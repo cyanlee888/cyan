@@ -1,2 +1,2 @@
-# codex
-codex项目
+# cyan
+code项目
