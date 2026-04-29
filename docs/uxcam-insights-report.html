@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UXCam 数据洞察与优化建议</title>
+  <style>
+    :root {
+      --bg: #f0f4ff;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: #eff6ff;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --ok: #059669;
+      --ok-soft: #ecfdf5;
+      --warn: #d97706;
+      --warn-soft: #fffbeb;
+      --border: #e2e8f0;
+      --shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+      --radius: 14px;
+      --font: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --max: 1040px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: linear-gradient(160deg, #eef2ff 0%, #f8fafc 45%, #ecfeff 100%);
+      min-height: 100vh;
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header.hero h1 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 8px;
+    }
+    header.hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .kpi {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .kpi .val { font-size: 1.75rem; font-weight: 700; color: var(--accent); }
+    .kpi .label { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    section h2 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    section h2 .num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    section .lead {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin: 0 0 20px;
+    }
+    ul.insights {
+      margin: 0 0 20px;
+      padding-left: 1.2rem;
+    }
+    ul.insights li { margin-bottom: 8px; }
+    .figure {
+      margin-top: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      vertical-align: middle;
+    }
+    .caption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      padding: 10px 14px;
+      background: #f1f5f9;
+      border-top: 1px solid var(--border);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr; }
+    }
+    .opt-block {
+      background: linear-gradient(135deg, #fefce8 0%, #fff7ed 100%);
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .opt-block h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+      color: #92400e;
+    }
+    .opt-block ol { margin: 0; padding-left: 1.2rem; }
+    .opt-block li { margin-bottom: 10px; }
+    .tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .tag-p0 { background: var(--danger-soft); color: var(--danger); }
+    .tag-p1 { background: var(--warn-soft); color: var(--warn); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-top: 32px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <span class="badge">UXCam · 产品与健康度</span>
+      <h1>数据洞察与优化建议</h1>
+      <p>基于接入 UXCam 后的用量、事件、版本、屏幕与漏斗数据整理 · 仅供内部复盘</p>
+    </header>
+
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="val">6.6K / 2.8K</div>
+        <div class="label">近窗会话量 / 活跃用户（卡片汇总）</div>
+      </div>
+      <div class="kpi">
+        <div class="val">~2.3 次</div>
+        <div class="label">人均会话约 2.3～2.4（浅层回访多）</div>
+      </div>
+      <div class="kpi">
+        <div class="val">17.5%</div>
+        <div class="label">登录 → 完成注册 → 开始上课 整体转化</div>
+      </div>
+    </div>
+
+    <section>
+      <h2><span class="num">1</span> 增长与使用结构</h2>
+      <p class="lead">第二周相对第一周，会话与用户量级明显抬升；堆叠显示<strong>短会话占比高</strong>、<strong>单次访问用户</strong>仍是最大桶，增长来自各频次层一起涌入，而非明显加深粘性。</p>
+      <ul class="insights">
+        <li>关注与投放、商店更新、UXCam/埋点全量时间的对齐，避免把「采集变完整」误判为纯自然增长。</li>
+        <li>长时长会话（如 &gt;10 分钟）条带薄，需结合课程设计看是用户习惯还是中途流失。</li>
+      </ul>
+      <div class="grid-2">
+        <div class="figure">
+          <img src="assets/uxcam/image-b8604bd5-1bb7-4cf4-b7ef-65bb9a2b8d23.png" alt="按周会话时长分布" loading="lazy" />
+          <div class="caption">按周：会话时长结构 — 短会话为主</div>
+        </div>
+        <div class="figure">
+          <img src="assets/uxcam/image-d521a00a-2080-4a9f-8c04-6b12fb3aa5dc.png" alt="用户访问频次分布" loading="lazy" />
+          <div class="caption">按周：访问频次 — 「仅 1 次」占比最大</div>
+        </div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p1">P1</span></h3>
+        <ol>
+          <li>为「首访次日回访」单独设目标与埋点校验，区分campaign用户与自然用户。</li>
+          <li>对短会话抽样录像，区分「打开即走」与「完成微任务后离开」。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">2</span> 事件趋势与集成节奏</h2>
+      <p class="lead">早期区间接近全零、之后陡升，符合<strong>近期集成或放量</strong>特征。<code>app_backgrounded</code>、<code>rageTap</code>、<code>UI Freeze</code>、<code>lesson_start</code> 等同步爬升，说明<strong>挫败与卡顿信号随流量放大</strong>。</p>
+      <ul class="insights">
+        <li><code>lesson_complete</code> 极低而 <code>lesson_exit</code> 更高时，优先排查埋点定义与完成条件。</li>
+        <li>跨周对比时标注「集成前无效区间」，避免误导同比。</li>
+      </ul>
+      <div class="figure">
+        <img src="assets/uxcam/image-c57270e6-127a-496a-80c6-f0eb347a3b33.png" alt="事件数量按周趋势" loading="lazy" />
+        <div class="caption">事件计数趋势 — 与集成/放量时间强相关</div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p1">P1</span></h3>
+        <ol>
+          <li>做一次事件字典评审（命名、触发次数、与业务语义是否一致）。</li>
+          <li>将 <code>rageTap</code> / <code>UI Freeze</code> 与版本、设备档位、网络类型交叉下钻。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">3</span> 版本表现与解读边界</h2>
+      <p class="lead"><strong>2.6.1</strong> 仍占绝大多数用户；<strong>2.7.0</strong> 在部分图表中会话时长与屏数极低，而「rage/session」为 0 时更可能反映<strong>样本极少</strong>，不能直接等同于体验最优。</p>
+      <ul class="insights">
+        <li>对 2.7.0 单独监控：DAU、时长、屏数、freeze、rage，并设最小样本阈值再下结论。</li>
+        <li>2.6.2 相对 2.6.1 的 rage/session 有下降趋势，可作为「已缓解点」与改动清单对照。</li>
+      </ul>
+      <div class="grid-2">
+        <div class="figure">
+          <img src="assets/uxcam/image-fdf69861-e19c-47e0-8253-fa445967e7a4.png" alt="按版本的会话时长与屏数" loading="lazy" />
+          <div class="caption">版本对比：会话时长与访问屏数</div>
+        </div>
+        <div class="figure">
+          <img src="assets/uxcam/image-25af3e7b-af3d-45b3-aadf-38695825fb92.png" alt="按版本的 rage tap 每会话" loading="lazy" />
+          <div class="caption">版本对比：rage taps / session（注意小样本版本）</div>
+        </div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p0">P0</span></h3>
+        <ol>
+          <li>发布节奏表 + 版本维度日报，直到 2.7.0 渗透率与指标稳定。</li>
+          <li>若 2.7.0 存在「一屏即走」，对齐冷启动、首屏渲染与关键依赖加载。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">4</span> 屏幕重心与使用时段</h2>
+      <p class="lead"><strong>AiClassRoom</strong> 相关屏在时长/会话中占比最高（约三分之一量级），与「核心教学场景」一致；周二会话占比突出，需与课表、推送、渠道核对。部分工作日柱形极低，建议排除过滤或采集缺口后再解读。</p>
+      <div class="grid-2">
+        <div class="figure">
+          <img src="assets/uxcam/image-6d8a26f4-cb81-45fa-a54b-0f1ace4c963f.png" alt="按星期与时段的会话分布" loading="lazy" />
+          <div class="caption">近两个月：星期 × 时段会话分布</div>
+        </div>
+        <div class="figure">
+          <img src="assets/uxcam/image-aaf9fc9c-b4a2-427d-87ef-f750451ab4d4.png" alt="屏幕占比饼图" loading="lazy" />
+          <div class="caption">屏幕占比 — AiClassRoom 为主力</div>
+        </div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p1">P1</span></h3>
+        <ol>
+          <li>将运营日历与「周二高峰」对齐，可复制成功触达策略到其他日。</li>
+          <li>对「其他屏」聚合过大时，逐步拆分为可行动的产品模块。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">5</span> 体验雷区：冻结与愤怒点击</h2>
+      <p class="lead"><strong>MainActivity</strong> 在 UI 冻结上居首；<strong>AiClassRoomActivity</strong> 在 rage tap 上为断层第一。登录相关屏在两类问题中均靠前，与「账号链路卡顿 + 挫败」叙事一致。</p>
+      <div class="figure">
+        <img src="assets/uxcam/image-d72b1367-0e37-46da-821c-b79c8f17af9a.png" alt="各屏 UI 冻结与 rage tap 排行" loading="lazy" />
+        <div class="caption">左：UI 冻结 by 屏（7 天）· 右：rage taps by 屏（30 天）</div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p0">P0</span></h3>
+        <ol>
+          <li>AiClassRoom：会话录像 + 元素热区，区分儿童重复点击、未响应与误触。</li>
+          <li>MainActivity：主线程耗时、首包接口并行度、列表/动效掉帧专项。</li>
+          <li>LoginAccount / PhoneVerify：错误提示、验证码链路、超时与重试策略。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">6</span> 转化、平台与留存</h2>
+      <p class="lead">漏斗显示：<strong>登录屏 → signup_complete</strong> 约半数流失；<strong>注册完成 → lesson_start</strong> 相对跌幅最大。iOS 在「注册完成 → 开始上课」上整体优于 Android。留存上 &lt;Day1 约一半、Day1 后骤降，且近期 cohort 多带未成熟标记，解读时注意时间窗。</p>
+      <div class="figure">
+        <img src="assets/uxcam/image-e915a8dd-7fac-4c12-9a3c-934129e84857.png" alt="signup 到 lesson 转化率 iOS Android" loading="lazy" />
+        <div class="caption">按日、分平台：signup_complete → lesson_start</div>
+      </div>
+      <div class="grid-2" style="margin-top:16px;">
+        <div class="figure">
+          <img src="assets/uxcam/image-3b1236c5-3de2-4b79-aede-190879acc3b2.png" alt="留存曲线与 cohort 表" loading="lazy" />
+          <div class="caption">留存：注意 cohort 未跑满的 * 标记</div>
+        </div>
+        <div class="figure">
+          <img src="assets/uxcam/image-a88d17b6-c937-4d8a-9909-1aabce3cd2ea.png" alt="注册到上课漏斗" loading="lazy" />
+          <div class="caption">漏斗：注册 → 注册完成 → 上课</div>
+        </div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p0">P0</span></h3>
+        <ol>
+          <li>首课「一键到达」：注册成功页直接给明确 CTA 与进度条，减少找课成本。</li>
+          <li>Android 专项：冷启动、登录 API、权限与 WebView 容器与 iOS 对齐体验。</li>
+          <li>对「0% 转化」日做样本量与发布/故障标注，避免噪声驱动决策。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">7</span> 用户旅程（Launch → Quit）</h2>
+      <p class="lead">Sankey 显示启动后路径分散，且早期出现<strong>大额 Quit</strong>；<strong>LoginAccountActivity</strong> 后通往退出的流较粗，与漏斗、冻结/rage 数据<strong>三角互证</strong>。</p>
+      <div class="figure">
+        <img src="assets/uxcam/image-e2f2965c-6f0c-4677-b10f-f76eb02d41b0.png" alt="Launch 到 Quit 的 Sankey" loading="lazy" />
+        <div class="caption">会话流：Launch → … → Quit（关注登录后早退）</div>
+      </div>
+      <div class="opt-block">
+        <h3>优化点 <span class="tag tag-p0">P0</span></h3>
+        <ol>
+          <li>为「登录后 60 秒内退出」建专项看板与告警。</li>
+          <li>减少合法入口外的循环回登录（会话恢复、token 刷新失败提示）。</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2><span class="num">8</span> 行动优先级总览</h2>
+      <p class="lead">将「主课堂体验 + 登录首启 + Android 转化」列为同一阶段主线，数据侧补齐版本切片与样本门槛。</p>
+      <ul class="insights">
+        <li><strong>P0</strong>：AiClassRoom 高 rage、MainActivity 高 freeze、登录后早退、注册→首课漏斗、2.7.0 真实用户指标。</li>
+        <li><strong>P1</strong>：事件字典、短会话与「单次用户」运营策略、周二高峰复制、埋点与完成率对齐。</li>
+      </ul>
+    </section>
+
+    <footer>
+      报告页面路径：<code>docs/uxcam-insights-report.html</code> · 配图位于 <code>docs/assets/uxcam/</code> · 用浏览器直接打开即可演示
+    </footer>
+  </div>
+</body>
+</html>
