@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UXCam 产品分析 — 操作教程（管理/业务版）</title>
+  <style>
+    /*
+     * 视觉 token 与 docs/DESIGN.md（Google DESIGN.md 格式）对齐。
+     * 改色 / 圆角 / 间距时优先改 DESIGN.md，再同步下方 :root 映射。
+     */
+    :root {
+      --color-background: #f4f5f8;
+      --color-surface: #ffffff;
+      --color-text-primary: #111827;
+      --color-text-secondary: #6b7280;
+      --color-text-body: #374151;
+      --color-accent: #1d4ed8;
+      --color-accent-container: #eff6ff;
+      --color-border: #e5e7eb;
+      --color-success: #065f46;
+      --color-success-container: #f0fdf4;
+      --color-success-border: #bbf7d0;
+      --color-ops-heading: #1e40af;
+      --color-ops-border: #bfdbfe;
+      --color-warn-bg: #fffbeb;
+      --color-warn-border: #fcd34d;
+      --color-warn-text: #92400e;
+      --color-warn-text-strong: #78350f;
+      --color-video-bg: #faf5ff;
+      --color-video-border: #e9d5ff;
+      --color-video-accent: #6b21a8;
+      --color-neutral-subtle: #f9fafb;
+      --color-code-bg: #f3f4f6;
+      --color-tag-bg: #e5e7eb;
+      --color-tag-text: #4b5563;
+      --color-tag-web-bg: #dbeafe;
+      --color-tag-web-text: #1e40af;
+      --color-tag-mob-bg: #fef3c7;
+      --color-tag-mob-text: #92400e;
+      --color-platform-on-bg: #ecfdf5;
+      --color-platform-on-border: #6ee7b7;
+      --color-platform-on-text: #047857;
+      --color-table-header-bg: #f9fafb;
+      --color-table-stripe: #fafafa;
+      --color-hover-scrim: rgba(0, 0, 0, 0.03);
+
+      --gradient-page: linear-gradient(125deg, #e8ecff 0%, #f0fdf9 35%, #ecfeff 68%, #faf5ff 100%);
+      --gradient-tab-active: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 48%, #0891b2 130%);
+      --shadow-shell: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 16px 40px -12px rgba(79, 70, 229, 0.12);
+      --shadow-elevate: 0 12px 32px -8px rgba(15, 23, 42, 0.14);
+      --glass-surface: rgba(255, 255, 255, 0.78);
+      --glass-border: rgba(255, 255, 255, 0.92);
+
+      --font-sans: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 10px;
+      --radius-lg: 12px;
+      --radius-xl: 14px;
+      --radius-pill: 999px;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-xxl: 40px;
+      --layout-max: 920px;
+
+      /* 与既有 class 兼容的别名 */
+      --bg: var(--color-background);
+      --card: var(--color-surface);
+      --text: var(--color-text-primary);
+      --muted: var(--color-text-secondary);
+      --accent: var(--color-accent);
+      --accent-soft: var(--color-accent-container);
+      --border: var(--color-border);
+      --ok: var(--color-success);
+      --warn-bg: var(--color-warn-bg);
+      --warn-border: var(--color-warn-border);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      background: var(--gradient-page);
+      background-attachment: fixed;
+      color: var(--color-text-primary);
+      line-height: 1.65;
+      font-size: 16px;
+      min-height: 100vh;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      body { background-attachment: scroll; }
+      .tabs-bar button,
+      section.module,
+      .mapping-section,
+      .panel-search-nav button { transition: none !important; }
+    }
+    .wrap.shell {
+      max-width: min(var(--layout-max), calc(100% - 2rem));
+      margin: var(--space-md) auto var(--space-xxl);
+      padding: var(--space-xl) clamp(1rem, 3vw, 1.75rem) var(--space-xxl);
+      background: var(--glass-surface);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--color-border);
+      border: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent);
+      border-radius: calc(var(--radius-xl) + 4px);
+      box-shadow: var(--shadow-shell);
+    }
+    .wrap { max-width: var(--layout-max); margin: 0 auto; }
+    header {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent);
+    }
+    h1 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .lead { color: var(--color-text-secondary); font-size: 0.95rem; margin: 0 0 1rem; max-width: 52rem; }
+    .warn {
+      background: var(--color-warn-bg);
+      border: 1px solid var(--color-warn-border);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1rem;
+      font-size: 0.9rem;
+      color: var(--color-warn-text);
+      margin-bottom: 1.25rem;
+    }
+    .warn strong { color: var(--color-warn-text-strong); }
+    nav.toc {
+      background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem 1.1rem;
+      margin-bottom: var(--space-lg);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
+    }
+    nav.toc h2 { margin: 0 0 0.65rem; font-size: 1rem; }
+    nav.toc ol { margin: 0; padding-left: 1.2rem; }
+    nav.toc li { margin-bottom: 0.35rem; }
+    nav.toc a { color: var(--color-accent); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+    section.module {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 1.35rem 1.5rem 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+    }
+    section.module:hover {
+      box-shadow: var(--shadow-elevate);
+      transform: translateY(-1px);
+    }
+    section.module h2 {
+      margin: 0 0 0.35rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding-top: 0.25rem;
+    }
+    .sub { color: var(--color-text-secondary); font-size: 0.9rem; margin: 0 0 1rem; }
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--color-text-body);
+      margin: 1.15rem 0 0.45rem;
+      text-transform: none;
+    }
+    h3:first-of-type { margin-top: 0.25rem; }
+    p { margin: 0 0 0.75rem; color: var(--color-text-body); }
+    ul, ol { margin: 0 0 0.85rem; padding-left: 1.25rem; color: var(--color-text-body); }
+    li { margin-bottom: 0.35rem; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem 1.25rem;
+    }
+    @media (max-width: 720px) { .grid-2 { grid-template-columns: 1fr; } }
+    .box {
+      background: linear-gradient(160deg, var(--color-accent-container) 0%, rgba(255, 255, 255, 0.65) 100%);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--color-ops-border);
+      box-shadow: 0 2px 8px rgba(30, 64, 175, 0.06);
+    }
+    .box.outcomes {
+      background: linear-gradient(165deg, var(--color-success-container) 0%, rgba(255, 255, 255, 0.7) 100%);
+      border-color: var(--color-success-border);
+      box-shadow: 0 2px 8px rgba(5, 80, 60, 0.06);
+    }
+    .box.outcomes h3 { color: var(--color-success); margin-top: 0; }
+    .box.ops h3 { color: var(--color-ops-heading); margin-top: 0; }
+    .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+    figure.media {
+      margin: 1rem 0 0.25rem;
+      padding: 0;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--color-neutral-subtle);
+    }
+    figure.media img, figure.media video {
+      display: block;
+      width: 100%;
+      height: auto;
+      vertical-align: middle;
+    }
+    figure.media figcaption {
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      padding: 0.5rem 0.75rem 0.65rem;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+    .video-block {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--color-video-bg);
+      border: 1px solid var(--color-video-border);
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+    }
+    .video-block strong { color: var(--color-video-accent); }
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--color-border);
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+    a { color: var(--color-accent); }
+    code { font-size: 0.85em; background: var(--color-code-bg); padding: 0.1em 0.35em; border-radius: var(--radius-xs); }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: var(--color-tag-bg);
+      color: var(--color-tag-text);
+      padding: 0.2rem 0.45rem;
+      border-radius: var(--radius-xs);
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .tag.web { background: var(--color-tag-web-bg); color: var(--color-tag-web-text); }
+    .tag.mob { background: var(--color-tag-mob-bg); color: var(--color-tag-mob-text); }
+    /* Tabs */
+    .tabs-bar-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      padding-bottom: 0.35rem;
+      margin: 0 0 1.25rem;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--glass-surface) 94%, transparent) 65%, transparent);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+    }
+    .tabs-bar {
+      display: flex;
+      gap: 0.4rem;
+      margin: 0;
+      padding: 0.4rem;
+      border: 1px solid color-mix(in srgb, var(--color-border) 80%, #c7d2fe);
+      border-radius: var(--radius-lg);
+      background: color-mix(in srgb, #fff 65%, transparent);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 4px 20px rgba(99, 102, 241, 0.06);
+    }
+    .tabs-bar button {
+      appearance: none;
+      font: inherit;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      background: transparent;
+      border: none;
+      padding: 0.7rem 0.85rem;
+      cursor: pointer;
+      border-radius: var(--radius-md);
+      flex: 1;
+      transition: color 0.2s ease, background 0.2s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    }
+    .tabs-bar button:hover {
+      color: var(--color-text-primary);
+      background: rgba(255, 255, 255, 0.85);
+    }
+    .tabs-bar button[aria-selected="true"] {
+      color: #fff;
+      font-weight: 700;
+      background: var(--gradient-tab-active);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+      transform: translateY(-0.5px);
+    }
+    .tabs-bar button:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    .tab-panel { outline: none; }
+    .mapping-page header { border-bottom: none; margin-bottom: 1rem; padding-bottom: 0; }
+    .mapping-intro {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.15rem;
+      margin-bottom: 1.5rem;
+      color: var(--color-text-body);
+      font-size: 0.92rem;
+    }
+    .mapping-intro .date { color: var(--color-text-secondary); font-size: 0.88rem; margin-bottom: 0.5rem; }
+    .platform-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+    .platform-tabs button {
+      font: inherit;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      cursor: pointer;
+      color: var(--color-text-secondary);
+    }
+    .platform-tabs button[aria-selected="true"] {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border-color: var(--color-platform-on-border);
+      color: var(--color-platform-on-text);
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.12);
+    }
+    .platform-tabs button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .mapping-section {
+      background: color-mix(in srgb, var(--color-surface) 96%, transparent);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.15rem 1.15rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      transition: box-shadow 0.2s ease;
+    }
+    .mapping-section:hover { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06); }
+    .mapping-section.mapping-section-filtered-empty { display: none !important; }
+    .mapping-section h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .mapping-table-wrap { overflow-x: auto; margin: 0 -0.15rem; }
+    table.mapping-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    table.mapping-table th,
+    table.mapping-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    table.mapping-table th {
+      background: var(--color-table-header-bg);
+      font-weight: 600;
+      color: var(--color-text-body);
+      white-space: nowrap;
+    }
+    table.mapping-table td code {
+      font-size: 0.82rem;
+      word-break: break-all;
+    }
+    table.mapping-table tbody tr:nth-child(even) { background: var(--color-table-stripe); }
+    table.mapping-table tbody tr.search-hit { box-shadow: inset 3px 0 0 0 #6366f1; }
+    table.mapping-table tbody tr.search-hit-current {
+      background: rgba(224, 231, 255, 0.65) !important;
+      box-shadow: inset 3px 0 0 0 #4338ca, 0 0 0 2px rgba(99, 102, 241, 0.22);
+      animation: search-pulse 1.2s ease-out 1;
+    }
+    @keyframes search-pulse {
+      0% { box-shadow: inset 3px 0 0 0 #4338ca, 0 0 0 0 rgba(99, 102, 241, 0.45); }
+      100% { box-shadow: inset 3px 0 0 0 #4338ca, 0 0 0 0 rgba(99, 102, 241, 0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      table.mapping-table tbody tr.search-hit-current { animation: none; }
+    }
+    table.mapping-table tbody tr.search-hidden { display: none !important; }
+    /* Glossary tab */
+    .glossary-page .glossary-entry {
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .glossary-page .mapping-section .glossary-entry:last-child { border-bottom: none; padding-bottom: 0; }
+    .glossary-page .term-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 0.65rem;
+      margin-bottom: 0.4rem;
+    }
+    .glossary-page .term-en { font-weight: 700; color: var(--color-text-primary); }
+    .glossary-page .term-zh { font-size: 0.92rem; color: var(--color-text-secondary); }
+    .glossary-page .glossary-def,
+    .glossary-page .glossary-scope {
+      margin: 0.25rem 0 0;
+      font-size: 0.9rem;
+      color: var(--color-text-body);
+    }
+    .glossary-page .glossary-scope strong { color: var(--color-text-primary); }
+    .glossary-page .glossary-src {
+      margin: 0.45rem 0 0;
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+    }
+    .glossary-page .glossary-src a { font-weight: 500; }
+    .glossary-page article.glossary-entry.search-hidden { display: none !important; }
+    .glossary-page article.glossary-entry.search-hit {
+      border-left: 3px solid #6366f1;
+      padding-left: 0.65rem;
+      margin-left: -0.1rem;
+    }
+    .glossary-page article.glossary-entry.search-hit-current {
+      background: linear-gradient(90deg, rgba(224, 231, 255, 0.9) 0%, rgba(255, 255, 255, 0.4) 100%);
+      border-radius: var(--radius-md);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    /* 面板内搜索 */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .panel-search {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem 0.85rem;
+      margin-bottom: 1.35rem;
+      padding: 0.85rem 1rem;
+      background: linear-gradient(135deg, rgba(238, 242, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(236, 253, 245, 0.85) 100%);
+      border: 1px solid color-mix(in srgb, var(--color-border) 75%, #a5b4fc);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 4px 18px rgba(79, 70, 229, 0.08);
+    }
+    .panel-search-inner {
+      flex: 1 1 220px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+      padding: 0.45rem 0.75rem;
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) inset;
+    }
+    .panel-search-inner:focus-within {
+      border-color: #818cf8;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+    }
+    .panel-search-icon {
+      flex-shrink: 0;
+      color: #6366f1;
+      display: flex;
+    }
+    .panel-search-icon svg { display: block; }
+    .panel-search input[type="search"] {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background: transparent;
+      font: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .panel-search input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; }
+    .panel-search-meta {
+      flex: 1 1 100%;
+      font-size: 0.82rem;
+      color: var(--color-text-secondary);
+      min-height: 1.25em;
+    }
+    .panel-search-nav {
+      display: flex;
+      gap: 0.4rem;
+      flex-shrink: 0;
+    }
+    .panel-search-nav button {
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: #fff;
+      color: var(--color-text-body);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+    .panel-search-nav button:hover:not(:disabled) {
+      background: var(--color-accent-container);
+      border-color: #93c5fd;
+      color: var(--color-accent);
+    }
+    .panel-search-nav button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      h1 {
+        background: linear-gradient(120deg, #0f172a 0%, #4338ca 42%, #0e7490 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap shell">
+    <div class="tabs-bar-wrap">
+    <div class="tabs-bar" role="tablist" aria-label="教程分区">
+      <button type="button" id="tab-btn-tutorial" role="tab" aria-selected="true" aria-controls="panel-tutorial">基础使用教程</button>
+      <button type="button" id="tab-btn-naming" role="tab" aria-selected="false" aria-controls="panel-naming">页面命名</button>
+      <button type="button" id="tab-btn-glossary" role="tab" aria-selected="false" aria-controls="panel-glossary">名词解释</button>
+    </div>
+    </div>
+
+    <div id="panel-tutorial" class="tab-panel" role="tabpanel" aria-labelledby="tab-btn-tutorial">
+    <header>
+      <h1>UXCam 产品分析 — 操作教程（管理 / 业务版）</h1>
+      <p class="lead">
+        面向已接入 UXCam 的团队：按模块说明<strong>从哪里进入、可以点哪些操作、最后能看到什么结论</strong>。内容与操作路径整理自
+        <a href="https://help.uxcam.com/en/collections/11057111-product-analytics-features" target="_blank" rel="noopener noreferrer">UXCam Help — Product Analytics &amp; features</a>
+        官方合集；界面文案以您账户实际菜单为准（中英文可能略有差异）。
+      </p>
+      <div class="warn">
+        <strong>关于配图与视频：</strong>下方部分配图/GIF 来自官方帮助中心文章中的附件链接（带时效签名）。若图片无法加载，请直接打开各小节附上的<strong>「官方文档（含图/视频）」</strong>链接，在浏览器中查看最新截图与内嵌演示视频。
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="目录">
+      <h2>目录</h2>
+      <ol>
+        <li><a href="#m-usage">用量与体验统计（首页概览）</a></li>
+        <li><a href="#m-dashboard">可定制看板（Dashboard）</a></li>
+        <li><a href="#m-retention">留存分析（Retention）</a></li>
+        <li><a href="#m-funnel">漏斗（Funnels）</a></li>
+        <li><a href="#m-screen">页面与热力图（Screen / Heatmap）</a></li>
+        <li><a href="#m-session">会话录屏（Session Replay）</a></li>
+        <li><a href="#m-smart">智能事件（Smart Events）</a></li>
+        <li><a href="#m-events">编码事件（Coded Events）与事件分析</a></li>
+        <li><a href="#m-user">用户分析（User Properties）</a></li>
+        <li><a href="#m-issue">问题分析（崩溃 / UI 卡顿）</a></li>
+      </ol>
+    </nav>
+
+    <!-- Usage -->
+    <section class="module" id="m-usage">
+      <h2>1. 用量与体验统计 <span class="tag mob">Mobile</span><span class="tag web">Web</span></h2>
+      <p class="sub">登录 UXCam 后首页级别的「大盘」，先看趋势再下钻到其他模块。</p>
+
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>登录 UXCam，在概览区找到 <strong>Usage &amp; UX Statistics</strong>（用量与体验统计）。</li>
+            <li>在页面中选择分析周期：<strong>最近 24 小时 / 7 天 / 30 天</strong>。</li>
+            <li>在 <strong>Usage Statistics</strong> 区域，点击各指标卡片（如 Sessions），展开<strong>随时间变化的曲线</strong>，并与历史周期对比趋势。</li>
+            <li><strong>UX Statistics</strong> 区块基于<strong>最近约 2 个月</strong>数据计算，用于补充「星期几最活跃、哪块屏停留最久」等体验向信息。</li>
+          </ol>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li><strong>Sessions</strong>：选定周期内录到的会话总数。</li>
+            <li><strong>Active Users</strong>：该周期内至少打开过一次 App 的用户数。</li>
+            <li><strong>Top events</strong>：触发次数最多的行为事件。</li>
+            <li><strong>Top App Version</strong>：使用最多的 App 版本（便于发现升级滞后）。</li>
+            <li><strong>Session Duration</strong>：平均单次会话时长。</li>
+            <li><strong>Rage Gestures</strong>：愤怒点击次数，偏高通常提示界面响应或引导问题。</li>
+            <li>UX 区：<strong>最常访问的星期几、停留最长的页面、主要国家/地区、常见设备尺寸</strong>等。</li>
+          </ul>
+        </div>
+      </div>
+
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273506503/71a653a9981f04d64941b309bcd6/23236483145113?expires=1777288500&amp;signature=47f2f2928471855908be212f0b253366978e096e7a921fabd66b5b7660f66423&amp;req=dSIgFcx%2Bm4RfWvMW1HO4zdovCDpThQRkNCgymtnqWPeNTHiWEb8sZaBO7FfL%0APCWTQs4YH8gblrJoouU%3D%0A"
+          alt="Usage Statistics 示例图（官方文档）"
+          loading="lazy"
+        />
+        <figcaption>用量统计示例：点击卡片可查看随时间变化的趋势图（来源：官方文档截图）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273506502/ea7ca73f526fa6ad71b37d685df2/23236528250777?expires=1777288500&amp;signature=305e73f990625bf6aee8c923e8d30cffaff7aa5cb04e0efa69165dc553d4a855&amp;req=dSIgFcx%2Bm4RfW%2FMW1HO4zQe87USR0uACCdnbNmQaTaHStnRGliw%2BCCP1JGbr%0AghFNs8OkwxE7yl38w3E%3D%0A"
+          alt="UX Statistics 示例图（官方文档）"
+          loading="lazy"
+        />
+        <figcaption>UX 概览示例：高峰星期、热门页面、国家与设备等（来源：官方文档截图）。</figcaption>
+      </figure>
+      <p class="doc-link"><a href="https://help.uxcam.com/en/articles/10222489-usage-ux-statistics" target="_blank" rel="noopener noreferrer">→ 官方文档（含图）：Usage &amp; UX Statistics</a></p>
+    </section>
+
+    <!-- Dashboard -->
+    <section class="module" id="m-dashboard">
+      <h2>2. 可定制看板（Customizable Dashboard）<span class="tag mob">Mobile</span><span class="tag web">Web</span></h2>
+      <p class="sub">把多个指标放在同一页，支持「报表库一键添加」或「从零搭建」，并可分享、导出、从图表一键跳到会话列表看录屏。</p>
+
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <h3 style="margin-top:0.75rem;font-size:0.88rem;color:var(--color-text-secondary);">A. 新建看板</h3>
+          <ol>
+            <li>进入 Dashboard 区域，点击右上角 <strong>Create Dashboard</strong>。</li>
+            <li>填写<strong>名称</strong>与<strong>描述</strong>（方便团队理解用途）。</li>
+            <li>设置<strong>访问权限</strong>：可先设为私有，后续再共享。</li>
+          </ol>
+          <h3 style="font-size:0.88rem;color:var(--color-text-secondary);">B. 添加报表 — 使用报表库（Report Library）</h3>
+          <ol>
+            <li>在看板中点击 <strong>Add report</strong>。</li>
+            <li>按分类浏览（如 Acquisition、Engagement、Events、Issues、Screens、Users 等）或<strong>搜索关键词</strong>。</li>
+            <li>打开预览后点 <strong>Add</strong> 加入看板；若报表需要选择事件或属性，按页面提示完成配置。</li>
+            <li>已添加的预置报表可通过<strong>三点菜单 → Edit report</strong>修改参数。</li>
+          </ol>
+          <h3 style="font-size:0.88rem;color:var(--color-text-secondary);">C. 从零创建报表（Build from scratch）</h3>
+          <ol>
+            <li>选择<strong>数据对象</strong>：events、sessions、users、screens，以及移动端还可选 crashes、UI freezes、handled exceptions 等。</li>
+            <li>选择<strong>指标（metric）</strong>、<strong>聚合方式</strong>（如 total、%、min、max、avg 等，视维度而定）。</li>
+            <li>设置<strong>分组（Grouping）</strong>：默认按时间（天）；也可按设备属性、用户属性等；最多两个分组（官方说明：<strong>不支持按小时分组</strong>）。</li>
+            <li>按需添加 <strong>Filters</strong> 筛选条件。</li>
+            <li>在右侧选择<strong>展示形式</strong>：Chart / Table / Numeric；选择时间范围后点 <strong>Create Report</strong> 命名保存。</li>
+          </ol>
+          <h3 style="font-size:0.88rem;color:var(--color-text-secondary);">D. 整理与导出</h3>
+          <ul>
+            <li><strong>拖拽</strong>调整报表块位置；拖右下角<strong>改变大小</strong>。</li>
+            <li>三点菜单：<strong>Edit / Rename / 切换图表类型 / Duplicate / Delete / Download</strong>（表格、图表可导出 csv、xls、png、jpeg、pdf、svg 等，以界面为准）。</li>
+            <li>看板级：<strong>Single date range</strong> 可统一覆盖各报表日期；或保留各报表独立时间。</li>
+            <li><strong>Share Dashboard</strong>：团队内共享、或生成<strong>公开链接</strong>（公开访问者通常<strong>不能</strong>从图表再点进会话等定性数据，以官方说明为准）。</li>
+          </ul>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>一页看清<strong>拉新、活跃、转化、崩溃、页面表现</strong>等组合指标。</li>
+            <li>对比不同指标（例如「各平台崩溃数 vs 会话量」）发现异常相关。</li>
+            <li>从表格/图表<strong>一键跳转</strong>到会话、事件或用户列表，把「数字」和「真实操作录屏」连起来。</li>
+            <li>通过<strong>公开链接</strong>向未开通账号的干系人展示固定看板（权限可控）。</li>
+          </ul>
+          <p style="margin-top:0.75rem;font-size:0.88rem;color:var(--color-text-secondary);"><strong>Web 与 Mobile 差异：</strong>Web 侧报表数据点侧重 Events、Conversions、Sessions、Screens；Mobile 另含 Issues 等类型，以官方说明为准。</p>
+        </div>
+      </div>
+
+      <figure class="media">
+        <img
+          src="https://downloads.intercomcdn.com/i/o/ncn9bb9h/1401315983/d906887ce8cea6df2f2e993efffd/Screenshot+2025-02-28+at+13_47_27.png?expires=1777288500&amp;signature=b91d6934591b92a23558cce7b7fa834cd28dd2ff663358fa68f806d236dfbd1e&amp;req=dSQnF8p%2FmIhXWvMW1HO4zV7C1%2F9CZ3tyDDHoRn%2B%2FhKc3GBY4QuTZolXCYiZs%0AhQA7upjN8qO4VW94tFA%3D%0A"
+          alt="可定制看板界面示例"
+          loading="lazy"
+        />
+        <figcaption>可定制看板界面概览（来源：Intro to Customizable Dashboards）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273507920/1ccba8ab8e72f68d24180e77c2b0/6774432824729?expires=1777288500&amp;signature=3aa6daba9d8c1249da829ad2d04716b81b9fcd029bf90096458f34d716c34065&amp;req=dSIgFcx%2BmohdWfMW1HO4zSJdwJO%2Fz%2BsAj7Y7S5Of7Ggm%2FAG%2Bj04PpPyFwhk%2F%0Ank3LQcNTCEQ3h2PfIq0%3D%0A"
+          alt="创建看板 GIF"
+          loading="lazy"
+        />
+        <figcaption>创建新看板流程演示 GIF（来源：Building Dashboards and Reports）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273507899/fb830066439c6aaa035c513ef89d/18302072711065?expires=1777288500&amp;signature=6a39e4504787fa0c025d7ae4904fa11daa17b964f31e3bc5ec1730227326bae0&amp;req=dSIgFcx%2BmolWUPMW1HO4zQPb8ZSIHZ3ZaB671UtmdOb81B70skmM2i6Y%2F%2BEH%0AhGZSVO1tOisyu2ve%2B0c%3D%0A"
+          alt="从报表库添加报表 GIF"
+          loading="lazy"
+        />
+        <figcaption>从报表库添加报表：浏览分类、搜索、预览后添加（官方 GIF）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222491-intro-to-customizable-dashboards" target="_blank" rel="noopener noreferrer">→ Intro to Customizable Dashboards</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222492-building-dashboards-and-reports" target="_blank" rel="noopener noreferrer">→ Building Dashboards and Reports</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222493-dashboard-metrics-explained" target="_blank" rel="noopener noreferrer">→ Dashboard Metrics Explained</a>
+      </p>
+    </section>
+
+    <!-- Retention -->
+    <section class="module" id="m-retention">
+      <h2>3. 留存分析（Retention Analytics）</h2>
+      <p class="sub">定义「首次行为」与「回访行为」，看用户是否在后续周期回来，用于评估新功能、运营活动与长期粘性。</p>
+      <div class="video-block">
+        <strong>视频：</strong>官方在「How to set up a Retention Report」页面提供<strong>汇总讲解视频</strong>，请在下方官方文档链接打开后于页面内播放（教程内嵌链接可能因附件策略无法直接引用视频源）。
+      </div>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>进入 Retention 模块，点击 <strong>Create Report</strong>。</li>
+            <li>选择 <strong>Start action（起始行为）</strong>：如注册、完成引导、首次访问、某关键事件/页面等；可组合多个起始行为，并可设<strong>最少发生次数</strong>。</li>
+            <li>用 <strong>Group by</strong> 定义队列粒度：按日/周/月/季将用户分入不同 cohort。</li>
+            <li>选择 <strong>Return action（回访行为）</strong>：代表用户「获得价值」的行为（如下单、观看、生成报告等）；同样支持多个行为及最少次数（多行为时计数规则见官方说明）。</li>
+            <li>设置 <strong>Return interval</strong>：期望用户多久重复一次该行为（日/周/月/季）；并选择<strong>Bounded（In）</strong>与<strong>Unbounded（In or After）</strong>留存口径。</li>
+            <li>添加 <strong>Filters</strong>（设备属性、用户属性等）与 <strong>Groupings</strong>（按版本、国家、订阅类型等拆分对比）。</li>
+            <li>保存后结合官方下一篇文档学习阅读<strong>留存曲线与留存表</strong>，并可保存 Cohort 供其他分析复用。</li>
+          </ol>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>各队列在<strong>第 1、2、3… 个周期</strong>仍执行回访行为的用户比例。</li>
+            <li>对比不同获客周、不同版本、不同国家的<strong>长期留存差异</strong>。</li>
+            <li>判断某次改版或活动后，用户是「短期来一次」还是「持续回来」。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273507323/2b0936fd61381cfce3eedf99244b/23405746711833?expires=1777288500&amp;signature=c56f4273767ae8b3b787fa9858557238be31be2091fed6e8c92cb8dd0bc71dbb&amp;req=dSIgFcx%2BmoJdWvMW1HO4zS%2FZMMbnIrZev4F7G8RN5ZLkppkfiDO%2BfhpzpDIH%0ATfeCJ8nj%2FVcK4jfqhw%3D%0A"
+          alt="留存报表配置 GIF"
+          loading="lazy"
+        />
+        <figcaption>留存报表配置过程示意 GIF（来源：How to set up a Retention Report）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222503-how-to-set-up-a-retention-report" target="_blank" rel="noopener noreferrer">→ How to set up a Retention Report（含视频）</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222504-how-to-analyze-a-retention-curve" target="_blank" rel="noopener noreferrer">→ How to analyze a Retention Curve</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222505-how-to-analyze-the-retention-table-save-cohorts" target="_blank" rel="noopener noreferrer">→ Retention Table &amp; save Cohorts</a>
+      </p>
+    </section>
+
+    <!-- Funnel -->
+    <section class="module" id="m-funnel">
+      <h2>4. 漏斗（Funnels）</h2>
+      <p class="sub">把「屏幕 + 事件」串成路径，看每一步流失与转化；支持 AI/规则建议路径，也支持完全自定义。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>点击 <strong>Create funnel</strong>；若不确定步骤，点 <strong>Suggestions</strong>：先选一个代表<strong>最终转化</strong>的屏幕或事件，系统会给出 3 条常见路径建议，可预览后 <strong>Create</strong>。</li>
+            <li>手动搭建：选择 <strong>This order（严格顺序）</strong>或 <strong>Any order（无序完成即算）</strong>；通过 <strong>Add steps</strong> 添加屏幕/事件，拖拽排序（最多 <strong>15</strong> 步）。</li>
+            <li>选择统计口径：<strong>Session count</strong> 或 <strong>User count</strong>（例如更关心「成交笔数」还是「成交人数」）。</li>
+            <li>设置<strong>转化窗口</strong>：基于会话时，默认须在<strong>同一会话内</strong>完成所有步骤；基于用户时可设「7 天内」「3 天内」等，用于注册后首单、优惠券有效期等场景。</li>
+            <li>可加<strong>整漏斗过滤器</strong>（国家、平台、是否加购等）与 <strong>Group by</strong> 对比不同人群转化率。</li>
+            <li>命名、选择日期范围，<strong>Save funnel</strong>；之后可随时编辑步骤或日期。</li>
+          </ol>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果（分析页）</h3>
+          <ul>
+            <li>顶部四项：<strong>进入漏斗的会话/用户数、总转化率、总转化次数、平均转化耗时</strong>（有序漏斗；两步骤漏斗可分析单段耗时）。</li>
+            <li>每一步的<strong>微转化与流失（drop-off）</strong>，定位「用户主要死在哪一步」。</li>
+            <li>按时间、设备、用户属性、事件过滤或分组，评估<strong>改版 / A/B 测试 / 新市场投放</strong>前后差异。</li>
+            <li>点击漏斗条带<strong>上方（流失）</strong>或<strong>下方（成功）</strong>区域，可直接打开对应<strong>会话录屏</strong>理解「为什么没转化」或「成功路径长什么样」。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273509725/a0fa9069aa0618841a34843d79a3/20504360863513?expires=1777288500&amp;signature=9f112018b9c3cfe21057e3c0539cac8ee10acef3bfffc8ee1e66fac719b38786&amp;req=dSIgFcx%2BlIZdXPMW1HO4zb7fJFIZyGneTedwurRVZp739BZO%2FpofF%2BhX%2Flrs%0AcSkQVBvFnKApSxXSmQ0%3D%0A"
+          alt="漏斗建议功能截图"
+          loading="lazy"
+        />
+        <figcaption>通过 Suggestions 根据目标屏/事件生成漏斗建议（官方截图）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273511052/1132451d1516d45d26cb115bb8dc/19803207412377?expires=1777288500&amp;signature=64c6d22ce82be772036367ed42e47c5c7dffd24ad34eb0f24f422bed2a8bbc00&amp;req=dSIgFcx%2FnIFaW%2FMW1HO4zSUEIoNAcLPxPFqHMRlKKTbaNnK%2B30HunNvxgxKK%0AYK1X1P3r7y4SGQD%2BdLE%3D%0A"
+          alt="漏斗分析顶部指标截图"
+          loading="lazy"
+        />
+        <figcaption>漏斗分析页顶部：进入量、转化率、转化次数、平均转化时间等（官方截图）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222565-how-to-create-a-funnel" target="_blank" rel="noopener noreferrer">→ How to create a Funnel</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222567-how-to-analyze-a-funnel" target="_blank" rel="noopener noreferrer">→ How to analyze a Funnel</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222564-what-is-the-ordering-logic-for-funnels" target="_blank" rel="noopener noreferrer">→ Ordering logic for funnels</a>
+      </p>
+    </section>
+
+    <!-- Screen Heatmap -->
+    <section class="module" id="m-screen">
+      <h2>5. 页面与热力图（Screen analytics &amp; Heatmap）</h2>
+      <p class="sub">看某一屏上的点击/滑动集中区域、退出率、愤怒点击等；支持框选区域做定量分析，并可跳到会话录屏。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>进入 <strong>Screens</strong>（或 Web 对应屏幕分析入口），选择要分析的页面。</li>
+            <li>左侧查看该屏的<strong>访问次数、退出率、rage taps、停留时长、手势次数、带崩溃的访问</strong>等指标。</li>
+            <li>使用过滤器：按<strong>日期、用户/设备/会话属性、前后访问路径、是否发生某事件、手势类型与次数</strong>等缩小样本。</li>
+            <li>在热力图上<strong>按下拖拽框选</strong>关注区域，查看该区域内的手势数、用户数、首次手势前等待时间等。</li>
+            <li>切换到 <strong>Screen visits</strong> 列表，按下一屏、停留时长等排序，点击播放<strong>会话录屏</strong>（默认播放该屏切换片段，可继续观看全会话）。</li>
+          </ol>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>识别<strong>误点高发区、无效点击（unresponsive gestures）</strong>、CTA 是否被其他元素分散注意力。</li>
+            <li>对比改版前后或不同人群（国家、A/B 组）在同一屏上的<strong>行为差异</strong>。</li>
+            <li>将热力图发现与<strong>漏斗流失步骤</strong>交叉验证，形成改版依据。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273510554/034c70ac944eab4857be87979645/16597290206873?expires=1777288500&amp;signature=a9a5442cf272e7e141952c91555b3b2de5ae79e0754a8fafaf6f1fa57a845897&amp;req=dSIgFcx%2FnYRaXfMW1HO4zTqZR6WJCdqmQ0qKDQA9kP6hu4hocmytO9o0Wl02%0AozAOyT92wK6R8FLisVo%3D%0A"
+          alt="热力图左侧屏幕指标"
+          loading="lazy"
+        />
+        <figcaption>热力图分析页左侧：屏幕访问与体验相关指标（官方截图）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273510513/532b5fe082a5c644b6b641f32589/16597772109721?expires=1777288500&amp;signature=dc20d27ec33fca7b9e973aa3446fa79ba5466f9c0236f483878cd500524b413b&amp;req=dSIgFcx%2FnYReWvMW1HO4zRHJMvTkYr6jxcOIAL9IDYjSKJTqBOaRT5Jg2UDT%0Ax4rb4j6nczIoQKWHNZ0%3D%0A"
+          alt="热力图框选分析 GIF"
+          loading="lazy"
+        />
+        <figcaption>在热力图上拖拽框选区域，查看手势数、用户数等细分指标（官方 GIF）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222558-how-to-analyze-heatmaps" target="_blank" rel="noopener noreferrer">→ How to analyze heatmaps（Mobile）</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/11593540-web-heatmaps-how-to-set-up-and-analyze-heatmaps" target="_blank" rel="noopener noreferrer">→ Web Heatmaps</a>
+      </p>
+    </section>
+
+    <!-- Session -->
+    <section class="module" id="m-session">
+      <h2>6. 会话录屏（Session Recording）</h2>
+      <p class="sub">回放真实用户操作轨迹；可打标签、写备注、分享给无账号同事。另有 <strong>Smart Filters（Beta）</strong> 用于智能筛选会话，详见官方文档。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ul>
+            <li>在会话播放器中，使用<strong>链接图标</strong>复制会话 URL，发给未开通账号的同事查看。</li>
+            <li>使用 <strong>Share</strong>：填写收件人、留言、选择要分享的片段后发送（由 UXCam 代发邮件）。</li>
+            <li>在需要长期保留时，通过右上角<strong>三点菜单 → Download</strong> 下载录像（注意与数据保留策略一致）。</li>
+            <li>在时间轴上某时刻点 <strong>Add note</strong>，自动带时间戳；正文中用 <strong>@</strong> 提及团队成员（对方需有 UXCam 权限），其会收到邮件并直达对应时间点。</li>
+            <li>结合官方文档创建 <strong>Labels</strong> 对会话分类，便于后续筛选与协作。</li>
+          </ul>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>把「数字异常」还原为<strong>真实操作路径与界面状态</strong>，缩短产品/研发定位问题时间。</li>
+            <li>通过备注与 @，在团队内形成<strong>可追踪的讨论记录</strong>。</li>
+            <li>对外分享典型「坏体验 / 好体验」片段，辅助汇报与对齐优先级。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273512943/e04b1754e00c0f7cb4e10e590707/21283842420889?expires=1777288500&amp;signature=0b630f915dd363571720965079850f9795bb4136b943afa335076cc80b36367b&amp;req=dSIgFcx%2Fn4hbWvMW1HO4zefijKLIQQw8HiFY%2BP2cwP44SazIg6IpH8ojMJTK%0Azk5vhQlXHQeb03K%2BMWw%3D%0A"
+          alt="分享会话 GIF"
+          loading="lazy"
+        />
+        <figcaption>复制会话链接或分享片段给同事（官方 GIF）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222533-sharing-sessions-collaborating-with-your-team" target="_blank" rel="noopener noreferrer">→ Sharing sessions &amp; Collaborating</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222529-how-to-create-use-labels" target="_blank" rel="noopener noreferrer">→ Labels</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222531-smart-filters-new-feature-in-beta" target="_blank" rel="noopener noreferrer">→ Smart Filters（Beta）</a>
+      </p>
+    </section>
+
+    <!-- Smart events -->
+    <section class="module" id="m-smart">
+      <h2>7. 智能事件（Smart Events）</h2>
+      <p class="sub">在<strong>不写代码</strong>的前提下，把「用户对某 UI 元素的手势」或「进入某屏」定义为可统计事件，用于后续漏斗、看板、筛选。</p>
+      <div class="video-block">
+        <strong>视频：</strong>「How to create a Smart Event」官方页面提供<strong>分步讲解视频</strong>，请从下方链接进入后在页面内观看。
+      </div>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>在会话回放右侧<strong>活动时间线</strong>找到目标手势（单次点击或滑动），展开卡片后点 <strong>Create event</strong> 或 <strong>+</strong>。</li>
+            <li>为事件<strong>命名、写描述</strong>，并按需配置 <strong>Screen name / UI element name / Element ID</strong> 等规则，以一次性覆盖多屏、多同类按钮（详见官方「rules」说明）。</li>
+            <li>也可从<strong>热力图框选</strong>或 <strong>Screens → 手势筛选</strong> 找到含该元素的会话，再在时间线上创建事件。</li>
+            <li>创建后在「Smart Events」管理列表中可编辑、停用或分析趋势（见官方 How to manage / analyze）。</li>
+          </ol>
+          <p style="font-size:0.88rem;margin-bottom:0;"><strong>前提条件（官方）：</strong>手势须为 <strong>Single tap</strong> 或 <strong>Swipes</strong>，且对应 UI 元素在屏幕上<strong>可见</strong>。</p>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>无需发版即可新增关键行为埋点，加速验证假设。</li>
+            <li>在事件分析、漏斗、看板中像普通事件一样<strong>统计次数、分群、对比</strong>。</li>
+            <li>与 <strong>Coded Events</strong> 组合：关键路径用代码事件保证精度，长尾探索用 Smart Event 补充（注意官方对 Smart Events 局限的说明）。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273505875/4cfc1d8c15791c5c824c6333d7bf/24753396836889?expires=1777288500&amp;signature=99cba6d4c2f17fac3ce5e79460c454b2e627cc0d9c820e7d52408f06031fbaee&amp;req=dSIgFcx%2BmIlYXPMW1HO4zQ%2FG1mg29IOZeoGzwz6hnfiET61XFkvihcbr43dG%0At8UKZrMHtt%2FOk3pOXTI%3D%0A"
+          alt="Smart Event 与 UI 元素信息"
+          loading="lazy"
+        />
+        <figcaption>手势类 Smart Event 依赖捕获到的手势与 UI 元素信息（官方示意图）。</figcaption>
+      </figure>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-7.com/i/o/ncn9bb9h/1273507095/4f4ac4a81115bb33a4fb2f20a961/24755205201049?expires=1777288500&amp;signature=cc660aec1b7a01ffc32eaf5a9402cdeca0dfea9c87ad4dc86f35989a538f4150&amp;req=dSIgFcx%2BmoFWXPMW1HO4zTolcLIUUhkez49tKckjbj0%2BLwWIbX9FYW6jaCYX%0AbxRUl5oNbDMJxLePkbA%3D%0A"
+          alt="从会话时间线创建 Smart Event GIF"
+          loading="lazy"
+        />
+        <figcaption>在会话时间线中创建 Smart Event（官方 GIF）。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222548-what-are-smart-events" target="_blank" rel="noopener noreferrer">→ What are Smart Events</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222549-how-to-create-a-smart-event" target="_blank" rel="noopener noreferrer">→ How to create a Smart Event（含视频）</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222553-smart-events-vs-coded-events" target="_blank" rel="noopener noreferrer">→ Smart vs Coded Events</a>
+      </p>
+    </section>
+
+    <!-- Coded events -->
+    <section class="module" id="m-events">
+      <h2>8. 编码事件（Coded Events）与事件分析</h2>
+      <p class="sub">由研发在 App 内通过 SDK/API 上报的事件与属性，适合做权威业务埋点（订单金额、会员等级等）。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ul>
+            <li>在 <strong>Events</strong> 相关页面按事件名、属性、用户/设备条件<strong>筛选与保存常用视图</strong>。</li>
+            <li>阅读官方 <strong>Send Coded Events and Properties</strong>，与研发对齐事件命名、属性类型与上报时机。</li>
+            <li>将事件用于<strong>漏斗步骤、留存起始/回访动作、看板报表</strong>等模块。</li>
+          </ul>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>按业务语义精确统计<strong>关键业务动作</strong>，不受界面改版影响（相对 Smart Event 更稳定）。</li>
+            <li>与 Smart Event 互补：前者保证「定义清晰」，后者支持「快速探索」。</li>
+          </ul>
+        </div>
+      </div>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222546-send-coded-events-and-properties" target="_blank" rel="noopener noreferrer">→ Send Coded Events and Properties</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222540-how-to-filter-and-analyze-smart-events" target="_blank" rel="noopener noreferrer">→ Filter and analyze Smart Events</a>
+      </p>
+    </section>
+
+    <!-- User -->
+    <section class="module" id="m-user">
+      <h2>9. 用户分析（User Analytics / User Properties）</h2>
+      <p class="sub">把业务侧用户标签（会员等级、城市、是否付费等）传给 UXCam 后，可在各模块作为<strong>过滤器或分组维度</strong>。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ul>
+            <li>与数据/研发对齐需要上传的 <strong>User Properties</strong> 列表与取值规范。</li>
+            <li>在会话列表、热力图、漏斗、留存、看板报表中，选择按这些属性<strong>过滤或 Group by</strong>。</li>
+            <li>参考官方「Ideas for custom User Properties」扩展可分析维度。</li>
+          </ul>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>看<strong>高价值用户 vs 免费用户</strong>在同一流程上的行为差异。</li>
+            <li>按渠道、客群拆分留存与转化，支撑精细化运营决策。</li>
+          </ul>
+        </div>
+      </div>
+      <p class="doc-link"><a href="https://help.uxcam.com/en/articles/10222539-ideas-for-custom-user-properties" target="_blank" rel="noopener noreferrer">→ Ideas for custom User Properties</a></p>
+    </section>
+
+    <!-- Issues -->
+    <section class="module" id="m-issue">
+      <h2>10. 问题分析（Crash &amp; UI Freeze）<span class="tag mob">主要 Mobile</span></h2>
+      <p class="sub">集中查看崩溃与界面卡顿（UI Freeze）趋势、影响面、关联会话，便于研发排障与版本优先级决策。</p>
+      <div class="grid-2">
+        <div class="box ops">
+          <h3>您可以做的操作</h3>
+          <ol>
+            <li>在 Issue Analytics 中先选择关注 <strong>Crashes</strong> 或 <strong>UI Freezes</strong>。</li>
+            <li>查看概览：问题次数、受影响用户/会话、<strong>无问题会话占比</strong>等。</li>
+            <li>查看趋势与按 <strong>App 版本、系统版本、机型</strong> 的分布，定位高发环境。</li>
+            <li>在列表中点开某一崩溃类型或卡顿类型，阅读日志与统计，并打开<strong>关联会话列表</strong>逐条回放。</li>
+            <li>按需开启 <strong>Slack / Microsoft Teams</strong> 通知以及时响应（见官方 Issues 通知文档）。</li>
+          </ol>
+        </div>
+        <div class="box outcomes">
+          <h3>您能得到的结论 / 结果</h3>
+          <ul>
+            <li>判断当前版本是否存在<strong>回归性崩溃或卡顿峰值</strong>。</li>
+            <li>把「TOP 崩溃签名」与<strong>用户实际录屏路径</strong>关联，缩短复现时间。</li>
+            <li>对比不同机型/系统上的体验稳定性，指导测试资源投入。</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="media">
+        <img
+          src="https://uxcam-7a4a7bd759e4.intercom-attachments-1.com/i/o/ncn9bb9h/1273506185/39d7d8391f0ccc8fb69ca548ca38/Crash_and_UI_Freeze_Analytics_1.png?expires=1777288500&amp;signature=94cfac2d5041902b336b28f8231e52e7bab0a338f3a8b9da0a6b007e670f9&amp;req=dSIgFcx%2Bm4BXXPMW1HO4zSdry%2BQbFpk1k54unSqVIBMUgB9%2FzCu1c1ElDT%2FO%0AIUrXcELuCvkQSxkt4DQ%3D%0A"
+          alt="Crash 与 UI Freeze 分析入口"
+          loading="lazy"
+        />
+        <figcaption>在崩溃与卡顿分析之间切换（官方截图）。若图片无法加载请直接打开下方官方文档。</figcaption>
+      </figure>
+      <p class="doc-link">
+        <a href="https://help.uxcam.com/en/articles/10222574-crash-and-ui-freeze-analytics" target="_blank" rel="noopener noreferrer">→ Crash and UI Freeze Analytics</a>
+        &nbsp;|&nbsp;
+        <a href="https://help.uxcam.com/en/articles/10222576-slack-microsoft-teams-notifications-for-issues" target="_blank" rel="noopener noreferrer">→ Slack &amp; Teams Notifications</a>
+      </p>
+    </section>
+
+    <footer>
+      本页为内部培训导读；操作配额、企业版功能开关、菜单翻译等以贵司 UXCam 合同与控制台为准。配图附件若过期，请以各「官方文档」页面展示为准。
+    </footer>
+    </div>
+
+    <div id="panel-naming" class="tab-panel mapping-page" role="tabpanel" aria-labelledby="tab-btn-naming" hidden>
+      <header>
+        <h1>UXCam 屏幕名映射表</h1>
+        <p class="lead"><strong>Android</strong> 为 Activity / Fragment 类名；<strong>iOS</strong> 为 ViewController 类名。UXCam 自动屏幕检测下，Dashboard 中展示上述技术名称，本页供产品 / 运营对照业务含义。</p>
+      </header>
+
+      <div class="mapping-intro">
+        <p class="date">Android 映射更新日期：2026-04-24 · iOS 数据来自 <code>App 页面映射表.xlsx</code></p>
+        <p>使用顶部 <strong>Android / iOS</strong> 切换查看对应平台。若与线上包体不一致，以研发最新路由为准并回写映射表。</p>
+      </div>
+
+      <div class="platform-tabs" role="tablist" aria-label="客户端平台">
+        <button type="button" id="plat-btn-android" role="tab" aria-selected="true" aria-controls="plat-panel-android">Android</button>
+        <button type="button" id="plat-btn-ios" role="tab" aria-selected="false" aria-controls="plat-panel-ios">iOS</button>
+      </div>
+
+      <div class="panel-search" role="search" aria-label="页面命名搜索">
+        <label class="visually-hidden" for="naming-search-input">搜索屏幕名、中文名或模块</label>
+        <div class="panel-search-inner">
+          <span class="panel-search-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+          <input type="search" id="naming-search-input" placeholder="搜索类名、中文名、模块、说明…" autocomplete="off" enterkeyhint="search" />
+        </div>
+        <div class="panel-search-nav">
+          <button type="button" id="naming-search-prev" disabled>上一个</button>
+          <button type="button" id="naming-search-next" disabled>下一个</button>
+        </div>
+        <div class="panel-search-meta" id="naming-search-meta" aria-live="polite"></div>
+      </div>
+
+      <div id="plat-panel-android" role="tabpanel" aria-labelledby="plat-btn-android">
+
+      <section class="mapping-section" id="map-launch">
+        <h2>启动 &amp; 主框架</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>SplashActivity</code></td><td>启动页</td><td>app</td><td>冷启动闪屏</td></tr>
+              <tr><td><code>DeepLinkDispatcherActivity</code></td><td>DeepLink 分发页</td><td>app</td><td>外部链接跳转中转，用户无感知</td></tr>
+              <tr><td><code>MainActivity</code></td><td>主页面</td><td>feature/main</td><td>底部 Tab 容器</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>首页</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>HomeFragment</code></td><td>首页</td><td>feature/home</td><td>AI 对话入口</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>账号 &amp; 登录</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>LoginAccountActivity</code></td><td>登录页</td><td>feature/account</td><td>含 Google / Kakao / Facebook 三方登录入口</td></tr>
+              <tr><td><code>PhoneVerifyLoginActivity</code></td><td>手机号验证登录</td><td>feature/account</td><td>输入手机号 + 验证码登录</td></tr>
+              <tr><td><code>KakaoAccountBindPhoneActivity</code></td><td>Kakao 绑定手机号</td><td>feature/account</td><td>Kakao 账号绑定手机号</td></tr>
+              <tr><td><code>ProfileSettingActivity</code></td><td>个人资料设置</td><td>feature/account</td><td>注册后引导填写资料</td></tr>
+              <tr><td><code>PickCountryActivity</code></td><td>选择国家</td><td>feature/account</td><td>国家/地区选择器</td></tr>
+              <tr><td><code>PickLanguageActivity</code></td><td>选择语言</td><td>feature/account</td><td>App 语言切换</td></tr>
+              <tr><td><code>PhoneRegionSelectFragment</code></td><td>手机区号选择</td><td>feature/account</td><td>弹窗：选择手机号国际区号</td></tr>
+              <tr><td><code>ProfileConfigGuideFragment</code></td><td>资料填写引导</td><td>feature/account</td><td>引导用户完善个人资料</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>个人中心</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>MeSidebarFragment</code></td><td>侧边栏</td><td>feature/me</td><td>个人中心入口（头像、设置等）</td></tr>
+              <tr><td><code>ProfileEditActivity</code></td><td>编辑个人资料</td><td>feature/me</td><td>修改头像、昵称等</td></tr>
+              <tr><td><code>InviteActivity</code></td><td>邀请好友</td><td>feature/me</td><td>邀请好友页面</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>AI 教室</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>AiClassRoomActivity</code></td><td>AI 教室</td><td>feature/aiclass</td><td>核心教学页面（H5 + Native 混合）</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>365 每日课</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>DailyLessonHomeFragment</code></td><td>每日课首页</td><td>feature/lesson</td><td>每日课程列表入口</td></tr>
+              <tr><td><code>DailyLessonOverviewActivity</code></td><td>每日课总览</td><td>feature/lesson</td><td>课程内容概览</td></tr>
+              <tr><td><code>LessonCardListActivity</code></td><td>课程卡片列表</td><td>feature/lesson</td><td>课程卡片浏览</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>智学</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>SmartLevelSelectActivity</code></td><td>智学 - 级别选择</td><td>feature/zhixue</td><td>选择学习级别</td></tr>
+              <tr><td><code>SmartCourseDetailActivity</code></td><td>智学 - 课程详情</td><td>feature/zhixue</td><td>课程详情页</td></tr>
+              <tr><td><code>ZhiXueLockedLessonPreviewActivity</code></td><td>智学 - 锁定课程预览</td><td>feature/zhixue</td><td>未解锁课程的预览</td></tr>
+              <tr><td><code>SmartCourseListFragment</code></td><td>智学 - 课程列表</td><td>feature/zhixue</td><td>课程列表</td></tr>
+              <tr><td><code>SmartLevelSelectFragment</code></td><td>智学 - 级别选择子页</td><td>feature/zhixue</td><td>级别选择内嵌页</td></tr>
+              <tr><td><code>MajorFragment</code></td><td>智学 - 已完成课程</td><td>feature/zhixue</td><td>已完成的课程列表</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>支付</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>PayHomeActivity</code></td><td>支付首页</td><td>feature/pay</td><td>订阅方案选择</td></tr>
+              <tr><td><code>PayHomeFragment</code></td><td>支付首页内容</td><td>feature/pay</td><td>支付首页内嵌内容</td></tr>
+              <tr><td><code>PayIntercepterActivity</code></td><td>支付拦截页</td><td>feature/pay</td><td>非会员操作时弹出的付费引导</td></tr>
+              <tr><td><code>FreeTrialActivity</code></td><td>免费试用</td><td>feature/pay</td><td>免费试用引导页</td></tr>
+              <tr><td><code>PayRetentionDialog</code></td><td>支付挽留弹窗</td><td>feature/pay</td><td>用户关闭支付页时的挽留弹窗</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>电台</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>RadioHomeActivity</code></td><td>电台首页</td><td>feature/radio</td><td>电台主页</td></tr>
+              <tr><td><code>RadioHomeFragment</code></td><td>电台首页内容</td><td>feature/radio</td><td>电台主页内嵌内容</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>复习课</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>ExercisesActivity</code></td><td>练习页</td><td>feature/reviewclass</td><td>复习课练习主页面</td></tr>
+              <tr><td><code>WordLearningActivity</code></td><td>单词学习</td><td>feature/reviewclass</td><td>单词学习页</td></tr>
+              <tr><td><code>SentenceLearningActivity</code></td><td>句子学习</td><td>feature/reviewclass</td><td>句子学习页</td></tr>
+              <tr><td><code>WordToImgFragment</code></td><td>练习 - 单词选图</td><td>feature/reviewclass</td><td>根据单词选择对应图片</td></tr>
+              <tr><td><code>ImgToWordFragment</code></td><td>练习 - 看图选词</td><td>feature/reviewclass</td><td>根据图片选择对应单词</td></tr>
+              <tr><td><code>AudioToImgFragment</code></td><td>练习 - 听音选图</td><td>feature/reviewclass</td><td>根据音频选择对应图片</td></tr>
+              <tr><td><code>SentenceToImgFragment</code></td><td>练习 - 句子选图</td><td>feature/reviewclass</td><td>根据句子选择对应图片</td></tr>
+              <tr><td><code>SentenceDragFragment</code></td><td>练习 - 句子拖拽</td><td>feature/reviewclass</td><td>拖拽单词组成正确句子</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>通用容器</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>Dashboard 屏幕名</th><th>中文业务名</th><th>所属模块</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>H5ContainerActivity</code></td><td>H5 页面</td><td>core/webview</td><td>WebView 通用容器，所有 H5 页面均显示为此名称</td></tr>
+              <tr><td><code>UpdateDialogFragment</code></td><td>版本更新弹窗</td><td>core/designsystem</td><td>App 版本更新提示弹窗</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      </div>
+
+      <div id="plat-panel-ios" role="tabpanel" aria-labelledby="plat-btn-ios" hidden>
+
+      <section class="mapping-section">
+        <h2>主框架 / 首页</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>MainTabViewController</code></td><td>主框架 / 首页</td><td>全局 Tab 容器，管理 Home、Class、Explore、Words、FM 五个 Tab，隐藏系统 TabBar 并使用自定义悬浮 TabBar。</td></tr>
+              <tr><td><code>HomeViewController</code></td><td>主框架 / 首页</td><td>横屏首页，包含用户信息、Dino 互动、语音录制/播放、侧边栏、推荐卡片、VIP 和锁课入口等。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>登录 / 新手流程 / 资料完善</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>LoginViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>登录入口页，按国家和接口配置展示 Kakao、手机号、Google、Apple 等登录方式。</td></tr>
+              <tr><td><code>PhoneLoginViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>手机号验证码登录页，处理区号、手机号、短信验证码、倒计时和登录提交。</td></tr>
+              <tr><td><code>PhoneRegionPickerViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>手机号国家区号选择弹窗，按国家名首字母分组展示并回传选中的 PhoneConfig。</td></tr>
+              <tr><td><code>QuickLogonBindPhoneViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>Kakao 快捷登录返回中间态后的补绑手机号页面，输入手机号和验证码后完成登录。</td></tr>
+              <tr><td><code>InterestDiversionViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>首登兴趣分流页，横屏左右分屏展示品牌视觉、昵称输入、学习目的选择和完成提交。</td></tr>
+              <tr><td><code>ProfileSetupViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>新用户三步资料完善流程容器：头像/昵称/性别、国家/地区、学习目标，并在完成后进入首页或试用链路。</td></tr>
+              <tr><td><code>ProfileViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>单页双列资料完善页，左侧填写昵称和性别，右侧选择国家和学习目标。</td></tr>
+              <tr><td><code>CountryPickerViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>国家选择 Bottom Sheet，支持搜索、选择和确认国家。</td></tr>
+              <tr><td><code>LearningGoalPickerViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>学习目标选择 Bottom Sheet，包装三张学习目标卡片并确认回传。</td></tr>
+              <tr><td><code>LanguagePickerViewController</code></td><td>登录 / 新手流程 / 资料完善</td><td>语言选择 Bottom Sheet，按产品顺序展示 19 种语言，可立即切换或回调给调用方。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>课程 / 探索 / 智学</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>SmartCourseListViewController</code></td><td>课程 / 探索 / 智学</td><td>智学 Class Tab 课程列表页，按 Level 和 Unit 展示课程卡片，支持骨架屏、错误态、切换 Level 和进入详情/课堂。</td></tr>
+              <tr><td><code>LevelSelectViewController</code></td><td>课程 / 探索 / 智学</td><td>Level 选择页面，用于首次进入 Intelligent Learning Tab 或从课程列表切换级别。</td></tr>
+              <tr><td><code>SmartLessonDetailViewController</code></td><td>课程 / 探索 / 智学</td><td>智学课程详情横屏页，展示课程封面、Unit/Lesson 信息、学习目标/内容卡片，并提供 Go to Class 入口。</td></tr>
+              <tr><td><code>CourseLockedLessonPreviewViewController</code></td><td>课程 / 探索 / 智学</td><td>智学锁定课程预览弹窗，横屏底部卡片展示课程信息并引导开通 VIP。</td></tr>
+              <tr><td><code>ExploreViewController</code></td><td>课程 / 探索 / 智学</td><td>Explore Tab 探索页，带课程类型下拉和分组课程列表，支持刷新、错误态和进入课程详情/课时列表。</td></tr>
+              <tr><td><code>WordsViewController</code></td><td>课程 / 探索 / 智学</td><td>Words Tab 页面，复习课/单词类课程独立展示，复用 Explore 课程内容接口和卡片结构。</td></tr>
+              <tr><td><code>ExploreLessonDetailViewController</code></td><td>课程 / 探索 / 智学</td><td>365 课时概览横屏页，展示封面、老师信息、Words/Sentences/Dialogue 内容和进入课堂按钮。</td></tr>
+              <tr><td><code>ASLessonListViewController</code></td><td>课程 / 探索 / 智学</td><td>课程课时列表页，展示 lesson 卡片、标签、进度和生成状态轮询，并进入单词、句子、练习等学习环节。</td></tr>
+              <tr><td><code>LockedLessonPreviewViewController</code></td><td>课程 / 探索 / 智学</td><td>非智学锁定课程预览弹窗，横屏底部卡片展示课程信息、老师信息并引导开通 VIP。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>学习流程</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>ASWordStudyViewController</code></td><td>学习流程</td><td>单词/句子学习页，卡片横向滑动，集成 TTS、评分、学习时长统计和倒计时。</td></tr>
+              <tr><td><code>PracticeViewController</code></td><td>学习流程</td><td>练习题页面，包装不同题型模板，处理答题、音频播放、连击、进度和学习计时。</td></tr>
+              <tr><td><code>StudySharePreviewViewController</code></td><td>学习流程</td><td>学习环节分享卡片预览弹窗，居中展示分享卡片，截图后唤起系统分享。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>AI 课堂</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>AiClassSharePreviewViewController</code></td><td>AI 课堂</td><td>AI 课堂分享卡片预览弹窗，横屏展示分享卡片，自动截图并唤起系统分享。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>FM</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>FMPlayerViewController</code></td><td>FM</td><td>FM 电台主页面，负责音频播放、锁屏控制、免费时长倒计时、欢迎弹窗和 VIP 购买联动。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>VIP / 订阅</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>VIPViewController</code></td><td>VIP / 订阅</td><td>VIP 订阅页，展示会员权益和商品，处理购买/恢复、页面刷新、挽留弹窗和 7 天免费试用链路。</td></tr>
+              <tr><td><code>FreeTrialSubscriptionViewController</code></td><td>VIP / 订阅</td><td>7 天免费试用竖屏页，展示试用权益、倒计时、CTA、恢复购买和条款。</td></tr>
+              <tr><td><code>FreeTrialLandscapeViewController</code></td><td>VIP / 订阅</td><td>7 天免费试用横屏页，左右分栏展示试用卖点、倒计时、课堂截图/恐龙视觉和 CTA。</td></tr>
+              <tr><td><code>RetentionPopupContainerViewController</code></td><td>VIP / 订阅</td><td>订阅挽留弹窗的竖屏容器，用于从横屏页面 present 竖屏挽留弹窗并在关闭后恢复方向。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mapping-section">
+        <h2>个人中心 / 编辑 / 分享</h2>
+        <div class="mapping-table-wrap">
+          <table class="mapping-table">
+            <thead><tr><th>UXCam 屏幕名（类名）</th><th>模块</th><th>功能说明</th></tr></thead>
+            <tbody>
+              <tr><td><code>ProfileEditViewController</code></td><td>个人中心 / 编辑 / 分享</td><td>个人资料编辑页，支持修改头像、昵称、性别、国家、生日和语言，并提交保存。</td></tr>
+              <tr><td><code>MeProfileBirthdatePickerViewController</code></td><td>个人中心 / 编辑 / 分享</td><td>出生日期选择器弹窗，使用年月日滚轮选择并返回 YYYY-MM-DD 日期字符串。</td></tr>
+              <tr><td><code>InviteCardPreviewViewController</code></td><td>个人中心 / 编辑 / 分享</td><td>邀请卡片预览与分享页，全屏背景加居中邀请卡片，截图后唤起系统分享。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      </div>
+
+      <footer>
+        Android 与仓库 <code>uxcam-screen-name-mapping.md</code> 同步维护；iOS 与项目根目录 <code>App 页面映射表.xlsx</code> 工作表一致，Excel 更新后请同步改本页或重新导出。
+      </footer>
+    </div>
+
+    <div id="panel-glossary" class="tab-panel glossary-page" role="tabpanel" aria-labelledby="tab-btn-glossary" hidden>
+      <header>
+        <h1>UXCam 名词解释</h1>
+        <p class="lead">控制台与报表中常见英文字段的中文对照、业务含义与<strong>统计口径</strong>。内容译述自 UXCam 官方帮助中心；若与英文原文不一致，以官方文档为准。</p>
+      </header>
+      <div class="mapping-intro">
+        <p><strong>主要参考：</strong><a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">UXCam Glossary</a>、
+        <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs</a>、
+        <a href="https://help.uxcam.com/en/articles/10222575-ui-freeze-s-events" target="_blank" rel="noopener noreferrer">UI Freeze&apos;s Events</a>。
+        Web 端部分字段命名可能略有差异，请以当前租户界面为准。</p>
+      </div>
+
+      <div class="panel-search" role="search" aria-label="名词解释搜索">
+        <label class="visually-hidden" for="glossary-search-input">搜索英文术语或中文释义</label>
+        <div class="panel-search-inner">
+          <span class="panel-search-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10" cy="10" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+          <input type="search" id="glossary-search-input" placeholder="搜索术语、中文、定义中的关键字…" autocomplete="off" enterkeyhint="search" />
+        </div>
+        <div class="panel-search-nav">
+          <button type="button" id="glossary-search-prev" disabled>上一个</button>
+          <button type="button" id="glossary-search-next" disabled>下一个</button>
+        </div>
+        <div class="panel-search-meta" id="glossary-search-meta" aria-live="polite"></div>
+      </div>
+
+      <section class="mapping-section">
+        <h2>覆盖范围说明</h2>
+        <p class="glossary-def" style="margin:0;">UXCam 控制台与报表中的英文标签<strong>数量多、且随 Mobile/Web、套餐与版本迭代</strong>；本 Tab <strong>无法保证与当前界面 100% 逐条穷尽</strong>。下方已与官方 <a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">UXCam Glossary</a> 表格<strong>逐条对照补全</strong>，并保留漏斗、留存、筛选等分析扩展条目。若遇未收录字段，建议继续在 <a href="https://help.uxcam.com/en/articles/10222493-dashboard-metrics-explained" target="_blank" rel="noopener noreferrer">Dashboard Metrics Explained</a> 等文档中检索。</p>
+      </section>
+
+      <section class="mapping-section">
+        <h2>用户与会话</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Session</span><span class="term-zh">会话</span></div>
+          <p class="glossary-def"><strong>定义：</strong>用户在应用内从启动到结束的一次完整访问过程；包含该次访问中的手势、事件、屏幕访问以及用户/设备/会话等元数据。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>会话在用户<strong>打开 App 时开始</strong>，在 App<strong>进入后台（background）时结束</strong>。会话一般在进入后台后上传；用于漏斗、热力图、用户流等分析。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Session</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — 起止时间</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Video</span><span class="term-zh">录屏 / 视频</span></div>
+          <p class="glossary-def"><strong>定义：</strong>对会话的<strong>可视化回放</strong>，展示用户在界面上的实际操作与画面变化。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>会话与视频不同：会话承载交互与元数据；视频是会话的一部分表现。部分会话可能无视频（如达到视频条数上限、条件录制、网络等原因，界面可能显示为「…」）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Video</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — sessions vs videos</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Session ID</span><span class="term-zh">会话 ID</span></div>
+          <p class="glossary-def"><strong>定义：</strong>由 UXCam 为每一次会话分配的唯一标识符。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>一条会话对应一个 Session ID，用于在列表、下钻、分享链接中唯一定位该次访问。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Session ID</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Active User</span><span class="term-zh">活跃用户</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在选定时间范围内，至少使用过应用一次的<strong>独立用户</strong>。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>默认以 <strong>Install ID</strong>（安装维度设备标识）区分唯一用户；也可通过你们自行设置的 User ID 识别用户。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Active User</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">New User</span><span class="term-zh">新用户</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在选定时间范围内<strong>首次</strong>访问应用的独立用户。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>与 Active User 相同，以 Install ID（或你们配置的 User ID）去重，仅统计「第一次出现」的用户。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — New User</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Install ID</span><span class="term-zh">安装 ID / 设备侧用户标识</span></div>
+          <p class="glossary-def"><strong>定义：</strong>UXCam 用于识别「同一安装实例」的标识；在 iOS 上来自系统提供的 Vendor 设备 ID（与发行商绑定的随机 UUID）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>作为默认维度统计唯一用户、新用户等；与你们业务账号体系无必然对应关系，除非再通过 User ID 关联。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Install ID</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Custom user ID / User name</span><span class="term-zh">自定义用户 ID / 用户名</span></div>
+          <p class="glossary-def"><strong>定义：</strong>通过 API（如 <code>UXCam.setUserIdentity</code>）由客户设置的 <strong>Custom User ID</strong>，用于在控制台识别用户；官方词汇表中 <strong>User name</strong> 与此同义，并说明亦可指 <strong>UXCam User ID</strong>（由 UXCam 分配、在界面中展示的「用户名」类标识，以当前控制台为准）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>属于用户属性的一种；<strong>勿向 Custom user ID 上报 PII</strong>（可直接识别个人的敏感信息）。与 Install ID 可同时存在，便于与业务用户对齐。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Custom user ID、User name</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">First seen / Last seen</span><span class="term-zh">首次出现 / 最近出现</span></div>
+          <p class="glossary-def"><strong>定义：</strong>UXCam 记录到该用户<strong>最早一次</strong>会话的日期；<strong>最近一次</strong>会话的日期。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>基于已上传会话的时间戳；用于判断用户生命周期与回访。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — First seen / Last seen</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Session label / User label</span><span class="term-zh">会话标签 / 用户标签</span></div>
+          <p class="glossary-def"><strong>定义：</strong>为会话或用户打上的自定义标签，便于筛选与后续分析。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>标签为人工或规则赋予的分类维度，不改变会话起止等基本统计。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Session label / User label</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>屏幕与导航</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Screens</span><span class="term-zh">屏幕</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在应用中被自动识别的页面/Activity（或 Fragment 等）名称，也可通过 Screen Tagging API 手动指定。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>一次会话内多次进入同一屏会产生多次「屏幕访问」；热力图、漏斗等按屏幕名聚合。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Screens</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">App quit rate</span><span class="term-zh">应用退出率（屏幕维度）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在选定日期范围内，用户在某次<strong>屏幕访问后直接退出应用</strong>的访问占比。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>以屏幕访问为分母，衡量「离开该屏后是否结束会话（退出 App）」；用于发现易流失页面。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — App quit rate</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Schematic Recording</span><span class="term-zh">示意图录制（iOS）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在 iOS 上，UXCam 默认用「示意图」方式可视化应用内行为，而非直接录制屏幕位图；通过绘制矩形与文字等方式<strong>重建与真实界面布局相符</strong>的会话画面。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>仅适用于 iOS；Android 录一般为图像形式。与隐私、性能策略相关。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Schematic Recording</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>事件与属性</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Event</span><span class="term-zh">事件</span></div>
+          <p class="glossary-def"><strong>定义：</strong>用户对应用的交互或状态变化；如点击按钮、完成流程、看到错误提示等。官方在 Event 条目中将其余需追踪的动作统称为以 <strong>Custom Events</strong> 形式上报；与控制台中的 <strong>Coded Event（编码事件）</strong>为同一类能力的不同表述。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>UXCam 默认自动识别两类行为作为事件相关信号：<strong>Rage taps</strong> 与 <strong>UI freezes</strong>。其余业务动作须通过代码/API 上报（Coded Event / Custom Events）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Event</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Coded Event</span><span class="term-zh">编码事件 / 埋点事件</span></div>
+          <p class="glossary-def"><strong>定义：</strong>通过事件 API 在应用内主动记录的用户交互；不限于手势或进屏，可带自定义属性，灵活描述业务行为。官方说明此类事件在应用侧实现、与平台内创建的 Smart Event 相对。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>从<strong>接入并上报的时刻起</strong>开始统计，<strong>不会追溯</strong>接入前的历史会话。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Coded Event</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Smart Event</span><span class="term-zh">智能事件</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在 UXCam 控制台基于手势（点击/滑动）或对某屏的访问所创建的事件，用于捕获特定 UI 交互。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>通常绑定 UI 元素元数据（如 element id、name、type）；可对<strong>历史会话回溯应用</strong>（与 Coded Event 的「不追溯」不同）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Smart Event</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Event Properties</span><span class="term-zh">事件属性</span></div>
+          <p class="glossary-def"><strong>定义：</strong>附属于某次事件上报的键值信息，用于补充上下文（数量、状态、名称等）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>官方说明每个事件最多约 <strong>20 个</strong>属性（以当前文档与套餐为准）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Event Properties</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Custom User properties</span><span class="term-zh">自定义用户属性</span></div>
+          <p class="glossary-def"><strong>定义：</strong>除默认字段外，与用户在 UXCam 中档案关联的自定义信息（如会员等级、城市等）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>通过 API 发送，官方词汇表提及最多约 <strong>100 个</strong>附加属性（以官方最新说明为准）；常用于筛选、分组、漏斗切片。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Custom User properties</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>体验信号与稳定性</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Rage Tap / Rage Gesture</span><span class="term-zh">愤怒点击 / 挫败手势</span></div>
+          <p class="glossary-def"><strong>定义：</strong>用户在短时间内对屏幕某一区域快速多次点击，通常表示对控件无响应或体验受挫。</p>
+          <p class="glossary-scope"><strong>统计口径（官方 Glossary）：</strong>在屏幕某一半径内，<strong>至少连续 3 次</strong>点击，且相邻两次点击间隔<strong>不超过约 300ms</strong>。可在应用设置中对特定屏幕关闭「自动标为愤怒点击」以避免误报（如需要快速连点的控件）。Session FAQ 中亦描述为「多于 3 次」快速点击，实际以官方当前版本说明为准。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Rage Tap</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — rage taps</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Rage Quits</span><span class="term-zh">愤怒退出会话</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在一次至少发生过愤怒点击的会话中，用户在极短时间内结束会话的行为模式。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>若会话在<strong>至少一次 rage tap 之后的 5 秒内结束</strong>，则计为 Rage quit 类会话（具体展示名称以控制台为准）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Rage Quits</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Unresponsive Gesture</span><span class="term-zh">无响应手势</span></div>
+          <p class="glossary-def"><strong>定义：</strong>用户做出点击或手势后，应用未产生预期响应；可能是控件缺陷，也可能是用户误点静态文案等非交互元素。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>作为体验质量信号，常与热力图、屏幕分析结合解读。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Unresponsive Gesture</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">UI Freeze</span><span class="term-zh">界面卡顿 / UI 冻结</span></div>
+          <p class="glossary-def"><strong>定义：</strong>应用在用户操作过程中出现<strong>主线程长时间阻塞</strong>，无法及时处理输入，表现为界面「卡住」；应用未必被系统强制关闭（与 Crash 不同）。</p>
+          <p class="glossary-scope"><strong>检测与统计口径：</strong>SDK 在主线程上按固定间隔投递检测代码；若两次执行之间的间隔<strong>异常拉长，且超过约 1 秒</strong>（官方 Glossary 表述），则判定发生一次 UI Freeze，并捕获当时的堆栈等信息。可在会话筛选器的 Events 下按 UI Freeze 过滤，并查看 UI Freeze log。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — UI Freezes</a>、
+          <a href="https://help.uxcam.com/en/articles/10222575-ui-freeze-s-events" target="_blank" rel="noopener noreferrer">UI Freeze&apos;s Events</a>（与 Crash 对比说明）</p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Crash / Crashes</span><span class="term-zh">崩溃</span></div>
+          <p class="glossary-def"><strong>定义：</strong>未处理的异常或信号导致应用<strong>意外退出</strong>，用户需重新打开应用才能继续使用。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>按崩溃类型、次数、影响用户数/会话数聚合；与 UI Freeze（不必然杀进程）区分统计。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Crashes</a>、
+          <a href="https://help.uxcam.com/en/articles/10222575-ui-freeze-s-events" target="_blank" rel="noopener noreferrer">UI Freeze vs Crash</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Exception</span><span class="term-zh">异常</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在移动应用开发语境下，指偏离预期流程的未预见错误或非常态事件，可能导致应用异常表现、崩溃或非预期结果；通常通过捕获与处理机制来保障稳定性与体验。</p>
+          <p class="glossary-scope"><strong>说明：</strong>与 <strong>Crash</strong>（未处理导致进程退出）及 <strong>Handled exceptions</strong>（已捕获并记录的异常）在阅读 Issues、崩溃报表时经常一起出现；具体是否计入某张报表以产品界面与套餐为准。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Exception</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>时间与上传</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Device Time</span><span class="term-zh">设备时间</span></div>
+          <p class="glossary-def"><strong>定义：</strong>会话开始时用户设备上的<strong>本地时间</strong>。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>依赖终端系统时钟；若用户将设备时间调快/调慢，可能出现与常识不符的时间显示，可结合 Uploading Time 判断。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Device Time</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — 未来时间</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Recording Time</span><span class="term-zh">录制时间（UTC）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>SDK 记录该会话时对应的 UTC 时间。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>用于与设备本地时间对照；便于跨时区对齐。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Recording Time</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Uploading Time</span><span class="term-zh">上传时间（UTC）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>会话数据上传到 UXCam 服务器的时间（UTC）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>一般在应用进入后台后数秒内完成上传；排查「看不到最新数据」时可优先看该时间。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Uploading Time</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — 上传时机</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>漏斗与转化</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Conversion rate / Total conversions</span><span class="term-zh">转化率 / 总转化次数</span></div>
+          <p class="glossary-def"><strong>定义：</strong>完成漏斗<strong>全部步骤</strong>的会话或用户占比；以及完成全路径的绝对次数。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>受漏斗配置影响：步骤为 <strong>This order</strong> 时需按顺序完成（中间可有其他行为）；<strong>Any order</strong> 时只需集齐各步不要求顺序。统计对象可选 <strong>Session count</strong> 或 <strong>User count</strong>。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222567-how-to-analyze-a-funnel" target="_blank" rel="noopener noreferrer">How to analyze a Funnel</a>、
+          <a href="https://help.uxcam.com/en/articles/10222565-how-to-create-a-funnel" target="_blank" rel="noopener noreferrer">How to create a Funnel</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Drop-off / Micro conversion</span><span class="term-zh">流失 / 步骤级微转化</span></div>
+          <p class="glossary-def"><strong>定义：</strong>漏斗中在某一<strong>相邻步骤之间</strong>未完成下一步的会话/用户比例称为流失；每一步的到达率可视为微转化。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>在漏斗图上可点击条带查看对应会话录屏；仅<strong>有序漏斗</strong>支持「平均全程转化耗时」等指标（两步骤漏斗可分析单段耗时）。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222567-how-to-analyze-a-funnel" target="_blank" rel="noopener noreferrer">How to analyze a Funnel</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Conversion window</span><span class="term-zh">转化窗口</span></div>
+          <p class="glossary-def"><strong>定义：</strong>从进入漏斗到完成末步所允许的最长时间范围。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>按 <strong>Session</strong> 统计时，默认须在<strong>同一会话内</strong>完成所有步骤；按 <strong>User</strong> 统计时可设「7 天内」「24 小时内」等跨会话窗口。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222565-how-to-create-a-funnel" target="_blank" rel="noopener noreferrer">How to create a Funnel — conversion window</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>留存与队列</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Cohort</span><span class="term-zh">队列 / 同期群</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在<strong>同一时间段内</strong>完成了「起始行为」的用户集合，用于观察他们后续是否重复「回访行为」。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>常用按日/周/月/季切队列；可与用户属性、设备属性再做交叉分组。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222510-how-does-uxcam-define-cohorts" target="_blank" rel="noopener noreferrer">How does UXCam define Cohorts</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Start action / Return action</span><span class="term-zh">起始行为 / 回访行为</span></div>
+          <p class="glossary-def"><strong>定义：</strong>留存报表中用于划定队列起点的行为（如注册、首访）；以及用来衡量「是否回来」的重复行为（如下单、打开核心页）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>可配置多个行为及「最少发生次数」；回访间隔可选日/周/月/季，并区分 <strong>In（Bounded）</strong> 与 <strong>In or After（Unbounded）</strong> 留存读法。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222503-how-to-set-up-a-retention-report" target="_blank" rel="noopener noreferrer">How to set up a Retention Report</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>筛选、分组与问题</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Filter / Group by</span><span class="term-zh">筛选 / 分组</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>Filter</strong> 限定纳入分析的数据子集；<strong>Group by</strong> 将结果按维度拆分对比（时间、设备属性、用户属性等）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>看板报表中分组最多两个维度，且官方说明部分场景<strong>不支持按小时</strong>分组；漏斗、热力图、会话列表等处的筛选条件各自独立作用于当前视图。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222492-building-dashboards-and-reports" target="_blank" rel="noopener noreferrer">Building Dashboards and Reports</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Issues / Handled exceptions</span><span class="term-zh">问题 / 已处理异常</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>Issues</strong> 分析区通常汇总崩溃（Crash）、UI Freeze 等体验与稳定性问题；部分套餐/平台在报表构建中可选择 Handled exceptions 等数据点。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>按问题类型、版本、机型聚合影响面；可下钻到具体会话与堆栈。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222574-crash-and-ui-freeze-analytics" target="_blank" rel="noopener noreferrer">Crash and UI Freeze Analytics</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>日期范围与导出</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Absolute / Relative date range</span><span class="term-zh">绝对 / 相对日期范围</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>Absolute</strong> 固定起止日期；<strong>Relative</strong> 随「今天」滚动而保持相对长度（如最近 7 天）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>各报表、漏斗、会话列表的日期选择器均遵循当前视图所选类型。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Absolute / Relative date range</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Data export</span><span class="term-zh">数据导出</span></div>
+          <p class="glossary-def"><strong>定义：</strong>将看板或列表中的数据导出为文件（如 CSV、图表为图片/PDF 等，以界面为准）。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>导出内容反映导出时刻的查询条件与权限范围内的数据快照。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/collections/11057111-product-analytics-features" target="_blank" rel="noopener noreferrer">Product Analytics — Export Data</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>账户、密钥与隐私</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">API Key / App ID / App key</span><span class="term-zh">API 密钥 / 应用标识</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>API Key</strong> 由你在账户中设定、在 API 调用中作为凭据使用的密钥，用于程序化访问应用数据；<strong>App ID</strong> 为应用在 API 中的唯一标识。集成/SDK 中常见 <strong>App key</strong>（与账户绑定，错配会导致数据无法上报）。官方提醒：<strong>API Key 与 App key 可在不登录控制台的情况下访问 UXCam 服务器上的数据</strong>，须妥善保管。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>与指标计算无直接关系，但错误配置会造成「无会话/无数据」表象。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — API Key / App ID</a>、
+          <a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — account-key</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Occlusion / Red screens</span><span class="term-zh">遮挡 / 红屏</span></div>
+          <p class="glossary-def"><strong>定义：</strong>开发者在集成时对敏感界面做遮挡处理；录屏中对应区域可能显示为<strong>红块</strong>以保护隐私。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>不代表崩溃；与合规配置相关。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — red squares</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">IP address storage</span><span class="term-zh">IP 地址处理</span></div>
+          <p class="glossary-def"><strong>定义：</strong>官方说明不在数据库中长期存储用户 IP；首次请求时可用 IP 推断城市/国家后丢弃。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong><strong>Top country</strong> 等与地理相关的指标依赖该推断流程，与「是否存 IP」不是同一概念。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10684655-session-faqs" target="_blank" rel="noopener noreferrer">Session FAQs — IP addresses</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>技术词汇（排障时常见）</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">SDK</span><span class="term-zh">软件开发套件</span></div>
+          <p class="glossary-def"><strong>定义：</strong>软件开发套件（Software Development Kit）：工具、库、文档等的集合，为开发应用提供代码示例、API、实用程序等资源。UXCam SDK 即嵌入应用的采集与分析组件及相关文档。</p>
+          <p class="glossary-scope"><strong>说明：</strong>会话起止、UI Freeze 检测、数据上传等行为均由 SDK 在客户端完成。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — SDK</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">DPI</span><span class="term-zh">屏幕点密度</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>Dots per inch</strong>，设备屏幕的每英寸点数，用于描述显示精细度。</p>
+          <p class="glossary-scope"><strong>说明：</strong>出现在设备/会话元数据或统计维度中时，用于区分不同像素密度的机型；与业务漏斗无直接换算关系。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — DPI</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">View Controller</span><span class="term-zh">视图控制器（iOS）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>负责管理、协调应用某一屏界面呈现的架构组件：组织视觉元素、处理用户交互，并常封装该屏相关业务逻辑（如登录页的 <code>LoginViewController</code>）。</p>
+          <p class="glossary-scope"><strong>说明：</strong>UXCam 自动识别屏幕名时常显示此类类名；与业务「页面」可读性不一致时，见「页面命名」Tab 或 Screen Tagging API。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — View Controller</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Fragments</span><span class="term-zh">片段（Android）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>可复用的模块化 UI 片段，常嵌在 Activity 内以搭建灵活、响应式布局；为界面中自包含的一块区域。</p>
+          <p class="glossary-scope"><strong>说明：</strong>与 Activity 组合出现时，<strong>Screens</strong> 可能显示 Fragment 相关名称。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Fragments</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">MainActivity</span><span class="term-zh">主 Activity（Android）</span></div>
+          <p class="glossary-def"><strong>定义：</strong>Android 应用中作为主入口的 Java/Kotlin 类：负责初始化主界面、处理用户交互并协调整体导航与行为，在启动时加载布局并拉起核心能力。</p>
+          <p class="glossary-scope"><strong>说明：</strong>常作为用户打开应用后首个或核心容器屏出现在 <strong>Screens</strong> 列表中。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — MainActivity</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Reverse flow</span><span class="term-zh">逆向用户流</span></div>
+          <p class="glossary-def"><strong>定义：</strong>在用户流分析中倒置屏幕顺序，用于从「退出前」反查用户此前经过的路径。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>不改变单条会话内事件顺序，仅改变可视化方向。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Reverse flow</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Top event vs Top events</span><span class="term-zh">单用户热门事件 vs 全应用热门事件</span></div>
+          <p class="glossary-def"><strong>定义：</strong><strong>Top event</strong>（单数）常指某用户在所选时段内触发最多的一个事件；<strong>Top events</strong>（复数）常指全应用范围内触发次数最多的若干事件。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>具体展示位置（用户详情 vs 用量概览）决定含义，阅读图表标题与轴标签确认。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Top event / Top events</a></p>
+        </article>
+      </section>
+
+      <section class="mapping-section">
+        <h2>报表与看板</h2>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Dashboards</span><span class="term-zh">看板 / 仪表盘</span></div>
+          <p class="glossary-def"><strong>定义：</strong>可自定义的集中视图，用于监控应用 KPI、分析体验并产出可行动结论。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>看板内各图表仍遵循底层指标（会话、事件、用户等）各自的统计定义；看板本身为展示与聚合容器。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Dashboards</a></p>
+        </article>
+        <article class="glossary-entry">
+          <div class="term-row"><span class="term-en">Top events / Top app version / Top week day / Top country / Top devices</span><span class="term-zh">热门事件 / 常用版本 / 高峰星期几 / 主要国家 / 常见设备尺寸</span></div>
+          <p class="glossary-def"><strong>定义：</strong>用量与体验概览中的「Top」类指标，表示在选定时间窗口内出现频率最高或占比最大的维度取值。</p>
+          <p class="glossary-scope"><strong>统计口径：</strong>在选定周期内按事件次数、版本分布、会话发生星期、会话来源国家（据官方说明与 IP 推断地理）、设备尺寸等聚合排序；具体以 Usage &amp; UX Statistics 文档为准。</p>
+          <p class="glossary-src">来源：<a href="https://help.uxcam.com/en/articles/10222460-uxcam-glossary" target="_blank" rel="noopener noreferrer">Glossary — Top events 等</a>、
+          <a href="https://help.uxcam.com/en/articles/10222489-usage-ux-statistics" target="_blank" rel="noopener noreferrer">Usage &amp; UX Statistics</a></p>
+        </article>
+      </section>
+
+      <footer>
+        名词表随官方文档与界面迭代更新；未出现的字段请优先查官方 Glossary 与 Dashboard Metrics Explained，或向内部数据/研发同事提交补录需求。
+      </footer>
+    </div>
+
+  </div>
+  <script>
+    (function () {
+      function debounce(fn, ms) {
+        var t;
+        return function () {
+          var ctx = this;
+          var args = arguments;
+          clearTimeout(t);
+          t = setTimeout(function () { fn.apply(ctx, args); }, ms);
+        };
+      }
+
+      var btnT = document.getElementById("tab-btn-tutorial");
+      var btnN = document.getElementById("tab-btn-naming");
+      var btnG = document.getElementById("tab-btn-glossary");
+      var panT = document.getElementById("panel-tutorial");
+      var panN = document.getElementById("panel-naming");
+      var panG = document.getElementById("panel-glossary");
+      var pBtnA = document.getElementById("plat-btn-android");
+      var pBtnI = document.getElementById("plat-btn-ios");
+      var pPanA = document.getElementById("plat-panel-android");
+      var pPanI = document.getElementById("plat-panel-ios");
+
+      function showMainTab(which) {
+        btnT.setAttribute("aria-selected", which === "tutorial");
+        btnN.setAttribute("aria-selected", which === "naming");
+        btnG.setAttribute("aria-selected", which === "glossary");
+        panT.hidden = which !== "tutorial";
+        panN.hidden = which !== "naming";
+        panG.hidden = which !== "glossary";
+      }
+      btnT.addEventListener("click", function () { showMainTab("tutorial"); });
+      btnN.addEventListener("click", function () { showMainTab("naming"); });
+      btnG.addEventListener("click", function () { showMainTab("glossary"); });
+
+      if (pBtnA && pBtnI && pPanA && pPanI) {
+        pBtnA.addEventListener("click", function () {
+          if (pBtnA.disabled) return;
+          pBtnA.setAttribute("aria-selected", "true");
+          pBtnI.setAttribute("aria-selected", "false");
+          pPanA.hidden = false;
+          pPanI.hidden = true;
+        });
+        pBtnI.addEventListener("click", function () {
+          if (pBtnI.disabled) return;
+          pBtnI.setAttribute("aria-selected", "true");
+          pBtnA.setAttribute("aria-selected", "false");
+          pPanI.hidden = false;
+          pPanA.hidden = true;
+        });
+      }
+
+      function namingRows() {
+        return [].slice.call(document.querySelectorAll("#panel-naming table.mapping-table tbody tr"));
+      }
+
+      function clearNamingSearchClasses() {
+        namingRows().forEach(function (tr) {
+          tr.classList.remove("search-hit", "search-hit-current", "search-hidden");
+        });
+        [].forEach.call(document.querySelectorAll("#panel-naming .mapping-section"), function (sec) {
+          sec.classList.remove("mapping-section-filtered-empty");
+        });
+      }
+
+      function syncNamingSections() {
+        [].forEach.call(document.querySelectorAll("#panel-naming .mapping-section"), function (sec) {
+          var trs = sec.querySelectorAll("tbody tr");
+          if (!trs.length) return;
+          var any = false;
+          for (var i = 0; i < trs.length; i++) {
+            if (!trs[i].classList.contains("search-hidden")) {
+              any = true;
+              break;
+            }
+          }
+          sec.classList.toggle("mapping-section-filtered-empty", !any);
+        });
+      }
+
+      function setupNamingSearch() {
+        var input = document.getElementById("naming-search-input");
+        var meta = document.getElementById("naming-search-meta");
+        var prev = document.getElementById("naming-search-prev");
+        var next = document.getElementById("naming-search-next");
+        if (!input || !meta || !prev || !next) return;
+
+        var hits = [];
+        var idx = 0;
+
+        function setNavDisabled(disabled) {
+          prev.disabled = disabled;
+          next.disabled = disabled;
+        }
+
+        function focusHit(i) {
+          hits.forEach(function (tr, j) {
+            tr.classList.toggle("search-hit-current", j === i);
+          });
+          if (!hits[i]) return;
+          var tr = hits[i];
+          var inIos = pPanI && pPanI.contains(tr);
+          if (inIos && pPanI && pPanI.hidden && pBtnI && !pBtnI.disabled) {
+            pBtnI.click();
+          } else if (!inIos && pPanA && pPanA.hidden && pBtnA) {
+            pBtnA.click();
+          }
+          requestAnimationFrame(function () {
+            tr.scrollIntoView({ behavior: "smooth", block: "center" });
+          });
+          idx = i;
+          meta.textContent = "第 " + (idx + 1) + " / " + hits.length + " 条 · ← → 或按钮切换";
+        }
+
+        function apply(q) {
+          clearNamingSearchClasses();
+          q = (q || "").trim().toLowerCase();
+          if (!q) {
+            meta.textContent = "";
+            hits = [];
+            setNavDisabled(true);
+            return;
+          }
+          hits = [];
+          namingRows().forEach(function (tr) {
+            var t = tr.textContent.toLowerCase();
+            if (t.indexOf(q) !== -1) {
+              tr.classList.add("search-hit");
+              hits.push(tr);
+            } else {
+              tr.classList.add("search-hidden");
+            }
+          });
+          syncNamingSections();
+          if (hits.length === 0) {
+            meta.textContent = "无匹配行，请尝试其它关键词（支持中英文与类名片段）";
+            setNavDisabled(true);
+            return;
+          }
+          meta.textContent = "共 " + hits.length + " 条匹配 · Enter 跳到下一处";
+          setNavDisabled(false);
+          idx = 0;
+          focusHit(0);
+        }
+
+        var run = debounce(function () { apply(input.value); }, 140);
+        input.addEventListener("input", run);
+        input.addEventListener("search", function () {
+          if (input.value === "") apply("");
+        });
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (!hits.length) return;
+            idx = (idx + 1) % hits.length;
+            focusHit(idx);
+          }
+        });
+        prev.addEventListener("click", function () {
+          if (!hits.length) return;
+          idx = (idx - 1 + hits.length) % hits.length;
+          focusHit(idx);
+        });
+        next.addEventListener("click", function () {
+          if (!hits.length) return;
+          idx = (idx + 1) % hits.length;
+          focusHit(idx);
+        });
+      }
+
+      function glossaryArticles() {
+        return [].slice.call(document.querySelectorAll("#panel-glossary article.glossary-entry"));
+      }
+
+      function clearGlossarySearchClasses() {
+        glossaryArticles().forEach(function (el) {
+          el.classList.remove("search-hit", "search-hit-current", "search-hidden");
+        });
+        [].forEach.call(document.querySelectorAll("#panel-glossary .mapping-section"), function (sec) {
+          sec.classList.remove("mapping-section-filtered-empty");
+        });
+      }
+
+      function syncGlossarySections(q) {
+        [].forEach.call(document.querySelectorAll("#panel-glossary section.mapping-section"), function (sec) {
+          var arts = sec.querySelectorAll("article.glossary-entry");
+          if (!arts.length) {
+            if (!q) return;
+            var txt = sec.textContent.toLowerCase();
+            sec.classList.toggle("mapping-section-filtered-empty", txt.indexOf(q) === -1);
+            return;
+          }
+          var visible = 0;
+          for (var i = 0; i < arts.length; i++) {
+            if (!arts[i].classList.contains("search-hidden")) visible++;
+          }
+          sec.classList.toggle("mapping-section-filtered-empty", visible === 0);
+        });
+      }
+
+      function setupGlossarySearch() {
+        var input = document.getElementById("glossary-search-input");
+        var meta = document.getElementById("glossary-search-meta");
+        var prev = document.getElementById("glossary-search-prev");
+        var next = document.getElementById("glossary-search-next");
+        if (!input || !meta || !prev || !next) return;
+
+        var hits = [];
+        var idx = 0;
+
+        function setNavDisabled(disabled) {
+          prev.disabled = disabled;
+          next.disabled = disabled;
+        }
+
+        function focusHit(i) {
+          hits.forEach(function (el, j) {
+            el.classList.toggle("search-hit-current", j === i);
+          });
+          if (hits[i]) {
+            hits[i].scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+          idx = i;
+          if (hits.length) {
+            meta.textContent = "第 " + (idx + 1) + " / " + hits.length + " 条 · Enter 或按钮切换";
+          }
+        }
+
+        function apply(raw) {
+          clearGlossarySearchClasses();
+          var q = (raw || "").trim().toLowerCase();
+          if (!q) {
+            meta.textContent = "";
+            hits = [];
+            setNavDisabled(true);
+            return;
+          }
+          hits = [];
+          glossaryArticles().forEach(function (art) {
+            var t = art.textContent.toLowerCase();
+            if (t.indexOf(q) !== -1) {
+              art.classList.add("search-hit");
+              hits.push(art);
+            } else {
+              art.classList.add("search-hidden");
+            }
+          });
+          syncGlossarySections(q);
+          if (hits.length === 0) {
+            var staticHit = false;
+            [].forEach.call(document.querySelectorAll("#panel-glossary section.mapping-section"), function (sec) {
+              if (sec.querySelector("article.glossary-entry")) return;
+              if (sec.textContent.toLowerCase().indexOf(q) !== -1) staticHit = true;
+            });
+            if (staticHit) {
+              meta.textContent = "说明段落中有匹配，请上下滚动查看（此类区块无「上一个/下一个」定位）";
+            } else {
+              meta.textContent = "无匹配词条，请尝试英文或中文关键字";
+            }
+            setNavDisabled(true);
+            return;
+          }
+          setNavDisabled(false);
+          idx = 0;
+          focusHit(0);
+        }
+
+        var run = debounce(function () { apply(input.value); }, 140);
+        input.addEventListener("input", run);
+        input.addEventListener("search", function () {
+          if (input.value === "") apply("");
+        });
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            if (!hits.length) return;
+            idx = (idx + 1) % hits.length;
+            focusHit(idx);
+          }
+        });
+        prev.addEventListener("click", function () {
+          if (!hits.length) return;
+          idx = (idx - 1 + hits.length) % hits.length;
+          focusHit(idx);
+        });
+        next.addEventListener("click", function () {
+          if (!hits.length) return;
+          idx = (idx + 1) % hits.length;
+          focusHit(idx);
+        });
+      }
+
+      setupNamingSearch();
+      setupGlossarySearch();
+    })();
+  </script>
+</body>
+</html>
