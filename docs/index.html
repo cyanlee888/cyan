@@ -2,12 +2,152 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=uxcam-product-analytics-tutorial.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>跳转中…</title>
-  <link rel="canonical" href="uxcam-product-analytics-tutorial.html" />
+  <title>李爽 — 个人主页</title>
+  <meta name="description" content="李爽的个人主页" />
+  <style>
+    :root {
+      --bg0: #0f172a;
+      --bg1: #1e1b4b;
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --card: rgba(15, 23, 42, 0.55);
+      --border: rgba(148, 163, 184, 0.2);
+      --radius: 18px;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: var(--font);
+      color: var(--text);
+      line-height: 1.65;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% -30%, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 100% 50%, rgba(167, 139, 250, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 0% 80%, rgba(34, 211, 238, 0.08), transparent),
+        linear-gradient(165deg, var(--bg0) 0%, var(--bg1) 45%, #0f172a 100%);
+      background-attachment: fixed;
+    }
+    .wrap {
+      max-width: 38rem;
+      margin: 0 auto;
+      padding: clamp(2.5rem, 8vw, 4rem) 1.35rem 4rem;
+    }
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 12px 40px rgba(56, 189, 248, 0.25);
+    }
+    h1 {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.35rem;
+      background: linear-gradient(120deg, #fff 0%, #e2e8f0 50%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+      h1 { color: #f8fafc; }
+    }
+    .tagline {
+      margin: 0 0 2rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .card {
+      background: var(--card);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .card p {
+      margin: 0 0 0.85rem;
+      color: #e2e8f0;
+      font-size: 0.98rem;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    a.link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    a.link:hover {
+      color: #7dd3fc;
+      border-bottom-color: rgba(125, 211, 252, 0.5);
+    }
+    footer {
+      margin-top: 2.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
 </head>
 <body>
-  <p>正在跳转到 <a href="uxcam-product-analytics-tutorial.html">UXCam 操作教程</a>…</p>
+  <div class="wrap">
+    <div class="avatar" aria-hidden="true">李</div>
+    <h1>李爽</h1>
+    <p class="tagline">产品 · 数据与体验度量 · 内部工具与文档</p>
+
+    <section class="card" aria-labelledby="sec-about">
+      <h2 id="sec-about">关于我</h2>
+      <p>
+        你好，我是李爽。我关注<strong>产品分析、用户行为数据与体验优化</strong>，平时会整理面向业务与协作方的操作说明、指标口径与页面映射，帮助团队把数据工具用好。
+      </p>
+      <p>
+        如果你对 UXCam、埋点命名或数据看板使用有疑问，欢迎通过下方 GitHub 联系我（建议先发 Issue 或站内说明来意）。
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="sec-find">
+      <h2 id="sec-find">在哪里找到我</h2>
+      <p style="margin-bottom: 0;">
+        <a class="link" href="https://github.com/cyanlee888" target="_blank" rel="noopener noreferrer">
+          GitHub — @cyanlee888
+        </a>
+      </p>
+    </section>
+
+    <footer>
+      本页部署在 GitHub Pages；内容可自行在仓库 <code style="font-size:0.85em;opacity:0.85;">docs/index.html</code> 中编辑。
+    </footer>
+  </div>
 </body>
 </html>
