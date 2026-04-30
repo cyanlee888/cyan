@@ -1,20 +1,20 @@
 # 用 GitHub Pages 发布教程（分步说明）
 
-你的教程在 **`docs/`** 里；根目录的 **`docs/index.html`** 会跳到 `uxcam-product-analytics-tutorial.html`，所以 GitHub Pages 选择「从 **`/docs`** 文件夹发布」即可。
+你的教程在 `**docs/**` 里；根目录的 `**docs/index.html**` 会跳到 `uxcam-product-analytics-tutorial.html`，所以 GitHub Pages 选择「从 `**/docs**` 文件夹发布」即可。
 
-下面按顺序做即可。把文中的 **`<你的用户名>`**、**`<仓库名>`** 换成你自己的（例如 `lishuang` / `uxcam-tutorial`）。
+下面按顺序做即可。把文中的 `**<你的用户名>**`、`**<仓库名>**` 换成你自己的（例如 `lishuang` / `uxcam-tutorial`）。
 
 ---
 
 ## 第 1 步：在 GitHub 上新建空仓库
 
 1. 浏览器打开 [https://github.com/new](https://github.com/new)。
-2. **Repository name** 填一个名字，例如：`uxcam-tutorial`（记下这个名字，下面叫 **`<仓库名>`**）。
+2. **Repository name** 填一个名字，例如：`uxcam-tutorial`（记下这个名字，下面叫 `**<仓库名>`**）。
 3. 选 **Public**（免费 Pages 对公开库最省事）。
 4. **不要**勾选「Add a README」等任何初始化文件（保持仓库是空的，方便第一次推送）。
 5. 点 **Create repository**。
-6. 创建完成后，页面上会有一串地址，形如：  
-   `https://github.com/<你的用户名>/<仓库名>.git`  
+6. 创建完成后，页面上会有一串地址，形如：
+  `https://github.com/<你的用户名>/<仓库名>.git`  
    复制备用（下面叫 **仓库地址**）。
 
 ---
@@ -52,8 +52,8 @@ git push -u origin main
 
 - 若 GitHub 已要求用 **HTTPS + Token** 或 **SSH**，按你平时推送其它仓库的方式登录即可。  
 - 若提示 `remote origin already exists`，先执行：  
-  `git remote remove origin`  
-  再重新 `git remote add origin ...`。
+`git remote remove origin`  
+再重新 `git remote add origin ...`。
 
 推送成功后，在 GitHub 网页上刷新仓库，应能看到 `docs/`、`DEPLOY.md` 等文件。
 
@@ -65,8 +65,8 @@ git push -u origin main
 2. 点 **Settings**（设置）。
 3. 左侧点 **Pages**（在「Code and automation」里）。
 4. **Build and deployment** 里：
-   - **Source** 选：**Deploy from a branch**。
-   - **Branch**：选 **`main`**，文件夹选 **`/docs`**（不是 root）。
+  - **Source** 选：**Deploy from a branch**。
+  - **Branch**：选 `**main`**，文件夹选 `**/docs`**（不是 root）。
 5. 点 **Save**。
 
 ---
@@ -75,10 +75,10 @@ git push -u origin main
 
 - 等 **1～3 分钟**（有时更久）。同一 Pages 页面顶部可能出现绿色提示条，里面会有站点地址。
 - 一般访问格式为：  
-  **`https://<你的用户名>.github.io/<仓库名>/`**  
-  打开后应自动进入教程页（经 `docs/index.html` 跳转）。
+`**https://<你的用户名>.github.io/<仓库名>/`**  
+打开后应自动进入教程页（经 `docs/index.html` 跳转）。
 
-若 404：再等几分钟；确认 Branch 是 **`main`** 且目录是 **`/docs`**；看 **Actions** 里是否有报错（纯静态 `/docs` 通常没有 Action，以 Settings → Pages 提示为准）。
+若 404：再等几分钟；确认 Branch 是 `**main`** 且目录是 `**/docs`**；看 **Actions** 里是否有报错（纯静态 `/docs` 通常没有 Action，以 Settings → Pages 提示为准）。
 
 ---
 

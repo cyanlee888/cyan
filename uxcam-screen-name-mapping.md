@@ -124,5 +124,3 @@
 | ---------------------- | ------ | ----------------- | ---------------------------- |
 | `H5ContainerActivity`  | H5 页面  | core/webview      | WebView 通用容器，所有 H5 页面均显示为此名称 |
 | `UpdateDialogFragment` | 版本更新弹窗 | core/designsystem | App 版本更新提示弹窗                 |
-
-
