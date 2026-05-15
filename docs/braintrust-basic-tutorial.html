@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Braintrust 平台基础使用教程</title>
+  <meta name="description" content="基于 Braintrust 官方文档整理的基础教程：注册、项目、链路追踪、Playground、评估与工作流。" />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #161b26;
+      --border: #2a3142;
+      --text: #e8ecf4;
+      --muted: #8b95a8;
+      --accent: #7c3aed;
+      --accent2: #22d3ee;
+      --link: #a78bfa;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 17px;
+    }
+    .wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.5rem;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      margin: 0;
+    }
+    .doc-link {
+      display: inline-block;
+      margin-top: 1rem;
+      color: var(--link);
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .doc-link:hover { text-decoration: underline; }
+    section {
+      margin-bottom: 3.5rem;
+    }
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 0 0 1rem;
+      color: #fff;
+    }
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 1.5rem 0 0.6rem;
+      color: #c4cbe0;
+    }
+    p { margin: 0 0 1rem; color: #c8cfdf; }
+    ul, ol { margin: 0 0 1rem; padding-left: 1.35rem; color: #c8cfdf; }
+    li { margin-bottom: 0.35rem; }
+    .pair {
+      display: grid;
+      gap: 1.25rem;
+      align-items: start;
+      margin: 1.25rem 0;
+    }
+    @media (min-width: 720px) {
+      .pair { grid-template-columns: 1fr 1fr; }
+      .pair.reverse .figure { order: 2; }
+      .pair.reverse .copy { order: 1; }
+    }
+    .figure {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      overflow: hidden;
+    }
+    .figure svg { width: 100%; height: auto; display: block; }
+    .figure-caption {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+    .copy { min-width: 0; }
+    code, .mono {
+      font-family: ui-monospace, "Cascadia Code", "SF Mono", Menlo, monospace;
+      font-size: 0.88em;
+      background: rgba(124, 58, 237, 0.12);
+      color: #ddd6fe;
+      padding: 0.12em 0.35em;
+      border-radius: 4px;
+    }
+    .note {
+      font-size: 0.9rem;
+      border-left: 3px solid var(--accent2);
+      padding: 0.65rem 1rem;
+      background: rgba(34, 211, 238, 0.06);
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      color: #b8c4d6;
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+    }
+    th { background: var(--surface); color: #fff; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Braintrust 平台基础使用教程</h1>
+      <p class="subtitle">面向新手的图文说明：从注册到追踪、Playground 评估与项目管理。内容依据官方文档整理，产品界面以线上版本为准。</p>
+      <a class="doc-link" href="https://www.braintrust.dev/docs" target="_blank" rel="noopener noreferrer">官方文档：https://www.braintrust.dev/docs</a>
+    </header>
+
+    <section>
+      <h2>1. Braintrust 是什么</h2>
+      <div class="pair">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:0.9" />
+                <stop offset="100%" style="stop-color:#22d3ee;stop-opacity:0.5" />
+              </linearGradient>
+            </defs>
+            <rect width="360" height="200" fill="#12151c" rx="8" />
+            <text x="180" y="28" fill="#8b95a8" font-size="11" text-anchor="middle" font-family="system-ui">AI 应用全链路</text>
+            <rect x="40" y="48" width="280" height="36" rx="6" fill="#1e2433" stroke="#3d4659" />
+            <text x="180" y="71" fill="#e8ecf4" font-size="12" text-anchor="middle" font-family="system-ui">你的应用（LLM / Agent / RAG）</text>
+            <path d="M180 88 L180 108" stroke="#7c3aed" stroke-width="2" />
+            <polygon points="180,118 175,108 185,108" fill="#7c3aed" />
+            <rect x="70" y="118" width="220" height="62" rx="8" fill="url(#g1)" opacity="0.25" stroke="#7c3aed" />
+            <text x="180" y="145" fill="#fff" font-size="13" text-anchor="middle" font-weight="600" font-family="system-ui">Braintrust</text>
+            <text x="180" y="165" fill="#c4cbe0" font-size="10" text-anchor="middle" font-family="system-ui">可观测 · 评估 · 数据集 · 实验对比</text>
+          </svg>
+          <div class="figure-caption">示意图：应用与 Braintrust 的关系</div>
+        </div>
+        <div class="copy">
+          <p><strong>Braintrust</strong> 是面向团队的 AI 可观测与评估平台，用于在生产环境中<strong>度量、评估并持续改进</strong> AI 应用。典型能力包括：对比不同模型、迭代 Prompt、发现回归，以及利用真实用户数据驱动优化。</p>
+          <p>入门第一步：在官网 <a class="doc-link" href="https://www.braintrust.dev/signup" target="_blank" rel="noopener noreferrer">创建账号</a>。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. 组织与项目</h2>
+      <div class="pair reverse">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="220" fill="#12151c" rx="8" />
+            <rect x="30" y="24" width="300" height="44" rx="8" fill="#1e2433" stroke="#7c3aed" stroke-width="1.5" />
+            <text x="180" y="52" fill="#fff" font-size="13" text-anchor="middle" font-family="system-ui" font-weight="600">Organization（组织）</text>
+            <rect x="50" y="88" width="120" height="52" rx="6" fill="#252b3d" stroke="#3d4659" />
+            <text x="110" y="120" fill="#e8ecf4" font-size="11" text-anchor="middle" font-family="system-ui">Project A</text>
+            <rect x="190" y="88" width="120" height="52" rx="6" fill="#252b3d" stroke="#3d4659" />
+            <text x="250" y="120" fill="#e8ecf4" font-size="11" text-anchor="middle" font-family="system-ui">Project B</text>
+            <text x="180" y="175" fill="#8b95a8" font-size="10" text-anchor="middle" font-family="system-ui">每个项目内：Logs · Experiments · Datasets · Prompts 等</text>
+          </svg>
+          <div class="figure-caption">示意图：组织与多项目结构</div>
+        </div>
+        <div class="copy">
+          <p><strong>项目（Project）</strong>用于收纳与某一 AI 产品/场景相关的所有资源：生产<strong>日志（Logs）</strong>、<strong>实验（Experiments）</strong>、<strong>数据集（Datasets）</strong>、<strong>Prompt</strong> 与函数等。</p>
+          <p><strong>新建项目（UI）</strong>：进入组织的项目列表 → 点击 <strong>+ Project</strong> → 填写名称与可选描述 → <strong>Create</strong>。</p>
+          <p>也可通过 SDK 的 <code>braintrust.projects.create</code> 或 CLI <code>bt projects create</code> 创建；在初始化实验或 logger 时若指定新项目名，也可能自动创建项目。</p>
+          <div class="note">在组织设置中可配置 AI 提供商密钥；项目级密钥可覆盖组织级，便于分账或隔离。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. 推荐工作流（五步走）</h2>
+      <div class="pair">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="240" fill="#12151c" rx="8" />
+            <g font-family="system-ui" font-size="10" fill="#e8ecf4">
+              <rect x="20" y="100" width="58" height="40" rx="6" fill="#2d1f4e" stroke="#7c3aed" />
+              <text x="49" y="124" text-anchor="middle">Instrument</text>
+              <text x="49" y="148" text-anchor="middle" fill="#8b95a8" font-size="8">埋点</text>
+              <rect x="88" y="100" width="58" height="40" rx="6" fill="#1a2f38" stroke="#22d3ee" />
+              <text x="117" y="124" text-anchor="middle">Observe</text>
+              <text x="117" y="148" text-anchor="middle" fill="#8b95a8" font-size="8">观察</text>
+              <rect x="156" y="100" width="58" height="40" rx="6" fill="#2d1f4e" stroke="#7c3aed" />
+              <text x="185" y="124" text-anchor="middle">Annotate</text>
+              <text x="185" y="148" text-anchor="middle" fill="#8b95a8" font-size="8">标注</text>
+              <rect x="224" y="100" width="58" height="40" rx="6" fill="#1a2f38" stroke="#22d3ee" />
+              <text x="253" y="124" text-anchor="middle">Evaluate</text>
+              <text x="253" y="148" text-anchor="middle" fill="#8b95a8" font-size="8">评估</text>
+              <rect x="292" y="100" width="48" height="40" rx="6" fill="#252b3d" stroke="#3d4659" />
+              <text x="316" y="124" text-anchor="middle">Deploy</text>
+              <text x="316" y="148" text-anchor="middle" fill="#8b95a8" font-size="8">发布</text>
+            </g>
+            <path d="M78 120 H88 M146 120 H156 M214 120 H224 M282 120 H292" stroke="#5c6578" stroke-width="2" marker-end="url(#arr)" />
+            <defs>
+              <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><polygon points="0 0, 6 3, 0 6" fill="#5c6578" /></marker>
+            </defs>
+            <text x="180" y="40" fill="#fff" font-size="12" text-anchor="middle" font-family="system-ui" font-weight="600">官方工作流</text>
+            <text x="180" y="200" fill="#8b95a8" font-size="10" text-anchor="middle" font-family="system-ui">详见 workflow 文档</text>
+          </svg>
+          <div class="figure-caption">示意图：Instrument → Observe → Annotate → Evaluate → Deploy</div>
+        </div>
+        <div class="copy">
+          <p>官方建议按结构化流程推进（详见 <a class="doc-link" href="https://www.braintrust.dev/workflow" target="_blank" rel="noopener noreferrer">Workflow</a>）：</p>
+          <ol>
+            <li><strong>Instrument</strong>：为应用接入追踪，采集 LLM 调用与业务逻辑。</li>
+            <li><strong>Observe</strong>：在平台中查看日志、检索与过滤，发现模式与异常。</li>
+            <li><strong>Annotate</strong>：人工反馈、标签与修正，沉淀为高质量数据。</li>
+            <li><strong>Evaluate</strong>：用 Playground 或实验（Experiments）系统化对比改动。</li>
+            <li><strong>Deploy</strong>：上线变更并持续监控生产表现。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. 记录第一条 Trace（链路追踪）</h2>
+      <div class="pair reverse">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="260" fill="#12151c" rx="8" />
+            <text x="180" y="28" fill="#fff" font-size="12" text-anchor="middle" font-family="system-ui" font-weight="600">Trace 与 Span 嵌套</text>
+            <rect x="40" y="44" width="280" height="28" rx="4" fill="#2d1f4e" stroke="#7c3aed" />
+            <text x="52" y="62" fill="#ddd6fe" font-size="10" font-family="ui-monospace">task（根 / 业务单元）</text>
+            <rect x="56" y="82" width="248" height="24" rx="4" fill="#252b3d" stroke="#3d4659" />
+            <text x="68" y="98" fill="#a5b4fc" font-size="9" font-family="ui-monospace">function / retrieval</text>
+            <rect x="72" y="114" width="224" height="24" rx="4" fill="#1a2f38" stroke="#22d3ee" />
+            <text x="84" y="130" fill="#a5f3fc" font-size="9" font-family="ui-monospace">llm（模型、tokens、费用）</text>
+            <rect x="88" y="146" width="200" height="22" rx="4" fill="#252b3d" stroke="#3d4659" />
+            <text x="98" y="161" fill="#94a3b8" font-size="9" font-family="ui-monospace">tool（外部调用）</text>
+            <text x="180" y="210" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">每个 Span：输入、输出、元数据、延迟、分数等</text>
+            <text x="180" y="232" fill="#6b7280" font-size="8" text-anchor="middle" font-family="system-ui">类型含 eval / task / llm / function / tool / score</text>
+          </svg>
+          <div class="figure-caption">示意图：一条 Trace 内多类型 Span 的层级</div>
+        </div>
+        <div class="copy">
+          <p><strong>追踪（Tracing）</strong>是观测与评估的基础：记录每次请求的输入输出、模型参数、延迟、Token 与费用、嵌套调用与错误等，数据进入 Braintrust 后可实时查看、过滤、加反馈并构建评估数据集。</p>
+          <p>接入方式概览：</p>
+          <ul>
+            <li><strong>自动埋点</strong>：对支持的 AI 提供商与框架，尽量少改代码即可记录 LLM 调用。</li>
+            <li><strong>应用逻辑 Span</strong>：对检索、工具调用、业务步骤等自行打 Span，获得端到端视图。</li>
+          </ul>
+          <p>支持的提供商与框架包括 OpenAI、Anthropic、Gemini、Bedrock、LangChain、LangGraph、Vercel AI SDK、DSPy 等，完整列表见 <a class="doc-link" href="https://www.braintrust.dev/integrations" target="_blank" rel="noopener noreferrer">Integrations</a>。快速上手可参考官方 <strong>Observability / Trace LLM calls</strong> 类文档。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Playground：交互式迭代</h2>
+      <div class="pair">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="240" fill="#12151c" rx="8" />
+            <text x="180" y="26" fill="#fff" font-size="12" text-anchor="middle" font-family="system-ui" font-weight="600">Playground 组成</text>
+            <rect x="24" y="44" width="100" height="72" rx="6" fill="#2d1f4e" stroke="#7c3aed" />
+            <text x="74" y="68" fill="#fff" font-size="10" text-anchor="middle" font-family="system-ui">Tasks</text>
+            <text x="74" y="88" fill="#8b95a8" font-size="8" text-anchor="middle" font-family="system-ui">Prompt / Workflow</text>
+            <text x="74" y="104" fill="#8b95a8" font-size="8" text-anchor="middle" font-family="system-ui">远程 Eval 等</text>
+            <rect x="130" y="44" width="100" height="72" rx="6" fill="#252b3d" stroke="#3d4659" />
+            <text x="180" y="68" fill="#fff" font-size="10" text-anchor="middle" font-family="system-ui">Scorers</text>
+            <text x="180" y="90" fill="#8b95a8" font-size="8" text-anchor="middle" font-family="system-ui">Autoevals / LLM 裁判</text>
+            <text x="180" y="104" fill="#8b95a8" font-size="8" text-anchor="middle" font-family="system-ui">自定义代码</text>
+            <rect x="236" y="44" width="100" height="72" rx="6" fill="#1a2f38" stroke="#22d3ee" />
+            <text x="286" y="68" fill="#fff" font-size="10" text-anchor="middle" font-family="system-ui">Dataset</text>
+            <text x="286" y="90" fill="#8b95a8" font-size="8" text-anchor="middle" font-family="system-ui">可选 · 多行用例</text>
+            <rect x="40" y="140" width="280" height="36" rx="6" fill="#1e2433" stroke="#5c6578" />
+            <text x="180" y="162" fill="#22d3ee" font-size="11" text-anchor="middle" font-family="system-ui">Run（Cmd/Ctrl + Enter）→ 结果流式展示</text>
+            <text x="180" y="212" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">可对比 Trace、Diff、保存为 Experiment</text>
+          </svg>
+          <div class="figure-caption">示意图：Playground 中的任务、评分器与数据集</div>
+        </div>
+        <div class="copy">
+          <p><strong>Playground</strong> 是浏览器内的无代码（或低代码）实验空间：快速调整 Prompt、切换模型、挂载 <strong>Scorer（评分器）</strong>与<strong>数据集</strong>，并行跑多组结果并横向对比。</p>
+          <p><strong>创建</strong>：进入 Playgrounds → <strong>Create empty playground</strong> 或 <strong>+ Playground</strong>。</p>
+          <p><strong>模板变量</strong>：在 Prompt 中可使用 <code>{{input}}</code>、<code>{{expected}}</code>、<code>{{metadata.xxx}}</code> 等（支持 Mustache / Nunjucks，详见 Write prompts 文档）。</p>
+          <p><strong>运行</strong>：点击 <strong>Run</strong> 或使用 <strong>Cmd/Ctrl + Enter</strong>。Playground 每次运行会覆盖当前结果；若配置满意，可通过 <strong>+ Experiment</strong> 提升为不可变实验快照以便长期对比。</p>
+          <div class="note">部分高级能力（如部分标注与 Loop 优化）在 Pro / Enterprise 计划中提供，以官网说明为准。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>6. 数据集与实验</h2>
+      <div class="pair reverse">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="200" fill="#12151c" rx="8" />
+            <rect x="40" y="36" width="120" height="130" rx="8" fill="#252b3d" stroke="#7c3aed" />
+            <text x="100" y="58" fill="#fff" font-size="11" text-anchor="middle" font-family="system-ui" font-weight="600">Dataset</text>
+            <line x1="55" y1="72" x2="145" y2="72" stroke="#3d4659" />
+            <text x="100" y="92" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">版本化用例</text>
+            <text x="100" y="112" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">可来自日志</text>
+            <text x="100" y="132" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">或导入 CSV/JSON</text>
+            <path d="M165 100 L200 100" stroke="#5c6578" stroke-width="2" />
+            <polygon points="205,100 200,96 200,104" fill="#5c6578" />
+            <rect x="210" y="36" width="110" height="130" rx="8" fill="#1a2f38" stroke="#22d3ee" />
+            <text x="265" y="58" fill="#fff" font-size="11" text-anchor="middle" font-family="system-ui" font-weight="600">Experiment</text>
+            <text x="265" y="88" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">一次评估快照</text>
+            <text x="265" y="110" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">可与基线对比</text>
+            <text x="265" y="132" fill="#8b95a8" font-size="9" text-anchor="middle" font-family="system-ui">CI 中回归检测</text>
+          </svg>
+          <div class="figure-caption">示意图：数据集驱动实验与对比</div>
+        </div>
+        <div class="copy">
+          <p><strong>数据集（Dataset）</strong>：存放带版本管理的测试用例集合，可从生产日志挑选、文件导入，或在 UI 中直接维护，供 Playground 与离线/线上评估复用。</p>
+          <p><strong>实验（Experiment）</strong>：一次评估运行的不可变记录，便于与<strong>基线（baseline）</strong>对比分数变化、定位回归用例。也可通过 SDK、API 或 CI/CD 触发（参见 Run evaluations 文档）。</p>
+          <p><strong>在线评分（Online scoring）</strong>：在项目自动化中按采样率对生产日志异步跑 Scorer，不阻塞主链路，结果出现在 Logs 中（详见 Score production traces）。</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. 常用 Span 类型速查</h2>
+      <p>在 Trace 详情中，不同类型 Span 帮助区分计算阶段（摘自官方 Tracing 文档）：</p>
+      <table>
+        <thead>
+          <tr><th>类型</th><th>含义（简述）</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>eval</code></td><td>评估运行的根 Span，常包裹 <code>task</code>，含输入、期望输出与子 Span。</td></tr>
+          <tr><td><code>task</code></td><td>应用逻辑单元；生产日志中根 Span 一般为 <code>task</code>。</td></tr>
+          <tr><td><code>llm</code></td><td>单次大模型调用：消息、参数、Token、费用等。</td></tr>
+          <tr><td><code>function</code></td><td>具名代码块：格式化、路由、预处理等。</td></tr>
+          <tr><td><code>tool</code></td><td>模型发起的工具调用（API、数据库等）。</td></tr>
+          <tr><td><code>score</code></td><td>评分器结果（线上或离线），可含 LLM-as-judge 理由。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>8. 管理与延伸阅读</h2>
+      <div class="pair">
+        <div class="figure" aria-hidden="true">
+          <svg viewBox="0 0 360 180" xmlns="http://www.w3.org/2000/svg">
+            <rect width="360" height="180" fill="#12151c" rx="8" />
+            <text x="180" y="32" fill="#fff" font-size="12" text-anchor="middle" font-family="system-ui" font-weight="600">Admin 范畴</text>
+            <g font-family="system-ui" font-size="10" fill="#c8cfdf">
+              <rect x="40" y="52" width="280" height="28" rx="6" fill="#1e2433" stroke="#3d4659" />
+              <text x="56" y="70">组织、成员、权限组（Access control）</text>
+              <rect x="40" y="88" width="280" height="28" rx="6" fill="#1e2433" stroke="#3d4659" />
+              <text x="56" y="106">账单、用量、数据保留与导出</text>
+              <rect x="40" y="124" width="280" height="28" rx="6" fill="#1e2433" stroke="#3d4659" />
+              <text x="56" y="142">告警（Slack / Webhook）、自助部署等</text>
+            </g>
+          </svg>
+          <div class="figure-caption">示意图：管理面能力概览</div>
+        </div>
+        <div class="copy">
+          <p>在 <strong>Admin</strong> 文档目录下可查阅：访问控制、认证、项目/组织设置、告警自动化、数据保留与导出、计费与用量等。自助部署（Self-hosting）亦有独立指南。</p>
+          <p>建议下一步直接阅读官方专题：</p>
+          <ul>
+            <li><a class="doc-link" href="https://www.braintrust.dev/docs/instrument/index" target="_blank" rel="noopener noreferrer">Instrument your application</a></li>
+            <li><a class="doc-link" href="https://www.braintrust.dev/docs/evaluate/playgrounds" target="_blank" rel="noopener noreferrer">Iterate in playgrounds</a></li>
+            <li><a class="doc-link" href="https://www.braintrust.dev/docs/annotate/index" target="_blank" rel="noopener noreferrer">Annotate and curate data</a></li>
+            <li><a class="doc-link" href="https://www.braintrust.dev/docs/evaluate/run-evaluations" target="_blank" rel="noopener noreferrer">Create experiments</a></li>
+            <li><a class="doc-link" href="https://www.braintrust.dev/docs/admin/index" target="_blank" rel="noopener noreferrer">Administration</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>本页为学习用梳理稿，产品功能与计划以 <a class="doc-link" href="https://www.braintrust.dev/docs" target="_blank" rel="noopener noreferrer">braintrust.dev/docs</a> 为准。插图均为示意性 SVG，非官方界面截图。</p>
+      <p style="margin:0">生成日期参考：2026-04-30</p>
+    </footer>
+  </div>
+</body>
+</html>
