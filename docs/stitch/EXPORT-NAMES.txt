@@ -1,0 +1,18 @@
+From Google Stitch: export frame as PNG into this folder using these exact filenames (demo picks them up automatically):
+
+  login.png   — Login / sign-in screen
+  fm.png      — FM home (main listening tab)
+  words.png   — Words tab (lesson list)
+  mine.png    — Profile / Me tab (optional)
+  splash.png  — Splash / launch (optional)
+
+  player.png          — optional; FM “now playing” overlay (no lyrics). If missing, demo still expects fm.png for FM tab only.
+  fm-lyrics.png       — optional; same player with lyrics / Dino panel open
+  words-practice.png  — optional; Words lesson practice screen; if missing, falls back to words.png in the ref panel
+
+Open MVP-v1-ui-demo.html from this repo root so paths like docs/stitch/login.png resolve correctly.
+
+Cursor / Stitch MCP (optional, for agents to list screens and pull code):
+  1) In Stitch: Settings → create an API key.
+  2) In your shell profile or Cursor env: export STITCH_GOOGLE_API_KEY="…"
+  3) This repo’s .cursor/mcp.json points at https://stitch.googleapis.com/mcp with that header. Reload MCP in Cursor after setting the variable.
