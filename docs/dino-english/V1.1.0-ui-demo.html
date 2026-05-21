@@ -4,404 +4,429 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Dino English — V1.1.0 UI Demo</title>
-  <!-- PRD: V1.1.0-产品需求文档-PRD.md — Portrait: welcome → onboarding → login; Landscape: teacher → Class -->
+  <!-- DESIGN.md · PRD V1.1.0 -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --surface: #fffbff;
-      --on-surface: #1d1b20;
-      --muted: #49454f;
-      --outline: #cac4d0;
-      --primary: #2d6b45;
-      --primary-light: #a8e6cf;
-      --accent: #ea6c25;
-      --font: "Roboto Flex", system-ui, sans-serif;
-      --display: "Fredoka", "Nunito", system-ui, sans-serif;
-      --radius: 16px;
-      --shadow: 0 8px 28px rgba(23, 66, 48, 0.12);
+      --forest-deep: #143d2a;
+      --forest-mid: #2d6b45;
+      --forest-light: #a8e6cf;
+      --forest-mist: #d4f8ec;
+      --surface: #fffbf8;
+      --surface-elevated: #ffffff;
+      --ink: #1a2420;
+      --ink-muted: #4a5f54;
+      --accent-live: #ea6c25;
+      --border: #c5ddd2;
+      --font: "DM Sans", system-ui, sans-serif;
+      --display: "Sora", system-ui, sans-serif;
+      --radius-md: 18px;
+      --radius-pill: 9999px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
       min-height: 100dvh;
-      background: #2d2839;
+      background: #1e1a24;
       font-family: var(--font);
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 10px;
-      color: var(--on-surface);
+      color: var(--ink);
     }
     .demo-bar {
-      width: min(420px, 100%);
-      max-width: 960px;
+      width: min(390px, 100%);
       margin-bottom: 8px;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.75);
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.65);
       text-align: center;
-      line-height: 1.4;
     }
-    .device-wrap { position: relative; }
-    .device-wrap.landscape { width: min(960px, 100%); }
     .device-wrap.portrait { width: min(390px, 100%); }
-
+    .device-wrap.landscape { width: min(960px, 100%); margin-top: 12px; }
     .device {
       background: var(--surface);
-      border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 28px 80px rgba(0,0,0,0.5);
       overflow: hidden;
       position: relative;
       margin: 0 auto;
     }
     .device.portrait {
       width: 100%;
-      max-width: 390px;
-      height: min(780px, calc(100dvh - 80px));
-      aspect-ratio: 9 / 19.5;
-      max-height: calc(100dvh - 80px);
+      height: min(800px, calc(100dvh - 72px));
+      max-height: calc(100dvh - 72px);
     }
     .device.landscape {
       width: 100%;
-      height: min(520px, calc(100dvh - 80px));
-      aspect-ratio: 16 / 9;
-      max-height: calc(100dvh - 80px);
+      height: min(520px, calc(100dvh - 72px));
+      aspect-ratio: 16/9;
     }
-
-    .screen { display: none; flex-direction: column; height: 100%; min-height: 0; }
+    .screen {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      animation: screenIn 0.32s var(--ease) both;
+    }
     .screen.active { display: flex; }
-
-    .progress {
-      padding: 12px 20px 0;
-      font-size: 0.75rem;
+    @keyframes screenIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .top-bar {
+      padding: 14px 20px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .step-label {
+      font-size: 0.72rem;
       font-weight: 600;
-      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+    .live-pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: var(--accent-live);
+      color: #fff;
     }
     .progress-bar {
-      height: 4px;
-      background: #e8e4ec;
-      border-radius: 4px;
-      margin: 8px 20px 0;
+      height: 3px;
+      background: #e8efe9;
+      margin: 10px 20px 0;
+      border-radius: 3px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--primary-light), var(--primary));
-      border-radius: 4px;
-      transition: width 0.35s ease;
+      background: var(--forest-mid);
+      border-radius: 3px;
+      transition: width 0.4s var(--ease);
     }
-
     .scroll-body {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 20px;
+      padding: 12px 20px 8px;
       min-height: 0;
     }
     .foot-actions {
-      padding: 12px 20px 24px;
+      padding: 12px 20px 28px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       flex-shrink: 0;
-      background: linear-gradient(180deg, transparent, var(--surface) 20%);
     }
-
     h1.title {
       font-family: var(--display);
-      font-size: 1.35rem;
+      font-size: 1.28rem;
       font-weight: 600;
-      color: #2d5a3d;
-      line-height: 1.25;
+      line-height: 1.28;
+      color: var(--forest-deep);
       margin-bottom: 8px;
+      letter-spacing: -0.02em;
     }
     p.sub, p.hint {
       font-size: 0.875rem;
-      line-height: 1.5;
-      color: var(--muted);
+      line-height: 1.55;
+      color: var(--ink-muted);
     }
-    p.hint { font-size: 0.8125rem; margin-bottom: 16px; }
+    p.hint { font-size: 0.8125rem; margin-bottom: 14px; }
     ul.bullets {
-      margin: 12px 0 0;
-      padding-left: 1.1rem;
+      margin-top: 10px;
+      padding-left: 1.15rem;
       font-size: 0.8125rem;
-      color: var(--muted);
-      line-height: 1.6;
+      color: var(--ink-muted);
+      line-height: 1.65;
     }
-
     .btn {
-      min-height: 52px;
-      border-radius: 999px;
+      min-height: 54px;
+      border-radius: var(--radius-pill);
       border: none;
       font-family: var(--font);
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: transform 0.12s, opacity 0.12s;
+      transition: transform 0.12s, background 0.15s;
     }
     .btn:active { transform: scale(0.98); }
     .btn-primary {
-      background: linear-gradient(135deg, #3d8f5c, var(--primary));
+      background: var(--forest-mid);
       color: #fff;
-      box-shadow: var(--shadow);
     }
+    .btn-primary:hover { background: #255a38; }
     .btn-text {
       background: transparent;
-      color: var(--primary);
-      min-height: 44px;
+      color: var(--forest-mid);
+      min-height: 46px;
     }
     .btn-oauth {
-      background: #fff;
-      border: 1px solid var(--outline);
-      color: var(--on-surface);
+      background: var(--surface-elevated);
+      border: 1.5px solid var(--border);
+      color: var(--ink);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
     }
-
+    .illo-slot {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .illo-slot svg { max-width: 100%; height: auto; }
     /* Welcome */
     .welcome-hero {
-      flex: 1;
-      min-height: 42%;
-      background: linear-gradient(165deg, #d4f8ec 0%, #fffbf5 50%, #e8f5e9 100%);
+      flex-shrink: 0;
+      background: var(--forest-mist);
+      padding: 8px 16px 0;
+      position: relative;
+    }
+    .welcome-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .carousel-frame { position: relative; min-height: 200px; }
+    .carousel-slide {
+      position: absolute;
+      inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease);
+      padding: 8px 0;
     }
+    .carousel-slide.on { opacity: 1; position: relative; }
     .carousel-dots {
       display: flex;
       gap: 6px;
-      margin-top: 12px;
+      justify-content: center;
+      padding: 10px 0 14px;
     }
     .carousel-dots span {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: rgba(45,107,69,0.25);
+      background: rgba(20,61,42,0.2);
+      transition: width 0.25s, background 0.25s;
     }
-    .carousel-dots span.on { background: var(--primary); width: 20px; border-radius: 4px; }
-    .value-slide {
+    .carousel-dots span.on {
+      width: 18px;
+      border-radius: 4px;
+      background: var(--forest-mid);
+    }
+    .welcome-copy {
+      padding: 18px 22px 4px;
       text-align: center;
-      max-width: 280px;
     }
-    .value-icon {
-      font-size: 3rem;
-      margin-bottom: 8px;
-    }
-    .value-slide h2 {
+    .logo {
       font-family: var(--display);
-      font-size: 1.1rem;
-      color: #2d5a3d;
-      margin-bottom: 4px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--forest-mid);
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
     }
-    .value-slide p { font-size: 0.8rem; color: #3d5c4a; }
-    .welcome-copy { padding: 16px 20px 0; text-align: center; }
-    .welcome-copy .logo {
-      font-family: var(--display);
-      font-size: 1.5rem;
-      color: #8fd4b4;
-      -webkit-text-stroke: 1.5px #356848;
-      paint-order: stroke fill;
-      margin-bottom: 8px;
-    }
-
     .option-list { display: flex; flex-direction: column; gap: 10px; }
     .option-btn {
       text-align: left;
-      padding: 16px 18px;
-      border-radius: var(--radius);
-      border: 2px solid #e8e4ec;
-      background: #fff;
+      padding: 16px 18px 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: var(--surface-elevated);
       font-family: var(--font);
       font-size: 0.9375rem;
       font-weight: 600;
-      color: var(--on-surface);
+      color: var(--ink);
       cursor: pointer;
-      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
     }
-    .option-btn:hover { border-color: var(--primary-light); }
+    .option-btn::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 12px;
+      bottom: 12px;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: transparent;
+      transition: background 0.15s;
+    }
+    .option-btn:hover { border-color: var(--forest-light); }
     .option-btn.selected {
-      border-color: var(--primary);
-      background: #f0faf4;
+      border-color: var(--forest-mid);
+      background: #f4fbf7;
+      box-shadow: 0 4px 20px rgba(45,107,69,0.1);
     }
-
-    .value-page-card {
-      background: linear-gradient(145deg, #f0faf4, #fff);
-      border: 1px solid rgba(45,107,69,0.15);
-      border-radius: 20px;
-      padding: 16px;
-      margin: 16px 0;
-      font-size: 0.8125rem;
-      color: #3d5c4a;
-      line-height: 1.5;
+    .option-btn.selected::before { background: var(--forest-mid); }
+    .value-card {
+      background: var(--surface-elevated);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin: 14px 0;
     }
-    .value-page-card .mock-ui {
-      height: 72px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #b8ebd9, #7fcdbe);
-      margin-bottom: 10px;
-      display: grid;
-      place-items: center;
+    .chosen-tag {
+      display: inline-block;
       font-size: 0.75rem;
       font-weight: 600;
-      color: #143d2a;
-    }
-    .chip-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      color: var(--forest-mid);
+      background: var(--forest-mist);
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
       margin-bottom: 12px;
     }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 10px 0; }
     .chip {
-      font-size: 0.6875rem;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--primary-light);
-      color: #143d2a;
+      font-size: 0.7rem;
       font-weight: 600;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      background: var(--forest-mist);
+      color: var(--forest-deep);
     }
-
     .toast-feedback {
       position: absolute;
       left: 20px;
       right: 20px;
-      bottom: 100px;
+      bottom: 96px;
       padding: 14px 16px;
-      background: #143d2a;
+      background: var(--forest-deep);
       color: #fff;
-      border-radius: var(--radius);
+      border-radius: var(--radius-md);
       font-size: 0.875rem;
       font-weight: 600;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(10px);
+      transition: opacity 0.28s, transform 0.28s;
       pointer-events: none;
       z-index: 10;
     }
     .toast-feedback.show { opacity: 1; transform: translateY(0); }
-
-    /* Login portrait */
-    .login-top {
-      text-align: center;
-      padding: 24px 20px 8px;
-    }
+    .login-block { text-align: center; padding-top: 8px; }
     .login-dynamic {
       font-family: var(--display);
-      font-size: 1.15rem;
-      color: #2d5a3d;
+      font-size: 1.1rem;
+      color: var(--forest-deep);
       line-height: 1.35;
-      margin: 12px 0 4px;
+      margin: 8px 0;
     }
-
-    /* Landscape: teacher + class */
-    .land-grid {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      min-height: 0;
+    /* Landscape */
+    .land-head {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-elevated);
     }
-    .teacher-panel {
-      background: linear-gradient(160deg, #d4f8ec, #fff);
-      padding: 20px;
+    .land-body { flex: 1; display: grid; grid-template-columns: 1fr 1.15fr; min-height: 0; }
+    .teacher-side {
+      padding: 24px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      background: var(--forest-mist);
     }
-    .teacher-avatar {
-      width: 120px;
-      height: 120px;
+    .teacher-ring {
+      width: 128px;
+      height: 128px;
       border-radius: 50%;
-      background: linear-gradient(145deg, #ffe082, #ffb74d);
+      border: 3px solid var(--forest-light);
+      background: var(--surface-elevated);
       display: grid;
       place-items: center;
-      font-size: 3.5rem;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow);
+      margin-bottom: 14px;
     }
-    .class-panel {
-      padding: 16px 20px;
+    .class-side {
+      padding: 18px 22px;
       display: flex;
       flex-direction: column;
       min-height: 0;
     }
-    .rail {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .rail button {
-      padding: 8px 14px;
-      border-radius: 999px;
+    .tab-rail { display: flex; gap: 8px; margin-bottom: 14px; }
+    .tab-rail button {
+      padding: 8px 16px;
       border: none;
+      border-radius: var(--radius-pill);
       font-size: 0.75rem;
       font-weight: 600;
       cursor: pointer;
-      background: #f0ecf4;
-      color: var(--muted);
+      background: #eef4f0;
+      color: var(--ink-muted);
     }
-    .rail button.on { background: var(--primary-light); color: #143d2a; }
+    .tab-rail button.on { background: var(--forest-light); color: var(--forest-deep); }
     .course-hero {
       flex: 1;
-      border-radius: 20px;
-      background: linear-gradient(145deg, #e8f5e9, #c8e6c9);
-      border: 1px solid rgba(45,107,69,0.2);
-      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      background: linear-gradient(160deg, #f4fbf7 0%, #e8f5e9 100%);
+      padding: 22px;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
     }
+    .course-hero .tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--forest-mid);
+      margin-bottom: 6px;
+    }
     .course-hero h3 {
       font-family: var(--display);
-      font-size: 1.25rem;
-      color: #143d2a;
+      font-size: 1.3rem;
+      color: var(--forest-deep);
       margin-bottom: 4px;
     }
-    .course-hero p { font-size: 0.8125rem; color: #3d5c4a; margin-bottom: 12px; }
     .rotate-hint {
       position: absolute;
       inset: 0;
-      background: rgba(20,61,42,0.92);
+      background: rgba(20,61,42,0.94);
       color: #fff;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 20;
+      z-index: 30;
       text-align: center;
-      padding: 24px;
+      font-family: var(--display);
     }
     .rotate-hint.show { display: flex; }
-    .rotate-hint span { font-size: 2.5rem; margin-bottom: 12px; }
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.1.0 demo · Portrait until login · Landscape for Class · Not production code</p>
+  <p class="demo-bar">V1.1.0 · DESIGN.md · Portrait → Login · Landscape Class</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
-      <!-- Welcome -->
       <section class="screen active" id="screen-welcome">
         <div class="welcome-hero">
-          <div class="value-slide" id="value-slide">
-            <div class="value-icon" id="value-icon">🦖</div>
-            <h2 id="value-title">Your AI teacher, always ready</h2>
-            <p id="value-desc">Live class—not a recording</p>
-          </div>
-          <div class="carousel-dots" id="carousel-dots">
-            <span class="on"></span><span></span><span></span>
-          </div>
+          <div class="carousel-frame" id="carousel-frame"></div>
+          <div class="carousel-dots" id="carousel-dots"></div>
         </div>
         <div class="welcome-copy">
           <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.15rem">Practice English with an AI teacher who listens.</h1>
+          <h1 class="title" style="font-size:1.12rem">Practice English with an AI teacher who listens.</h1>
           <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
         </div>
         <div class="foot-actions">
@@ -410,15 +435,17 @@
         </div>
       </section>
 
-      <!-- Purpose -->
       <section class="screen" id="screen-purpose">
-        <div class="progress" id="prog-purpose">Step 1 of 7</div>
+        <div class="top-bar">
+          <span class="step-label">Step 1 of 7</span>
+          <span class="live-pill" style="background:var(--forest-mid)">PERSONALIZE</span>
+        </div>
         <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
-        <div class="scroll-body" style="text-align:center;padding-top:32px">
-          <div style="font-size:3rem;margin-bottom:16px">📋</div>
+        <div class="scroll-body" style="text-align:center;padding-top:20px">
+          <div class="illo-slot" id="illo-purpose"></div>
           <h1 class="title">Let's personalize your first lesson</h1>
           <p class="sub">Answer a few quick questions so we can recommend the right course and teacher for you.</p>
-          <ul class="bullets" style="text-align:left;max-width:300px;margin:20px auto 0">
+          <ul class="bullets" style="text-align:left;max-width:300px;margin:16px auto 0">
             <li>Takes about 1 minute</li>
             <li>No account needed yet</li>
             <li>You can change answers later</li>
@@ -429,9 +456,8 @@
         </div>
       </section>
 
-      <!-- Goal -->
       <section class="screen" id="screen-goal">
-        <div class="progress">Step 2 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 2 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What's your main goal right now?</h1>
@@ -440,16 +466,15 @@
         </div>
       </section>
 
-      <!-- Value page L -->
       <section class="screen" id="screen-value">
-        <div class="progress">Step 3 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 3 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:42%"></div></div>
         <div class="scroll-body">
-          <p class="hint" id="value-chosen"></p>
+          <span class="chosen-tag" id="value-chosen"></span>
           <h1 class="title" id="value-h1"></h1>
           <p class="sub" id="value-h2"></p>
-          <div class="value-page-card">
-            <div class="mock-ui" id="value-mock">AI classroom</div>
+          <div class="value-card">
+            <div class="illo-slot" id="illo-value"></div>
             <ul class="bullets" id="value-bullets"></ul>
           </div>
         </div>
@@ -458,9 +483,8 @@
         </div>
       </section>
 
-      <!-- Age -->
       <section class="screen" id="screen-age">
-        <div class="progress">Step 4 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 4 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Which age group fits you best?</h1>
@@ -470,9 +494,8 @@
         <div class="toast-feedback" id="toast"></div>
       </section>
 
-      <!-- Level -->
       <section class="screen" id="screen-level">
-        <div class="progress">Step 5 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 5 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How much English do you know today?</h1>
@@ -481,9 +504,8 @@
         </div>
       </section>
 
-      <!-- Time -->
       <section class="screen" id="screen-time">
-        <div class="progress">Step 6 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 6 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How much time can you study most days?</h1>
@@ -492,61 +514,64 @@
         </div>
       </section>
 
-      <!-- Login portrait -->
       <section class="screen" id="screen-login">
-        <div class="progress">Step 7 of 7</div>
+        <div class="top-bar"><span class="step-label">Step 7 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        <div class="login-top">
+        <div class="scroll-body login-block">
+          <div class="illo-slot" id="illo-login" style="margin-top:8px"></div>
           <div class="logo">Dino English</div>
           <div class="chip-row" id="login-chips"></div>
           <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
           <p class="sub">Sign in to save your answers</p>
-        </div>
-        <div class="scroll-body" style="padding-top:8px">
-          <button type="button" class="btn btn-oauth" id="btn-login-apple"> Continue with Apple</button>
-          <button type="button" class="btn btn-oauth" style="margin-top:10px" id="btn-login-google">Continue with Google</button>
+          <div style="margin-top:20px;text-align:left">
+            <button type="button" class="btn btn-oauth" id="btn-login-apple" style="width:100%">Continue with Apple</button>
+            <button type="button" class="btn btn-oauth" id="btn-login-google" style="width:100%;margin-top:10px">Continue with Google</button>
+          </div>
         </div>
         <div class="foot-actions">
-          <p style="font-size:0.65rem;text-align:center;color:var(--muted)">Service Terms & Privacy Policy</p>
+          <p style="font-size:0.65rem;text-align:center;color:var(--ink-muted)">Service Terms & Privacy Policy</p>
         </div>
       </section>
     </div>
   </div>
 
-  <div class="device-wrap landscape" id="wrap-landscape" style="display:none;margin-top:12px">
+  <div class="device-wrap landscape" id="wrap-landscape" style="display:none">
     <div class="device landscape" id="device-landscape">
       <div class="rotate-hint" id="rotate-hint">
-        <span>↻</span>
-        <p style="font-weight:700;font-size:1.1rem">Turn your device</p>
-        <p style="font-size:0.85rem;opacity:0.9;margin-top:8px">Class works best in landscape</p>
+        <p style="font-size:2rem;margin-bottom:8px">↻</p>
+        <p>Turn your device — Class is landscape</p>
       </div>
-
       <section class="screen active" id="screen-teacher">
-        <div class="land-grid">
-          <div class="teacher-panel">
-            <div class="teacher-avatar">👩‍🏫</div>
-            <h2 style="font-family:var(--display);color:#2d5a3d">Kym</h2>
-            <p style="font-size:0.8rem;color:#3d5c4a;margin:8px 0 16px">Friendly · Patient · Great for beginners</p>
-            <p style="font-size:0.75rem;color:var(--muted)">Swipe for Max & Leo in production</p>
+        <div class="land-head">
+          <span class="logo" style="margin:0;font-size:1rem">Dino English</span>
+          <span class="live-pill">LIVE CLASS</span>
+        </div>
+        <div class="land-body">
+          <div class="teacher-side">
+            <div class="teacher-ring" id="teacher-svg"></div>
+            <h2 style="font-family:var(--display);color:var(--forest-deep)">Kym</h2>
+            <p style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">Friendly · Patient · Beginners</p>
           </div>
-          <div class="teacher-panel" style="background:#fff;justify-content:flex-end">
-            <button type="button" class="btn btn-primary" id="btn-confirm-teacher" style="width:100%;max-width:220px">Confirm teacher</button>
+          <div style="display:flex;align-items:flex-end;justify-content:center;padding:24px;background:#fff">
+            <button type="button" class="btn btn-primary" id="btn-confirm-teacher" style="width:100%;max-width:240px">Confirm teacher</button>
           </div>
         </div>
       </section>
-
       <section class="screen" id="screen-class">
-        <div class="class-panel" style="height:100%">
-          <div class="rail">
+        <div class="land-head">
+          <span class="logo" style="margin:0;font-size:1rem">Dino English</span>
+        </div>
+        <div class="class-side" style="height:calc(100% - 52px)">
+          <div class="tab-rail">
             <button type="button" class="on">Class</button>
-            <button type="button" disabled style="opacity:0.5">Listen</button>
-            <button type="button" disabled style="opacity:0.5">Words</button>
+            <button type="button" disabled style="opacity:0.45">Listen</button>
+            <button type="button" disabled style="opacity:0.45">Words</button>
           </div>
-          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:8px">AI Teacher · Kym</p>
+          <p style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:10px">AI Teacher · Kym</p>
           <div class="course-hero">
-            <p style="font-size:0.7rem;font-weight:700;color:#2d6b45">RECOMMENDED</p>
+            <span class="tag">RECOMMENDED</span>
             <h3>Start your first lesson</h3>
-            <p>Level 1 · Unit 1 · Lesson 1 — Greetings</p>
+            <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px">Level 1 · Unit 1 · Lesson 1 — Greetings</p>
             <button type="button" class="btn btn-primary" id="btn-go-class">Go to Class</button>
           </div>
         </div>
@@ -559,22 +584,88 @@
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const profile = { goal: null, goalLabel: "", age: "", level: "", time: "" };
 
-    const VALUE_SLIDES = [
-      { icon: "🦖", title: "Your AI teacher, always ready", desc: "Live class—not a recording" },
-      { icon: "🎤", title: "Speak in class—not just watch", desc: "Questions, mic, instant feedback" },
-      { icon: "📊", title: "See progress after every lesson", desc: "Reports & clear lesson path" },
+    const ILLUSTRATIONS = {
+      welcome: [
+        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
+          <ellipse cx="140" cy="150" rx="100" ry="18" fill="#C5DDD2" opacity="0.5"/>
+          <path d="M60 120 Q90 60 140 75 Q190 60 220 120" stroke="#2D6B45" stroke-width="3" fill="none"/>
+          <circle cx="100" cy="95" r="22" fill="#FFE082"/>
+          <circle cx="180" cy="88" r="26" fill="#A8E6CF"/>
+          <rect x="168" y="72" width="24" height="8" rx="4" fill="#EA6C25"/>
+          <text x="180" y="79" text-anchor="middle" fill="white" font-size="6" font-weight="700">LIVE</text>
+        </svg>`,
+        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
+          <rect x="70" y="50" width="140" height="90" rx="14" fill="#fff" stroke="#2D6B45" stroke-width="2"/>
+          <circle cx="200" cy="130" r="18" fill="#EA6C25" opacity="0.9"/>
+          <path d="M194 130 L200 122 L206 130 L200 138 Z" fill="white"/>
+          <rect x="90" y="70" width="50" height="8" rx="4" fill="#A8E6CF"/>
+          <rect x="90" y="88" width="80" height="8" rx="4" fill="#D4F8EC"/>
+        </svg>`,
+        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
+          <rect x="60" y="55" width="160" height="70" rx="12" fill="#fff" stroke="#C5DDD2"/>
+          <rect x="75" y="75" width="30" height="40" rx="4" fill="#2D6B45" opacity="0.2"/>
+          <rect x="115" y="68" width="30" height="47" rx="4" fill="#2D6B45"/>
+          <rect x="155" y="72" width="30" height="43" rx="4" fill="#A8E6CF"/>
+          <path d="M75 130 H185" stroke="#2D6B45" stroke-width="2"/>
+        </svg>`,
+      ],
+      purpose: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="40" y="20" width="160" height="120" rx="16" fill="#F4FBF7" stroke="#C5DDD2"/>
+        <circle cx="80" cy="70" r="10" fill="#2D6B45"/>
+        <circle cx="120" cy="70" r="10" fill="#A8E6CF"/>
+        <circle cx="160" cy="70" r="10" fill="#A8E6CF" opacity="0.5"/>
+        <path d="M90 70 H110 M130 70 H150" stroke="#C5DDD2" stroke-width="2"/>
+        <path d="M70 100 L85 115 L110 90" stroke="#2D6B45" stroke-width="3" fill="none"/>
+      </svg>`,
+      value: `<svg width="100%" height="120" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="320" height="120" rx="14" fill="#D4F8EC"/>
+        <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="1.5"/>
+        <ellipse cx="260" cy="75" rx="28" ry="28" fill="#EA6C25"/>
+        <rect x="248" y="62" width="24" height="26" rx="6" fill="#fff" opacity="0.3"/>
+        <rect x="50" y="45" width="60" height="10" rx="5" fill="#A8E6CF"/>
+        <rect x="50" y="65" width="90" height="10" rx="5" fill="#E8F5E9"/>
+      </svg>`,
+      login: `<svg width="120" height="72" viewBox="0 0 120 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="60" cy="36" r="28" fill="#D4F8EC"/>
+        <path d="M48 40 Q60 22 72 40" stroke="#2D6B45" stroke-width="2.5" fill="none"/>
+        <rect x="52" y="48" width="16" height="14" rx="3" fill="#2D6B45"/>
+      </svg>`,
+      teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
+    };
+
+    const CAROUSEL_META = [
+      { title: "Your AI teacher, always ready", desc: "Live class—not a recording" },
+      { title: "Speak in class—not just watch", desc: "Questions, mic, instant feedback" },
+      { title: "See progress after every lesson", desc: "Reports & clear lesson path" },
     ];
-    let carouselIdx = 0;
-    setInterval(() => {
-      carouselIdx = (carouselIdx + 1) % 3;
-      const s = VALUE_SLIDES[carouselIdx];
-      $("#value-icon").textContent = s.icon;
-      $("#value-title").textContent = s.title;
-      $("#value-desc").textContent = s.desc;
-      $("#carousel-dots").querySelectorAll("span").forEach((el, i) => {
-        el.classList.toggle("on", i === carouselIdx);
+
+    function initCarousel() {
+      const frame = $("#carousel-frame");
+      const dots = $("#carousel-dots");
+      ILLUSTRATIONS.welcome.forEach((svg, i) => {
+        const slide = document.createElement("div");
+        slide.className = "carousel-slide" + (i === 0 ? " on" : "");
+        slide.innerHTML = svg;
+        frame.appendChild(slide);
+        const dot = document.createElement("span");
+        if (i === 0) dot.className = "on";
+        dots.appendChild(dot);
       });
-    }, 3200);
+      let idx = 0;
+      setInterval(() => {
+        idx = (idx + 1) % 3;
+        frame.querySelectorAll(".carousel-slide").forEach((el, i) => el.classList.toggle("on", i === idx));
+        dots.querySelectorAll("span").forEach((el, i) => el.classList.toggle("on", i === idx));
+      }, 4000);
+    }
+    $("#illo-purpose").innerHTML = ILLUSTRATIONS.purpose;
+    $("#illo-value").innerHTML = ILLUSTRATIONS.value;
+    $("#illo-login").innerHTML = ILLUSTRATIONS.login;
+    $("#teacher-svg").innerHTML = ILLUSTRATIONS.teacher;
+    initCarousel();
 
     const GOALS = [
       { key: "speak_confidence", label: "Speak more confidently" },
@@ -584,36 +675,11 @@
       { key: "listening_habit", label: "Build listening habit" },
     ];
     const VALUE_PAGES = {
-      speak_confidence: {
-        h1: "We'll help you speak—not just listen",
-        h2: "Your AI teacher asks questions and waits for your answer.",
-        mock: "🎤 Speak in class",
-        bullets: ["Practice speaking every lesson", "Get instant feedback", "Build confidence step by step"],
-      },
-      structured_progress: {
-        h1: "A clear path from Lesson 1 onward",
-        h2: "Level by level, with progress you can see.",
-        mock: "📚 Level · Unit · Lesson",
-        bullets: ["Structured curriculum", "Recommended next lesson", "Reports after class"],
-      },
-      school_exam: {
-        h1: "Lessons that fit school expectations",
-        h2: "Practice speaking and key skills in each unit.",
-        mock: "📝 Skills + report",
-        bullets: ["Align with learning goals", "Track completion", "Review anytime"],
-      },
-      daily_communication: {
-        h1: "English you'll actually use",
-        h2: "Role-play and dialogue in every class.",
-        mock: "💬 Real-life dialogue",
-        bullets: ["Real-life topics", "Speak in class", "Short practice after class"],
-      },
-      listening_habit: {
-        h1: "Listening helps—but speaking locks it in",
-        h2: "We'll start with a short interactive class; use Listen anytime after.",
-        mock: "🎧 + 🎤 Class first",
-        bullets: ["Start with a live lesson", "Add listening on your schedule", "One app, two habits"],
-      },
+      speak_confidence: { h1: "We'll help you speak—not just listen", h2: "Your AI teacher asks questions and waits for your answer.", bullets: ["Practice speaking every lesson", "Get instant feedback", "Build confidence step by step"] },
+      structured_progress: { h1: "A clear path from Lesson 1 onward", h2: "Level by level, with progress you can see.", bullets: ["Structured curriculum", "Recommended next lesson", "Reports after class"] },
+      school_exam: { h1: "Lessons that fit school expectations", h2: "Practice speaking and key skills in each unit.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
+      daily_communication: { h1: "English you'll actually use", h2: "Role-play and dialogue in every class.", bullets: ["Real-life topics", "Speak in class", "Short practice after class"] },
+      listening_habit: { h1: "Listening helps—but speaking locks it in", h2: "We'll start with a short interactive class; use Listen anytime after.", bullets: ["Start with a live lesson", "Add listening on your schedule", "One app, two habits"] },
     };
     const LOGIN_COPY = {
       speak_confidence: "Save your plan and start speaking in class",
@@ -623,31 +689,19 @@
       listening_habit: "Save your plan and start your first class",
       default: "Save your plan and continue",
     };
-
     const AGES = ["3–5", "6–8", "9–12", "13–17", "18+"];
-    const LEVELS = [
-      "I'm just starting",
-      "I know some words",
-      "I can have simple conversations",
-      "I'm intermediate or above",
-    ];
+    const LEVELS = ["I'm just starting", "I know some words", "I can have simple conversations", "I'm intermediate or above"];
     const TIMES = ["5 min", "10 min", "15 min", "20+ min"];
 
     function showPortraitScreen(id) {
-      $$("#device-portrait .screen").forEach((el) => {
-        el.classList.toggle("active", el.id === id);
-      });
+      $$("#device-portrait .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
-
     function renderOptions(container, items, onPick) {
-      container.innerHTML = items
-        .map(
-          (item) =>
-            `<button type="button" class="option-btn" data-val="${typeof item === "string" ? item : item.key}">${
-              typeof item === "string" ? item : item.label
-            }</button>`
-        )
-        .join("");
+      container.innerHTML = items.map((item) => {
+        const val = typeof item === "string" ? item : item.key;
+        const label = typeof item === "string" ? item : item.label;
+        return `<button type="button" class="option-btn" data-val="${val}">${label}</button>`;
+      }).join("");
       container.querySelectorAll(".option-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           container.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
@@ -656,26 +710,19 @@
         });
       });
     }
-
     function showToast(msg, then) {
       const t = $("#toast");
       t.textContent = msg;
       t.classList.add("show");
-      setTimeout(() => {
-        t.classList.remove("show");
-        if (then) then();
-      }, 1200);
+      setTimeout(() => { t.classList.remove("show"); if (then) then(); }, 1200);
     }
-
     function fillValuePage() {
       const v = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
-      $("#value-chosen").textContent = `You chose: ${profile.goalLabel}`;
+      $("#value-chosen").textContent = profile.goalLabel;
       $("#value-h1").textContent = v.h1;
       $("#value-h2").textContent = v.h2;
-      $("#value-mock").textContent = v.mock;
       $("#value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
     }
-
     function fillLogin() {
       $("#login-dynamic").textContent = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
       const chips = [];
@@ -684,67 +731,43 @@
       $("#login-chips").innerHTML = chips.map((c) => `<span class="chip">${c}</span>`).join("");
     }
 
+    $("#btn-get-started").addEventListener("click", () => showPortraitScreen("screen-purpose"));
+    $("#btn-has-account-welcome").addEventListener("click", () => { fillLogin(); showPortraitScreen("screen-login"); });
+    $('[data-next="goal"]').addEventListener("click", () => showPortraitScreen("screen-goal"));
+    renderOptions($("#goal-options"), GOALS, (key, label) => {
+      profile.goal = key; profile.goalLabel = label; fillValuePage();
+      setTimeout(() => showPortraitScreen("screen-value"), 300);
+    });
+    $('[data-next="age"]').addEventListener("click", () => showPortraitScreen("screen-age"));
+    renderOptions($("#age-options"), AGES, (val) => {
+      profile.age = val;
+      showToast(`Got it—we'll match courses for ages ${val}.`, () => showPortraitScreen("screen-level"));
+    });
+    renderOptions($("#level-options"), LEVELS, (val) => {
+      profile.level = val;
+      showToast("We'll start where you're comfortable—no pressure.", () => showPortraitScreen("screen-time"));
+    });
+    renderOptions($("#time-options"), TIMES, (val) => {
+      profile.time = val;
+      const n = val.replace(/\D/g, "") || "10";
+      showToast(`A ${n}-minute daily goal works great.`, () => { fillLogin(); showPortraitScreen("screen-login"); });
+    });
+
     function enterLandscape() {
       $("#wrap-portrait").style.display = "none";
       $("#wrap-landscape").style.display = "block";
       const hint = $("#rotate-hint");
       hint.classList.add("show");
-      setTimeout(() => hint.classList.remove("show"), 1800);
+      setTimeout(() => hint.classList.remove("show"), 1600);
     }
-
     function showLandScreen(id) {
-      $$("#device-landscape .screen").forEach((el) => {
-        el.classList.toggle("active", el.id === id);
-      });
+      $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
-
-    $("#btn-get-started").addEventListener("click", () => showPortraitScreen("screen-purpose"));
-    $("#btn-has-account-welcome").addEventListener("click", () => {
-      showPortraitScreen("screen-login");
-      fillLogin();
-    });
-
-    $('[data-next="goal"]').addEventListener("click", () => showPortraitScreen("screen-goal"));
-
-    renderOptions($("#goal-options"), GOALS, (key, label) => {
-      profile.goal = key;
-      profile.goalLabel = label;
-      fillValuePage();
-      setTimeout(() => showPortraitScreen("screen-value"), 280);
-    });
-
-    $('[data-next="age"]').addEventListener("click", () => showPortraitScreen("screen-age"));
-
-    renderOptions($("#age-options"), AGES, (val) => {
-      profile.age = val;
-      showToast(`Got it—we'll match courses for ages ${val}.`, () => showPortraitScreen("screen-level"));
-    });
-
-    renderOptions($("#level-options"), LEVELS, (val) => {
-      profile.level = val;
-      showToast("We'll start where you're comfortable—no pressure.", () => showPortraitScreen("screen-time"));
-    });
-
-    renderOptions($("#time-options"), TIMES, (val) => {
-      profile.time = val;
-      const n = val.replace(/\D/g, "") || "10";
-      showToast(`A ${n}-minute daily goal works great.`, () => {
-        fillLogin();
-        showPortraitScreen("screen-login");
-      });
-    });
-
-    function onLoginSuccess() {
-      enterLandscape();
-      showLandScreen("screen-teacher");
-    }
+    function onLoginSuccess() { enterLandscape(); showLandScreen("screen-teacher"); }
     $("#btn-login-apple").addEventListener("click", onLoginSuccess);
     $("#btn-login-google").addEventListener("click", onLoginSuccess);
-
     $("#btn-confirm-teacher").addEventListener("click", () => showLandScreen("screen-class"));
-    $("#btn-go-class").addEventListener("click", () => {
-      alert("Demo: would open classroom (landscape). See PRD §9.8.");
-    });
+    $("#btn-go-class").addEventListener("click", () => alert("Demo: open classroom (landscape). PRD §9.8."));
   </script>
 </body>
 </html>
