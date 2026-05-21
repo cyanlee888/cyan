@@ -320,14 +320,32 @@
       z-index: 10;
     }
     .toast-feedback.show { opacity: 1; transform: translateY(0); }
-    .login-block { text-align: center; padding-top: 8px; }
+    .login-block {
+      text-align: center;
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .login-block .illo-slot { margin: 0 auto 16px; min-height: 88px; }
+    .login-block .logo { margin-bottom: 12px; }
     .login-dynamic {
       font-family: var(--display);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--forest-deep);
       line-height: 1.35;
-      margin: 8px 0;
+      margin: 8px 0 4px;
+      max-width: 300px;
     }
+    .login-oauth-stack {
+      width: 100%;
+      max-width: 320px;
+      margin-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-oauth svg { flex-shrink: 0; }
     /* Landscape */
     .land-head {
       padding: 14px 20px;
@@ -518,14 +536,20 @@
         <div class="top-bar"><span class="step-label">Step 7 of 7</span></div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body login-block">
-          <div class="illo-slot" id="illo-login" style="margin-top:8px"></div>
+          <div class="illo-slot" id="illo-login"></div>
           <div class="logo">Dino English</div>
           <div class="chip-row" id="login-chips"></div>
           <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
           <p class="sub">Sign in to save your answers</p>
-          <div style="margin-top:20px;text-align:left">
-            <button type="button" class="btn btn-oauth" id="btn-login-apple" style="width:100%">Continue with Apple</button>
-            <button type="button" class="btn btn-oauth" id="btn-login-google" style="width:100%;margin-top:10px">Continue with Google</button>
+          <div class="login-oauth-stack">
+            <button type="button" class="btn btn-oauth" id="btn-login-apple">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
+              Continue with Apple
+            </button>
+            <button type="button" class="btn btn-oauth" id="btn-login-google">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.88l2.84 2.2c1.7-1.57 2.68-3.88 2.68-6.58z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.61-5.12-3.77H.96v2.27C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.88 10.75A5.41 5.41 0 0 1 3.7 9c0-.62.11-1.22.18-1.75v-2.27H.96A8.96 8.96 0 0 0 0 9c0 1.45.35 2.82.96 4.02l2.92-2.27z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.22.57 2.73 1.05l1.99-1.94C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.98L3.88 7.25C4.6 5.09 6.62 3.58 9 3.58z"/></svg>
+              Continue with Google
+            </button>
           </div>
         </div>
         <div class="foot-actions">
@@ -628,10 +652,15 @@
         <rect x="50" y="45" width="60" height="10" rx="5" fill="#A8E6CF"/>
         <rect x="50" y="65" width="90" height="10" rx="5" fill="#E8F5E9"/>
       </svg>`,
-      login: `<svg width="120" height="72" viewBox="0 0 120 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="60" cy="36" r="28" fill="#D4F8EC"/>
-        <path d="M48 40 Q60 22 72 40" stroke="#2D6B45" stroke-width="2.5" fill="none"/>
-        <rect x="52" y="48" width="16" height="14" rx="3" fill="#2D6B45"/>
+      login: `<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="200" height="120" rx="20" fill="#D4F8EC"/>
+        <ellipse cx="100" cy="98" rx="70" ry="12" fill="#A8E6CF" opacity="0.6"/>
+        <circle cx="78" cy="52" r="22" fill="#FFE082"/>
+        <circle cx="128" cy="48" r="26" fill="#2D6B45" opacity="0.15"/>
+        <path d="M115 55 Q128 38 142 55" stroke="#2D6B45" stroke-width="2.5" fill="none"/>
+        <rect x="88" y="72" width="24" height="20" rx="4" fill="#2D6B45"/>
+        <path d="M92 78 L100 86 L108 78" stroke="#fff" stroke-width="2" fill="none"/>
+        <text x="100" y="32" text-anchor="middle" fill="#2D6B45" font-size="11" font-weight="600">Save your plan</text>
       </svg>`,
       teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
     };
