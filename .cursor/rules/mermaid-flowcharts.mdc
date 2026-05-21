@@ -1,0 +1,17 @@
+---
+description: 产品文档中的流程图、路径图、状态机统一使用 Mermaid
+globs: **/*.md
+alwaysApply: false
+---
+
+# 文档流程图使用 Mermaid
+
+编写或更新本仓库内的产品文档（PRD、MRD、版本说明、`docs/` 等）时：
+
+- **流程图、路径图、页面地图、状态流转、时序交互** → 使用 ` ```mermaid ` 代码块，不要用 ASCII 树状图或纯文字箭头链。
+- **选型**：
+  - 用户路径 / 页面地图 → `flowchart TB` 或 `flowchart LR`，用 `subgraph` 区分阶段（如未登录 / 已登录）
+  - 状态机 → `stateDiagram-v2`
+  - 接口 / 埋点 / 支付时序 → `sequenceDiagram`
+- **可读性**：节点文案简短；复杂说明用 `<br/>` 换行；边标签写清分支条件（如「是」「已有账号」）。
+- **维护**：改流程时同步改 Mermaid，避免文档内 ASCII 与 Mermaid 两套并存。

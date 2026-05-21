@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dino English — V1.1.0 UI Demo</title>
+  <!-- PRD: V1.1.0-产品需求文档-PRD.md — Portrait: welcome → onboarding → login; Landscape: teacher → Class -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&family=Roboto+Flex:opsz,wght@8..144,400;8..144,500;8..144,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --surface: #fffbff;
+      --on-surface: #1d1b20;
+      --muted: #49454f;
+      --outline: #cac4d0;
+      --primary: #2d6b45;
+      --primary-light: #a8e6cf;
+      --accent: #ea6c25;
+      --font: "Roboto Flex", system-ui, sans-serif;
+      --display: "Fredoka", "Nunito", system-ui, sans-serif;
+      --radius: 16px;
+      --shadow: 0 8px 28px rgba(23, 66, 48, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      min-height: 100dvh;
+      background: #2d2839;
+      font-family: var(--font);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      color: var(--on-surface);
+    }
+    .demo-bar {
+      width: min(420px, 100%);
+      max-width: 960px;
+      margin-bottom: 8px;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+      line-height: 1.4;
+    }
+    .device-wrap { position: relative; }
+    .device-wrap.landscape { width: min(960px, 100%); }
+    .device-wrap.portrait { width: min(390px, 100%); }
+
+    .device {
+      background: var(--surface);
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+      overflow: hidden;
+      position: relative;
+      margin: 0 auto;
+    }
+    .device.portrait {
+      width: 100%;
+      max-width: 390px;
+      height: min(780px, calc(100dvh - 80px));
+      aspect-ratio: 9 / 19.5;
+      max-height: calc(100dvh - 80px);
+    }
+    .device.landscape {
+      width: 100%;
+      height: min(520px, calc(100dvh - 80px));
+      aspect-ratio: 16 / 9;
+      max-height: calc(100dvh - 80px);
+    }
+
+    .screen { display: none; flex-direction: column; height: 100%; min-height: 0; }
+    .screen.active { display: flex; }
+
+    .progress {
+      padding: 12px 20px 0;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .progress-bar {
+      height: 4px;
+      background: #e8e4ec;
+      border-radius: 4px;
+      margin: 8px 20px 0;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-light), var(--primary));
+      border-radius: 4px;
+      transition: width 0.35s ease;
+    }
+
+    .scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      min-height: 0;
+    }
+    .foot-actions {
+      padding: 12px 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+      background: linear-gradient(180deg, transparent, var(--surface) 20%);
+    }
+
+    h1.title {
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #2d5a3d;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    p.sub, p.hint {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    p.hint { font-size: 0.8125rem; margin-bottom: 16px; }
+    ul.bullets {
+      margin: 12px 0 0;
+      padding-left: 1.1rem;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .btn {
+      min-height: 52px;
+      border-radius: 999px;
+      border: none;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s, opacity 0.12s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, #3d8f5c, var(--primary));
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+    .btn-text {
+      background: transparent;
+      color: var(--primary);
+      min-height: 44px;
+    }
+    .btn-oauth {
+      background: #fff;
+      border: 1px solid var(--outline);
+      color: var(--on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Welcome */
+    .welcome-hero {
+      flex: 1;
+      min-height: 42%;
+      background: linear-gradient(165deg, #d4f8ec 0%, #fffbf5 50%, #e8f5e9 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .carousel-dots {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .carousel-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(45,107,69,0.25);
+    }
+    .carousel-dots span.on { background: var(--primary); width: 20px; border-radius: 4px; }
+    .value-slide {
+      text-align: center;
+      max-width: 280px;
+    }
+    .value-icon {
+      font-size: 3rem;
+      margin-bottom: 8px;
+    }
+    .value-slide h2 {
+      font-family: var(--display);
+      font-size: 1.1rem;
+      color: #2d5a3d;
+      margin-bottom: 4px;
+    }
+    .value-slide p { font-size: 0.8rem; color: #3d5c4a; }
+    .welcome-copy { padding: 16px 20px 0; text-align: center; }
+    .welcome-copy .logo {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      color: #8fd4b4;
+      -webkit-text-stroke: 1.5px #356848;
+      paint-order: stroke fill;
+      margin-bottom: 8px;
+    }
+
+    .option-list { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn {
+      text-align: left;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      border: 2px solid #e8e4ec;
+      background: #fff;
+      font-family: var(--font);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--on-surface);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .option-btn:hover { border-color: var(--primary-light); }
+    .option-btn.selected {
+      border-color: var(--primary);
+      background: #f0faf4;
+    }
+
+    .value-page-card {
+      background: linear-gradient(145deg, #f0faf4, #fff);
+      border: 1px solid rgba(45,107,69,0.15);
+      border-radius: 20px;
+      padding: 16px;
+      margin: 16px 0;
+      font-size: 0.8125rem;
+      color: #3d5c4a;
+      line-height: 1.5;
+    }
+    .value-page-card .mock-ui {
+      height: 72px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b8ebd9, #7fcdbe);
+      margin-bottom: 10px;
+      display: grid;
+      place-items: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #143d2a;
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .chip {
+      font-size: 0.6875rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: #143d2a;
+      font-weight: 600;
+    }
+
+    .toast-feedback {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 100px;
+      padding: 14px 16px;
+      background: #143d2a;
+      color: #fff;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .toast-feedback.show { opacity: 1; transform: translateY(0); }
+
+    /* Login portrait */
+    .login-top {
+      text-align: center;
+      padding: 24px 20px 8px;
+    }
+    .login-dynamic {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      color: #2d5a3d;
+      line-height: 1.35;
+      margin: 12px 0 4px;
+    }
+
+    /* Landscape: teacher + class */
+    .land-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      min-height: 0;
+    }
+    .teacher-panel {
+      background: linear-gradient(160deg, #d4f8ec, #fff);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .teacher-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #ffe082, #ffb74d);
+      display: grid;
+      place-items: center;
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .class-panel {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    .rail {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .rail button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f0ecf4;
+      color: var(--muted);
+    }
+    .rail button.on { background: var(--primary-light); color: #143d2a; }
+    .course-hero {
+      flex: 1;
+      border-radius: 20px;
+      background: linear-gradient(145deg, #e8f5e9, #c8e6c9);
+      border: 1px solid rgba(45,107,69,0.2);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .course-hero h3 {
+      font-family: var(--display);
+      font-size: 1.25rem;
+      color: #143d2a;
+      margin-bottom: 4px;
+    }
+    .course-hero p { font-size: 0.8125rem; color: #3d5c4a; margin-bottom: 12px; }
+    .rotate-hint {
+      position: absolute;
+      inset: 0;
+      background: rgba(20,61,42,0.92);
+      color: #fff;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      text-align: center;
+      padding: 24px;
+    }
+    .rotate-hint.show { display: flex; }
+    .rotate-hint span { font-size: 2.5rem; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <p class="demo-bar">V1.1.0 demo · Portrait until login · Landscape for Class · Not production code</p>
+
+  <div class="device-wrap portrait" id="wrap-portrait">
+    <div class="device portrait" id="device-portrait">
+      <!-- Welcome -->
+      <section class="screen active" id="screen-welcome">
+        <div class="welcome-hero">
+          <div class="value-slide" id="value-slide">
+            <div class="value-icon" id="value-icon">🦖</div>
+            <h2 id="value-title">Your AI teacher, always ready</h2>
+            <p id="value-desc">Live class—not a recording</p>
+          </div>
+          <div class="carousel-dots" id="carousel-dots">
+            <span class="on"></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="welcome-copy">
+          <div class="logo">Dino English</div>
+          <h1 class="title" style="font-size:1.15rem">Practice English with an AI teacher who listens.</h1>
+          <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-get-started">Get started</button>
+          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I already have an account</button>
+        </div>
+      </section>
+
+      <!-- Purpose -->
+      <section class="screen" id="screen-purpose">
+        <div class="progress" id="prog-purpose">Step 1 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+        <div class="scroll-body" style="text-align:center;padding-top:32px">
+          <div style="font-size:3rem;margin-bottom:16px">📋</div>
+          <h1 class="title">Let's personalize your first lesson</h1>
+          <p class="sub">Answer a few quick questions so we can recommend the right course and teacher for you.</p>
+          <ul class="bullets" style="text-align:left;max-width:300px;margin:20px auto 0">
+            <li>Takes about 1 minute</li>
+            <li>No account needed yet</li>
+            <li>You can change answers later</li>
+          </ul>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" data-next="goal">Continue</button>
+        </div>
+      </section>
+
+      <!-- Goal -->
+      <section class="screen" id="screen-goal">
+        <div class="progress">Step 2 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+        <div class="scroll-body">
+          <h1 class="title">What's your main goal right now?</h1>
+          <p class="hint">We'll recommend your first lesson based on this.</p>
+          <div class="option-list" id="goal-options"></div>
+        </div>
+      </section>
+
+      <!-- Value page L -->
+      <section class="screen" id="screen-value">
+        <div class="progress">Step 3 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:42%"></div></div>
+        <div class="scroll-body">
+          <p class="hint" id="value-chosen"></p>
+          <h1 class="title" id="value-h1"></h1>
+          <p class="sub" id="value-h2"></p>
+          <div class="value-page-card">
+            <div class="mock-ui" id="value-mock">AI classroom</div>
+            <ul class="bullets" id="value-bullets"></ul>
+          </div>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" data-next="age">Continue</button>
+        </div>
+      </section>
+
+      <!-- Age -->
+      <section class="screen" id="screen-age">
+        <div class="progress">Step 4 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+        <div class="scroll-body">
+          <h1 class="title">Which age group fits you best?</h1>
+          <p class="hint">This helps us match the right course level.</p>
+          <div class="option-list" id="age-options"></div>
+        </div>
+        <div class="toast-feedback" id="toast"></div>
+      </section>
+
+      <!-- Level -->
+      <section class="screen" id="screen-level">
+        <div class="progress">Step 5 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+        <div class="scroll-body">
+          <h1 class="title">How much English do you know today?</h1>
+          <p class="hint">We'll pick a comfortable starting point.</p>
+          <div class="option-list" id="level-options"></div>
+        </div>
+      </section>
+
+      <!-- Time -->
+      <section class="screen" id="screen-time">
+        <div class="progress">Step 6 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+        <div class="scroll-body">
+          <h1 class="title">How much time can you study most days?</h1>
+          <p class="hint">We'll help you build a habit that fits.</p>
+          <div class="option-list" id="time-options"></div>
+        </div>
+      </section>
+
+      <!-- Login portrait -->
+      <section class="screen" id="screen-login">
+        <div class="progress">Step 7 of 7</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        <div class="login-top">
+          <div class="logo">Dino English</div>
+          <div class="chip-row" id="login-chips"></div>
+          <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
+          <p class="sub">Sign in to save your answers</p>
+        </div>
+        <div class="scroll-body" style="padding-top:8px">
+          <button type="button" class="btn btn-oauth" id="btn-login-apple"> Continue with Apple</button>
+          <button type="button" class="btn btn-oauth" style="margin-top:10px" id="btn-login-google">Continue with Google</button>
+        </div>
+        <div class="foot-actions">
+          <p style="font-size:0.65rem;text-align:center;color:var(--muted)">Service Terms & Privacy Policy</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="device-wrap landscape" id="wrap-landscape" style="display:none;margin-top:12px">
+    <div class="device landscape" id="device-landscape">
+      <div class="rotate-hint" id="rotate-hint">
+        <span>↻</span>
+        <p style="font-weight:700;font-size:1.1rem">Turn your device</p>
+        <p style="font-size:0.85rem;opacity:0.9;margin-top:8px">Class works best in landscape</p>
+      </div>
+
+      <section class="screen active" id="screen-teacher">
+        <div class="land-grid">
+          <div class="teacher-panel">
+            <div class="teacher-avatar">👩‍🏫</div>
+            <h2 style="font-family:var(--display);color:#2d5a3d">Kym</h2>
+            <p style="font-size:0.8rem;color:#3d5c4a;margin:8px 0 16px">Friendly · Patient · Great for beginners</p>
+            <p style="font-size:0.75rem;color:var(--muted)">Swipe for Max & Leo in production</p>
+          </div>
+          <div class="teacher-panel" style="background:#fff;justify-content:flex-end">
+            <button type="button" class="btn btn-primary" id="btn-confirm-teacher" style="width:100%;max-width:220px">Confirm teacher</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-class">
+        <div class="class-panel" style="height:100%">
+          <div class="rail">
+            <button type="button" class="on">Class</button>
+            <button type="button" disabled style="opacity:0.5">Listen</button>
+            <button type="button" disabled style="opacity:0.5">Words</button>
+          </div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-bottom:8px">AI Teacher · Kym</p>
+          <div class="course-hero">
+            <p style="font-size:0.7rem;font-weight:700;color:#2d6b45">RECOMMENDED</p>
+            <h3>Start your first lesson</h3>
+            <p>Level 1 · Unit 1 · Lesson 1 — Greetings</p>
+            <button type="button" class="btn btn-primary" id="btn-go-class">Go to Class</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const profile = { goal: null, goalLabel: "", age: "", level: "", time: "" };
+
+    const VALUE_SLIDES = [
+      { icon: "🦖", title: "Your AI teacher, always ready", desc: "Live class—not a recording" },
+      { icon: "🎤", title: "Speak in class—not just watch", desc: "Questions, mic, instant feedback" },
+      { icon: "📊", title: "See progress after every lesson", desc: "Reports & clear lesson path" },
+    ];
+    let carouselIdx = 0;
+    setInterval(() => {
+      carouselIdx = (carouselIdx + 1) % 3;
+      const s = VALUE_SLIDES[carouselIdx];
+      $("#value-icon").textContent = s.icon;
+      $("#value-title").textContent = s.title;
+      $("#value-desc").textContent = s.desc;
+      $("#carousel-dots").querySelectorAll("span").forEach((el, i) => {
+        el.classList.toggle("on", i === carouselIdx);
+      });
+    }, 3200);
+
+    const GOALS = [
+      { key: "speak_confidence", label: "Speak more confidently" },
+      { key: "structured_progress", label: "Follow a clear learning path" },
+      { key: "school_exam", label: "Keep up with school / tests" },
+      { key: "daily_communication", label: "Use English in daily life" },
+      { key: "listening_habit", label: "Build listening habit" },
+    ];
+    const VALUE_PAGES = {
+      speak_confidence: {
+        h1: "We'll help you speak—not just listen",
+        h2: "Your AI teacher asks questions and waits for your answer.",
+        mock: "🎤 Speak in class",
+        bullets: ["Practice speaking every lesson", "Get instant feedback", "Build confidence step by step"],
+      },
+      structured_progress: {
+        h1: "A clear path from Lesson 1 onward",
+        h2: "Level by level, with progress you can see.",
+        mock: "📚 Level · Unit · Lesson",
+        bullets: ["Structured curriculum", "Recommended next lesson", "Reports after class"],
+      },
+      school_exam: {
+        h1: "Lessons that fit school expectations",
+        h2: "Practice speaking and key skills in each unit.",
+        mock: "📝 Skills + report",
+        bullets: ["Align with learning goals", "Track completion", "Review anytime"],
+      },
+      daily_communication: {
+        h1: "English you'll actually use",
+        h2: "Role-play and dialogue in every class.",
+        mock: "💬 Real-life dialogue",
+        bullets: ["Real-life topics", "Speak in class", "Short practice after class"],
+      },
+      listening_habit: {
+        h1: "Listening helps—but speaking locks it in",
+        h2: "We'll start with a short interactive class; use Listen anytime after.",
+        mock: "🎧 + 🎤 Class first",
+        bullets: ["Start with a live lesson", "Add listening on your schedule", "One app, two habits"],
+      },
+    };
+    const LOGIN_COPY = {
+      speak_confidence: "Save your plan and start speaking in class",
+      structured_progress: "Save your learning path and start Lesson 1",
+      school_exam: "Save your plan and start your first lesson",
+      daily_communication: "Save your plan and start your first lesson",
+      listening_habit: "Save your plan and start your first class",
+      default: "Save your plan and continue",
+    };
+
+    const AGES = ["3–5", "6–8", "9–12", "13–17", "18+"];
+    const LEVELS = [
+      "I'm just starting",
+      "I know some words",
+      "I can have simple conversations",
+      "I'm intermediate or above",
+    ];
+    const TIMES = ["5 min", "10 min", "15 min", "20+ min"];
+
+    function showPortraitScreen(id) {
+      $$("#device-portrait .screen").forEach((el) => {
+        el.classList.toggle("active", el.id === id);
+      });
+    }
+
+    function renderOptions(container, items, onPick) {
+      container.innerHTML = items
+        .map(
+          (item) =>
+            `<button type="button" class="option-btn" data-val="${typeof item === "string" ? item : item.key}">${
+              typeof item === "string" ? item : item.label
+            }</button>`
+        )
+        .join("");
+      container.querySelectorAll(".option-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          container.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          onPick(btn.dataset.val, btn.textContent.trim());
+        });
+      });
+    }
+
+    function showToast(msg, then) {
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => {
+        t.classList.remove("show");
+        if (then) then();
+      }, 1200);
+    }
+
+    function fillValuePage() {
+      const v = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
+      $("#value-chosen").textContent = `You chose: ${profile.goalLabel}`;
+      $("#value-h1").textContent = v.h1;
+      $("#value-h2").textContent = v.h2;
+      $("#value-mock").textContent = v.mock;
+      $("#value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
+    }
+
+    function fillLogin() {
+      $("#login-dynamic").textContent = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
+      const chips = [];
+      if (profile.goalLabel) chips.push(`Goal: ${profile.goalLabel}`);
+      if (profile.age) chips.push(`Age: ${profile.age}`);
+      $("#login-chips").innerHTML = chips.map((c) => `<span class="chip">${c}</span>`).join("");
+    }
+
+    function enterLandscape() {
+      $("#wrap-portrait").style.display = "none";
+      $("#wrap-landscape").style.display = "block";
+      const hint = $("#rotate-hint");
+      hint.classList.add("show");
+      setTimeout(() => hint.classList.remove("show"), 1800);
+    }
+
+    function showLandScreen(id) {
+      $$("#device-landscape .screen").forEach((el) => {
+        el.classList.toggle("active", el.id === id);
+      });
+    }
+
+    $("#btn-get-started").addEventListener("click", () => showPortraitScreen("screen-purpose"));
+    $("#btn-has-account-welcome").addEventListener("click", () => {
+      showPortraitScreen("screen-login");
+      fillLogin();
+    });
+
+    $('[data-next="goal"]').addEventListener("click", () => showPortraitScreen("screen-goal"));
+
+    renderOptions($("#goal-options"), GOALS, (key, label) => {
+      profile.goal = key;
+      profile.goalLabel = label;
+      fillValuePage();
+      setTimeout(() => showPortraitScreen("screen-value"), 280);
+    });
+
+    $('[data-next="age"]').addEventListener("click", () => showPortraitScreen("screen-age"));
+
+    renderOptions($("#age-options"), AGES, (val) => {
+      profile.age = val;
+      showToast(`Got it—we'll match courses for ages ${val}.`, () => showPortraitScreen("screen-level"));
+    });
+
+    renderOptions($("#level-options"), LEVELS, (val) => {
+      profile.level = val;
+      showToast("We'll start where you're comfortable—no pressure.", () => showPortraitScreen("screen-time"));
+    });
+
+    renderOptions($("#time-options"), TIMES, (val) => {
+      profile.time = val;
+      const n = val.replace(/\D/g, "") || "10";
+      showToast(`A ${n}-minute daily goal works great.`, () => {
+        fillLogin();
+        showPortraitScreen("screen-login");
+      });
+    });
+
+    function onLoginSuccess() {
+      enterLandscape();
+      showLandScreen("screen-teacher");
+    }
+    $("#btn-login-apple").addEventListener("click", onLoginSuccess);
+    $("#btn-login-google").addEventListener("click", onLoginSuccess);
+
+    $("#btn-confirm-teacher").addEventListener("click", () => showLandScreen("screen-class"));
+    $("#btn-go-class").addEventListener("click", () => {
+      alert("Demo: would open classroom (landscape). See PRD §9.8.");
+    });
+  </script>
+</body>
+</html>
