@@ -1,1037 +1,164 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>课程继续学习用户数与留资模块分析</title>
+  <title>李双 — 个人主页</title>
+  <meta name="description" content="李双的个人主页" />
   <style>
     :root {
-      --ink: #172033;
-      --muted: #667085;
-      --faint: #8b95a7;
-      --paper: #fbf7ef;
-      --panel: rgba(255, 255, 255, 0.76);
-      --panel-solid: #fffdf8;
-      --line: rgba(23, 32, 51, 0.13);
-      --blue: #2257c9;
-      --blue-ink: #143579;
-      --amber: #c47a16;
-      --green: #16886f;
-      --red: #b8332f;
-      --lavender: #7261cc;
-      --shadow: 0 24px 70px rgba(31, 42, 68, 0.14);
-      --radius-xl: 30px;
-      --radius-lg: 22px;
-      --radius-md: 16px;
+      --bg0: #0f172a;
+      --bg1: #1e1b4b;
+      --accent: #38bdf8;
+      --accent2: #a78bfa;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --card: rgba(15, 23, 42, 0.55);
+      --border: rgba(148, 163, 184, 0.2);
+      --radius: 18px;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
     }
-
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       min-height: 100vh;
-      color: var(--ink);
-      font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
-      line-height: 1.55;
+      font-family: var(--font);
+      color: var(--text);
+      line-height: 1.65;
       background:
-        radial-gradient(circle at 8% 8%, rgba(34, 87, 201, 0.16), transparent 27rem),
-        radial-gradient(circle at 88% 0%, rgba(196, 122, 22, 0.18), transparent 25rem),
-        linear-gradient(135deg, #f7efe2 0%, #f8faf9 52%, #eef4ff 100%);
+        radial-gradient(ellipse 100% 80% at 50% -30%, rgba(56, 189, 248, 0.22), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 100% 50%, rgba(167, 139, 250, 0.12), transparent),
+        radial-gradient(ellipse 60% 40% at 0% 80%, rgba(34, 211, 238, 0.08), transparent),
+        linear-gradient(165deg, var(--bg0) 0%, var(--bg1) 45%, #0f172a 100%);
+      background-attachment: fixed;
     }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.24;
-      background-image:
-        linear-gradient(rgba(23, 32, 51, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(23, 32, 51, 0.045) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: linear-gradient(to bottom, #000, transparent 78%);
-    }
-
-    main {
-      position: relative;
-      z-index: 1;
-      max-width: 1280px;
+    .wrap {
+      max-width: 38rem;
       margin: 0 auto;
-      padding: 34px 28px 64px;
+      padding: clamp(2.5rem, 8vw, 4rem) 1.35rem 4rem;
     }
-
-    p, h1, h2, h3 { margin: 0; }
-
-    .shell {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 24px;
-      align-items: start;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 22px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(255, 253, 248, 0.7);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 14px 44px rgba(31, 42, 68, 0.08);
-    }
-
-    .brand {
-      display: grid;
-      gap: 2px;
-      padding-bottom: 16px;
-      margin-bottom: 16px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .brand strong {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 20px;
-      letter-spacing: -0.02em;
-    }
-
-    .brand span,
-    .nav a,
-    .eyebrow,
-    .caption,
-    .small {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .nav {
-      display: grid;
-      gap: 8px;
-    }
-
-    .nav a {
-      display: block;
-      padding: 9px 11px;
-      border-radius: 999px;
-      text-decoration: none;
-      color: var(--ink);
-      background: transparent;
-      transition: background 160ms ease, transform 160ms ease;
-    }
-
-    .nav a:hover {
-      background: rgba(34, 87, 201, 0.09);
-      transform: translateX(3px);
-    }
-
-    .content {
-      display: grid;
-      gap: 28px;
-    }
-
-    .hero {
-      overflow: hidden;
-      position: relative;
-      padding: 34px;
-      border: 1px solid rgba(23, 32, 51, 0.11);
-      border-radius: 36px;
-      background:
-        linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(240, 245, 255, 0.84)),
-        var(--panel-solid);
-      box-shadow: var(--shadow);
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      width: 360px;
-      height: 360px;
-      right: -120px;
-      top: -130px;
-      border-radius: 50%;
-      background:
-        radial-gradient(circle, rgba(34, 87, 201, 0.24), transparent 60%),
-        radial-gradient(circle at 36% 64%, rgba(196, 122, 22, 0.28), transparent 42%);
-      filter: blur(2px);
-    }
-
-    .hero-grid {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
-      gap: 30px;
-      align-items: end;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      width: fit-content;
-      gap: 8px;
-      align-items: center;
-      padding: 7px 11px;
-      margin-bottom: 18px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    h1 {
-      max-width: 780px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(34px, 6vw, 66px);
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-      font-weight: 650;
-    }
-
-    .subtitle {
-      max-width: 760px;
-      margin-top: 20px;
-      color: #4f5b70;
-      font-size: 17px;
-    }
-
-    .hero-note {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(255, 255, 255, 0.6);
-    }
-
-    .hero-note strong {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 13px;
-      letter-spacing: 0.02em;
-    }
-
-    .section {
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-xl);
-      background: var(--panel);
-      box-shadow: 0 20px 60px rgba(31, 42, 68, 0.09);
-      backdrop-filter: blur(22px);
-    }
-
-    .section-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
-      align-items: end;
-      margin-bottom: 22px;
-    }
-
-    h2 {
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 30px;
-      letter-spacing: -0.035em;
-      line-height: 1.08;
-    }
-
-    h3 {
-      font-size: 15px;
-      letter-spacing: -0.01em;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 7px 11px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--muted);
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.54);
-      white-space: nowrap;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-      margin-bottom: 22px;
-    }
-
-    .metric {
-      position: relative;
-      min-height: 136px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(255, 255, 255, 0.62);
-      overflow: hidden;
-    }
-
-    .metric::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 4px;
-      background: var(--blue);
-      opacity: 0.8;
-    }
-
-    .metric.amber::before { background: var(--amber); }
-    .metric.green::before { background: var(--green); }
-    .metric.red::before { background: var(--red); }
-    .metric.lavender::before { background: var(--lavender); }
-
-    .metric .value {
-      display: block;
-      margin-bottom: 6px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 36px;
-      line-height: 1;
-      letter-spacing: -0.045em;
-      font-weight: 700;
-    }
-
-    .metric .label {
-      display: block;
-      color: var(--ink);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .metric .note {
-      display: block;
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .card {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: rgba(255, 255, 255, 0.64);
-    }
-
-    .card.tint {
-      background:
-        linear-gradient(135deg, rgba(34, 87, 201, 0.08), rgba(255, 255, 255, 0.68)),
-        rgba(255, 255, 255, 0.58);
-    }
-
-    .chart-wrap {
-      width: 100%;
-      overflow: hidden;
-      margin-top: 12px;
-    }
-
-    svg {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .legend {
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .legend span {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: var(--blue);
-    }
-
-    .dot.blue { background: var(--blue); }
-    .dot.amber { background: var(--amber); }
-    .dot.green { background: var(--green); }
-    .dot.red { background: var(--red); }
-
-    .insights {
-      display: grid;
-      gap: 12px;
-    }
-
-    .insight {
-      padding: 14px 15px;
-      border-left: 4px solid var(--blue);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.54);
-    }
-
-    .insight.green { border-color: var(--green); }
-    .insight.amber { border-color: var(--amber); }
-    .insight.red { border-color: var(--red); }
-
-    .insight strong {
-      display: block;
-      margin-bottom: 3px;
-      font-size: 13px;
-    }
-
-    .insight p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.62);
-      font-size: 13px;
-    }
-
-    th, td {
-      padding: 13px 14px;
-      border-bottom: 1px solid rgba(23, 32, 51, 0.09);
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    th:first-child, td:first-child { text-align: left; }
-    tr:last-child td { border-bottom: 0; }
-
-    th {
-      color: #536178;
-      font-size: 12px;
-      font-weight: 800;
-      background: rgba(247, 239, 226, 0.72);
-    }
-
-    tbody tr:nth-child(even) td { background: rgba(255, 255, 255, 0.36); }
-
-    .rank {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 800;
-    }
-
-    .badge {
-      display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 24px;
-      height: 24px;
-      padding: 0 7px;
-      border-radius: 999px;
-      color: white;
-      background: var(--blue);
-      font-size: 11px;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 12px 40px rgba(56, 189, 248, 0.25);
     }
-
-    .badge.green { background: var(--green); }
-    .badge.amber { background: var(--amber); }
-    .badge.red { background: var(--red); }
-
-    .axis, .gridline {
-      stroke: rgba(23, 32, 51, 0.12);
-      stroke-width: 1;
+    h1 {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0 0 0.35rem;
+      background: linear-gradient(120deg, #fff 0%, #e2e8f0 50%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-
-    .axis-label, .tick {
-      fill: var(--muted);
-      font-size: 11px;
-      font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+    @supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+      h1 { color: #f8fafc; }
     }
-
-    .source {
-      margin-top: 18px;
-      color: var(--faint);
-      font-size: 12px;
+    .tagline {
+      margin: 0 0 2rem;
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 500;
     }
-
-    .takeaway {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+    .card {
+      background: var(--card);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.6rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
     }
-
-    .takeaway .card {
-      min-height: 150px;
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
     }
-
+    .card p {
+      margin: 0 0 0.85rem;
+      color: #e2e8f0;
+      font-size: 0.98rem;
+    }
+    .card p:last-child { margin-bottom: 0; }
+    a.link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    a.link:hover {
+      color: #7dd3fc;
+      border-bottom-color: rgba(125, 211, 252, 0.5);
+    }
     footer {
-      padding: 20px 2px 0;
-      color: var(--faint);
-      font-size: 12px;
+      margin-top: 2.5rem;
+      font-size: 0.8rem;
+      color: var(--muted);
     }
-
-    @media (max-width: 1040px) {
-      .shell { grid-template-columns: 1fr; }
-      .sidebar { position: relative; top: 0; }
-      .nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .hero-grid, .split { grid-template-columns: 1fr; }
-      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-
-    @media (max-width: 680px) {
-      main { padding: 18px 14px 40px; }
-      .hero, .section { padding: 20px; border-radius: 24px; }
-      .nav { grid-template-columns: 1fr 1fr; }
-      .metric-grid, .takeaway { grid-template-columns: 1fr; }
-      .section-head { grid-template-columns: 1fr; }
-      table { display: block; overflow-x: auto; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 <body>
-  <main>
-    <div class="shell">
-      <aside class="sidebar">
-        <div class="brand">
-          <strong>DINO Insight</strong>
-          <span>课程与留资模块分析</span>
-        </div>
-        <nav class="nav">
-          <a href="#overview">总览</a>
-          <a href="#continue">继续学习用户数</a>
-          <a href="#retention">模块留存</a>
-          <a href="#payment">支付转化</a>
-          <a href="#takeaway">综合判断</a>
-        </nav>
-      </aside>
+  <div class="wrap">
+    <div class="avatar" aria-hidden="true">李</div>
+    <h1>李双</h1>
+    <p class="tagline">产品 · 数据与体验度量 · 内部工具与文档</p>
 
-      <div class="content">
-        <header class="hero" id="overview">
-          <div class="hero-grid">
-            <div>
-              <div class="eyebrow">Sensors Analytics Export · Product Decision</div>
-              <h1>课程继续学习用户数与留资模块表现分析</h1>
-              <p class="subtitle">用神策导出的事件、留存和漏斗数据，判断「重新开始课程」需求的影响面，以及留资页不同模块对留存和支付的拉动效果。</p>
-            </div>
-            <div class="hero-note">
-              <strong>数据周期</strong>
-              <p class="small">继续学习与留存：2026-04-19 至 2026-05-18</p>
-              <p class="small">支付漏斗：2026-04-01 至 2026-04-30</p>
-            </div>
-          </div>
-        </header>
+    <section class="card" aria-labelledby="sec-about">
+      <h2 id="sec-about">关于我</h2>
+      <p>
+        你好，我是李双。我关注<strong>产品分析、用户行为数据与体验优化</strong>，平时会整理面向业务与协作方的操作说明、指标口径与页面映射，帮助团队把数据工具用好。
+      </p>
+      <p>
+        如果你对 UXCam、埋点命名或数据看板使用有疑问，欢迎通过下方 GitHub 联系我（建议先发 Issue 或站内说明来意）。
+      </p>
+    </section>
 
-        <section class="section" id="continue">
-          <div class="section-head">
-            <div>
-              <span class="pill">问题 1 · 是否需要重新开始课程</span>
-              <h2>继续学习用户数占比偏低，先不建议直接上强入口</h2>
-            </div>
-            <span class="pill">当前口径：按天用户数聚合相减</span>
-          </div>
+    <section class="card" aria-labelledby="sec-projects">
+      <h2 id="sec-projects">项目与 Demo</h2>
+      <p>
+        <a class="link" href="dino-english/">Dino English — MVP UI Demo</a>
+        <span style="color: var(--muted); font-size: 0.9rem;"> · 横屏 · FM / Words / 我的</span>
+      </p>
+      <p style="margin-bottom: 0;">
+        <a class="link" href="uxcam-product-analytics-tutorial.html">UXCam 产品分析教程</a>
+      </p>
+    </section>
 
-          <div class="metric-grid">
-            <div class="metric">
-              <span class="value">2,385</span>
-              <span class="label">进入课程每日用户数加总</span>
-              <span class="note">不是 30 天月去重用户数</span>
-            </div>
-            <div class="metric green">
-              <span class="value">2,324</span>
-              <span class="label">开始学习每日用户数加总</span>
-              <span class="note">同一用户多天出现会重复计入</span>
-            </div>
-            <div class="metric amber">
-              <span class="value">61</span>
-              <span class="label">继续学习用户数差值</span>
-              <span class="note">进入课程 - 开始学习</span>
-            </div>
-            <div class="metric red">
-              <span class="value">2.6%</span>
-              <span class="label">继续学习用户数占比</span>
-              <span class="note">61 / 2,385</span>
-            </div>
-          </div>
+    <section class="card" aria-labelledby="sec-find">
+      <h2 id="sec-find">在哪里找到我</h2>
+      <p style="margin-bottom: 0;">
+        <a class="link" href="https://github.com/cyanlee888" target="_blank" rel="noopener noreferrer">
+          GitHub — @cyanlee888
+        </a>
+      </p>
+    </section>
 
-          <div class="split">
-            <div class="card tint">
-              <h3>占比视图</h3>
-              <div id="continuePieChart" class="chart-wrap" aria-label="继续学习用户数占比圆环图"></div>
-              <div class="legend">
-                <span><i class="dot amber"></i>继续学习用户数差值：61</span>
-                <span><i class="dot blue"></i>其他进入课程用户数：2,324</span>
-              </div>
-            </div>
-            <div class="insights">
-              <div class="insight green">
-                <strong>当前判断</strong>
-                <p>从聚合用户数看，继续学习用户数占比仅 2.6%，需求影响面暂时偏小。</p>
-              </div>
-              <div class="insight amber">
-                <strong>口径备注</strong>
-                <p>部分日期开始学习用户数高于进入课程用户数，因此聚合相减只适合作方向参考。</p>
-              </div>
-              <div class="insight">
-                <strong>下一步</strong>
-                <p>需要用户级 SQL 排除同一时间触发的开始学习事件，得到真正继续学习用户数。</p>
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top: 18px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>阶段</th>
-                  <th>天数</th>
-                  <th>进入课程每日用户数加总</th>
-                  <th>开始学习每日用户数加总</th>
-                  <th>每日用户数差值</th>
-                  <th>差值占比</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>4/19-5/7</td>
-                  <td>19</td>
-                  <td>597</td>
-                  <td>498</td>
-                  <td>99</td>
-                  <td>16.6%</td>
-                </tr>
-                <tr>
-                  <td>5/8-5/18</td>
-                  <td>11</td>
-                  <td>1,788</td>
-                  <td>1,826</td>
-                  <td>-38</td>
-                  <td>-2.1%</td>
-                </tr>
-                <tr>
-                  <td>全部周期</td>
-                  <td>30</td>
-                  <td>2,385</td>
-                  <td>2,324</td>
-                  <td>61</td>
-                  <td>2.6%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="source">说明：当前没有课程 ID，也没有用户级明细，不能确认用户是否回到同一门课程继续学习。</p>
-        </section>
-
-        <section class="section" id="retention">
-          <div class="section-head">
-            <div>
-              <span class="pill">问题 2 · 留资模块长期质量</span>
-              <h2>DINO 拉动短期留存，课程模块 D7 表现最好</h2>
-            </div>
-            <span class="pill">留存口径：cohort 人数加权</span>
-          </div>
-
-          <div class="metric-grid">
-            <div class="metric">
-              <span class="value">DINO</span>
-              <span class="label">D1 留存最高</span>
-              <span class="note">17.58%，高于整体 4.04 个百分点</span>
-            </div>
-            <div class="metric green">
-              <span class="value">课程</span>
-              <span class="label">D7 留存最高</span>
-              <span class="note">3.40%，但样本较小</span>
-            </div>
-            <div class="metric lavender">
-              <span class="value">FM</span>
-              <span class="label">初始人数最大</span>
-              <span class="note">11,701，占整体约 69.0%</span>
-            </div>
-            <div class="metric amber">
-              <span class="value">2.27%</span>
-              <span class="label">整体 D7 留存</span>
-              <span class="note">作为长期留存基准</span>
-            </div>
-          </div>
-
-          <div class="split">
-            <div class="card">
-              <h3>不同模块 D1 与 D7 留存率</h3>
-              <div id="retentionBarChart" class="chart-wrap" aria-label="不同模块留存率柱状图"></div>
-              <div class="legend">
-                <span><i class="dot blue"></i>D1 留存率</span>
-                <span><i class="dot amber"></i>D7 留存率</span>
-              </div>
-            </div>
-            <div class="insights">
-              <div class="insight green">
-                <strong>DINO</strong>
-                <p>短期回访最强，说明 DINO 更容易触发首次兴趣或即时价值感。</p>
-              </div>
-              <div class="insight amber">
-                <strong>课程</strong>
-                <p>D7 留存最高，但初始人数加总仅 706，适合继续扩大样本验证。</p>
-              </div>
-              <div class="insight red">
-                <strong>FM</strong>
-                <p>覆盖人数最大，但 D1 和 D7 均低于整体，更像流量型入口。</p>
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top: 18px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>模块</th>
-                  <th>初始人数加总</th>
-                  <th>平均每日初始人数</th>
-                  <th>D1 留存</th>
-                  <th>D2 留存</th>
-                  <th>D3 留存</th>
-                  <th>D7 留存</th>
-                  <th>D1 留存人数</th>
-                  <th>D7 留存人数</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>全部</td>
-                  <td>16,966</td>
-                  <td>565.5</td>
-                  <td>13.54%</td>
-                  <td>7.34%</td>
-                  <td>5.19%</td>
-                  <td>2.27%</td>
-                  <td>2,297</td>
-                  <td>385</td>
-                </tr>
-                <tr>
-                  <td><span class="rank"><span class="badge green">D1</span>DINO</span></td>
-                  <td>2,127</td>
-                  <td>70.9</td>
-                  <td>17.58%</td>
-                  <td>8.27%</td>
-                  <td>6.11%</td>
-                  <td>2.63%</td>
-                  <td>374</td>
-                  <td>56</td>
-                </tr>
-                <tr>
-                  <td><span class="rank"><span class="badge amber">D7</span>课程</span></td>
-                  <td>706</td>
-                  <td>28.2</td>
-                  <td>15.30%</td>
-                  <td>8.92%</td>
-                  <td>5.38%</td>
-                  <td>3.40%</td>
-                  <td>108</td>
-                  <td>24</td>
-                </tr>
-                <tr>
-                  <td>Words</td>
-                  <td>2,497</td>
-                  <td>83.2</td>
-                  <td>14.78%</td>
-                  <td>8.05%</td>
-                  <td>5.09%</td>
-                  <td>2.44%</td>
-                  <td>369</td>
-                  <td>61</td>
-                </tr>
-                <tr>
-                  <td>FM</td>
-                  <td>11,701</td>
-                  <td>390.0</td>
-                  <td>12.39%</td>
-                  <td>6.94%</td>
-                  <td>5.03%</td>
-                  <td>2.09%</td>
-                  <td>1,450</td>
-                  <td>244</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="section" id="payment">
-          <div class="section-head">
-            <div>
-              <span class="pill">支付漏斗 · 模块点击到支付触发</span>
-              <h2>Words 支付效率最高，FM 贡献规模但效率偏低</h2>
-            </div>
-            <span class="pill">整体支付转化率 0.25%</span>
-          </div>
-
-          <div class="metric-grid">
-            <div class="metric">
-              <span class="value">Words</span>
-              <span class="label">支付转化率最高</span>
-              <span class="note">0.79%，约为整体 3.2 倍</span>
-            </div>
-            <div class="metric green">
-              <span class="value">课程</span>
-              <span class="label">支付转化率第二</span>
-              <span class="note">0.56%，同时 D7 留存最高</span>
-            </div>
-            <div class="metric lavender">
-              <span class="value">FM</span>
-              <span class="label">支付人数最多</span>
-              <span class="note">12 人支付，转化率 0.13%</span>
-            </div>
-            <div class="metric amber">
-              <span class="value">36</span>
-              <span class="label">整体支付用户数</span>
-              <span class="note">样本偏小，需谨慎下结论</span>
-            </div>
-          </div>
-
-          <div class="split">
-            <div class="card">
-              <h3>不同模块支付转化率</h3>
-              <div id="paymentBarChart" class="chart-wrap" aria-label="不同模块支付转化率柱状图"></div>
-              <div class="legend">
-                <span><i class="dot blue"></i>支付转化率</span>
-                <span><i class="dot amber"></i>整体基准 0.25%</span>
-              </div>
-            </div>
-            <div class="insights">
-              <div class="insight green">
-                <strong>Words</strong>
-                <p>1,398 个入口用户贡献 11 个支付用户，支付效率明显领先。</p>
-              </div>
-              <div class="insight amber">
-                <strong>课程</strong>
-                <p>支付效率和长期留存同时较好，可能更接近高意向入口。</p>
-              </div>
-              <div class="insight red">
-                <strong>FM</strong>
-                <p>入口规模占比 65.2%，但支付转化率只有 0.13%，后续付费承接空间更大。</p>
-              </div>
-            </div>
-          </div>
-
-          <div style="margin-top: 18px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>模块</th>
-                  <th>入口用户数</th>
-                  <th>支付用户数</th>
-                  <th>支付转化率</th>
-                  <th>相对整体</th>
-                  <th>入口用户占比</th>
-                  <th>支付用户占比</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>全部</td>
-                  <td>14,633</td>
-                  <td>36</td>
-                  <td>0.25%</td>
-                  <td>基准</td>
-                  <td>100.0%</td>
-                  <td>100.0%</td>
-                </tr>
-                <tr>
-                  <td><span class="rank"><span class="badge">TOP</span>Words</span></td>
-                  <td>1,398</td>
-                  <td>11</td>
-                  <td>0.79%</td>
-                  <td>3.16x</td>
-                  <td>9.6%</td>
-                  <td>30.6%</td>
-                </tr>
-                <tr>
-                  <td><span class="rank"><span class="badge green">2</span>课程</span></td>
-                  <td>1,606</td>
-                  <td>9</td>
-                  <td>0.56%</td>
-                  <td>2.24x</td>
-                  <td>11.0%</td>
-                  <td>25.0%</td>
-                </tr>
-                <tr>
-                  <td>DINO</td>
-                  <td>2,135</td>
-                  <td>4</td>
-                  <td>0.19%</td>
-                  <td>0.76x</td>
-                  <td>14.6%</td>
-                  <td>11.1%</td>
-                </tr>
-                <tr>
-                  <td>FM</td>
-                  <td>9,545</td>
-                  <td>12</td>
-                  <td>0.13%</td>
-                  <td>0.52x</td>
-                  <td>65.2%</td>
-                  <td>33.3%</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="source">说明：入口用户数为漏斗第 1 步 page_click_viptrack 用户数；支付用户数为第 2 步 page_trigger_viptrack 用户数。</p>
-        </section>
-
-        <section class="section" id="takeaway">
-          <div class="section-head">
-            <div>
-              <span class="pill">Product Readout</span>
-              <h2>综合判断</h2>
-            </div>
-          </div>
-
-          <div class="takeaway">
-            <div class="card tint">
-              <h3>关于「重新开始课程」</h3>
-              <p class="subtitle" style="font-size: 15px; margin-top: 10px;">当前继续学习用户数占比只有 2.6%，且口径仍是聚合估算。建议先用用户级 SQL 复核真实用户规模，再决定是否做明显按钮；短期可考虑轻量入口或复习提醒。</p>
-            </div>
-            <div class="card tint">
-              <h3>关于留资模块优先级</h3>
-              <p class="subtitle" style="font-size: 15px; margin-top: 10px;">Words 支付效率最好，课程兼具支付和 D7 留存，DINO 更偏短期兴趣，FM 是流量入口但效率偏低。优先优化 Words / 课程承接，同时改善 FM 后续付费引导。</p>
-            </div>
-          </div>
-        </section>
-
-        <footer>
-          数据来源：神策事件分析、留存分析与漏斗分析导出文件。页面中的聚合人数不等同于全周期去重人数；支付转化人数样本较小，建议结合更长周期和订单金额复核。
-        </footer>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    function renderContinuePieChart() {
-      const total = 2385;
-      const continueUsers = 61;
-      const otherUsers = total - continueUsers;
-      const radius = 92;
-      const circumference = 2 * Math.PI * radius;
-      const continueDash = (continueUsers / total) * circumference;
-      const otherDash = circumference - continueDash;
-
-      const svg = `
-        <svg viewBox="0 0 640 300" role="img">
-          <circle cx="170" cy="150" r="${radius}" fill="none" stroke="rgba(34, 87, 201, 0.12)" stroke-width="34"></circle>
-          <circle cx="170" cy="150" r="${radius}" fill="none" stroke="var(--amber)" stroke-width="34" stroke-linecap="round" stroke-dasharray="${continueDash} ${otherDash}" transform="rotate(-90 170 150)"></circle>
-          <text x="170" y="140" text-anchor="middle" fill="var(--ink)" font-size="48" font-family="Georgia" font-weight="700">2.6%</text>
-          <text x="170" y="172" text-anchor="middle" fill="var(--muted)" font-size="13">继续学习用户数占比</text>
-          <text x="350" y="110" fill="var(--muted)" font-size="13">继续学习用户数差值</text>
-          <text x="350" y="150" fill="var(--ink)" font-size="42" font-family="Georgia" font-weight="700">61</text>
-          <text x="350" y="190" fill="var(--muted)" font-size="13">进入课程每日用户数加总</text>
-          <text x="350" y="228" fill="var(--ink)" font-size="42" font-family="Georgia" font-weight="700">2,385</text>
-        </svg>
-      `;
-      document.getElementById("continuePieChart").innerHTML = svg;
-    }
-
-    const retentionRows = [
-      { module: "全部", d1: 13.54, d7: 2.27 },
-      { module: "Words", d1: 14.78, d7: 2.44 },
-      { module: "FM", d1: 12.39, d7: 2.09 },
-      { module: "DINO", d1: 17.58, d7: 2.63 },
-      { module: "课程", d1: 15.30, d7: 3.40 },
-    ];
-
-    function renderRetentionBarChart() {
-      const width = 920;
-      const height = 340;
-      const margin = { top: 28, right: 20, bottom: 60, left: 54 };
-      const innerW = width - margin.left - margin.right;
-      const innerH = height - margin.top - margin.bottom;
-      const maxY = 20;
-      const groupW = innerW / retentionRows.length;
-      const barW = 30;
-      const y = value => margin.top + ((maxY - value) / maxY) * innerH;
-      const ticks = [0, 5, 10, 15, 20];
-
-      const svg = `
-        <svg viewBox="0 0 ${width} ${height}" role="img">
-          ${ticks.map(t => `
-            <line class="gridline" x1="${margin.left}" x2="${width - margin.right}" y1="${y(t)}" y2="${y(t)}"></line>
-            <text class="tick" x="${margin.left - 10}" y="${y(t) + 4}" text-anchor="end">${t}%</text>
-          `).join("")}
-          <line class="axis" x1="${margin.left}" x2="${width - margin.right}" y1="${height - margin.bottom}" y2="${height - margin.bottom}"></line>
-          ${retentionRows.map((d, i) => {
-            const cx = margin.left + i * groupW + groupW / 2;
-            const d1H = height - margin.bottom - y(d.d1);
-            const d7H = height - margin.bottom - y(d.d7);
-            return `
-              <rect x="${cx - barW - 4}" y="${y(d.d1)}" width="${barW}" height="${d1H}" rx="7" fill="var(--blue)"></rect>
-              <rect x="${cx + 4}" y="${y(d.d7)}" width="${barW}" height="${d7H}" rx="7" fill="var(--amber)"></rect>
-              <text class="tick" x="${cx - barW / 2 - 4}" y="${y(d.d1) - 7}" text-anchor="middle">${d.d1.toFixed(1)}%</text>
-              <text class="tick" x="${cx + barW / 2 + 4}" y="${y(d.d7) - 7}" text-anchor="middle">${d.d7.toFixed(1)}%</text>
-              <text class="tick" x="${cx}" y="${height - 30}" text-anchor="middle">${d.module}</text>
-            `;
-          }).join("")}
-          <text class="axis-label" x="${margin.left}" y="${height - 8}">模块</text>
-          <text class="axis-label" x="8" y="18">留存率</text>
-        </svg>
-      `;
-      document.getElementById("retentionBarChart").innerHTML = svg;
-    }
-
-    const paymentRows = [
-      { module: "全部", rate: 0.25 },
-      { module: "Words", rate: 0.79 },
-      { module: "课程", rate: 0.56 },
-      { module: "DINO", rate: 0.19 },
-      { module: "FM", rate: 0.13 },
-    ];
-
-    function renderPaymentBarChart() {
-      const width = 920;
-      const height = 340;
-      const margin = { top: 28, right: 20, bottom: 60, left: 58 };
-      const innerW = width - margin.left - margin.right;
-      const innerH = height - margin.top - margin.bottom;
-      const maxY = 0.9;
-      const groupW = innerW / paymentRows.length;
-      const barW = 52;
-      const y = value => margin.top + ((maxY - value) / maxY) * innerH;
-      const ticks = [0, 0.2, 0.4, 0.6, 0.8];
-      const baselineY = y(0.25);
-
-      const svg = `
-        <svg viewBox="0 0 ${width} ${height}" role="img">
-          ${ticks.map(t => `
-            <line class="gridline" x1="${margin.left}" x2="${width - margin.right}" y1="${y(t)}" y2="${y(t)}"></line>
-            <text class="tick" x="${margin.left - 10}" y="${y(t) + 4}" text-anchor="end">${t.toFixed(1)}%</text>
-          `).join("")}
-          <line class="axis" x1="${margin.left}" x2="${width - margin.right}" y1="${height - margin.bottom}" y2="${height - margin.bottom}"></line>
-          <line x1="${margin.left}" x2="${width - margin.right}" y1="${baselineY}" y2="${baselineY}" stroke="var(--amber)" stroke-width="1.6" stroke-dasharray="7 6"></line>
-          ${paymentRows.map((d, i) => {
-            const cx = margin.left + i * groupW + groupW / 2;
-            const barH = height - margin.bottom - y(d.rate);
-            return `
-              <rect x="${cx - barW / 2}" y="${y(d.rate)}" width="${barW}" height="${barH}" rx="8" fill="var(--blue)"></rect>
-              <text class="tick" x="${cx}" y="${y(d.rate) - 8}" text-anchor="middle">${d.rate.toFixed(2)}%</text>
-              <text class="tick" x="${cx}" y="${height - 30}" text-anchor="middle">${d.module}</text>
-            `;
-          }).join("")}
-          <text class="axis-label" x="${margin.left}" y="${height - 8}">模块</text>
-          <text class="axis-label" x="8" y="18">支付转化率</text>
-        </svg>
-      `;
-      document.getElementById("paymentBarChart").innerHTML = svg;
-    }
-
-    renderContinuePieChart();
-    renderRetentionBarChart();
-    renderPaymentBarChart();
-  </script>
+    <footer>
+      本页部署在 GitHub Pages；内容可自行在仓库 <code style="font-size:0.85em;opacity:0.85;">docs/index.html</code> 中编辑。
+    </footer>
+  </div>
 </body>
 </html>
