@@ -84,7 +84,23 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      min-height: 44px;
     }
+    .btn-back {
+      border: none;
+      background: transparent;
+      color: var(--forest-mid);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-back::before { content: "←"; font-size: 1.1rem; }
+    .top-bar .top-spacer { flex: 1; }
     .step-label {
       font-size: 0.72rem;
       font-weight: 600;
@@ -188,10 +204,14 @@
     .illo-slot svg { max-width: 100%; height: auto; }
     /* Welcome */
     .welcome-hero {
-      flex-shrink: 0;
+      flex: 1;
+      min-height: 52%;
+      max-height: 58%;
       background: var(--forest-mist);
-      padding: 8px 16px 0;
+      padding: 12px 16px 0;
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
     .welcome-hero::after {
       content: "";
@@ -200,19 +220,39 @@
       background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
     }
-    .carousel-frame { position: relative; min-height: 200px; }
+    .carousel-frame { position: relative; flex: 1; min-height: 240px; }
     .carousel-slide {
       position: absolute;
       inset: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
+      gap: 12px;
       opacity: 0;
       transition: opacity 0.6s var(--ease);
-      padding: 8px 0;
+      padding: 8px 12px;
     }
     .carousel-slide.on { opacity: 1; position: relative; }
+    .slide-visual {
+      flex: 1;
+      min-height: 140px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+    .slide-visual svg { width: 100%; max-height: 130px; }
+    .slide-text { text-align: center; padding: 0 8px; }
+    .slide-text h3 {
+      font-family: var(--display);
+      font-size: 1rem;
+      color: var(--forest-deep);
+      margin-bottom: 4px;
+    }
+    .slide-text p { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.45; }
     .carousel-dots {
       display: flex;
       gap: 6px;
@@ -232,8 +272,102 @@
       background: var(--forest-mid);
     }
     .welcome-copy {
-      padding: 18px 22px 4px;
+      padding: 28px 22px 8px;
+      margin-top: auto;
       text-align: center;
+      flex-shrink: 0;
+    }
+    .welcome-foot { flex-shrink: 0; }
+    /* Dino guide (Duolingo-style) */
+    .dino-guide {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 24px;
+      gap: 0;
+    }
+    .dino-wrap { width: 120px; margin-bottom: -8px; z-index: 2; }
+    .speech-bubble {
+      position: relative;
+      background: #fff;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 18px 20px;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(20,61,42,0.08);
+    }
+    .speech-bubble::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 10px solid transparent;
+      border-bottom-color: var(--border);
+    }
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-bottom-color: #fff;
+    }
+    .speech-bubble p {
+      font-size: 0.9375rem;
+      line-height: 1.55;
+      color: var(--ink);
+      text-align: center;
+    }
+    .speech-bubble strong { color: var(--forest-mid); }
+    /* Loading */
+    .loading-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .progress-ring {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 28px;
+    }
+    .progress-ring circle.track { stroke: #e8efe9; }
+    .progress-ring circle.fill {
+      stroke: var(--forest-mid);
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 0.15s linear;
+    }
+    .loading-status {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      color: var(--forest-deep);
+      margin-bottom: 8px;
+      min-height: 1.4em;
+    }
+    .loading-sub { font-size: 0.8125rem; color: var(--ink-muted); }
+    .age-value-hero {
+      background: linear-gradient(160deg, var(--forest-mist), #fff);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .age-value-hero .age-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--forest-mid);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 12px;
     }
     .logo {
       font-family: var(--display);
@@ -447,7 +581,7 @@
           <h1 class="title" style="font-size:1.12rem">Practice English with an AI teacher who listens.</h1>
           <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
         </div>
-        <div class="foot-actions">
+        <div class="foot-actions welcome-foot">
           <button type="button" class="btn btn-primary" id="btn-get-started">Get started</button>
           <button type="button" class="btn btn-text" id="btn-has-account-welcome">I already have an account</button>
         </div>
@@ -455,28 +589,26 @@
 
       <section class="screen" id="screen-purpose">
         <div class="top-bar">
-          <span class="step-label">Step 1 of 7</span>
-          <span class="live-pill" style="background:var(--forest-mid)">PERSONALIZE</span>
+          <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
+          <span class="top-spacer"></span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
-        <div class="scroll-body" style="text-align:center;padding-top:20px">
-          <div class="illo-slot" id="illo-purpose"></div>
-          <h1 class="title">Let's personalize your first lesson</h1>
-          <p class="sub">Answer a few quick questions so we can recommend the right course and teacher for you.</p>
-          <ul class="bullets" style="text-align:left;max-width:300px;margin:16px auto 0">
-            <li>Takes about 1 minute</li>
-            <li>No account needed yet</li>
-            <li>You can change answers later</li>
-          </ul>
+        <div class="scroll-body dino-guide">
+          <div class="dino-wrap" id="dino-purpose"></div>
+          <div class="speech-bubble">
+            <p><strong>Hi, I'm Dino!</strong> I'll ask a few quick questions, then build a <strong>personalized learning plan</strong> just for you—before you sign in.</p>
+          </div>
         </div>
         <div class="foot-actions">
-          <button type="button" class="btn btn-primary" data-next="goal">Continue</button>
+          <button type="button" class="btn btn-primary" id="btn-purpose-continue">Continue</button>
         </div>
       </section>
 
       <section class="screen" id="screen-goal">
-        <div class="top-bar"><span class="step-label">Step 2 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-purpose">Back</button>
+          <span class="step-label" data-step-label>Step 1 of 4</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:25%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What's your main goal right now?</h1>
           <p class="hint">We'll recommend your first lesson based on this.</p>
@@ -485,8 +617,10 @@
       </section>
 
       <section class="screen" id="screen-value">
-        <div class="top-bar"><span class="step-label">Step 3 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:42%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
+          <span class="top-spacer"></span>
+        </div>
         <div class="scroll-body">
           <span class="chosen-tag" id="value-chosen"></span>
           <h1 class="title" id="value-h1"></h1>
@@ -497,24 +631,47 @@
           </div>
         </div>
         <div class="foot-actions">
-          <button type="button" class="btn btn-primary" data-next="age">Continue</button>
+          <button type="button" class="btn btn-primary" id="btn-value-continue">Continue</button>
         </div>
       </section>
 
       <section class="screen" id="screen-age">
-        <div class="top-bar"><span class="step-label">Step 4 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-value">Back</button>
+          <span class="step-label" data-step-label>Step 2 of 4</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:50%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Which age group fits you best?</h1>
           <p class="hint">This helps us match the right course level.</p>
           <div class="option-list" id="age-options"></div>
         </div>
-        <div class="toast-feedback" id="toast"></div>
+      </section>
+
+      <section class="screen" id="screen-age-value">
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-age">Back</button>
+          <span class="top-spacer"></span>
+        </div>
+        <div class="scroll-body">
+          <div class="age-value-hero">
+            <span class="age-badge" id="age-badge">Ages 9–12</span>
+            <h1 class="title" id="age-value-h1" style="font-size:1.1rem"></h1>
+            <p class="sub" id="age-value-h2"></p>
+          </div>
+          <ul class="bullets" id="age-value-bullets"></ul>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-age-value-continue">Continue</button>
+        </div>
       </section>
 
       <section class="screen" id="screen-level">
-        <div class="top-bar"><span class="step-label">Step 5 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-age-value">Back</button>
+          <span class="step-label" data-step-label>Step 3 of 4</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:75%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How much English do you know today?</h1>
           <p class="hint">We'll pick a comfortable starting point.</p>
@@ -523,8 +680,11 @@
       </section>
 
       <section class="screen" id="screen-time">
-        <div class="top-bar"><span class="step-label">Step 6 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-level">Back</button>
+          <span class="step-label" data-step-label>Step 4 of 4</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:100%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How much time can you study most days?</h1>
           <p class="hint">We'll help you build a habit that fits.</p>
@@ -532,9 +692,27 @@
         </div>
       </section>
 
+      <section class="screen" id="screen-loading">
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-time">Back</button>
+          <span class="top-spacer"></span>
+        </div>
+        <div class="loading-body">
+          <svg class="progress-ring" viewBox="0 0 88 88" aria-hidden="true">
+            <circle class="track" cx="44" cy="44" r="36" fill="none" stroke-width="8"/>
+            <circle class="fill" id="loading-ring" cx="44" cy="44" r="36" fill="none" stroke-width="8"
+              stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+          </svg>
+          <p class="loading-status" id="loading-status">Creating your plan…</p>
+          <p class="loading-sub">This usually takes a few seconds</p>
+        </div>
+      </section>
+
       <section class="screen" id="screen-login">
-        <div class="top-bar"><span class="step-label">Step 7 of 7</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        <div class="top-bar">
+          <button type="button" class="btn-back" id="btn-login-back">Back</button>
+          <span class="top-spacer"></span>
+        </div>
         <div class="scroll-body login-block">
           <div class="illo-slot" id="illo-login"></div>
           <div class="logo">Dino English</div>
@@ -606,44 +784,29 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { goal: null, goalLabel: "", age: "", level: "", time: "" };
+    const profile = { goal: null, goalLabel: "", age: "", level: "", time: "", skipOnboarding: false };
+    const TOTAL_STEPS = 4;
+    const RING_LEN = 226.2;
+
+    const DINO_CHAR = `<svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+      <ellipse cx="60" cy="108" rx="36" ry="8" fill="#A8E6CF" opacity="0.5"/>
+      <path d="M35 75 Q30 45 55 38 Q75 32 88 50 Q95 65 82 78 Q70 88 55 85 Q42 82 35 75Z" fill="#5CB87A"/>
+      <path d="M38 72 Q45 55 58 52 Q72 50 80 62" fill="#7DCE9A"/>
+      <circle cx="52" cy="58" r="4" fill="#143D2A"/>
+      <circle cx="72" cy="56" r="4" fill="#143D2A"/>
+      <circle cx="53" cy="57" r="1.5" fill="#fff"/>
+      <circle cx="73" cy="55" r="1.5" fill="#fff"/>
+      <path d="M58 68 Q65 74 74 68" stroke="#143D2A" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M28 62 L18 48 M92 54 L102 40" stroke="#5CB87A" stroke-width="5" stroke-linecap="round"/>
+      <polygon points="55,32 62,18 70,32" fill="#EA6C25"/>
+    </svg>`;
 
     const ILLUSTRATIONS = {
       welcome: [
-        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
-          <ellipse cx="140" cy="150" rx="100" ry="18" fill="#C5DDD2" opacity="0.5"/>
-          <path d="M60 120 Q90 60 140 75 Q190 60 220 120" stroke="#2D6B45" stroke-width="3" fill="none"/>
-          <circle cx="100" cy="95" r="22" fill="#FFE082"/>
-          <circle cx="180" cy="88" r="26" fill="#A8E6CF"/>
-          <rect x="168" y="72" width="24" height="8" rx="4" fill="#EA6C25"/>
-          <text x="180" y="79" text-anchor="middle" fill="white" font-size="6" font-weight="700">LIVE</text>
-        </svg>`,
-        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
-          <rect x="70" y="50" width="140" height="90" rx="14" fill="#fff" stroke="#2D6B45" stroke-width="2"/>
-          <circle cx="200" cy="130" r="18" fill="#EA6C25" opacity="0.9"/>
-          <path d="M194 130 L200 122 L206 130 L200 138 Z" fill="white"/>
-          <rect x="90" y="70" width="50" height="8" rx="4" fill="#A8E6CF"/>
-          <rect x="90" y="88" width="80" height="8" rx="4" fill="#D4F8EC"/>
-        </svg>`,
-        `<svg width="280" height="180" viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect width="280" height="180" rx="20" fill="#E8F5E9"/>
-          <rect x="60" y="55" width="160" height="70" rx="12" fill="#fff" stroke="#C5DDD2"/>
-          <rect x="75" y="75" width="30" height="40" rx="4" fill="#2D6B45" opacity="0.2"/>
-          <rect x="115" y="68" width="30" height="47" rx="4" fill="#2D6B45"/>
-          <rect x="155" y="72" width="30" height="43" rx="4" fill="#A8E6CF"/>
-          <path d="M75 130 H185" stroke="#2D6B45" stroke-width="2"/>
-        </svg>`,
+        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><circle cx="70" cy="65" r="28" fill="#FFE082"/><circle cx="130" cy="60" r="32" fill="#A8E6CF"/><rect x="118" y="44" width="22" height="8" rx="4" fill="#EA6C25"/><text x="129" y="51" text-anchor="middle" fill="#fff" font-size="5" font-weight="700">LIVE</text></svg>`, title: "Your AI teacher, always ready", desc: "A real-time teacher—not pre-recorded lessons." },
+        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><rect x="40" y="35" width="120" height="70" rx="12" fill="#fff" stroke="#2D6B45"/><circle cx="155" cy="95" r="14" fill="#EA6C25"/><path d="M55 55 h70 M55 70 h50" stroke="#A8E6CF" stroke-width="6" stroke-linecap="round"/></svg>`, title: "Speak in class—not just watch", desc: "Answer questions, use your mic, get feedback." },
+        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><rect x="50" y="40" width="100" height="55" rx="8" fill="#fff"/><rect x="60" y="52" width="20" height="35" rx="3" fill="#2D6B45" opacity="0.25"/><rect x="88" y="48" width="20" height="40" rx="3" fill="#2D6B45"/><rect x="116" y="52" width="20" height="35" rx="3" fill="#A8E6CF"/></svg>`, title: "See progress after every lesson", desc: "Clear Level–Unit–Lesson path and reports." },
       ],
-      purpose: `<svg width="240" height="160" viewBox="0 0 240 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="40" y="20" width="160" height="120" rx="16" fill="#F4FBF7" stroke="#C5DDD2"/>
-        <circle cx="80" cy="70" r="10" fill="#2D6B45"/>
-        <circle cx="120" cy="70" r="10" fill="#A8E6CF"/>
-        <circle cx="160" cy="70" r="10" fill="#A8E6CF" opacity="0.5"/>
-        <path d="M90 70 H110 M130 70 H150" stroke="#C5DDD2" stroke-width="2"/>
-        <path d="M70 100 L85 115 L110 90" stroke="#2D6B45" stroke-width="3" fill="none"/>
-      </svg>`,
       value: `<svg width="100%" height="120" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect width="320" height="120" rx="14" fill="#D4F8EC"/>
         <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="1.5"/>
@@ -665,20 +828,29 @@
       teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
     };
 
-    const CAROUSEL_META = [
-      { title: "Your AI teacher, always ready", desc: "Live class—not a recording" },
-      { title: "Speak in class—not just watch", desc: "Questions, mic, instant feedback" },
-      { title: "See progress after every lesson", desc: "Reports & clear lesson path" },
+    const AGE_VALUE_PAGES = {
+      "3–5": { h1: "Playful English for little learners", h2: "Short, gentle classes designed for ages 3–5—with lots of listening and first words.", bullets: ["Age-appropriate pace and topics", "AI teacher who encourages trying", "Safe, fun first steps in English"] },
+      "6–8": { h1: "Built for curious kids ages 6–8", h2: "We match courses and teachers for early elementary learners.", bullets: ["Level fit for young school-age kids", "Speak-and-listen in every lesson", "Progress parents can understand"] },
+      "9–12": { h1: "Made for learners ages 9–12", h2: "Courses that grow with pre-teens—speaking, school skills, and confidence.", bullets: ["Right Level for this age band", "Classroom-style speaking practice", "Reports to track improvement"] },
+      "13–17": { h1: "Designed for teens 13–17", h2: "Structured lessons with real dialogue—not childish content.", bullets: ["Teen-friendly topics and pace", "Exam and school alignment options", "Speak more in every class"] },
+      "18+": { h1: "A plan that fits adult learners", h2: "Personalized Level and lessons for independent study.", bullets: ["Flexible daily goals", "AI teacher available anytime", "Clear path from Lesson 1"] },
+    };
+
+    const LOADING_LINES = [
+      (p) => `Matching courses for ages ${p.age || "you"}…`,
+      () => "Choosing the best AI teacher…",
+      () => "Building your first lesson…",
+      () => "Almost ready—personalizing your plan…",
     ];
 
     function initCarousel() {
       const frame = $("#carousel-frame");
       const dots = $("#carousel-dots");
-      ILLUSTRATIONS.welcome.forEach((svg, i) => {
-        const slide = document.createElement("div");
-        slide.className = "carousel-slide" + (i === 0 ? " on" : "");
-        slide.innerHTML = svg;
-        frame.appendChild(slide);
+      ILLUSTRATIONS.welcome.forEach((slide, i) => {
+        const el = document.createElement("div");
+        el.className = "carousel-slide" + (i === 0 ? " on" : "");
+        el.innerHTML = `<div class="slide-visual">${slide.visual}</div><div class="slide-text"><h3>${slide.title}</h3><p>${slide.desc}</p></div>`;
+        frame.appendChild(el);
         const dot = document.createElement("span");
         if (i === 0) dot.className = "on";
         dots.appendChild(dot);
@@ -688,13 +860,22 @@
         idx = (idx + 1) % 3;
         frame.querySelectorAll(".carousel-slide").forEach((el, i) => el.classList.toggle("on", i === idx));
         dots.querySelectorAll("span").forEach((el, i) => el.classList.toggle("on", i === idx));
-      }, 4000);
+      }, 4500);
     }
-    $("#illo-purpose").innerHTML = ILLUSTRATIONS.purpose;
+
+    function showPortraitScreen(id) {
+      $$("#device-portrait .screen").forEach((el) => el.classList.toggle("active", el.id === id));
+    }
+
+    $("#dino-purpose").innerHTML = DINO_CHAR;
     $("#illo-value").innerHTML = ILLUSTRATIONS.value;
     $("#illo-login").innerHTML = ILLUSTRATIONS.login;
     $("#teacher-svg").innerHTML = ILLUSTRATIONS.teacher;
     initCarousel();
+
+    $$(".btn-back[data-back]").forEach((btn) => {
+      btn.addEventListener("click", () => showPortraitScreen(btn.dataset.back));
+    });
 
     const GOALS = [
       { key: "speak_confidence", label: "Speak more confidently" },
@@ -722,9 +903,36 @@
     const LEVELS = ["I'm just starting", "I know some words", "I can have simple conversations", "I'm intermediate or above"];
     const TIMES = ["5 min", "10 min", "15 min", "20+ min"];
 
-    function showPortraitScreen(id) {
-      $$("#device-portrait .screen").forEach((el) => el.classList.toggle("active", el.id === id));
+    function fillAgeValuePage() {
+      const v = AGE_VALUE_PAGES[profile.age] || AGE_VALUE_PAGES["9–12"];
+      $("#age-badge").textContent = profile.age === "18+" ? "Ages 18+" : `Ages ${profile.age}`;
+      $("#age-value-h1").textContent = v.h1;
+      $("#age-value-h2").textContent = v.h2;
+      $("#age-value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
     }
+
+    function startLoadingSequence() {
+      showPortraitScreen("screen-loading");
+      const ring = $("#loading-ring");
+      const status = $("#loading-status");
+      let progress = 0;
+      let lineIdx = 0;
+      status.textContent = LOADING_LINES[0](profile);
+      const tick = setInterval(() => {
+        progress += 2;
+        ring.setAttribute("stroke-dashoffset", String(RING_LEN * (1 - progress / 100)));
+        if (progress % 24 === 0 && lineIdx < LOADING_LINES.length - 1) {
+          lineIdx += 1;
+          status.textContent = LOADING_LINES[lineIdx](profile);
+        }
+        if (progress >= 100) {
+          clearInterval(tick);
+          fillLogin();
+          setTimeout(() => showPortraitScreen("screen-login"), 400);
+        }
+      }, 70);
+    }
+
     function renderOptions(container, items, onPick) {
       container.innerHTML = items.map((item) => {
         const val = typeof item === "string" ? item : item.key;
@@ -738,12 +946,6 @@
           onPick(btn.dataset.val, btn.textContent.trim());
         });
       });
-    }
-    function showToast(msg, then) {
-      const t = $("#toast");
-      t.textContent = msg;
-      t.classList.add("show");
-      setTimeout(() => { t.classList.remove("show"); if (then) then(); }, 1200);
     }
     function fillValuePage() {
       const v = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
@@ -760,26 +962,41 @@
       $("#login-chips").innerHTML = chips.map((c) => `<span class="chip">${c}</span>`).join("");
     }
 
-    $("#btn-get-started").addEventListener("click", () => showPortraitScreen("screen-purpose"));
-    $("#btn-has-account-welcome").addEventListener("click", () => { fillLogin(); showPortraitScreen("screen-login"); });
-    $('[data-next="goal"]').addEventListener("click", () => showPortraitScreen("screen-goal"));
-    renderOptions($("#goal-options"), GOALS, (key, label) => {
-      profile.goal = key; profile.goalLabel = label; fillValuePage();
-      setTimeout(() => showPortraitScreen("screen-value"), 300);
+    $("#btn-get-started").addEventListener("click", () => {
+      profile.skipOnboarding = false;
+      showPortraitScreen("screen-purpose");
     });
-    $('[data-next="age"]').addEventListener("click", () => showPortraitScreen("screen-age"));
+    $("#btn-has-account-welcome").addEventListener("click", () => {
+      profile.skipOnboarding = true;
+      fillLogin();
+      showPortraitScreen("screen-login");
+    });
+    $("#btn-purpose-continue").addEventListener("click", () => showPortraitScreen("screen-goal"));
+    $("#btn-value-continue").addEventListener("click", () => showPortraitScreen("screen-age"));
+    $("#btn-age-value-continue").addEventListener("click", () => showPortraitScreen("screen-level"));
+
+    $("#btn-login-back").addEventListener("click", () => {
+      showPortraitScreen(profile.skipOnboarding ? "screen-welcome" : "screen-loading");
+    });
+
+    renderOptions($("#goal-options"), GOALS, (key, label) => {
+      profile.goal = key;
+      profile.goalLabel = label;
+      fillValuePage();
+      setTimeout(() => showPortraitScreen("screen-value"), 320);
+    });
     renderOptions($("#age-options"), AGES, (val) => {
       profile.age = val;
-      showToast(`Got it—we'll match courses for ages ${val}.`, () => showPortraitScreen("screen-level"));
+      fillAgeValuePage();
+      setTimeout(() => showPortraitScreen("screen-age-value"), 320);
     });
     renderOptions($("#level-options"), LEVELS, (val) => {
       profile.level = val;
-      showToast("We'll start where you're comfortable—no pressure.", () => showPortraitScreen("screen-time"));
+      setTimeout(() => showPortraitScreen("screen-time"), 200);
     });
     renderOptions($("#time-options"), TIMES, (val) => {
       profile.time = val;
-      const n = val.replace(/\D/g, "") || "10";
-      showToast(`A ${n}-minute daily goal works great.`, () => { fillLogin(); showPortraitScreen("screen-login"); });
+      setTimeout(() => startLoadingSequence(), 280);
     });
 
     function enterLandscape() {
