@@ -39,7 +39,7 @@
       color: var(--ink);
     }
     .demo-bar {
-      width: min(390px, 100%);
+      width: min(960px, 100%);
       margin-bottom: 8px;
       font-size: 0.68rem;
       color: rgba(255,255,255,0.65);
@@ -63,7 +63,7 @@
     }
     .device.landscape {
       width: 100%;
-      height: min(520px, calc(100dvh - 72px));
+      height: min(560px, calc(100dvh - 72px));
       aspect-ratio: 16/9;
     }
     .screen {
@@ -201,7 +201,15 @@
       justify-content: center;
       margin-bottom: 12px;
     }
-    .illo-slot svg { max-width: 100%; height: auto; }
+    .illo-slot svg { max-width: 100%; height: auto; display: block; }
+    .value-illo-slot {
+      min-height: 148px;
+      width: 100%;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--forest-mist);
+    }
+    .value-illo-slot svg { width: 100%; height: 148px; display: block; }
     /* Welcome */
     .welcome-hero {
       flex: 1;
@@ -220,7 +228,7 @@
       background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
     }
-    .carousel-frame { position: relative; flex: 1; min-height: 240px; }
+    .carousel-frame { position: relative; flex: 1; min-height: 0; height: 100%; }
     .carousel-slide {
       position: absolute;
       inset: 0;
@@ -236,16 +244,27 @@
     .carousel-slide.on { opacity: 1; position: relative; }
     .slide-visual {
       flex: 1;
-      min-height: 140px;
+      min-height: 0;
       border-radius: var(--radius-md);
-      background: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.72);
       display: flex;
-      align-items: center;
+      align-items: stretch;
       justify-content: center;
-      padding: 8px;
+      padding: 10px 12px;
+      overflow: hidden;
     }
-    .slide-visual svg { width: 100%; max-height: 130px; }
-    .slide-text { text-align: center; padding: 0 8px; }
+    .slide-visual svg {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      flex: 1;
+      display: block;
+    }
+    .slide-text {
+      text-align: center;
+      padding: 10px 12px 4px;
+      flex-shrink: 0;
+    }
     .slide-text h3 {
       font-family: var(--display);
       font-size: 1rem;
@@ -283,10 +302,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 24px;
+      padding-top: 20px;
       gap: 0;
     }
-    .dino-wrap { width: 120px; margin-bottom: -8px; z-index: 2; }
+    .dino-wrap { width: 96px; margin-bottom: -6px; z-index: 2; }
+    .dino-mascot {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      max-height: 108px;
+    }
     .speech-bubble {
       position: relative;
       background: #fff;
@@ -328,8 +354,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 32px 24px;
+      padding: 24px 24px 32px;
       text-align: center;
+    }
+    .loading-dino { width: 88px; margin-bottom: 16px; }
+    .loading-dino .dino-mascot { max-height: 96px; }
+    .name-field {
+      width: 100%;
+      min-height: 54px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--border);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--surface-elevated);
+      margin-top: 8px;
+    }
+    .name-field:focus {
+      outline: none;
+      border-color: var(--forest-mid);
+      box-shadow: 0 0 0 3px rgba(45,107,69,0.12);
     }
     .progress-ring {
       width: 88px;
@@ -489,15 +535,1437 @@
       border-bottom: 1px solid var(--border);
       background: var(--surface-elevated);
     }
+    .land-head .head-spacer { flex: 1; }
+    .land-body.login-land {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+      gap: 28px;
+      align-items: center;
+      padding: 24px 28px 28px;
+      min-height: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(101, 231, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 82% 18%, rgba(112, 255, 211, 0.14), transparent 24%),
+        linear-gradient(135deg, #4b72df 0%, #5b7ae8 35%, #7d72f5 100%);
+    }
+    .land-login-copy {
+      position: relative;
+      z-index: 1;
+      color: #fff;
+      max-width: 430px;
+      padding-left: 10px;
+    }
+    .land-login-copy h1 {
+      font-family: var(--display);
+      font-size: 2rem;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .land-login-copy p {
+      font-size: 0.95rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.88);
+      max-width: 32ch;
+    }
+    .land-login-card {
+      position: relative;
+      z-index: 1;
+      padding: 28px 24px 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(34, 48, 118, 0.22);
+      color: #fff;
+      display: grid;
+      gap: 14px;
+      justify-items: stretch;
+    }
+    .land-login-illo {
+      min-height: 92px;
+      display: grid;
+      place-items: center;
+    }
+    .land-login-illo svg {
+      width: 188px;
+      height: auto;
+      display: block;
+    }
+    .land-login-card h2 {
+      font-family: var(--display);
+      font-size: 1.42rem;
+      line-height: 1.12;
+      color: #fff;
+      letter-spacing: -0.03em;
+      text-align: center;
+    }
+    .land-login-card p {
+      font-size: 0.84rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.84);
+      text-align: center;
+    }
+    .land-login-actions {
+      display: grid;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .land-login-actions .btn-oauth {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.94);
+    }
+    .land-login-foot {
+      font-size: 0.68rem;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.72);
+      text-align: center;
+      margin-top: 2px;
+    }
+    .btn-skip-teacher {
+      border: none;
+      background: none;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+    }
+    .btn-skip-teacher:hover { color: var(--forest-mid); background: var(--forest-mist); }
     .land-body { flex: 1; display: grid; grid-template-columns: 1fr 1.15fr; min-height: 0; }
-    .teacher-side {
-      padding: 24px;
+    .land-body.teacher-pick {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+      padding: 18px 28px 24px;
+      min-height: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(101, 231, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 22%, rgba(112, 255, 211, 0.18), transparent 26%),
+        linear-gradient(135deg, #4b72df 0%, #5b7ae8 35%, #7d72f5 100%);
+    }
+    .land-body.teacher-pick::before {
+      content: "";
+      position: absolute;
+      inset: auto -8% -34% auto;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+    .teacher-intro {
+      position: relative;
+      text-align: center;
+      max-width: 520px;
+      margin: 0 auto;
+      color: #fff;
+      z-index: 1;
+    }
+    .teacher-intro h2 {
+      font-family: var(--display);
+      font-size: 1.45rem;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .teacher-intro p {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.86);
+      line-height: 1.4;
+    }
+    .teacher-grid {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      align-items: end;
+    }
+    .teacher-card {
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.18s var(--ease);
+    }
+    .teacher-card:hover { transform: translateY(-4px); }
+    .teacher-card.selected { transform: translateY(-10px) scale(1.02); }
+    .teacher-card-shell {
+      position: relative;
+      padding: 2px;
+      clip-path: polygon(12% 0, 88% 0, 100% 14%, 100% 86%, 88% 100%, 12% 100%, 0 86%, 0 14%);
+      background: linear-gradient(135deg, rgba(91, 244, 255, 0.95), rgba(0, 232, 255, 0.7));
+      filter: drop-shadow(0 0 12px rgba(63, 247, 255, 0.22));
+    }
+    .teacher-card.selected .teacher-card-shell {
+      filter: drop-shadow(0 12px 20px rgba(27, 35, 96, 0.32)) drop-shadow(0 0 16px rgba(63, 247, 255, 0.45));
+    }
+    .teacher-card-inner {
+      position: relative;
+      min-height: 222px;
+      clip-path: polygon(12% 0, 88% 0, 100% 14%, 100% 86%, 88% 100%, 12% 100%, 0 86%, 0 14%);
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--teacher-top, #82d7ff) 0%, var(--teacher-mid, #77c8ff) 58%, rgba(58, 190, 255, 0.9) 58%, rgba(64, 171, 255, 0.92) 100%);
+    }
+    .teacher-card.theme-kym,
+    .teacher-card.theme-max,
+    .teacher-card.theme-leo { --teacher-top: #86dbff; --teacher-mid: #71c4ff; }
+    .teacher-card.selected .teacher-card-inner {
+      background: linear-gradient(180deg, #8df0d1 0%, #9ce5b7 58%, rgba(87, 201, 137, 0.94) 58%, rgba(73, 176, 118, 0.96) 100%);
+    }
+    .teacher-card-portrait {
+      height: 154px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-top: 8px;
+    }
+    .teacher-card-portrait img {
+      width: 144px;
+      height: 164px;
+      display: block;
+      object-fit: contain;
+      object-position: center bottom;
+    }
+    .teacher-card-meta {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 14px 18px 18px;
+      background: linear-gradient(180deg, rgba(64, 193, 255, 0.22) 0%, rgba(54, 159, 255, 0.88) 16%, rgba(58, 150, 243, 0.92) 100%);
+      color: #fff;
+      backdrop-filter: blur(4px);
+    }
+    .teacher-card.selected .teacher-card-meta {
+      background: linear-gradient(180deg, rgba(124, 231, 163, 0.22) 0%, rgba(83, 193, 128, 0.88) 16%, rgba(70, 170, 112, 0.94) 100%);
+    }
+    .teacher-card-meta strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .teacher-card-meta span {
+      display: block;
+      font-size: 0.82rem;
+      line-height: 1.2;
+      color: rgba(255, 255, 255, 0.92);
+    }
+    .teacher-card-sound {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.22);
+      color: rgba(39, 80, 155, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+    }
+    .teacher-card-sound svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .teacher-actions {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 10px;
+      margin-top: -8px;
+    }
+    .teacher-actions .btn-primary {
+      min-width: 168px;
+      min-height: 50px;
+      background: linear-gradient(180deg, #ffb15d 0%, #ff8a43 56%, #ff7a33 100%);
+      box-shadow: 0 10px 18px rgba(58, 33, 87, 0.24);
+    }
+    .teacher-actions .btn-primary:hover {
+      background: linear-gradient(180deg, #ffb76a 0%, #ff9250 56%, #ff7a33 100%);
+    }
+    .teacher-pick-hint {
+      font-size: 0.76rem;
+      color: rgba(255, 255, 255, 0.86);
       text-align: center;
-      background: var(--forest-mist);
+      max-width: 260px;
+    }
+    .btn-back-land {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      padding: 10px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+    }
+    .btn-back-land::before { content: "←"; font-size: 1rem; }
+    .course-bridge {
+      position: relative;
+      height: 100%;
+      padding: 42px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+    .course-bridge-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .course-bridge-pill {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+    }
+    .course-bridge-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(296px, 0.92fr) minmax(0, 1.08fr);
+      gap: 24px;
+      align-items: start;
+      padding-top: 16px;
+    }
+    .course-bridge-side {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 12px;
+      padding-top: 10px;
+    }
+    .course-bridge-figure {
+      min-height: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      position: relative;
+    }
+    .course-bridge-figure-shell {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 292px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 0 0 0 8px;
+    }
+    .course-bridge-figure-shell img {
+      width: min(100%, 286px);
+      height: auto;
+      display: block;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 12px 20px rgba(44, 57, 127, 0.22));
+    }
+    .course-bridge-main {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-content: start;
+      padding-top: 14px;
+      padding-right: 6px;
+    }
+    .course-bridge-card,
+    .class-side-card,
+    .class-lane {
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 36px rgba(34, 48, 118, 0.16);
+    }
+    .course-bridge-copy {
+      padding: 8px 22px 0 8px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 8px;
+      overflow: hidden;
+    }
+    .course-bridge-eyebrow,
+    .class-side-eyebrow,
+    .class-hub-label,
+    .class-hero-kicker,
+    .class-mini-stage,
+    .class-module-badge {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.76);
+    }
+    .course-bridge-title {
+      font-family: var(--display);
+      font-size: 1.68rem;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-top: 4px;
+      max-width: 14ch;
+    }
+    .course-bridge-sub {
+      font-size: 0.9rem;
+      line-height: 1.48;
+      color: rgba(255,255,255,0.84);
+      max-width: 23.5rem;
+      margin-top: 4px;
+    }
+    .class-hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .class-hero-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .course-bridge-bullets {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+      margin-top: 2px;
+    }
+    .course-bridge-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.9);
+    }
+    .course-bridge-bullets li::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      margin-top: 0.38rem;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #ffd36b 0%, #ff9147 100%);
+      box-shadow: 0 0 0 5px rgba(255, 200, 90, 0.14);
+      flex-shrink: 0;
+    }
+    .course-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-wrap: nowrap;
+      margin-top: 0;
+      padding: 0 6px;
+    }
+    .course-card-actions .course-bridge-pill {
+      min-height: 64px;
+      min-width: 156px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.22);
+    }
+    .course-card-actions .btn-primary,
+    .class-hero-actions .class-cta {
+      min-width: 236px;
+      min-height: 64px;
+      padding: 0 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(180deg, #ffb15d 0%, #ff8a43 56%, #ff7a33 100%);
+      box-shadow: 0 10px 18px rgba(58, 33, 87, 0.24);
+      color: #fff;
+    }
+    .course-card-actions .btn-primary:hover,
+    .class-hero-actions .class-cta:hover {
+      background: linear-gradient(180deg, #ffbc6d 0%, #ff9551 56%, #ff7f36 100%);
+    }
+    .course-bridge-card {
+      position: relative;
+      overflow: hidden;
+      padding: 24px 26px 22px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border-radius: 34px;
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(118, 190, 255, 0.76) 0%, rgba(129, 166, 255, 0.74) 100%);
+      box-shadow: 0 24px 44px rgba(37, 65, 154, 0.22);
+    }
+    .course-bridge-card::before {
+      content: "";
+      position: absolute;
+      inset: auto -48px -78px auto;
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .course-card-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+    .course-card-topcopy {
+      min-width: 0;
+      display: grid;
+      gap: 14px;
+    }
+    .course-card-stage {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+    }
+    .course-card-live {
+      position: relative;
+      z-index: 1;
+      align-self: flex-start;
+      margin-top: 18px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .course-card-title {
+      position: relative;
+      z-index: 1;
+      font-family: var(--display);
+      font-size: 1.28rem;
+      line-height: 1.22;
+      letter-spacing: -0.03em;
+      color: #fff;
+      max-width: 12ch;
+    }
+    .course-card-thumb {
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+      width: 170px;
+      height: 112px;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #73d8ff 0%, #80b5ff 100%);
+      box-shadow: 0 14px 24px rgba(56, 92, 190, 0.2);
+    }
+    .course-card-thumb::before {
+      content: "";
+      position: absolute;
+      inset: auto auto 0 -22px;
+      width: 124px;
+      height: 54px;
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(180deg, #57b65e 0%, #3f9446 100%);
+    }
+    .course-card-thumb::after {
+      content: "";
+      position: absolute;
+      inset: auto 10px 10px auto;
+      width: 84px;
+      height: 34px;
+      border-radius: 20px 20px 14px 14px;
+      background: linear-gradient(180deg, #ffd470 0%, #ef9d3c 100%);
+      box-shadow: 0 8px 14px rgba(114, 72, 24, 0.18);
+      opacity: 0.94;
+    }
+    .course-card-thumb-badge {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      margin: 10px 0 0 12px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      color: #4b76d8;
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .course-card-thumb img {
+      position: absolute;
+      right: 10px;
+      bottom: 2px;
+      z-index: 2;
+      width: 66px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 10px rgba(72, 86, 154, 0.24));
+    }
+    .course-card-lines {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .course-card-line {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+    }
+    .course-card-line span {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .course-card-line p {
+      margin: 0;
+      min-width: 0;
+      color: rgba(255,255,255,0.88);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .class-hub {
+      position: relative;
+      height: 100%;
+      padding: 18px 22px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+    .class-hub-top {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .class-hub-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .class-hub-copy {
+      min-width: 0;
+      color: #fff;
+    }
+    .class-hub-copy h2 {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      line-height: 1.2;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-top: 3px;
+    }
+    .class-top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .class-hub-main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.48fr) minmax(250px, 0.88fr);
+      gap: 16px;
+      align-items: stretch;
+      flex: 1;
+      min-height: 0;
+    }
+    .class-hub-hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(135deg, rgba(137, 208, 255, 0.28) 0%, rgba(151, 170, 255, 0.24) 55%, rgba(255, 255, 255, 0.12) 100%);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 36px rgba(34, 48, 118, 0.18);
+      padding: 22px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 176px;
+      gap: 16px;
+      min-height: 214px;
+    }
+    .class-hub-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -40px -70px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .class-hero-copy,
+    .class-hero-visual {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+    .class-hero-copy {
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+    }
+    .class-hero-title {
+      font-family: var(--display);
+      font-size: 1.34rem;
+      line-height: 1.14;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin-top: 8px;
+      max-width: 14ch;
+    }
+    .class-hero-sub {
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.86);
+      margin-top: 8px;
+      max-width: 30rem;
+    }
+    .class-hero-meta { margin-top: 12px; }
+    .class-hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+    .class-hero-visual {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 0;
+    }
+    .class-hero-panel {
+      padding: 14px 14px 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      display: grid;
+      gap: 8px;
+    }
+    .class-hero-panel-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+    }
+    .class-hero-panel-title {
+      font-family: var(--display);
+      font-size: 0.96rem;
+      line-height: 1.28;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .class-hero-panel-copy {
+      font-size: 0.8rem;
+      line-height: 1.48;
+      color: rgba(255,255,255,0.82);
+    }
+    .class-hero-note {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+    .class-side-stack {
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 14px;
+      min-height: 0;
+    }
+    .class-side-card {
+      padding: 18px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .class-side-card h4 {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      line-height: 1.25;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .class-side-card p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.82);
+    }
+    .class-quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 2px;
+    }
+    .class-quick-card {
+      min-height: 74px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .class-quick-card strong {
+      font-size: 0.88rem;
+      color: #fff;
+    }
+    .class-quick-card span {
+      font-size: 0.72rem;
+      line-height: 1.38;
+      color: rgba(255,255,255,0.74);
+    }
+    .class-next-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .class-next-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .class-next-copy {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+    }
+    .class-next-stage {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .class-next-copy strong {
+      font-size: 0.84rem;
+      line-height: 1.38;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .class-next-badge {
+      flex-shrink: 0;
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .class-lanes {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      gap: 18px;
+      min-height: 0;
+      flex: 1;
+    }
+    .class-lane {
+      padding: 18px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 0;
+    }
+    .class-section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .class-section-head h3 {
+      font-family: var(--display);
+      font-size: 1rem;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .class-section-head p {
+      font-size: 0.78rem;
+      line-height: 1.45;
+      text-align: right;
+      color: rgba(255,255,255,0.7);
+      max-width: 11rem;
+    }
+    .class-lesson-strip,
+    .class-explore-strip {
+      display: grid;
+      gap: 12px;
+      min-height: 0;
+    }
+    .class-lesson-strip {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .class-explore-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .class-mini-card,
+    .class-module-card {
+      min-height: 154px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+    .class-mini-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .class-mini-badge {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .class-mini-card h4,
+    .class-module-card h4 {
+      font-family: var(--display);
+      font-size: 0.98rem;
+      line-height: 1.28;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .class-mini-focus,
+    .class-module-card p {
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.8);
+    }
+    .class-mini-meta {
+      margin-top: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.74rem;
+      color: rgba(255,255,255,0.68);
+    }
+    .class-module-card {
+      position: relative;
+      justify-content: flex-start;
+    }
+    .class-module-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      border-radius: 22px 22px 0 0;
+      background: var(--module-accent, #7cd8ff);
+    }
+    .class-module-card[data-tone="goal"] { --module-accent: #ffb466; }
+    .class-module-card[data-tone="catalog"] { --module-accent: #7cd8ff; }
+    .class-module-card[data-tone="review"] { --module-accent: #91f0c7; }
+    .class-hub .class-bottom-nav {
+      position: static;
+      transform: none;
+      width: min(100%, 354px);
+      margin: auto auto 0;
+      flex-shrink: 0;
+    }
+    /* Refined Class home + All Courses */
+    .class-hub-main {
+      grid-template-columns: minmax(150px, 0.42fr) minmax(0, 1.58fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+    .class-teacher-card,
+    .class-catalog-card {
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 36px rgba(34, 48, 118, 0.18);
+    }
+    .class-teacher-card {
+      padding: 0 4px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      color: #fff;
+      overflow: hidden;
+      border: none;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+    .class-teacher-visual {
+      min-height: 276px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-top: 0;
+    }
+    .class-teacher-visual img {
+      width: min(100%, 208px);
+      height: auto;
+      display: block;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 12px 18px rgba(44, 57, 127, 0.22));
+    }
+    .class-teacher-copy {
+      display: grid;
+      gap: 0;
+      text-align: center;
+    }
+    .class-teacher-copy h4 {
+      font-family: var(--display);
+      font-size: 1.14rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .class-teacher-btn {
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .class-home-main {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      align-content: start;
+    }
+    .class-home-lead {
+      padding: 8px 4px 0;
+      display: grid;
+      gap: 6px;
+      color: #fff;
+    }
+    .class-home-lead-title {
+      font-family: var(--display);
+      font-size: 1.48rem;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      color: #fff;
+      max-width: none;
+      white-space: nowrap;
+    }
+    .class-home-course-card {
+      min-height: 0;
+      padding: 24px 26px 22px;
+    }
+    .class-home-course-title {
+      max-width: 13ch;
+    }
+    .class-home-course-lines {
+      margin-top: 2px;
+    }
+    .class-home-actions {
+      padding: 0 4px;
+      gap: 14px;
+    }
+    .class-home-secondary {
+      min-width: 220px;
+      min-height: 58px;
+      justify-content: center;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      box-shadow: none;
+    }
+    .class-home-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .class-catalog-card {
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      color: #fff;
+      min-height: 0;
+      justify-content: center;
+    }
+    .class-catalog-btn {
+      width: 100%;
+      min-height: 58px;
+      justify-content: center;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.22);
+      color: #fff;
+      box-shadow: none;
+    }
+    .class-catalog-btn:hover {
+      background: rgba(255,255,255,0.24);
+    }
+    .all-courses-shell {
+      height: 100%;
+      padding: 26px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      color: #fff;
+      overflow: hidden;
+    }
+    .all-courses-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .all-courses-list {
+      flex: 1;
+      min-height: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding: 12px calc(50% - 200px) 20px;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 50%;
+      -webkit-overflow-scrolling: touch;
+    }
+    .all-courses-course-card {
+      flex: 0 0 auto;
+      width: 252px;
+      height: 268px;
+      padding: 16px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      cursor: pointer;
+      scroll-snap-align: center;
+      scroll-snap-stop: always;
+      transition: width 0.22s ease, height 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, opacity 0.22s ease;
+      opacity: 0.82;
+    }
+    .all-courses-course-card.is-anchored {
+      width: 400px;
+      height: 336px;
+      padding: 20px 22px 16px;
+      opacity: 1;
+      border-color: rgba(255,255,255,0.36);
+      box-shadow: 0 28px 52px rgba(37, 65, 154, 0.32);
+      transform: scale(1);
+      z-index: 1;
+    }
+    .all-courses-course-card.is-compact .course-card-stage,
+    .all-courses-course-card.is-compact .course-card-lines,
+    .all-courses-course-card.is-compact .all-courses-card-actions {
+      display: none;
+    }
+    .all-courses-course-card.is-compact .course-card-top {
+      margin-bottom: 0;
+      height: 100%;
+      align-items: stretch;
+    }
+    .all-courses-course-card.is-compact .course-card-topcopy {
+      align-content: center;
+      gap: 10px;
+    }
+    .all-courses-course-card.is-compact .course-card-title {
+      max-width: 11ch;
+      font-size: 1.08rem;
+      line-height: 1.24;
+    }
+    .all-courses-course-card.is-compact .course-card-thumb {
+      width: 108px;
+      height: 108px;
+      align-self: center;
+    }
+    .all-courses-course-card.is-compact .course-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .all-courses-course-card.is-anchored .course-card-top {
+      margin-bottom: 14px;
+    }
+    .all-courses-course-card.is-anchored .course-card-title {
+      max-width: 14ch;
+      font-size: 1.34rem;
+    }
+    .all-courses-course-card.is-anchored .course-card-thumb {
+      width: 132px;
+      height: 96px;
+    }
+    .all-courses-course-card.is-anchored .course-card-lines {
+      gap: 8px;
+      flex: 1;
+      min-height: 0;
+    }
+    .all-courses-course-card.is-anchored .course-card-line p {
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+    .all-courses-card-actions {
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+    }
+    .all-courses-card-meta {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 0;
+    }
+    .all-courses-card-status,
+    .all-courses-card-duration {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .all-courses-card-status.is-selected {
+      background: rgba(255,255,255,0.24);
+      border-color: rgba(255,255,255,0.26);
+    }
+    .all-courses-course-card.is-compact {
+      transform: scale(0.96);
+    }
+    .course-detail-shell {
+      height: 100%;
+      padding: 26px 22px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      color: #fff;
+      overflow: hidden;
+    }
+    .course-detail-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .course-detail-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding: 6px 4px 8px 2px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+    }
+    .course-detail-panels {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .course-detail-panels .course-detail-section {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .course-detail-panels .course-detail-block {
+      flex: 1;
+    }
+    .course-detail-hero {
+      padding: 22px 24px 20px;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 36px rgba(34, 48, 118, 0.14);
+    }
+    .course-detail-hero h2 {
+      font-family: var(--display);
+      font-size: 1.42rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .course-detail-hero p {
+      font-size: 0.86rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.82);
+    }
+    .course-detail-section {
+      padding: 20px 22px 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+    }
+    .course-detail-section h3 {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.68);
+      margin-bottom: 12px;
+    }
+    .course-detail-block {
+      display: grid;
+      gap: 10px;
+    }
+    .course-detail-block p,
+    .course-detail-block li {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+    .course-detail-block ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+    .course-detail-block li::marker {
+      color: rgba(255,255,255,0.72);
+    }
+    .course-detail-foot {
+      flex-shrink: 0;
+      padding-top: 4px;
+    }
+    .course-detail-foot .btn-primary {
+      width: 100%;
+      min-height: 58px;
+      font-size: 1rem;
+    }
+    @media (max-width: 900px) {
+      .course-bridge-body,
+      .class-hub-main,
+      .class-lanes {
+        grid-template-columns: 1fr;
+      }
+      .course-bridge-side {
+        grid-template-rows: auto auto;
+      }
+      .course-bridge-main {
+        grid-template-rows: auto auto;
+      }
+      .course-detail-panels {
+        grid-template-columns: 1fr;
+      }
+      .all-courses-course-card.is-anchored {
+        width: 360px;
+        height: 320px;
+      }
+      .all-courses-list {
+        padding-inline: calc(50% - 180px);
+      }
+    }
+    @media (max-width: 760px) {
+      .teacher-grid { grid-template-columns: 1fr; gap: 16px; }
+      .teacher-card-inner { min-height: 190px; }
+      .course-bridge-figure-shell {
+        min-height: 240px;
+      }
+      .course-card-top {
+        flex-direction: column;
+      }
+      .course-card-thumb {
+        width: 100%;
+        max-width: 210px;
+      }
+      .class-hub-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .class-top-actions {
+        justify-content: space-between;
+      }
+      .class-hub-hero {
+        grid-template-columns: 1fr;
+      }
+      .class-teacher-visual {
+        min-height: 190px;
+      }
     }
     .teacher-ring {
       width: 128px;
@@ -509,33 +1977,655 @@
       place-items: center;
       margin-bottom: 14px;
     }
-    .class-side {
-      padding: 18px 22px;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
+    .teacher-ring img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
     }
-    .tab-rail { display: flex; gap: 8px; margin-bottom: 14px; }
-    .tab-rail button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: var(--radius-pill);
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: #eef4f0;
-      color: var(--ink-muted);
+    /* Landscape — class home */
+    .app-shell {
+      position: relative;
+      background:
+        radial-gradient(circle at 0% 100%, rgba(184, 118, 255, 0.32), transparent 24%),
+        radial-gradient(circle at 100% 100%, rgba(130, 168, 255, 0.22), transparent 22%),
+        linear-gradient(135deg, #4f77df 0%, #5d84ea 35%, #688ef2 100%);
+      overflow: hidden;
     }
-    .tab-rail button.on { background: var(--forest-light); color: var(--forest-deep); }
-    .course-hero {
+    .app-shell::before,
+    .app-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.22;
+    }
+    .app-shell::before {
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      top: 80px;
+      background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+    }
+    .app-shell::after {
+      width: 260px;
+      height: 260px;
+      left: -90px;
+      bottom: -90px;
+      background: radial-gradient(circle, rgba(182,118,255,0.45) 0%, transparent 70%);
+    }
+    .class-home {
+      position: relative;
       flex: 1;
-      border-radius: var(--radius-md);
-      border: 1.5px solid var(--border);
-      background: linear-gradient(160deg, #f4fbf7 0%, #e8f5e9 100%);
-      padding: 22px;
+      min-height: 0;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .class-home-top {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px 0;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+    .class-home-top-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .class-user-badge {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.65);
+      background: linear-gradient(180deg, #fff8ea 0%, #f0d4bf 100%);
+      box-shadow: 0 6px 14px rgba(38, 50, 120, 0.18);
+      display: grid;
+      place-items: center;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #7b4f2f;
+      cursor: pointer;
+    }
+    .teacher-switch-pill {
+      min-height: 42px;
+      border: 1px solid rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      padding: 6px 12px 6px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.94);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .teacher-switch-stack {
+      display: flex;
+      align-items: center;
+      padding-left: 6px;
+    }
+    .teacher-switch-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1.6px solid rgba(255,255,255,0.8);
+      margin-left: -6px;
+      background: rgba(255,255,255,0.18);
+      box-shadow: 0 3px 8px rgba(34, 40, 92, 0.18);
+    }
+    .teacher-switch-avatar:first-child { margin-left: 0; }
+    .teacher-switch-avatar.selected { transform: translateY(-1px); }
+    .teacher-switch-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+    }
+    .teacher-switch-pill svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .class-vip-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(10px);
+      display: grid;
+      place-items: center;
+      color: #ffb255;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+      cursor: pointer;
+    }
+    .class-vip-btn svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    .class-home-stage {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      padding: 10px 94px 104px 162px;
+    }
+    .class-teacher-spot {
+      position: absolute;
+      left: 20px;
+      bottom: 0;
+      width: 170px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .class-teacher-spot img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(52, 58, 126, 0.18));
+    }
+    .class-lesson-card {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 430px);
+      min-height: 205px;
+      margin: 34px auto 0;
+      padding: 18px 22px 20px;
+      border-radius: 30px;
+      border: 1px solid rgba(184, 240, 255, 0.5);
+      background: linear-gradient(135deg, rgba(173, 176, 255, 0.32) 0%, rgba(132, 217, 255, 0.24) 100%);
+      box-shadow: 0 18px 34px rgba(44, 61, 140, 0.18);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .class-lesson-copy {
+      flex: 1;
+      min-width: 0;
+      color: #fff;
+    }
+    .class-lesson-level {
+      font-size: 0.78rem;
+      line-height: 1.3;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 8px;
+    }
+    .class-lesson-title {
+      font-family: var(--display);
+      font-size: 1.18rem;
+      line-height: 1.22;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .class-lesson-line {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: rgba(255,255,255,0.84);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+      max-width: 100%;
+    }
+    .class-lesson-thumb {
+      width: 96px;
+      height: 78px;
+      border-radius: 22px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 8px 18px rgba(40, 58, 136, 0.16);
+    }
+    .class-lesson-thumb svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .class-cta {
+      margin-top: 18px;
+      min-width: 180px;
+      min-height: 44px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffb156 0%, #ff9545 56%, #ff7e33 100%);
+      color: #fff;
+      box-shadow: 0 10px 16px rgba(57, 36, 104, 0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .class-cta:hover {
+      background: linear-gradient(180deg, #ffba67 0%, #ff9d53 56%, #ff8239 100%);
+    }
+    .class-cta svg {
+      width: 15px;
+      height: 15px;
+      display: block;
+    }
+    .class-side-rail {
+      position: absolute;
+      right: 24px;
+      top: 42px;
+      bottom: 96px;
+      width: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 2;
+    }
+    .class-side-thumb,
+    .class-side-arrow {
+      width: 44px;
+      height: 44px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.24);
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(10px);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .class-side-thumb svg,
+    .class-side-arrow svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    .class-bottom-nav {
+      position: absolute;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      z-index: 2;
+      width: min(100%, 354px);
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: linear-gradient(180deg, rgba(193, 202, 255, 0.32) 0%, rgba(159, 176, 255, 0.26) 100%);
+      backdrop-filter: blur(14px);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .class-bottom-item {
+      border: none;
+      background: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.74rem;
+      font-weight: 500;
+      padding: 0;
+      min-height: auto;
+    }
+    .class-bottom-item.is-active { color: #fff; }
+    .class-bottom-item:disabled { opacity: 0.92; cursor: default; }
+    .class-bottom-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 35% 30%, #ffe48f 0%, #ffb239 62%, #ff8d2f 100%);
+      box-shadow: 0 8px 14px rgba(72, 48, 113, 0.18);
+    }
+    .class-bottom-icon svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+    }
+    .class-ref-wrap {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      overflow: hidden;
+    }
+    .class-ref-canvas {
+      position: relative;
+      width: 100%;
+      max-width: 812px;
+      aspect-ratio: 812 / 375;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #4f77df;
+    }
+    .class-ref-bg-img,
+    .class-ref-card-bg,
+    .class-ref-thumb img,
+    .class-ref-go-btn img,
+    .class-ref-tab img,
+    .class-ref-rail-thumb img,
+    .class-ref-figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .class-ref-bg-img {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+    }
+    .class-ref-bg-top {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 72.27%;
+      background: linear-gradient(180deg, rgba(38, 88, 210, 0.8) 0%, rgba(24, 75, 196, 0) 100%);
+      opacity: 0.6;
+    }
+    .class-ref-bg-mid {
+      position: absolute;
+      inset: auto 0 0;
+      height: 100%;
+      background: rgba(24, 75, 196, 0.2);
+      backdrop-filter: blur(0px);
+    }
+    .class-ref-profile {
+      position: absolute;
+      left: 4.93%;
+      top: 5.33%;
+      width: 4.93%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.75);
+      background: linear-gradient(180deg, #fff6e4 0%, #eabfa8 100%);
+      color: #6f482e;
+      font-size: 0.92rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 10px rgba(26, 44, 112, 0.18);
+      z-index: 3;
+      cursor: pointer;
+    }
+    .class-ref-teachers-pill {
+      position: absolute;
+      left: 11.33%;
+      top: 5.33%;
+      height: 10.67%;
+      min-width: 12.8%;
+      padding: 0 1.48% 0 0.5%;
+      border-radius: 999px;
+      border: 0.6px solid rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      display: inline-flex;
+      align-items: center;
+      gap: 1%;
+      z-index: 3;
+      color: rgba(255,255,255,0.96);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+      cursor: pointer;
+    }
+    .class-ref-teacher-stack {
+      display: flex;
+      align-items: center;
+      padding-left: 0.75%;
+    }
+    .class-ref-teacher-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-left: -6px;
+      border: 1.2px solid rgba(255,255,255,0.84);
+      box-shadow: 0 3px 8px rgba(31, 44, 102, 0.2);
+      background: rgba(255,255,255,0.22);
+    }
+    .class-ref-teacher-avatar:first-child { margin-left: 0; }
+    .class-ref-teacher-avatar.selected {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,0.98);
+    }
+    .class-ref-teacher-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 18%;
+      display: block;
+    }
+    .class-ref-switch-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      flex-shrink: 0;
+    }
+    .class-ref-vip {
+      position: absolute;
+      top: 5.33%;
+      right: 4.93%;
+      width: 4.93%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 0.6px solid rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      display: grid;
+      place-items: center;
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+      cursor: pointer;
+    }
+    .class-ref-vip svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    .class-ref-figure {
+      position: absolute;
+      left: -6.65%;
+      bottom: 0;
+      width: 38.42%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .class-ref-figure img {
+      height: auto;
+      object-fit: contain;
+      object-position: center bottom;
+      filter: drop-shadow(0 8px 18px rgba(44, 57, 127, 0.18));
+    }
+    .class-ref-card {
+      position: absolute;
+      left: 25.98%;
+      top: 19.73%;
+      width: 51.72%;
+      height: 54.67%;
+      z-index: 2;
+    }
+    .class-ref-card-bg {
+      position: absolute;
+      inset: 0;
+      object-fit: contain;
+    }
+    .class-ref-card-copy {
+      position: absolute;
+      left: 7.14%;
+      top: 12.2%;
+      width: 59.52%;
+      color: #fff;
+    }
+    .class-ref-card-level {
+      font-size: 0.88rem;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: rgba(255,255,255,0.92);
+    }
+    .class-ref-card-title {
+      font-family: var(--display);
+      font-size: 1.24rem;
+      line-height: 1.22;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      color: #fff;
+      max-width: 100%;
+    }
+    .class-ref-card-line {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .class-ref-thumb {
+      position: absolute;
+      top: 0;
+      right: 2.62%;
+      width: 23.81%;
+      aspect-ratio: 4 / 3;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 18px rgba(34, 47, 118, 0.14);
+    }
+    .class-ref-thumb img {
+      object-fit: cover;
+    }
+    .class-ref-go-btn {
+      position: absolute;
+      left: 7.14%;
+      bottom: 7.8%;
+      width: 42.86%;
+      height: 19.51%;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+      z-index: 3;
+    }
+    .class-ref-go-btn img {
+      object-fit: contain;
+    }
+    .class-ref-go-btn-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      pointer-events: none;
+    }
+    .class-ref-go-btn-label svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    .class-ref-rail {
+      position: absolute;
+      right: 4.93%;
+      top: 21.33%;
+      width: 4.93%;
+      height: 38.93%;
+      border-radius: 20px;
+      border: 0.6px solid rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      z-index: 3;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+    }
+    .class-ref-rail-thumb {
+      width: 70%;
+      aspect-ratio: 28 / 22;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    .class-ref-rail-thumb img {
+      object-fit: cover;
+    }
+    .class-ref-rail-arrow {
+      margin-top: 2px;
+      width: 75%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #35d4ff 0%, #15c0f0 100%);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 16px rgba(40, 96, 202, 0.22);
+    }
+    .class-ref-rail-arrow svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      color: #fff;
+    }
+    .class-ref-bottom-nav {
+      position: absolute;
+      left: 50%;
+      bottom: 5.33%;
+      transform: translateX(-50%);
+      width: 43.35%;
+      height: 12.8%;
+      border-radius: 999px;
+      border: 0.6px solid rgba(255,255,255,0.72);
+      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(205,236,255,0.3) 100%);
+      backdrop-filter: blur(16px);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      padding: 0 2.2%;
+      z-index: 3;
+    }
+    .class-ref-tab {
+      border: none;
+      background: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 400;
+      padding: 0;
+      min-height: auto;
+      cursor: default;
+    }
+    .class-ref-tab:disabled { opacity: 0.95; }
+    .class-ref-tab img {
+      width: auto;
+      height: 48px;
+      object-fit: contain;
+    }
+    .class-ref-tab:first-child img { height: 48px; }
+    .class-ref-tab-label {
+      margin-top: -1px;
+      opacity: 0.9;
     }
     .course-hero .tag {
       font-size: 0.68rem;
@@ -567,11 +2657,11 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.1.0 · DESIGN.md · Portrait → Login · Landscape Class</p>
+  <p class="demo-bar">V1.1.0 · Landscape login to Class flow demo</p>
 
-  <div class="device-wrap portrait" id="wrap-portrait">
+  <div class="device-wrap portrait" id="wrap-portrait" style="display:none">
     <div class="device portrait" id="device-portrait">
-      <section class="screen active" id="screen-welcome">
+      <section class="screen" id="screen-welcome">
         <div class="welcome-hero">
           <div class="carousel-frame" id="carousel-frame"></div>
           <div class="carousel-dots" id="carousel-dots"></div>
@@ -595,7 +2685,7 @@
         <div class="scroll-body dino-guide">
           <div class="dino-wrap" id="dino-purpose"></div>
           <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> I'll ask a few quick questions, then build a <strong>personalized learning plan</strong> just for you—before you sign in.</p>
+            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions so we can shape <strong>personalized learning content</strong> that fits you well.</p>
           </div>
         </div>
         <div class="foot-actions">
@@ -603,44 +2693,28 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-goal">
+      <section class="screen" id="screen-name">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-purpose">Back</button>
-          <span class="step-label" data-step-label>Step 1 of 4</span>
+          <span class="step-label">Step 1 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:25%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your main goal right now?</h1>
-          <p class="hint">We'll recommend your first lesson based on this.</p>
-          <div class="option-list" id="goal-options"></div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-value">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body">
-          <span class="chosen-tag" id="value-chosen"></span>
-          <h1 class="title" id="value-h1"></h1>
-          <p class="sub" id="value-h2"></p>
-          <div class="value-card">
-            <div class="illo-slot" id="illo-value"></div>
-            <ul class="bullets" id="value-bullets"></ul>
-          </div>
+          <h1 class="title">What's your name?</h1>
+          <p class="hint">We'll use it when we talk in class and in the app—so we can call you by name.</p>
+          <input type="text" class="name-field" id="input-name" placeholder="Your name" autocomplete="name" maxlength="32" />
         </div>
         <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-value-continue">Continue</button>
+          <button type="button" class="btn btn-primary" id="btn-name-continue">Continue</button>
         </div>
       </section>
 
       <section class="screen" id="screen-age">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-value">Back</button>
-          <span class="step-label" data-step-label>Step 2 of 4</span>
+          <button type="button" class="btn-back" data-back="screen-name">Back</button>
+          <span class="step-label">Step 2 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:50%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Which age group fits you best?</h1>
           <p class="hint">This helps us match the right course level.</p>
@@ -654,6 +2728,7 @@
           <span class="top-spacer"></span>
         </div>
         <div class="scroll-body">
+          <div class="illo-slot value-illo-slot" id="illo-age-value"></div>
           <div class="age-value-hero">
             <span class="age-badge" id="age-badge">Ages 9–12</span>
             <h1 class="title" id="age-value-h1" style="font-size:1.1rem"></h1>
@@ -669,9 +2744,9 @@
       <section class="screen" id="screen-level">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-age-value">Back</button>
-          <span class="step-label" data-step-label>Step 3 of 4</span>
+          <span class="step-label">Step 3 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:75%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How much English do you know today?</h1>
           <p class="hint">We'll pick a comfortable starting point.</p>
@@ -679,25 +2754,43 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-time">
+      <section class="screen" id="screen-goal">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-level">Back</button>
-          <span class="step-label" data-step-label>Step 4 of 4</span>
+          <span class="step-label">Step 4 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" data-progress-fill style="width:100%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">How much time can you study most days?</h1>
-          <p class="hint">We'll help you build a habit that fits.</p>
-          <div class="option-list" id="time-options"></div>
+          <h1 class="title">What's your main goal right now?</h1>
+          <p class="hint">We'll recommend your first lesson based on this.</p>
+          <div class="option-list" id="goal-options"></div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-goal-value">
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
+          <span class="top-spacer"></span>
+        </div>
+        <div class="scroll-body">
+          <div class="illo-slot value-illo-slot" id="illo-goal-value"></div>
+          <span class="chosen-tag" id="goal-chosen"></span>
+          <h1 class="title" id="goal-value-h1"></h1>
+          <p class="sub" id="goal-value-h2"></p>
+          <ul class="bullets" id="goal-value-bullets"></ul>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-goal-value-continue">Continue</button>
         </div>
       </section>
 
       <section class="screen" id="screen-loading">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-time">Back</button>
+          <button type="button" class="btn-back" data-back="screen-goal-value">Back</button>
           <span class="top-spacer"></span>
         </div>
         <div class="loading-body">
+          <div class="loading-dino" id="loading-dino"></div>
           <svg class="progress-ring" viewBox="0 0 88 88" aria-hidden="true">
             <circle class="track" cx="44" cy="44" r="36" fill="none" stroke-width="8"/>
             <circle class="fill" id="loading-ring" cx="44" cy="44" r="36" fill="none" stroke-width="8"
@@ -708,7 +2801,7 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-login">
+      <section class="screen active" id="screen-login">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-login-back">Back</button>
           <span class="top-spacer"></span>
@@ -718,7 +2811,6 @@
           <div class="logo">Dino English</div>
           <div class="chip-row" id="login-chips"></div>
           <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
-          <p class="sub">Sign in to save your answers</p>
           <div class="login-oauth-stack">
             <button type="button" class="btn btn-oauth" id="btn-login-apple">
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
@@ -737,44 +2829,235 @@
     </div>
   </div>
 
-  <div class="device-wrap landscape" id="wrap-landscape" style="display:none">
+  <div class="device-wrap landscape" id="wrap-landscape">
     <div class="device landscape" id="device-landscape">
       <div class="rotate-hint" id="rotate-hint">
         <p style="font-size:2rem;margin-bottom:8px">↻</p>
         <p>Turn your device — Class is landscape</p>
       </div>
-      <section class="screen active" id="screen-teacher">
+      <section class="screen active" id="screen-login-landscape">
         <div class="land-head">
           <span class="logo" style="margin:0;font-size:1rem">Dino English</span>
           <span class="live-pill">LIVE CLASS</span>
+          <span class="head-spacer"></span>
         </div>
-        <div class="land-body">
-          <div class="teacher-side">
-            <div class="teacher-ring" id="teacher-svg"></div>
-            <h2 style="font-family:var(--display);color:var(--forest-deep)">Kym</h2>
-            <p style="font-size:0.8rem;color:var(--ink-muted);margin-top:6px">Friendly · Patient · Beginners</p>
+        <div class="land-body login-land">
+          <div class="land-login-copy">
+            <h1>Log in and start your first class.</h1>
+            <p>Sign in first, then choose a teacher and go straight into the recommended lesson.</p>
           </div>
-          <div style="display:flex;align-items:flex-end;justify-content:center;padding:24px;background:#fff">
-            <button type="button" class="btn btn-primary" id="btn-confirm-teacher" style="width:100%;max-width:240px">Confirm teacher</button>
+          <div class="land-login-card">
+            <div class="land-login-illo" id="illo-login-landscape"></div>
+            <h2>Create your account</h2>
+            <p>Continue to choose a teacher and enter Class.</p>
+            <div class="land-login-actions">
+              <button type="button" class="btn btn-oauth" id="btn-login-apple-land">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
+                Continue with Apple
+              </button>
+              <button type="button" class="btn btn-oauth" id="btn-login-google-land">
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.88l2.84 2.2c1.7-1.57 2.68-3.88 2.68-6.58z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.61-5.12-3.77H.96v2.27C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.88 10.75A5.41 5.41 0 0 1 3.7 9c0-.62.11-1.22.18-1.75v-2.27H.96A8.96 8.96 0 0 0 0 9c0 1.45.35 2.82.96 4.02l2.92-2.27z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.22.57 2.73 1.05l1.99-1.94C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.98L3.88 7.25C4.6 5.09 6.62 3.58 9 3.58z"/></svg>
+                Continue with Google
+              </button>
+            </div>
+            <p class="land-login-foot">Service Terms & Privacy Policy</p>
           </div>
         </div>
       </section>
-      <section class="screen" id="screen-class">
+      <section class="screen" id="screen-teacher">
         <div class="land-head">
           <span class="logo" style="margin:0;font-size:1rem">Dino English</span>
+          <span class="live-pill">LIVE CLASS</span>
+          <span class="head-spacer"></span>
         </div>
-        <div class="class-side" style="height:calc(100% - 52px)">
-          <div class="tab-rail">
-            <button type="button" class="on">Class</button>
-            <button type="button" disabled style="opacity:0.45">Listen</button>
-            <button type="button" disabled style="opacity:0.45">Words</button>
+        <div class="land-body teacher-pick">
+          <div class="teacher-intro">
+            <h2 id="teacher-guide-h1">Choose your teacher</h2>
+            <p id="teacher-guide-h2">Each teacher has a different style. Pick the one you'd like to learn with.</p>
           </div>
-          <p style="font-size:0.75rem;color:var(--ink-muted);margin-bottom:10px">AI Teacher · Kym</p>
-          <div class="course-hero">
-            <span class="tag">RECOMMENDED</span>
-            <h3>Start your first lesson</h3>
-            <p style="font-size:0.85rem;color:var(--ink-muted);margin-bottom:14px">Level 1 · Unit 1 · Lesson 1 — Greetings</p>
-            <button type="button" class="btn btn-primary" id="btn-go-class">Go to Class</button>
+          <div class="teacher-grid" id="teacher-grid"></div>
+          <div class="teacher-actions">
+            <button type="button" class="btn btn-primary" id="btn-confirm-teacher">Continue</button>
+            <p class="teacher-pick-hint" id="teacher-pick-hint">You can change your teacher later in Class.</p>
+          </div>
+        </div>
+      </section>
+      <section class="screen app-shell" id="screen-course-intro">
+        <div class="course-bridge">
+          <div class="course-bridge-body">
+            <div class="course-bridge-side">
+              <div class="course-bridge-copy">
+                <p class="course-bridge-eyebrow" id="course-intro-eyebrow">First class</p>
+                <h2 class="course-bridge-title" id="course-intro-title">Start your first class</h2>
+                <p class="course-bridge-sub" id="course-intro-sub">A short live lesson is ready.</p>
+              </div>
+              <div class="course-bridge-figure">
+                <div class="course-bridge-figure-shell">
+                  <img id="course-intro-teacher-figure" src="" alt="" decoding="async" />
+                </div>
+              </div>
+            </div>
+            <div class="course-bridge-main">
+              <div class="course-bridge-card">
+                <div class="course-card-top">
+                  <div class="course-card-topcopy">
+                    <span class="course-card-stage" id="course-preview-stage">Lesson 1</span>
+                    <h3 class="course-card-title" id="course-preview-title">An Exploratory Adventure at the Forest Lake</h3>
+                  </div>
+                  <div class="course-card-thumb" aria-hidden="true">
+                    <span class="course-card-thumb-badge">Preview</span>
+                    <img src="assets/dino-mascot.png" alt="" decoding="async" />
+                  </div>
+                </div>
+                <div class="course-card-lines">
+                  <div class="course-card-line">
+                    <span>Words :</span>
+                    <p id="course-preview-words">Book, pencil, crayon, bike</p>
+                  </div>
+                  <div class="course-card-line">
+                    <span>Sentences :</span>
+                    <p id="course-preview-sentence">Hello! I am Meg. Nice to meet you.</p>
+                  </div>
+                </div>
+                <span class="course-card-live" id="course-preview-duration">12 min live class</span>
+              </div>
+              <div class="course-card-actions">
+                <button type="button" class="btn btn-primary" id="btn-start-first-class">Start Class</button>
+                <button type="button" class="course-bridge-pill" id="btn-course-intro-later">Maybe later</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="screen app-shell" id="screen-class">
+        <div class="class-hub">
+          <div class="class-hub-top">
+            <div class="class-top-actions">
+              <button type="button" class="class-vip-btn" aria-label="Premium">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3 19 7 16 17 8 17 5 7 12 3Z" fill="currentColor" opacity="0.22"/>
+                  <path d="M12 3 19 7 16 17 8 17 5 7 12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                  <path d="M9.4 9.2h5.2L12 14.7 9.4 9.2Z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="class-hub-main">
+            <aside class="class-teacher-card">
+              <div class="class-teacher-visual" id="class-teacher-visual"></div>
+              <div class="class-teacher-copy">
+                <h4 id="class-teacher-name">Kym</h4>
+              </div>
+              <button type="button" class="teacher-switch-pill class-teacher-btn" id="btn-change-teacher" aria-label="Change teacher">
+                Change teacher
+              </button>
+            </aside>
+            <section class="class-home-main">
+              <div class="class-home-lead">
+                <p class="class-hero-kicker" id="class-hero-kicker">Start here first</p>
+                <h3 class="class-home-lead-title" id="class-home-lead-title">Your current class is ready</h3>
+              </div>
+              <div class="course-bridge-card class-home-course-card">
+                <div class="course-card-top">
+                  <div class="course-card-topcopy">
+                    <span class="course-card-stage" id="class-home-stage">Level 2 · Unit 1 · Lesson 1</span>
+                    <h3 class="course-card-title class-home-course-title" id="class-home-course-title">An Exploratory Adventure at the Forest Lake</h3>
+                  </div>
+                  <div class="course-card-thumb" aria-hidden="true">
+                    <span class="course-card-thumb-badge">Current</span>
+                    <img src="assets/dino-mascot.png" alt="" decoding="async" />
+                  </div>
+                </div>
+                <div class="course-card-lines class-home-course-lines">
+                  <div class="course-card-line">
+                    <span>Words :</span>
+                    <p id="class-home-words">Book, pencil, crayon, bike</p>
+                  </div>
+                  <div class="course-card-line">
+                    <span>Sentences :</span>
+                    <p id="class-home-sentence">Hello! I am Meg. Nice to meet you.</p>
+                  </div>
+                </div>
+                <span class="course-card-live" id="class-home-duration">12 min live class</span>
+              </div>
+              <div class="course-card-actions class-home-actions">
+                <button type="button" class="btn btn-primary" id="btn-go-class">Start Class</button>
+                <button type="button" class="btn class-home-secondary" id="btn-open-all-courses">View all courses</button>
+              </div>
+            </section>
+          </div>
+          <nav class="class-bottom-nav" aria-label="Main navigation">
+            <button type="button" class="class-bottom-item is-active" aria-current="page">
+              <span class="class-bottom-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true">
+                  <path d="M4 7h16v10H4z"/>
+                  <path d="M8 17v3h8v-3"/>
+                </svg>
+              </span>
+              Class
+            </button>
+            <button type="button" class="class-bottom-item" disabled>
+              <span class="class-bottom-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true">
+                  <path d="M6 5h12v14H6z"/>
+                  <path d="M9 9h6M9 13h4"/>
+                </svg>
+              </span>
+              Words
+            </button>
+            <button type="button" class="class-bottom-item" disabled>
+              <span class="class-bottom-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true">
+                  <circle cx="12" cy="12" r="7"/>
+                  <path d="M12 5v7l4 2"/>
+                </svg>
+              </span>
+              FM
+            </button>
+            <button type="button" class="class-bottom-item" disabled>
+              <span class="class-bottom-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" aria-hidden="true">
+                  <circle cx="12" cy="8.5" r="3.5"/>
+                  <path d="M5.5 19c1.5-3.2 4-4.8 6.5-4.8S17 15.8 18.5 19"/>
+                </svg>
+              </span>
+              Profile
+            </button>
+          </nav>
+        </div>
+      </section>
+      <section class="screen app-shell" id="screen-all-courses">
+        <div class="all-courses-shell">
+          <div class="all-courses-head">
+            <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
+          </div>
+          <section class="all-courses-list" id="all-courses-list"></section>
+        </div>
+      </section>
+      <section class="screen app-shell" id="screen-course-detail">
+        <div class="course-detail-shell">
+          <div class="course-detail-head">
+            <button type="button" class="btn-back-land" id="btn-course-detail-back">Back</button>
+          </div>
+          <div class="course-detail-body">
+            <section class="course-detail-hero">
+              <span class="course-card-stage" id="course-detail-stage">Lesson 1</span>
+              <h2 id="course-detail-title">Course title</h2>
+              <p id="course-detail-duration">12 min live class</p>
+            </section>
+            <div class="course-detail-panels">
+              <section class="course-detail-section">
+                <h3>Learning content</h3>
+                <div class="course-detail-block" id="course-detail-content"></div>
+              </section>
+              <section class="course-detail-section">
+                <h3>Learning objectives</h3>
+                <div class="course-detail-block" id="course-detail-objectives"></div>
+              </section>
+            </div>
+          </div>
+          <div class="course-detail-foot">
+            <button type="button" class="btn-primary" id="btn-course-detail-start">Start learning</button>
           </div>
         </div>
       </section>
@@ -784,29 +3067,34 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { goal: null, goalLabel: "", age: "", level: "", time: "", skipOnboarding: false };
+    const profile = { name: "", goal: null, goalLabel: "", age: "", level: "", teacherId: "kym", skipOnboarding: false, hasStartedClass: false, currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     const TOTAL_STEPS = 4;
     const RING_LEN = 226.2;
+    let teacherFlowMode = "onboarding";
 
-    const DINO_CHAR = `<svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
-      <ellipse cx="60" cy="108" rx="36" ry="8" fill="#A8E6CF" opacity="0.5"/>
-      <path d="M35 75 Q30 45 55 38 Q75 32 88 50 Q95 65 82 78 Q70 88 55 85 Q42 82 35 75Z" fill="#5CB87A"/>
-      <path d="M38 72 Q45 55 58 52 Q72 50 80 62" fill="#7DCE9A"/>
-      <circle cx="52" cy="58" r="4" fill="#143D2A"/>
-      <circle cx="72" cy="56" r="4" fill="#143D2A"/>
-      <circle cx="53" cy="57" r="1.5" fill="#fff"/>
-      <circle cx="73" cy="55" r="1.5" fill="#fff"/>
-      <path d="M58 68 Q65 74 74 68" stroke="#143D2A" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M28 62 L18 48 M92 54 L102 40" stroke="#5CB87A" stroke-width="5" stroke-linecap="round"/>
-      <polygon points="55,32 62,18 70,32" fill="#EA6C25"/>
-    </svg>`;
+    const DINO_ASSET = "assets/dino-mascot.png";
+    const DINO_CHAR = `<img src="${DINO_ASSET}" alt="" class="dino-mascot" width="96" height="96" decoding="async" />`;
 
     const ILLUSTRATIONS = {
       welcome: [
-        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><circle cx="70" cy="65" r="28" fill="#FFE082"/><circle cx="130" cy="60" r="32" fill="#A8E6CF"/><rect x="118" y="44" width="22" height="8" rx="4" fill="#EA6C25"/><text x="129" y="51" text-anchor="middle" fill="#fff" font-size="5" font-weight="700">LIVE</text></svg>`, title: "Your AI teacher, always ready", desc: "A real-time teacher—not pre-recorded lessons." },
-        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><rect x="40" y="35" width="120" height="70" rx="12" fill="#fff" stroke="#2D6B45"/><circle cx="155" cy="95" r="14" fill="#EA6C25"/><path d="M55 55 h70 M55 70 h50" stroke="#A8E6CF" stroke-width="6" stroke-linecap="round"/></svg>`, title: "Speak in class—not just watch", desc: "Answer questions, use your mic, get feedback." },
-        { visual: `<svg viewBox="0 0 200 130" width="100%"><rect width="200" height="130" rx="16" fill="#E8F5E9"/><rect x="50" y="40" width="100" height="55" rx="8" fill="#fff"/><rect x="60" y="52" width="20" height="35" rx="3" fill="#2D6B45" opacity="0.25"/><rect x="88" y="48" width="20" height="40" rx="3" fill="#2D6B45"/><rect x="116" y="52" width="20" height="35" rx="3" fill="#A8E6CF"/></svg>`, title: "See progress after every lesson", desc: "Clear Level–Unit–Lesson path and reports." },
+        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8F5E9"/><stop offset="100%" stop-color="#D4F8EC"/></linearGradient></defs><rect width="280" height="240" fill="url(#g1)"/><ellipse cx="140" cy="210" rx="110" ry="20" fill="#A8E6CF" opacity="0.45"/><path d="M50 175 Q80 90 140 105 Q200 90 230 175" stroke="#2D6B45" stroke-width="4" fill="none"/><circle cx="95" cy="130" r="38" fill="#FFE082"/><circle cx="185" cy="120" r="44" fill="#7DCE9A"/><circle cx="185" cy="120" r="32" fill="#A8E6CF"/><rect x="168" y="88" width="34" height="12" rx="6" fill="#EA6C25"/><text x="185" y="97" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">LIVE</text><path d="M120 195 L140 175 L160 195" fill="#5CB87A" opacity="0.5"/></svg>`, title: "Your AI teacher, always ready", desc: "A real-time teacher—not pre-recorded lessons." },
+        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><rect width="280" height="240" fill="#E8F5E9"/><rect x="50" y="55" width="180" height="120" rx="18" fill="#fff" stroke="#2D6B45" stroke-width="2.5"/><circle cx="210" cy="175" r="26" fill="#EA6C25"/><path d="M202 175 L210 160 L218 175 L210 190 Z" fill="#fff"/><rect x="75" y="85" width="70" height="12" rx="6" fill="#A8E6CF"/><rect x="75" y="108" width="110" height="12" rx="6" fill="#D4F8EC"/><rect x="75" y="131" width="90" height="12" rx="6" fill="#E8F5E9"/><ellipse cx="140" cy="210" rx="100" ry="16" fill="#C5DDD2" opacity="0.4"/></svg>`, title: "Speak in class—not just watch", desc: "Answer questions, use your mic, get feedback." },
+        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><rect width="280" height="240" fill="#E8F5E9"/><rect x="45" y="50" width="190" height="130" rx="16" fill="#fff" stroke="#C5DDD2"/><rect x="65" y="85" width="35" height="70" rx="6" fill="#2D6B45" opacity="0.2"/><rect x="115" y="72" width="35" height="83" rx="6" fill="#2D6B45"/><rect x="165" y="80" width="35" height="75" rx="6" fill="#A8E6CF"/><path d="M65 195 H215" stroke="#2D6B45" stroke-width="3"/><circle cx="140" cy="175" r="8" fill="#2D6B45"/></svg>`, title: "See progress after every lesson", desc: "Clear Level–Unit–Lesson path and reports." },
       ],
+      ageValue: {
+        "3–5": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><ellipse cx="160" cy="128" rx="120" ry="14" fill="#A8E6CF" opacity="0.5"/><circle cx="110" cy="72" r="28" fill="#FFE082"/><circle cx="105" cy="68" r="3" fill="#143D2A"/><circle cx="115" cy="68" r="3" fill="#143D2A"/><path d="M102 78 Q110 84 118 78" stroke="#143D2A" stroke-width="2" fill="none"/><rect x="145" y="88" width="22" height="22" rx="4" fill="#EA6C25"/><rect x="172" y="78" width="22" height="22" rx="4" fill="#2D6B45" opacity="0.35"/><rect x="199" y="68" width="22" height="22" rx="4" fill="#A8E6CF"/><path d="M230 55 L250 40 L270 55" stroke="#5CB87A" stroke-width="3" fill="none"/></svg>`,
+        "6–8": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="48" y="42" width="120" height="88" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="62" y="58" width="50" height="8" rx="4" fill="#A8E6CF"/><rect x="62" y="74" width="80" height="8" rx="4" fill="#E8F5E9"/><circle cx="220" cy="78" r="36" fill="#FFE082"/><ellipse cx="220" cy="118" rx="28" ry="10" fill="#7DCE9A" opacity="0.6"/></svg>`,
+        "9–12": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="40" y="36" width="140" height="90" rx="14" fill="#fff" stroke="#C5DDD2"/><rect x="55" y="52" width="110" height="60" rx="6" fill="#D4F8EC"/><circle cx="115" cy="78" r="14" fill="#2D6B45" opacity="0.2"/><circle cx="230" cy="70" r="32" fill="#FFE082"/><rect x="200" y="95" width="60" height="36" rx="8" fill="#2D6B45" opacity="0.12"/></svg>`,
+        "13–17": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="50" y="40" width="100" height="70" rx="10" fill="#fff" stroke="#2D6B45"/><path d="M65 55 h70 M65 70 h50 M65 85 h60" stroke="#A8E6CF" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="68" r="30" fill="#FFE082"/><rect x="248" y="48" width="36" height="48" rx="6" fill="#fff" stroke="#2D6B45"/><path d="M256 62 h20 M256 76 h16" stroke="#2D6B45" stroke-width="2"/></svg>`,
+        "18+": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="44" y="38" width="132" height="78" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="58" y="52" width="48" height="10" rx="5" fill="#A8E6CF"/><rect x="58" y="70" width="96" height="10" rx="5" fill="#D4F8EC"/><circle cx="228" cy="62" r="26" fill="#FFE082"/><ellipse cx="228" cy="100" rx="34" ry="14" fill="#2D6B45" opacity="0.15"/><rect x="268" y="55" width="28" height="40" rx="4" fill="#EA6C25" opacity="0.85"/></svg>`,
+      },
+      goalValue: {
+        speak_confidence: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="28" y="32" width="168" height="88" rx="14" fill="#fff" stroke="#2D6B45"/><ellipse cx="248" cy="76" rx="44" ry="44" fill="#EA6C25"/><rect x="236" y="58" width="24" height="36" rx="8" fill="#fff" opacity="0.35"/><path d="M52 72 Q88 52 128 72 T168 72" stroke="#2D6B45" stroke-width="3" fill="none"/><circle cx="200" cy="52" r="16" fill="#A8E6CF"/><path d="M196 52 h8 M200 48 v8" stroke="#2D6B45" stroke-width="2"/></svg>`,
+        structured_progress: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="36" y="100" width="48" height="28" rx="6" fill="#A8E6CF"/><rect x="96" y="72" width="48" height="56" rx="6" fill="#7DCE9A"/><rect x="156" y="48" width="48" height="80" rx="6" fill="#2D6B45" opacity="0.35"/><rect x="216" y="24" width="48" height="104" rx="6" fill="#2D6B45"/><path d="M60 88 L120 60 L180 40 L240 20" stroke="#EA6C25" stroke-width="3" fill="none" stroke-dasharray="6 4"/><circle cx="240" cy="20" r="10" fill="#EA6C25"/></svg>`,
+        school_exam: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="40" y="30" width="110" height="96" rx="12" fill="#fff" stroke="#2D6B45"/><path d="M58 52 h74 M58 68 h54 M58 84 h64" stroke="#E8F5E9" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="78" r="40" fill="#fff" stroke="#2D6B45" stroke-width="2"/><path d="M182 78 L194 92 L220 64" stroke="#2D6B45" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
+        daily_communication: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="32" y="44" width="120" height="56" rx="16" fill="#fff" stroke="#2D6B45"/><rect x="168" y="28" width="120" height="56" rx="16" fill="#D4F8EC" stroke="#2D6B45"/><path d="M48 72 h40 M48 82 h28" stroke="#A8E6CF" stroke-width="4" stroke-linecap="round"/><path d="M184 56 h50 M184 66 h36" stroke="#2D6B45" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="148" cy="88" r="22" fill="#FFE082"/><ellipse cx="148" cy="118" rx="18" ry="8" fill="#7DCE9A" opacity="0.5"/></svg>`,
+        listening_habit: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><path d="M88 74 Q88 40 120 40 Q152 40 152 74 V90 Q152 110 120 110 Q88 110 88 90 Z" fill="#2D6B45" opacity="0.2"/><path d="M168 74 Q168 36 208 36 Q248 36 248 74 V92 Q248 114 208 114 Q168 114 168 92 Z" fill="#2D6B45"/><rect x="200" y="48" width="72" height="64" rx="12" fill="#fff" stroke="#EA6C25" stroke-width="2"/><text x="236" y="86" text-anchor="middle" fill="#EA6C25" font-size="11" font-weight="700">LIVE</text></svg>`,
+      },
       value: `<svg width="100%" height="120" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <rect width="320" height="120" rx="14" fill="#D4F8EC"/>
         <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="1.5"/>
@@ -828,20 +3116,225 @@
       teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
     };
 
+    const TEACHERS = [
+      {
+        id: "kym",
+        name: "Kym",
+        short: "Gentle and playful",
+        tags: "Gentle · Patient · Encouraging",
+        theme: "theme-kym",
+        image: "assets/teacher-kym.png",
+      },
+      {
+        id: "max",
+        name: "Max",
+        short: "Energetic and vibrant",
+        tags: "Energetic · Clear · Motivating",
+        theme: "theme-max",
+        image: "assets/teacher-max.png",
+      },
+      {
+        id: "leo",
+        name: "Leo",
+        short: "Sunny and lively",
+        tags: "Sunny · Lively · Positive",
+        theme: "theme-leo",
+        image: "assets/teacher-leo.png",
+      },
+    ];
+
     const AGE_VALUE_PAGES = {
-      "3–5": { h1: "Playful English for little learners", h2: "Short, gentle classes designed for ages 3–5—with lots of listening and first words.", bullets: ["Age-appropriate pace and topics", "AI teacher who encourages trying", "Safe, fun first steps in English"] },
-      "6–8": { h1: "Built for curious kids ages 6–8", h2: "We match courses and teachers for early elementary learners.", bullets: ["Level fit for young school-age kids", "Speak-and-listen in every lesson", "Progress parents can understand"] },
-      "9–12": { h1: "Made for learners ages 9–12", h2: "Courses that grow with pre-teens—speaking, school skills, and confidence.", bullets: ["Right Level for this age band", "Classroom-style speaking practice", "Reports to track improvement"] },
-      "13–17": { h1: "Designed for teens 13–17", h2: "Structured lessons with real dialogue—not childish content.", bullets: ["Teen-friendly topics and pace", "Exam and school alignment options", "Speak more in every class"] },
-      "18+": { h1: "A plan that fits adult learners", h2: "Personalized Level and lessons for independent study.", bullets: ["Flexible daily goals", "AI teacher available anytime", "Clear path from Lesson 1"] },
+      "3–5": { h1: "English built for ages 3–5", h2: "We specialize in content and teaching methods for this age—gentle, playful, and parent-trusted.", bullets: ["Courses designed only for early learners", "Professional pacing for little ones", "AI teacher trained for young children"] },
+      "6–8": { h1: "Made for kids ages 6–8", h2: "Our curriculum team focuses on this stage—school readiness, speaking, and confidence.", bullets: ["Dedicated Level paths for 6–8", "Teachers and topics that fit their world", "Trusted by families at this age"] },
+      "9–12": { h1: "Designed for ages 9–12", h2: "We provide learning content and live classes tailored to pre-teens—not generic one-size-fits-all.", bullets: ["Age-specific lessons and reports", "Speaking practice that matches their level", "Built for this group, professionally"] },
+      "13–17": { h1: "Built for teens 13–17", h2: "Serious dialogue, school-aligned skills, and topics teens actually care about.", bullets: ["Specialized teen curriculum", "Not babyish—real classroom English", "Support for exams and daily use"] },
+      "18+": { h1: "Plans for adult learners", h2: "Flexible, professional English learning—personalized to your level and goals.", bullets: ["Adult-appropriate lessons", "Learn on your schedule", "Clear structured progress"] },
     };
 
     const LOADING_LINES = [
-      (p) => `Matching courses for ages ${p.age || "you"}…`,
-      () => "Choosing the best AI teacher…",
-      () => "Building your first lesson…",
-      () => "Almost ready—personalizing your plan…",
+      (p) => `Hi ${p.name || "there"}—matching courses for ages ${p.age}…`,
+      (p) => `Finding the right Level for ${p.name || "you"}…`,
+      () => "Choosing your AI teacher…",
+      (p) => `Building ${p.name ? p.name + "'s" : "your"} first lesson…`,
     ];
+    const COURSE_LIBRARY = [
+      {
+        id: "level-1",
+        label: "Level 1",
+        units: [
+          {
+            id: "unit-1",
+            label: "Unit 1",
+            theme: "First words and easy greetings",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "Meet Dino and Say Hello", duration: "8 min live class", words: "hello, dino, friend, wave", sentence: "Hello! I am Dino.", summary: "Start with names, greetings, and one easy speaking turn." },
+              { id: "lesson-2", label: "Lesson 2", title: "Colors Around Me", duration: "9 min live class", words: "red, blue, green, yellow", sentence: "It is red.", summary: "Practice color words in short speaking moments." },
+              { id: "lesson-3", label: "Lesson 3", title: "Count My School Things", duration: "9 min live class", words: "one, two, three, four", sentence: "I have two books.", summary: "Build early number phrases with school objects." },
+            ],
+          },
+          {
+            id: "unit-2",
+            label: "Unit 2",
+            theme: "Family and daily objects",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "My Family Photo", duration: "9 min live class", words: "mom, dad, sister, brother", sentence: "This is my mom.", summary: "Name family members and use one simple sentence pattern." },
+              { id: "lesson-2", label: "Lesson 2", title: "Things in My Room", duration: "10 min live class", words: "bed, lamp, desk, chair", sentence: "It is on my desk.", summary: "Use room nouns and simple position phrases." },
+              { id: "lesson-3", label: "Lesson 3", title: "Morning Routine Time", duration: "10 min live class", words: "wake up, wash, eat, go", sentence: "I eat breakfast.", summary: "Talk through an easy daily routine in order." },
+            ],
+          },
+        ],
+      },
+      {
+        id: "level-2",
+        label: "Level 2",
+        units: [
+          {
+            id: "unit-1",
+            label: "Unit 1",
+            theme: "School life and first conversations",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "An Exploratory Adventure at the Forest Lake", duration: "12 min live class", words: "Book, pencil, crayon, bike", sentence: "Hello! I am Meg. Nice to meet you.", summary: "Warm up with the target words, practice the core sentence out loud, and finish one short live class with a clear speaking goal.", objectives: ["Practice the target words in class.", "Say the sentence with confidence.", "Join a short live lesson with a teacher."] },
+              { id: "lesson-2", label: "Lesson 2", title: "Meet My School Friends", duration: "10 min live class", words: "friend, classmate, name, school", sentence: "This is my friend.", summary: "Practice greetings, introductions, and easy follow-up questions.", objectives: ["Greet classmates and introduce yourself clearly.", "Ask and answer simple questions about names.", "Build confidence speaking in a live class."] },
+              { id: "lesson-3", label: "Lesson 3", title: "Pack My School Bag", duration: "11 min live class", words: "bag, ruler, eraser, notebook", sentence: "I have a ruler.", summary: "Reinforce school nouns and simple have / don't have patterns.", objectives: ["Name common school supplies.", "Use have in short spoken sentences.", "Practice classroom vocabulary in context."] },
+            ],
+          },
+          {
+            id: "unit-2",
+            label: "Unit 2",
+            theme: "Colors, classroom talk, and sharing",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "Find Colors at the Lake", duration: "11 min live class", words: "blue, green, tree, water", sentence: "The water is blue.", summary: "Use color words in full sentences around a scene." },
+              { id: "lesson-2", label: "Lesson 2", title: "Talk About My Classroom", duration: "12 min live class", words: "classroom, board, desk, window", sentence: "This is my classroom.", summary: "Describe places and objects in the classroom." },
+              { id: "lesson-3", label: "Lesson 3", title: "Can I Share My Crayons?", duration: "12 min live class", words: "share, please, thank you, crayons", sentence: "Can I use your crayons?", summary: "Practice polite requests and simple sharing dialogue." },
+            ],
+          },
+        ],
+      },
+      {
+        id: "level-3",
+        label: "Level 3",
+        units: [
+          {
+            id: "unit-1",
+            label: "Unit 1",
+            theme: "Daily routines with longer answers",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "After School Plans", duration: "12 min live class", words: "homework, park, dinner, read", sentence: "I go to the park after school.", summary: "Build longer routine answers with time phrases." },
+              { id: "lesson-2", label: "Lesson 2", title: "My Favorite Weekend", duration: "13 min live class", words: "weekend, visit, play, family", sentence: "I visit my grandma on Saturday.", summary: "Talk about a weekend plan with more detail." },
+              { id: "lesson-3", label: "Lesson 3", title: "Let's Make a Picnic List", duration: "12 min live class", words: "basket, juice, fruit, sandwich", sentence: "We need some juice.", summary: "Use need / want to plan a group activity." },
+            ],
+          },
+          {
+            id: "unit-2",
+            label: "Unit 2",
+            theme: "Places and helpful questions",
+            lessons: [
+              { id: "lesson-1", label: "Lesson 1", title: "Where Is the Library?", duration: "13 min live class", words: "library, turn, left, right", sentence: "Turn left at the library.", summary: "Follow and give basic directions." },
+              { id: "lesson-2", label: "Lesson 2", title: "Let's Visit the Market", duration: "13 min live class", words: "market, buy, apples, bread", sentence: "I want to buy apples.", summary: "Practice shopping requests and choices." },
+              { id: "lesson-3", label: "Lesson 3", title: "Ask for Help in Town", duration: "14 min live class", words: "help, street, map, station", sentence: "Can you help me?", summary: "Ask for help and respond politely in simple dialogue." },
+            ],
+          },
+        ],
+      },
+    ];
+    function getLevelById(levelId) {
+      return COURSE_LIBRARY.find((level) => level.id === levelId) || COURSE_LIBRARY[0];
+    }
+
+    function getUnitById(levelId, unitId) {
+      const level = getLevelById(levelId);
+      return level.units.find((unit) => unit.id === unitId) || level.units[0];
+    }
+
+    function getLessonById(levelId, unitId, lessonId) {
+      const unit = getUnitById(levelId, unitId);
+      return unit.lessons.find((lesson) => lesson.id === lessonId) || unit.lessons[0];
+    }
+
+    function buildCourse(levelId, unitId, lessonId) {
+      const level = getLevelById(levelId);
+      const unit = getUnitById(levelId, unitId);
+      const lesson = getLessonById(levelId, unitId, lessonId);
+      return {
+        ...lesson,
+        levelId,
+        unitId,
+        lessonId,
+        levelLabel: level.label,
+        unitLabel: unit.label,
+        lessonLabel: lesson.label,
+        unitTheme: unit.theme,
+        stage: `${level.label} · ${unit.label} · ${lesson.label}`,
+      };
+    }
+
+    function getCurrentCourse() {
+      return buildCourse(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+    }
+
+    function getCurrentUnit() {
+      return getUnitById(profile.currentLevelId, profile.currentUnitId);
+    }
+
+    function getCurrentLevel() {
+      return getLevelById(profile.currentLevelId);
+    }
+
+    function getCurrentLevelCourseSequence() {
+      const currentLevel = getCurrentLevel();
+      return currentLevel.units.flatMap((unit) =>
+        unit.lessons.map((lesson) => buildCourse(currentLevel.id, unit.id, lesson.id))
+      );
+    }
+
+    let selectedAllCourseKey = "";
+    let courseDetailReturnScreen = "all-courses";
+    let allCoursesScrollRaf = 0;
+    let allCoursesListScrollBound = false;
+
+    function getLessonObjectives(course) {
+      if (course.objectives?.length) return course.objectives;
+      return [
+        course.summary,
+        "Use the target words in short spoken answers.",
+        "Finish the live class with clearer speaking confidence.",
+      ].filter(Boolean);
+    }
+
+    function getCourseDetailCtaLabel(state) {
+      if (state === "completed") return "Start learning";
+      if (state === "in-progress") return "Continue learning";
+      return "Start learning";
+    }
+
+    function makeCourseKey(levelId, unitId, lessonId) {
+      return `${levelId}::${unitId}::${lessonId}`;
+    }
+
+    function setCurrentCourse(levelId, unitId, lessonId) {
+      profile.currentLevelId = levelId;
+      profile.currentUnitId = unitId;
+      profile.currentLessonId = lessonId;
+    }
+
+    function getLessonState(levelId, unitId, lessonId) {
+      const currentKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      const compareKey = makeCourseKey(levelId, unitId, lessonId);
+      if (compareKey === currentKey) return "InProgress";
+
+      const currentLevelCourses = getCurrentLevelCourseSequence();
+      const currentIdx = currentLevelCourses.findIndex((course) => makeCourseKey(course.levelId, course.unitId, course.lessonId) === currentKey);
+      const compareIdx = currentLevelCourses.findIndex((course) => makeCourseKey(course.levelId, course.unitId, course.lessonId) === compareKey);
+
+      if (currentIdx !== -1 && compareIdx !== -1 && compareIdx < currentIdx) return "Completed";
+      return "NotStarted";
+    }
+
+    function getLessonStateLabel(state) {
+      if (state === "Completed") return "Completed";
+      if (state === "InProgress") return "In progress";
+      return "Not started";
+    }
 
     function initCarousel() {
       const frame = $("#carousel-frame");
@@ -867,10 +3360,192 @@
       $$("#device-portrait .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
 
+    function getTeacher() {
+      return TEACHERS.find((teacher) => teacher.id === profile.teacherId) || TEACHERS[0];
+    }
+
+    function getFirstName() {
+      return profile.name ? profile.name.trim().split(/\s+/)[0] : "";
+    }
+
+    function renderClassTeacherVisual() {
+      const teacher = getTeacher();
+      $("#class-teacher-visual").innerHTML = `<img src="${teacher.image}" alt="${teacher.name}" decoding="async" />`;
+      $("#class-teacher-name").textContent = teacher.name;
+    }
+
+    function getFirstAllCoursesKey(courses) {
+      if (!courses.length) return "";
+      const first = courses[0];
+      return makeCourseKey(first.levelId, first.unitId, first.lessonId);
+    }
+
+    function applyAllCoursesAnchor(courseKey, { scroll = false, smooth = true } = {}) {
+      const list = $("#all-courses-list");
+      if (!list || !courseKey) return;
+      selectedAllCourseKey = courseKey;
+      list.querySelectorAll(".all-courses-course-card").forEach((card) => {
+        const anchored = card.dataset.courseKey === courseKey;
+        card.classList.toggle("is-anchored", anchored);
+        card.classList.toggle("is-compact", !anchored);
+        card.querySelector(".all-courses-card-status")?.classList.toggle("is-selected", anchored);
+      });
+      if (!scroll) return;
+      const card = list.querySelector(`[data-course-key="${courseKey}"]`);
+      if (!card) return;
+      card.scrollIntoView({ behavior: smooth ? "smooth" : "auto", inline: "center", block: "nearest" });
+    }
+
+    function updateAllCoursesAnchorFromScroll() {
+      const list = $("#all-courses-list");
+      const cards = [...list.querySelectorAll(".all-courses-course-card")];
+      if (!cards.length) return;
+      const listRect = list.getBoundingClientRect();
+      const anchorX = listRect.left + listRect.width / 2;
+      let bestCard = cards[0];
+      let bestDistance = Infinity;
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.left + rect.width / 2;
+        const distance = Math.abs(cardCenter - anchorX);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestCard = card;
+        }
+      });
+      if (bestCard.dataset.courseKey !== selectedAllCourseKey) {
+        applyAllCoursesAnchor(bestCard.dataset.courseKey, { scroll: false });
+      }
+    }
+
+    function bindAllCoursesListScroll() {
+      const list = $("#all-courses-list");
+      if (!list || allCoursesListScrollBound) return;
+      allCoursesListScrollBound = true;
+      list.addEventListener("scroll", () => {
+        if (allCoursesScrollRaf) cancelAnimationFrame(allCoursesScrollRaf);
+        allCoursesScrollRaf = requestAnimationFrame(updateAllCoursesAnchorFromScroll);
+      }, { passive: true });
+    }
+
+    function scrollAllCoursesToAnchor({ smooth = false } = {}) {
+      requestAnimationFrame(() => {
+        applyAllCoursesAnchor(selectedAllCourseKey, { scroll: true, smooth });
+      });
+    }
+
+    function renderAllCoursesScreen({ scrollToAnchor = true, smoothScroll = false } = {}) {
+      const courses = getCurrentLevelCourseSequence().slice(0, 6);
+      const firstCourseKey = getFirstAllCoursesKey(courses);
+      if (!selectedAllCourseKey || !courses.some((course) => makeCourseKey(course.levelId, course.unitId, course.lessonId) === selectedAllCourseKey)) {
+        selectedAllCourseKey = firstCourseKey;
+      }
+      $("#all-courses-list").innerHTML = courses.map((course) => {
+        const state = getLessonState(course.levelId, course.unitId, course.lessonId);
+        const stateLabel = getLessonStateLabel(state);
+        const courseKey = makeCourseKey(course.levelId, course.unitId, course.lessonId);
+        const isAnchored = courseKey === selectedAllCourseKey;
+        return `
+          <article class="course-bridge-card all-courses-course-card ${isAnchored ? "is-anchored" : "is-compact"}" data-course-key="${courseKey}" data-level-id="${course.levelId}" data-unit-id="${course.unitId}" data-lesson-id="${course.lessonId}">
+            <div class="course-card-top">
+              <div class="course-card-topcopy">
+                <span class="course-card-stage">${course.lessonLabel}</span>
+                <h3 class="course-card-title">${course.title}</h3>
+              </div>
+              <div class="course-card-thumb" aria-hidden="true">
+                <img src="assets/dino-mascot.png" alt="" decoding="async" />
+              </div>
+            </div>
+            <div class="course-card-lines">
+              <div class="course-card-line">
+                <span>Words :</span>
+                <p>${course.words}</p>
+              </div>
+              <div class="course-card-line">
+                <span>Sentences :</span>
+                <p>${course.sentence}</p>
+              </div>
+            </div>
+            <div class="all-courses-card-actions">
+              <div class="all-courses-card-meta">
+                <span class="all-courses-card-status ${isAnchored ? "is-selected" : ""}">${stateLabel}</span>
+                <span class="all-courses-card-duration">${course.duration}</span>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+      bindAllCoursesListScroll();
+      $("#all-courses-list").querySelectorAll(".all-courses-course-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          applyAllCoursesAnchor(card.dataset.courseKey, { scroll: true, smooth: true });
+          showCourseDetail(card.dataset.levelId, card.dataset.unitId, card.dataset.lessonId, "all-courses");
+        });
+      });
+      applyAllCoursesAnchor(selectedAllCourseKey, { scroll: false });
+      if (scrollToAnchor) scrollAllCoursesToAnchor({ smooth: smoothScroll });
+    }
+
+    function fillCourseDetail(course) {
+      const state = getLessonState(course.levelId, course.unitId, course.lessonId);
+      $("#course-detail-stage").textContent = course.lessonLabel;
+      $("#course-detail-title").textContent = course.title;
+      $("#course-detail-duration").textContent = course.duration;
+      $("#course-detail-content").innerHTML = `
+        <p><strong>Words:</strong> ${course.words}</p>
+        <p><strong>Sentences:</strong> ${course.sentence}</p>
+      `;
+      $("#course-detail-objectives").innerHTML = `
+        <ul>${getLessonObjectives(course).map((item) => `<li>${item}</li>`).join("")}</ul>
+      `;
+      $("#btn-course-detail-start").textContent = getCourseDetailCtaLabel(state);
+    }
+
+    function showCourseDetail(levelId, unitId, lessonId, returnScreen = "all-courses") {
+      courseDetailReturnScreen = returnScreen;
+      setCurrentCourse(levelId, unitId, lessonId);
+      selectedAllCourseKey = makeCourseKey(levelId, unitId, lessonId);
+      fillCourseDetail(buildCourse(levelId, unitId, lessonId));
+      showLandScreen("screen-course-detail");
+    }
+
+    function renderTeacherCards() {
+      const grid = $("#teacher-grid");
+      grid.innerHTML = TEACHERS.map((teacher) => `
+        <button type="button" class="teacher-card ${teacher.theme} ${teacher.id === profile.teacherId ? "selected" : ""}" data-teacher-id="${teacher.id}">
+          <div class="teacher-card-shell">
+            <div class="teacher-card-inner">
+              <div class="teacher-card-sound" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 14h4l5 4V6L8 10H4z"/>
+                  <path d="M16 9a5 5 0 0 1 0 6"/>
+                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11"/>
+                </svg>
+              </div>
+              <div class="teacher-card-portrait"><img src="${teacher.image}" alt="" decoding="async" /></div>
+              <div class="teacher-card-meta">
+                <strong>${teacher.name}</strong>
+                <span>${teacher.short}</span>
+              </div>
+            </div>
+          </div>
+        </button>
+      `).join("");
+      grid.querySelectorAll(".teacher-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          profile.teacherId = card.dataset.teacherId;
+          renderTeacherCards();
+          renderClassTeacherVisual();
+        });
+      });
+    }
+
     $("#dino-purpose").innerHTML = DINO_CHAR;
-    $("#illo-value").innerHTML = ILLUSTRATIONS.value;
+    $("#loading-dino").innerHTML = DINO_CHAR;
     $("#illo-login").innerHTML = ILLUSTRATIONS.login;
-    $("#teacher-svg").innerHTML = ILLUSTRATIONS.teacher;
+    $("#illo-login-landscape").innerHTML = ILLUSTRATIONS.login;
+    renderClassTeacherVisual();
+    renderTeacherCards();
     initCarousel();
 
     $$(".btn-back[data-back]").forEach((btn) => {
@@ -901,10 +3576,9 @@
     };
     const AGES = ["3–5", "6–8", "9–12", "13–17", "18+"];
     const LEVELS = ["I'm just starting", "I know some words", "I can have simple conversations", "I'm intermediate or above"];
-    const TIMES = ["5 min", "10 min", "15 min", "20+ min"];
-
     function fillAgeValuePage() {
       const v = AGE_VALUE_PAGES[profile.age] || AGE_VALUE_PAGES["9–12"];
+      $("#illo-age-value").innerHTML = ILLUSTRATIONS.ageValue[profile.age] || ILLUSTRATIONS.ageValue["9–12"];
       $("#age-badge").textContent = profile.age === "18+" ? "Ages 18+" : `Ages ${profile.age}`;
       $("#age-value-h1").textContent = v.h1;
       $("#age-value-h2").textContent = v.h2;
@@ -947,18 +3621,23 @@
         });
       });
     }
-    function fillValuePage() {
+    function fillGoalValuePage() {
       const v = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
-      $("#value-chosen").textContent = profile.goalLabel;
-      $("#value-h1").textContent = v.h1;
-      $("#value-h2").textContent = v.h2;
-      $("#value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
+      $("#goal-chosen").textContent = profile.goalLabel;
+      $("#goal-value-h1").textContent = v.h1;
+      $("#goal-value-h2").textContent = v.h2;
+      $("#goal-value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
+      $("#illo-goal-value").innerHTML = ILLUSTRATIONS.goalValue[profile.goal] || ILLUSTRATIONS.goalValue.speak_confidence;
     }
     function fillLogin() {
-      $("#login-dynamic").textContent = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
+      const first = profile.name ? profile.name.split(" ")[0] : "";
+      $("#login-dynamic").textContent = first
+        ? `${LOGIN_COPY[profile.goal] || LOGIN_COPY.default}`.replace("your plan", `${first}'s plan`)
+        : (LOGIN_COPY[profile.goal] || LOGIN_COPY.default);
       const chips = [];
-      if (profile.goalLabel) chips.push(`Goal: ${profile.goalLabel}`);
-      if (profile.age) chips.push(`Age: ${profile.age}`);
+      if (profile.name) chips.push(profile.name);
+      if (profile.age) chips.push(`Ages ${profile.age}`);
+      if (profile.goalLabel) chips.push(profile.goalLabel);
       $("#login-chips").innerHTML = chips.map((c) => `<span class="chip">${c}</span>`).join("");
     }
 
@@ -971,20 +3650,24 @@
       fillLogin();
       showPortraitScreen("screen-login");
     });
-    $("#btn-purpose-continue").addEventListener("click", () => showPortraitScreen("screen-goal"));
-    $("#btn-value-continue").addEventListener("click", () => showPortraitScreen("screen-age"));
+    $("#btn-purpose-continue").addEventListener("click", () => showPortraitScreen("screen-name"));
+    $("#btn-name-continue").addEventListener("click", () => {
+      const name = $("#input-name").value.trim();
+      if (!name) { $("#input-name").focus(); return; }
+      profile.name = name;
+      showPortraitScreen("screen-age");
+    });
     $("#btn-age-value-continue").addEventListener("click", () => showPortraitScreen("screen-level"));
+    $("#btn-goal-value-continue").addEventListener("click", () => startLoadingSequence());
 
     $("#btn-login-back").addEventListener("click", () => {
+      if (!profile.name && !profile.age && !profile.goal && !profile.level) {
+        showPortraitScreen("screen-welcome");
+        return;
+      }
       showPortraitScreen(profile.skipOnboarding ? "screen-welcome" : "screen-loading");
     });
 
-    renderOptions($("#goal-options"), GOALS, (key, label) => {
-      profile.goal = key;
-      profile.goalLabel = label;
-      fillValuePage();
-      setTimeout(() => showPortraitScreen("screen-value"), 320);
-    });
     renderOptions($("#age-options"), AGES, (val) => {
       profile.age = val;
       fillAgeValuePage();
@@ -992,11 +3675,13 @@
     });
     renderOptions($("#level-options"), LEVELS, (val) => {
       profile.level = val;
-      setTimeout(() => showPortraitScreen("screen-time"), 200);
+      setTimeout(() => showPortraitScreen("screen-goal"), 200);
     });
-    renderOptions($("#time-options"), TIMES, (val) => {
-      profile.time = val;
-      setTimeout(() => startLoadingSequence(), 280);
+    renderOptions($("#goal-options"), GOALS, (key, label) => {
+      profile.goal = key;
+      profile.goalLabel = label;
+      fillGoalValuePage();
+      setTimeout(() => showPortraitScreen("screen-goal-value"), 320);
     });
 
     function enterLandscape() {
@@ -1009,11 +3694,111 @@
     function showLandScreen(id) {
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
-    function onLoginSuccess() { enterLandscape(); showLandScreen("screen-teacher"); }
+    function fillTeacherGuide() {
+      const first = getFirstName();
+      const isAppMode = teacherFlowMode === "app";
+      $("#teacher-guide-h1").textContent = isAppMode
+        ? "Switch Teacher"
+        : `Choose ${first ? `${first}'s` : "your"} teacher`;
+      $("#teacher-guide-h2").textContent = isAppMode
+        ? "Each teacher has a different style. Pick the one you'd like to keep learning with."
+        : "Each teacher has a different style. Pick the one you'd like to learn with.";
+      $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Continue";
+      $("#teacher-pick-hint").textContent = isAppMode
+        ? "You can switch again anytime."
+        : "You can change your teacher later in Class.";
+      renderTeacherCards();
+    }
+    function fillCourseIntro() {
+      const first = getFirstName();
+      const teacher = getTeacher();
+      const currentCourse = getCurrentCourse();
+      $("#course-intro-eyebrow").textContent = first ? `${first}'s first class` : "First class";
+      $("#course-intro-title").textContent = "Start your first class";
+      $("#course-intro-sub").textContent = "A short live lesson is ready.";
+      $("#course-intro-teacher-figure").src = teacher.image;
+      $("#course-intro-teacher-figure").alt = teacher.name;
+      $("#course-preview-stage").textContent = currentCourse.lessonLabel;
+      $("#course-preview-duration").textContent = currentCourse.duration;
+      $("#course-preview-title").textContent = currentCourse.title;
+      $("#course-preview-words").textContent = currentCourse.words;
+      $("#course-preview-sentence").textContent = currentCourse.sentence;
+    }
+    function onLoginSuccess() {
+      $("#wrap-portrait").style.display = "none";
+      $("#wrap-landscape").style.display = "block";
+      openTeacherPicker("onboarding");
+    }
     $("#btn-login-apple").addEventListener("click", onLoginSuccess);
     $("#btn-login-google").addEventListener("click", onLoginSuccess);
-    $("#btn-confirm-teacher").addEventListener("click", () => showLandScreen("screen-class"));
-    $("#btn-go-class").addEventListener("click", () => alert("Demo: open classroom (landscape). PRD §9.8."));
+    $("#btn-login-apple-land").addEventListener("click", onLoginSuccess);
+    $("#btn-login-google-land").addEventListener("click", onLoginSuccess);
+    function fillClassTab() {
+      const first = getFirstName();
+      const currentCourse = getCurrentCourse();
+      $("#class-hero-kicker").textContent = profile.hasStartedClass
+        ? "Current class"
+        : "Start here first";
+      $("#class-home-lead-title").textContent = profile.hasStartedClass
+        ? "Go back to your current lesson"
+        : "Your current class is ready";
+      $("#class-home-stage").textContent = currentCourse.stage;
+      $("#class-home-course-title").textContent = currentCourse.title;
+      $("#class-home-duration").textContent = currentCourse.duration;
+      $("#class-home-words").textContent = currentCourse.words;
+      $("#class-home-sentence").textContent = currentCourse.sentence;
+      $("#btn-go-class").textContent = profile.hasStartedClass ? "Continue Learning" : "Start Class";
+      renderClassTeacherVisual();
+    }
+    function openTeacherPicker(mode = "onboarding") {
+      teacherFlowMode = mode;
+      fillTeacherGuide();
+      showLandScreen("screen-teacher");
+    }
+    function showCourseIntro() {
+      fillCourseIntro();
+      showLandScreen("screen-course-intro");
+    }
+    function showClassHome() {
+      fillClassTab();
+      showLandScreen("screen-class");
+    }
+    function showAllCourses() {
+      const courses = getCurrentLevelCourseSequence().slice(0, 6);
+      selectedAllCourseKey = getFirstAllCoursesKey(courses);
+      renderAllCoursesScreen({ scrollToAnchor: false });
+      showLandScreen("screen-all-courses");
+      requestAnimationFrame(() => scrollAllCoursesToAnchor({ smooth: false }));
+    }
+    function openClassroomDemo(source) {
+      profile.hasStartedClass = true;
+      fillClassTab();
+      alert("Demo: this button would open the live classroom. After class, users return to the app with the current lesson still pinned on Class home.");
+      if (source === "course-intro" || source === "all-courses" || source === "course-detail") showLandScreen("screen-class");
+    }
+    $("#btn-confirm-teacher").addEventListener("click", () => {
+      if (teacherFlowMode === "app") {
+        showClassHome();
+      } else {
+        showCourseIntro();
+      }
+    });
+    $("#btn-course-intro-later").addEventListener("click", showClassHome);
+    $("#btn-start-first-class").addEventListener("click", () => openClassroomDemo("course-intro"));
+    $("#btn-change-teacher").addEventListener("click", () => openTeacherPicker("app"));
+    $("#btn-open-all-courses").addEventListener("click", showAllCourses);
+    $("#btn-all-courses-back").addEventListener("click", showClassHome);
+    $("#btn-course-detail-back").addEventListener("click", () => {
+      if (courseDetailReturnScreen === "class-home") {
+        showClassHome();
+        return;
+      }
+      renderAllCoursesScreen({ scrollToAnchor: false });
+      showLandScreen("screen-all-courses");
+      requestAnimationFrame(() => scrollAllCoursesToAnchor({ smooth: false }));
+    });
+    $("#btn-course-detail-start").addEventListener("click", () => openClassroomDemo("course-detail"));
+    $("#btn-go-class").addEventListener("click", () => openClassroomDemo("class-home"));
   </script>
 </body>
 </html>
