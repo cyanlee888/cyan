@@ -46,7 +46,7 @@
       text-align: center;
     }
     .device-wrap.portrait { width: min(390px, 100%); }
-    .device-wrap.landscape { width: min(960px, 100%); margin-top: 12px; }
+    .device-wrap.landscape { width: min(960px, 100%); }
     .device {
       background: var(--surface);
       border-radius: 28px;
@@ -2657,177 +2657,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.1.0 · Landscape login to Class flow demo</p>
-
-  <div class="device-wrap portrait" id="wrap-portrait" style="display:none">
-    <div class="device portrait" id="device-portrait">
-      <section class="screen" id="screen-welcome">
-        <div class="welcome-hero">
-          <div class="carousel-frame" id="carousel-frame"></div>
-          <div class="carousel-dots" id="carousel-dots"></div>
-        </div>
-        <div class="welcome-copy">
-          <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.12rem">Practice English with an AI teacher who listens.</h1>
-          <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
-        </div>
-        <div class="foot-actions welcome-foot">
-          <button type="button" class="btn btn-primary" id="btn-get-started">Get started</button>
-          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I already have an account</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-purpose">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body dino-guide">
-          <div class="dino-wrap" id="dino-purpose"></div>
-          <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions so we can shape <strong>personalized learning content</strong> that fits you well.</p>
-          </div>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-purpose-continue">Continue</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-name">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-purpose">Back</button>
-          <span class="step-label">Step 1 of 4</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">What's your name?</h1>
-          <p class="hint">We'll use it when we talk in class and in the app—so we can call you by name.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your name" autocomplete="name" maxlength="32" />
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-name-continue">Continue</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-age">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-name">Back</button>
-          <span class="step-label">Step 2 of 4</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">Which age group fits you best?</h1>
-          <p class="hint">This helps us match the right course level.</p>
-          <div class="option-list" id="age-options"></div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-age-value">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-age">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body">
-          <div class="illo-slot value-illo-slot" id="illo-age-value"></div>
-          <div class="age-value-hero">
-            <span class="age-badge" id="age-badge">Ages 9–12</span>
-            <h1 class="title" id="age-value-h1" style="font-size:1.1rem"></h1>
-            <p class="sub" id="age-value-h2"></p>
-          </div>
-          <ul class="bullets" id="age-value-bullets"></ul>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-age-value-continue">Continue</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-level">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-age-value">Back</button>
-          <span class="step-label">Step 3 of 4</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">How much English do you know today?</h1>
-          <p class="hint">We'll pick a comfortable starting point.</p>
-          <div class="option-list" id="level-options"></div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-goal">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-level">Back</button>
-          <span class="step-label">Step 4 of 4</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">What's your main goal right now?</h1>
-          <p class="hint">We'll recommend your first lesson based on this.</p>
-          <div class="option-list" id="goal-options"></div>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-goal-value">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body">
-          <div class="illo-slot value-illo-slot" id="illo-goal-value"></div>
-          <span class="chosen-tag" id="goal-chosen"></span>
-          <h1 class="title" id="goal-value-h1"></h1>
-          <p class="sub" id="goal-value-h2"></p>
-          <ul class="bullets" id="goal-value-bullets"></ul>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-goal-value-continue">Continue</button>
-        </div>
-      </section>
-
-      <section class="screen" id="screen-loading">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal-value">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="loading-body">
-          <div class="loading-dino" id="loading-dino"></div>
-          <svg class="progress-ring" viewBox="0 0 88 88" aria-hidden="true">
-            <circle class="track" cx="44" cy="44" r="36" fill="none" stroke-width="8"/>
-            <circle class="fill" id="loading-ring" cx="44" cy="44" r="36" fill="none" stroke-width="8"
-              stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
-          </svg>
-          <p class="loading-status" id="loading-status">Creating your plan…</p>
-          <p class="loading-sub">This usually takes a few seconds</p>
-        </div>
-      </section>
-
-      <section class="screen active" id="screen-login">
-        <div class="top-bar">
-          <button type="button" class="btn-back" id="btn-login-back">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body login-block">
-          <div class="illo-slot" id="illo-login"></div>
-          <div class="logo">Dino English</div>
-          <div class="chip-row" id="login-chips"></div>
-          <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
-          <div class="login-oauth-stack">
-            <button type="button" class="btn btn-oauth" id="btn-login-apple">
-              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
-              Continue with Apple
-            </button>
-            <button type="button" class="btn btn-oauth" id="btn-login-google">
-              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.88l2.84 2.2c1.7-1.57 2.68-3.88 2.68-6.58z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.61-5.12-3.77H.96v2.27C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.88 10.75A5.41 5.41 0 0 1 3.7 9c0-.62.11-1.22.18-1.75v-2.27H.96A8.96 8.96 0 0 0 0 9c0 1.45.35 2.82.96 4.02l2.92-2.27z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.22.57 2.73 1.05l1.99-1.94C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.98L3.88 7.25C4.6 5.09 6.62 3.58 9 3.58z"/></svg>
-              Continue with Google
-            </button>
-          </div>
-        </div>
-        <div class="foot-actions">
-          <p style="font-size:0.65rem;text-align:center;color:var(--ink-muted)">Service Terms & Privacy Policy</p>
-        </div>
-      </section>
-    </div>
-  </div>
+  <p class="demo-bar">V1.1.0 · Landscape login → Class flow (no portrait onboarding)</p>
 
   <div class="device-wrap landscape" id="wrap-landscape">
     <div class="device landscape" id="device-landscape">
@@ -3067,9 +2897,7 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { name: "", goal: null, goalLabel: "", age: "", level: "", teacherId: "kym", skipOnboarding: false, hasStartedClass: false, currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
-    const TOTAL_STEPS = 4;
-    const RING_LEN = 226.2;
+    const profile = { name: "", teacherId: "kym", hasStartedClass: false, currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     let teacherFlowMode = "onboarding";
 
     const DINO_ASSET = "assets/dino-mascot.png";
@@ -3143,20 +2971,6 @@
       },
     ];
 
-    const AGE_VALUE_PAGES = {
-      "3–5": { h1: "English built for ages 3–5", h2: "We specialize in content and teaching methods for this age—gentle, playful, and parent-trusted.", bullets: ["Courses designed only for early learners", "Professional pacing for little ones", "AI teacher trained for young children"] },
-      "6–8": { h1: "Made for kids ages 6–8", h2: "Our curriculum team focuses on this stage—school readiness, speaking, and confidence.", bullets: ["Dedicated Level paths for 6–8", "Teachers and topics that fit their world", "Trusted by families at this age"] },
-      "9–12": { h1: "Designed for ages 9–12", h2: "We provide learning content and live classes tailored to pre-teens—not generic one-size-fits-all.", bullets: ["Age-specific lessons and reports", "Speaking practice that matches their level", "Built for this group, professionally"] },
-      "13–17": { h1: "Built for teens 13–17", h2: "Serious dialogue, school-aligned skills, and topics teens actually care about.", bullets: ["Specialized teen curriculum", "Not babyish—real classroom English", "Support for exams and daily use"] },
-      "18+": { h1: "Plans for adult learners", h2: "Flexible, professional English learning—personalized to your level and goals.", bullets: ["Adult-appropriate lessons", "Learn on your schedule", "Clear structured progress"] },
-    };
-
-    const LOADING_LINES = [
-      (p) => `Hi ${p.name || "there"}—matching courses for ages ${p.age}…`,
-      (p) => `Finding the right Level for ${p.name || "you"}…`,
-      () => "Choosing your AI teacher…",
-      (p) => `Building ${p.name ? p.name + "'s" : "your"} first lesson…`,
-    ];
     const COURSE_LIBRARY = [
       {
         id: "level-1",
@@ -3334,30 +3148,6 @@
       if (state === "Completed") return "Completed";
       if (state === "InProgress") return "In progress";
       return "Not started";
-    }
-
-    function initCarousel() {
-      const frame = $("#carousel-frame");
-      const dots = $("#carousel-dots");
-      ILLUSTRATIONS.welcome.forEach((slide, i) => {
-        const el = document.createElement("div");
-        el.className = "carousel-slide" + (i === 0 ? " on" : "");
-        el.innerHTML = `<div class="slide-visual">${slide.visual}</div><div class="slide-text"><h3>${slide.title}</h3><p>${slide.desc}</p></div>`;
-        frame.appendChild(el);
-        const dot = document.createElement("span");
-        if (i === 0) dot.className = "on";
-        dots.appendChild(dot);
-      });
-      let idx = 0;
-      setInterval(() => {
-        idx = (idx + 1) % 3;
-        frame.querySelectorAll(".carousel-slide").forEach((el, i) => el.classList.toggle("on", i === idx));
-        dots.querySelectorAll("span").forEach((el, i) => el.classList.toggle("on", i === idx));
-      }, 4500);
-    }
-
-    function showPortraitScreen(id) {
-      $$("#device-portrait .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
 
     function getTeacher() {
@@ -3540,157 +3330,9 @@
       });
     }
 
-    $("#dino-purpose").innerHTML = DINO_CHAR;
-    $("#loading-dino").innerHTML = DINO_CHAR;
-    $("#illo-login").innerHTML = ILLUSTRATIONS.login;
     $("#illo-login-landscape").innerHTML = ILLUSTRATIONS.login;
     renderClassTeacherVisual();
     renderTeacherCards();
-    initCarousel();
-
-    $$(".btn-back[data-back]").forEach((btn) => {
-      btn.addEventListener("click", () => showPortraitScreen(btn.dataset.back));
-    });
-
-    const GOALS = [
-      { key: "speak_confidence", label: "Speak more confidently" },
-      { key: "structured_progress", label: "Follow a clear learning path" },
-      { key: "school_exam", label: "Keep up with school / tests" },
-      { key: "daily_communication", label: "Use English in daily life" },
-      { key: "listening_habit", label: "Build listening habit" },
-    ];
-    const VALUE_PAGES = {
-      speak_confidence: { h1: "We'll help you speak—not just listen", h2: "Your AI teacher asks questions and waits for your answer.", bullets: ["Practice speaking every lesson", "Get instant feedback", "Build confidence step by step"] },
-      structured_progress: { h1: "A clear path from Lesson 1 onward", h2: "Level by level, with progress you can see.", bullets: ["Structured curriculum", "Recommended next lesson", "Reports after class"] },
-      school_exam: { h1: "Lessons that fit school expectations", h2: "Practice speaking and key skills in each unit.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
-      daily_communication: { h1: "English you'll actually use", h2: "Role-play and dialogue in every class.", bullets: ["Real-life topics", "Speak in class", "Short practice after class"] },
-      listening_habit: { h1: "Listening helps—but speaking locks it in", h2: "We'll start with a short interactive class; use Listen anytime after.", bullets: ["Start with a live lesson", "Add listening on your schedule", "One app, two habits"] },
-    };
-    const LOGIN_COPY = {
-      speak_confidence: "Save your plan and start speaking in class",
-      structured_progress: "Save your learning path and start Lesson 1",
-      school_exam: "Save your plan and start your first lesson",
-      daily_communication: "Save your plan and start your first lesson",
-      listening_habit: "Save your plan and start your first class",
-      default: "Save your plan and continue",
-    };
-    const AGES = ["3–5", "6–8", "9–12", "13–17", "18+"];
-    const LEVELS = ["I'm just starting", "I know some words", "I can have simple conversations", "I'm intermediate or above"];
-    function fillAgeValuePage() {
-      const v = AGE_VALUE_PAGES[profile.age] || AGE_VALUE_PAGES["9–12"];
-      $("#illo-age-value").innerHTML = ILLUSTRATIONS.ageValue[profile.age] || ILLUSTRATIONS.ageValue["9–12"];
-      $("#age-badge").textContent = profile.age === "18+" ? "Ages 18+" : `Ages ${profile.age}`;
-      $("#age-value-h1").textContent = v.h1;
-      $("#age-value-h2").textContent = v.h2;
-      $("#age-value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
-    }
-
-    function startLoadingSequence() {
-      showPortraitScreen("screen-loading");
-      const ring = $("#loading-ring");
-      const status = $("#loading-status");
-      let progress = 0;
-      let lineIdx = 0;
-      status.textContent = LOADING_LINES[0](profile);
-      const tick = setInterval(() => {
-        progress += 2;
-        ring.setAttribute("stroke-dashoffset", String(RING_LEN * (1 - progress / 100)));
-        if (progress % 24 === 0 && lineIdx < LOADING_LINES.length - 1) {
-          lineIdx += 1;
-          status.textContent = LOADING_LINES[lineIdx](profile);
-        }
-        if (progress >= 100) {
-          clearInterval(tick);
-          fillLogin();
-          setTimeout(() => showPortraitScreen("screen-login"), 400);
-        }
-      }, 70);
-    }
-
-    function renderOptions(container, items, onPick) {
-      container.innerHTML = items.map((item) => {
-        const val = typeof item === "string" ? item : item.key;
-        const label = typeof item === "string" ? item : item.label;
-        return `<button type="button" class="option-btn" data-val="${val}">${label}</button>`;
-      }).join("");
-      container.querySelectorAll(".option-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          container.querySelectorAll(".option-btn").forEach((b) => b.classList.remove("selected"));
-          btn.classList.add("selected");
-          onPick(btn.dataset.val, btn.textContent.trim());
-        });
-      });
-    }
-    function fillGoalValuePage() {
-      const v = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
-      $("#goal-chosen").textContent = profile.goalLabel;
-      $("#goal-value-h1").textContent = v.h1;
-      $("#goal-value-h2").textContent = v.h2;
-      $("#goal-value-bullets").innerHTML = v.bullets.map((b) => `<li>${b}</li>`).join("");
-      $("#illo-goal-value").innerHTML = ILLUSTRATIONS.goalValue[profile.goal] || ILLUSTRATIONS.goalValue.speak_confidence;
-    }
-    function fillLogin() {
-      const first = profile.name ? profile.name.split(" ")[0] : "";
-      $("#login-dynamic").textContent = first
-        ? `${LOGIN_COPY[profile.goal] || LOGIN_COPY.default}`.replace("your plan", `${first}'s plan`)
-        : (LOGIN_COPY[profile.goal] || LOGIN_COPY.default);
-      const chips = [];
-      if (profile.name) chips.push(profile.name);
-      if (profile.age) chips.push(`Ages ${profile.age}`);
-      if (profile.goalLabel) chips.push(profile.goalLabel);
-      $("#login-chips").innerHTML = chips.map((c) => `<span class="chip">${c}</span>`).join("");
-    }
-
-    $("#btn-get-started").addEventListener("click", () => {
-      profile.skipOnboarding = false;
-      showPortraitScreen("screen-purpose");
-    });
-    $("#btn-has-account-welcome").addEventListener("click", () => {
-      profile.skipOnboarding = true;
-      fillLogin();
-      showPortraitScreen("screen-login");
-    });
-    $("#btn-purpose-continue").addEventListener("click", () => showPortraitScreen("screen-name"));
-    $("#btn-name-continue").addEventListener("click", () => {
-      const name = $("#input-name").value.trim();
-      if (!name) { $("#input-name").focus(); return; }
-      profile.name = name;
-      showPortraitScreen("screen-age");
-    });
-    $("#btn-age-value-continue").addEventListener("click", () => showPortraitScreen("screen-level"));
-    $("#btn-goal-value-continue").addEventListener("click", () => startLoadingSequence());
-
-    $("#btn-login-back").addEventListener("click", () => {
-      if (!profile.name && !profile.age && !profile.goal && !profile.level) {
-        showPortraitScreen("screen-welcome");
-        return;
-      }
-      showPortraitScreen(profile.skipOnboarding ? "screen-welcome" : "screen-loading");
-    });
-
-    renderOptions($("#age-options"), AGES, (val) => {
-      profile.age = val;
-      fillAgeValuePage();
-      setTimeout(() => showPortraitScreen("screen-age-value"), 320);
-    });
-    renderOptions($("#level-options"), LEVELS, (val) => {
-      profile.level = val;
-      setTimeout(() => showPortraitScreen("screen-goal"), 200);
-    });
-    renderOptions($("#goal-options"), GOALS, (key, label) => {
-      profile.goal = key;
-      profile.goalLabel = label;
-      fillGoalValuePage();
-      setTimeout(() => showPortraitScreen("screen-goal-value"), 320);
-    });
-
-    function enterLandscape() {
-      $("#wrap-portrait").style.display = "none";
-      $("#wrap-landscape").style.display = "block";
-      const hint = $("#rotate-hint");
-      hint.classList.add("show");
-      setTimeout(() => hint.classList.remove("show"), 1600);
-    }
     function showLandScreen(id) {
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
@@ -3725,12 +3367,8 @@
       $("#course-preview-sentence").textContent = currentCourse.sentence;
     }
     function onLoginSuccess() {
-      $("#wrap-portrait").style.display = "none";
-      $("#wrap-landscape").style.display = "block";
       openTeacherPicker("onboarding");
     }
-    $("#btn-login-apple").addEventListener("click", onLoginSuccess);
-    $("#btn-login-google").addEventListener("click", onLoginSuccess);
     $("#btn-login-apple-land").addEventListener("click", onLoginSuccess);
     $("#btn-login-google-land").addEventListener("click", onLoginSuccess);
     function fillClassTab() {
