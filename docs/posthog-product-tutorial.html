@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PostHog 产品平台快速上手教程</title>
+  <meta name="description" content="面向业务、产品和运营同学的 PostHog 主要功能快速上手教程，默认平台已完成接入，不包含大模型测评相关内容。" />
+  <style>
+    :root {
+      --bg: #f7f3ea;
+      --paper: #fffaf0;
+      --ink: #221a12;
+      --muted: #736657;
+      --line: #e3d4bd;
+      --accent: #f05a28;
+      --accent-dark: #9f2f16;
+      --accent-soft: #ffe2d3;
+      --green: #1f7a4d;
+      --green-soft: #e3f4e9;
+      --blue: #255c99;
+      --blue-soft: #e5f0ff;
+      --purple: #6d46a6;
+      --purple-soft: #eee6ff;
+      --shadow: 0 22px 70px rgba(62, 39, 14, 0.12);
+      --radius: 22px;
+      --font: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: var(--font);
+      line-height: 1.72;
+      background:
+        radial-gradient(circle at 8% 8%, rgba(240, 90, 40, 0.18), transparent 28rem),
+        radial-gradient(circle at 88% 18%, rgba(37, 92, 153, 0.13), transparent 26rem),
+        linear-gradient(135deg, #fff7e8 0%, var(--bg) 42%, #f0eadf 100%);
+      background-attachment: fixed;
+    }
+
+    a { color: var(--accent-dark); }
+    code {
+      border: 1px solid #eadcc8;
+      border-radius: 7px;
+      background: #fff4df;
+      padding: 0.12rem 0.35rem;
+      font-size: 0.9em;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(146, 92, 45, 0.2);
+      border-radius: 32px;
+      padding: clamp(1.4rem, 4vw, 3.2rem);
+      background:
+        linear-gradient(120deg, rgba(255, 250, 240, 0.96), rgba(255, 244, 225, 0.88)),
+        repeating-linear-gradient(90deg, rgba(34, 26, 18, 0.04) 0 1px, transparent 1px 62px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 360px;
+      height: 360px;
+      border-radius: 46% 54% 39% 61%;
+      background: rgba(240, 90, 40, 0.16);
+      filter: blur(2px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 0.45rem;
+      align-items: center;
+      border: 1px solid rgba(240, 90, 40, 0.28);
+      border-radius: 999px;
+      background: #fff4df;
+      padding: 0.35rem 0.7rem;
+      color: var(--accent-dark);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 1rem 0 0.85rem;
+      font-size: clamp(2.1rem, 6vw, 4.8rem);
+      line-height: 1.03;
+      letter-spacing: -0.06em;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 1.45rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 0.78rem 1rem;
+      text-decoration: none;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      color: #fffaf0;
+      box-shadow: 0 12px 28px rgba(240, 90, 40, 0.24);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--accent-dark);
+    }
+
+    .note {
+      margin-top: 1.2rem;
+      border: 1px solid #f1c988;
+      border-radius: 18px;
+      background: #fff7dc;
+      padding: 0.95rem 1rem;
+      color: #6f4b12;
+      font-size: 0.94rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .section {
+      margin-top: 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.86);
+      box-shadow: 0 10px 30px rgba(62, 39, 14, 0.07);
+      padding: clamp(1rem, 3vw, 1.55rem);
+    }
+
+    .section h2 {
+      margin: 0 0 0.85rem;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      line-height: 1.18;
+      letter-spacing: -0.035em;
+    }
+
+    .section > p {
+      margin-top: 0;
+      color: var(--muted);
+    }
+
+    .toc {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .toc a,
+    .mini-card {
+      display: block;
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: rgba(255, 255, 255, 0.62);
+      padding: 0.95rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .toc strong,
+    .mini-card strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.98rem;
+    }
+
+    .toc span,
+    .mini-card span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 0.9rem;
+      padding: 1rem 0;
+      border-top: 1px dashed #d9c8ae;
+    }
+
+    .step:first-child { border-top: 0; padding-top: 0.2rem; }
+    .badge {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 0.25rem;
+      font-size: 1.05rem;
+    }
+
+    .step p { margin: 0 0 0.55rem; color: var(--muted); }
+    .step ul { margin: 0.2rem 0 0; padding-left: 1.2rem; }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid #d7c4a9;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 18px 38px rgba(62, 39, 14, 0.12);
+    }
+
+    .panel-bar {
+      display: flex;
+      gap: 0.35rem;
+      align-items: center;
+      border-bottom: 1px solid #eadcc8;
+      background: #fff4df;
+      padding: 0.7rem 0.8rem;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e66b43;
+      box-shadow: 17px 0 #f5bb4f, 34px 0 #61b86f;
+    }
+
+    .panel-body { padding: 1rem; }
+    .chart {
+      height: 150px;
+      border-radius: 15px;
+      background:
+        linear-gradient(to top, rgba(240, 90, 40, 0.14), transparent 72%),
+        repeating-linear-gradient(to right, transparent 0 48px, rgba(34, 26, 18, 0.06) 49px 50px),
+        repeating-linear-gradient(to top, transparent 0 38px, rgba(34, 26, 18, 0.05) 39px 40px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart svg { width: 100%; height: 100%; display: block; }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.8rem; }
+    .pill {
+      border-radius: 999px;
+      background: #fff4df;
+      border: 1px solid #eadcc8;
+      padding: 0.32rem 0.55rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .feature {
+      border: 1px solid var(--line);
+      border-radius: 19px;
+      background: rgba(255, 255, 255, 0.68);
+      padding: 1rem;
+    }
+
+    .feature h3 {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin: 0 0 0.45rem;
+      font-size: 1.05rem;
+    }
+
+    .feature p { margin: 0 0 0.75rem; color: var(--muted); }
+    .feature ul { margin: 0; padding-left: 1.15rem; color: #44382d; }
+
+    .icon {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 900;
+      font-size: 0.86rem;
+    }
+
+    .media {
+      overflow: hidden;
+      border: 1px solid #d4c3aa;
+      border-radius: 22px;
+      background: #1d1814;
+      color: #fff7e8;
+    }
+
+    .video-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #221a12;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .media-caption {
+      padding: 1rem;
+      color: #decdb7;
+      font-size: 0.92rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #fff;
+      font-size: 0.93rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid #eadcc8;
+      padding: 0.85rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #fff1db;
+      color: #6f351f;
+      font-size: 0.86rem;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .checklist label {
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      border-top: 1px dashed #d9c8ae;
+      padding: 0.82rem 0;
+      cursor: pointer;
+    }
+
+    .checklist label:first-child { border-top: 0; }
+    .checklist input { margin-top: 0.38rem; accent-color: var(--accent); }
+    .checklist span { color: var(--muted); }
+
+    .footer {
+      margin-top: 1.15rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .grid.two,
+      .grid.three,
+      .toc { grid-template-columns: 1fr; }
+      .hero { border-radius: 24px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .hero, .section { box-shadow: none; break-inside: avoid; }
+      .video-frame { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">PostHog Product OS · 快速上手</span>
+      <h1>业务人员如何快速用起 PostHog</h1>
+      <p class="lead">
+        这份教程默认平台已经完成接入，面向产品、运营和业务同学：你需要做的是快速找到数据入口、看懂核心指标、从图表追到用户行为，再把结论沉淀成看板、反馈或需求。内容来自 PostHog 产品总览与各产品页整理，刻意不包含大模型测评相关功能。
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="#start">从业务使用路径开始</a>
+        <a class="button secondary" href="https://posthog.com/products" target="_blank" rel="noopener noreferrer">查看官方产品总览</a>
+      </div>
+      <div class="note">
+        建议使用方式：新用户按“业务使用路径”完成一次从看数到找原因的练习；已有用户按“常见任务怎么选功能”查找；培训时可以直接播放下方官方教程视频列表。
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="map-title">
+      <h2 id="map-title">一眼看懂：PostHog 能帮你做什么</h2>
+      <nav class="toc" aria-label="页面目录">
+        <a href="#start"><strong>业务使用路径</strong><span>找入口、看指标、筛选人群、保存看板</span></a>
+        <a href="#analytics"><strong>分析产品使用</strong><span>Web Analytics、Product Analytics、漏斗、路径、留存</span></a>
+        <a href="#debug"><strong>定位体验问题</strong><span>Session Replay、Error Tracking、Logs</span></a>
+        <a href="#ship"><strong>实验与反馈闭环</strong><span>Experiments、Surveys、Feature Flags、Data Platform</span></a>
+      </nav>
+    </section>
+
+    <section id="start" class="section" aria-labelledby="start-title">
+      <h2 id="start-title">业务人员 30 分钟上手路径</h2>
+      <div class="grid two">
+        <div>
+          <article class="step">
+            <div class="badge">1</div>
+            <div>
+              <h3>先进入正确项目和时间范围</h3>
+              <p>登录后确认当前项目、环境和日期范围。业务分析通常先看最近 7 天、30 天，再和上一个周期对比。</p>
+              <ul>
+                <li>如果数据明显异常，先确认是不是看错项目、环境或时间区间。</li>
+                <li>常用入口建议收藏：Dashboards、Product Analytics、Replay、Surveys。</li>
+              </ul>
+            </div>
+          </article>
+          <article class="step">
+            <div class="badge">2</div>
+            <div>
+              <h3>从现成看板了解业务现状</h3>
+              <p>先打开团队已有 Dashboard，快速回答“整体有没有变化、变化从哪里来、影响哪些用户”。</p>
+              <ul>
+                <li>先看流量、活跃、注册/购买/核心功能使用等主指标。</li>
+                <li>再按渠道、国家、设备、版本、用户类型做拆分。</li>
+              </ul>
+            </div>
+          </article>
+          <article class="step">
+            <div class="badge">3</div>
+            <div>
+              <h3>用分析工具回答具体问题</h3>
+              <p>带着问题进入 Product Analytics：趋势看变化，漏斗看转化，路径看用户怎么走，留存看用户是否回来。</p>
+            </div>
+          </article>
+          <article class="step">
+            <div class="badge">4</div>
+            <div>
+              <h3>把结论沉淀成协作材料</h3>
+              <p>把常用图表保存到 Dashboard；把异常用户保存为人群或回放列表；把不确定原因转成 Survey、实验假设或需求讨论。</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="panel" aria-label="PostHog 操作示意图">
+          <div class="panel-bar"><span class="dot" aria-hidden="true"></span></div>
+          <div class="panel-body">
+            <div class="chart" role="img" aria-label="趋势图示意">
+              <svg viewBox="0 0 640 180" aria-hidden="true">
+                <polyline points="0,138 70,118 140,126 210,82 280,96 350,52 420,68 490,34 560,42 640,18" fill="none" stroke="#f05a28" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+                <polyline points="0,154 70,148 140,142 210,135 280,124 350,118 420,108 490,102 560,91 640,82" fill="none" stroke="#255c99" stroke-width="5" stroke-linecap="round" stroke-dasharray="12 12" />
+              </svg>
+            </div>
+            <div class="pill-row">
+              <span class="pill">Traffic</span>
+              <span class="pill">Signup funnel</span>
+              <span class="pill">Replay</span>
+              <span class="pill">Dashboard</span>
+            </div>
+            <p style="margin: 1rem 0 0; color: var(--muted);">
+              PostHog 的核心价值不是单个图表，而是同一份用户行为数据能在图表、回放、实验和反馈之间互相跳转，帮助业务更快形成判断。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analytics" class="section" aria-labelledby="analytics-title">
+      <h2 id="analytics-title">主要功能一：分析产品使用</h2>
+      <div class="grid three">
+        <article class="feature">
+          <h3><span class="icon">W</span>Web Analytics</h3>
+          <p>适合先看网站和落地页表现，不需要复杂配置就能了解流量。</p>
+          <ul>
+            <li>看访问量、来源、页面、设备和地区。</li>
+            <li>定位流量下降或某页面异常波动。</li>
+            <li>从流量峰值跳到对应用户会话。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">P</span>Product Analytics</h3>
+          <p>用事件、属性和用户维度分析产品内部行为。</p>
+          <ul>
+            <li>Trends：功能使用量、活跃用户、关键事件趋势。</li>
+            <li>Funnels：注册、下单、激活等步骤转化。</li>
+            <li>Paths / Lifecycle / Retention：路径、用户阶段和留存。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">A</span>Actions 与 Dashboards</h3>
+          <p>把自动采集的原始点击整理成业务可读指标，并保存给团队复用。</p>
+          <ul>
+            <li>用 Actions 给关键行为命名。</li>
+            <li>把常用图表保存到 Dashboard。</li>
+            <li>统一指标口径，减少重复提问。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="debug" class="section" aria-labelledby="debug-title">
+      <h2 id="debug-title">主要功能二：定位体验问题</h2>
+      <div class="grid three">
+        <article class="feature">
+          <h3><span class="icon">R</span>Session Replay</h3>
+          <p>像看录像一样回看用户真实操作，理解“图表背后的原因”。</p>
+          <ul>
+            <li>筛选掉队用户、异常用户、 rage click 或特定事件。</li>
+            <li>结合事件时间线快速跳到关键时刻。</li>
+            <li>用倍速和跳过静止时间提高观看效率。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">E</span>Error Tracking</h3>
+          <p>查看用户遇到的报错，判断是否影响关键转化或近期活动效果。</p>
+          <ul>
+            <li>按错误聚合、优先处理影响用户最多的问题。</li>
+            <li>结合 Session Replay 复现用户当时做了什么。</li>
+            <li>把高影响问题同步给对应负责人，并附上链接、时间范围和受影响用户。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">L</span>Logs 与 Activity Timeline</h3>
+          <p>当你需要解释某个用户“为什么没完成操作”时，用活动轨迹补充上下文。</p>
+          <ul>
+            <li>把用户会话、事件和错误放在同一上下文里看。</li>
+            <li>记录慢页面、失败接口和控制台错误等线索。</li>
+            <li>追踪某个用户在问题前后的完整活动。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="ship" class="section" aria-labelledby="ship-title">
+      <h2 id="ship-title">主要功能三：实验、开关与反馈闭环</h2>
+      <div class="grid two">
+        <article class="feature">
+          <h3><span class="icon">F</span>Feature Flags</h3>
+          <p>业务侧通常不直接改开关，但需要理解哪些用户看到了哪个版本，方便分析效果。</p>
+          <ul>
+            <li>在图表或回放中按功能开关变体筛选用户。</li>
+            <li>观察新功能人群和未使用人群的转化、留存、反馈差异。</li>
+            <li>发现异常时，把证据同步给负责发布的同学。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">X</span>Experiments</h3>
+          <p>把业务假设做成可验证的问题，围绕主指标和护栏指标判断改动是否有效。</p>
+          <ul>
+            <li>先写清楚假设：改什么、影响谁、期待提升什么。</li>
+            <li>和项目负责人确认实验人群、成功指标和观察周期。</li>
+            <li>结合漏斗、留存和错误率判断结果。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">S</span>Surveys</h3>
+          <p>在产品内向用户提问，把定性反馈和行为数据连接起来。</p>
+          <ul>
+            <li>适合 NPS、满意度、流失原因、功能需求收集。</li>
+            <li>按用户属性或行为触发问卷。</li>
+            <li>查看回答者的行为、回放和相关指标。</li>
+          </ul>
+        </article>
+        <article class="feature">
+          <h3><span class="icon">D</span>Data Platform</h3>
+          <p>当默认图表不够用时，可以使用已整理好的数据表、SQL 或 BI 看板做更深入分析。</p>
+          <ul>
+            <li>使用团队已接入的数据库、广告、SaaS 等业务数据。</li>
+            <li>SQL、BI、Dashboards：做更灵活的分析。</li>
+            <li>把沉淀下来的人群或结果同步给运营、CRM 或客服工具。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="choose-title">
+      <h2 id="choose-title">常见任务怎么选功能</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>你想解决的问题</th>
+            <th>优先使用</th>
+            <th>推荐操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>最近访问量为什么下降？</td>
+            <td>Web Analytics + Trends</td>
+            <td>先按来源、页面、国家、设备拆分，再查看对应时间段的 Session Replay。</td>
+          </tr>
+          <tr>
+            <td>注册或购买转化卡在哪里？</td>
+            <td>Funnels + Session Replay</td>
+            <td>建立关键步骤漏斗，点击掉队人群看回放，记录卡点原因。</td>
+          </tr>
+          <tr>
+            <td>新功能表现是否健康？</td>
+            <td>Feature Flags + Dashboard</td>
+            <td>按开关变体拆分使用率、转化、错误率和反馈，判断是否需要继续观察或调整。</td>
+          </tr>
+          <tr>
+            <td>某个改版是否真的有效？</td>
+            <td>Experiments</td>
+            <td>定义主指标和护栏指标，保持实验稳定运行，避免中途随意改分流。</td>
+          </tr>
+          <tr>
+            <td>用户为什么不使用某功能？</td>
+            <td>Surveys + Product Analytics</td>
+            <td>筛选目标用户触发问卷，再结合用户历史行为和回放判断真实原因。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" aria-labelledby="media-title">
+      <h2 id="media-title">图文/视频学习资源</h2>
+      <div class="grid two">
+        <div class="media">
+          <div class="video-frame">
+            <iframe
+              src="https://www.youtube.com/embed/videoseries?list=PLnOY1RYHjDfzSAKPTLjOz_sQKx8hxlwi3"
+              title="PostHog 官方教程视频列表"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="media-caption">
+            官方 Tutorials 播放列表。培训时建议边播放边让新用户在测试项目中跟做。
+          </div>
+        </div>
+        <div class="grid">
+          <a class="mini-card" href="https://posthog.com/product-analytics" target="_blank" rel="noopener noreferrer">
+            <strong>Product Analytics 官方页</strong>
+            <span>理解趋势、漏斗、路径、留存与自动采集。</span>
+          </a>
+          <a class="mini-card" href="https://posthog.com/session-replay" target="_blank" rel="noopener noreferrer">
+            <strong>Session Replay 官方页</strong>
+            <span>学习如何从图表跳到用户真实会话。</span>
+          </a>
+          <a class="mini-card" href="https://posthog.com/feature-flags" target="_blank" rel="noopener noreferrer">
+            <strong>Feature Flags 官方页</strong>
+            <span>了解如何按版本或人群分析新功能表现。</span>
+          </a>
+          <a class="mini-card" href="https://posthog.com/experiments" target="_blank" rel="noopener noreferrer">
+            <strong>Experiments 官方页</strong>
+            <span>学习如何验证假设并评估实验结果。</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="check-title">
+      <h2 id="check-title">业务人员日常使用清单</h2>
+      <div class="checklist">
+        <label><input type="checkbox" /> <span>每次分析先确认项目、环境、日期范围和对比周期。</span></label>
+        <label><input type="checkbox" /> <span>先看团队已有 Dashboard，再决定是否新建分析，避免重复口径。</span></label>
+        <label><input type="checkbox" /> <span>遇到指标变化时，至少按渠道、国家、设备、版本或用户类型拆分一次。</span></label>
+        <label><input type="checkbox" /> <span>看到漏斗掉队或异常峰值时，打开对应人群的 Session Replay 看真实行为。</span></label>
+        <label><input type="checkbox" /> <span>需要他人跟进的问题，附上图表链接、筛选条件、时间范围和 2 到 3 个典型回放。</span></label>
+        <label><input type="checkbox" /> <span>常用分析保存到 Dashboard，并在标题或描述里写清楚指标口径。</span></label>
+        <label><input type="checkbox" /> <span>无法从行为数据判断原因时，补充 Survey 或用户访谈问题。</span></label>
+      </div>
+    </section>
+
+    <p class="footer">
+      本教程为快速入门材料，适合作为团队内部培训页。最后更新：2026-05-29。
+    </p>
+  </main>
+</body>
+</html>
