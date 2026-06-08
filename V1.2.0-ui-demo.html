@@ -3876,6 +3876,7 @@
     .pw-cta { margin-top: 8px; }
     .pw-legal { font-size: 0.68rem; color: #8aa; text-align: center; line-height: 1.4; margin: 0; }
     .pw-legal a { color: #2a6db0; }
+    .pw-renewal { color: #6f889f; }
 
     /* ---------- Membership center (V1.2.0) ---------- */
     .ms-body { flex: 1; padding: 4px 26px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
@@ -4440,17 +4441,17 @@
                 <li>All vocabulary practice</li>
                 <li>All English radio (FM)</li>
                 <li>Learning report after every lesson</li>
-                <li>One subscription · cancel anytime</li>
+                <li>One subscription unlocks every section</li>
               </ul>
-              <p class="pw-trust">Cancel anytime · no tricks</p>
+              <p class="pw-trust">Secure App Store checkout</p>
             </div>
             <div class="pw-right">
               <div class="pw-plans" id="pw-plans"></div>
               <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
               <p class="pw-legal">
-                You agree to our
+                <span class="pw-renewal">Auto-renews · cancel anytime</span> ·
                 <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
-                and
+                ·
                 <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
               </p>
             </div>
@@ -5791,7 +5792,7 @@
     // same subscription group and are already built on the backend — they are simply
     // not surfaced on the MVP paywall, so re-enabling them later is zero-rework.
     const PLANS = [
-      { id: "weekly", name: "Weekly", price: "$8.99 / week", per: "$8.99/week", note: "Auto-renews · cancel anytime", hero: true },
+      { id: "weekly", name: "Weekly", price: "$8.99 / week", per: "$8.99/week", note: "Weekly access", hero: true },
       // Not exposed on MVP paywall (same subscription group, backend ready):
       // { id: "monthly", name: "Monthly", price: "$37.99 / month", per: "$37.99/month", note: "Billed monthly" },
       // { id: "annual",  name: "Annual",  price: "$229.99 / year", per: "$229.99/year", note: "Best long-term value", badge: "Best value" },
