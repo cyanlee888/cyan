@@ -189,6 +189,11 @@
       transition: transform 0.12s, background 0.15s;
     }
     .btn:active { transform: scale(0.98); }
+    .btn:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+      transform: none;
+    }
     .btn-primary {
       background: var(--forest-mid);
       color: #fff;
@@ -3822,6 +3827,9 @@
     .login-oauth-stack { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 8px; }
     .btn-oauth { display: flex; align-items: center; justify-content: center; gap: 10px; border: 2px solid #d6e4f0; background: #fff; border-radius: 14px; padding: 13px; font-size: 0.92rem; font-weight: 700; color: #1f2d3d; cursor: pointer; }
     .btn-oauth:hover { border-color: #19c3b2; }
+    .login-portrait-legal { margin: 0 auto; max-width: 280px; font-size: 0.65rem; line-height: 1.5; text-align: center; color: var(--ink-muted); }
+    .login-portrait-legal a { color: #2a6db0; font-weight: 600; text-decoration: none; }
+    .login-portrait-legal a:hover { text-decoration: underline; }
 
     /* ---------- Locked course CTA (V1.2.0) ---------- */
     .course-cta-locked { display: inline-flex; align-items: center; gap: 7px; border: none; border-radius: 999px; padding: 10px 18px; font-size: 0.9rem; font-weight: 700; cursor: pointer; background: linear-gradient(135deg,#ffd36b,#ff9f43); color: #6b3b00; box-shadow: 0 8px 18px rgba(255,159,67,.35); }
@@ -3882,6 +3890,29 @@
     .ms-benefits-list li::before { content: "✓"; position: absolute; left: 0; color: #19c3b2; font-weight: 800; }
     .ms-actions { display: flex; flex-direction: column; gap: 10px; }
 
+    /* ---------- Profile detail / edit (V1.2.0) ---------- */
+    .pd-view { display: flex; flex-direction: column; gap: 10px; }
+    .pd-field { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 16px; background: #fff; border: 1px solid #e4ecf3; border-radius: 14px; }
+    .pd-field-label { font-size: 0.8rem; color: #5a7a98; font-weight: 700; }
+    .pd-field-value { font-size: 0.9rem; color: #1f3a52; font-weight: 600; text-align: right; }
+    .pd-field-value.is-empty { color: #9bb0c2; font-weight: 500; }
+    .pd-edit { display: flex; flex-direction: column; gap: 16px; }
+    .pd-edit-group { display: flex; flex-direction: column; }
+    .pd-edit-label { font-size: 0.74rem; font-weight: 800; color: #5a7a98; text-transform: uppercase; letter-spacing: .4px; margin: 0 0 8px; }
+    .pd-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pd-pill { padding: 8px 14px; border-radius: 999px; border: 1.5px solid #cdd9e4; background: #fff; font-size: 0.84rem; color: #34506a; cursor: pointer; transition: .15s ease; }
+    .pd-pill.is-selected { border-color: #19c3b2; background: #e6faf6; color: #0f7d70; font-weight: 700; }
+    .pd-stack { display: flex; flex-direction: column; gap: 8px; }
+    .pd-stack .pd-pill { text-align: left; }
+    .pd-input { width: 100%; box-sizing: border-box; padding: 11px 14px; border-radius: 12px; border: 1.5px solid #cdd9e4; font-size: 0.9rem; color: #1f3a52; }
+    .pd-input:focus { outline: none; border-color: #19c3b2; }
+    .pd-confirm-overlay { position: absolute; inset: 0; background: rgba(15,40,60,.45); display: flex; align-items: center; justify-content: center; z-index: 60; }
+    .pd-confirm-overlay[hidden] { display: none; }
+    .pd-confirm-box { background: #fff; border-radius: 18px; padding: 22px; width: 78%; max-width: 320px; box-shadow: 0 20px 50px rgba(0,0,0,.25); }
+    .pd-confirm-title { font-size: 1.05rem; font-weight: 800; color: #143a5e; margin: 0 0 6px; }
+    .pd-confirm-desc { font-size: 0.84rem; color: #5a7a98; margin: 0 0 18px; }
+    .pd-confirm-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
     /* ---------- Purchase toast (V1.2.0) ---------- */
     .pay-toast { position: absolute; left: 50%; bottom: 30px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #143a5e; color: #fff; font-size: 0.86rem; font-weight: 700; padding: 12px 20px; border-radius: 999px; box-shadow: 0 14px 30px rgba(20,58,94,.4); transition: .3s ease; z-index: 50; }
     .pay-toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -3899,7 +3930,7 @@
         </div>
         <div class="welcome-copy">
           <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.12rem">Practice English with an AI teacher who listens.</h1>
+          <h1 class="title" style="font-size:1.12rem">Meet your AI English teacher</h1>
           <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
         </div>
         <div class="foot-actions welcome-foot">
@@ -4017,6 +4048,9 @@
           <p class="hint">We'll recommend the first lesson based on this.</p>
           <div class="option-list" id="goal-options"></div>
         </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-goal-continue" disabled>Continue</button>
+        </div>
       </section>
 
       <section class="screen" id="screen-goal-value">
@@ -4075,7 +4109,12 @@
           </div>
         </div>
         <div class="foot-actions">
-          <p style="font-size:0.65rem;text-align:center;color:var(--ink-muted)">Service Terms &amp; Privacy Policy</p>
+          <p class="login-portrait-legal">
+            You agree to our
+            <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
+            and
+            <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
+          </p>
         </div>
       </section>
     </div>
@@ -4110,8 +4149,8 @@
               </button>
             </div>
             <p class="login-land-legal">
-              You agree to
-              <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">our Terms of Use</a>
+              You agree to our
+              <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
               and
               <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
             </p>
@@ -4213,6 +4252,17 @@
                   </div>
                   <div class="profile-divider" aria-hidden="true"></div>
                   <nav class="profile-menu" aria-label="Profile menu">
+                    <button type="button" class="profile-menu-item" id="btn-profile-detail">
+                      <span class="profile-menu-item-main">
+                        <span class="profile-menu-icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#2D6B45" stroke-width="1.7"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6" stroke="#2D6B45" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <span class="profile-menu-label">My profile</span>
+                      </span>
+                      <span class="profile-menu-right">
+                        <span class="profile-menu-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M6 12.5L10.5 8 6 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                      </span>
+                    </button>
                     <button type="button" class="profile-menu-item" id="btn-profile-language">
                       <span class="profile-menu-item-main">
                         <span class="profile-menu-icon" aria-hidden="true">
@@ -4397,9 +4447,11 @@
             <div class="pw-right">
               <div class="pw-plans" id="pw-plans"></div>
               <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
-              <p class="pw-legal"><span id="pw-legal-line">Auto-renews · cancel anytime.</span>
-                <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms</a> ·
-                <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy</a>
+              <p class="pw-legal">
+                You agree to our
+                <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
+                and
+                <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
               </p>
             </div>
           </div>
@@ -4417,13 +4469,37 @@
             <div class="ms-benefits">
               <p class="ms-benefits-title">Premium includes</p>
               <ul class="ms-benefits-list">
-                <li>Unlock all current AI live lessons</li>
-                <li>Monthly fair-use on live AI classes</li>
-                <li>Full Practice &amp; Radio access</li>
-                <li>Learning reports after every class</li>
+                <li>All AI speaking lessons</li>
+                <li>All Practice vocabulary</li>
+                <li>All Radio stories</li>
+                <li>All lesson reports</li>
               </ul>
             </div>
             <div class="ms-actions" id="ms-actions"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen app-shell" id="screen-profile-detail">
+        <div class="ms-shell">
+          <div class="ms-head">
+            <button type="button" class="btn-back-land" id="btn-pd-back">Back</button>
+            <span class="ms-head-title">My profile</span>
+          </div>
+          <div class="ms-body">
+            <div class="pd-view" id="pd-view"></div>
+            <div class="pd-edit" id="pd-edit" hidden></div>
+            <div class="ms-actions" id="pd-actions"></div>
+          </div>
+        </div>
+        <div class="pd-confirm-overlay" id="pd-confirm" hidden>
+          <div class="pd-confirm-box">
+            <p class="pd-confirm-title">Save changes?</p>
+            <p class="pd-confirm-desc">Update your profile with the new details?</p>
+            <div class="pd-confirm-actions">
+              <button type="button" class="btn btn-text" id="pd-confirm-cancel">Cancel</button>
+              <button type="button" class="btn btn-primary" id="pd-confirm-ok">Confirm</button>
+            </div>
           </div>
         </div>
       </section>
@@ -4433,10 +4509,15 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, premiumUnlocked: false, selectedPlan: "weekly", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-2" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goals: [], goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "weekly", nextBillingDate: "Jul 8, 2026", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
     let teacherFlowMode = "onboarding";
+    // Post-login forced info collection: set when a user who took the
+    // "I already have an account" shortcut logs in without a profile yet
+    // (simulates a new account / register). Show Dino's purpose page first,
+    // then collect questions only and continue to class.
+    let postLoginInfo = false;
 
     const DINO_ASSET = "assets/dino-mascot.png";
     const DINO_CHAR = `<img src="${DINO_ASSET}" alt="" class="dino-mascot" width="96" height="96" decoding="async" />`;
@@ -4692,8 +4773,12 @@
 
     function isCourseLocked(course) {
       if (profile.premiumUnlocked) return false;
-      const state = getLessonState(course.levelId, course.unitId, course.lessonId);
-      return state === "NotStarted";
+      // Free tier opens exactly ONE lesson: the first lesson in the path.
+      // Everything from the second lesson onward stays locked until purchase.
+      const sequence = getCurrentLevelCourseSequence();
+      if (!sequence.length) return false;
+      const firstKey = makeCourseKey(sequence[0].levelId, sequence[0].unitId, sequence[0].lessonId);
+      return makeCourseKey(course.levelId, course.unitId, course.lessonId) !== firstKey;
     }
 
     function renderCourseListMeta(course, isAnchored) {
@@ -4945,7 +5030,27 @@
       if (portrait) portrait.style.display = "none";
       if (landscape) landscape.style.display = "";
     }
+    function finishPostLoginInfo() {
+      postLoginInfo = false;
+      profile.profileComplete = true;
+      enterLandscape();
+      openTeacherPicker("onboarding");
+    }
     function onLoginSuccess() {
+      // New account with no profile yet (entered via "I already have an account"
+      // but never went through Onboarding) → force questions-only info collection
+      // after Dino's purpose page (no value pages or Loading), then class.
+      if (profile.skipOnboarding && !profile.profileComplete) {
+        postLoginInfo = true;
+        const landscape = $("#wrap-landscape");
+        const portrait = $("#wrap-portrait");
+        if (landscape) landscape.style.display = "none";
+        if (portrait) portrait.style.display = "";
+        applyVoiceWording();
+        showPortraitScreen("screen-purpose");
+        return;
+      }
+      profile.profileComplete = true;
       enterLandscape();
       openTeacherPicker("onboarding");
     }
@@ -5338,6 +5443,8 @@
           const portrait = $("#wrap-portrait");
           if (landscape) landscape.style.display = "none";
           if (portrait) portrait.style.display = "";
+          postLoginInfo = false;
+          profile.skipOnboarding = false;
           setHubTab("class");
           showPortraitScreen("screen-welcome");
         }
@@ -5573,6 +5680,35 @@
       });
     }
 
+    function renderGoalOptions() {
+      const box = $("#goal-options");
+      const next = $("#btn-goal-continue");
+      if (!box) return;
+      box.innerHTML = GOALS.map((it) =>
+        `<button type="button" class="option-item${profile.goals.includes(it.id) ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
+      ).join("");
+      const syncGoalState = () => {
+        const selected = GOALS.filter((g) => profile.goals.includes(g.id));
+        profile.goal = selected[0]?.id || "";
+        profile.goalLabel = selected.map((g) => g.label).join(", ");
+        if (next) next.disabled = selected.length === 0;
+      };
+      box.querySelectorAll(".option-item").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.val;
+          if (profile.goals.includes(val)) {
+            profile.goals = profile.goals.filter((id) => id !== val);
+            btn.classList.remove("is-selected");
+          } else {
+            profile.goals.push(val);
+            btn.classList.add("is-selected");
+          }
+          syncGoalState();
+        });
+      });
+      syncGoalState();
+    }
+
     // Apply parent vs self wording to the name/age/level/goal question screens.
     function applyVoiceWording() {
       const v = VOICE_WORDING[profile.learner] || VOICE_WORDING.child;
@@ -5591,10 +5727,13 @@
     function initOnboarding() {
       $("#dino-purpose").innerHTML = DINO_CHAR;
       renderWhoOptions();
+      renderGoalOptions();
       applyVoiceWording();
-      renderOptions("age-options", AGES, "age", () => { fillAgeValuePage(); showPortraitScreen("screen-age-value"); });
+      renderOptions("age-options", AGES, "age", () => {
+        if (postLoginInfo) { showPortraitScreen("screen-level"); return; }
+        fillAgeValuePage(); showPortraitScreen("screen-age-value");
+      });
       renderOptions("level-options", LEVELS, "level", () => { showPortraitScreen("screen-goal"); });
-      renderOptions("goal-options", GOALS, "goal", (val, label) => { profile.goalLabel = label; fillGoalValuePage(); showPortraitScreen("screen-goal-value"); });
 
       $("#btn-get-started")?.addEventListener("click", () => { profile.skipOnboarding = false; showPortraitScreen("screen-purpose"); });
       $("#btn-has-account-welcome")?.addEventListener("click", () => { profile.skipOnboarding = true; fillLogin(); showPortraitScreen("screen-login"); });
@@ -5619,13 +5758,28 @@
         showPortraitScreen("screen-age");
       });
       $("#btn-age-value-continue")?.addEventListener("click", () => showPortraitScreen("screen-level"));
+      $("#btn-goal-continue")?.addEventListener("click", () => {
+        if (!profile.goals.length) return;
+        if (postLoginInfo) { finishPostLoginInfo(); return; }
+        fillGoalValuePage();
+        showPortraitScreen("screen-goal-value");
+      });
       $("#btn-goal-value-continue")?.addEventListener("click", startLoadingSequence);
       $("#btn-login-back")?.addEventListener("click", () => {
         if (!profile.name && !profile.age && !profile.goal && !profile.level) { showPortraitScreen("screen-welcome"); return; }
         showPortraitScreen(profile.skipOnboarding ? "screen-welcome" : "screen-goal-value");
       });
       $$("#device-portrait .btn-back[data-back]").forEach((btn) => {
-        btn.addEventListener("click", () => showPortraitScreen(btn.dataset.back));
+        btn.addEventListener("click", () => {
+          let target = btn.dataset.back;
+          if (postLoginInfo) {
+            // Questions-only collection skips the value pages, so keep Back on the
+            // purpose/who/name/age/level/goal chain and don't let it escape back past login.
+            if (target === "screen-age-value") target = "screen-age";
+            if (target === "screen-welcome") return;
+          }
+          showPortraitScreen(target);
+        });
       });
       initCarousel();
     }
@@ -5674,9 +5828,6 @@
       // Button stays price-free; the amount appears once in the price card above.
       const cta = $("#btn-paywall-purchase");
       if (cta) cta.textContent = "Subscribe now";
-      // Renewal + cancel disclosure stays for compliance, without repeating the price.
-      const legal = $("#pw-legal-line");
-      if (legal) legal.textContent = "Auto-renews · cancel anytime.";
     }
 
     function openPaywall(returnScreen, triggerSource) {
@@ -5688,6 +5839,7 @@
 
     function completePurchase() {
       profile.premiumUnlocked = true;
+      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showLandScreen(paywallReturnScreen);
       showPayToast("Premium unlocked 🎉");
@@ -5695,6 +5847,7 @@
 
     function restorePurchase() {
       profile.premiumUnlocked = true;
+      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showPayToast("Purchase restored ✓");
     }
@@ -5716,26 +5869,103 @@
       if (card) {
         if (profile.premiumUnlocked) {
           card.classList.remove("is-free");
-          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews automatically · all lessons unlocked.</p>`;
+          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews automatically · next billing date: ${profile.nextBillingDate} · all lessons unlocked.</p>`;
         } else {
           card.classList.add("is-free");
           card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Free</p><p class="ms-status-desc">First class & samples unlocked. Go Premium for the full path.</p>`;
         }
       }
       if (actions) {
+        // App does NOT manage subscriptions in-app. Subscribed users only see
+        // Restore purchase; Free users only see Subscribe now.
         actions.innerHTML = profile.premiumUnlocked
-          ? `<button type="button" class="btn btn-secondary" id="btn-ms-manage">Manage subscription</button>`
-          : `<button type="button" class="btn btn-primary" id="btn-ms-upgrade">Go Premium</button>
-             <button type="button" class="btn btn-text" id="btn-ms-restore">Restore purchase</button>`;
-        $("#btn-ms-upgrade")?.addEventListener("click", () => openPaywall("screen-membership"));
+          ? `<button type="button" class="btn btn-text" id="btn-ms-restore">Restore purchase</button>`
+          : `<button type="button" class="btn btn-primary" id="btn-ms-upgrade">Subscribe now</button>`;
+        $("#btn-ms-upgrade")?.addEventListener("click", () => openPaywall("screen-membership", "membership_entry"));
         $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
-        $("#btn-ms-manage")?.addEventListener("click", () => alert("Demo: opens store subscription management."));
       }
     }
 
     function openMembership() {
+      if (!profile.premiumUnlocked) {
+        openPaywall(activeLandScreen() || "screen-class", "membership_entry");
+        return;
+      }
       renderMembership();
       showLandScreen("screen-membership");
+    }
+
+    // ---------- Profile detail / edit (V1.2.0) ----------
+    let pdDraft = null;
+
+    function pdPills(containerId, items, selected, onPick) {
+      const box = $("#" + containerId);
+      if (!box) return;
+      box.innerHTML = items.map((it) =>
+        `<button type="button" class="pd-pill${it.id === selected ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
+      ).join("");
+      box.querySelectorAll(".pd-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          box.querySelectorAll(".pd-pill").forEach((b) => b.classList.remove("is-selected"));
+          btn.classList.add("is-selected");
+          onPick(btn.dataset.val, btn.textContent.trim());
+        });
+      });
+    }
+
+    function pdMultiPills(containerId, items, selectedIds, onChange) {
+      const box = $("#" + containerId);
+      if (!box) return;
+      const selected = new Set(selectedIds || []);
+      box.innerHTML = items.map((it) =>
+        `<button type="button" class="pd-pill${selected.has(it.id) ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
+      ).join("");
+      box.querySelectorAll(".pd-pill").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const val = btn.dataset.val;
+          if (selected.has(val)) selected.delete(val);
+          else selected.add(val);
+          if (!selected.size) selected.add(val);
+          box.querySelectorAll(".pd-pill").forEach((b) => b.classList.toggle("is-selected", selected.has(b.dataset.val)));
+          onChange([...selected]);
+        });
+      });
+    }
+
+    function renderProfileDetailEdit() {
+      const view = $("#pd-view");
+      const edit = $("#pd-edit");
+      const actions = $("#pd-actions");
+      const currentGoals = profile.goals?.length ? [...profile.goals] : (profile.goal ? [profile.goal] : []);
+      pdDraft = { name: profile.name, age: profile.age, level: profile.level, goals: currentGoals };
+      if (view) view.hidden = true;
+      if (edit) {
+        edit.hidden = false;
+        edit.innerHTML = `
+          <div class="pd-edit-group"><p class="pd-edit-label">Nickname</p><input type="text" class="pd-input" id="pd-name" maxlength="32" placeholder="Nickname" /></div>
+          <div class="pd-edit-group"><p class="pd-edit-label">Age</p><div class="pd-pills" id="pd-age"></div></div>
+          <div class="pd-edit-group"><p class="pd-edit-label">Current level</p><div class="pd-stack" id="pd-level"></div></div>
+          <div class="pd-edit-group"><p class="pd-edit-label">Learning purpose</p><div class="pd-stack" id="pd-goal"></div></div>`;
+        pdPills("pd-age", AGES.map((a) => ({ id: a, label: a })), pdDraft.age, (id) => { pdDraft.age = id; });
+        pdPills("pd-level", LEVELS.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
+        pdMultiPills("pd-goal", GOALS, pdDraft.goals, (ids) => { pdDraft.goals = ids; });
+        const nameInput = $("#pd-name");
+        if (nameInput) nameInput.value = pdDraft.name || "";
+      }
+      if (actions) {
+        actions.innerHTML = `<button type="button" class="btn btn-primary" id="btn-pd-save">Save</button>`;
+        $("#btn-pd-save")?.addEventListener("click", () => {
+          const ni = $("#pd-name");
+          if (ni) pdDraft.name = ni.value.trim();
+          const overlay = $("#pd-confirm");
+          if (overlay) overlay.hidden = false;
+        });
+      }
+    }
+
+    function openProfileDetail() {
+      renderProfileDetailEdit();
+      showLandScreen("screen-profile-detail");
     }
 
     $("#btn-paywall-back")?.addEventListener("click", () => showLandScreen(paywallReturnScreen));
@@ -5743,6 +5973,25 @@
     $("#btn-paywall-restore")?.addEventListener("click", () => { restorePurchase(); showLandScreen(paywallReturnScreen); });
     $("#btn-membership-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
     $("#btn-profile-membership")?.addEventListener("click", openMembership);
+    $("#btn-profile-detail")?.addEventListener("click", openProfileDetail);
+    $("#btn-pd-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
+    $("#pd-confirm-cancel")?.addEventListener("click", () => { const o = $("#pd-confirm"); if (o) o.hidden = true; });
+    $("#pd-confirm-ok")?.addEventListener("click", () => {
+      if (pdDraft) {
+        profile.name = pdDraft.name;
+        profile.age = pdDraft.age;
+        profile.level = pdDraft.level;
+        profile.goals = pdDraft.goals?.length ? [...pdDraft.goals] : [];
+        profile.goal = profile.goals[0] || "";
+        profile.goalLabel = GOALS.filter((g) => profile.goals.includes(g.id)).map((g) => g.label).join(", ");
+        const hn = $("#hub-profile-name");
+        if (hn && profile.name) hn.textContent = profile.name;
+      }
+      const o = $("#pd-confirm");
+      if (o) o.hidden = true;
+      renderProfileDetailEdit();
+      showPayToast("Profile updated ✓");
+    });
     refreshUnlockState();
   </script>
 </body>
