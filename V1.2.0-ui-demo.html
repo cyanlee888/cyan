@@ -114,6 +114,7 @@
     }
     .btn-back::before { content: "←"; font-size: 1.1rem; }
     .top-bar .top-spacer { flex: 1; }
+    .top-bar .btn-back.is-hidden { visibility: hidden; pointer-events: none; }
     .step-label {
       font-size: 0.72rem;
       font-weight: 600;
@@ -5033,15 +5034,13 @@
       if (landscape) landscape.style.display = "";
     }
     function finishPostLoginInfo() {
-      postLoginInfo = false;
       profile.profileComplete = true;
-      enterLandscape();
-      openTeacherPicker("onboarding");
+      startLoadingSequence({ afterComplete: "teacher", clearPostLoginInfo: true });
     }
     function onLoginSuccess() {
       // New account with no profile yet (entered via "I already have an account"
       // but never went through Onboarding) → force questions-only info collection
-      // after Dino's purpose page (no value pages or Loading), then class.
+      // after Dino's purpose page, then show a personalized Loading before teacher pick.
       if (profile.skipOnboarding && !profile.profileComplete) {
         postLoginInfo = true;
         const landscape = $("#wrap-landscape");
@@ -5054,7 +5053,11 @@
       }
       profile.profileComplete = true;
       enterLandscape();
-      openTeacherPicker("onboarding");
+      if (profile.hasStartedClass) {
+        showClassHome();
+      } else {
+        openTeacherPicker("onboarding");
+      }
     }
     $("#btn-login-apple-land")?.addEventListener("click", onLoginSuccess);
     $("#btn-login-google-land")?.addEventListener("click", onLoginSuccess);
@@ -5458,6 +5461,8 @@
     /* ===================== V1.2.0: Onboarding + Payment ===================== */
     function showPortraitScreen(id) {
       $$("#device-portrait .screen").forEach((s) => s.classList.toggle("active", s.id === id));
+      $("#screen-purpose .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-purpose");
+      $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
       const dp = $("#device-portrait");
       if (dp) dp.scrollTop = 0;
     }
@@ -5612,7 +5617,8 @@
     }
 
     let loadingTimer = null;
-    function startLoadingSequence() {
+    function startLoadingSequence(options = {}) {
+      const afterComplete = options.afterComplete || "login";
       showPortraitScreen("screen-loading");
       const ring = $("#loading-ring");
       const status = $("#loading-status");
@@ -5631,8 +5637,16 @@
         if (progress >= 100) {
           clearInterval(loadingTimer);
           loadingTimer = null;
-          fillLogin();
-          setTimeout(() => showPortraitScreen("screen-login"), 400);
+          if (afterComplete === "teacher") {
+            setTimeout(() => {
+              if (options.clearPostLoginInfo) postLoginInfo = false;
+              enterLandscape();
+              openTeacherPicker("onboarding");
+            }, 400);
+          } else {
+            fillLogin();
+            setTimeout(() => showPortraitScreen("screen-login"), 400);
+          }
         }
       }, 70);
     }
