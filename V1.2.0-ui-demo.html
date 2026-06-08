@@ -3842,9 +3842,9 @@
     .pw-head, .ms-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
     .ms-head-title { font-weight: 800; color: #143a5e; font-size: 1rem; }
     .pw-restore { background: none; border: none; color: #2a6db0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
-    .pw-body { flex: 1; display: flex; gap: 22px; padding: 4px 26px 22px; overflow-y: auto; }
-    .pw-left { flex: 1.1; min-width: 0; }
-    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+    .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 22px; overflow-y: auto; align-items: stretch; }
+    .pw-left { flex: 1.1; min-width: 0; padding: 18px 20px; border-radius: 22px; background: linear-gradient(155deg,rgba(255,255,255,.72),rgba(232,248,244,.82)); border: 1px solid rgba(255,255,255,.72); }
+    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: center; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
     .pw-kicker { display: inline-block; background: #fff0d4; color: #c47f1d; border-radius: 999px; padding: 4px 12px; font-size: 0.74rem; font-weight: 800; }
     .pw-title { font-size: 1.3rem; font-weight: 800; color: #143a5e; margin: 10px 0 6px; line-height: 1.25; }
     .pw-sub { font-size: 0.88rem; color: #5a7a98; margin: 0 0 12px; line-height: 1.45; }
@@ -3853,8 +3853,6 @@
     .pw-benefits li { position: relative; padding-left: 30px; font-size: 0.9rem; font-weight: 600; color: #2c4a66; line-height: 1.35; }
     .pw-benefits li::before { content: "✓"; position: absolute; left: 0; top: -1px; width: 20px; height: 20px; border-radius: 50%; background: #19c3b2; color: #fff; font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
     .pw-fairuse { font-size: 0.72rem; color: #7a93ad; margin: 0 0 10px; line-height: 1.4; }
-    .pw-trust { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: #0d8f80; background: #e7faf6; border-radius: 999px; padding: 5px 12px; margin: 0; }
-    .pw-trust::before { content: "🛡"; font-size: 0.8rem; }
     /* Single-plan price card (weekly only on MVP paywall) */
     .pw-price-card { border: 2px solid #19c3b2; border-radius: 16px; padding: 16px 18px; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); text-align: left; }
     .pw-price-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
@@ -4434,7 +4432,7 @@
         <div class="pw-shell">
           <div class="pw-head">
             <button type="button" class="btn-back-land" id="btn-paywall-back">Back</button>
-            <button type="button" class="pw-restore" id="btn-paywall-restore">Restore purchase</button>
+            <button type="button" class="pw-restore" id="btn-paywall-restore">Restore</button>
           </div>
           <div class="pw-body">
             <div class="pw-left">
@@ -4447,7 +4445,6 @@
                 <li>Learning report after every lesson</li>
                 <li>One subscription unlocks every section</li>
               </ul>
-              <p class="pw-trust">Secure App Store checkout</p>
             </div>
             <div class="pw-right">
               <div class="pw-plans" id="pw-plans"></div>
@@ -5888,9 +5885,9 @@
       }
       if (actions) {
         // App does NOT manage subscriptions in-app. Subscribed users only see
-        // Restore purchase; Free users only see Subscribe now.
+        // Restore; Free users only see Subscribe now.
         actions.innerHTML = profile.premiumUnlocked
-          ? `<button type="button" class="btn btn-text" id="btn-ms-restore">Restore purchase</button>`
+          ? `<button type="button" class="btn btn-text" id="btn-ms-restore">Restore</button>`
           : `<button type="button" class="btn btn-primary" id="btn-ms-upgrade">Subscribe now</button>`;
         $("#btn-ms-upgrade")?.addEventListener("click", () => openPaywall("screen-membership", "membership_entry"));
         $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
