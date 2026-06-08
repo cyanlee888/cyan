@@ -3856,9 +3856,13 @@
     .pw-trust { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 700; color: #0d8f80; background: #e7faf6; border-radius: 999px; padding: 5px 12px; margin: 0; }
     .pw-trust::before { content: "🛡"; font-size: 0.8rem; }
     /* Single-plan price card (weekly only on MVP paywall) */
-    .pw-price-card { border: 2px solid #19c3b2; border-radius: 16px; padding: 16px 18px; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); text-align: center; }
+    .pw-price-card { border: 2px solid #19c3b2; border-radius: 16px; padding: 16px 18px; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); text-align: left; }
+    .pw-price-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+    .pw-price-title { font-size: 1rem; font-weight: 800; color: #143a5e; }
+    .pw-price-check { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 999px; background: #19c3b2; color: #fff; font-size: 0.78rem; font-weight: 900; }
+    .pw-price-row { display: flex; align-items: baseline; justify-content: flex-start; gap: 5px; }
     .pw-price-amt { font-size: 1.5rem; font-weight: 800; color: #143a5e; }
-    .pw-price-note { display: block; font-size: 0.78rem; color: #5a7a98; margin-top: 4px; font-weight: 600; }
+    .pw-price-period { font-size: 0.82rem; color: #5a7a98; font-weight: 700; }
     .pw-plans { display: flex; flex-direction: column; gap: 10px; }
     .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 14px 16px; cursor: pointer; background: #fff; transition: .15s; }
     .pw-plan.is-selected { border-color: #19c3b2; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); }
@@ -5792,7 +5796,7 @@
     // same subscription group and are already built on the backend — they are simply
     // not surfaced on the MVP paywall, so re-enabling them later is zero-rework.
     const PLANS = [
-      { id: "weekly", name: "Weekly", price: "$8.99 / week", per: "$8.99/week", note: "Weekly access", hero: true },
+      { id: "weekly", name: "Weekly", price: "$8.99", period: "/ week", per: "$8.99/week", hero: true },
       // Not exposed on MVP paywall (same subscription group, backend ready):
       // { id: "monthly", name: "Monthly", price: "$37.99 / month", per: "$37.99/month", note: "Billed monthly" },
       // { id: "annual",  name: "Annual",  price: "$229.99 / year", per: "$229.99/year", note: "Best long-term value", badge: "Best value" },
@@ -5823,8 +5827,14 @@
       const plan = getSelectedPlan();
       box.innerHTML = `
         <div class="pw-price-card">
-          <span class="pw-price-amt">${plan.price}</span>
-          <span class="pw-price-note">${plan.note}</span>
+          <div class="pw-price-head">
+            <span class="pw-price-title">${plan.name}</span>
+            <span class="pw-price-check" aria-hidden="true">✓</span>
+          </div>
+          <div class="pw-price-row">
+            <span class="pw-price-amt">${plan.price}</span>
+            <span class="pw-price-period">${plan.period}</span>
+          </div>
         </div>`;
       // Button stays price-free; the amount appears once in the price card above.
       const cta = $("#btn-paywall-purchase");
