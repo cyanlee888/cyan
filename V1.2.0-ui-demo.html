@@ -3797,6 +3797,8 @@
     .carousel-dots span { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.6); transition: .2s; }
     .carousel-dots span.active { background: #fff; width: 18px; border-radius: 999px; }
     .welcome-copy { display: flex; flex-direction: column; gap: 6px; padding: 16px 2px 0; }
+    .welcome-points { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+    .welcome-points li { font-size: 0.72rem; font-weight: 700; color: #2d6b45; background: #e8f5e9; border-radius: 999px; padding: 4px 10px; }
     .option-list { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
     .option-item { border: 2px solid #d6e4f0; border-radius: 16px; padding: 14px 16px; font-size: 0.95rem; font-weight: 600; color: #244; cursor: pointer; background: #fff; text-align: left; transition: .15s; }
     .option-item:hover { border-color: #9fd; }
@@ -3934,12 +3936,12 @@
         </div>
         <div class="welcome-copy">
           <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.12rem">Meet your AI English teacher</h1>
-          <p class="sub">Live interactive lessons. Speak, get feedback, move forward.</p>
+          <h1 class="title" style="font-size:1.12rem">Meet Your Exclusive AI English Teacher</h1>
+          <p class="sub">Boost your child's English skills anytime, anywhere.</p>
         </div>
         <div class="foot-actions welcome-foot">
-          <button type="button" class="btn btn-primary" id="btn-get-started">Get started</button>
-          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I already have an account</button>
+          <button type="button" class="btn btn-primary" id="btn-get-started">Get Started</button>
+          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I have an account</button>
         </div>
       </section>
 
@@ -3951,7 +3953,7 @@
         <div class="scroll-body dino-guide">
           <div class="dino-wrap" id="dino-purpose"></div>
           <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions, then you'll <strong>start speaking from your very first lesson</strong>.</p>
+            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to understand your <strong>goals and preferences</strong>.</p>
           </div>
         </div>
         <div class="foot-actions">
@@ -3967,7 +3969,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Who's learning?</h1>
-          <p class="hint">We'll match the tone to who's learning.</p>
+          <p class="hint">We'll personalize lessons based on who's learning.</p>
           <div class="option-list" id="who-options"></div>
         </div>
         <div class="foot-actions">
@@ -3983,7 +3985,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What's your child's name?</h1>
-          <p class="hint">We'll use this name in class and in the app.</p>
+          <p class="hint">We will call you by this name.</p>
           <input type="text" class="name-field" id="input-name" placeholder="Your child's name" autocomplete="name" maxlength="32" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
@@ -4004,7 +4006,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
-          <p class="hint">This helps us set the right tone for lessons.</p>
+          <p class="hint">This helps us create a proper account for you and your child.</p>
           <div class="option-list" id="age-options"></div>
         </div>
       </section>
@@ -4017,7 +4019,6 @@
         <div class="scroll-body">
           <div class="illo-slot value-illo-slot" id="illo-age-value"></div>
           <div class="age-value-hero">
-            <span class="age-badge" id="age-badge">Ages 9–12</span>
             <h1 class="title" id="age-value-h1" style="font-size:1.1rem"></h1>
             <p class="sub" id="age-value-h2"></p>
           </div>
@@ -4064,7 +4065,6 @@
         </div>
         <div class="scroll-body">
           <div class="illo-slot value-illo-slot" id="illo-goal-value"></div>
-          <span class="chosen-tag" id="goal-chosen"></span>
           <h1 class="title" id="goal-value-h1"></h1>
           <p class="sub" id="goal-value-h2"></p>
           <ul class="bullets" id="goal-value-bullets"></ul>
@@ -4115,7 +4115,7 @@
         <div class="foot-actions">
           <p class="login-portrait-legal">
             You agree to our
-            <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
+            <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Use</a>
             and
             <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
           </p>
@@ -4131,6 +4131,15 @@
         <p>Turn your device — Class is landscape</p>
       </div>
       <div class="pay-toast" id="pay-toast">Premium unlocked 🎉</div>
+      <div class="pd-confirm-overlay" id="wb-overlay" hidden>
+        <div class="pd-confirm-box">
+          <p class="pd-confirm-title">Welcome back!</p>
+          <p class="pd-confirm-desc">We found your existing account. Your profile and progress are saved—let's keep learning.</p>
+          <div class="pd-confirm-actions">
+            <button type="button" class="btn btn-primary" id="wb-continue">Continue</button>
+          </div>
+        </div>
+      </div>
       <section class="screen active" id="screen-login-landscape">
         <div class="login-land-scene">
           <div class="login-land-bg" aria-hidden="true">
@@ -4165,7 +4174,7 @@
         <div class="land-body teacher-pick">
           <div class="teacher-intro">
             <h2 id="teacher-guide-h1">Your first class is ready</h2>
-            <p id="teacher-guide-h2">Choose a teacher, then tap Start Class.</p>
+            <p id="teacher-guide-h2">Choose a teacher and start learning now.</p>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
           <div class="teacher-actions">
@@ -4221,8 +4230,7 @@
             <div class="hub-panel hub-panel--practice" id="hub-panel-practice" data-hub-panel="practice">
               <div class="hub-content-head">
                 <div class="hub-chip-row" id="practice-chip-row" role="tablist" aria-label="Practice levels">
-                  <button type="button" class="hub-chip is-active" data-practice-filter="all">All</button>
-                  <button type="button" class="hub-chip" data-practice-filter="1">Level 1</button>
+                  <button type="button" class="hub-chip is-active" data-practice-filter="1">Level 1</button>
                   <button type="button" class="hub-chip" data-practice-filter="2">Level 2</button>
                   <button type="button" class="hub-chip" data-practice-filter="3">Level 3</button>
                   <button type="button" class="hub-chip" data-practice-filter="4">Level 4</button>
@@ -4237,8 +4245,7 @@
             <div class="hub-panel hub-panel--radio" id="hub-panel-radio" data-hub-panel="radio">
               <div class="hub-content-head">
                 <div class="hub-chip-row" id="radio-chip-row" role="tablist" aria-label="Radio categories">
-                  <button type="button" class="hub-chip is-active" data-radio-filter="all">All</button>
-                  <button type="button" class="hub-chip" data-radio-filter="goodnight">Goodnight Time</button>
+                  <button type="button" class="hub-chip is-active" data-radio-filter="goodnight">Goodnight Time</button>
                   <button type="button" class="hub-chip" data-radio-filter="morning">Morning Read</button>
                   <button type="button" class="hub-chip" data-radio-filter="anytime">Anytime Audio</button>
                 </div>
@@ -4438,13 +4445,12 @@
           <div class="pw-body">
             <div class="pw-left">
               <span class="pw-kicker">Dino Premium</span>
-              <h2 class="pw-title" id="pw-title">Unlock everything in Dino English</h2>
+              <h2 class="pw-title" id="pw-title">Unlock the FULL learning experience!</h2>
               <ul class="pw-benefits">
-                <li>Unlock all AI speaking lessons</li>
-                <li>All vocabulary practice</li>
-                <li>All English radio (FM)</li>
-                <li>Learning report after every lesson</li>
-                <li>One subscription unlocks every section</li>
+                <li>Unlimited AI speaking lessons</li>
+                <li>Full vocabulary practice</li>
+                <li>All FM stories &amp; songs</li>
+                <li>Progress report after every lesson</li>
               </ul>
             </div>
             <div class="pw-right">
@@ -4472,10 +4478,10 @@
             <div class="ms-benefits">
               <p class="ms-benefits-title">Premium includes</p>
               <ul class="ms-benefits-list">
-                <li>All AI speaking lessons</li>
-                <li>All Practice vocabulary</li>
-                <li>All Radio stories</li>
-                <li>All lesson reports</li>
+                <li>Unlimited AI speaking lessons</li>
+                <li>Full vocabulary practice</li>
+                <li>All FM stories &amp; songs</li>
+                <li>Progress report after every lesson</li>
               </ul>
             </div>
             <div class="ms-actions" id="ms-actions"></div>
@@ -4512,7 +4518,7 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goals: [], goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "weekly", nextBillingDate: "Jul 8, 2026", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "weekly", nextBillingDate: "Jul 8, 2026", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
     let teacherFlowMode = "onboarding";
@@ -4798,19 +4804,19 @@
 
     function renderCourseActionButtons(course) {
       if (isCourseLocked(course)) {
-        return `<button type="button" class="course-cta-locked" data-action="unlock">Unlock with Premium</button>`;
+        return `<button type="button" class="course-cta-locked" data-action="unlock">Unlock</button>`;
       }
       const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
         return `
-          <button type="button" class="btn btn-primary" data-action="retake">Retake class</button>
-          <button type="button" class="course-cta-secondary" data-action="report">View learning report</button>
+          <button type="button" class="btn btn-primary" data-action="retake">Review</button>
+          <button type="button" class="course-cta-secondary" data-action="report">Report</button>
         `;
       }
       if (state === "InProgress") {
-        return `<button type="button" class="btn btn-primary" data-action="continue">Continue learning</button>`;
+        return `<button type="button" class="btn btn-primary" data-action="continue">Continue</button>`;
       }
-      return `<button type="button" class="btn btn-primary" data-action="start">Start learning</button>`;
+      return `<button type="button" class="btn btn-primary" data-action="start">Start Learning</button>`;
     }
 
     function bindCourseCardActions(container, course, source) {
@@ -4866,8 +4872,8 @@
       return TEACHERS.find((teacher) => teacher.id === profile.teacherId) || TEACHERS[0];
     }
 
-    function getFirstName() {
-      return profile.name ? profile.name.trim().split(/\s+/)[0] : "";
+    function getDisplayName() {
+      return profile.name ? profile.name.trim() : "";
     }
 
     function renderClassTeacherVisual() {
@@ -5016,15 +5022,15 @@
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
     function fillTeacherGuide() {
-      const first = getFirstName();
+      const name = getDisplayName();
       const isAppMode = teacherFlowMode === "app";
       $("#teacher-guide-h1").textContent = isAppMode
         ? "Switch teacher"
-        : (first ? `${first}, your first class is ready` : "Your first class is ready");
+        : (name ? `${name}, your first class is ready` : "Your first class is ready");
       $("#teacher-guide-h2").textContent = isAppMode
         ? "Pick the teacher you'd like to keep learning with."
-        : "Choose a teacher, then tap Start Class.";
-      $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Class";
+        : "Choose a teacher and start learning now.";
+      $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Learning";
       renderTeacherCards();
     }
     function enterLandscape() {
@@ -5054,11 +5060,16 @@
       profile.profileComplete = true;
       enterLandscape();
       if (profile.hasStartedClass) {
+        // Existing account: no merge/overwrite of local temp profile —
+        // show the "Welcome back!" dialog, then land on Class home.
         showClassHome();
+        const wb = $("#wb-overlay");
+        if (wb) wb.hidden = false;
       } else {
         openTeacherPicker("onboarding");
       }
     }
+    $("#wb-continue")?.addEventListener("click", () => { const wb = $("#wb-overlay"); if (wb) wb.hidden = true; });
     $("#btn-login-apple-land")?.addEventListener("click", onLoginSuccess);
     $("#btn-login-google-land")?.addEventListener("click", onLoginSuccess);
     $("#btn-login-apple")?.addEventListener("click", onLoginSuccess);
@@ -5123,8 +5134,8 @@
       { type: "pic", audio: "A happy cat", options: [ { emoji: "🐱", correct: true }, { emoji: "🐶", correct: false }, { emoji: "🐰", correct: false } ] },
     ];
     let activeHubTab = "class";
-    let practiceFilter = "all";
-    let radioFilter = "all";
+    let practiceFilter = "1";
+    let radioFilter = "goodnight";
     // Free users get one free sample per tab as a hook; the rest are Premium-gated.
     const FREE_PRACTICE_IDS = ["ocean"];
     const FREE_RADIO_IDS = ["quotes"];
@@ -5219,9 +5230,9 @@
       });
     }
     function fillClassTab() {
-      const first = getFirstName();
+      const name = getDisplayName();
       const currentCourse = getCurrentCourse();
-      if ($("#hub-profile-name")) $("#hub-profile-name").textContent = first || "Jackson";
+      if ($("#hub-profile-name")) $("#hub-profile-name").textContent = name || "Jackson";
       $("#class-hero-kicker").textContent = profile.hasStartedClass
         ? "Current class"
         : "Start here first";
@@ -5479,16 +5490,16 @@
     ];
     // Level labels are neutral noun-phrases so they read naturally in both the
     // parent ("your child's level") and self ("your level") voice.
-    const LEVELS = ["Just starting out", "Knows some words", "Can hold a simple conversation", "Intermediate or above"];
+    const LEVELS = ["Beginner (just starting)", "Basic (know few words)", "Intermediate (say simple sentences)", "Advanced (speaks with confidence)"];
     // Goal labels stay neutral and cover both kids (speak confidently / school
     // English / make learning fun) and self-learners (daily conversation / travel
     // / exam). Same ids/data structure as before.
     const GOALS = [
-      { id: "speak_confidence", label: "Speak English with confidence" },
+      { id: "speak_confidence", label: "Speak with confidence" },
+      { id: "school_exam", label: "Do better in school" },
       { id: "structured_progress", label: "Follow a clear learning path" },
-      { id: "school_exam", label: "School English & exams" },
       { id: "daily_communication", label: "Daily conversation & travel" },
-      { id: "listening_habit", label: "Make learning fun & build a listening habit" },
+      { id: "listening_habit", label: "Build an easy daily habit" },
     ];
     // Question titles fork by the "Who's learning?" choice, not by age.
     const VOICE_WORDING = {
@@ -5500,7 +5511,7 @@
         goalTitle: "What's your child's main goal right now?",
       },
       self: {
-        nameTitle: "What should we call you?",
+        nameTitle: "What's your name?",
         namePlaceholder: "Your name",
         ageTitle: "How old are you?",
         levelTitle: "What's your current level?",
@@ -5512,8 +5523,8 @@
     // experience-led — "speak from lesson 1" — and must not promise age-tailored
     // content. Voice still forks parent ("your child") vs self ("you").
     const AGE_VALUE_COPY = {
-      child: { h1: "Speak from the very first lesson", h2: "Every lesson is a real conversation—your child talks, the AI teacher listens and replies.", bullets: ["Speaking practice in every lesson", "Instant, friendly feedback", "A learning report after every lesson"] },
-      self: { h1: "Speak from your very first lesson", h2: "Every lesson is a real conversation—you talk, the AI teacher listens and replies.", bullets: ["Speaking practice in every lesson", "Instant, friendly feedback", "A learning report after every lesson"] },
+      child: { h1: "Speak from the very first lesson", h2: "Real conversations every lesson—child speaks, and the AI teacher responds.", bullets: ["Speaking practice in every lesson", "Instant feedback as they go", "A learning report after every lesson"] },
+      self: { h1: "Speak from your very first lesson", h2: "Real conversations every lesson—you speak, and the AI teacher responds.", bullets: ["Speaking practice in every lesson", "Instant feedback as they go", "A learning report after every lesson"] },
     };
     const AGE_VALUE_PAGES = {
       "3–5": AGE_VALUE_COPY,
@@ -5530,24 +5541,24 @@
     // Goal value pages fork voice the same way (parent vs self).
     const VALUE_PAGES = {
       speak_confidence: {
-        child: { h1: "We'll help your child speak—not just listen", h2: "Their AI teacher asks questions and waits for their answer.", bullets: ["Speaking practice every lesson", "Instant, gentle feedback", "Confidence that grows step by step"] },
-        self: { h1: "We'll help you speak—not just listen", h2: "Your AI teacher asks questions and waits for your answer.", bullets: ["Practice speaking every lesson", "Get instant feedback", "Build confidence step by step"] },
+        child: { h1: "Help your child speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for a real answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
+        self: { h1: "Help you speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for your answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
       },
       structured_progress: {
-        child: { h1: "A clear path from Lesson 1 onward", h2: "Level by level, with progress you can see.", bullets: ["Structured curriculum", "Recommended next lesson", "A report after every class"] },
-        self: { h1: "A clear path from Lesson 1 onward", h2: "Level by level, with progress you can see.", bullets: ["Structured curriculum", "Recommended next lesson", "Reports after class"] },
+        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every class"] },
+        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after class"] },
       },
       school_exam: {
-        child: { h1: "Lessons that fit school expectations", h2: "Speaking and key skills practiced in every unit.", bullets: ["Aligned with school goals", "Track their completion", "Review anytime"] },
-        self: { h1: "Lessons that fit school expectations", h2: "Practice speaking and key skills in each unit.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
+        child: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Aligned with school goals", "Track lessons completed", "Review anytime"] },
+        self: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
       },
       daily_communication: {
-        child: { h1: "English they'll actually use", h2: "Role-play and dialogue in every class.", bullets: ["Real-life topics", "Speaking in every class", "Short practice after class"] },
-        self: { h1: "English you'll actually use", h2: "Role-play and dialogue in every class.", bullets: ["Real-life topics", "Speak in class", "Short practice after class"] },
+        child: { h1: "English they'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak up in all class", "Quick practice after class"] },
+        self: { h1: "English you'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak in class", "Quick practice after class"] },
       },
       listening_habit: {
-        child: { h1: "Listening helps—but speaking locks it in", h2: "We'll start with a short interactive class; add listening anytime after.", bullets: ["Start with a live lesson", "Add listening on their schedule", "One app, two habits"] },
-        self: { h1: "Listening helps—but speaking locks it in", h2: "We'll start with a short interactive class; use Listen anytime after.", bullets: ["Start with a live lesson", "Add listening on your schedule", "One app, two habits"] },
+        child: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
+        self: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
       },
     };
     // Loading copy forks by voice (parent vs self) via isParentVoice().
@@ -5588,7 +5599,6 @@
       const entry = AGE_VALUE_PAGES[profile.age] || AGE_VALUE_PAGES["9–12"];
       const data = isParentVoice() ? entry.child : entry.self;
       $("#illo-age-value").innerHTML = (ILLUSTRATIONS.ageValue && ILLUSTRATIONS.ageValue[profile.age]) || (ILLUSTRATIONS.ageValue && ILLUSTRATIONS.ageValue["9–12"]) || "";
-      $("#age-badge").textContent = profile.age === "18+" ? "Ages 18+" : `Ages ${profile.age}`;
       $("#age-value-h1").textContent = data.h1;
       $("#age-value-h2").textContent = data.h2;
       $("#age-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
@@ -5598,7 +5608,6 @@
       const entry = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
       const data = isParentVoice() ? entry.child : entry.self;
       $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue[profile.goal]) || (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || "";
-      $("#goal-chosen").textContent = profile.goalLabel;
       $("#goal-value-h1").textContent = data.h1;
       $("#goal-value-h2").textContent = data.h2;
       $("#goal-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
@@ -5606,13 +5615,17 @@
 
     function fillLogin() {
       $("#illo-login").innerHTML = ILLUSTRATIONS.login || "";
-      const first = getFirstName ? getFirstName() : (profile.name || "");
+      const name = getDisplayName ? getDisplayName() : (profile.name || "");
       const base = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
-      $("#login-dynamic").textContent = first ? base.replace("your plan", `${first}'s plan`) : base;
-      const chips = [];
-      if (profile.name) chips.push(profile.name);
-      if (profile.age) chips.push(`Ages ${profile.age}`);
-      if (profile.goalLabel) chips.push(profile.goalLabel);
+      $("#login-dynamic").textContent = name ? base.replace("your plan", `${name}'s plan`) : base;
+      // Profile tags filled in Onboarding, shown as a "you've already told us" anchor.
+      // Show name → age_band → goal (drop level); name truncated ≤16, goal shown in full.
+      const cut = (s) => { s = String(s).trim(); return s.length > 16 ? s.slice(0, 15) + "…" : s; };
+      const chips = [
+        profile.name ? cut(profile.name) : "",
+        profile.age ? `Ages ${profile.age}` : "",
+        profile.goalLabel || "",
+      ].filter(Boolean);
       $("#login-chips").innerHTML = chips.map((c) => `<span>${c}</span>`).join("");
     }
 
@@ -5701,24 +5714,18 @@
       const next = $("#btn-goal-continue");
       if (!box) return;
       box.innerHTML = GOALS.map((it) =>
-        `<button type="button" class="option-item${profile.goals.includes(it.id) ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
+        `<button type="button" class="option-item${profile.goal === it.id ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
       ).join("");
       const syncGoalState = () => {
-        const selected = GOALS.filter((g) => profile.goals.includes(g.id));
-        profile.goal = selected[0]?.id || "";
-        profile.goalLabel = selected.map((g) => g.label).join(", ");
-        if (next) next.disabled = selected.length === 0;
+        const selected = GOALS.find((g) => g.id === profile.goal);
+        profile.goalLabel = selected?.label || "";
+        if (next) next.disabled = !selected;
       };
       box.querySelectorAll(".option-item").forEach((btn) => {
         btn.addEventListener("click", () => {
-          const val = btn.dataset.val;
-          if (profile.goals.includes(val)) {
-            profile.goals = profile.goals.filter((id) => id !== val);
-            btn.classList.remove("is-selected");
-          } else {
-            profile.goals.push(val);
-            btn.classList.add("is-selected");
-          }
+          box.querySelectorAll(".option-item").forEach((b) => b.classList.remove("is-selected"));
+          btn.classList.add("is-selected");
+          profile.goal = btn.dataset.val;
           syncGoalState();
         });
       });
@@ -5775,7 +5782,7 @@
       });
       $("#btn-age-value-continue")?.addEventListener("click", () => showPortraitScreen("screen-level"));
       $("#btn-goal-continue")?.addEventListener("click", () => {
-        if (!profile.goals.length) return;
+        if (!profile.goal) return;
         if (postLoginInfo) { finishPostLoginInfo(); return; }
         fillGoalValuePage();
         showPortraitScreen("screen-goal-value");
@@ -5935,31 +5942,11 @@
       });
     }
 
-    function pdMultiPills(containerId, items, selectedIds, onChange) {
-      const box = $("#" + containerId);
-      if (!box) return;
-      const selected = new Set(selectedIds || []);
-      box.innerHTML = items.map((it) =>
-        `<button type="button" class="pd-pill${selected.has(it.id) ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
-      ).join("");
-      box.querySelectorAll(".pd-pill").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const val = btn.dataset.val;
-          if (selected.has(val)) selected.delete(val);
-          else selected.add(val);
-          if (!selected.size) selected.add(val);
-          box.querySelectorAll(".pd-pill").forEach((b) => b.classList.toggle("is-selected", selected.has(b.dataset.val)));
-          onChange([...selected]);
-        });
-      });
-    }
-
     function renderProfileDetailEdit() {
       const view = $("#pd-view");
       const edit = $("#pd-edit");
       const actions = $("#pd-actions");
-      const currentGoals = profile.goals?.length ? [...profile.goals] : (profile.goal ? [profile.goal] : []);
-      pdDraft = { name: profile.name, age: profile.age, level: profile.level, goals: currentGoals };
+      pdDraft = { name: profile.name, age: profile.age, level: profile.level, goal: profile.goal, goalLabel: profile.goalLabel };
       if (view) view.hidden = true;
       if (edit) {
         edit.hidden = false;
@@ -5970,7 +5957,7 @@
           <div class="pd-edit-group"><p class="pd-edit-label">Learning purpose</p><div class="pd-stack" id="pd-goal"></div></div>`;
         pdPills("pd-age", AGES.map((a) => ({ id: a, label: a })), pdDraft.age, (id) => { pdDraft.age = id; });
         pdPills("pd-level", LEVELS.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
-        pdMultiPills("pd-goal", GOALS, pdDraft.goals, (ids) => { pdDraft.goals = ids; });
+        pdPills("pd-goal", GOALS, pdDraft.goal, (id, label) => { pdDraft.goal = id; pdDraft.goalLabel = label; });
         const nameInput = $("#pd-name");
         if (nameInput) nameInput.value = pdDraft.name || "";
       }
@@ -6003,9 +5990,8 @@
         profile.name = pdDraft.name;
         profile.age = pdDraft.age;
         profile.level = pdDraft.level;
-        profile.goals = pdDraft.goals?.length ? [...pdDraft.goals] : [];
-        profile.goal = profile.goals[0] || "";
-        profile.goalLabel = GOALS.filter((g) => profile.goals.includes(g.id)).map((g) => g.label).join(", ");
+        profile.goal = pdDraft.goal;
+        profile.goalLabel = pdDraft.goalLabel;
         const hn = $("#hub-profile-name");
         if (hn && profile.name) hn.textContent = profile.name;
       }
