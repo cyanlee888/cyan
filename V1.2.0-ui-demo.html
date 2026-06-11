@@ -1639,6 +1639,24 @@
     .hub-radio-card.is-locked .hub-radio-cover svg {
       filter: saturate(0.6) brightness(0.82);
     }
+    .hub-card-free {
+      position: absolute;
+      top: 8px; left: 8px; z-index: 3;
+      display: inline-flex; align-items: center;
+      font-size: 0.62rem; font-weight: 800;
+      color: #2d6b45;
+      background: rgba(232, 255, 240, 0.92);
+      border-radius: 999px; padding: 3px 9px;
+    }
+    .hub-card-done {
+      position: absolute;
+      top: 8px; left: 8px; z-index: 3;
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 0.62rem; font-weight: 800;
+      color: #fff;
+      background: rgba(45, 107, 69, 0.88);
+      border-radius: 999px; padding: 3px 9px;
+    }
     .hub-story-title {
       margin: 12px 0 0;
       font-size: 0.82rem;
@@ -4518,7 +4536,7 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "weekly", nextBillingDate: "Jul 8, 2026", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "weekly", nextBillingDate: "Jul 8, 2026", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", completedPracticeIds: ["ocean"] };
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
     let teacherFlowMode = "onboarding";
@@ -5136,9 +5154,16 @@
     let activeHubTab = "class";
     let practiceFilter = "1";
     let radioFilter = "goodnight";
-    // Free users get one free sample per tab as a hook; the rest are Premium-gated.
-    const FREE_PRACTICE_IDS = ["ocean"];
-    const FREE_RADIO_IDS = ["quotes"];
+    // Free: first item per level (Practice) / first item per non-"all" category (Radio).
+    const FREE_PRACTICE_IDS = (() => {
+      const seen = new Set();
+      return PRACTICE_STORIES.filter(s => { if (!seen.has(s.level)) { seen.add(s.level); return true; } return false; }).map(s => s.id);
+    })();
+    const FREE_RADIO_IDS = (() => {
+      const seen = new Set(); const ids = new Set();
+      for (const s of RADIO_STATIONS) { for (const cat of s.categories) { if (cat !== "all" && !seen.has(cat)) { seen.add(cat); ids.add(s.id); } } }
+      return [...ids];
+    })();
     function isPracticeLocked(story) {
       return !profile.premiumUnlocked && !FREE_PRACTICE_IDS.includes(story.id);
     }
@@ -5171,9 +5196,15 @@
         : PRACTICE_STORIES.filter((story) => story.level === Number(practiceFilter));
       $("#practice-carousel").innerHTML = filtered.map((story) => {
         const locked = isPracticeLocked(story);
+        const completed = !locked && profile.completedPracticeIds.includes(story.id);
+        const isFreeTag = !profile.premiumUnlocked && FREE_PRACTICE_IDS.includes(story.id) && !completed;
+        let badge = "";
+        if (locked) badge = `<span class="hub-card-lock">🔒 Premium</span>`;
+        else if (completed) badge = `<span class="hub-card-done">✓ Done</span>`;
+        else if (isFreeTag) badge = `<span class="hub-card-free">Free</span>`;
         return `
-        <article class="hub-story-card ${locked ? "is-locked" : ""}" data-story-id="${story.id}" role="button" tabindex="0">
-          <div class="hub-story-art">${uniqueSvgIds(story.art, story.id)}${locked ? `<span class="hub-card-lock">🔒 Premium</span>` : ""}</div>
+        <article class="hub-story-card ${locked ? "is-locked" : ""} ${completed ? "is-completed" : ""}" data-story-id="${story.id}" role="button" tabindex="0">
+          <div class="hub-story-art">${uniqueSvgIds(story.art, story.id)}${badge}</div>
           <p class="hub-story-title">${story.title}</p>
         </article>`;
       }).join("");
@@ -5400,6 +5431,10 @@
       }, 950);
     }
     function renderQuizComplete() {
+      // Mark this practice story as completed (persists in profile for the session)
+      if (quizCurrentStory && !profile.completedPracticeIds.includes(quizCurrentStory)) {
+        profile.completedPracticeIds.push(quizCurrentStory);
+      }
       $("#quiz-prompt-text").textContent = "Practice complete";
       $("#quiz-progress-fill").style.width = "100%";
       const stars = quizCorrect >= 5 ? "★★★" : quizCorrect >= 3 ? "★★☆" : "★☆☆";
