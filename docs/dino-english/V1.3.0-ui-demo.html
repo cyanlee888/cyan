@@ -4649,6 +4649,9 @@
        from the big reveal overlay below). */
     .capd-pet-line { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; margin: 0 auto 8px;
       background: #fff; border: 1.5px solid #ffe0a3; border-radius: 14px; box-shadow: 0 6px 16px rgba(160,110,10,0.12); }
+    /* No Capsule Coin won this round → no pet line at all. The class sets display:inline-flex,
+       which would otherwise beat the [hidden] attribute, so respect [hidden] explicitly. */
+    .capd-pet-line[hidden] { display: none; }
     .capd-pet-emoji { font-size: 1.5rem; line-height: 1; }
     .capd-pet-name { font-size: 0.86rem; font-weight: 800; color: var(--ink); }
     .capd-pet-tag { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
@@ -4881,53 +4884,57 @@
     .hub-app > .class-bottom-nav--four { width: min(100%, 380px); }
     .class-bottom-icon--img { background: rgba(255,255,255,0.22); padding: 3px; overflow: hidden; }
     .class-bottom-icon--img img { width: 100%; height: 100%; object-fit: contain; }
-    /* ---------- Trial Lesson Report (V1.3.0, portrait) ---------- */
+    /* ---------- Trial Lesson Report (V1.3.0, LANDSCAPE) ----------
+       Now a landscape takeover (consistent with lesson-complete → report →
+       study-plan). Scroll shell + compact horizontal hero + 2-column card grid
+       + sticky footer CTA. */
     .tr-screen { padding: 0 !important; background: #f3f1fb; }
-    .tr-scroll { padding: 0 !important; gap: 0 !important; }
-    .tr-back { position: absolute; top: 14px; left: 14px; z-index: 6; border: none; background: rgba(255,255,255,0.22); color: #fff; font-size: 0.82rem; font-weight: 700; padding: 7px 13px; border-radius: 999px; cursor: pointer; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
-    .tr-hero { position: relative; padding: 48px 22px 30px; background: linear-gradient(150deg,#6d8bff 0%,#9b7aff 58%,#b06bff 100%); color: #fff; border-radius: 0 0 28px 28px; text-align: center; overflow: hidden; }
-    .tr-hero::before { content: ""; position: absolute; top: -46px; right: -34px; width: 168px; height: 168px; background: radial-gradient(circle,rgba(255,255,255,0.28),transparent 70%); }
-    .tr-hero::after { content: ""; position: absolute; bottom: -30px; left: -26px; width: 120px; height: 120px; background: radial-gradient(circle,rgba(255,255,255,0.16),transparent 70%); }
-    .tr-hero-badge { position: relative; display: inline-block; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; background: rgba(255,255,255,0.24); padding: 5px 13px; border-radius: 999px; }
-    .tr-hero h1 { position: relative; font-size: 1.46rem; font-weight: 800; margin: 13px 0 4px; }
-    .tr-hero-sub { position: relative; font-size: 0.82rem; opacity: 0.92; margin: 0; }
-    .tr-hero-dino { position: relative; width: 92px; height: 92px; margin: 14px auto 0; filter: drop-shadow(0 8px 14px rgba(60,30,110,0.32)); }
+    .tr-land-shell { position: absolute; inset: 0; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; background: #f3f1fb; }
+    .tr-back { position: absolute; top: 12px; left: 12px; z-index: 8; border: none; background: rgba(255,255,255,0.26); color: #fff; font-size: 0.8rem; font-weight: 700; padding: 6px 13px; border-radius: 999px; cursor: pointer; -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+    .tr-hero { position: relative; flex-shrink: 0; padding: 15px 22px; background: linear-gradient(120deg,#6d8bff 0%,#9b7aff 58%,#b06bff 100%); color: #fff; display: flex; align-items: center; justify-content: center; gap: 16px; overflow: hidden; }
+    .tr-hero::before { content: ""; position: absolute; top: -46px; right: -34px; width: 168px; height: 168px; background: radial-gradient(circle,rgba(255,255,255,0.26),transparent 70%); }
+    .tr-hero::after { content: ""; position: absolute; bottom: -42px; left: 24%; width: 120px; height: 120px; background: radial-gradient(circle,rgba(255,255,255,0.14),transparent 70%); }
+    .tr-hero-dino { position: relative; width: 62px; height: 62px; flex-shrink: 0; filter: drop-shadow(0 8px 14px rgba(60,30,110,0.32)); }
     .tr-hero-dino img { width: 100%; height: 100%; object-fit: contain; }
-    .tr-cards { padding: 16px; display: flex; flex-direction: column; gap: 13px; margin-top: -16px; position: relative; z-index: 2; }
-    .tr-card { background: #fff; border-radius: 18px; padding: 15px 16px; box-shadow: 0 6px 18px rgba(80,60,140,0.08); }
-    .tr-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
-    .tr-card-ico { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; font-size: 1rem; background: #eef0ff; flex-shrink: 0; }
-    .tr-card-title { font-size: 0.98rem; font-weight: 800; color: #2a2350; }
-    .tr-perf-row { display: flex; gap: 9px; }
-    .tr-stat { flex: 1; background: #f7f6fd; border-radius: 12px; padding: 11px 6px; text-align: center; }
-    .tr-stat b { display: block; font-size: 1.3rem; font-weight: 800; color: #6d5cff; line-height: 1.1; }
+    .tr-hero-copy { position: relative; min-width: 0; }
+    .tr-hero-badge { display: inline-block; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; background: rgba(255,255,255,0.24); padding: 4px 11px; border-radius: 999px; }
+    .tr-hero h1 { font-size: 1.18rem; font-weight: 800; margin: 6px 0 2px; }
+    .tr-hero-sub { font-size: 0.76rem; opacity: 0.92; margin: 0; }
+    .tr-cards { flex: 1; padding: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 11px; align-content: start; }
+    .tr-card { background: #fff; border-radius: 16px; padding: 12px 14px; box-shadow: 0 6px 18px rgba(80,60,140,0.08); }
+    .tr-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .tr-card-ico { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; font-size: 0.95rem; background: #eef0ff; flex-shrink: 0; }
+    .tr-card-title { font-size: 0.9rem; font-weight: 800; color: #2a2350; }
+    .tr-perf-row { display: flex; gap: 8px; }
+    .tr-stat { flex: 1; background: #f7f6fd; border-radius: 12px; padding: 9px 6px; text-align: center; }
+    .tr-stat b { display: block; font-size: 1.2rem; font-weight: 800; color: #6d5cff; line-height: 1.1; }
     .tr-stat b small { font-size: 0.7rem; font-weight: 700; }
-    .tr-stat span { font-size: 0.68rem; color: #7b7796; }
-    .tr-encourage { margin: 11px 0 0; font-size: 0.84rem; color: #6b5a2a; line-height: 1.5; background: #fff7ec; border-radius: 10px; padding: 10px 12px; }
+    .tr-stat span { font-size: 0.64rem; color: #7b7796; }
+    .tr-encourage { margin: 10px 0 0; font-size: 0.8rem; color: #6b5a2a; line-height: 1.45; background: #fff7ec; border-radius: 10px; padding: 9px 11px; }
     .tr-card--level { background: linear-gradient(160deg,#fbf8ff,#f1ebff); border: 1.5px solid #d9ccff; }
     .tr-level-badge { display: flex; align-items: baseline; gap: 8px; }
-    .tr-level-badge b { font-size: 2.1rem; font-weight: 900; color: #6d5cff; line-height: 1; }
-    .tr-level-badge span { font-size: 0.76rem; color: #8a84a8; font-weight: 700; }
-    .tr-level-reason { font-size: 0.86rem; color: #4a4670; line-height: 1.55; margin: 9px 0 0; }
+    .tr-level-badge b { font-size: 1.9rem; font-weight: 900; color: #6d5cff; line-height: 1; }
+    .tr-level-badge span { font-size: 0.72rem; color: #8a84a8; font-weight: 700; }
+    .tr-level-reason { font-size: 0.82rem; color: #4a4670; line-height: 1.5; margin: 8px 0 0; }
     .tr-level-reason strong { color: #5a39c7; }
-    .tr-level-dir { margin-top: 9px; font-size: 0.78rem; color: #5a39c7; font-weight: 700; background: #efeaff; border-radius: 9px; padding: 8px 11px; }
-    .tr-topic { display: inline-block; font-size: 0.72rem; font-weight: 700; color: #c2410c; background: #ffedd5; border-radius: 999px; padding: 4px 11px; margin-bottom: 11px; }
+    .tr-level-dir { margin-top: 8px; font-size: 0.76rem; color: #5a39c7; font-weight: 700; background: #efeaff; border-radius: 9px; padding: 7px 11px; }
+    .tr-topic { display: inline-block; font-size: 0.7rem; font-weight: 700; color: #c2410c; background: #ffedd5; border-radius: 999px; padding: 4px 11px; margin-bottom: 10px; }
     .tr-vocab { display: flex; flex-wrap: wrap; gap: 7px; }
-    .tr-vocab span { font-size: 0.8rem; font-weight: 700; color: #2f5878; background: #eef6ff; border: 1px solid #d6e8fb; border-radius: 9px; padding: 6px 10px; }
-    .tr-expr { margin: 11px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .tr-expr li { font-size: 0.82rem; color: #4a4670; background: #f7f6fd; border-radius: 9px; padding: 8px 11px; line-height: 1.4; }
+    .tr-vocab span { font-size: 0.78rem; font-weight: 700; color: #2f5878; background: #eef6ff; border: 1px solid #d6e8fb; border-radius: 9px; padding: 5px 9px; }
+    .tr-expr { margin: 10px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .tr-expr li { font-size: 0.8rem; color: #4a4670; background: #f7f6fd; border-radius: 9px; padding: 7px 11px; line-height: 1.4; }
     .tr-expr i { color: #b3aacc; font-style: normal; }
-    .tr-rev { display: flex; flex-direction: column; gap: 8px; }
-    .tr-rev-line { font-size: 0.84rem; color: #4a4670; line-height: 1.5; margin: 0; }
-    .tr-pill { font-size: 0.8rem; line-height: 1.45; border-radius: 10px; padding: 9px 11px; }
+    .tr-rev { display: flex; flex-direction: column; gap: 7px; }
+    .tr-rev-line { font-size: 0.82rem; color: #4a4670; line-height: 1.45; margin: 0; }
+    .tr-pill { font-size: 0.78rem; line-height: 1.4; border-radius: 10px; padding: 8px 11px; }
     .tr-pill b { font-weight: 800; }
     .tr-pill.good { background: #e9f9ee; color: #1f7a44; }
     .tr-pill.grow { background: #fff4e5; color: #9a6212; }
-    .tr-disclaimer { text-align: center; font-size: 0.66rem; color: #aaa5c0; padding: 4px 16px 20px; margin: 0; }
-    .tr-foot { background: #fff; box-shadow: 0 -4px 16px rgba(80,60,140,0.08); }
-    .tr-foot .btn-primary { background: linear-gradient(180deg,#8b7bff,#6d5cff); min-height: 54px; font-size: 1rem; }
+    .tr-disclaimer { grid-column: 1 / -1; text-align: center; font-size: 0.64rem; color: #aaa5c0; padding: 2px 8px 2px; margin: 0; }
+    .tr-foot { position: sticky; bottom: 0; flex-shrink: 0; background: rgba(255,255,255,0.96); box-shadow: 0 -4px 16px rgba(80,60,140,0.1); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding: 10px 16px 14px; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+    .tr-foot .btn-primary { width: 100%; max-width: 360px; background: linear-gradient(180deg,#8b7bff,#6d5cff); min-height: 48px; font-size: 0.96rem; }
     .tr-foot .btn-primary:hover { background: linear-gradient(180deg,#7d6cff,#5d4ce0); }
-    .tr-foot-note { text-align: center; font-size: 0.7rem; color: #9a93b8; margin: 0; }
+    .tr-foot-note { text-align: center; font-size: 0.68rem; color: #9a93b8; margin: 0; }
 
     /* ---------- Explore tab (renamed from Practice) ---------- */
     .hub-panel--explore { padding: 16px 16px var(--hub-nav-clearance); gap: 0; }
@@ -5358,7 +5365,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="pt-question">Quick question</h1>
-          <p class="hint" id="pt-hint">🎧 Listening · Question 1 of 4</p>
+          <p class="hint" id="pt-hint">Pick the one that fits best</p>
           <div class="option-list" id="pt-options"></div>
         </div>
       </section>
@@ -5497,63 +5504,6 @@
         </div>
         <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
       </section>
-
-      <!-- Trial Lesson Report (V1.3.0): shown right after the first trial lesson -->
-      <section class="screen tr-screen" id="screen-trial-report">
-        <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
-        <div class="scroll-body tr-scroll">
-          <div class="tr-hero">
-            <span class="tr-hero-badge" id="tr-hero-badge">Trial Lesson Report</span>
-            <h1 id="tr-hero-h">Great first class! 🎉</h1>
-            <p class="tr-hero-sub" id="tr-hero-sub">Your first lesson</p>
-            <div class="tr-hero-dino"><img src="assets/dino-mascot.png" alt="Dino" decoding="async" /></div>
-          </div>
-          <div class="tr-cards">
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">⭐</span><span class="tr-card-title" id="tr-perf-title">How it went</span></div>
-              <div class="tr-perf-row">
-                <div class="tr-stat"><b>10<small>m</small></b><span>Class time</span></div>
-                <div class="tr-stat"><b>😊</b><span>Engagement</span></div>
-                <div class="tr-stat"><b>12</b><span>Times spoken</span></div>
-              </div>
-              <p class="tr-encourage" id="tr-encourage"></p>
-            </div>
-
-            <div class="tr-card tr-card--level">
-              <div class="tr-card-head"><span class="tr-card-ico">🦕</span><span class="tr-card-title">Dino's level recommendation</span></div>
-              <div class="tr-level-badge"><b id="tr-level">A2</b><span>recommended CEFR level</span></div>
-              <p class="tr-level-reason" id="tr-level-reason"></p>
-              <div class="tr-level-dir" id="tr-level-dir"></div>
-            </div>
-
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">📚</span><span class="tr-card-title">What we learned today</span></div>
-              <span class="tr-topic">Topic · A Forest Lake Adventure</span>
-              <div class="tr-vocab"><span>🌊 lake</span><span>🌲 forest</span><span>🐾 footprint</span><span>🔍 explore</span></div>
-              <ul class="tr-expr">
-                <li><i>“</i>Let's explore the forest!<i>”</i></li>
-                <li><i>“</i>I can see a footprint.<i>”</i></li>
-              </ul>
-            </div>
-
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">👩‍🏫</span><span class="tr-card-title">AI teacher's notes</span></div>
-              <div class="tr-rev">
-                <p class="tr-rev-line" id="tr-rev-line"></p>
-                <div class="tr-pill good"><b>👍 Did well:</b> Spoke up confidently and copied new words with clear sounds.</div>
-                <div class="tr-pill good"><b>👍 Did well:</b> Stayed curious and answered the teacher's questions.</div>
-                <div class="tr-pill grow"><b>🌱 Next step:</b> Try linking two words into a short sentence — we'll practice this next class.</div>
-              </div>
-            </div>
-
-            <p class="tr-disclaimer">Some of the content above is AI-generated.</p>
-          </div>
-        </div>
-        <div class="foot-actions tr-foot">
-          <button type="button" class="btn btn-primary" id="btn-trial-start">Get my study plan →</button>
-          <p class="tr-foot-note" id="tr-foot-note">See your weekly plan, then unlock to keep learning</p>
-        </div>
-      </section>
     </div>
   </div>
 
@@ -5672,7 +5622,7 @@
                          swiper (zero clicks). Browsing the full catalog moves to the single
                          Learning Path entry on the right. -->
                     <div class="class-week-head">
-                      <span class="class-week-title">Your lessons</span>
+                      <span class="class-week-title">📅 This week's plan</span>
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View all courses">All courses <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
                     <div class="class-week-list" id="class-week-list"></div>
@@ -6488,6 +6438,66 @@
               <span class="reward-pill coin"><span class="coin-ico"></span>+<span id="lc-coin">20</span></span>
             </div>
             <button class="gbtn gbtn-gold" id="lc-continue">Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trial Lesson Report (V1.3.0): LANDSCAPE takeover after the first trial lesson
+           (also reused for the level-up check). Scroll shell + 2-column card grid. -->
+      <section class="screen tr-screen" id="screen-trial-report">
+        <div class="tr-land-shell" id="tr-scroll">
+          <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
+          <div class="tr-hero">
+            <div class="tr-hero-dino"><img src="assets/dino-mascot.png" alt="Dino" decoding="async" /></div>
+            <div class="tr-hero-copy">
+              <span class="tr-hero-badge" id="tr-hero-badge">Trial Lesson Report</span>
+              <h1 id="tr-hero-h">Great first class! 🎉</h1>
+              <p class="tr-hero-sub" id="tr-hero-sub">Your first lesson</p>
+            </div>
+          </div>
+          <div class="tr-cards">
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">⭐</span><span class="tr-card-title" id="tr-perf-title">How it went</span></div>
+              <div class="tr-perf-row">
+                <div class="tr-stat"><b>10<small>m</small></b><span>Class time</span></div>
+                <div class="tr-stat"><b>😊</b><span>Engagement</span></div>
+                <div class="tr-stat"><b>12</b><span>Times spoken</span></div>
+              </div>
+              <p class="tr-encourage" id="tr-encourage"></p>
+            </div>
+
+            <div class="tr-card tr-card--level">
+              <div class="tr-card-head"><span class="tr-card-ico">🦕</span><span class="tr-card-title">Dino's level recommendation</span></div>
+              <div class="tr-level-badge"><b id="tr-level">A2</b><span>recommended CEFR level</span></div>
+              <p class="tr-level-reason" id="tr-level-reason"></p>
+              <div class="tr-level-dir" id="tr-level-dir"></div>
+            </div>
+
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">📚</span><span class="tr-card-title">What we learned today</span></div>
+              <span class="tr-topic">Topic · A Forest Lake Adventure</span>
+              <div class="tr-vocab"><span>🌊 lake</span><span>🌲 forest</span><span>🐾 footprint</span><span>🔍 explore</span></div>
+              <ul class="tr-expr">
+                <li><i>“</i>Let's explore the forest!<i>”</i></li>
+                <li><i>“</i>I can see a footprint.<i>”</i></li>
+              </ul>
+            </div>
+
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">👩‍🏫</span><span class="tr-card-title">AI teacher's notes</span></div>
+              <div class="tr-rev">
+                <p class="tr-rev-line" id="tr-rev-line"></p>
+                <div class="tr-pill good"><b>👍 Did well:</b> Spoke up confidently and copied new words with clear sounds.</div>
+                <div class="tr-pill good"><b>👍 Did well:</b> Stayed curious and answered the teacher's questions.</div>
+                <div class="tr-pill grow"><b>🌱 Next step:</b> Try linking two words into a short sentence — we'll practice this next class.</div>
+              </div>
+            </div>
+
+            <p class="tr-disclaimer">Some of the content above is AI-generated.</p>
+          </div>
+          <div class="foot-actions tr-foot">
+            <button type="button" class="btn btn-primary" id="btn-trial-start">Get my study plan →</button>
+            <p class="tr-foot-note" id="tr-foot-note">See your weekly plan, then unlock to keep learning</p>
           </div>
         </div>
       </section>
@@ -8231,8 +8241,11 @@
     }
     function showTrialReport() {
       renderTrialReport();
-      enterPortrait();
-      showPortraitScreen("screen-trial-report");
+      // V1.3.0: the trial report is now a landscape takeover (was portrait).
+      enterLandscape();
+      showLandScreen("screen-trial-report");
+      const sh = $("#tr-scroll");
+      if (sh) sh.scrollTop = 0;
     }
     $("#btn-trial-start")?.addEventListener("click", () => {
       if (trialReportMode === "levelup") { finishLevelUp(getLevelUpVerdict()); return; }
@@ -9621,65 +9634,27 @@
       { id: "child", label: "For my child" },
       { id: "self", label: "For myself" },
     ];
-    // Placement test: 4 self-assessment questions (Listening / Speaking / Reading / Writing).
-    // The parent rates the learner; each option carries a score, summed to a CEFR band.
-    // Source: the placement-questions spreadsheet — A 5 / B 10 / C 15 / D 20 / E 22 / F 25 / G 0.
+    // Placement test: ONE self-assessment question (replaces the old 4 skill questions).
+    // The parent picks the single description that fits the learner best; each option
+    // maps directly to a CEFR band / start level (no scoring). The last option ("I'm
+    // not sure") starts gently at the beginning and lets Dino adjust as the child learns.
     const PLACEMENT_QUESTIONS = [
       {
-        skill: "Listening", emoji: "🎧",
-        prompt: "How well can {name} understand spoken English?",
+        prompt: "Which best describes {name}'s English right now?",
+        hint: "Pick the one that fits best \u2014 Dino adjusts the level as {name} learns.",
         choices: [
-          { label: "Follows very slow, very clear simple instructions & greetings, sometimes needing repetition (e.g. \u201CHow are you?\u201D)", score: 5 },
-          { label: "Understands very slow simple daily talk, but needs repeats or hints (e.g. \u201CWhat's your name?\u201D)", score: 10 },
-          { label: "Follows slow, short conversations with occasional repeats (e.g. \u201CWhere is your school?\u201D)", score: 15 },
-          { label: "Understands familiar topics \u2014 family, shopping, surroundings (e.g. \u201CIs there a hospital nearby?\u201D)", score: 20 },
-          { label: "Follows longer talk on familiar topics at normal speed, catching details despite new words", score: 22 },
-          { label: "Keeps up with clear, normal-speed conversation, getting the gist even when it's fast or has new words", score: 25 },
-          { label: "None of the above", score: 0 },
-        ],
-      },
-      {
-        skill: "Speaking", emoji: "🗣️",
-        prompt: "How well can {name} speak English?",
-        choices: [
-          { label: "Answers simple greetings; names colors, shapes, body parts & animals (e.g. \u201CIt's yellow.\u201D)", score: 5 },
-          { label: "Answers basic questions with single words or short phrases (e.g. \u201CMy name is\u2026 / I like red.\u201D)", score: 10 },
-          { label: "Makes 2\u20133 simple sentences about everyday things (e.g. \u201CI have a dog. It is white.\u201D)", score: 15 },
-          { label: "Describes own life & study, simple past and future plans (e.g. \u201CI went to the park. I will go to the beach.\u201D)", score: 20 },
-          { label: "Chats fluently on familiar topics, asks follow-up questions and gives simple opinions", score: 22 },
-          { label: "Retells stories or movies with opinions; handles real situations like ordering food abroad", score: 25 },
-          { label: "None of the above", score: 0 },
-        ],
-      },
-      {
-        skill: "Reading", emoji: "📖",
-        prompt: "How well can {name} read English?",
-        choices: [
-          { label: "Recognizes simple single words (e.g. dog, cat, star)", score: 5 },
-          { label: "Recognizes high-frequency words in short phrases (e.g. cat, apple, big)", score: 10 },
-          { label: "Reads short sentences & simple questions (e.g. \u201CWhat is this? It's a book.\u201D)", score: 15 },
-          { label: "Reads simple articles, stories, dialogues, notices and emails", score: 20 },
-          { label: "Reads longer, detailed stories and guesses word meaning from context", score: 22 },
-          { label: "Reads longer, more complex articles & stories on familiar topics", score: 25 },
-          { label: "None of the above", score: 0 },
-        ],
-      },
-      {
-        skill: "Writing", emoji: "✍️",
-        prompt: "How well can {name} write in English?",
-        choices: [
-          { label: "Copies the 26 letters and very simple words", score: 5 },
-          { label: "Copies sentences but can't spell a full sentence alone (e.g. \u201CThis is a cat.\u201D)", score: 10 },
-          { label: "Writes simple sentences, with some spelling mistakes (e.g. \u201CI have two brothers.\u201D)", score: 15 },
-          { label: "Writes simple paragraphs about daily life \u2014 a short email or postcard", score: 20 },
-          { label: "Uses linking words (and / but / because) to write a connected paragraph", score: 22 },
-          { label: "Writes coherent paragraphs or short essays about interests, experiences & opinions", score: 25 },
-          { label: "None of the above", score: 0 },
+          { label: "Beginner \u2014 knows \u201Chello\u201D and \u201Cbye\u201D", result: 0 },
+          { label: "Knows common words, can't make sentences yet", result: 1 },
+          { label: "Reads simple sentences, gives short answers", result: 2 },
+          { label: "Reads short stories, can describe things", result: 3 },
+          { label: "Reads full stories alone, talks about experiences", result: 4 },
+          { label: "Reads longer texts, gives opinions with reasons", result: 5 },
+          { label: "I'm not sure", result: 0, unsure: true },
         ],
       },
     ];
-    // 4 questions x max 25 = 100. Bands from the placement-questions spreadsheet:
-    // Pre-A1 [0-20] · A1 [21-40] · A1+ [41-60] · A2 [61-80] · A2+ [81-90] · B1 [91-100].
+    // Each option maps straight to a CEFR band / start level:
+    // Pre-A1 · A1 · A1+ · A2 · A2+ · B1 ("I'm not sure" → a gentle Pre-A1 start).
     const PT_RESULTS = [
       { min: 0,  max: 20,  badge: "Pre-A1", levelId: "level-1", title: "A brand-new start!",      sub: (n) => `Based on your quick check, we recommend starting at <strong>Pre-A1</strong> for ${n}.`, bullets: ["First words, sounds & friendly greetings", "Lots of pictures, repetition & praise", "Speak from the very first lesson"] },
       { min: 21, max: 40,  badge: "A1",     levelId: "level-1", title: "A great starting point!",  sub: (n) => `Based on your quick check, we recommend <strong>A1</strong> for ${n}.`, bullets: ["Everyday words & simple phrases", "Short, friendly conversations", "Build confidence speaking out loud"] },
@@ -9951,20 +9926,24 @@
       const q = PLACEMENT_QUESTIONS[idx];
       const total = PLACEMENT_QUESTIONS.length;
       const name = profile.name || "your child";
-      $("#pt-question").textContent = q.prompt.replace("{name}", name);
-      $("#pt-hint").textContent = `${q.emoji} ${q.skill} · Question ${idx + 1} of ${total}`;
+      $("#pt-question").textContent = q.prompt.replace(/\{name\}/g, name);
+      const hintEl = $("#pt-hint");
+      if (hintEl) {
+        if (q.hint) { hintEl.hidden = false; hintEl.textContent = q.hint.replace(/\{name\}/g, name); }
+        else hintEl.hidden = true;
+      }
       const box = $("#pt-options");
       box.innerHTML = "";
-      q.choices.forEach((c) => {
+      q.choices.forEach((c, ci) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "option-item";
         btn.textContent = c.label;
-        if (ptAnswers[idx] === c.score) btn.classList.add("is-selected");
+        if (ptAnswers[idx] === ci) btn.classList.add("is-selected");
         btn.addEventListener("click", () => {
           box.querySelectorAll(".option-item").forEach((b) => b.classList.remove("is-selected"));
           btn.classList.add("is-selected");
-          ptAnswers[idx] = c.score;
+          ptAnswers[idx] = ci;
           setTimeout(() => {
             if (idx + 1 < total) {
               ptCurrentIdx = idx + 1;
@@ -9980,16 +9959,21 @@
 
     function showPlacementResult() {
       const name = profile.name || "your child";
-      const ptScore = ptAnswers.reduce((sum, s) => sum + (s || 0), 0);
-      const result = PT_RESULTS.find((r) => ptScore >= r.min && ptScore <= r.max) || PT_RESULTS[0];
+      // Single-question placement: the chosen option maps straight to a CEFR band.
+      const q = PLACEMENT_QUESTIONS[0];
+      const choice = q.choices[ptAnswers[0]] || q.choices[0];
+      const result = PT_RESULTS[choice.result] || PT_RESULTS[0];
       profile.level = result.badge;
       profile.currentLevelId = result.levelId;
       // Record the placement level so the Learning Path can show levels BELOW it as
       // "not started" (skipped at placement), not auto-completed.
       profile.placementLevelId = result.levelId;
       $("#pt-result-badge").textContent = "Recommended · " + result.badge;
-      $("#pt-result-title").textContent = result.title;
-      $("#pt-result-sub").innerHTML = result.sub(name);
+      // "I'm not sure" → reassuring gentle-start copy; otherwise the band's own copy.
+      $("#pt-result-title").textContent = choice.unsure ? "We'll start gently" : result.title;
+      $("#pt-result-sub").innerHTML = choice.unsure
+        ? `No problem! We'll begin with the basics and move ${name} up as soon as it feels easy.`
+        : result.sub(name);
       const illo = $("#illo-pt-result");
       if (illo && !illo.dataset.filled) { illo.innerHTML = DINO_CHAR; illo.dataset.filled = "1"; }
       const bx = $("#pt-result-bullets");
@@ -10403,6 +10387,12 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
+        if (id === "screen-trial-report") {
+          // V1.3.0: trial report is now a landscape takeover.
+          return trialReportMode === "levelup"
+            ? { label: "跳级定级报告", keys: ["levelUpResult"] }
+            : { label: "体验课报告",   keys: [] };
+        }
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-study-plan")  return { label: "学习计划",        keys: ["membership", "startLevel"] };
@@ -10410,11 +10400,6 @@
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
         return { label: "App 内", keys: ["membership"] };
-      }
-      if (document.querySelector("#screen-trial-report")?.classList.contains("active")) {
-        return trialReportMode === "levelup"
-          ? { label: "跳级定级报告", keys: ["levelUpResult"] }
-          : { label: "体验课报告",   keys: [] };
       }
       return { label: "Onboarding", keys: [] };
     },
@@ -10452,6 +10437,7 @@
       { label: "课程列表",    run: function () { enterLandscape(); showAllCourses(undefined, "class"); } },
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
       { label: "学习计划",    run: function () { enterLandscape(); showStudyPlan(); } },
+      { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
       { label: "Paywall",    run: function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
       { label: "会员中心",    run: function () { enterLandscape(); showLandScreen("screen-membership"); } },
     ],
