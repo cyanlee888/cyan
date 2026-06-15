@@ -1402,30 +1402,10 @@
       object-fit: cover;
       display: block;
     }
-    /* ---- Avatar frame (earned via in-class rewards) ---- */
-    .avatar-frame-wrap { position: relative; display: inline-block; border: none; background: none; padding: 0; cursor: pointer; }
-    .avatar-frame-wrap .profile-avatar { position: relative; z-index: 1; }
-    .af-ring {
-      position: absolute; inset: -6px; border-radius: 50%; pointer-events: none; z-index: 2; display: none;
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
-    }
-    .af-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 0.95rem; display: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.18)); }
-    [data-frame="star"] .af-ring { display: block; background: linear-gradient(135deg, #ffd34d, #ff9a3d); }
-    [data-frame="crown"] .af-ring { display: block; background: linear-gradient(135deg, #ffe27a, #d99a1f); }
-    [data-frame="rainbow"] .af-ring { display: block; background: conic-gradient(#ff6b6b, #ffb84d, #ffe66d, #6bd66b, #5b8cff, #b06bff, #ff6b6b); }
-    [data-frame="star"] .af-badge, [data-frame="crown"] .af-badge, [data-frame="rainbow"] .af-badge { display: block; }
-    .af-edit-hint { margin-top: -6px; font-size: 0.62rem; font-weight: 700; color: #2d6b45; background: #eef7f1; border-radius: 999px; padding: 3px 10px; cursor: pointer; }
-    .af-edit-hint:hover { background: #e2f1e8; }
     /* ---- Profile entry: avatar in the top-left corner (replaces the Profile tab) ---- */
     .hub-avatar-entry { position: absolute; top: 10px; left: 14px; z-index: 30; width: 42px; height: 42px; border: none; background: none; padding: 0; cursor: pointer; transition: transform 0.14s ease; }
     .hub-avatar-entry:hover { transform: scale(1.06); }
     .hub-avatar-entry img { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 4px 10px rgba(0,0,0,0.22); }
-    .hub-avatar-entry .af-ring {
-      inset: -4px;
-      -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
-      mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px));
-    }
     .hub-app--profile .hub-avatar-entry { display: none; }
     /* Profile is a standalone page (back button at top-left) — hide the bottom nav */
     .hub-app--profile > .class-bottom-nav { display: none; }
@@ -1435,46 +1415,6 @@
     .dino-hud { padding-left: 56px; }
     /* Back button inside the profile page (opened from the avatar entry) */
     .profile-back { position: absolute; top: 12px; left: 14px; z-index: 5; }
-    /* In-class student feed inherits the equipped frame */
-    .ic-feed[data-frame="star"] { border-color: #ffd34d; box-shadow: 0 0 0 2px rgba(255, 211, 77, 0.55), 0 6px 14px rgba(0,0,0,0.22); }
-    .ic-feed[data-frame="crown"] { border-color: #ffce4d; box-shadow: 0 0 0 2px rgba(217, 154, 31, 0.55), 0 6px 14px rgba(0,0,0,0.22); }
-    .ic-feed[data-frame="rainbow"] { border-color: #b06bff; box-shadow: 0 0 0 2px rgba(91, 140, 255, 0.5), 0 6px 14px rgba(0,0,0,0.22); }
-    .ic-frame-badge { position: absolute; top: 3px; left: 7px; z-index: 7; font-size: 0.82rem; display: none; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25)); }
-    .ic-feed[data-frame="star"] .ic-frame-badge, .ic-feed[data-frame="crown"] .ic-frame-badge, .ic-feed[data-frame="rainbow"] .ic-frame-badge { display: block; }
-    /* Frame picker sheet */
-    .frame-sheet-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.45); display: none; align-items: center; justify-content: center; z-index: 40; }
-    .frame-sheet-overlay.show { display: flex; }
-    .frame-sheet { background: #fff; border-radius: 20px; padding: 18px 20px 20px; width: min(92%, 470px); box-shadow: 0 24px 60px rgba(0,0,0,0.3); }
-    .frame-sheet-title { margin: 0 0 3px; font-family: var(--display); font-weight: 800; font-size: 1rem; color: #23314f; }
-    .frame-sheet-sub { margin: 0 0 14px; font-size: 0.68rem; color: #7a87a3; }
-    /* Live preview header: shows the pending frame on the learner's own avatar */
-    .frame-preview { display: flex; align-items: center; gap: 14px; background: #f5f8fd; border: 1px solid #e7edf7;
-      border-radius: 16px; padding: 12px 16px; margin-bottom: 14px; }
-    .frame-preview .fp-ava { position: relative; width: 58px; height: 58px; flex: none; }
-    .frame-preview .fp-ava img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; position: relative; z-index: 1; }
-    .frame-preview .fp-ava .af-ring { inset: -5px; }
-    .frame-preview .fp-badge { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); z-index: 3; font-size: 0.95rem; display: none; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.18)); }
-    .frame-preview .fp-ava[data-frame="star"] .fp-badge, .frame-preview .fp-ava[data-frame="crown"] .fp-badge, .frame-preview .fp-ava[data-frame="rainbow"] .fp-badge { display: block; }
-    .fp-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-    .fp-name { font-family: var(--display); font-weight: 800; font-size: 0.92rem; color: #23314f; }
-    .fp-src { font-size: 0.64rem; color: #7a87a3; }
-    .fp-live { align-self: flex-start; margin-top: 3px; font-size: 0.56rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: #2d6b45; background: #e6f4ec; border-radius: 999px; padding: 2px 8px; }
-    .frame-sheet-actions { display: flex; gap: 10px; margin-top: 16px; }
-    .fs-btn { flex: 1; border: none; border-radius: 999px; padding: 11px 0; font-family: var(--font); font-weight: 800; font-size: 0.84rem; cursor: pointer; }
-    .fs-btn-ghost { background: #eef1f7; color: #5a6a86; }
-    .fs-btn-primary { background: #2d6b45; color: #fff; box-shadow: 0 8px 18px rgba(45, 107, 69, 0.34); }
-    .fs-btn-primary:disabled { opacity: 0.5; cursor: default; box-shadow: none; }
-    .frame-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-    .frame-opt { border: 2px solid #e3e9f4; border-radius: 16px; background: #fff; padding: 12px 6px 9px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; transition: border-color 0.15s, transform 0.15s; font-family: var(--font); }
-    .frame-opt:hover { transform: translateY(-2px); }
-    .frame-opt.on { border-color: #2d6b45; background: #f1faf4; }
-    .frame-opt .fo-ava { position: relative; width: 46px; height: 46px; }
-    .frame-opt .fo-ava img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; position: relative; z-index: 1; }
-    .frame-opt .fo-ava .af-ring { inset: -4px; }
-    .frame-opt .fo-name { font-size: 0.66rem; font-weight: 700; color: #3c4a68; }
-    .frame-opt .fo-src { font-size: 0.55rem; color: #9aa7c2; line-height: 1.3; }
-    .frame-opt.locked { opacity: 0.55; }
-    .frame-opt.locked::after { content: "🔒"; position: absolute; top: 6px; right: 8px; font-size: 0.7rem; }
     .profile-name {
       margin: 0;
       font-family: var(--display);
@@ -4122,6 +4062,7 @@
     .name-suggest.is-selected { border-color: #19c3b2; background: #effbf9; color: #0d8f80; }
     .foot-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; }
     .btn-text { background: none; border: none; color: #5a7a98; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .btn-text-link { color: var(--forest-mid); font-weight: 700; }
     .welcome-hero { height: 320px; border-radius: 28px; overflow: hidden; position: relative; background: linear-gradient(160deg,#cdeafe,#eafbf6); }
     .carousel-frame { position: absolute; inset: 0; }
     .carousel-slide { position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease; }
@@ -4836,6 +4777,10 @@
     .sc-eq { position: absolute; top: 5px; right: 6px; font-size: 0.8rem; color: #2c2360;
       background: #ffd34d; border-radius: 50%; width: 19px; height: 19px; display: grid; place-items: center; font-weight: 800; }
     .shop-card.sel .sc-eq { box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+    /* Pet collection count badge (×N) for duplicate pulls; pets are collect-only. */
+    .sc-count { position: absolute; bottom: 5px; right: 5px; font-size: 0.62rem; font-weight: 800;
+      color: #2c2360; background: #ffd34d; border-radius: 8px; padding: 1px 6px; z-index: 2; }
+    .shop-card.pet-collect { cursor: default; }
     .shop-card-name { color: #fff; font-size: 0.75rem; font-weight: 800; }
     .shop-card-price { align-self: center; display: inline-flex; align-items: center; gap: 5px;
       background: rgba(20,14,52,0.65); border: 1px solid rgba(255,255,255,0.14); color: #fff;
@@ -4943,7 +4888,7 @@
     .explore-head { padding: 2px 4px 14px; flex-shrink: 0; }
     .explore-title { margin: 0; font-size: 1.32rem; font-weight: 900; color: #fff; }
     .explore-lead { margin: 4px 0 0; font-size: 0.78rem; color: rgba(255,255,255,0.8); }
-    /* 4 entries (W&S / Listening / Speaking / Reading) must fit above the floating nav */
+    /* 3 entries (W&S / Listening / Speaking) must fit above the floating nav */
     .explore-entries { display: flex; flex-direction: column; gap: 9px; flex-shrink: 0; }
     .explore-entries .explore-entry { padding: 11px 16px; }
     .explore-entries .ee-emoji { width: 40px; height: 40px; font-size: 1.45rem; }
@@ -5247,6 +5192,76 @@
     .sp-uchip.is-current .sp-uchip-no { background: #ffd98a; border-color: #ffd98a; color: #8a5a12; }
     .sp-uchip-theme { flex: 1; min-width: 0; font-size: 0.72rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .sp-uchip-status { font-size: 0.55rem; font-weight: 800; border-radius: 999px; padding: 2px 8px; flex-shrink: 0; }
+    /* ===== First-trial report (portrait, CT trial-report reference design) ===== */
+    #screen-trial-report { padding: 0; }
+    .tp-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; background: #f4f3fb; overflow-y: auto; overflow-x: hidden; }
+    #screen-trial-report .tp-hero { position: relative; padding: 16px 16px 42px; color: #fff; text-align: center; background: linear-gradient(135deg,#7b5cf0 0%,#a98cff 55%,#7aa6ff 110%); }
+    #screen-trial-report .tp-back { position: absolute; left: 12px; top: 12px; border: none; cursor: pointer; background: rgba(255,255,255,0.18); color: #fff; font-size: 0.82rem; font-weight: 800; padding: 6px 12px; border-radius: 999px; }
+    #screen-trial-report .tp-hero-badge { display: inline-block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.22); padding: 4px 12px; border-radius: 999px; margin-top: 6px; }
+    #screen-trial-report .tp-hero-emoji { font-size: 2.4rem; margin: 6px 0 2px; }
+    #screen-trial-report .tp-hero-title { font-family: var(--display); font-size: 1.5rem; font-weight: 900; margin: 0; }
+    #screen-trial-report .tp-hero-sub { font-size: 0.78rem; opacity: 0.92; margin: 6px 0 0; }
+    #screen-trial-report .tp-stack { position: relative; z-index: 2; margin-top: -26px; padding: 0 13px; display: flex; flex-direction: column; }
+    #screen-trial-report .tp-card { background: #fff; border-radius: 22px; box-shadow: 0 14px 30px rgba(40,40,120,0.14); padding: 17px 15px; margin-bottom: 14px; }
+    #screen-trial-report .tp-chead { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+    #screen-trial-report .tp-ico { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; font-size: 1.05rem; color: #fff; flex: 0 0 34px; }
+    #screen-trial-report .tp-violet { background: linear-gradient(135deg,#a98cff,#7b5cf0); }
+    #screen-trial-report .tp-blue { background: linear-gradient(135deg,#67c0ff,#3f8df4); }
+    #screen-trial-report .tp-orange { background: linear-gradient(135deg,#ffc861,#ff9b3d); }
+    #screen-trial-report .tp-avatar { width: 38px; height: 38px; border-radius: 50%; flex: 0 0 38px; display: grid; place-items: center; font-size: 1.2rem; background: linear-gradient(135deg,#ffe1c7,#ffd0a8); box-shadow: 0 3px 8px rgba(80,80,160,0.2); }
+    #screen-trial-report .tp-h3 { margin: 0; font-size: 1.05rem; font-weight: 900; color: #2c2b3a; }
+    #screen-trial-report .tp-level-badge { margin-left: auto; font-size: 0.8rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 4px; padding: 6px 13px; border-radius: 999px; background: linear-gradient(135deg,#7b5cf0,#a98cff); box-shadow: 0 5px 12px rgba(123,92,240,0.4); white-space: nowrap; }
+    #screen-trial-report .tp-sub-h { font-size: 0.92rem; font-weight: 900; margin: 15px 0 9px; color: #2c2b3a; }
+    #screen-trial-report .tp-box { border-radius: 15px; padding: 12px 13px; margin-bottom: 10px; }
+    #screen-trial-report .tp-box:last-child { margin-bottom: 0; }
+    #screen-trial-report .tp-box p { margin: 0; font-size: 0.84rem; line-height: 1.6; color: #2c2b3a; }
+    #screen-trial-report .tp-box p.tp-warm { margin-top: 9px; }
+    #screen-trial-report .tp-lbl { font-size: 0.8rem; font-weight: 900; margin-bottom: 5px; color: #2c2b3a; }
+    #screen-trial-report .tp-en-lbl { font-size: 0.62rem; color: #7d7c94; font-weight: 600; margin-left: 5px; }
+    #screen-trial-report .tp-box ol, #screen-trial-report .tp-box ul { margin: 5px 0 0; padding-left: 18px; font-size: 0.82rem; line-height: 1.7; color: #2c2b3a; }
+    #screen-trial-report .tp-b-lav { background: #eef0fb; }
+    #screen-trial-report .tp-b-mint { background: #ebf6ee; }
+    #screen-trial-report .tp-b-peach { background: #fdeee2; }
+    #screen-trial-report .tp-b-cream { background: #fbf3df; }
+    #screen-trial-report .tp-hl { color: #7b5cf0; font-weight: 800; }
+    #screen-trial-report .tp-quote { color: #ff7a3d; font-weight: 700; }
+    #screen-trial-report .tp-score-line { font-size: 0.95rem; font-weight: 800; margin: 0 0 9px; display: flex; align-items: center; gap: 7px; color: #2c2b3a; }
+    #screen-trial-report .tp-score-line b { font-size: 1.4rem; }
+    #screen-trial-report .tp-coin { font-size: 1.3rem; }
+    #screen-trial-report .tp-intro { font-size: 0.84rem; color: #4a4960; margin: 0 0 13px; line-height: 1.55; }
+    #screen-trial-report .tp-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
+    #screen-trial-report .tp-tile { border-radius: 16px; padding: 14px 6px 12px; text-align: center; }
+    #screen-trial-report .tp-tile.tp-lav { background: #eef0fb; }
+    #screen-trial-report .tp-tile.tp-mint { background: #ebf6ee; }
+    #screen-trial-report .tp-tile.tp-peach { background: #fdeee2; }
+    #screen-trial-report .tp-tic { font-size: 1.5rem; line-height: 1; margin-bottom: 7px; }
+    #screen-trial-report .tp-tag { font-size: 1.25rem; font-weight: 900; margin-bottom: 3px; }
+    #screen-trial-report .tp-tag.tp-p { color: #7b5cf0; }
+    #screen-trial-report .tp-tag.tp-g { color: #22c08b; }
+    #screen-trial-report .tp-tag.tp-o { color: #ff7a3d; }
+    #screen-trial-report .tp-unit { font-size: 0.8rem; font-weight: 800; margin-left: 1px; }
+    #screen-trial-report .tp-tsub { font-size: 0.66rem; color: #5a5872; font-weight: 700; }
+    #screen-trial-report .tp-segtab { display: flex; background: #fdf0e6; border-radius: 999px; padding: 5px; margin-bottom: 13px; }
+    #screen-trial-report .tp-seg { flex: 1; border: none; background: transparent; font-size: 0.82rem; font-weight: 800; color: #bb8e6e; padding: 9px 0; border-radius: 999px; cursor: pointer; }
+    #screen-trial-report .tp-seg.on { background: linear-gradient(135deg,#ffb24d,#ff8a3d); color: #fff; box-shadow: 0 5px 12px rgba(255,140,60,0.4); }
+    #screen-trial-report .tp-weak-tip { display: flex; align-items: center; gap: 7px; background: #fff6ee; border: 1px solid #ffe1c7; border-radius: 14px; padding: 10px 12px; margin: -2px 0 13px; font-size: 0.74rem; font-weight: 600; color: #c4753c; line-height: 1.4; }
+    #screen-trial-report .tp-wic { font-size: 0.95rem; flex-shrink: 0; }
+    #screen-trial-report .tp-colhead { display: flex; align-items: center; font-size: 0.72rem; color: #7d7c94; font-weight: 700; padding: 0 2px 8px; }
+    #screen-trial-report .tp-cl { flex: 1; }
+    #screen-trial-report .tp-cc { width: 50px; text-align: center; }
+    #screen-trial-report .tp-cdiv { width: 1px; height: 13px; background: #e3e0ee; }
+    #screen-trial-report .tp-dot-div { border-top: 2px dotted #ecdccd; margin-bottom: 2px; }
+    #screen-trial-report .tp-wrow { display: flex; align-items: center; padding: 11px 2px; border-bottom: 1px solid #f4f2fa; }
+    #screen-trial-report .tp-wrow:last-of-type { border-bottom: none; }
+    #screen-trial-report .tp-w { flex: 1; font-size: 0.92rem; font-weight: 700; color: #2c2b3a; }
+    #screen-trial-report .tp-spk { width: 50px; display: flex; justify-content: center; }
+    #screen-trial-report .tp-spk button { width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; background: transparent; color: #ff7a3d; font-size: 1.05rem; display: grid; place-items: center; transition: transform 0.15s; }
+    #screen-trial-report .tp-legal { text-align: center; font-size: 0.7rem; color: #a8a6bd; padding: 4px 18px 2px; }
+    #screen-trial-report .tp-cta-spacer { height: 84px; }
+    #screen-trial-report .tp-cta-bar { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 16px 16px; background: linear-gradient(180deg,rgba(244,243,251,0) 0%,rgba(244,243,251,0.92) 35%,#f4f3fb 100%); z-index: 10; }
+    #screen-trial-report .tp-cta-btn { display: block; width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg,#ff9b3d,#ff7a3d); color: #fff; padding: 14px; border-radius: 16px; box-shadow: 0 10px 24px rgba(255,120,60,0.4); }
+    #screen-trial-report .tp-cta-main { display: block; font-size: 1.02rem; font-weight: 900; letter-spacing: 0.3px; }
+    #screen-trial-report .tp-cta-small { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.92; margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -5261,12 +5276,12 @@
         </div>
         <div class="welcome-copy">
           <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.12rem">Meet Your Exclusive AI English Teacher</h1>
-          <p class="sub">Boost your child's English skills anytime, anywhere.</p>
+          <h1 class="title" style="font-size:1.12rem">Meet Your Personal AI English Teacher</h1>
+          <p class="sub">Learn English anytime, anywhere.</p>
         </div>
         <div class="foot-actions welcome-foot">
           <button type="button" class="btn btn-primary" id="btn-get-started">Get Started</button>
-          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I have an account</button>
+          <button type="button" class="btn btn-text" id="btn-has-account-welcome">Already have an account? <span class="btn-text-link">Log in</span></button>
         </div>
       </section>
 
@@ -5278,7 +5293,7 @@
         <div class="scroll-body dino-guide">
           <div class="dino-wrap" id="dino-purpose"></div>
           <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to understand your <strong>goals and preferences</strong>.</p>
+            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong> for your learning.</p>
           </div>
         </div>
         <div class="foot-actions">
@@ -5294,7 +5309,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Who's learning?</h1>
-          <p class="hint">We'll personalize lessons based on who's learning.</p>
+          <p class="hint">We'll personalize the learning plan for the learner.</p>
           <div class="option-list" id="who-options"></div>
         </div>
         <div class="foot-actions">
@@ -5309,9 +5324,9 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your child's name?</h1>
-          <p class="hint">We will call you by this name.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your child's name" autocomplete="name" maxlength="32" />
+          <h1 class="title">What should we call your child?</h1>
+          <p class="hint">We'll use this name in lessons.</p>
+          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="32" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
@@ -5335,7 +5350,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
-          <p class="hint">This helps us create a proper account for you and your child.</p>
+          <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
           <div class="option-list" id="age-options"></div>
         </div>
       </section>
@@ -5397,8 +5412,8 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your child's main goal right now?</h1>
-          <p class="hint">We'll recommend the first lesson based on this.</p>
+          <h1 class="title">What's your child's main learning goal right now?</h1>
+          <p class="hint">We'll use this to recommend the best first lesson for your child.</p>
           <div class="option-list" id="goal-options"></div>
         </div>
         <div class="foot-actions">
@@ -5448,7 +5463,7 @@
           <div class="illo-slot" id="illo-login"></div>
           <div class="logo">Dino English</div>
           <div class="chip-row" id="login-chips"></div>
-          <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
+          <p class="login-dynamic" id="login-dynamic">Log in to continue</p>
           <div class="login-oauth-stack">
             <button type="button" class="btn btn-oauth" id="btn-login-apple">
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
@@ -5506,6 +5521,140 @@
         </div>
         <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
       </section>
+
+      <!-- Study plan (V1.3.0: portrait/vertical takeover, moved out of the landscape frame) -->
+      <section class="screen app-shell" id="screen-study-plan">
+        <div class="study-plan-shell" id="study-plan-scroll">
+          <div class="study-plan-head">
+            <button type="button" class="btn-back-land" id="btn-study-plan-back">Back</button>
+          </div>
+          <!-- Plan hero · who + start level + one goal line -->
+          <div class="sp-hero" id="sp-hero"></div>
+          <!-- Value at a glance · rich content · steady rhythm · clear goal. No weekday
+               schedule — lessons unlock as a batch and learners set their own pace. -->
+          <div class="sp-block">
+            <div class="sp-block-head"><span class="sp-block-title">Why it works</span><span class="sp-block-sub">Rich content · steady pace · real progress</span></div>
+            <div class="sp-value" id="sp-value" aria-label="Why this plan works"></div>
+          </div>
+          <!-- The path ahead · 6-Level ladder + compact unit chips -->
+          <div class="sp-block">
+            <div class="sp-block-head"><span class="sp-block-title">The full course system</span><span class="sp-block-sub" id="sp-path-sub">6 Levels</span></div>
+            <div class="sp-ladder" id="sp-ladder" aria-label="All six levels"></div>
+            <div class="sp-units sp-units--compact" id="sp-units" aria-label="Units in this level"></div>
+          </div>
+          <div class="sp-foot">
+            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Unlock the full plan →</button>
+            <p class="sp-foot-note">Unlock the full path · cancel anytime</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- First-trial report (V1.3.0): PORTRAIT takeover built from the CT trial-report
+           reference — teacher notes + level, lesson snapshot, what we covered, and a
+           pronunciation check. Name + recommended level are personalized in JS. -->
+      <section class="screen" id="screen-trial-report">
+        <div class="tp-scroll" id="trp-scroll">
+          <div class="tp-hero">
+            <button type="button" class="tp-back" id="btn-trip-back">‹ Back</button>
+            <div class="tp-hero-badge">Trial Lesson Report</div>
+            <div class="tp-hero-emoji">🎉</div>
+            <h1 class="tp-hero-title">Great first lesson!</h1>
+            <p class="tp-hero-sub">Daily Wear · Clothes That Changed History</p>
+          </div>
+
+          <div class="tp-stack">
+            <!-- 1 · Teacher notes + recommended level -->
+            <div class="tp-card">
+              <div class="tp-chead">
+                <span class="tp-avatar">👩‍🏫</span>
+                <h3 class="tp-h3">Teacher Kim's notes</h3>
+                <span class="tp-level-badge"><span class="tp-st">⭐</span><span id="trp-level">Level 3</span></span>
+              </div>
+              <div class="tp-box tp-b-lav">
+                <p id="trp-overall"></p>
+                <p class="tp-warm">🌟 You did wonderfully today — Teacher Kim loved learning with you and <span class="tp-hl">can't wait to see you again</span>. Let's keep making English fun!</p>
+              </div>
+              <div class="tp-sub-h">What went well</div>
+              <div class="tp-box tp-b-mint">
+                <p>🗣️ Jumped right in — shared ideas with phrases like <span class="tp-quote">"small community"</span> and kept the conversation lively!</p>
+              </div>
+              <div class="tp-box tp-b-peach">
+                <p>🎯 Said tricky words like <span class="tp-quote">"fountain"</span> and <span class="tp-quote">"magnetic"</span> clearly — and used them correctly in context!</p>
+              </div>
+              <div class="tp-sub-h">Room to grow</div>
+              <div class="tp-box tp-b-cream">
+                <p>💡 <span class="tp-quote">"supplies"</span> sometimes came out like <span class="tp-quote">"surprise"</span>. A little listening-and-repeating after class will make it perfect!</p>
+              </div>
+            </div>
+
+            <!-- 2 · Lesson snapshot -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-violet">📈</span><h3 class="tp-h3">Lesson snapshot</h3></div>
+              <div class="tp-score-line">Earned this lesson <b>192</b><span class="tp-coin">🪙</span></div>
+              <p class="tp-intro">Perfectly focused on today's <b>Science</b> theme! Curiosity is your superpower — keep it up, little <b>future scientist</b>!</p>
+              <div class="tp-tiles">
+                <div class="tp-tile tp-lav"><div class="tp-tic">⏰</div><div class="tp-tag tp-p">56<span class="tp-unit">m</span></div><div class="tp-tsub">Class time</div></div>
+                <div class="tp-tile tp-mint"><div class="tp-tic">💡</div><div class="tp-tag tp-g">66</div><div class="tp-tsub">Questions answered</div></div>
+                <div class="tp-tile tp-peach"><div class="tp-tic">😀</div><div class="tp-tag tp-o">36</div><div class="tp-tsub">Times speaking</div></div>
+              </div>
+            </div>
+
+            <!-- 3 · What we covered -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-blue">📖</span><h3 class="tp-h3">What we covered</h3></div>
+              <div class="tp-box tp-b-lav"><div class="tp-lbl">Topic <span class="tp-en-lbl">主题</span></div><p>Daily Wear</p></div>
+              <div class="tp-box tp-b-lav"><div class="tp-lbl">Title <span class="tp-en-lbl">篇章标题</span></div><p>Clothes That Changed History</p></div>
+              <div class="tp-box tp-b-mint"><div class="tp-lbl">Vocabulary <span class="tp-en-lbl">核心词汇</span></div><p>trench coat, raincoat, high heels, suit</p></div>
+              <div class="tp-box tp-b-cream">
+                <div class="tp-lbl">Key Sentences <span class="tp-en-lbl">重点表达</span></div>
+                <ol>
+                  <li>The trench coat became famous thanks to Sherlock Holmes.</li>
+                  <li>The raincoat became a royal favorite thanks to Queen Elizabeth II.</li>
+                  <li>King Louis XIV loved his red high heels so much that only his rich friends were allowed to wear them!</li>
+                </ol>
+              </div>
+              <div class="tp-box tp-b-peach">
+                <div class="tp-lbl">Reading Skills <span class="tp-en-lbl">阅读策略</span></div>
+                <ol>
+                  <li>Predict from title and picture</li>
+                  <li>Find details and facts</li>
+                  <li>Get the gist</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- 4 · Pronunciation check -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-orange">💬</span><h3 class="tp-h3">Pronunciation check</h3></div>
+              <div class="tp-segtab">
+                <button type="button" class="tp-seg on">Nice try!</button>
+                <button type="button" class="tp-seg">Good!</button>
+                <button type="button" class="tp-seg">Great!</button>
+              </div>
+              <div class="tp-weak-tip" id="trp-weak">
+                <span class="tp-wic">🎯</span>
+                <span>AI spotted a few sounds to polish. Tap to listen and keep practicing to watch your progress!</span>
+              </div>
+              <div class="tp-colhead"><span class="tp-cl">Word / Phrase</span><span class="tp-cc">You</span><span class="tp-cdiv"></span><span class="tp-cc">Teacher</span></div>
+              <div class="tp-dot-div"></div>
+              <div class="tp-wrow"><span class="tp-w">headphones</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">school</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">circle</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">These are headphones</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+            </div>
+
+            <p class="tp-legal">Some of the content above is AI-generated; the level result is for reference only.</p>
+            <div class="tp-cta-spacer"></div>
+          </div>
+
+          <div class="tp-cta-bar">
+            <button type="button" class="tp-cta-btn" id="btn-trip-start">
+              <span class="tp-cta-main" id="trp-cta-main">Get the study plan</span>
+              <span class="tp-cta-small" id="trp-cta-sub">Tailored to your level · start the full course</span>
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -5530,11 +5679,11 @@
             <div class="login-land-actions">
               <button type="button" class="btn btn-oauth" id="btn-login-apple-land">
                 <img src="assets/login/icon-apple.svg" alt="" width="24" height="24" decoding="async" />
-                Sign in with Apple
+                Continue with Apple
               </button>
               <button type="button" class="btn btn-oauth" id="btn-login-google-land">
                 <img src="assets/login/icon-google.svg" alt="" width="24" height="24" decoding="async" />
-                Sign in with Google
+                Continue with Google
               </button>
               <button type="button" class="login-more-entry" data-lg-open>More login options</button>
             </div>
@@ -5598,9 +5747,8 @@
       <section class="screen app-shell" id="screen-class">
         <div class="hub-app" id="hub-app">
           <!-- Profile entry: avatar in the top-left corner (replaces the Profile tab) -->
-          <button type="button" class="hub-avatar-entry" id="hub-avatar-entry" data-frame="star" aria-label="Open profile">
+          <button type="button" class="hub-avatar-entry" id="hub-avatar-entry" aria-label="Open profile">
             <img src="assets/profile/avatar.png" alt="" decoding="async" />
-            <span class="af-ring" aria-hidden="true"></span>
           </button>
           <div class="hub-panels">
             <div class="hub-panel hub-panel--class is-active" id="hub-panel-class" data-hub-panel="class">
@@ -5668,15 +5816,6 @@
                   <span class="ee-thumbs ee-thumbs--dino" aria-hidden="true"><img src="assets/dino-mascot.png" alt="" decoding="async" /></span>
                   <span class="ee-arrow">›</span>
                 </button>
-                <!-- Placeholder for future Reading -->
-                <div class="explore-entry ee-soon" aria-disabled="true">
-                  <span class="ee-emoji">📚</span>
-                  <span class="ee-info">
-                    <b>Reading</b>
-                    <span>Reading practice</span>
-                  </span>
-                  <span class="ee-soon-tag">Coming soon</span>
-                </div>
               </div>
             </div>
             <div class="hub-panel hub-panel--dino" id="hub-panel-dino" data-hub-panel="dino">
@@ -5710,7 +5849,6 @@
                     <span class="coin-ico"></span><span class="js-coin">888</span>
                   </span>
                   <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop">🛍️</button>
-                  <button type="button" class="dn-pill dn-pill--icon dn-pill--gem" id="dino-gem-entry" aria-label="Membership">💎</button>
                 </div>
               </div>
               <!-- Backpack entry card (left edge, Figma) -->
@@ -5776,12 +5914,7 @@
               <div class="profile-main">
                 <div class="profile-card">
                   <div class="profile-card-left">
-                    <button type="button" class="avatar-frame-wrap" id="btn-avatar-frame" data-frame="star" aria-label="Change avatar frame">
-                      <img class="profile-avatar" id="hub-profile-avatar" src="assets/profile/avatar.png" alt="" width="72" height="72" decoding="async" />
-                      <span class="af-ring" aria-hidden="true"></span>
-                      <span class="af-badge" id="af-badge" aria-hidden="true">⭐</span>
-                    </button>
-                    <span class="af-edit-hint" id="af-edit-hint" role="button" tabindex="0">Avatar frames ›</span>
+                    <img class="profile-avatar" id="hub-profile-avatar" src="assets/profile/avatar.png" alt="" width="72" height="72" decoding="async" />
                     <p class="profile-name" id="hub-profile-name">Jackson</p>
                   </div>
                   <div class="profile-divider" aria-hidden="true"></div>
@@ -5900,25 +6033,6 @@
               Play
             </button>
           </nav>
-          <div class="frame-sheet-overlay" id="frame-sheet" aria-hidden="true">
-            <div class="frame-sheet" role="dialog" aria-label="Choose avatar frame">
-              <p class="frame-sheet-title">Avatar Frames</p>
-              <p class="frame-sheet-sub">Earned in class · Shows on your avatar and your in-class video frame</p>
-              <div class="frame-preview">
-                <span class="fp-ava" id="fp-ava" data-frame="star"><img src="assets/profile/avatar.png" alt="" /><span class="af-ring"></span><span class="fp-badge" id="fp-badge">⭐</span></span>
-                <div class="fp-meta">
-                  <span class="fp-name" id="fp-name">Star Frame</span>
-                  <span class="fp-src" id="fp-src">Class reward · Owned</span>
-                  <span class="fp-live">Live preview</span>
-                </div>
-              </div>
-              <div class="frame-grid" id="frame-grid"></div>
-              <div class="frame-sheet-actions">
-                <button type="button" class="fs-btn fs-btn-ghost" id="fs-cancel">Cancel</button>
-                <button type="button" class="fs-btn fs-btn-primary" id="fs-equip">Equip</button>
-              </div>
-            </div>
-          </div>
           <div class="lang-sheet-overlay" id="language-sheet" aria-hidden="true">
             <div class="lang-sheet" role="dialog" aria-label="Select language">
               <p class="lang-sheet-title">Language</p>
@@ -5947,7 +6061,6 @@
         <div class="ic-teacher"><img class="ic-teacher-img" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" /></div>
         <div class="ic-feed">
           <span class="ic-crown" aria-hidden="true">👑</span>
-          <span class="ic-frame-badge" aria-hidden="true"></span>
           <span class="ic-feed-kid">🧒</span>
           <span class="ic-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
         </div>
@@ -5981,7 +6094,6 @@
         <div class="ic-teacher"><img class="ic-teacher-img" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" /></div>
         <div class="ic-feed crowned">
           <span class="ic-crown" aria-hidden="true">👑</span>
-          <span class="ic-frame-badge" aria-hidden="true"></span>
           <span class="ic-feed-kid">🧒</span>
           <span class="ic-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
         </div>
@@ -6009,7 +6121,6 @@
         <div class="ic-teacher"><img class="ic-teacher-img" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" /></div>
         <div class="ic-feed">
           <span class="ic-crown" aria-hidden="true">👑</span>
-          <span class="ic-frame-badge" aria-hidden="true"></span>
           <span class="ic-feed-kid">🧒</span>
           <span class="ic-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
         </div>
@@ -6045,36 +6156,6 @@
           <div class="course-map-body">
             <div class="course-map-levels" id="course-map-levels" role="tablist" aria-label="Levels"></div>
             <div class="course-map-units" id="course-map-units"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Study Plan: simplified custom plan opened from the trial report (→ paywall):
-           a compact hero (who + start level + one goal line), this week's lessons as a
-           single day-labelled list, and a light "path ahead" (6-Level ladder + compact
-           unit chips). -->
-      <section class="screen app-shell" id="screen-study-plan">
-        <div class="study-plan-shell" id="study-plan-scroll">
-          <div class="study-plan-head">
-            <button type="button" class="btn-back-land" id="btn-study-plan-back">Back</button>
-          </div>
-          <!-- Plan hero · who + start level + one goal line -->
-          <div class="sp-hero" id="sp-hero"></div>
-          <!-- Value at a glance · rich content · steady rhythm · clear goal. No weekday
-               schedule — lessons unlock as a batch and learners set their own pace. -->
-          <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">Why it works</span><span class="sp-block-sub">Rich content · steady pace · real progress</span></div>
-            <div class="sp-value" id="sp-value" aria-label="Why this plan works"></div>
-          </div>
-          <!-- The path ahead · 6-Level ladder + compact unit chips -->
-          <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">The full course system</span><span class="sp-block-sub" id="sp-path-sub">6 Levels</span></div>
-            <div class="sp-ladder" id="sp-ladder" aria-label="All six levels"></div>
-            <div class="sp-units sp-units--compact" id="sp-units" aria-label="Units in this level"></div>
-          </div>
-          <div class="sp-foot">
-            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Unlock the full plan →</button>
-            <p class="sp-foot-note">Unlock the full path · cancel anytime</p>
           </div>
         </div>
       </section>
@@ -6447,9 +6528,10 @@
         </div>
       </section>
 
-      <!-- Trial Lesson Report (V1.3.0): LANDSCAPE takeover after the first trial lesson
-           (also reused for the level-up check). Scroll shell + 2-column card grid. -->
-      <section class="screen tr-screen" id="screen-trial-report">
+      <!-- Level-Up Check report (V1.3.0): LANDSCAPE takeover for the in-app level-up
+           trial (向上跳级定级). The first-trial report is a separate PORTRAIT screen
+           (#screen-trial-report) built from the CT trial-report reference. -->
+      <section class="screen tr-screen" id="screen-levelup-report">
         <div class="tr-land-shell" id="tr-scroll">
           <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
           <div class="tr-hero">
@@ -6571,7 +6653,6 @@
           <div class="shop-panel">
             <div class="shop-tabs" id="shop-tabs">
               <button class="shop-tab on" data-cat="skin">Dino Skins</button>
-              <button class="shop-tab" data-cat="pet">Dino Pets</button>
             </div>
             <div class="shop-panel-body">
               <div class="shop-grid" id="shop-grid"></div>
@@ -6684,7 +6765,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", avatarFrame: "star" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = { levelUpResult: "pass", capsuleOutcome: "random" };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
@@ -7783,6 +7864,7 @@
       showLandScreen("screen-teacher");
     }
     function showClassHome() {
+      enterLandscape();
       fillClassTab();
       setHubTab("class");
       showLandScreen("screen-class");
@@ -8113,109 +8195,24 @@
     });
     // Exit (back) from any in-class screen → return to Class home
     $$("[data-ic-exit]").forEach((btn) => btn.addEventListener("click", () => showClassHome()));
-    // ----- Avatar frame (earned via in-class rewards; applies to avatar and in-class video frame) -----
-    const AVATAR_FRAMES = [
-      { id: "none", name: "No Frame", src: "Default", badge: "", owned: true },
-      { id: "star", name: "Star Frame", src: "Class reward · Owned", badge: "⭐", owned: true },
-      { id: "crown", name: "Crown Frame", src: "Class reward · Owned", badge: "👑", owned: true },
-      { id: "rainbow", name: "Rainbow Frame", src: "Unlock with a 7-day class streak", badge: "🌈", owned: false },
-    ];
-    function applyAvatarFrame() {
-      const f = AVATAR_FRAMES.find((x) => x.id === profile.avatarFrame) || AVATAR_FRAMES[0];
-      const wrap = $("#btn-avatar-frame");
-      if (wrap) { wrap.dataset.frame = f.id; const b = $("#af-badge"); if (b) b.textContent = f.badge; }
-      const entry = $("#hub-avatar-entry");
-      if (entry) entry.dataset.frame = f.id;
-      $$(".ic-feed").forEach((feed) => {
-        if (f.id === "none") delete feed.dataset.frame;
-        else feed.dataset.frame = f.id;
-        const fb = feed.querySelector(".ic-frame-badge");
-        if (fb) fb.textContent = f.badge;
-      });
-    }
-    // Frame editor is a LIGHT overlay (not a full page): a frame is a one-tap
-    // cosmetic choice, so a sheet keeps the profile in context and avoids an extra
-    // navigation level. The sheet carries a LIVE PREVIEW of the pending frame on
-    // the learner's own avatar; nothing is committed until "Equip" is tapped.
-    let framePending = null; // id selected in the sheet, applied only on Equip
-    function renderFrameGrid() {
-      const grid = $("#frame-grid");
-      if (!grid) return;
-      grid.innerHTML = AVATAR_FRAMES.map((f) => `
-        <button type="button" class="frame-opt ${framePending === f.id ? "on" : ""} ${f.owned ? "" : "locked"}" data-frame-id="${f.id}">
-          <span class="fo-ava" data-frame="${f.id}"><img src="assets/profile/avatar.png" alt="" /><span class="af-ring"></span></span>
-          <span class="fo-name">${f.name}</span>
-          <span class="fo-src">${f.src}</span>
-        </button>`).join("");
-    }
-    // Reflect the pending frame in the preview header (live, before committing).
-    function renderFramePreview() {
-      const f = AVATAR_FRAMES.find((x) => x.id === framePending) || AVATAR_FRAMES[0];
-      const ava = $("#fp-ava");
-      if (ava) ava.dataset.frame = f.id;
-      if ($("#fp-badge")) $("#fp-badge").textContent = f.badge;
-      if ($("#fp-name")) $("#fp-name").textContent = f.name;
-      if ($("#fp-src")) $("#fp-src").textContent = f.src;
-      const equip = $("#fs-equip");
-      if (equip) {
-        const committed = framePending === profile.avatarFrame;
-        equip.disabled = committed;
-        equip.textContent = committed ? "Equipped" : "Equip";
-      }
-    }
-    function openFrameSheet() {
-      framePending = profile.avatarFrame;
-      renderFrameGrid();
-      renderFramePreview();
-      $("#frame-sheet")?.classList.add("show");
-      $("#frame-sheet")?.setAttribute("aria-hidden", "false");
-    }
-    function closeFrameSheet() {
-      $("#frame-sheet")?.classList.remove("show");
-      $("#frame-sheet")?.setAttribute("aria-hidden", "true");
-    }
-    $("#btn-avatar-frame")?.addEventListener("click", openFrameSheet);
-    $("#af-edit-hint")?.addEventListener("click", openFrameSheet);
-    $("#frame-sheet")?.addEventListener("click", (e) => {
-      if (e.target === $("#frame-sheet")) { closeFrameSheet(); return; }
-      const opt = e.target.closest("[data-frame-id]");
-      if (!opt) return;
-      const f = AVATAR_FRAMES.find((x) => x.id === opt.dataset.frameId);
-      if (!f) return;
-      if (!f.owned) { showPayToast("🔒 Locked — earn it with a 7-day class streak!"); return; }
-      // Select → live preview only; commit happens on Equip.
-      framePending = f.id;
-      renderFrameGrid();
-      renderFramePreview();
-    });
-    $("#fs-cancel")?.addEventListener("click", closeFrameSheet);
-    $("#fs-equip")?.addEventListener("click", () => {
-      if (!framePending) { closeFrameSheet(); return; }
-      profile.avatarFrame = framePending;
-      applyAvatarFrame();
-      showPayToast("✨ Frame equipped!");
-      closeFrameSheet();
-    });
-    applyAvatarFrame();
+    // Avatar frames were removed in V1.3.0 — the top-left avatar is now a plain
+    // profile entry (no frame ring/badge, no frame picker, no in-class video frame).
     // ----- Trial Lesson Report (after first trial lesson) -----
     function renderTrialReport() {
       const name = getDisplayName() || (isParentVoice() ? "your child" : "you");
       if (trialReportMode === "levelup") { renderLevelUpReport(name); return; }
-      // ---- Default first-trial report ----
-      const badge = profile.level || "A2";
-      const res = PT_RESULTS.find((r) => r.badge === badge) || PT_RESULTS[3];
-      const course = (typeof getCurrentCourse === "function") ? getCurrentCourse() : null;
-      if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = "Trial Lesson Report";
-      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = "Great first class! 🎉";
-      if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = course && course.title ? course.title : "Your first lesson";
-      if ($("#tr-perf-title")) $("#tr-perf-title").textContent = `How ${name} did`;
-      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = `“${name} jumped right in and spoke from the very first minute — a brilliant start! 🌟”`;
-      if ($("#tr-level")) $("#tr-level").textContent = badge;
-      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = res.sub(name);
-      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = "Up next: " + (res.bullets[0] || "Keep building everyday English");
-      if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `${name} showed great energy today. Here's what stood out:`;
-      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = "Get my study plan →";
-      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = "See your weekly plan, then unlock to keep learning";
+      // ---- First-trial report (PORTRAIT) — content modeled on the CT trial-report
+      //      reference; name + recommended level are personalized from Onboarding. ----
+      const lvlId = profile.placementLevelId || profile.currentLevelId || "level-3";
+      const lvlLabel = (typeof levelLabelOf === "function") ? levelLabelOf(lvlId) : "Level 3";
+      const cefr = ((typeof levelCefrLabel === "function") ? levelCefrLabel(lvlId) : null) || profile.level || "A1+";
+      const lead = (name === "you") ? "You" : `<b>${name}</b>, you`;
+      const poss = (name === "you") ? "your" : `${name}'s`;
+      if ($("#trp-level")) $("#trp-level").textContent = lvlLabel;
+      if ($("#trp-overall")) $("#trp-overall").innerHTML =
+        `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>, with a solid foundation already! Your trial places you at <span class="tp-hl">CEFR ${cefr} · recommended ${lvlLabel}</span>.`;
+      if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
+      if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
     }
     // Level-up trial report: same layout, but the level recommendation reflects the
     // pass/fail verdict and the CTA either re-plans (jump ahead) or keeps the level.
@@ -8249,23 +8246,43 @@
     }
     function showTrialReport() {
       renderTrialReport();
-      // V1.3.0: the trial report is now a landscape takeover (was portrait).
-      enterLandscape();
-      showLandScreen("screen-trial-report");
-      const sh = $("#tr-scroll");
-      if (sh) sh.scrollTop = 0;
+      if (trialReportMode === "levelup") {
+        // Level-up check stays a LANDSCAPE takeover.
+        enterLandscape();
+        showLandScreen("screen-levelup-report");
+        const sh = $("#tr-scroll");
+        if (sh) sh.scrollTop = 0;
+      } else {
+        // First-trial report is a PORTRAIT takeover (CT reference design).
+        enterPortrait();
+        showPortraitScreen("screen-trial-report");
+        const sh = $("#trp-scroll");
+        if (sh) sh.scrollTop = 0;
+      }
     }
-    $("#btn-trial-start")?.addEventListener("click", () => {
-      if (trialReportMode === "levelup") { finishLevelUp(getLevelUpVerdict()); return; }
-      enterLandscape();
-      showStudyPlan();
-    });
+    // Level-up report actions (landscape #screen-levelup-report only).
+    $("#btn-trial-start")?.addEventListener("click", () => { finishLevelUp(getLevelUpVerdict()); });
     $("#btn-trial-back")?.addEventListener("click", () => {
       // Backing out of a level-up check cancels it (keeps the current level) and
       // returns to the Level·Unit map it was launched from.
-      if (trialReportMode === "levelup") { restoreLevelUpState(); enterLandscape(); showCourseMap(); return; }
+      restoreLevelUpState();
       enterLandscape();
-      showClassHome();
+      showCourseMap();
+    });
+    // First-trial report actions (portrait #screen-trial-report).
+    $("#btn-trip-start")?.addEventListener("click", () => { showStudyPlan(); });
+    $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
+    // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
+    document.querySelectorAll("#screen-trial-report .tp-seg").forEach((b) => {
+      b.addEventListener("click", () => {
+        document.querySelectorAll("#screen-trial-report .tp-seg").forEach((x) => x.classList.remove("on"));
+        b.classList.add("on");
+        const tip = $("#trp-weak");
+        if (tip) tip.style.display = b.textContent.indexOf("Nice try") === 0 ? "flex" : "none";
+      });
+    });
+    document.querySelectorAll("#screen-trial-report .tp-spk button").forEach((b) => {
+      b.addEventListener("click", () => { b.style.transform = "scale(1.25)"; setTimeout(() => { b.style.transform = ""; }, 220); });
     });
     // ----- Study Plan (weekly plan preview, opened from the trial report) -----
     // Shows the value (rich content · 3 lessons a week · clear goal); CTA → paywall,
@@ -8349,7 +8366,10 @@
     }
     function showStudyPlan() {
       renderStudyPlanScreen();
-      showLandScreen("screen-study-plan");
+      enterPortrait();
+      showPortraitScreen("screen-study-plan");
+      const sh = $("#study-plan-scroll");
+      if (sh) sh.scrollTop = 0;
     }
     $("#btn-study-plan-back")?.addEventListener("click", showClassHome);
     $("#btn-study-plan-start")?.addEventListener("click", () => openPaywall("screen-class", "trial_report"));
@@ -8662,10 +8682,12 @@
         xp: 360,
         coins: 888,
         equipped: { pet: "none", skin: "skin-classic", prop: "none" },
-        owned: new Set(["skin-classic", "skin-explorer"]),
+        owned: new Set(["skin-classic", "skin-explorer", "pet-raptor"]),
+        petCounts: { "pet-raptor": 2 },
       };
-      // Shop sells Dino Skins + Dino Pets only (per Figma); props live in the backpack.
-      // Skins use the real Dino artwork (assets/skins/*.png); pets stay emoji.
+      // Shop sells Dino Skins ONLY (per Figma 1.3.0). Dino Pets are a pure capsule
+      // collection — not purchasable, not equippable — and live in the Backpack pet
+      // gallery (keys/emoji mirror CAP_POOL). Skins use real art (assets/skins/*.png).
       const SHOP_ITEMS = {
         skin: [
           { id: "skin-classic", name: "Classic Dino", img: "assets/dino-mascot.png", price: 0 },
@@ -8677,11 +8699,12 @@
           { id: "skin-bunny", name: "Bunny Suit", img: "assets/skins/bunny.png", price: 800 },
           { id: "skin-superhero", name: "Superhero", img: "assets/skins/superhero.png", price: 1000 },
         ],
+        // Pets: collection-only (no price). Pulled from the capsule machine.
         pet: [
-          { id: "pet-raptor", name: "Baby Raptor", emoji: "🦖", price: 200 },
-          { id: "pet-turtle", name: "Sea Turtle", emoji: "🐢", price: 500 },
-          { id: "pet-ptero", name: "Pterosaur", emoji: "🐲", price: 800 },
-          { id: "pet-trike", name: "Triceratops", emoji: "🦕", price: 1000 },
+          { id: "pet-raptor", name: "Baby Raptor", emoji: "🦖" },
+          { id: "pet-turtle", name: "Sea Turtle", emoji: "🐢" },
+          { id: "pet-ptero", name: "Pterosaur", emoji: "🐲" },
+          { id: "pet-trike", name: "Triceratops", emoji: "🦕" },
         ],
         prop: [
           { id: "prop-xp2", name: "Double XP Card", emoji: "⚡", price: 80, tag: "Boost" },
@@ -9037,8 +9060,6 @@
         }, 900);
       }
       // Membership entry (gem icon on the Dino home HUD)
-      $("#dino-gem-entry")?.addEventListener("click", () => openMembership());
-
       $("#dchat-mic")?.addEventListener("click", dinoChatTurn);
       $("#dchat-log")?.addEventListener("click", (e) => {
         if (e.target.closest(".dmsg-play")) gToast("🔊 Playing audio (demo)");
@@ -9075,12 +9096,13 @@
       // come up empty (MISS). Duplicates & misses cost no coins and give no consolation
       // coins (the round XP/coins are already earned from the quiz). Odds are ops-tunable.
       const CAP_DRAW_ODDS = { miss: 0.20, dup: 0.25, new: 0.55 };
-      // Shared capsule prize pool (mostly pets, with the occasional skin).
+      // Capsule prize pool — PETS ONLY (pure collection; pets aren't purchasable or
+      // equippable). Aligns with the backpack pet collection (SHOP_ITEMS.pet ids).
       const CAP_POOL = [
         { label: "Baby Raptor", item: "pet-raptor", glass: "🦖" },
-        { label: "Sky Pterosaur", item: "pet-ptero", glass: "🦅" },
-        { label: "Golden Dino", item: "pet-golden", glass: "🐲" },
-        { label: "Knight skin", item: "skin-knight", glass: "🛡️" },
+        { label: "Sea Turtle", item: "pet-turtle", glass: "🐢" },
+        { label: "Pterosaur", item: "pet-ptero", glass: "🐲" },
+        { label: "Triceratops", item: "pet-trike", glass: "🦕" },
       ];
       // Decide a draw outcome, honoring the ⚙︎ States override and reconciling with
       // what's actually owned so the reveal is truthful (e.g. can't show a "new" pet
@@ -9301,6 +9323,10 @@
           capdVisitXp += CAP_DRAW_XP;
           capdVisitCoins += CAP_DRAW_COINS;
           state.owned.add(outcome.pet.item);
+          state.petCounts[outcome.pet.item] = 1;
+        } else if (outcome.kind === "dup") {
+          // Duplicate pets are pure collection: bump the owned count (no coins).
+          state.petCounts[outcome.pet.item] = (state.petCounts[outcome.pet.item] || 1) + 1;
         }
         const g = $("#machine-glass");
         if (g) g.textContent = outcome.kind === "miss" ? "🫧" : outcome.pet.glass;
@@ -9324,10 +9350,11 @@
           if (note) note.hidden = true;
           if (ok) ok.textContent = "Got it!";
         } else if (outcome.kind === "dup") {
-          if (kicker) kicker.textContent = `💛 You already have this ${noun}!`;
+          const n = state.petCounts[outcome.pet.item] || 2;
+          if (kicker) kicker.textContent = `💛 Another ${outcome.pet.label}!`;
           if (pet) pet.textContent = outcome.pet.glass;
-          if (nm) nm.textContent = outcome.pet.label;
-          if (note) { note.hidden = false; note.textContent = "Give it a happy high-five! 🖐️ No coins used."; }
+          if (nm) nm.textContent = `${outcome.pet.label} ×${n}`;
+          if (note) { note.hidden = false; note.textContent = `Your collection grows — now ×${n}! No coins used.`; }
           if (ok) ok.textContent = "OK!";
         } else {
           if (kicker) kicker.textContent = "🫧 Aw, the capsule was empty!";
@@ -9524,9 +9551,6 @@
         if (!label) return;
         if (shopCat === "skin" && sel) {
           label.textContent = `${state.equipped.skin === sel.id ? "👕 Wearing" : "✨ Preview"}: ${sel.name}`;
-        } else if (shopCat === "pet" && sel) {
-          const eq = state.equipped.pet === sel.id;
-          label.textContent = `${sel.emoji} ${eq ? "Pet equipped" : "Preview pet"}: ${sel.name}`;
         } else {
           label.textContent = `👕 Wearing: ${equippedSkin ? equippedSkin.name : "Classic Dino"}`;
         }
@@ -9543,10 +9567,9 @@
         const eq = state.equipped[shopCat] === item.id;
         btn.disabled = false;
         if (!owned && item.price > 0) btn.innerHTML = `<span class="coin-ico"></span> Buy · ${item.price}`;
-        else if (eq) { btn.disabled = true; btn.textContent = shopCat === "pet" ? "Equipped ✓" : "Worn ✓"; }
-        // Owned but not equipped: skins use "Wear", pets use "Equip" — consistent
-        // with the Backpack so the same item type always reads the same verb.
-        else btn.textContent = shopCat === "pet" ? "Equip" : "Wear";
+        else if (eq) { btn.disabled = true; btn.textContent = "Worn ✓"; }
+        // Owned but not equipped → Wear it right here (shop sells skins only).
+        else btn.textContent = "Wear";
       }
       function renderShop() {
         $$("#shop-tabs .shop-tab").forEach((t) => t.classList.toggle("on", t.dataset.cat === shopCat));
@@ -9596,13 +9619,13 @@
           state.owned.add(item.id);
           state.equipped[shopCat] = item.id;
           applyEquippedSkin();
-          gToast(shopCat === "pet" ? `Purchased & equipped: ${item.name} 🐾` : `Purchased & now wearing: ${item.name} 👕`);
+          gToast(`Purchased & now wearing: ${item.name} 👕`);
           renderShop();
         } else if (owned && state.equipped[shopCat] !== item.id) {
-          // Owned → Wear (skin) / Equip (pet) right here; the left Dino updates immediately.
+          // Owned → Wear right here; the left Dino (and every on-screen Dino) updates.
           state.equipped[shopCat] = item.id;
           applyEquippedSkin();
-          gToast(shopCat === "pet" ? `Equipped: ${item.name} 🐾` : `Now wearing: ${item.name} 👕`);
+          gToast(`Now wearing: ${item.name} 👕`);
           renderShop();
         }
       });
@@ -9615,9 +9638,9 @@
         showLandScreen("screen-class");
       });
 
-      // ---- Backpack (unified with the Shop: preview-left + grid-right, select an
-      // owned item → Wear/Equip button → success toast). Holds owned skins & pets.
-      // Skins lead (default tab) since costumes are the primary collection. ----
+      // ---- Backpack: two tabs. Skins (default) = owned costumes with a Wear flow
+      // (preview-left + grid-right + Wear button). Pets = a pure collection gallery
+      // (full set, owned shown with ×N count, unseen locked; no Wear/Equip). ----
       let bagCat = "skin";
       let bagSel = null;
       // Left Dino mirrors the selection (a skin previews that costume; pets keep the
@@ -9632,9 +9655,6 @@
         if (!label) return;
         if (bagCat === "skin" && sel) {
           label.textContent = `${state.equipped.skin === sel.id ? "👕 Wearing" : "✨ Preview"}: ${sel.name}`;
-        } else if (bagCat === "pet" && sel) {
-          const eq = state.equipped.pet === sel.id;
-          label.textContent = `${sel.emoji} ${eq ? "Pet equipped" : "Preview pet"}: ${sel.name}`;
         } else {
           label.textContent = `👕 Wearing: ${equippedSkin ? equippedSkin.name : "Classic Dino"}`;
         }
@@ -9644,21 +9664,52 @@
       function updateBagEquipBtn() {
         const btn = $("#bag-equip");
         if (!btn) return;
-        const label = bagCat === "pet" ? "Equip" : "Wear";
-        if (!bagSel) { btn.disabled = true; btn.textContent = label; return; }
+        if (!bagSel) { btn.disabled = true; btn.textContent = "Wear"; return; }
         const eq = state.equipped[bagCat] === bagSel;
-        if (eq) { btn.disabled = true; btn.textContent = bagCat === "pet" ? "Equipped ✓" : "Worn ✓"; }
-        else { btn.disabled = false; btn.textContent = label; }
+        if (eq) { btn.disabled = true; btn.textContent = "Worn ✓"; }
+        else { btn.disabled = false; btn.textContent = "Wear"; }
       }
       function renderBackpack() {
         $$("#bag-tabs .shop-tab").forEach((t) => t.classList.toggle("on", t.dataset.cat === bagCat));
+        const grid = $("#bag-grid");
+        const equipBtn = $("#bag-equip");
+        // PETS = pure collection gallery: show the full set, owned ones with ×N count,
+        // unseen ones locked. No selection, no Equip (pets are companions, not costumes).
+        if (bagCat === "pet") {
+          bagSel = null;
+          if (equipBtn) equipBtn.hidden = true;
+          const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
+          if (grid) {
+            if (!owned.length) {
+              // Empty state: no pets pulled yet — point kids to the Pet Capsule.
+              grid.innerHTML = `<div class="empty-note">No pets yet 🥚<br>Play the Pet Capsule in Play to hatch your first dino friend!</div>`;
+            } else {
+              grid.innerHTML = owned.map((p) => {
+                const n = state.petCounts[p.id] || 1;
+                return `<div class="shop-card pet-collect">
+                  <span class="shop-card-art"><span class="sc-emoji">${p.emoji}</span>${n > 1 ? `<span class="sc-count">×${n}</span>` : ""}</span>
+                  <span class="shop-card-name">${p.name}</span>
+                  <span class="shop-card-price">Collected</span>
+                </div>`;
+              }).join("");
+            }
+          }
+          const img = $("#bag-preview-img");
+          const label = $("#bag-preview-label");
+          if (img) img.src = equippedSkinImg();
+          if (label) label.textContent = owned.length
+            ? `🐾 Pet collection · ${owned.length} collected`
+            : `🐾 Pet collection`;
+          return;
+        }
+        // SKINS = owned grid + Wear flow.
+        if (equipBtn) equipBtn.hidden = false;
         const items = SHOP_ITEMS[bagCat].filter((i) => state.owned.has(i.id));
         // Keep the selection valid: default to the equipped item, else the first owned.
         if (!items.length) bagSel = null;
         else if (!bagSel || !items.some((i) => i.id === bagSel)) {
           bagSel = items.find((i) => i.id === state.equipped[bagCat])?.id || items[0].id;
         }
-        const grid = $("#bag-grid");
         if (grid) {
           if (!items.length) {
             grid.innerHTML = `<div class="empty-note">No ${catName(bagCat)} yet — visit the Shop!</div>`;
@@ -9671,7 +9722,7 @@
               return `<button type="button" class="shop-card ${bagSel === item.id ? "sel" : ""}" data-id="${item.id}">
                 <span class="shop-card-art">${art}${eq ? '<span class="sc-eq">✓</span>' : ""}</span>
                 <span class="shop-card-name">${item.name}</span>
-                <span class="shop-card-price">${eq ? (bagCat === "pet" ? "Equipped" : "Worn") : "Owned"}</span>
+                <span class="shop-card-price">${eq ? "Worn" : "Owned"}</span>
               </button>`;
             }).join("");
             $$("#bag-grid .shop-card").forEach((el) => el.addEventListener("click", () => { bagSel = el.dataset.id; renderBackpack(); }));
@@ -9686,7 +9737,7 @@
         if (!item) return;
         state.equipped[bagCat] = item.id;
         applyEquippedSkin();
-        gToast(bagCat === "pet" ? `Equipped: ${item.name} 🐾` : `Now wearing: ${item.name} 👕`);
+        gToast(`Now wearing: ${item.name} 👕`);
         renderBackpack();
       });
       $$("#bag-tabs .shop-tab").forEach((t) => t.addEventListener("click", () => { bagCat = t.dataset.cat; bagSel = null; renderBackpack(); }));
@@ -9756,24 +9807,30 @@
     // / exam). Same ids/data structure as before.
     const GOALS = [
       { id: "speak_confidence", label: "Speak with confidence" },
-      { id: "school_exam", label: "Do better in school" },
+      { id: "school_exam", label: "Improve English for school" },
       { id: "structured_progress", label: "Follow a clear learning path" },
-      { id: "daily_communication", label: "Daily conversation & travel" },
-      { id: "listening_habit", label: "Build an easy daily habit" },
+      { id: "daily_communication", label: "Use English in daily life and travel" },
+      { id: "listening_habit", label: "Build a consistent learning habit" },
     ];
     // Question titles fork by the "Who's learning?" choice, not by age.
     const VOICE_WORDING = {
       child: {
-        nameTitle: "What's your child's name?",
-        namePlaceholder: "Your child's name",
+        nameTitle: "What should we call your child?",
+        nameHint: "We'll use this name in lessons.",
+        namePlaceholder: "Your child's name or nickname",
         ageTitle: "How old is your child?",
-        goalTitle: "What's your child's main goal right now?",
+        ageHint: "This helps us recommend the right starting level and lessons for your child.",
+        goalTitle: "What's your child's main learning goal right now?",
+        goalHint: "We'll use this to recommend the best first lesson for your child.",
       },
       self: {
-        nameTitle: "What's your name?",
+        nameTitle: "What should we call you?",
+        nameHint: "We'll use this name in your lessons.",
         namePlaceholder: "Your name",
         ageTitle: "How old are you?",
-        goalTitle: "What's your main goal right now?",
+        ageHint: "This helps us recommend the right starting level and lessons for you.",
+        goalTitle: "What's your main learning goal right now?",
+        goalHint: "We'll use this to recommend the best first lesson for you.",
       },
     };
     // Age is collected for tone/analytics and future grading only. This version
@@ -9803,16 +9860,16 @@
         self: { h1: "Help you speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for your answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
       },
       structured_progress: {
-        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every class"] },
-        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after class"] },
+        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every lesson"] },
+        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after lessons"] },
       },
       school_exam: {
         child: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Aligned with school goals", "Track lessons completed", "Review anytime"] },
         self: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
       },
       daily_communication: {
-        child: { h1: "English they'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak up in all class", "Quick practice after class"] },
-        self: { h1: "English you'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak in class", "Quick practice after class"] },
+        child: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak up in every lesson", "Quick practice after lessons"] },
+        self: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak in every lesson", "Quick practice after lessons"] },
       },
       listening_habit: {
         child: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
@@ -9826,14 +9883,17 @@
       () => "Choosing the AI teacher…",
       (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
     ];
-    const LOGIN_COPY = {
-      speak_confidence: "Save your plan and start speaking in class",
-      structured_progress: "Save your learning path and start Lesson 1",
-      school_exam: "Save your plan and start your first lesson",
-      daily_communication: "Save your plan and start your first lesson",
-      listening_habit: "Save your plan and start your first class",
-      default: "Save your plan and continue",
-    };
+    // Login-screen lead line. Returning users (entered via "Log in") see a sign-in
+    // prompt; users who just finished Onboarding see a voice-based "save your plan"
+    // CTA — self keeps "your plan", parent path uses the child's name.
+    function loginLeadCopy() {
+      if (profile.skipOnboarding) return "Log in to continue";
+      if (isParentVoice()) {
+        const name = getDisplayName ? getDisplayName() : (profile.name || "");
+        return `Save ${name || "your child"}'s plan and start the first lesson`;
+      }
+      return "Save your plan and start your first lesson";
+    }
 
     function renderOptions(containerId, items, key, onPick) {
       const box = $("#" + containerId);
@@ -9873,9 +9933,7 @@
 
     function fillLogin() {
       $("#illo-login").innerHTML = ILLUSTRATIONS.login || "";
-      const name = getDisplayName ? getDisplayName() : (profile.name || "");
-      const base = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
-      $("#login-dynamic").textContent = name ? base.replace("your plan", `${name}'s plan`) : base;
+      $("#login-dynamic").textContent = loginLeadCopy();
       // Profile tags filled in Onboarding, shown as a "you've already told us" anchor.
       // Show name → age_band → placement level → goal; name truncated ≤16.
       const cut = (s) => { s = String(s).trim(); return s.length > 16 ? s.slice(0, 15) + "…" : s; };
@@ -9996,12 +10054,18 @@
       const v = VOICE_WORDING[profile.learner] || VOICE_WORDING.child;
       const nameTitle = document.querySelector("#screen-name .title");
       if (nameTitle) nameTitle.textContent = v.nameTitle;
+      const nameHint = document.querySelector("#screen-name .hint");
+      if (nameHint) nameHint.textContent = v.nameHint;
       const nameInput = $("#input-name");
       if (nameInput) nameInput.setAttribute("placeholder", v.namePlaceholder);
       const ageTitle = document.querySelector("#screen-age .title");
       if (ageTitle) ageTitle.textContent = v.ageTitle;
+      const ageHint = document.querySelector("#screen-age .hint");
+      if (ageHint) ageHint.textContent = v.ageHint;
       const goalTitle = document.querySelector("#screen-goal .title");
       if (goalTitle) goalTitle.textContent = v.goalTitle;
+      const goalHint = document.querySelector("#screen-goal .hint");
+      if (goalHint) goalHint.textContent = v.goalHint;
     }
 
     // ---- Placement test logic ----
@@ -10204,6 +10268,7 @@
     function openPaywall(returnScreen, triggerSource) {
       paywallReturnScreen = returnScreen || activeLandScreen() || "screen-class";
       paywallTrigger = triggerSource || "course";
+      enterLandscape();
       renderPaywallPlans();
       showLandScreen("screen-paywall");
     }
@@ -10476,21 +10541,20 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id === "screen-trial-report") {
-          // V1.3.0: trial report is now a landscape takeover.
-          return trialReportMode === "levelup"
-            ? { label: "跳级定级报告", keys: ["levelUpResult"] }
-            : { label: "体验课报告",   keys: [] };
-        }
+        if (id === "screen-levelup-report") return { label: "跳级定级报告", keys: ["levelUpResult"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
-        if (id === "screen-study-plan")  return { label: "学习计划",        keys: ["membership", "startLevel"] };
         if (id === "screen-paywall")     return { label: "Paywall",         keys: ["membership"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
         return { label: "App 内", keys: ["membership"] };
       }
+      // V1.3.0: study plan + trial report are portrait takeovers.
+      var pel = document.querySelector("#device-portrait .screen.active");
+      var pid = pel ? pel.id : null;
+      if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
+      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
     groups: [
@@ -10513,13 +10577,13 @@
           courseMapLevelId = v;
           refreshUnlockState();
           if (activeLandScreen() === "screen-course-map") renderCourseMap();
-          if (activeLandScreen() === "screen-study-plan") renderStudyPlanScreen();
+          if (document.querySelector("#screen-study-plan")?.classList.contains("active")) renderStudyPlanScreen();
         } },
       { key: "levelUpResult", label: "跳级体验课定级结果",
         options: [["pass", "达标·可跳级"], ["fail", "未达标·留级"]],
         apply: function (v) {
           demoState.levelUpResult = v;
-          if (document.querySelector("#screen-trial-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
+          if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
         } },
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新宠物"], ["dup", "已有宠物"], ["miss", "未抽中"]],
@@ -10529,7 +10593,7 @@
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
       { label: "课程列表",    run: function () { enterLandscape(); showAllCourses(undefined, "class"); } },
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
-      { label: "学习计划",    run: function () { enterLandscape(); showStudyPlan(); } },
+      { label: "学习计划",    run: function () { showStudyPlan(); } },
       { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
       { label: "Dino 升级",   run: function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); } },
       { label: "盲盒抽取",    run: function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); } },
