@@ -9450,7 +9450,7 @@
         const eq = state.equipped[shopCat] === item.id;
         btn.disabled = false;
         if (!owned && item.price > 0) btn.innerHTML = `<span class="coin-ico"></span> Buy · ${item.price}`;
-        else if (eq) { btn.disabled = true; btn.textContent = "Equipped ✓"; }
+        else if (eq) { btn.disabled = true; btn.textContent = shopCat === "pet" ? "Equipped ✓" : "Worn ✓"; }
         // Owned but not equipped: skins use "Wear", pets use "Equip" — consistent
         // with the Backpack so the same item type always reads the same verb.
         else btn.textContent = shopCat === "pet" ? "Equip" : "Wear";
@@ -9476,7 +9476,7 @@
               : `<span class="sc-emoji">${item.emoji}</span>`;
             const price = locked
               ? `<span class="shop-card-price"><span class="coin-ico"></span>${item.price} Coins</span>`
-              : `<span class="shop-card-price">${eq ? "Equipped" : "Owned"}</span>`;
+              : `<span class="shop-card-price">${eq ? (shopCat === "pet" ? "Equipped" : "Worn") : "Owned"}</span>`;
             return `<button type="button" class="shop-card ${shopSel === item.id ? "sel" : ""} ${locked ? "locked" : ""}" data-id="${item.id}">
               <span class="shop-card-art">${art}${owned && !eq ? '<span class="sc-owned">Owned</span>' : ""}${locked ? '<span class="sc-lock">🔒</span>' : ""}${eq ? '<span class="sc-eq">✓</span>' : ""}</span>
               <span class="shop-card-name">${item.name}</span>
@@ -9553,7 +9553,7 @@
         const label = bagCat === "pet" ? "Equip" : "Wear";
         if (!bagSel) { btn.disabled = true; btn.textContent = label; return; }
         const eq = state.equipped[bagCat] === bagSel;
-        if (eq) { btn.disabled = true; btn.textContent = "Equipped ✓"; }
+        if (eq) { btn.disabled = true; btn.textContent = bagCat === "pet" ? "Equipped ✓" : "Worn ✓"; }
         else { btn.disabled = false; btn.textContent = label; }
       }
       function renderBackpack() {
@@ -9577,7 +9577,7 @@
               return `<button type="button" class="shop-card ${bagSel === item.id ? "sel" : ""}" data-id="${item.id}">
                 <span class="shop-card-art">${art}${eq ? '<span class="sc-eq">✓</span>' : ""}</span>
                 <span class="shop-card-name">${item.name}</span>
-                <span class="shop-card-price">${eq ? "Equipped" : "Owned"}</span>
+                <span class="shop-card-price">${eq ? (bagCat === "pet" ? "Equipped" : "Worn") : "Owned"}</span>
               </button>`;
             }).join("");
             $$("#bag-grid .shop-card").forEach((el) => el.addEventListener("click", () => { bagSel = el.dataset.id; renderBackpack(); }));
