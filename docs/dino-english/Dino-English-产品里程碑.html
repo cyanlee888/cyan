@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dino English · 产品里程碑</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f8f9fb;
+      --surface: #ffffff;
+      --surface2: #f3f4f6;
+      --border: #e5e7eb;
+      --border2: #d1d5db;
+      --text: #111827;
+      --text2: #374151;
+      --text3: #6b7280;
+      --text4: #9ca3af;
+
+      --green:  #10b981; --green-bg:  #ecfdf5; --green-border:  #a7f3d0;
+      --blue:   #3b82f6; --blue-bg:   #eff6ff; --blue-border:   #bfdbfe;
+      --purple: #8b5cf6; --purple-bg: #f5f3ff; --purple-border: #ddd6fe;
+      --orange: #f59e0b; --orange-bg: #fffbeb; --orange-border: #fde68a;
+      --red:    #dc2626; --red-bg:    #fef2f2; --red-border:    #fecaca;
+      --gray:   #6b7280; --gray-bg:   #f9fafb; --gray-border:   #e5e7eb;
+
+      --radius: 8px;
+      --radius-lg: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    body { font-family: 'Inter', 'PingFang SC', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    .page { max-width: 1140px; margin: 0 auto; padding: 32px 24px 64px; }
+
+    /* ── Typography ── */
+    h1 { font-size: 28px; font-weight: 700; letter-spacing: -.3px; }
+    h2 { font-size: 20px; font-weight: 700; letter-spacing: -.2px; }
+    h3 { font-size: 16px; font-weight: 600; }
+    .subtitle { color: var(--text3); font-size: 15px; margin-top: 4px; }
+
+    /* ── Card ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow); }
+    .card-header { font-size: 13px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; }
+
+    /* ── Section spacing ── */
+    .section { margin-top: 36px; }
+    .section-title { margin-bottom: 16px; }
+    .section-title h2 { display: inline-block; }
+    .section-title .meta { font-size: 13px; color: var(--text4); margin-left: 10px; }
+
+    /* ── Divider ── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+    /* ── Grid ── */
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    /* ── Stat card ── */
+    .stat { padding: 18px 20px; }
+    .stat .value { font-size: 26px; font-weight: 700; }
+    .stat .label { font-size: 13px; color: var(--text3); margin-top: 2px; }
+    .stat.green .value { color: var(--green); }
+    .stat.blue .value  { color: var(--blue); }
+    .stat.purple .value{ color: var(--purple); }
+    .stat.orange .value{ color: var(--orange); }
+
+    /* ── Timeline ── */
+    .timeline { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding-bottom: 8px; margin-top: 20px; }
+    .timeline-node { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 140px; flex-shrink: 0; }
+    .timeline-dot {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700; border: 2px solid;
+    }
+    .timeline-dot.shipped { background: var(--green); border-color: var(--green); color: #fff; }
+    .timeline-dot.planned { background: var(--purple-bg); border-color: var(--purple); color: var(--purple); }
+    .timeline-dot.milestone { background: var(--orange-bg); border-color: var(--orange); color: var(--orange); border-radius: 8px; }
+    .timeline-dot.future { background: var(--surface2); border-color: var(--border2); color: var(--text3); }
+    .timeline-label { font-weight: 600; font-size: 14px; text-align: center; }
+    .timeline-theme { font-size: 12px; color: var(--text3); text-align: center; max-width: 120px; }
+    .timeline-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+    .timeline-status.shipped { background: var(--green-bg); color: var(--green); }
+    .timeline-status.planned { background: var(--purple-bg); color: var(--purple); }
+    .timeline-status.milestone{ background: var(--orange-bg); color: var(--orange); }
+    .timeline-status.future { background: var(--gray-bg); color: var(--gray); }
+    .timeline-connector { flex: 1; height: 2px; margin-top: 20px; min-width: 20px; flex-shrink: 1; }
+    .timeline-connector.shipped { background: var(--green); }
+    .timeline-connector.default { background: var(--border2); }
+
+    /* ── Iteration strips ── */
+    .iter-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .iter-card {
+      flex: 1; min-width: 150px; padding: 12px 14px;
+      border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .iter-card.core { border-color: var(--orange); background: var(--orange-bg); }
+    .iter-card .iter-id { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .iter-card.core .iter-id { color: var(--orange); }
+    .iter-card .iter-desc { font-size: 12px; color: var(--text3); }
+    .iter-card .iter-badge { font-size: 11px; font-weight: 600; color: var(--orange); margin-top: 6px; }
+
+    /* ── Filter tabs ── */
+    .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .filter-btn {
+      padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border2);
+      background: var(--surface); color: var(--text3); font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .filter-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .filter-btn[data-filter="V1.1.0"].active { background: var(--green); border-color: var(--green); }
+    .filter-btn[data-filter="V1.2.0"].active { background: var(--blue); border-color: var(--blue); }
+    .filter-btn[data-filter="V1.3.0"].active { background: var(--purple); border-color: var(--purple); }
+    .filter-btn[data-filter="6/30"].active { background: var(--orange); border-color: var(--orange); }
+
+    /* ── Table ── */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { background: var(--surface2); color: var(--text2); font-weight: 600; padding: 10px 14px; text-align: left; position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface2); }
+    tbody tr.stripe { background: #fafafa; }
+    tbody tr.stripe:hover { background: var(--surface2); }
+    tbody td { padding: 9px 14px; vertical-align: top; }
+
+    .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .badge-v110 { background: var(--green-bg); color: var(--green); }
+    .badge-v120 { background: var(--blue-bg); color: var(--blue); }
+    .badge-v130 { background: var(--purple-bg); color: var(--purple); }
+    .badge-p0 { background: var(--red-bg); color: var(--red); }
+    .badge-p1 { background: var(--orange-bg); color: var(--orange); }
+    .badge-p2 { background: var(--gray-bg); color: var(--gray); }
+    .badge-shipped { background: var(--green-bg); color: var(--green); }
+    .badge-pending { background: var(--purple-bg); color: var(--purple); }
+    .badge-core { background: var(--orange-bg); color: var(--orange); }
+
+    /* ── Callout ── */
+    .callout { border-radius: var(--radius); border-left: 4px solid; padding: 14px 16px; margin-top: 16px; }
+    .callout.info { background: var(--blue-bg); border-color: var(--blue); }
+    .callout.warning { background: var(--orange-bg); border-color: var(--orange); }
+    .callout.success { background: var(--green-bg); border-color: var(--green); }
+    .callout-title { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+    .callout.info .callout-title { color: var(--blue); }
+    .callout.warning .callout-title { color: var(--orange); }
+    .callout.success .callout-title { color: var(--green); }
+    .callout p { font-size: 13px; color: var(--text2); }
+
+    /* ── Positioning cards ── */
+    .pos-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .pos-item { flex: 1; min-width: 160px; }
+    .pos-item .pos-label { font-size: 12px; font-weight: 600; color: var(--text3); margin-bottom: 2px; }
+    .pos-item .pos-value { font-size: 13px; color: var(--text2); }
+
+    /* ── Roadmap cards ── */
+    .roadmap-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .roadmap-card { border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface); padding: 18px; }
+    .roadmap-card .phase-title { font-size: 13px; font-weight: 700; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .roadmap-card ul { list-style: none; }
+    .roadmap-card ul li { font-size: 13px; color: var(--text2); padding: 5px 0; border-bottom: 1px dashed var(--border); display: flex; gap: 8px; }
+    .roadmap-card ul li:last-child { border-bottom: none; }
+    .roadmap-card ul li::before { content: '→'; color: var(--text4); flex-shrink: 0; }
+
+    /* ── Footer ── */
+    .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text4); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .grid-2, .grid-3, .roadmap-cards { grid-template-columns: 1fr; }
+      h1 { font-size: 22px; }
+    }
+    @media (max-width: 480px) {
+      .grid-4 { grid-template-columns: 1fr 1fr; }
+      .page { padding: 20px 16px 48px; }
+    }
+
+    /* ── Hidden row ── */
+    tr.hidden { display: none; }
+
+    /* ── View toggle ── */
+    .view-toggle { display: flex; gap: 0; border: 1.5px solid var(--border2); border-radius: 8px; overflow: hidden; }
+    .view-btn { padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--text3); background: var(--surface); border: none; cursor: pointer; transition: all .15s; }
+    .view-btn:not(:last-child) { border-right: 1.5px solid var(--border2); }
+    .view-btn.active { background: var(--text); color: #fff; }
+
+    /* ── Module timeline table ── */
+    .mod-table-wrap { overflow-x: auto; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+    .mod-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .mod-table thead th { background: var(--surface2); font-weight: 600; padding: 10px 14px; text-align: left; position: sticky; top: 0; z-index: 2; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    .mod-table thead th.col-v110 { color: var(--green); }
+    .mod-table thead th.col-v120 { color: var(--blue); }
+    .mod-table thead th.col-v130 { color: var(--purple); }
+    .mod-table tbody tr { border-bottom: 1px solid var(--border); }
+    .mod-table tbody tr:last-child { border-bottom: none; }
+    .mod-table tbody tr:hover td { background: #f0f4ff; }
+    .mod-table tbody td { padding: 9px 14px; vertical-align: top; }
+    .mod-table tbody td.group-label { background: var(--surface2); border-right: 1px solid var(--border); white-space: nowrap; }
+
+    .mod-cell { border-radius: 6px; padding: 5px 9px; font-size: 12px; line-height: 1.5; }
+    .mod-cell.v110 { background: var(--green-bg); color: #065f46; }
+    .mod-cell.v120 { background: var(--blue-bg); color: #1e40af; }
+    .mod-cell.v130 { background: var(--purple-bg); color: #5b21b6; }
+    .mod-cell.core { background: var(--orange-bg); color: #92400e; border: 1px solid var(--orange-border); }
+    .mod-cell.empty { color: var(--text4); font-style: italic; }
+
+    .group-header-row td { background: #f1f5f9; font-size: 12px; font-weight: 700; color: var(--text3); letter-spacing: .5px; text-transform: uppercase; padding: 6px 14px; border-bottom: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── Header ── -->
+  <div>
+    <h1>🦕 Dino English · 产品里程碑</h1>
+    <p class="subtitle">面向 6–13 岁儿童的 AI 英语开口陪练产品 · 版本全景 · 6/30 提审节点规划</p>
+  </div>
+
+  <!-- ── Stats ── -->
+  <div class="section">
+    <div class="grid-4">
+      <div class="card stat green">
+        <div class="value">8 项</div>
+        <div class="label">V1.1.0 已上线</div>
+      </div>
+      <div class="card stat blue">
+        <div class="value">18 项</div>
+        <div class="label">V1.2.0 已上线</div>
+      </div>
+      <div class="card stat purple">
+        <div class="value">31 项</div>
+        <div class="label">V1.3.0 规划中</div>
+      </div>
+      <div class="card stat orange">
+        <div class="value">11 项</div>
+        <div class="label">6/30 必交付</div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── Timeline ── -->
+  <div class="section">
+    <div class="section-title"><h2>版本时间线</h2></div>
+    <div class="timeline">
+      <div class="timeline-node">
+        <div class="timeline-dot shipped">1.1</div>
+        <div class="timeline-label">V1.1.0</div>
+        <div class="timeline-theme">首课进课链路</div>
+        <div class="timeline-status shipped">已上线</div>
+      </div>
+      <div class="timeline-connector shipped"></div>
+      <div class="timeline-node">
+        <div class="timeline-dot shipped">1.2</div>
+        <div class="timeline-label">V1.2.0</div>
+        <div class="timeline-theme">商业化闭环</div>
+        <div class="timeline-status shipped">已上线</div>
+      </div>
+      <div class="timeline-connector shipped"></div>
+      <div class="timeline-node">
+        <div class="timeline-dot milestone">M</div>
+        <div class="timeline-label" style="color:var(--orange)">6/30</div>
+        <div class="timeline-theme">提审里程碑</div>
+        <div class="timeline-status milestone">目标截止</div>
+      </div>
+      <div class="timeline-connector default"></div>
+      <div class="timeline-node">
+        <div class="timeline-dot planned">1.3</div>
+        <div class="timeline-label">V1.3.0</div>
+        <div class="timeline-theme">游戏化 + 功能迭代</div>
+        <div class="timeline-status planned">规划中</div>
+      </div>
+      <div class="timeline-connector default"></div>
+      <div class="timeline-node">
+        <div class="timeline-dot future">1.4+</div>
+        <div class="timeline-label">V1.4+</div>
+        <div class="timeline-theme">社交 · 扩张 · 深化</div>
+        <div class="timeline-status future">后续规划</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Iteration breakdown ── -->
+  <div class="section">
+    <div class="section-title">
+      <h2>V1.3.0 迭代分解</h2>
+      <span class="meta">★ 标注为 6/30 提审必交付</span>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <h3 style="font-size:14px;color:var(--text3);font-weight:600;margin-bottom:8px;">🎯 功能性迭代（6/30 核心）</h3>
+      <div class="iter-grid">
+        <div class="iter-card core" style="min-width:200px">
+          <div class="iter-id">迭代 A</div>
+          <div class="iter-desc">定级测试（Onboarding Step4）<br/>体验课学习报告</div>
+          <div class="iter-badge">★ 6/30 必交付</div>
+        </div>
+        <div class="iter-card core" style="min-width:200px">
+          <div class="iter-id">迭代 E</div>
+          <div class="iter-desc">Class Tab 每日解锁 + 本周学习计划<br/>全部课程列表 + 推送提醒 + Paywall 年付</div>
+          <div class="iter-badge">★ 6/30 必交付</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3 style="font-size:14px;color:var(--text3);font-weight:600;margin-bottom:8px;">🎮 功能与游戏化迭代</h3>
+      <div class="iter-grid">
+        <div class="iter-card">
+          <div class="iter-id" style="color:var(--purple)">迭代 B</div>
+          <div class="iter-desc">Explore Tab 新架构<br/>（Story / Radio 二级内容页）</div>
+        </div>
+        <div class="iter-card">
+          <div class="iter-id" style="color:var(--purple)">迭代 C / D</div>
+          <div class="iter-desc">Dino Tab 对话主屏<br/>基础版 → 完整版（STT + 情绪动画）</div>
+        </div>
+        <div class="iter-card">
+          <div class="iter-id" style="color:var(--purple)">迭代 1 – 2</div>
+          <div class="iter-desc">Dino 成长主屏 + 统一结算<br/>商城 / 背包体系</div>
+        </div>
+        <div class="iter-card">
+          <div class="iter-id" style="color:var(--purple)">迭代 3 – 4</div>
+          <div class="iter-desc">Play 玩法聚合（盲盒机 / 单词 PK / 口语 PK）<br/>课中奖励 & Words 课后奖励</div>
+        </div>
+        <div class="iter-card">
+          <div class="iter-id" style="color:var(--purple)">迭代 5</div>
+          <div class="iter-desc">恐龙币付费 IAP<br/>会员升级引导</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── Feature table ── -->
+  <div class="section">
+    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+      <h2>模块功能明细</h2>
+      <div style="display:flex;align-items:center;gap:10px;flex:1;justify-content:flex-end;flex-wrap:wrap">
+        <div class="view-toggle">
+          <button class="view-btn active" id="view-ver">版本视角</button>
+          <button class="view-btn" id="view-mod">模块视角</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 版本视角 filter bar -->
+    <div id="ver-filter-bar" class="filter-row">
+      <button class="filter-btn active" data-filter="全部">全部</button>
+      <button class="filter-btn" data-filter="V1.1.0">V1.1.0</button>
+      <button class="filter-btn" data-filter="V1.2.0">V1.2.0</button>
+      <button class="filter-btn" data-filter="V1.3.0">V1.3.0</button>
+      <button class="filter-btn" data-filter="6/30">★ 6/30 必交付</button>
+    </div>
+
+    <div class="table-wrap">
+      <table id="feature-table">
+        <thead>
+          <tr>
+            <th>版本</th>
+            <th>模块</th>
+            <th>功能点</th>
+            <th>优先级</th>
+            <th>所属迭代</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody id="feature-tbody">
+          <!-- V1.1.0 -->
+          <tr class="feature-row" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>登录 / 注册</td>
+            <td>Apple / Google 登录页</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>选老师</td>
+            <td>首次选老师页（Kim / Max / Leo，默认 Kim）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>选老师</td>
+            <td>切换老师页</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>Class 主流程</td>
+            <td>Class 首页（推荐课卡 + 全部完成态）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>Class 主流程</td>
+            <td>课程列表页（6 横滑课卡 + 锚定卡进课）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>Class 主流程</td>
+            <td>进入课程（首课 / 锚定卡 handoff）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>Profile</td>
+            <td>Profile 菜单（Language / Feedback / About / Invite / Logout）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.1.0" data-core="false">
+            <td><span class="badge badge-v110">V1.1.0</span></td>
+            <td>Profile</td>
+            <td>多语言国际化（6 语言 + RTL + 持久化）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>首课链路</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+
+          <!-- V1.2.0 -->
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>首启价值宣传页</td>
+            <td>价值主张页（Get Started / I have an account）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>首启价值宣传页</td>
+            <td>登录态判定（有 Token 跳过本页）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Onboarding</td>
+            <td>框架 / 编排（每题一屏 + Step 进度）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Onboarding</td>
+            <td>信息采集（谁在学 / 姓名 / 年龄段 / 水平 / 目标）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Onboarding</td>
+            <td>价值页（年龄价值页 / 目标价值页，按 goal 动态）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Onboarding</td>
+            <td>个性化 Loading（承接登录 / 选老师）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>登录 / 注册</td>
+            <td>登录页（已填资料 chip 回显）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>登录 / 注册</td>
+            <td>登录成功 / 画像合并（新号合并 / 老号「已有账号」）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>登录 / 注册</td>
+            <td>登录后画像补采集（仅新用户）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Class 锁态</td>
+            <td>课程卡片 / 锁态（Unlock / Premium 标签）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Practice</td>
+            <td>Practice Tab 内容同步与锁态（按 level，去 all）</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>Radio</td>
+            <td>Radio Tab 内容锁态（goodnight / morning / anytime）</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>支付 / Paywall</td>
+            <td>Paywall 主体（只露周卡 + 权益 + trigger_source）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>支付 / Paywall</td>
+            <td>购买 / 恢复购买 + 解锁状态联动</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>支付 / Paywall</td>
+            <td>多账号订阅拦截（支付回执校验后）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>个人中心</td>
+            <td>Profile 资料展示 / 编辑（name / 年龄 / 水平 / 目标）</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>会员中心</td>
+            <td>会员中心入口（Free 拉 Paywall / 订阅进会员页）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.2.0" data-core="false">
+            <td><span class="badge badge-v120">V1.2.0</span></td>
+            <td>会员中心</td>
+            <td>会员中心页（状态 / Plan / 续费日 / Restore）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>商业化闭环</td>
+            <td><span class="badge badge-shipped">已上线</span></td>
+          </tr>
+
+          <!-- V1.3.0 游戏化 -->
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>首页（Dino 成长主屏）</td>
+            <td>Dino 形象与场景 + 等级 / XP 进度</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 1</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>首页（Dino 成长主屏）</td>
+            <td>恐龙币入口</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 1</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Play</td>
+            <td>统一结算页（XP + 恐龙币 + 升级动画）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 1</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>商城 / 背包</td>
+            <td>商城主体（宠物 / 皮肤 / 道具三 Tab）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 2</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>商城 / 背包</td>
+            <td>购买流程（校验 → 扣币 → 入包 → 回滚）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 2</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>商城 / 背包</td>
+            <td>背包主体（拥有 / 装备态切换）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 2</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>个人中心（游戏化）</td>
+            <td>头像框展示位 + 头像框装扮</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>迭代 2</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Play</td>
+            <td>Play 页框架（玩法聚合 + 段位展示）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 3</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Play</td>
+            <td>宠物盲盒机（答对 5 题 = 1 抽 + 自适应出题）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 3</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Play</td>
+            <td>单词 PK（独立入口，去倒计时 / 次数限制）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 3</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Play</td>
+            <td>口语 PK（独立入口）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 3</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>课中 / Words</td>
+            <td>课中奖励 + Words 课后奖励（接统一结算）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 4</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>恐龙币付费</td>
+            <td>恐龙币购买（消耗型 IAP SKU）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 5</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>恐龙币付费</td>
+            <td>会员升级引导（复用 V1.2.0 Paywall）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 5</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <!-- V1.3.0 功能性迭代 - 迭代A -->
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>定级测试（Onboarding）</td>
+            <td>测试主体（信息采集题形式，约 5 题）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 A</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>定级测试（Onboarding）</td>
+            <td>结果页（推荐 Level，写 level 字段）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 A</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>体验课学习报告</td>
+            <td>页面框架 + 孩子表现摘要</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 A</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>体验课学习报告</td>
+            <td>Level 推荐（核心模块）+ 课堂亮点</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 A</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>体验课学习报告</td>
+            <td>AI 老师点评 + 「开始正式学习」CTA</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>迭代 A</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <!-- 迭代B -->
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Explore Tab（原 Practice）</td>
+            <td>Explore 主页（Story / Radio 两入口卡）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 B</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Explore Tab（原 Practice）</td>
+            <td>Story 二级内容页（筛选 L1–L6）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 B</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Explore Tab（原 Practice）</td>
+            <td>Radio 二级内容页（All / Morning / Goodnight / Anytime）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 B</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <!-- 迭代C/D -->
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Dino Tab 对话</td>
+            <td>主屏（打招呼气泡 + 语音按钮 + 弱化商城/背包）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 C</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Dino Tab 对话</td>
+            <td>沉浸对话页·基础版（文字对话 + TTS）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 C</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="false">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Dino Tab 对话</td>
+            <td>沉浸对话页·完整版（STT + 情绪动画 + 打断）</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>迭代 D</td>
+            <td><span class="badge badge-pending">待开发</span></td>
+          </tr>
+          <!-- 迭代E -->
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Class Tab 每日解锁</td>
+            <td>今日课程卡（解锁高亮 / 倒计时 / Start）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Class Tab 每日解锁</td>
+            <td>本周学习计划（Mon–Sun 节点视图）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Class Tab 每日解锁</td>
+            <td>全部课程列表（已 / 今日 / 待解锁分状态）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>推送提醒</td>
+            <td>解锁提醒（每日解锁，默认 08:00 本地）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row stripe" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>推送提醒</td>
+            <td>学习提醒（当日 20:00 未完成）</td>
+            <td><span class="badge badge-p1">P1</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+          <tr class="feature-row" data-ver="V1.3.0" data-core="true">
+            <td><span class="badge badge-v130">V1.3.0</span></td>
+            <td>Paywall 年付 SKU</td>
+            <td>按年付费选项（默认选中 + 折扣标签）</td>
+            <td><span class="badge badge-p0">P0</span></td>
+            <td>迭代 E</td>
+            <td><span class="badge badge-core">★ 6/30 必交付</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p id="ver-note" style="font-size:12px;color:var(--text4);margin-top:8px;">★ 标注项为 2026-06-30 提审里程碑必交付功能</p>
+
+    <!-- ── 模块视角 ── -->
+    <div id="mod-view" style="display:none">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;align-items:center">
+        <span style="display:flex;align-items:center;gap:5px"><span class="mod-cell v110" style="padding:2px 7px">V1.1.0</span> 已上线</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="mod-cell v120" style="padding:2px 7px">V1.2.0</span> 已上线</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="mod-cell v130" style="padding:2px 7px">V1.3.0</span> 规划中</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="mod-cell core" style="padding:2px 7px">★ 6/30</span> 提审必交付</span>
+        <span style="display:flex;align-items:center;gap:5px"><span class="mod-cell empty" style="padding:2px 7px">—</span> 无内容</span>
+      </div>
+      <div class="mod-table-wrap">
+        <table class="mod-table">
+          <thead>
+            <tr>
+              <th style="width:90px">分组</th>
+              <th style="width:160px">模块</th>
+              <th class="col-v110">V1.1.0 · 首课链路</th>
+              <th class="col-v120">V1.2.0 · 商业化闭环</th>
+              <th class="col-v130">V1.3.0 · 游戏化迭代</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- GROUP: 核心链路 -->
+            <tr class="group-header-row"><td colspan="5">🎓 核心学习链路</td></tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v110">V1.1</span></td>
+              <td><strong>登录 / 注册</strong></td>
+              <td><div class="mod-cell v110">Apple / Google 登录页</div></td>
+              <td><div class="mod-cell v120">登录页改版（资料 chip 回显）<br/>登录成功·画像合并·补采集</div></td>
+              <td><div class="mod-cell empty">— 无新增</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v110">V1.1</span></td>
+              <td><strong>选老师</strong></td>
+              <td><div class="mod-cell v110">首次选老师页（Kim/Max/Leo）<br/>切换老师页</div></td>
+              <td><div class="mod-cell empty">— 无变更</div></td>
+              <td><div class="mod-cell empty">— 无变更</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v110">V1.1</span></td>
+              <td><strong>Class 课程</strong></td>
+              <td><div class="mod-cell v110">Class 首页<br/>课程列表页（横滑）<br/>进入课程 handoff</div></td>
+              <td><div class="mod-cell v120">课程卡锁态<br/>（Unlock / Premium 标签）</div></td>
+              <td><div class="mod-cell core">★ 每日解锁卡（今日/倒计时）<br/>★ 本周学习计划（Mon–Sun）<br/>★ 全部课程列表（分状态）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v110">V1.1</span></td>
+              <td><strong>个人中心 / Profile</strong></td>
+              <td><div class="mod-cell v110">Profile 菜单<br/>多语言国际化（6 语言 + RTL）</div></td>
+              <td><div class="mod-cell v120">资料展示 / 编辑<br/>（name / 年龄 / 水平 / 目标）</div></td>
+              <td><div class="mod-cell v130">头像框展示位 + 装扮（迭代 2）</div></td>
+            </tr>
+
+            <!-- GROUP: 商业化 -->
+            <tr class="group-header-row"><td colspan="5">💰 商业化闭环</td></tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v120">V1.2</span></td>
+              <td><strong>首启 / Onboarding</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v120">价值宣传页<br/>Onboarding 流程（谁学·姓名·年龄·水平·目标）<br/>价值页 + 个性化 Loading</div></td>
+              <td><div class="mod-cell core">★ 定级测试（约 5 题 + 结果页）<br/><span style="color:var(--text3)">接在 Onboarding Step4</span></div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v120">V1.2</span></td>
+              <td><strong>Practice → Explore</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v120">内容同步 + 锁态<br/>（按 level，去 all）</div></td>
+              <td><div class="mod-cell v130">Explore Tab 新架构（迭代 B）<br/>主页·Story 二级·Radio 二级</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v120">V1.2</span></td>
+              <td><strong>Radio</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v120">锁态（goodnight / morning / anytime）</div></td>
+              <td><div class="mod-cell empty">— 并入 Explore（见上）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v120">V1.2</span></td>
+              <td><strong>支付 / Paywall</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v120">Paywall 主体（周卡）<br/>购买 / 恢复购买<br/>多账号订阅拦截</div></td>
+              <td><div class="mod-cell core">★ 按年付费 SKU<br/>（默认选中 + 折扣标签）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v120">V1.2</span></td>
+              <td><strong>会员中心</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v120">入口（Free 拉 Paywall）<br/>会员页（状态·Plan·续费日·Restore）</div></td>
+              <td><div class="mod-cell empty">— 无新增</div></td>
+            </tr>
+
+            <!-- GROUP: 游戏化 -->
+            <tr class="group-header-row"><td colspan="5">🎮 游戏化体系（V1.3.0 迭代 1–5）</td></tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>Dino 成长主屏</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">Dino 形象 + 等级 / XP 进度<br/>恐龙币入口（迭代 1）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>商城 / 背包</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">商城（宠物/皮肤/道具三 Tab）<br/>购买流程 + 背包（迭代 2）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>Play 玩法</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">Play 页框架 + 段位<br/>宠物盲盒机<br/>单词 PK + 口语 PK（迭代 3）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>统一结算 / 课中奖励</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">结算页（XP + 恐龙币 + 升级动画）<br/>课中 + Words 课后奖励（迭代 1/4）</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>恐龙币付费</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">消耗型 IAP SKU<br/>会员升级引导（迭代 5）</div></td>
+            </tr>
+
+            <!-- GROUP: 功能迭代 -->
+            <tr class="group-header-row"><td colspan="5">🔧 功能性迭代（V1.3.0 迭代 A / B / C / D / E）</td></tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>体验课学习报告</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell core">★ 页面框架 + 孩子表现摘要<br/>★ Level 推荐 + 课堂亮点<br/>★ AI 老师点评 + 「开始正式学习」CTA</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>Dino Tab 对话</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell v130">主屏（打招呼气泡 + 语音按钮）<br/>基础版（文字对话 + TTS）迭代 C<br/>完整版（STT + 情绪 + 打断）迭代 D</div></td>
+            </tr>
+            <tr>
+              <td class="group-label"><span class="badge badge-v130">V1.3</span></td>
+              <td><strong>推送提醒</strong></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell empty">— 无</div></td>
+              <td><div class="mod-cell core">★ 解锁提醒（每日 08:00）<br/>★ 学习提醒（当日 20:00 未完成）</div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px;color:var(--text4);margin-top:8px;">橙色高亮 = 2026-06-30 提审必交付 · 颜色深浅代表版本归属</p>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── Product positioning ── -->
+  <div class="section">
+    <div class="section-title"><h2>产品定位</h2></div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">核心定位</div>
+        <div class="pos-row" style="flex-direction:column;gap:14px">
+          <div class="pos-item">
+            <div class="pos-label">目标用户</div>
+            <div class="pos-value">6–13 岁、缺少英语交流环境的儿童家庭；父母为付费决策者，孩子为使用主体</div>
+          </div>
+          <div style="border-top:1px solid var(--border)"></div>
+          <div class="pos-item">
+            <div class="pos-label">产品愿景</div>
+            <div class="pos-value">让孩子每天愿意主动开口，与 AI 老师在沉浸式教学故事里把英语说出来</div>
+          </div>
+          <div style="border-top:1px solid var(--border)"></div>
+          <div class="pos-item">
+            <div class="pos-label">核心价值主张</div>
+            <div class="pos-value">帮助孩子在互动中「敢说、常说、说对」——AI 老师贯穿叙事与教学，低压力、高频次练习表达</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">差异化优势</div>
+        <div class="pos-row" style="flex-direction:column;gap:14px">
+          <div class="pos-item">
+            <div class="pos-label">vs. 录播课</div>
+            <div class="pos-value">AI 老师实时互动，孩子开口才能继续推进，不是被动收听</div>
+          </div>
+          <div style="border-top:1px solid var(--border)"></div>
+          <div class="pos-item">
+            <div class="pos-label">vs. 真人外教</div>
+            <div class="pos-value">随时可用、成本可控；通过游戏化降低孩子对「开口犯错」的心理压力</div>
+          </div>
+          <div style="border-top:1px solid var(--border)"></div>
+          <div class="pos-item">
+            <div class="pos-label">核心飞轮</div>
+            <div class="pos-value">上课获 XP / 恐龙币 → 游戏 / 商城消费 → 等级成长 → 提升继续上课动力</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info" style="margin-top:16px">
+      <div class="callout-title">当前版本验证重点（V1.2.0 已上线阶段）</div>
+      <p>首课完播率 / 复玩率 · Paywall 曝光 → 购买转化率 · 登录成功率 · 支付失败率。6 节课内容不足以验证留存 / LTV，全量课程（864 节目标）上线后再测长期留存与月订阅 WTP。</p>
+    </div>
+    <div class="callout warning" style="margin-top:12px">
+      <div class="callout-title">V1.3.0 核心目标</div>
+      <p>在不改动 V1.2.0 主流程前提下，加入游戏化激励体系，把「学完一节课」变成「想继续玩、想收集、想变强」的长期循环；同步完成定级测试、体验课报告、每日解锁 & 学习计划三项功能性迭代，在 2026-06-30 前完成提审。</p>
+    </div>
+  </div>
+
+  <hr />
+
+  <!-- ── Future roadmap ── -->
+  <div class="section">
+    <div class="section-title"><h2>后续产品规划（V1.4+）</h2></div>
+    <p style="font-size:13px;color:var(--text3);margin-bottom:16px">基于当前产品定位与 V1.3.0 游戏化底座，后续围绕「社交竞争」「内容扩张」「商业深化」三条主线推进</p>
+
+    <div class="roadmap-cards">
+      <div class="roadmap-card">
+        <div class="phase-title" style="color:var(--blue)">🏆 社交竞争（V1.4）</div>
+        <ul>
+          <li>连胜打卡（Streak）— 提升日留存与习惯养成</li>
+          <li>周排行榜 — 增加竞争激励与复访动力</li>
+          <li>成就徽章系统 — 长期收集感与里程碑认可</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="phase-title" style="color:var(--purple)">📚 内容扩张（V1.5）</div>
+        <ul>
+          <li>全量课程目标 864 节（6 Level × 12 Unit × 12 Lesson）</li>
+          <li>Explore 说 / 写功能 — 覆盖四技能</li>
+          <li>赛季 / 节日活动运营 — 节点拉活 + 提升活跃度</li>
+        </ul>
+      </div>
+      <div class="roadmap-card">
+        <div class="phase-title" style="color:var(--orange)">💰 商业深化（V1.6）</div>
+        <ul>
+          <li>全量上线后完整订阅定价（月 / 年，验证 LTV）</li>
+          <li>Dino 3D 动态交互 — 强化游戏化沉浸感</li>
+          <li>家庭档 / 多用户方案 — 拓展付费客单价</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:18px">
+      <table>
+        <thead>
+          <tr>
+            <th>阶段</th>
+            <th>规划功能</th>
+            <th>目标 / 价值假设</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-v120" style="background:#eff6ff">V1.4 社交竞争</span></td><td>连胜打卡（Streak）</td><td style="color:var(--text3)">提升日留存与习惯养成</td></tr>
+          <tr class="stripe"><td><span class="badge badge-v120" style="background:#eff6ff">V1.4 社交竞争</span></td><td>周排行榜</td><td style="color:var(--text3)">增加竞争激励与复访动力</td></tr>
+          <tr><td><span class="badge badge-v120" style="background:#eff6ff">V1.4 社交竞争</span></td><td>成就徽章系统</td><td style="color:var(--text3)">长期收集感与里程碑认可</td></tr>
+          <tr class="stripe"><td><span class="badge badge-v130" style="background:#f5f3ff">V1.5 内容扩张</span></td><td>全量课程上线（864 节目标）</td><td style="color:var(--text3)">支撑留存 / LTV 验证</td></tr>
+          <tr><td><span class="badge badge-v130" style="background:#f5f3ff">V1.5 内容扩张</span></td><td>Explore 说 / 写功能</td><td style="color:var(--text3)">丰富练习类型，覆盖四技能</td></tr>
+          <tr class="stripe"><td><span class="badge badge-v130" style="background:#f5f3ff">V1.5 内容扩张</span></td><td>赛季 / 节日活动运营</td><td style="color:var(--text3)">节点拉活 + 提升活跃度</td></tr>
+          <tr><td><span class="badge badge-p1">V1.6 商业深化</span></td><td>完整课程定价（月 / 年订阅）</td><td style="color:var(--text3)">全量上线后验证 LTV</td></tr>
+          <tr class="stripe"><td><span class="badge badge-p1">V1.6 商业深化</span></td><td>Dino 3D 动态交互 / 场景动画</td><td style="color:var(--text3)">提升游戏化沉浸感</td></tr>
+          <tr><td><span class="badge badge-p1">V1.6 商业深化</span></td><td>家庭档 / 多用户方案</td><td style="color:var(--text3)">拓展付费客单价</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <p>来源：V1.1.0 / V1.2.0 / V1.3.0 PRD · 飞书云文档「Dino AI 范式课-项目总表」AI-里程碑 & 李双-里程碑 · 生成时间：2026-06-11</p>
+  </div>
+
+</div>
+
+<script>
+  // ── Version view filters ──
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const featureRows = document.querySelectorAll('.feature-row');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      featureRows.forEach(row => {
+        const ver = row.dataset.ver;
+        const core = row.dataset.core === 'true';
+        let show = false;
+        if (filter === '全部') show = true;
+        else if (filter === 'V1.1.0') show = ver === 'V1.1.0';
+        else if (filter === 'V1.2.0') show = ver === 'V1.2.0';
+        else if (filter === 'V1.3.0') show = ver === 'V1.3.0';
+        else if (filter === '6/30') show = core;
+        row.classList.toggle('hidden', !show);
+      });
+
+      let idx = 0;
+      featureRows.forEach(row => {
+        if (!row.classList.contains('hidden')) {
+          row.classList.toggle('stripe', idx % 2 === 1);
+          idx++;
+        }
+      });
+    });
+  });
+
+  // ── View toggle ──
+  const verView  = document.getElementById('feature-table').parentElement;
+  const modView  = document.getElementById('mod-view');
+  const filterBar= document.getElementById('ver-filter-bar');
+  const verNote  = document.getElementById('ver-note');
+  const btnVer   = document.getElementById('view-ver');
+  const btnMod   = document.getElementById('view-mod');
+
+  btnVer.addEventListener('click', () => {
+    btnVer.classList.add('active');   btnMod.classList.remove('active');
+    verView.style.display  = '';
+    filterBar.style.display= '';
+    verNote.style.display  = '';
+    modView.style.display  = 'none';
+  });
+
+  btnMod.addEventListener('click', () => {
+    btnMod.classList.add('active');   btnVer.classList.remove('active');
+    verView.style.display  = 'none';
+    filterBar.style.display= 'none';
+    verNote.style.display  = 'none';
+    modView.style.display  = '';
+  });
+</script>
+</body>
+</html>
