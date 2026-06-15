@@ -1,14 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dino English — V1.3.0 UI Demo</title>
-  <meta http-equiv="refresh" content="0; url=V1.3.0-ui-demo.html" />
-  <link rel="canonical" href="V1.3.0-ui-demo.html" />
-  <script>location.replace("V1.3.0-ui-demo.html");</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dino English · 演示与文档导航</title>
+<meta name="description" content="Dino English 各版本 UI Demo、产品视图与方案的快捷链接导航页。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#f6f1e7;
+  --paper-deep:#efe7d6;
+  --ink:#1f2a24;
+  --ink-soft:#4c5a52;
+  --ink-faint:#8a958d;
+  --green:#1d5c3f;
+  --green-bright:#2e8b57;
+  --orange:#d9641e;
+  --orange-soft:#f3e0cf;
+  --line:#d8cfba;
+  --card:#fffdf8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-weight:400;line-height:1.7;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 110% -10%, rgba(46,139,87,.07), transparent),
+    radial-gradient(ellipse 60% 50% at -10% 100%, rgba(217,100,30,.06), transparent);
+  min-height:100vh;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+
+/* header */
+header{padding:64px 0 36px;border-bottom:3px double var(--line)}
+.kicker{
+  font-family:'Fraunces',serif;font-size:12.5px;letter-spacing:.34em;text-transform:uppercase;
+  color:var(--green);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:14px
+}
+.kicker::before{content:"";width:42px;height:1px;background:var(--green)}
+h1{
+  font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(32px,5vw,52px);
+  line-height:1.15;letter-spacing:.01em
+}
+h1 em{font-style:normal;color:var(--orange)}
+.lede{margin-top:18px;max-width:600px;color:var(--ink-soft);font-size:15px}
+.meta-row{margin-top:24px;display:flex;gap:24px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-faint);letter-spacing:.04em}
+.meta-row b{color:var(--ink-soft);font-weight:500}
+.meta-row code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--paper-deep);padding:2px 7px;border-radius:5px;color:var(--green);font-size:12px}
+
+/* section */
+section{padding:44px 0 8px}
+.sec-head{
+  font-family:'Fraunces',serif;font-size:12px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--orange);font-weight:600;margin-bottom:22px;display:flex;align-items:center;gap:12px
+}
+.sec-head::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* grid + cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{
+  display:flex;flex-direction:column;gap:10px;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:22px 22px 20px;text-decoration:none;color:inherit;position:relative;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 14px 30px -16px rgba(31,42,36,.38);border-color:var(--green-bright)}
+.card .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tag{
+  font-family:'Fraunces',serif;font-size:11px;font-weight:600;letter-spacing:.12em;
+  padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-faint);white-space:nowrap
+}
+.tag.green{color:var(--green);border-color:rgba(46,139,87,.4);background:rgba(46,139,87,.07)}
+.tag.orange{color:var(--orange);border-color:rgba(217,100,30,.4);background:var(--orange-soft)}
+.tag.gray{color:var(--ink-faint)}
+.card h3{font-family:'Noto Serif SC',serif;font-size:19px;font-weight:700;line-height:1.35}
+.card p{font-size:13px;color:var(--ink-soft);line-height:1.6;flex:1}
+.card .go{font-size:12.5px;color:var(--green-bright);font-weight:500;letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+.card .go .arrow{transition:transform .18s ease}
+.card:hover .go .arrow{transform:translateX(4px)}
+
+/* featured */
+.feature{
+  margin-top:34px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;
+  background:linear-gradient(120deg,#fffdf8, #fbf4e6);
+  border:1px solid var(--line);border-left:5px solid var(--orange);
+  border-radius:16px;padding:26px 28px;text-decoration:none;color:inherit;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.feature:hover{transform:translateY(-3px);box-shadow:0 16px 34px -18px rgba(31,42,36,.4)}
+.feature .ft-main{flex:1;min-width:240px}
+.feature .ft-main h3{font-family:'Noto Serif SC',serif;font-size:24px;font-weight:900;margin:8px 0 6px}
+.feature .ft-main p{font-size:13.5px;color:var(--ink-soft);max-width:520px}
+.feature .ft-go{
+  font-family:'Fraunces',serif;font-weight:600;font-size:14px;color:#fff;background:var(--orange);
+  padding:12px 22px;border-radius:999px;white-space:nowrap;display:flex;align-items:center;gap:8px
+}
+
+/* footer */
+footer{margin-top:48px;padding:28px 0 64px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-faint);line-height:1.8}
+footer b{color:var(--ink-soft);font-weight:500}
+@media(max-width:560px){
+  header{padding:48px 0 28px}
+  .feature .ft-go{width:100%;justify-content:center}
+}
+</style>
 </head>
 <body>
-  <p>Redirecting to <a href="V1.3.0-ui-demo.html">Dino English V1.3.0 UI Demo</a>…</p>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Dino English · Demo &amp; Docs Hub</div>
+    <h1>演示与<em>文档</em>导航</h1>
+    <p class="lede">Dino English 各版本 UI Demo、产品主线视图与定价方案的快捷入口。点击任意卡片在新标签打开。</p>
+    <div class="meta-row">
+      <span><b>更新</b>　2026-06-15</span>
+      <span><b>当前最新</b>　V1.3.0</span>
+      <span><b>地址</b>　<code>cyanlee888.github.io/cyan/dino-english/</code></span>
+    </div>
+  </header>
+
+  <a class="feature" href="V1.3.0-ui-demo.html" target="_blank" rel="noopener">
+    <div class="ft-main">
+      <span class="tag orange">最新 · LATEST</span>
+      <h3>V1.3.0 UI Demo</h3>
+      <p>跳级体验课、本周学习计划首页、Level · Unit 课程列表与状态机面板（含登录 / 网络 / 会员等态查看）。</p>
+    </div>
+    <span class="ft-go">打开 Demo&nbsp;→</span>
+  </a>
+
+  <section>
+    <div class="sec-head">UI Demo 演示（按版本）</div>
+    <div class="grid">
+
+      <a class="card" href="MVP-v1-ui-demo.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag gray">MVP</span></div>
+        <h3>MVP v1 UI Demo</h3>
+        <p>最早的横版 / Stitch 参考演示，验证核心课堂与首页骨架。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="V1.1.0-ui-demo.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag green">V1.1.0</span></div>
+        <h3>V1.1.0 UI Demo</h3>
+        <p>登录、教师选择、课程列表与课堂主流程首版完整演示。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="V1.2.0-ui-demo.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag green">V1.2.0</span></div>
+        <h3>V1.2.0 UI Demo</h3>
+        <p>Onboarding 定级、Paywall 与会员、Practice / Radio 与埋点建模演示。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="V1.3.0-ui-demo.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag orange">V1.3.0 · 最新</span></div>
+        <h3>V1.3.0 UI Demo</h3>
+        <p>跳级体验课、本周学习计划首页、Level · Unit 列表与状态机面板。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">产品视图 &amp; 方案</div>
+    <div class="grid">
+
+      <a class="card" href="dino-ai-milestone-roadmap.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag green">串联视图</span></div>
+        <h3>产品主线串联视图</h3>
+        <p>把 V1.1 / V1.2 / V1.3 三个版本内嵌串联，一页看清产品演进主线。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="Dino-English-产品里程碑.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag green">里程碑</span></div>
+        <h3>产品里程碑</h3>
+        <p>按时间线梳理的版本里程碑与关键能力规划总览。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="V1.2.0-版本方案重点.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag gray">V1.2.0</span></div>
+        <h3>V1.2.0 版本方案重点</h3>
+        <p>V1.2.0 版本的方案要点与重点决策摘要。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="dino-english-pricing-strategy.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag orange">定价</span></div>
+        <h3>多版本定价策略</h3>
+        <p>沙特 / 韩国等市场的会员定价、套餐与支付链路策略。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+      <a class="card" href="course-list-demo.html" target="_blank" rel="noopener">
+        <div class="top"><span class="tag gray">组件</span></div>
+        <h3>课程列表 Demo</h3>
+        <p>精简版课程列表页（Course List）单页演示。</p>
+        <span class="go"><span class="arrow">→</span> 打开</span>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <p><b>说明</b>　本页为演示与文档的快捷导航；产品需求文档（PRD）以飞书云文档为准（内部协作），此处不公开直链。</p>
+    <p>Dino English · 内部演示导航 · 更新于 2026-06-15</p>
+  </footer>
+
+</div>
 </body>
 </html>
