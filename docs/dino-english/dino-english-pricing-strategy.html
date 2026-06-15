@@ -1,0 +1,2914 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dino English 多版本定价策略</title>
+    <style>
+        :root {
+            --bg: #f0f4f8;
+            --surface: #ffffff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --green: #10b981;
+            --orange: #f59e0b;
+            --purple: #8b5cf6;
+            --pink: #ec4899;
+            --cyan: #06b6d4;
+            --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+            --radius: 12px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .page { max-width: 1440px; margin: 0 auto; padding: 32px 40px 64px; }
+
+        /* Header */
+        .header { margin-bottom: 32px; }
+        .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+        .header h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+        .header .subtitle { font-size: 14px; color: var(--muted); max-width: 720px; }
+        .header-meta { font-size: 12px; color: var(--muted); text-align: right; white-space: nowrap; }
+        .header-meta strong { color: var(--text); display: block; font-size: 13px; }
+
+        /* Overview cards */
+        .overview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .overview-card {
+            background: var(--surface); border-radius: var(--radius); padding: 20px;
+            box-shadow: var(--shadow); border-top: 3px solid var(--primary);
+        }
+        .overview-card:nth-child(2) { border-top-color: var(--green); }
+        .overview-card:nth-child(3) { border-top-color: var(--purple); }
+        .overview-card:nth-child(4) { border-top-color: var(--orange); }
+        .overview-card .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+        .overview-card .value { font-size: 22px; font-weight: 700; }
+        .overview-card .desc { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+        .tab {
+            padding: 10px 20px; border-radius: 999px; border: 2px solid var(--border);
+            background: var(--surface); cursor: pointer; font-size: 14px; font-weight: 500;
+            transition: all .2s; user-select: none;
+        }
+        .tab:hover { border-color: var(--primary); color: var(--primary); }
+        .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .tab .num { display: inline-block; width: 20px; height: 20px; line-height: 20px; text-align: center;
+            border-radius: 50%; background: rgba(0,0,0,.08); font-size: 11px; margin-right: 6px; }
+        .tab.active .num { background: rgba(255,255,255,.25); }
+
+        /* Panels */
+        .panel { display: none; animation: fadeIn .3s ease; }
+        .panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+        .panel-header {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+            border-radius: var(--radius); padding: 24px 28px; margin-bottom: 24px;
+            display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start;
+        }
+        .panel-header.s2 { background: linear-gradient(135deg, #fdf4ff 0%, #eff6ff 100%); }
+        .panel-header.s3 { background: linear-gradient(135deg, #fef3c7 0%, #fce7f3 100%); }
+        .panel-header.s4 { background: linear-gradient(135deg, #ecfdf5 0%, #eff6ff 100%); }
+        .panel-header h2 { font-size: 20px; margin-bottom: 8px; }
+        .panel-header .logic { font-size: 14px; color: #374151; }
+        .panel-header .logic li { margin-left: 18px; margin-bottom: 4px; }
+        .ref-box {
+            background: var(--surface); border-radius: 10px; padding: 16px;
+            box-shadow: var(--shadow); font-size: 13px;
+        }
+        .ref-box h4 { font-size: 12px; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: .5px; }
+        .ref-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
+        .ref-item:last-child { border-bottom: none; }
+        .ref-item .name { font-weight: 500; }
+        .ref-item .price { color: var(--primary); font-weight: 600; white-space: nowrap; margin-left: 12px; }
+
+        /* Section */
+        .section { margin-bottom: 28px; }
+        .section-title {
+            font-size: 16px; font-weight: 600; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-title::before {
+            content: ''; width: 4px; height: 18px; background: var(--primary); border-radius: 2px;
+        }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead { background: #f8fafc; }
+        th { padding: 12px 14px; text-align: left; font-weight: 600; color: #374151; border-bottom: 2px solid var(--border); white-space: nowrap; }
+        td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f9fafb; }
+        .sku-name { font-weight: 600; color: var(--text); }
+        .sku-tag {
+            display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 500; margin-top: 4px;
+        }
+        .tag-free { background: #ecfdf5; color: #059669; }
+        .tag-core { background: #eff6ff; color: #2563eb; }
+        .tag-premium { background: #fdf4ff; color: #7c3aed; }
+        .tag-addon { background: #fff7ed; color: #d97706; }
+        .tag-bundle { background: #fce7f3; color: #db2777; }
+        .tag-ultra { background: #fef3c7; color: #b45309; }
+        .price-cell { font-weight: 600; color: var(--primary-dark); white-space: nowrap; }
+        .price-strike { text-decoration: line-through; color: var(--muted); font-weight: 400; font-size: 12px; }
+        .tier-grid { display: flex; gap: 4px; flex-wrap: wrap; }
+        .tier-pill {
+            padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 500;
+            background: #f3f4f6; color: #4b5563;
+        }
+        .tier-pill.t0 { background: #fef3c7; color: #92400e; }
+        .tier-pill.highlight { background: #dbeafe; color: #1d4ed8; }
+
+        /* Regional tiers */
+        .tier-cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+        .tier-card {
+            background: var(--surface); border-radius: var(--radius); padding: 18px;
+            box-shadow: var(--shadow); text-align: center; position: relative;
+        }
+        .tier-card.recommended { border: 2px solid var(--primary); }
+        .tier-card.recommended::after {
+            content: '首发重点'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: #fff; font-size: 10px; padding: 2px 10px; border-radius: 999px;
+        }
+        .tier-card .tier-label { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .tier-card .tier-price { font-size: 18px; font-weight: 700; color: var(--primary); }
+        .tier-card .tier-price-sub { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+        .tier-card .tier-countries { font-size: 11px; color: var(--muted); line-height: 1.5; }
+        .tier-card .tier-launch {
+            font-size: 11px; color: var(--green); font-weight: 600; margin-top: 6px;
+            padding-top: 6px; border-top: 1px dashed var(--border);
+        }
+        .tier-card .tier-sku {
+            font-size: 10px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .3px;
+        }
+        .tier-section-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+        .tier-scheme-badge {
+            font-size: 12px; font-weight: 600; color: var(--primary-dark);
+            background: #eff6ff; padding: 4px 12px; border-radius: 999px;
+        }
+        .tier-scheme-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+        .tier-cards.updating { opacity: .5; transform: translateY(4px); transition: opacity .15s, transform .15s; }
+        .overview-card .value { transition: opacity .2s; }
+        .overview-card .value.flash { opacity: .4; }
+
+        /* ===== 四方案对比矩阵（Boss View）===== */
+        .compare-section { margin-bottom: 32px; }
+        .compare-section > .section-title { font-size: 18px; margin-bottom: 16px; }
+        .compare-matrix {
+            display: grid;
+            grid-template-columns: 140px repeat(4, 1fr);
+            gap: 0;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            font-size: 12px;
+        }
+        .compare-matrix .cm-corner {
+            background: #f8fafc; padding: 14px 12px;
+            font-weight: 600; color: var(--muted); font-size: 11px;
+            border-bottom: 2px solid var(--border); border-right: 1px solid var(--border);
+            display: flex; align-items: flex-end;
+        }
+        .compare-matrix .cm-head {
+            padding: 16px 14px; text-align: center; cursor: pointer;
+            border-bottom: 2px solid var(--border); border-right: 1px solid var(--border);
+            transition: background .2s; position: relative;
+        }
+        .compare-matrix .cm-head:last-child { border-right: none; }
+        .compare-matrix .cm-head:hover { background: #f9fafb; }
+        .compare-matrix .cm-head.active { background: #eff6ff; }
+        .compare-matrix .cm-head.active::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+        }
+        .compare-matrix .cm-head.active.s1::after { background: #3b82f6; }
+        .compare-matrix .cm-head.active.s2::after { background: #8b5cf6; }
+        .compare-matrix .cm-head.active.s3::after { background: #f59e0b; }
+        .compare-matrix .cm-head.active.s4::after { background: #10b981; }
+        .compare-matrix .cm-head .cm-num {
+            display: inline-block; width: 22px; height: 22px; line-height: 22px;
+            border-radius: 50%; font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 6px;
+        }
+        .cm-head.s1 .cm-num { background: #3b82f6; }
+        .cm-head.s2 .cm-num { background: #8b5cf6; }
+        .cm-head.s3 .cm-num { background: #f59e0b; }
+        .cm-head.s4 .cm-num { background: #10b981; }
+        .compare-matrix .cm-head .cm-title { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .compare-matrix .cm-head .cm-ref { font-size: 10px; color: var(--muted); }
+        .compare-matrix .cm-label {
+            padding: 10px 12px; font-weight: 600; color: #374151; background: #f8fafc;
+            border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
+            display: flex; align-items: center;
+        }
+        .compare-matrix .cm-cell {
+            padding: 10px 14px; border-bottom: 1px solid var(--border); border-right: 1px solid var(--border);
+            line-height: 1.55; color: #374151; vertical-align: top;
+        }
+        .compare-matrix .cm-cell:last-child { border-right: none; }
+        .compare-matrix .cm-cell.highlight { background: #fafbff; }
+        .compare-matrix .cm-price { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .compare-matrix .cm-price-sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+        .compare-matrix .cm-list-price { font-size: 12px; color: var(--muted); text-decoration: line-through; margin-bottom: 2px; }
+        .compare-matrix .cm-head .cm-badge {
+            display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 6px;
+            border-radius: 4px; margin-top: 4px; letter-spacing: .3px;
+        }
+        .compare-matrix .cm-head .cm-badge.primary { background: #dbeafe; color: #1d4ed8; }
+        .compare-matrix .cm-head .cm-badge.premium { background: #ecfdf5; color: #047857; }
+        .compare-note {
+            font-size: 12px; color: var(--muted); margin-bottom: 12px; padding: 10px 14px;
+            background: #f8fafc; border-radius: 8px; border: 1px solid var(--border);
+        }
+        .compare-note strong { color: var(--text); }
+        .tier-card .tier-list-price { font-size: 13px; color: var(--muted); text-decoration: line-through; margin-bottom: 2px; }
+
+        /* SKU 分组行 & 融合架构 */
+        tr.sku-group-row td {
+            background: #f1f5f9; font-weight: 600; font-size: 12px; padding: 10px 14px;
+            border-bottom: 2px solid var(--border); color: #475569;
+        }
+        tr.sku-group-row td .grp-tag {
+            display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 6px;
+            border-radius: 4px; margin-left: 8px; background: #e2e8f0; color: #64748b;
+        }
+        .fusion-arch {
+            display: grid; grid-template-columns: 1fr 48px 1fr 48px 1fr; gap: 0;
+            align-items: stretch; margin-bottom: 20px;
+        }
+        @media (max-width: 900px) { .fusion-arch { grid-template-columns: 1fr; gap: 12px; } .fusion-arch .fa-arrow { display: none; } }
+        .fusion-arch .fa-block {
+            background: var(--surface); border-radius: var(--radius); padding: 18px;
+            box-shadow: var(--shadow); border-top: 3px solid var(--primary); text-align: center;
+        }
+        .fusion-arch .fa-block:nth-child(1) { border-top-color: #10b981; }
+        .fusion-arch .fa-block:nth-child(3) { border-top-color: #8b5cf6; }
+        .fusion-arch .fa-block:nth-child(5) { border-top-color: #f59e0b; }
+        .fusion-arch .fa-block h4 { font-size: 13px; margin-bottom: 8px; }
+        .fusion-arch .fa-block p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+        .fusion-arch .fa-arrow { display: flex; align-items: center; justify-content: center; font-size: 20px; color: #cbd5e1; }
+        .ai-play-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        @media (max-width: 900px) { .ai-play-grid { grid-template-columns: 1fr; } }
+        .ai-play-card {
+            background: var(--surface); border-radius: 10px; padding: 14px; box-shadow: var(--shadow);
+            border-left: 3px solid var(--purple);
+        }
+        .ai-play-card:nth-child(2) { border-left-color: var(--primary); }
+        .ai-play-card:nth-child(3) { border-left-color: var(--orange); }
+        .ai-play-card h5 { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+        .ai-play-card ul { font-size: 11px; color: #374151; margin-left: 14px; line-height: 1.55; }
+        .compare-matrix .cm-tag {
+            display: inline-block; padding: 1px 6px; border-radius: 3px;
+            font-size: 10px; font-weight: 600; margin: 2px 2px 0 0;
+        }
+        .cm-tag.rec { background: #dcfce7; color: #166534; }
+        .cm-tag.launch { background: #fef3c7; color: #92400e; }
+        .cm-tag.comp { background: #eff6ff; color: #1d4ed8; }
+        .cm-trial-list {
+            margin: 6px 0 0; padding-left: 16px; font-size: 11px; color: #374151; line-height: 1.55;
+        }
+        .cm-trial-list li { margin-bottom: 3px; }
+        .cm-trial-comp {
+            display: block; font-size: 10px; color: var(--muted); margin-top: 6px; line-height: 1.45;
+        }
+        .compare-bar-row {
+            display: flex; align-items: center; gap: 8px; margin-top: 4px;
+        }
+        .compare-bar-bg { flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+        .compare-bar-fill { height: 100%; border-radius: 4px; }
+        .compare-bar-fill.s1 { background: #3b82f6; }
+        .compare-bar-fill.s2 { background: #8b5cf6; }
+        .compare-bar-fill.s3 { background: #f59e0b; }
+        .compare-bar-fill.s4 { background: #10b981; }
+        @media (max-width: 1100px) {
+            .compare-matrix { overflow-x: auto; }
+            .compare-matrix { min-width: 900px; }
+        }
+
+        /* Benchmark comparison */
+        .benchmark-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .benchmark-col {
+            background: var(--surface); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+        }
+        .benchmark-col h3 { font-size: 14px; margin-bottom: 4px; }
+        .benchmark-col .cat { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+        .benchmark-row {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; gap: 8px;
+        }
+        .benchmark-row:last-child { border-bottom: none; }
+        .benchmark-row .bname { font-weight: 500; flex: 1; }
+        .benchmark-row .bprice { color: var(--green); font-weight: 600; white-space: nowrap; }
+        .benchmark-row .bmodel { font-size: 10px; color: var(--muted); display: block; }
+
+        /* Price bar chart */
+        .chart-container { background: var(--surface); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+        .chart-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .chart-label { width: 120px; font-size: 12px; font-weight: 500; text-align: right; flex-shrink: 0; }
+        .chart-bar-wrap { flex: 1; height: 28px; background: #f3f4f6; border-radius: 6px; overflow: hidden; position: relative; }
+        .chart-bar { height: 100%; border-radius: 6px; display: flex; align-items: center; padding-left: 10px;
+            font-size: 11px; font-weight: 600; color: #fff; min-width: 40px; transition: width .6s ease; }
+        .chart-bar.competitor { background: linear-gradient(90deg, #9ca3af, #6b7280); }
+        .chart-bar.dino { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+        .chart-bar.dino-launch { background: linear-gradient(90deg, #10b981, #059669); }
+
+        /* Promo cards */
+        .promo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .promo-card {
+            background: var(--surface); border-radius: 10px; padding: 16px; box-shadow: var(--shadow);
+            border-left: 4px solid var(--orange);
+        }
+        .promo-card:nth-child(2) { border-left-color: var(--green); }
+        .promo-card:nth-child(3) { border-left-color: var(--purple); }
+        .promo-card h4 { font-size: 13px; margin-bottom: 6px; }
+        .promo-card p { font-size: 12px; color: var(--muted); }
+
+        /* Competitor SKU detail */
+        .comp-section { margin-top: 8px; }
+        .comp-product {
+            background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow);
+            margin-bottom: 16px; overflow: hidden;
+        }
+        .comp-product-header {
+            padding: 14px 18px; background: #f8fafc; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+        }
+        .comp-product-header h4 { font-size: 14px; font-weight: 600; }
+        .comp-product-header .comp-cat {
+            font-size: 11px; color: var(--muted); background: #f3f4f6; padding: 2px 8px; border-radius: 4px;
+        }
+        .comp-sku-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0; }
+        .comp-sku-card {
+            padding: 16px 18px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+        }
+        .comp-sku-card:last-child { border-right: none; }
+        .comp-sku-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .comp-sku-price { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
+        .comp-sku-price .sub { font-size: 11px; color: var(--muted); font-weight: 400; }
+        .benefit-list { list-style: none; font-size: 12px; color: #374151; }
+        .benefit-list li {
+            padding: 3px 0 3px 14px; position: relative; line-height: 1.5;
+        }
+        .benefit-list li::before {
+            content: '✓'; position: absolute; left: 0; color: var(--green); font-size: 10px; font-weight: 700;
+        }
+        .benefit-list li.limit::before { content: '○'; color: var(--orange); }
+        .benefit-list li.none::before { content: '×'; color: #d1d5db; }
+        .comp-table td.benefits-cell { font-size: 12px; line-height: 1.55; max-width: 360px; }
+        .comp-table .tier-name { font-weight: 600; white-space: nowrap; }
+        .comp-table tr.tier-free td:first-child { border-left: 3px solid #10b981; }
+        .comp-table tr.tier-core td:first-child { border-left: 3px solid #3b82f6; }
+        .comp-table tr.tier-premium td:first-child { border-left: 3px solid #8b5cf6; }
+        .comp-table tr.tier-ultra td:first-child { border-left: 3px solid #f59e0b; }
+        .comp-table tr.tier-addon td:first-child { border-left: 3px solid #f97316; }
+        .comp-table tr.tier-bundle td:first-child { border-left: 3px solid #ec4899; }
+        .comp-legend { display: flex; gap: 16px; font-size: 11px; color: var(--muted); margin-bottom: 12px; flex-wrap: wrap; }
+        .comp-legend span { display: flex; align-items: center; gap: 5px; }
+        .comp-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+        .comp-tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .comp-tab {
+            padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border);
+            background: var(--surface); cursor: pointer; font-size: 12px; font-weight: 500;
+        }
+        .comp-tab.active { background: #eff6ff; border-color: var(--primary); color: var(--primary-dark); }
+        .comp-panel { display: none; }
+        .comp-panel.active { display: block; }
+
+        /* Consumption / detail tables */
+        .detail-note {
+            background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+            padding: 12px 16px; font-size: 12px; color: #92400e; margin-bottom: 14px; line-height: 1.6;
+        }
+        .detail-note.info { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+        .consumption-table td:first-child { font-weight: 500; white-space: nowrap; }
+        .consumption-table .cost { color: var(--orange); font-weight: 600; }
+        .feature-block { margin-bottom: 20px; }
+        .feature-block h5 { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: #374151; }
+
+        /* Footer */
+        .footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+        @media (max-width: 1100px) {
+            .comp-sku-grid { grid-template-columns: 1fr; }
+            .comp-sku-card { border-right: none; }
+            .overview { grid-template-columns: repeat(2, 1fr); }
+            .tier-cards { grid-template-columns: repeat(3, 1fr); }
+            .benchmark-grid { grid-template-columns: 1fr; }
+            .panel-header { grid-template-columns: 1fr; }
+            .promo-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="header-top">
+            <div>
+                <h1>Dino English 多版本定价策略</h1>
+                <p class="subtitle">Dino English 共 6 级 × 144 Lesson。<strong>方案 1（卖课）</strong>与<strong>方案 2（卖内容）</strong>采用统一 SKU 架构：课程底座 + 融合方案 3 Token 额度 + 方案 4 AI 分层加购。<strong>标价 = 售价 × 2</strong>。</p>
+            </div>
+            <div class="header-meta">
+                <strong>REF: Dino定价方案分析 V1.2.0</strong>
+                0605 会议 · 2025-06
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 四方案 Boss 对比矩阵 ===== -->
+    <div class="compare-section">
+        <div class="section-title">四套定价策略 · 一图对比（点击列切换详情）</div>
+        <div class="compare-note"><strong>价格口径：</strong>下表同时展示 <strong>标价</strong>（划线，官方定价锚点）与 <strong>售价</strong>（实际成交/促销价）。当前各 SKU 售价为基准，标价为售价的 2 倍，年付/月付均适用。</div>
+        <div class="compare-matrix" id="compareMatrix"></div>
+    </div>
+
+    <div class="overview">
+        <div class="overview-card">
+            <div class="label">售价区间（年付）</div>
+            <div class="value" id="ovPriceRange">$180 – $250</div>
+            <div class="desc" id="ovPriceDesc">标价 = 售价 × 2</div>
+        </div>
+        <div class="overview-card">
+            <div class="label">当前定价模式</div>
+            <div class="value" id="ovSchemeName" style="font-size:16px;">儿童app订阅（卖内容）</div>
+            <div class="desc" id="ovSchemeSku">Plus 会员 PRO · 自学内容解锁</div>
+        </div>
+        <div class="overview-card">
+            <div class="label">定价锚点</div>
+            <div class="value" id="ovAnchor">行业上沿</div>
+            <div class="desc" id="ovAnchorDesc">高于纯内容 App，对齐 AI 互动课定位</div>
+        </div>
+        <div class="overview-card">
+            <div class="label">首发促销</div>
+            <div class="value" id="ovPromo">50% OFF</div>
+            <div class="desc" id="ovPromoDesc">前三月新用户 · 首月 $9.99 · 赠 Token</div>
+        </div>
+    </div>
+
+    <!-- Scheme Tabs (controls tier pricing + panels) -->
+    <div class="tabs" id="schemeTabs">
+        <div class="tab" data-panel="p4" data-scheme="p4"><span class="num">1</span>儿童订阅体系课（卖课）</div>
+        <div class="tab active" data-panel="p1" data-scheme="p1"><span class="num">2</span>儿童app订阅（卖内容）</div>
+        <div class="tab" data-panel="p2" data-scheme="p2"><span class="num">3</span>生图产品额度模式</div>
+        <div class="tab" data-panel="p3" data-scheme="p3"><span class="num">4</span>AI 工具分层模式</div>
+    </div>
+
+    <!-- Regional Tiers (dynamic by scheme) -->
+    <div class="section" id="tierSection">
+        <div class="tier-section-head">
+            <div class="section-title" style="margin-bottom:0;">T0 – T4 区域分层定价</div>
+            <span class="tier-scheme-badge" id="tierSchemeBadge">方案 2 · Plus 会员 PRO</span>
+        </div>
+        <p class="tier-scheme-desc" id="tierSchemeDesc">864 主课全解锁 · 定级测 · 定制计划 · 游戏化 · 公共资源 · 多设备同步</p>
+        <div class="tier-cards" id="tierCards"></div>
+    </div>
+
+    <!-- ========== 方案1 ========== -->
+    <div class="panel active" id="p1">
+        <div class="panel-header">
+            <div>
+                <h2>方案 2 · 儿童app订阅（卖内容）</h2>
+                <ul class="logic">
+                    <li><strong>课程底座 + AI 加购：</strong>864 主课内容订阅（LingoKids 价位）+ 融合方案 3 Token 额度 & 方案 4 AI 分层加购</li>
+                    <li>卖内容：Plus 年包 $249.99 · 含基础 500 Token/月 · Dino 对话 50 次/月</li>
+                    <li>AI 玩法可叠加：AI Pass（Canva 式 40× 额度）· Pro/Pro+/Ultra 分层 · Speak 口语 · BYOM 定制课</li>
+                    <li>VIPKid 1v1 联名捆绑 · 与方案 1 SKU 结构完全一致，定价偏低</li>
+                </ul>
+            </div>
+            <div class="ref-box">
+                <h4>对标参考 · 内容 App + AI 融合</h4>
+                <div class="ref-item"><span class="name">LingoKids Plus</span><span class="price">$71.99/年 · 内容底座</span></div>
+                <div class="ref-item"><span class="name">Canva Pro + AI Pass</span><span class="price">$15 + 附加 · Token 池</span></div>
+                <div class="ref-item"><span class="name">Claude Pro / Cursor Pro</span><span class="price">$20/月 · AI 分层</span></div>
+                <div class="ref-item"><span class="name">Duolingo Max</span><span class="price">Roleplay · 视频对话</span></div>
+                <div class="ref-item"><span class="name">Speak Premium</span><span class="price">$17.99/月 · 口语纠音</span></div>
+                <div class="ref-item"><span class="name">VIPKid 联名</span><span class="price">1v1 捆绑加售</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">SKU 深度设计 · 方案 2（卖内容 · 课程 + AI 融合）</div>
+            <div class="detail-note info"><strong>融合逻辑：</strong>课程 SKU 与方案 1 完全一致 · 底座对标 LingoKids（Plus $249.99/年）· AI 能力融合方案 3 Token 池 + 方案 4 Pro/Pro+/Ultra 分层 · 可按需加购 AI Pass / Speak / BYOM。</div>
+
+            <div class="section-title" style="font-size:14px;margin-top:20px;">SKU 三层架构</div>
+            <div class="fusion-arch">
+                <div class="fa-block"><h4>① 课程层</h4><p>Free → 课次包 → Plus/课包<br>卖「864 主课内容解锁」<br>对标 LingoKids / 斑马</p></div>
+                <div class="fa-arrow">+</div>
+                <div class="fa-block"><h4>② AI 额度层</h4><p>内置 Token 池<br>+ AI Pass 40× 加油<br>对标 Canva / 即梦</p></div>
+                <div class="fa-arrow">+</div>
+                <div class="fa-block"><h4>③ AI 分层加购</h4><p>Pro → Pro+ → Ultra<br>Speak 口语 · BYOM<br>对标 Claude / Cursor</p></div>
+            </div>
+
+            <div class="section-title" style="font-size:14px;">表 A · 课程 SKU（含内置 AI 额度）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>产品权益（含 AI）</th>
+                            <th>课量</th>
+                            <th>标价 / 售价（Monthly）</th>
+                            <th>标价 / 售价（Yearly）</th>
+                            <th>对标</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="sku-group-row"><td colspan="6">A1 · 体验 & 入门 <span class="grp-tag">Freemium</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Free 免费版</div><span class="sku-tag tag-free">Free</span></td>
+                            <td>Level 1 体验 · 每日 3 节上限 · 定级测 · <strong>5 Token/天</strong> · Dino 对话 3 次/天 · 水印学情报告</td>
+                            <td>6 课</td><td>$0</td><td>$0</td><td>LingoKids Basic</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">7-Day Free Trial</div><span class="sku-tag tag-free">试用</span></td>
+                            <td>下一周学习计划 + 报告 · 公共资源 · <strong>50 Token 试用池</strong> · Dino Roleplay 体验 1 次</td>
+                            <td>7 天</td><td>—</td><td>—</td><td>ABCmouse 30天</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">MVP 周课包</div><span class="sku-tag tag-core">入门</span></td>
+                            <td>单周学习计划 · 1 份报告 · <strong>含 20 Token</strong> · 1 次 Dino 对话纠音</td>
+                            <td>7 课</td><td>—</td>
+                            <td><span class="price-strike">$19.98</span> <span class="price-cell">$9.99/周</span></td>
+                            <td>Funexpected</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A2 · 按课售卖 <span class="grp-tag">按课</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">主课单次包</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>1 节 AI 主课 · Dino 外教 · 课后练习 · <strong>含 5 Token</strong></td>
+                            <td>1 课</td><td>—</td>
+                            <td><span class="price-strike">$9.98</span> <span class="price-cell">$4.99</span></td>
+                            <td>斑马 ¥13/课</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">主课课次包 ×8</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>8 节主课 · 2 周计划 · 学情报告 · <strong>含 40 Token</strong></td>
+                            <td>8 课</td><td>—</td>
+                            <td><span class="price-strike">$79.98</span> <span class="price-cell">$39.99</span></td>
+                            <td>洪恩课包</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">主课课次包 ×32</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>32 节主课 · 8 周计划 · 级别测评 · <strong>含 150 Token</strong></td>
+                            <td>32 课</td><td>—</td>
+                            <td><span class="price-strike">$199.98</span> <span class="price-cell">$99.99</span></td>
+                            <td>斑马 240节/年</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A3 · 订阅 & 课包 <span class="grp-tag">核心收入</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Plus 会员（T0）</div><span class="sku-tag tag-premium">864课</span></td>
+                            <td>864 主课全解锁 · 定级 · 游戏化 · <strong>500 Standard Token/月</strong> · Dino 对话 50 次/月 · 去水印周报</td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$79.98</span> <span class="price-cell">$39.99</span></td>
+                            <td><span class="price-strike">$499.98</span> <span class="price-cell">$249.99/年</span></td>
+                            <td>LingoKids Plus</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Plus 会员（T4）</div><span class="sku-tag tag-premium">864课</span></td>
+                            <td>同上 · <strong>400 Token/月</strong> · 下沉定价</td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$63.98</span> <span class="price-cell">$31.99</span></td>
+                            <td><span class="price-strike">$359.98</span> <span class="price-cell">$179.99/年</span></td>
+                            <td>Epic</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">单级别课包（T0）</div><span class="sku-tag tag-premium">144课</span></td>
+                            <td>144 主课/级别 · 大纲 · 测评 · <strong>200 Token/月</strong> · 级别 AI 学情报告</td>
+                            <td>144 课</td>
+                            <td><span class="price-strike">$23.98</span> <span class="price-cell">$11.99</span></td>
+                            <td><span class="price-strike">$179.98</span> <span class="price-cell">$89.99/年</span></td>
+                            <td>洪恩 $69–99</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">单级别课包（T4）</div><span class="sku-tag tag-premium">144课</span></td>
+                            <td>同上 · <strong>150 Token/月</strong></td>
+                            <td>144 课</td>
+                            <td><span class="price-strike">$19.98</span> <span class="price-cell">$9.99</span></td>
+                            <td><span class="price-strike">$139.98</span> <span class="price-cell">$69.99/年</span></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">双级别课包（T0）</div><span class="sku-tag tag-premium">288课</span></td>
+                            <td>288 主课 · 跨级计划 · <strong>400 Token/月</strong></td>
+                            <td>288 课</td><td>—</td>
+                            <td><span class="price-strike">$319.98</span> <span class="price-cell">$159.99/年</span></td>
+                            <td>洪恩多级别</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">全体系课包（T0）</div><span class="sku-tag tag-ultra">864课</span></td>
+                            <td>864 主课 · 6 级大纲 · 毕业测评 · <strong>800 Token/月</strong> · BYOM 2 次/月</td>
+                            <td>864 课</td><td>—</td>
+                            <td><span class="price-strike">$699.98</span> <span class="price-cell">$349.99/年</span></td>
+                            <td>斑马全级别</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Family Plan（6人）</div><span class="sku-tag tag-bundle">家庭</span></td>
+                            <td>6 档案 · 独立进度 · 汇总报告 · <strong>共享 800 Token/月</strong></td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$99.98</span> <span class="price-cell">$49.99</span></td>
+                            <td><span class="price-strike">$478</span> <span class="price-cell">$239/年</span></td>
+                            <td>Duolingo Family</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A4 · 联名 <span class="grp-tag">VIPKid</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名包 · 韩国（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>Plus 864课 + VIPKid 1v1 ×4/月 · 课后 Dino AI 复习 · <strong>含 500 Token/月</strong></td>
+                            <td>864+48</td>
+                            <td><span class="price-strike">$119.98</span> <span class="price-cell">$59.99</span></td>
+                            <td><span class="price-strike">$999.98</span> <span class="price-cell">$499.99/年</span></td>
+                            <td>VIPKid 韩国</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名包 · 沙特（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>同上 · 阿语本地化</td>
+                            <td>864+48</td>
+                            <td><span class="price-strike">$129.98</span> <span class="price-cell">$64.99</span></td>
+                            <td><span class="price-strike">$1,099.98</span> <span class="price-cell">$549.99/年</span></td>
+                            <td>VIPKid 中东</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名旗舰包 · 韩/沙（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>全体系课包 + VIPKid 1v1 ×4/月 · <strong>含 800 Token/月</strong></td>
+                            <td>864+48</td><td>—</td>
+                            <td><span class="price-strike">$2,599.98</span> <span class="price-cell">$1,299.99/年</span></td>
+                            <td>VIPKid 旗舰</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="font-size:14px;margin-top:24px;">表 B · AI 加购 SKU（融合方案 3 & 4 · 需有课程底座）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>AI SKU</th><th>产品权益</th><th>Monthly</th><th>Yearly</th><th>AI 额度 / 玩法</th><th>融合来源</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="sku-group-row"><td colspan="6">B1 · Token 额度 <span class="grp-tag">方案 3 · Canva/即梦</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">AI Pass 加购</div><span class="sku-tag tag-addon">附加</span></td>
+                            <td>在 Plus/课包基础上 · 当前 Token 池 <strong>×40</strong> · 月续</td>
+                            <td><span class="price-strike">$29.98</span> <span class="price-cell">+$14.99</span></td><td>—</td>
+                            <td>×40 额度</td><td>Canva AI Pass</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×100</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>100 Standard Token · 不过期 · 对话/报告/BYOM 共用</td>
+                            <td><span class="price-strike">$7.98</span> <span class="price-cell">$3.99</span></td><td>—</td>
+                            <td>100 Std</td><td>即梦积分包</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×500</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>500 Standard Token · 批量优惠</td>
+                            <td><span class="price-strike">$35.98</span> <span class="price-cell">$17.99</span></td><td>—</td>
+                            <td>500 Std</td><td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">BYOM Ultra ×1</div><span class="sku-tag tag-ultra">Ultra</span></td>
+                            <td>1 次 AI 全定制课生成（多轮迭代）· 消耗 20 Ultra Token</td>
+                            <td><span class="price-strike">$5.98</span> <span class="price-cell">$2.99</span></td><td>—</td>
+                            <td>20 Ultra</td><td>Duolingo 自定义生成</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">BYOM 定制课 Token ×20</div><span class="sku-tag tag-addon">包</span></td>
+                            <td>20 次 BYOM · 年付加赠或单独购买</td>
+                            <td>—</td>
+                            <td><span class="price-strike">$120</span> <span class="price-cell">$60</span></td>
+                            <td>20× Ultra</td><td>—</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">B2 · AI 工具分层 <span class="grp-tag">方案 4 · Claude/Cursor</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Pro AI 加购</div><span class="sku-tag tag-core">$20锚</span></td>
+                            <td>Dino Agent · 实时纠音 · ~300 次 AI 对话/月 · 深度周报</td>
+                            <td><span class="price-strike">$39.98</span> <span class="price-cell">$19.99</span></td>
+                            <td><span class="price-strike">$319.98</span> <span class="price-cell">$159.99</span></td>
+                            <td>~300 次/月</td><td>Claude Pro · Cursor Pro</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Pro+ AI 加购</div><span class="sku-tag tag-premium">$60锚</span></td>
+                            <td>Pro 全部 · <strong>3× AI 额度</strong> · BYOM 5 次/月 · 家长 Agent</td>
+                            <td><span class="price-strike">$99.98</span> <span class="price-cell">$49.99</span></td>
+                            <td><span class="price-strike">$799.98</span> <span class="price-cell">$399.99</span></td>
+                            <td>~900 次/月</td><td>Cursor Pro+</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Ultra AI 加购</div><span class="sku-tag tag-ultra">$200锚</span></td>
+                            <td>Pro+ 全部 · ~6000 次/月 · <strong>无限 BYOM</strong> · AI 视频上课反馈</td>
+                            <td><span class="price-strike">$359.98</span> <span class="price-cell">$179.99</span></td>
+                            <td><span class="price-strike">$2,879</span> <span class="price-cell">$1,439/年</span></td>
+                            <td>~6000 次/月</td><td>Claude Max 20x</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Plus + Pro AI 组合（T0）</div><span class="sku-tag tag-bundle">组合</span></td>
+                            <td>Plus 864课 + Pro AI 一体 · 比分开买省 $10/月</td>
+                            <td><span class="price-strike">$119.98</span> <span class="price-cell">$49.99</span></td>
+                            <td><span class="price-strike">$839.98</span> <span class="price-cell">$419.99/年</span></td>
+                            <td>500 Token + 300 对话</td><td>内容+AI 组合</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">B3 · 场景玩法 <span class="grp-tag">Duolingo Max / Speak</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Speak 口语包</div><span class="sku-tag tag-addon">口语</span></td>
+                            <td>AI 口语专项 · 每日 10 次纠音 · 情景 Roleplay · 错题解析</td>
+                            <td><span class="price-strike">$29.98</span> <span class="price-cell">$14.99</span></td>
+                            <td><span class="price-strike">$167.98</span> <span class="price-cell">$83.99</span></td>
+                            <td>10 次/天</td><td>Speak Premium</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Speak+ 无限口语</div><span class="sku-tag tag-premium">口语</span></td>
+                            <td>无限 AI 纠音 · 无限情景课 · 个性化练习生成</td>
+                            <td><span class="price-strike">$79.98</span> <span class="price-cell">$39.99</span></td>
+                            <td><span class="price-strike">$329.98</span> <span class="price-cell">$164.99</span></td>
+                            <td>无限</td><td>Speak Premium+</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">AI 视频反馈月包</div><span class="sku-tag tag-addon">即梦</span></td>
+                            <td>1080P AI 视频上课反馈 · 发音口型分析 · 15 Ultra Token/条</td>
+                            <td><span class="price-strike">$15.98</span> <span class="price-cell">$7.99</span></td><td>—</td>
+                            <td>~20 条/月</td><td>即梦 1080P 视频</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Dino Roleplay 场景包 ×10</div><span class="sku-tag tag-addon">Max</span></td>
+                            <td>10 个 Duolingo 式场景对话 · 语法/词汇/发音反馈 · 课后报告</td>
+                            <td>—</td>
+                            <td><span class="price-strike">$39.98</span> <span class="price-cell">$19.99</span></td>
+                            <td>10 场景</td><td>Duolingo Roleplay</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="font-size:14px;margin-top:24px;">Dino Token 消耗 & AI 玩法矩阵</div>
+            <div class="ai-play-grid">
+                <div class="ai-play-card"><h5>🎯 课中 AI（含在主课）</h5><ul><li>Dino 外教互动 · 不扣 Token</li><li>Explain My Answer 错题解析 · Free</li><li>Practice Hub 弱项复习 · Plus+</li></ul></div>
+                <div class="ai-play-card"><h5>💬 对话 & 纠音（扣 Token）</h5><ul><li>Dino 对话 5 min · 5 Std Token</li><li>发音纠音 · 3 Std Token</li><li>Roleplay 场景 · 8 Std Token</li></ul></div>
+                <div class="ai-play-card"><h5>✨ 高阶 AI（Premium/Ultra）</h5><ul><li>学情报告 · 10 Premium</li><li>BYOM 定制课 · 20 Ultra</li><li>AI 视频反馈 · 15 Ultra</li></ul></div>
+            </div>
+            <div class="table-wrap">
+                <table class="consumption-table">
+                    <thead><tr><th>AI 功能</th><th>Token 类型</th><th>单次消耗</th><th>方案 3 对标</th><th>方案 4 对标</th></tr></thead>
+                    <tbody>
+                        <tr><td>Dino AI 对话（5 min）</td><td>Standard</td><td class="cost">5 Token</td><td>Canva Magic Write</td><td>Cursor Pro 1 次请求</td></tr>
+                        <tr><td>发音纠音 + 反馈</td><td>Standard</td><td class="cost">3 Token</td><td>—</td><td>Speak Premium 1 次</td></tr>
+                        <tr><td>Dino Roleplay 场景</td><td>Standard</td><td class="cost">8 Token</td><td>—</td><td>Duolingo Max Roleplay</td></tr>
+                        <tr><td>学情报告生成</td><td>Premium</td><td class="cost">10 Token</td><td>Canva Premium AI 1 次</td><td>—</td></tr>
+                        <tr><td>AI 定制课 BYOM</td><td>Ultra</td><td class="cost">20 Token</td><td>即梦 15s 视频</td><td>Duolingo 自定义生成</td></tr>
+                        <tr><td>AI 视频上课反馈 1080P</td><td>Ultra</td><td class="cost">15 Token</td><td>即梦 1080P 5s</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">转化路径 · 课程 + AI 加购</div>
+            <div class="chart-container" style="text-align:center;padding:32px;">
+                <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-size:13px;">
+                    <div style="background:#ecfdf5;border:2px solid #10b981;border-radius:12px;padding:14px 20px;font-weight:600;">Free / Trial<br><span style="font-size:11px;font-weight:400;color:#6b7280;">5 Token/天</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#eff6ff;border:2px solid #3b82f6;border-radius:12px;padding:14px 20px;font-weight:600;">Plus 年包 $249.99<br><span style="font-size:11px;font-weight:400;color:#6b7280;">500 Token/月</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;padding:14px 20px;font-weight:600;">AI Pass / Pro AI<br><span style="font-size:11px;font-weight:400;color:#6b7280;">+$14.99 / $19.99</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fdf4ff;border:2px solid #8b5cf6;border-radius:12px;padding:14px 20px;font-weight:600;">Speak / BYOM<br><span style="font-size:11px;font-weight:400;color:#6b7280;">场景玩法加购</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fff7ed;border:2px solid #f97316;border-radius:12px;padding:14px 20px;font-weight:600;">VIPKid 联名<br><span style="font-size:11px;font-weight:400;color:#6b7280;">+ 1v1 真人</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">年付价格对比 · Dino vs 竞品（T0 市场）</div>
+            <div class="chart-container">
+                <div class="chart-row"><div class="chart-label">DuoABC</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:5%">$0</div></div></div>
+                <div class="chart-row"><div class="chart-label">ABCmouse</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:22%">$45</div></div></div>
+                <div class="chart-row"><div class="chart-label">LingoKids</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:35%">$71.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Epic</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:41%">$84.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Buddy AI</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:24%">$49.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Dino 首发价 T0</div><div class="chart-bar-wrap"><div class="chart-bar dino-launch" style="width:50%">$124.99*</div></div></div>
+                <div class="chart-row"><div class="chart-label">Dino 区域价 T0</div><div class="chart-bar-wrap"><div class="chart-bar dino" style="width:100%">$249.99</div></div></div>
+                <p style="font-size:11px;color:var(--muted);margin-top:12px;">* 首发 50% OFF 后 T0 年付 $124.99（标价 $249.99）。Dino 定位 AI 互动课，价格高于纯内容 App 属预期区间。</p>
+            </div>
+        </div>
+
+        <div class="section comp-section">
+            <div class="section-title">对标竞品 SKU 权益明细 · 儿童 App 垂类</div>
+            <div class="comp-legend">
+                <span><i style="background:#10b981"></i> 免费档</span>
+                <span><i style="background:#3b82f6"></i> 基础/Plus 档</span>
+                <span><i style="background:#8b5cf6"></i> 高级/VIP 档</span>
+            </div>
+            <div class="table-wrap">
+                <table class="comp-table">
+                    <thead>
+                        <tr><th>产品</th><th>SKU / 档位</th><th>价格</th><th>具体权益</th><th>限制 / 差异</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tier-free">
+                            <td rowspan="2" class="tier-name">LingoKids</td>
+                            <td>Basic 免费版</td><td>$0</td>
+                            <td class="benefits-cell">3000+ 教学游戏 · 播客 · 动画音视频 · 1 儿童档案 · 无广告</td>
+                            <td>每日限 3 节活动 · 无法离线 · 无进阶报告</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>Plus 订阅</td><td>$14.99/月 · $71.99/年</td>
+                            <td class="benefits-cell">解锁全部课程内容 · 最多 4 儿童档案 · 离线模式 · 进阶进度报告 · 多设备同步</td>
+                            <td>7 天免费试用 · 线下单词卡片/周边另售</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td rowspan="2" class="tier-name">ABCmouse</td>
+                            <td>Basic Access</td><td>$0</td>
+                            <td class="benefits-cell">部分系统课 · 部分学习游戏 · 有限每日活动</td>
+                            <td>每日活动上限 · 无法添加多档案 · 无离线</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>VIP Premium</td><td>$14.99/月 · $45/年</td>
+                            <td class="benefits-cell">10000+ 活动全解锁 · 最多 3 儿童主页 · 个性化学习路径 · 离线内容 · 屏幕用时管理 · 进度追踪</td>
+                            <td>Web 注册 30 天试用 · 年付 $45 续费可能 $59.99</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td class="tier-name">DuoABC</td>
+                            <td>完全免费</td><td>$0</td>
+                            <td class="benefits-cell">系统读写课 · 触屏互动写字教学 · 无广告 · 无内购</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">Epic</td>
+                            <td>Epic Basic</td><td>$0</td>
+                            <td class="benefits-cell">有限图书/视频访问 · 个人书架 · 基础奖励机制</td>
+                            <td>每日阅读时间限制 · 内容库受限</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>Epic Unlimited</td><td>$13.99/月 · $84.99/年</td>
+                            <td class="benefits-cell">4000+ 图书/视频/漫画/有声书 · 养宠开宝箱互动 · 无限阅读 · 自定义播放列表</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">HOMER</td>
+                            <td>试用</td><td>7 天免费</td>
+                            <td class="benefits-cell">系统课全功能体验</td>
+                            <td>7 天后需订阅</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>订阅</td><td>$12.99/月 · $79.99/年</td>
+                            <td class="benefits-cell">阅读+数学+创造力系统课 · 个性化学习路径 · 进度报告</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">VOOKS</td>
+                            <td>基础</td><td>—</td>
+                            <td class="benefits-cell">故事绘本音视频 · 有限播放</td>
+                            <td>无只听模式 · 无自定义列表</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>付费版</td><td>$9.99/月 · $69.99/年</td>
+                            <td class="benefits-cell">只听模式 · 睡前读物 · 自定义个人播放列表 · 全库解锁</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="3" class="tier-name">Buddy AI</td>
+                            <td>月付</td><td>$12.49/月</td>
+                            <td class="benefits-cell">AI 语音陪练 · 音频视频互动系统课</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>半年付</td><td>$29.99/6mo</td>
+                            <td class="benefits-cell">同上 · 更长周期优惠</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>年付</td><td>$49.99/年</td>
+                            <td class="benefits-cell">同上 · 最低月均成本</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">Epop 韩国</td>
+                            <td>订阅</td><td>$14.99/月 · $99.99/年</td>
+                            <td class="benefits-cell">韩国市场少儿英语 · 本地化内容</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td class="tier-name">Khan Kids</td>
+                            <td>完全免费</td><td>$0</td>
+                            <td class="benefits-cell">教学课 · 非盈利 · 无广告</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">伴鱼绘本</td>
+                            <td>VIP 连续包月</td><td>¥40/月</td>
+                            <td class="benefits-cell">VIP 绘本阅读 · 智能纠音 · 贝壳翻倍 · 全部绘本讲解</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>SVIP / 终身 VIP</td><td>¥40/月 · ¥598 终身</td>
+                            <td class="benefits-cell">SVIP 绘本全库 · 不限次纠音 · 更高内容权限</td>
+                            <td>连续包年约 ¥428</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="3" class="tier-name">洪恩英语</td>
+                            <td>包月畅享会员</td><td>¥28/月</td>
+                            <td class="benefits-cell">21 类主题课 · 300 单词 · 100 句型 · 100 儿歌 · 50 对话 · 50 本分级阅读</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>包年畅享会员</td><td>¥268/年</td>
+                            <td class="benefits-cell">同上 · 年付优惠</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>主题系统课永久包</td><td>¥588 一次性</td>
+                            <td class="benefits-cell">K1–K3 全级别永久 · 字母+主题系统课</td>
+                            <td>启蒙+小学畅学永久包 ¥1288</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">Funexpected</td>
+                            <td>7 天试用</td><td>免费</td>
+                            <td class="benefits-cell">数学系统课全功能体验</td>
+                            <td>7 天后需订阅</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>订阅</td><td>$8.99/月</td>
+                            <td class="benefits-cell">数学系统课 · 游戏化学习 · 进度追踪</td>
+                            <td>无年付公开价</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">叽里呱啦</td>
+                            <td>免费 + 呱豆</td><td>App 内购</td>
+                            <td class="benefits-cell">2–8 岁英语+思维启蒙 · 动画+外教实景 · 自然拼读 · 全年伴学班</td>
+                            <td>呱豆 ¥88–588/包兑换课程</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>全年伴学班等</td><td>专项课包定价</td>
+                            <td class="benefits-cell">系统课完整路径 · 哈佛专家教研 · 新课标体系</td>
+                            <td>按课程包单独售卖</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">斑马 AI 英语</td>
+                            <td>系统课</td><td>¥13/课 · 240 节/年</td>
+                            <td class="benefits-cell">AI 互动系统课 · 定级测试 · 定制学习计划 · 240 节/年</td>
+                            <td>≈¥3120/年 · 按课售卖</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">斑马 AI 口语</td>
+                            <td>L3 AI 老师</td><td>¥37.5/课</td>
+                            <td class="benefits-cell">96 节课 · 48 周 · 每周 2 次 · 7–9 岁 AI 口语专项</td>
+                            <td>≈¥3600/级别</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 方案2 ========== -->
+    <div class="panel" id="p2">
+        <div class="panel-header s2">
+            <div>
+                <h2>方案 3 · 生图产品额度 + 订阅模式</h2>
+                <ul class="logic">
+                    <li>对标 Canva / 即梦的「基础订阅 + AI 额度 + 超额加购」复合收费体系</li>
+                    <li>核心内容（864 主课）含在订阅内，AI 功能（Dino 对话、定制课生成、学情报告）消耗 Token</li>
+                    <li>免费用户每日赠送基础 Token，付费会员获得月度额度池</li>
+                    <li>高阶 AI 功能（BYOM 定制课、AI 视频反馈）走 Premium / Ultra 额度</li>
+                </ul>
+            </div>
+            <div class="ref-box">
+                <h4>对标参考 · 生图 / AI 创作产品</h4>
+                <div class="ref-item"><span class="name">Canva Free</span><span class="price">200 次 Standard AI</span></div>
+                <div class="ref-item"><span class="name">Canva Pro</span><span class="price">$15/月 · 2000 次</span></div>
+                <div class="ref-item"><span class="name">Canva AI Pass</span><span class="price">附加订阅 · 40x 额度</span></div>
+                <div class="ref-item"><span class="name">即梦 基础会员</span><span class="price">¥69/月 · 725 积分</span></div>
+                <div class="ref-item"><span class="name">即梦 标准会员</span><span class="price">¥119/月 · 2210 积分</span></div>
+                <div class="ref-item"><span class="name">即梦 高级会员</span><span class="price">¥649/月 · 6160 积分</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">SKU 定价表 · 方案 2（Token 额度体系）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>产品权益</th>
+                            <th>Monthly</th>
+                            <th>Yearly</th>
+                            <th>月度 Token 额度</th>
+                            <th>对标产品</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="sku-name">Free 免费版</div><span class="sku-tag tag-free">Freemium</span></td>
+                            <td>864 主课中 Level 1 部分开放 · 每日 5 Token（AI 对话/纠音）· 带水印学习报告</td>
+                            <td>$0</td><td>$0</td>
+                            <td>5 Token/天（≈150/月）</td>
+                            <td>Canva Free · 即梦签到积分</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Basic 基础会员</div><span class="sku-tag tag-core">核心</span></td>
+                            <td>全部 864 主课 · 游戏化 · 公共资源 · 500 Token/月 · 去水印报告</td>
+                            <td class="price-cell">$14.99</td>
+                            <td class="price-cell">$99/年</td>
+                            <td>500 Standard Token</td>
+                            <td>Canva Pro $15 · 即梦基础 ¥69</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Standard 标准会员（T0 区域）</div><span class="sku-tag tag-premium">区域</span></td>
+                            <td>Basic 全部 + 2000 Token/月 · AI 定制课 · 1080P 视频反馈</td>
+                            <td class="price-cell">$34.99</td>
+                            <td class="price-cell">$279.99</td>
+                            <td>2000 Standard + 200 Premium</td>
+                            <td>即梦标准 ¥119</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Standard 标准会员（T4 区域）</div><span class="sku-tag tag-premium">区域</span></td>
+                            <td>同上 · 下沉市场定价</td>
+                            <td class="price-cell">$24.99</td>
+                            <td class="price-cell">$169.99</td>
+                            <td>2000 Standard + 200 Premium</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Premium 高级会员（T0）</div><span class="sku-tag tag-ultra">高阶</span></td>
+                            <td>Standard 全部 + 4000 Token/月 · BYOM 无限 · 4K 报告</td>
+                            <td class="price-cell">$59.99</td>
+                            <td class="price-cell">$479.99</td>
+                            <td>4000 + 400 Premium + 40 Ultra</td>
+                            <td>即梦高级</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">AI Pass 加购包</div><span class="sku-tag tag-addon">附加</span></td>
+                            <td>在 Basic/Standard 基础上叠加 40x AI 额度 · 月续</td>
+                            <td class="price-cell">+$19.99</td><td>—</td>
+                            <td>×40 当前档位额度</td>
+                            <td>Canva AI Pass</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×100</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>100 Standard Token · 不过期 · 可用于 AI 对话/定制课/报告</td>
+                            <td class="price-cell">$4.99</td><td>—</td>
+                            <td>100 Token</td>
+                            <td>即梦积分包 · Canva 超额</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×500</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>500 Standard Token · 批量优惠</td>
+                            <td class="price-cell">$19.99</td><td>—</td>
+                            <td>500 Token</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">BYOM Ultra Token ×1</div><span class="sku-tag tag-addon">Ultra</span></td>
+                            <td>1 次 AI 全定制课程生成（含多轮迭代）· 消耗 20 Ultra Token</td>
+                            <td class="price-cell">$2.99</td><td>—</td>
+                            <td>20 Ultra Token</td>
+                            <td>Duolingo Max 自定义生成</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Token 消耗参考表</div>
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>功能</th><th>Token 类型</th><th>单次消耗</th><th>对标</th></tr></thead>
+                    <tbody>
+                        <tr><td>Dino AI 对话（5 分钟）</td><td>Standard</td><td>5 Token</td><td>Canva Magic Write 1 次</td></tr>
+                        <tr><td>发音纠音 + 反馈</td><td>Standard</td><td>3 Token</td><td>—</td></tr>
+                        <tr><td>学情报告生成</td><td>Premium</td><td>10 Token</td><td>Canva Premium AI 1 次</td></tr>
+                        <tr><td>AI 定制课（BYOM）</td><td>Ultra</td><td>20 Token</td><td>即梦 15s 视频 ~45–210 积分</td></tr>
+                        <tr><td>AI 视频上课反馈</td><td>Ultra</td><td>15 Token</td><td>即梦视频生成</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section comp-section">
+            <div class="section-title">对标竞品 SKU 权益明细 · 生图 / AI 创作产品</div>
+            <div class="table-wrap">
+                <table class="comp-table">
+                    <thead>
+                        <tr><th>产品</th><th>SKU / 档位</th><th>价格</th><th>具体权益</th><th>AI 额度 / 限制</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tier-free">
+                            <td rowspan="4" class="tier-name">Canva</td>
+                            <td>Free</td><td>$0</td>
+                            <td class="benefits-cell">基础设计模板 · Magic Write · Text-to-Image · 基础导出</td>
+                            <td>200 次 Standard AI 或 20 次 Premium AI · 无 Ultra AI</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>Pro</td><td>$15/月 · $120/年</td>
+                            <td class="benefits-cell">全模板库 · 品牌套件 · 背景移除 · Magic Studio 全功能 · 100GB 存储</td>
+                            <td>2000 Standard · 200 Premium · 20 Ultra AI/月</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>Business</td><td>$20/月</td>
+                            <td class="benefits-cell">Pro 全部 + 团队协作 · 品牌管控 · 高级 AI 图像/视频生成 · 数据可视化</td>
+                            <td>4000 Standard · 400 Premium · 40 Ultra AI/月</td>
+                        </tr>
+                        <tr class="tier-addon">
+                            <td>AI Pass 附加</td><td>附加月费</td>
+                            <td class="benefits-cell">在 Pro/Business 上叠加 · 解锁 Ultra/Premium/Standard 更高用量</td>
+                            <td>Pro 的 40× 或 Business 的 20× AI 额度</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td rowspan="2" class="tier-name">即梦 AI</td>
+                            <td>免费用户</td><td>$0</td>
+                            <td class="benefits-cell">AI 图片/视频生成 · 探索社区 · 做同款 · 分享作品</td>
+                            <td>每日签到 60–100 积分 · 720P · 带水印 · 需排队</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>基础会员</td><td>¥69/月 · ¥659/年</td>
+                            <td class="benefits-cell">每月会员积分 · 延长视频生成 · 去水印 · 1080P 输出 · 优先渲染</td>
+                            <td>725 积分/月（2026 调价后）</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">即梦 AI</td>
+                            <td>标准会员</td><td>¥119/月</td>
+                            <td class="benefits-cell">基础全部 + 视频对口型 · 商用授权 · 更高积分池</td>
+                            <td>2210 积分/月</td>
+                        </tr>
+                        <tr class="tier-ultra">
+                            <td class="tier-name">即梦 AI</td>
+                            <td>高级会员</td><td>¥649/月 · ¥5199/年</td>
+                            <td class="benefits-cell">4K 导出 · Seedance 2.0 折扣 · VIP 专属通道 · 无限生成</td>
+                            <td>6160 积分/月 · VIP 通道额外消耗</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="margin-top:24px;">Canva · 即梦 AI 功能消耗规则明细</div>
+            <div class="detail-note info">Canva 采用 Standard / Premium / Ultra 三档共享额度池；Magic Write 等 AI Design 工具<strong>不计入</strong>月度额度（公平使用限制另计）。即梦采用积分制，消耗随模型/时长/分辨率动态变化。</div>
+            <div class="table-wrap" style="margin-bottom:20px;">
+                <table class="comp-table consumption-table">
+                    <thead><tr><th>Canva 功能</th><th>AI 档位</th><th>消耗规则</th><th>Free</th><th>Pro</th><th>Business</th></tr></thead>
+                    <tbody>
+                        <tr><td>Magic Write 文本生成</td><td>不计入额度</td><td>续写/缩短/改写/换语气 · 公平使用限制</td><td>✓</td><td>✓</td><td>✓</td></tr>
+                        <tr><td>Canva AI 文生设计</td><td>Premium</td><td>从共享池扣除 · 每次 1 use</td><td class="cost">20 次/月</td><td class="cost">200 次/月</td><td class="cost">400 次/月</td></tr>
+                        <tr><td>Canva AI 文生图</td><td>Premium</td><td>Create image with Canva AI</td><td class="cost">共享 20 Premium</td><td class="cost">共享 200 Premium</td><td class="cost">共享 400 Premium</td></tr>
+                        <tr><td>Magic Layers / 元素生成</td><td>Premium</td><td>形状/3D/图表/表单等</td><td class="cost">—</td><td class="cost">计入 Premium 池</td><td class="cost">计入 Premium 池</td></tr>
+                        <tr><td>Canva Code 交互体验</td><td>Premium</td><td>Build interactive experiences</td><td class="cost">—</td><td class="cost">高消耗 Premium</td><td class="cost">高消耗 Premium</td></tr>
+                        <tr><td>Canva AI 2.0 多页对话迭代</td><td>Ultra</td><td>最高消耗 · 多轮设计生成</td><td class="cost">—</td><td class="cost">20 Ultra/月</td><td class="cost">40 Ultra/月</td></tr>
+                        <tr><td>音乐/音效生成</td><td>Premium</td><td>Music & Sound Effect Generator</td><td class="cost">—</td><td class="cost">计入 Premium 池</td><td class="cost">计入 Premium 池</td></tr>
+                        <tr><td>AI Pass 附加包</td><td>全档 ×40/×20</td><td>Pro/Teams 40× 额度 · Business 20× 额度</td><td>—</td><td>附加月费</td><td>附加月费</td></tr>
+                        <tr><td>超额后行为</td><td>—</td><td>短间隔等待后可继续使用 · 或升级/加购 AI Pass</td><td>升级 Pro</td><td>升级或 AI Pass</td><td>AI Pass</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-wrap">
+                <table class="comp-table consumption-table">
+                    <thead><tr><th>即梦 AI 功能</th><th>单次消耗（积分）</th><th>免费用户</th><th>基础会员</th><th>标准会员</th><th>高级会员</th></tr></thead>
+                    <tbody>
+                        <tr><td>文生图（高清）</td><td class="cost">8–16 积分/张</td><td>每日 60 积分</td><td>725/月</td><td>2210/月</td><td>6160/月</td></tr>
+                        <tr><td>视频 3.0 · 5s · 720P</td><td class="cost">10 积分/条</td><td>≈6 条/天</td><td>≈72 条/月</td><td>≈221 条/月</td><td>≈616 条/月</td></tr>
+                        <tr><td>视频 3.0 · 5s · 1080P</td><td class="cost">20 积分/条</td><td>≈3 条/天</td><td>≈36 条/月</td><td>≈110 条/月</td><td>≈308 条/月</td></tr>
+                        <tr><td>视频 3.0 Pro · 5s</td><td class="cost">50 积分/条</td><td>—</td><td>≈14 条/月</td><td>≈44 条/月</td><td>≈123 条/月</td></tr>
+                        <tr><td>视频 10s</td><td class="cost">消耗 ×2</td><td>—</td><td>时长翻倍扣积分</td><td>同上</td><td>同上</td></tr>
+                        <tr><td>Seedance 2.0 VIP 通道</td><td class="cost">210 积分/15s</td><td>—</td><td>—</td><td>—</td><td>4K · 折扣 · 优先队列</td></tr>
+                        <tr><td>数字人视频</td><td class="cost">随音频长度</td><td>—</td><td>—</td><td>✓ 对口型</td><td>✓ 全功能</td></tr>
+                        <tr><td>积分消耗顺序</td><td>—</td><td colspan="4">每日免费积分 → 订阅积分（30 天有效）→ 充值积分（2 年有效）</td></tr>
+                        <tr><td>去水印 / 1080P / 商用</td><td>—</td><td class="cost">× 水印 · 720P</td><td>✓</td><td>✓ 商用授权</td><td>✓ 4K 导出</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 方案3 ========== -->
+    <div class="panel" id="p3">
+        <div class="panel-header s3">
+            <div>
+                <h2>方案 4 · Claude / Cursor AI 工具分层模式</h2>
+                <ul class="logic">
+                    <li>对标 Claude Pro/Max、Cursor Pro/Pro+/Ultra、Gemini Pro/Ultra 的清晰价格锚点</li>
+                    <li>三档价格锚：Free → $20/月（Pro）→ $60/月（Pro+）→ $200/月（Ultra）</li>
+                    <li>AI 对话/Agent 功能按档位限制次数或算力，核心课程内容全档位开放</li>
+                    <li>Team 版面向机构/学校，按席位计费</li>
+                </ul>
+            </div>
+            <div class="ref-box">
+                <h4>对标参考 · AI 工具订阅</h4>
+                <div class="ref-item"><span class="name">Claude Pro</span><span class="price">$20/月</span></div>
+                <div class="ref-item"><span class="name">Claude Max 5x</span><span class="price">$100/月</span></div>
+                <div class="ref-item"><span class="name">Claude Max 20x</span><span class="price">$200/月</span></div>
+                <div class="ref-item"><span class="name">Cursor Pro</span><span class="price">$20/月</span></div>
+                <div class="ref-item"><span class="name">Cursor Pro+</span><span class="price">$60/月</span></div>
+                <div class="ref-item"><span class="name">Gemini AI Pro</span><span class="price">$19.99/月</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">SKU 定价表 · 方案 3（AI 工具分层）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>产品权益</th>
+                            <th>Monthly</th>
+                            <th>Yearly</th>
+                            <th>AI 使用额度</th>
+                            <th>对标产品</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><div class="sku-name">Hobby 免费版</div><span class="sku-tag tag-free">Free</span></td>
+                            <td>Level 1 体验 · Dino 对话 5 次/天 · 基础学习报告 · 公共资源</td>
+                            <td>$0</td><td>$0</td>
+                            <td>5 次 AI 对话/天</td>
+                            <td>Claude Free · Cursor Hobby</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Pro 专业版（T0 区域）</div><span class="sku-tag tag-core">区域</span></td>
+                            <td>864 主课 · Dino Agent · ~300 次 AI 对话/月 · 周报</td>
+                            <td class="price-cell">$24.99</td>
+                            <td class="price-cell">$199.99</td>
+                            <td>~300 次/月</td>
+                            <td>Claude Pro · Cursor Pro</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Pro 专业版（T4 区域）</div><span class="sku-tag tag-core">区域</span></td>
+                            <td>同上 · 下沉市场</td>
+                            <td class="price-cell">$17.99</td>
+                            <td class="price-cell">$129.99</td>
+                            <td>~300 次/月</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Pro+ 进阶版（T0）</div><span class="sku-tag tag-premium">$60 锚点</span></td>
+                            <td>Pro 全部 + 3× AI 额度 · BYOM 10 次/月 · 家长 Agent</td>
+                            <td class="price-cell">$69.99</td>
+                            <td class="price-cell">$559.99</td>
+                            <td>~900 次/月</td>
+                            <td>Cursor Pro+</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Ultra 旗舰版（T0）</div><span class="sku-tag tag-premium">$200 锚点</span></td>
+                            <td>Pro+ 全部 + 20× AI · 无限 BYOM · 1v1 AI 复盘</td>
+                            <td class="price-cell">$219.99</td>
+                            <td class="price-cell">$1799.99</td>
+                            <td>~6000 次/月</td>
+                            <td>Claude Max 20x</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Team 团队版</div><span class="sku-tag tag-bundle">B2B</span></td>
+                            <td>Pro 权益 × N 席位 · 管理后台 · 学情汇总 · SSO · 隐私模式</td>
+                            <td class="price-cell">$25/席位</td>
+                            <td class="price-cell">$240/席位/年</td>
+                            <td>Pro 额度/席位</td>
+                            <td>Claude Team · Cursor Teams $40</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Enterprise 企业版</div><span class="sku-tag tag-bundle">定制</span></td>
+                            <td>Team 全部 + 定制内容 · API 接入 · 合规 · 专属客服</td>
+                            <td>Contact Sales</td><td>—</td>
+                            <td>定制</td>
+                            <td>Claude Enterprise</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Speak 模式 · Premium</div><span class="sku-tag tag-addon">口语</span></td>
+                            <td>AI 口语专项 · 每日 10 次对话纠正 · 情景模拟</td>
+                            <td class="price-cell">$17.99</td>
+                            <td class="price-cell">$83.99/年</td>
+                            <td>10 次/天纠音</td>
+                            <td>Speak Premium</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Speak 模式 · Premium+</div><span class="sku-tag tag-addon">口语</span></td>
+                            <td>无限 AI 对话纠正 · 无限个性化课程 · 专属练习生成</td>
+                            <td class="price-cell">$39.99</td>
+                            <td class="price-cell">$164.99/年</td>
+                            <td>无限</td>
+                            <td>Speak Premium Plus</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">AI 工具价格锚点对照</div>
+            <div class="chart-container">
+                <div class="chart-row"><div class="chart-label">Gemini Pro</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:10%">$19.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Claude Pro</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:10%">$20</div></div></div>
+                <div class="chart-row"><div class="chart-label">Cursor Pro</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:10%">$20</div></div></div>
+                <div class="chart-row"><div class="chart-label">Dino Pro</div><div class="chart-bar-wrap"><div class="chart-bar dino-launch" style="width:10%">$19.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Cursor Pro+</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:30%">$60</div></div></div>
+                <div class="chart-row"><div class="chart-label">Dino Pro+</div><div class="chart-bar-wrap"><div class="chart-bar dino" style="width:30%">$59.99</div></div></div>
+                <div class="chart-row"><div class="chart-label">Claude Max 20x</div><div class="chart-bar-wrap"><div class="chart-bar competitor" style="width:100%">$200</div></div></div>
+                <div class="chart-row"><div class="chart-label">Dino Ultra</div><div class="chart-bar-wrap"><div class="chart-bar dino" style="width:100%">$199.99</div></div></div>
+            </div>
+        </div>
+
+        <div class="section comp-section">
+            <div class="section-title">对标竞品 SKU 权益明细 · AI 工具 / 语言学习</div>
+            <div class="table-wrap">
+                <table class="comp-table">
+                    <thead>
+                        <tr><th>产品</th><th>SKU / 档位</th><th>价格</th><th>具体权益</th><th>使用限制</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tier-free">
+                            <td class="tier-name">Claude</td>
+                            <td>Free</td><td>$0</td>
+                            <td class="benefits-cell">基础 Claude 对话 · 网页/App 访问</td>
+                            <td>轻量使用 · 低优先级 · 无 Projects</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Claude</td>
+                            <td>Pro</td><td>$20/月</td>
+                            <td class="benefits-cell">全功能访问 · 更高限额 · Projects · Artifacts · 优先响应</td>
+                            <td>标准 Pro 用量池</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">Claude</td>
+                            <td>Max 5x / 20x</td><td>$100 / $200/月</td>
+                            <td class="benefits-cell">Pro 全部 · 5×/20× 使用量 · 并行工作流 · 200K 上下文</td>
+                            <td>重度专业用户</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td class="tier-name">Cursor</td>
+                            <td>Hobby</td><td>$0</td>
+                            <td class="benefits-cell">IDE 基础功能 · 有限 AI 补全 · 2000 次补全 + 50 次慢速请求</td>
+                            <td>评估/轻度使用</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Cursor</td>
+                            <td>Pro</td><td>$20/月 · $192/年</td>
+                            <td class="benefits-cell">无限 Tab 补全 · $20 信用池 · GPT-4o/Claude/Gemini 多模型 · Cloud Agent</td>
+                            <td>~225 Claude / 500 GPT-4o 请求/月</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">Cursor</td>
+                            <td>Pro+ / Ultra</td><td>$60 / $200/月</td>
+                            <td class="benefits-cell">Pro 全部 · 3×/20× 使用倍数 · 更高 Agent 额度</td>
+                            <td>重度 Claude 用户常需 Pro+</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Gemini</td>
+                            <td>Google AI Pro</td><td>$19.99/月</td>
+                            <td class="benefits-cell">Gemini Advanced · Gmail/Docs/Drive 集成 · NotebookLM · 2TB 存储</td>
+                            <td>标准 Pro 限额</td>
+                        </tr>
+                        <tr class="tier-ultra">
+                            <td class="tier-name">Gemini</td>
+                            <td>Google AI Ultra</td><td>$99.99–$199.99/月</td>
+                            <td class="benefits-cell">最高 Gemini 限额 · 30TB 存储 · 优先新功能 · Deep Research</td>
+                            <td>5×/20× 档位</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Duolingo Super</td>
+                            <td>Super</td><td>$9.99/月 · $83.99/年</td>
+                            <td class="benefits-cell">无广告 · 无限红心（错误不阻断）· 离线学习 · Practice Hub 个性化复习 · 详细进度报告 · 无限跳级 · 错题为复习题</td>
+                            <td>无 AI 功能 · 3 个月 $83.99</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td rowspan="4" class="tier-name">Duolingo Max</td>
+                            <td>Max 订阅</td><td>$12.99/月 · $95.99/年</td>
+                            <td class="benefits-cell">Super 全部 + Video Call（Lily AI 视频通话）· Roleplay（场景角色扮演）· 实时 AI 对话（GPT-4o）</td>
+                            <td>7 天试用 · 188 国 · iOS/Android</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>↳ Video Call</td><td>含在 Max</td>
+                            <td class="benefits-cell">与 Lily 实时口语对话 · 自适应难度 · 通话后 transcript 复盘 · Tap-to-speak 控节奏 · 路径节点+Practice Hub 入口</td>
+                            <td>单次 1–3 min（初级）至 6 min（高级）· 不限次数拨打 · ES/FR/DE/IT/PT/JP/KO</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>↳ Roleplay</td><td>含在 Max</td>
+                            <td class="benefits-cell">场景对话（咖啡馆/酒店/购物/徒步等）· Side Quest 路径节点 · 完成后 XP+反馈 · GPT-4 驱动</td>
+                            <td>按场景节点解锁 · 单次短对话 · 非完全开放域</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>↳ Explain My Answer</td><td>2026.01 起全员免费</td>
+                            <td class="benefits-cell">练习后 AI 语法/词汇解释 · 聊天式追问 · 记忆技巧</td>
+                            <td>原 Max 独占 · 现已下放 Free/Super</td>
+                        </tr>
+                        <tr class="tier-bundle">
+                            <td rowspan="2" class="tier-name">Duolingo Family</td>
+                            <td>Family Plan</td><td>$119/年（3mo）</td>
+                            <td class="benefits-cell">6 人账号 · Super 权益 · 无广告 · 离线 · 无限红心 · 个性化复习 · 跳级 · 进度报告</td>
+                            <td>≈$20/人/年 · 无 AI</td>
+                        </tr>
+                        <tr class="tier-bundle">
+                            <td>Family Max Plan</td><td>$239/年（3mo）</td>
+                            <td class="benefits-cell">6 人账号 · Max 全部 AI 功能 · Video Call · Roleplay</td>
+                            <td>≈$40/人/年 · 含 AI</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Speak Premium</td>
+                            <td>Premium</td><td>$17.99/月 · $83.99/年</td>
+                            <td class="benefits-cell">系统课 · 快速练习 · 智慧复习 · AI 自定义/预设话题对话 · AI 即时问答 · 发音点读</td>
+                            <td>每日 10 次 AI 对话纠正</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">Speak Premium+</td>
+                            <td>Premium+</td><td>$39.99/月 · $164.99/年</td>
+                            <td class="benefits-cell">Premium 全部 · AI 对话纠错不限次数 · 个性化课程不限 · 无限专属练习生成</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Busuu</td>
+                            <td>VIP / Plus</td><td>$12.49 / $14.9/月</td>
+                            <td class="benefits-cell">VIP：语法回顾 · 无广告 · Plus：AI 对话口语 · AI 纠音 · 私人定制内容</td>
+                            <td>7 天免费 · 年付 $72.99/$87.90</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">LingQ</td>
+                            <td>Premium / Premium+</td><td>$14.99 / $29.99/月</td>
+                            <td class="benefits-cell">Premium：无限保存单词 · 里程碑 · 导入影音；Plus：AI 简化课程 · 音视频转课程</td>
+                            <td>年付 $119.99/$269.99</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Pingo AI</td>
+                            <td>订阅</td><td>$19.98/月 · $119.98/年</td>
+                            <td class="benefits-cell">主题路径 AI 对话 · 情景模拟 · 单词本 · 学习报告 · 进度追踪</td>
+                            <td>新用户 2 天免费试用</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Praktika</td>
+                            <td>订阅</td><td>$14.99/月 · $99/年 · 终身 $249</td>
+                            <td class="benefits-cell">AI 虚拟外教 · 沉浸式口语 · 多场景对话 · 发音反馈</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Learna AI</td>
+                            <td>月/季/年</td><td>$9.99/月 · $39.99/季 · $39.99/年</td>
+                            <td class="benefits-cell">AI 模拟对话口语练习 · 轻量入门</td>
+                            <td>年付与季付同价策略</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="2" class="tier-name">Rosetta Stone</td>
+                            <td>3 天试用</td><td>免费</td>
+                            <td class="benefits-cell">各板块首课免费 · 25 种语言 · 语音跟读 · 图片匹配 · 聊天对话</td>
+                            <td>3 天后需订阅</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>订阅</td><td>$19.99/月 · $159/年</td>
+                            <td class="benefits-cell">全系统课 · 短语集 · 故事 · 语音伙伴 · 离线音频 · 专业度高/难度大</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="3" class="tier-name">Babbel</td>
+                            <td>月付</td><td>$17.95/月</td>
+                            <td class="benefits-cell">小语种 · 听说读写 · 语音识别 · 自定义学习计划</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>3/6/12 个月</td><td>$15.25 / $13.45 / 折合</td>
+                            <td class="benefits-cell">同上 · 长周期折扣</td>
+                            <td>年付 $107.4 · 终身 $299.99</td>
+                        </tr>
+                        <tr class="tier-bundle">
+                            <td>Group（5人）</td><td>$30.95/月 · $185.7/年</td>
+                            <td class="benefits-cell">5 人共享 · 同上权益</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">ChatGPT</td>
+                            <td>Plus / Pro</td><td>$20 / $200/月</td>
+                            <td class="benefits-cell">Plus：GPT-4o · Agent · 更高限额；Pro：重度推理 · 最深 Agent/Research</td>
+                            <td>Free 轻量 · Go $8/月</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="margin-top:24px;">Duolingo Max · AI 功能消耗/限制规则明细</div>
+            <div class="detail-note">Duolingo Max 不使用显式 Token 制，而是通过<strong>功能入口 + 单次会话时长 + 场景节点</strong>控制 AI 用量。Super 与 Max 均无限红心，差异在 AI 功能包。</div>
+            <div class="table-wrap" style="margin-bottom:20px;">
+                <table class="comp-table consumption-table">
+                    <thead><tr><th>AI 功能</th><th>所属档位</th><th>单次限制</th><th>频次/消耗规则</th><th>支持语言</th><th>Dino 对标映射</th></tr></thead>
+                    <tbody>
+                        <tr><td>Video Call（Lily）</td><td>Max only</td><td class="cost">1–6 min/次</td><td>Max 用户不限拨打次数 · 初级 ~1 min · 高级 ~3–6 min · 通话后可看 transcript</td><td>ES/FR/DE/IT/PT/JP/KO</td><td>Dino AI 对话 · 视频上课反馈</td></tr>
+                        <tr><td>Roleplay 场景</td><td>Max only</td><td class="cost">短对话/场景</td><td>路径 Side Quest 节点触发 · 完成后获 XP+反馈 · 场景预设（非开放域）</td><td>同上</td><td>情景模拟课 · BYOM 场景</td></tr>
+                        <tr><td>实时 AI 对话（2025+）</td><td>Max only</td><td class="cost">2–15 min/次</td><td>GPT-4o 低延迟语音 · 语法/词汇/发音/流利度反馈 · 课后分析报告</td><td>EN/ES/FR 等</td><td>Dino Agent 实时纠音</td></tr>
+                        <tr><td>Explain My Answer</td><td>全员 Free（2026.01+）</td><td>—</td><td>练习后 AI 解释 · 可追问语法规则/替代表达/记忆技巧</td><td>全语言</td><td>学情报告 · 错题解析</td></tr>
+                        <tr><td>无限红心</td><td>Super + Max</td><td>—</td><td>答错不阻断学习 · Free 5 红心/天</td><td>—</td><td>免费版每日 3 节上限</td></tr>
+                        <tr><td>Practice Hub 复习</td><td>Super + Max</td><td>—</td><td>基于弱项生成个性化复习单元</td><td>—</td><td>定制学习计划</td></tr>
+                        <tr><td>自定义生成</td><td>Max（部分市场）</td><td class="cost">Token 消耗</td><td>Excel 标注「自定义生成-token消耗」· 与 Roleplay/对话共用 AI 算力池</td><td>—</td><td>BYOM Ultra Token ×20</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title">Cursor · Claude · Gemini 用量池规则</div>
+            <div class="table-wrap">
+                <table class="comp-table consumption-table">
+                    <thead><tr><th>产品</th><th>档位</th><th>月度用量池</th><th>超额行为</th><th>不计入池的功能</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cursor</td><td>Pro $20</td><td class="cost">$20 信用池/月</td><td>按模型不同速率扣减 · 可购 overage · Auto 路由通常不限</td><td>Tab 补全无限</td></tr>
+                        <tr><td>Cursor</td><td>Pro+ $60</td><td class="cost">3× Pro 倍数</td><td>同上</td><td>Tab 补全无限</td></tr>
+                        <tr><td>Cursor</td><td>Ultra $200</td><td class="cost">20× Pro 倍数</td><td>重度 Agent 用户</td><td>Tab 补全无限</td></tr>
+                        <tr><td>Cursor</td><td>模型消耗差异</td><td class="cost">Claude 3.5 ≈225 次/月</td><td>GPT-4o ≈500 次 · Gemini ≈550 次（同 $20 池）</td><td>—</td></tr>
+                        <tr><td>Claude</td><td>Pro $20</td><td class="cost">标准 Pro 限额</td><td>达限后等待或升级 Max</td><td>—</td></tr>
+                        <tr><td>Claude</td><td>Max 5x/20x</td><td class="cost">5×/20× Pro</td><td>并行工作流 · 200K 上下文</td><td>—</td></tr>
+                        <tr><td>Gemini</td><td>AI Pro $19.99</td><td class="cost">标准 Pro 限额</td><td>Workspace 集成 · 2TB</td><td>—</td></tr>
+                        <tr><td>Gemini</td><td>AI Ultra</td><td class="cost">5×/20× 档位</td><td>30TB · Deep Research · 优先新功能</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 方案4 ========== -->
+    <div class="panel" id="p4">
+        <div class="panel-header s4">
+            <div>
+                <h2>方案 1 · 儿童订阅体系课（卖课）</h2>
+                <ul class="logic">
+                    <li><strong>课程底座 + AI 融合：</strong>6级×144课体系课包 · 融合方案 3 Token 池 + 方案 4 Pro/Pro+/Ultra 分层</li>
+                    <li>卖课：单级别 T0 标价 $899.99/年 · Plus 864课 $299.99/年 · 内置 AI 额度更慷慨（2000 Token/月）</li>
+                    <li>AI 玩法：Dino Agent · Roleplay · BYOM 定制课 · Speak 口语 · AI 视频反馈 · AI Pass 40×</li>
+                    <li>VIPKid 1v1 联名捆绑 · SKU 结构与方案 2 完全一致</li>
+                </ul>
+            </div>
+            <div class="ref-box">
+                <h4>对标参考 · 体系课 + AI 融合</h4>
+                <div class="ref-item"><span class="name">斑马 AI 系统课</span><span class="price">¥13/课 · 课程底座</span></div>
+                <div class="ref-item"><span class="name">Canva Pro + AI Pass</span><span class="price">Token 池 · 方案 3</span></div>
+                <div class="ref-item"><span class="name">Claude Pro / Cursor Pro+</span><span class="price">$20/$60 · 方案 4</span></div>
+                <div class="ref-item"><span class="name">Duolingo Max</span><span class="price">Roleplay · 视频对话</span></div>
+                <div class="ref-item"><span class="name">Speak Premium</span><span class="price">口语纠音加购</span></div>
+                <div class="ref-item"><span class="name">VIPKid 联名</span><span class="price">1v1 捆绑</span></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">SKU 深度设计 · 方案 1（卖课 · 体系课 + AI 融合）</div>
+            <div class="detail-note info"><strong>融合逻辑：</strong>课程 SKU 与方案 2 完全一致 · 底座按体系课高端定价（单级别 $449.99/年）· AI 能力融合方案 3 Token 池 + 方案 4 Pro/Pro+/Ultra 分层 · 内置 AI 更慷慨 · 可按需加购 AI Pass / Speak / BYOM。</div>
+
+            <div class="section-title" style="font-size:14px;margin-top:20px;">SKU 三层架构</div>
+            <div class="fusion-arch">
+                <div class="fa-block"><h4>① 课程层</h4><p>Free → 课次包 → Plus/课包<br>卖「144/864 体系课包」<br>对标 斑马 / 洪恩</p></div>
+                <div class="fa-arrow">+</div>
+                <div class="fa-block"><h4>② AI 额度层</h4><p>内置 Token 池<br>+ AI Pass 40× 加油<br>对标 Canva / 即梦</p></div>
+                <div class="fa-arrow">+</div>
+                <div class="fa-block"><h4>③ AI 分层加购</h4><p>Pro → Pro+ → Ultra<br>Speak 口语 · BYOM<br>对标 Claude / Cursor</p></div>
+            </div>
+
+            <div class="section-title" style="font-size:14px;">表 A · 课程 SKU（含内置 AI 额度）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>产品权益（含 AI）</th>
+                            <th>课量</th>
+                            <th>标价 / 售价（Monthly）</th>
+                            <th>标价 / 售价（Yearly）</th>
+                            <th>对标</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="sku-group-row"><td colspan="6">A1 · 体验 & 入门 <span class="grp-tag">Freemium</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Free 免费版</div><span class="sku-tag tag-free">Free</span></td>
+                            <td>Level 1 体验 · 每日 3 节上限 · 定级测 · <strong>5 Token/天</strong> · Dino 对话 3 次/天 · 水印学情报告</td>
+                            <td>6 课</td><td>$0</td><td>$0</td><td>LingoKids Basic</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">7-Day Free Trial</div><span class="sku-tag tag-free">试用</span></td>
+                            <td>下一周学习计划 + 报告 · 公共资源 · <strong>50 Token 试用池</strong> · Dino Roleplay 体验 1 次</td>
+                            <td>7 天</td><td>—</td><td>—</td><td>ABCmouse 30天</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">MVP 周课包</div><span class="sku-tag tag-core">入门</span></td>
+                            <td>单周学习计划 · 1 份报告 · <strong>含 20 Token</strong> · 1 次 Dino 对话纠音</td>
+                            <td>7 课</td><td>—</td>
+                            <td><span class="price-strike">$19.98</span> <span class="price-cell">$9.99/周</span></td>
+                            <td>Funexpected</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A2 · 按课售卖 <span class="grp-tag">按课</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">主课单次包</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>1 节 AI 主课 · Dino 外教 · 课后练习 · <strong>含 5 Token</strong></td>
+                            <td>1 课</td><td>—</td>
+                            <td><span class="price-strike">$19.98</span> <span class="price-cell">$9.99</span></td>
+                            <td>斑马 ¥13/课</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">主课课次包 ×8</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>8 节主课 · 2 周计划 · 学情报告 · <strong>含 40 Token</strong></td>
+                            <td>8 课</td><td>—</td>
+                            <td><span class="price-strike">$129.98</span> <span class="price-cell">$64.99</span></td>
+                            <td>洪恩课包</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">主课课次包 ×32</div><span class="sku-tag tag-addon">按课</span></td>
+                            <td>32 节主课 · 8 周计划 · 级别测评 · <strong>含 150 Token</strong></td>
+                            <td>32 课</td><td>—</td>
+                            <td><span class="price-strike">$319.98</span> <span class="price-cell">$159.99</span></td>
+                            <td>斑马 240节/年</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A3 · 订阅 & 课包 <span class="grp-tag">核心收入</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Plus 会员（T0）</div><span class="sku-tag tag-premium">864课</span></td>
+                            <td>864 主课全解锁 · 定级 · 游戏化 · <strong>2000 Standard + 200 Premium/月</strong> · Dino Agent · ~300 对话/月 · 去水印周报</td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$59.98</span> <span class="price-cell">$29.99</span></td>
+                            <td><span class="price-strike">$599.98</span> <span class="price-cell">$299.99/年</span></td>
+                            <td>Buddy AI · 斑马</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Plus 会员（T4）</div><span class="sku-tag tag-premium">864课</span></td>
+                            <td>同上 · <strong>1500 Standard + 150 Premium/月</strong> · 下沉定价</td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$49.98</span> <span class="price-cell">$24.99</span></td>
+                            <td><span class="price-strike">$499.98</span> <span class="price-cell">$249.99/年</span></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">单级别课包（T0）</div><span class="sku-tag tag-premium">144课</span></td>
+                            <td>144 主课/级别 · 大纲 · 测评 · <strong>1000 Token/月</strong> · 级别 AI 深度测评报告</td>
+                            <td>144 课</td>
+                            <td><span class="price-strike">$89.98</span> <span class="price-cell">$44.99</span></td>
+                            <td><span class="price-strike">$899.99</span> <span class="price-cell">$449.99/年</span></td>
+                            <td>斑马 240节/年</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">单级别课包（T4）</div><span class="sku-tag tag-premium">144课</span></td>
+                            <td>同上 · <strong>800 Token/月</strong></td>
+                            <td>144 课</td>
+                            <td><span class="price-strike">$69.98</span> <span class="price-cell">$34.99</span></td>
+                            <td><span class="price-strike">$699.98</span> <span class="price-cell">$349.99/年</span></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">双级别课包（T0）</div><span class="sku-tag tag-premium">288课</span></td>
+                            <td>288 主课 · 跨级计划 · <strong>2000 Token/月</strong></td>
+                            <td>288 课</td><td>—</td>
+                            <td><span class="price-strike">$1,599.98</span> <span class="price-cell">$799.99/年</span></td>
+                            <td>Brighterly</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">全体系课包（T0）</div><span class="sku-tag tag-ultra">864课</span></td>
+                            <td>864 主课 · 6 级大纲 · 毕业测评 · <strong>4000 Token/月</strong> · BYOM 10 次/月</td>
+                            <td>864 课</td><td>—</td>
+                            <td><span class="price-strike">$3,999.98</span> <span class="price-cell">$1,999.99/年</span></td>
+                            <td>斑马全级别 · 洪恩</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Family Plan（6人）</div><span class="sku-tag tag-bundle">家庭</span></td>
+                            <td>6 档案 · 独立进度 · 汇总报告 · <strong>共享 3000 Token/月</strong></td>
+                            <td>864 课</td>
+                            <td><span class="price-strike">$119.98</span> <span class="price-cell">$59.99</span></td>
+                            <td><span class="price-strike">$718</span> <span class="price-cell">$359/年</span></td>
+                            <td>Duolingo Family</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">A4 · 联名 <span class="grp-tag">VIPKid</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名包 · 韩国（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>单级别课包 144课 + VIPKid 1v1 ×4/月 · 课后 Dino AI 复习 · <strong>含 2000 Token/月</strong></td>
+                            <td>144+48</td>
+                            <td><span class="price-strike">$119.98</span> <span class="price-cell">$59.99</span></td>
+                            <td><span class="price-strike">$1,099.98</span> <span class="price-cell">$549.99/年</span></td>
+                            <td>VIPKid 韩国</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名包 · 沙特（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>同上 · 阿语本地化</td>
+                            <td>144+48</td>
+                            <td><span class="price-strike">$129.98</span> <span class="price-cell">$64.99</span></td>
+                            <td><span class="price-strike">$1,199.98</span> <span class="price-cell">$599.99/年</span></td>
+                            <td>VIPKid 中东</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">VIPKid 联名旗舰包 · 韩/沙（T0）</div><span class="sku-tag tag-bundle">联名</span></td>
+                            <td>全体系课包 + VIPKid 1v1 ×4/月 · <strong>含 4000 Token/月</strong></td>
+                            <td>864+48</td><td>—</td>
+                            <td><span class="price-strike">$4,599.98</span> <span class="price-cell">$2,299.99/年</span></td>
+                            <td>VIPKid 旗舰</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="font-size:14px;margin-top:24px;">表 B · AI 加购 SKU（融合方案 3 & 4 · 需有课程底座）</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>AI SKU</th><th>产品权益</th><th>Monthly</th><th>Yearly</th><th>AI 额度 / 玩法</th><th>融合来源</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="sku-group-row"><td colspan="6">B1 · Token 额度 <span class="grp-tag">方案 3 · Canva/即梦</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">AI Pass 加购</div><span class="sku-tag tag-addon">附加</span></td>
+                            <td>在 Plus/课包基础上 · 当前 Token 池 <strong>×40</strong> · 月续</td>
+                            <td><span class="price-strike">$39.98</span> <span class="price-cell">+$19.99</span></td><td>—</td>
+                            <td>×40 额度</td><td>Canva AI Pass</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×100</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>100 Standard Token · 不过期 · 对话/报告/BYOM 共用</td>
+                            <td><span class="price-strike">$7.98</span> <span class="price-cell">$3.99</span></td><td>—</td>
+                            <td>100 Std</td><td>即梦积分包</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Token 加油包 ×500</div><span class="sku-tag tag-addon">单次</span></td>
+                            <td>500 Standard Token · 批量优惠</td>
+                            <td><span class="price-strike">$35.98</span> <span class="price-cell">$17.99</span></td><td>—</td>
+                            <td>500 Std</td><td>—</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">BYOM Ultra ×1</div><span class="sku-tag tag-ultra">Ultra</span></td>
+                            <td>1 次 AI 全定制课生成（多轮迭代）· 消耗 20 Ultra Token</td>
+                            <td><span class="price-strike">$5.98</span> <span class="price-cell">$2.99</span></td><td>—</td>
+                            <td>20 Ultra</td><td>Duolingo 自定义生成</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">BYOM 定制课 Token ×20</div><span class="sku-tag tag-addon">包</span></td>
+                            <td>20 次 BYOM · 年付加赠或单独购买</td>
+                            <td>—</td>
+                            <td><span class="price-strike">$120</span> <span class="price-cell">$60</span></td>
+                            <td>20× Ultra</td><td>—</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">B2 · AI 工具分层 <span class="grp-tag">方案 4 · Claude/Cursor</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Pro AI 加购</div><span class="sku-tag tag-core">$20锚</span></td>
+                            <td>Dino Agent · 实时纠音 · ~300 次 AI 对话/月 · 深度周报</td>
+                            <td><span class="price-strike">$39.98</span> <span class="price-cell">$24.99</span></td>
+                            <td><span class="price-strike">$399.98</span> <span class="price-cell">$199.99</span></td>
+                            <td>~300 次/月</td><td>Claude Pro · Cursor Pro</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Pro+ AI 加购</div><span class="sku-tag tag-premium">$60锚</span></td>
+                            <td>Pro 全部 · <strong>3× AI 额度</strong> · BYOM 10 次/月 · 家长 Agent</td>
+                            <td><span class="price-strike">$99.98</span> <span class="price-cell">$59.99</span></td>
+                            <td><span class="price-strike">$959.98</span> <span class="price-cell">$479.99</span></td>
+                            <td>~900 次/月</td><td>Cursor Pro+</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Ultra AI 加购</div><span class="sku-tag tag-ultra">$200锚</span></td>
+                            <td>Pro+ 全部 · ~6000 次/月 · <strong>无限 BYOM</strong> · AI 视频上课反馈</td>
+                            <td><span class="price-strike">$359.98</span> <span class="price-cell">$199.99</span></td>
+                            <td><span class="price-strike">$3,599</span> <span class="price-cell">$1,799/年</span></td>
+                            <td>~6000 次/月</td><td>Claude Max 20x</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Plus + Pro AI 组合（T0）</div><span class="sku-tag tag-bundle">组合</span></td>
+                            <td>单级别课包 + Pro AI 一体 · 比分开买省 $10/月</td>
+                            <td><span class="price-strike">$119.98</span> <span class="price-cell">$59.99</span></td>
+                            <td><span class="price-strike">$999.98</span> <span class="price-cell">$499.99/年</span></td>
+                            <td>2000 Token + 300 对话</td><td>内容+AI 组合</td>
+                        </tr>
+                        <tr class="sku-group-row"><td colspan="6">B3 · 场景玩法 <span class="grp-tag">Duolingo Max / Speak</span></td></tr>
+                        <tr>
+                            <td><div class="sku-name">Speak 口语包</div><span class="sku-tag tag-addon">口语</span></td>
+                            <td>AI 口语专项 · 每日 10 次纠音 · 情景 Roleplay · 错题解析</td>
+                            <td><span class="price-strike">$29.98</span> <span class="price-cell">$14.99</span></td>
+                            <td><span class="price-strike">$167.98</span> <span class="price-cell">$83.99</span></td>
+                            <td>10 次/天</td><td>Speak Premium</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Speak+ 无限口语</div><span class="sku-tag tag-premium">口语</span></td>
+                            <td>无限 AI 纠音 · 无限情景课 · 个性化练习生成</td>
+                            <td><span class="price-strike">$129.98</span> <span class="price-cell">$64.99</span></td>
+                            <td><span class="price-strike">$329.98</span> <span class="price-cell">$164.99</span></td>
+                            <td>无限</td><td>Speak Premium+</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">AI 视频反馈月包</div><span class="sku-tag tag-addon">即梦</span></td>
+                            <td>1080P AI 视频上课反馈 · 发音口型分析 · 15 Ultra Token/条</td>
+                            <td><span class="price-strike">$15.98</span> <span class="price-cell">$11.99</span></td><td>—</td>
+                            <td>~20 条/月</td><td>即梦 1080P 视频</td>
+                        </tr>
+                        <tr>
+                            <td><div class="sku-name">Dino Roleplay 场景包 ×10</div><span class="sku-tag tag-addon">Max</span></td>
+                            <td>10 个 Duolingo 式场景对话 · 语法/词汇/发音反馈 · 课后报告</td>
+                            <td>—</td>
+                            <td><span class="price-strike">$39.98</span> <span class="price-cell">$19.99</span></td>
+                            <td>10 场景</td><td>Duolingo Roleplay</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="font-size:14px;margin-top:24px;">Dino Token 消耗 & AI 玩法矩阵</div>
+            <div class="ai-play-grid">
+                <div class="ai-play-card"><h5>🎯 课中 AI（含在主课）</h5><ul><li>Dino 外教互动 · 不扣 Token</li><li>Explain My Answer 错题解析 · Free</li><li>Practice Hub 弱项复习 · Plus+</li></ul></div>
+                <div class="ai-play-card"><h5>💬 对话 & 纠音（扣 Token）</h5><ul><li>Dino 对话 5 min · 5 Std Token</li><li>发音纠音 · 3 Std Token</li><li>Roleplay 场景 · 8 Std Token</li></ul></div>
+                <div class="ai-play-card"><h5>✨ 高阶 AI（Premium/Ultra）</h5><ul><li>学情报告 · 10 Premium</li><li>BYOM 定制课 · 20 Ultra</li><li>AI 视频反馈 · 15 Ultra</li></ul></div>
+            </div>
+            <div class="table-wrap">
+                <table class="consumption-table">
+                    <thead><tr><th>AI 功能</th><th>Token 类型</th><th>单次消耗</th><th>方案 3 对标</th><th>方案 4 对标</th></tr></thead>
+                    <tbody>
+                        <tr><td>Dino AI 对话（5 min）</td><td>Standard</td><td class="cost">5 Token</td><td>Canva Magic Write</td><td>Cursor Pro 1 次请求</td></tr>
+                        <tr><td>发音纠音 + 反馈</td><td>Standard</td><td class="cost">3 Token</td><td>—</td><td>Speak Premium 1 次</td></tr>
+                        <tr><td>Dino Roleplay 场景</td><td>Standard</td><td class="cost">8 Token</td><td>—</td><td>Duolingo Max Roleplay</td></tr>
+                        <tr><td>学情报告生成</td><td>Premium</td><td class="cost">10 Token</td><td>Canva Premium AI 1 次</td><td>—</td></tr>
+                        <tr><td>AI 定制课 BYOM</td><td>Ultra</td><td class="cost">20 Token</td><td>即梦 15s 视频</td><td>Duolingo 自定义生成</td></tr>
+                        <tr><td>AI 视频上课反馈 1080P</td><td>Ultra</td><td class="cost">15 Token</td><td>即梦 1080P 5s</td><td>—</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">转化路径 · 课程 + AI 加购</div>
+            <div class="chart-container" style="text-align:center;padding:32px;">
+                <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font-size:13px;">
+                    <div style="background:#ecfdf5;border:2px solid #10b981;border-radius:12px;padding:14px 20px;font-weight:600;">Free / Trial<br><span style="font-size:11px;font-weight:400;color:#6b7280;">5 Token/天</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#eff6ff;border:2px solid #3b82f6;border-radius:12px;padding:14px 20px;font-weight:600;">课次包 / 课包<br><span style="font-size:11px;font-weight:400;color:#6b7280;">按课 · 按级别</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fdf4ff;border:2px solid #8b5cf6;border-radius:12px;padding:14px 20px;font-weight:600;">Plus / 全体系<br><span style="font-size:11px;font-weight:400;color:#6b7280;">含 Token 池</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;padding:14px 20px;font-weight:600;">AI Pass / Pro AI<br><span style="font-size:11px;font-weight:400;color:#6b7280;">方案 3&4 加购</span></div>
+                    <div style="font-size:20px;color:#9ca3af;">→</div>
+                    <div style="background:#fff7ed;border:2px solid #f97316;border-radius:12px;padding:14px 20px;font-weight:600;">VIPKid 联名<br><span style="font-size:11px;font-weight:400;color:#6b7280;">+ Speak / BYOM</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section comp-section">
+            <div class="section-title">对标竞品 SKU 权益明细 · AI 体系课 / VIPKid 联名参考</div>
+            <div class="table-wrap">
+                <table class="comp-table">
+                    <thead>
+                        <tr><th>产品</th><th>SKU / 档位</th><th>价格</th><th>具体权益</th><th>课时 / 限制</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr class="tier-core">
+                            <td rowspan="5" class="tier-name">Outschool</td>
+                            <td>小组课 · 每周 1 次</td><td>$40/月</td>
+                            <td class="benefits-cell">线上小组/1v1 · 免费试听 1 次 · 按积分梯度</td>
+                            <td>1 次/周</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>小组课 · 每周 2 次</td><td>$70–120/月</td>
+                            <td class="benefits-cell">同上 · 更多频次选项</td>
+                            <td>2 次/周</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>小组课 · 每周 4–10 次</td><td>$240–600/月</td>
+                            <td class="benefits-cell">高频小组课 · 沉浸式学习</td>
+                            <td>4–10 次/周</td>
+                        </tr>
+                        <tr class="tier-addon">
+                            <td>1v1 预约课</td><td>$10–40+/课</td>
+                            <td class="benefits-cell">按教师等级/难度弹性定价 · 线上预约</td>
+                            <td>按课计费</td>
+                        </tr>
+                        <tr class="tier-free">
+                            <td>试听课</td><td>$0</td>
+                            <td class="benefits-cell">首次免费试听</td>
+                            <td>1 次</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">BookNook</td>
+                            <td>1v1 辅导</td><td>$15–22/小时</td>
+                            <td class="benefits-cell">K-8 教学计划 · 同步教学平台 · 阅读+数学 · 及时反馈纠错 · 首次试听免费</td>
+                            <td>按教师定价</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td rowspan="2" class="tier-name">Savvy Learning</td>
+                            <td>1v1 私教</td><td>$495/月 · $4740/年</td>
+                            <td class="benefits-cell">每周 4 节私教（Mon–Thu 固定）· 25 min/节 · 订阅制</td>
+                            <td>16 节/月</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>小组课</td><td>$240/月 · $2040/年</td>
+                            <td class="benefits-cell">同上频次 · 小组订阅制</td>
+                            <td>16 节/月</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">Lingoda</td>
+                            <td>4/8/16/32 节包</td><td>$16.49→$7.99/节</td>
+                            <td class="benefits-cell">真人小组课 · AI 课堂评估 · 课下迷你练习 · 免费解谜游戏 · 开源阅读库</td>
+                            <td>买越多越便宜</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="3" class="tier-name">Cambly</td>
+                            <td>Private 月付</td><td>¥84.9–92.25/节</td>
+                            <td class="benefits-cell">1v1 私教 · 课程录像 · 语音转文字 · 课后 AI 反馈 · 全部教材</td>
+                            <td>2–10 节/周</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>Private Pro</td><td>¥119–129.75/节</td>
+                            <td class="benefits-cell">Pro 外教 · 结构化目标导向课程 · 针对性纠正 · 自主学习建议</td>
+                            <td>2–10 节/周</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>Small Groups 年付</td><td>¥19.5–20.54/节</td>
+                            <td class="benefits-cell">1 外教 + 1–3 学生 · 无限发音/语法/词汇练习</td>
+                            <td>1–2 节/周</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">斑马 AI 英语</td>
+                            <td>系统课</td><td>¥13/课 · 240 节/年</td>
+                            <td class="benefits-cell">AI 互动系统课 · 240 节/年 · 定级+学习计划</td>
+                            <td>≈¥3120/年</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td class="tier-name">斑马 AI 口语</td>
+                            <td>L3 口语课</td><td>¥37.5/课</td>
+                            <td class="benefits-cell">96 节课 · 48 周 · 每周 2 次 · 7–9 岁 AI 口语老师</td>
+                            <td>≈¥3600/级别</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td class="tier-name">italki</td>
+                            <td>1v1 预约</td><td>$4–120/课时</td>
+                            <td class="benefits-cell">真人母语外教 · 按目标选课（备考/商务/纠音/对话）· 弹性定价</td>
+                            <td>按课 · 按教师</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td rowspan="4" class="tier-name">Brighterly</td>
+                            <td>月付（每周 2 节）</td><td>$21.9/课</td>
+                            <td class="benefits-cell">1–9 年级 · 数学/阅读 1v1 · 固定每周 2 节辅导</td>
+                            <td>25 min/节</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>3 个月</td><td>$21.4/课</td>
+                            <td class="benefits-cell">同上 · 长周期微降</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-core">
+                            <td>6 个月</td><td>$20.2/课</td>
+                            <td class="benefits-cell">同上</td>
+                            <td>—</td>
+                        </tr>
+                        <tr class="tier-premium">
+                            <td>年付</td><td>$17.7/课</td>
+                            <td class="benefits-cell">同上 · 最低单价</td>
+                            <td>买越长越便宜</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-title" style="margin-top:24px;">Cambly · 斑马 AI 各档位权益对比</div>
+            <div class="table-wrap">
+                <table class="comp-table consumption-table">
+                    <thead><tr><th>产品</th><th>SKU</th><th>月付单价</th><th>年付单价</th><th>核心权益</th><th>频次选项</th></tr></thead>
+                    <tbody>
+                        <tr><td>Cambly Private</td><td>基础 1v1</td><td class="cost">¥84.9–92.25/节</td><td class="cost">¥39.18–42.58/节</td><td>录像 · 语音转文字 · 课后 AI 反馈 · 全部教材</td><td>2/3/5/10 节/周</td></tr>
+                        <tr><td>Cambly Private Pro</td><td>Pro 外教</td><td class="cost">¥119–129.75/节</td><td class="cost">¥55.13–59.88/节</td><td>结构化目标课程 · 针对性纠正 · 自主学习建议</td><td>2/3/5/10 节/周</td></tr>
+                        <tr><td>Cambly Small Groups</td><td>小班</td><td class="cost">¥42.25–44.5/节</td><td class="cost">¥19.5–20.54/节</td><td>1 外教 + 1–3 学生 · 无限发音/语法/词汇练习</td><td>1–2 节/周</td></tr>
+                        <tr><td>斑马 AI 英语</td><td>系统课</td><td>—</td><td class="cost">¥13/课</td><td>240 节/年 · AI 互动 · 定级 · 学习计划</td><td>≈¥3120/年</td></tr>
+                        <tr><td>斑马 AI 口语</td><td>L3 口语</td><td>—</td><td class="cost">¥37.5/课</td><td>96 节 · 48 周 · 7–9 岁 AI 口语老师</td><td>每周 2 次</td></tr>
+                        <tr><td>Lingoda</td><td>32 节包</td><td>—</td><td class="cost">$7.99/节</td><td>真人小组 · AI 评估 · 课下练习 · 4/8/16/32 梯度</td><td>$16.49→$7.99</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="section" style="margin-top:36px;">
+        <div class="section-title">全球首发见面礼（前三月 · 全方案通用）</div>
+        <div class="promo-grid">
+            <div class="promo-card">
+                <h4>方案 1 · 体系课首发礼</h4>
+                <p>单级别体系课年付首发售价 $324.99（标价 $649.98）。对标斑马 / 洪恩长周期体系课折扣。</p>
+            </div>
+            <div class="promo-card">
+                <h4>方案 2 · 加赠会员期</h4>
+                <p>年付买 12 个月加赠 3/6 个月 · 50% OFF 售价（T0 标价 $499.98 · 售价 $249.99）。对标 LingoKids 年包 $200+ 超值感。</p>
+            </div>
+            <div class="promo-card">
+                <h4>方案 3 · 赠 Token 包</h4>
+                <p>年付额外送价值 $60 的 20 个 BYOM 定制课 Token。对标 Canva 年付赠 AI 额度策略。</p>
+            </div>
+            <div class="promo-card">
+                <h4>方案 4 · 首月特惠</h4>
+                <p>前三月新用户月付首月 $9.99（Pro 档）。对标 Claude/Cursor 低门槛试用 → 转正。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Benchmark -->
+    <div class="section">
+        <div class="section-title">三大对标品类 · 竞品 SKU 权益全景（汇总）</div>
+        <div class="comp-tabs" id="compTabs">
+            <div class="comp-tab active" data-comp="c1">儿童 App 垂类</div>
+            <div class="comp-tab" data-comp="c2">生图 / AI 创作</div>
+            <div class="comp-tab" data-comp="c3">AI 工具 / 语言</div>
+            <div class="comp-tab" data-comp="c4">真人外教 / 混合</div>
+        </div>
+
+        <!-- Tab 1: Kids App -->
+        <div class="comp-panel active" id="c1">
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>LingoKids</h4><span class="comp-cat">内容 / 游戏化 App · Freemium</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Basic 免费版 <span class="sku-tag tag-free">Free</span></div>
+                        <div class="comp-sku-price">$0</div>
+                        <ul class="benefit-list">
+                            <li>3000+ 教学游戏、播客、动画</li>
+                            <li>1 儿童档案 · 无广告</li>
+                            <li class="limit">每日限 3 节活动</li>
+                            <li class="none">无离线 · 无进阶报告</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Plus 订阅 <span class="sku-tag tag-core">核心</span></div>
+                        <div class="comp-sku-price">$14.99/月 <span class="sub">· $71.99/年</span></div>
+                        <ul class="benefit-list">
+                            <li>解锁全部课程内容</li>
+                            <li>最多 4 儿童档案</li>
+                            <li>离线模式 · 多设备同步</li>
+                            <li>进阶进度报告 · 7 天试用</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>ABCmouse</h4><span class="comp-cat">内容 / 游戏化 App · Basic + VIP</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Basic Access <span class="sku-tag tag-free">Free</span></div>
+                        <div class="comp-sku-price">$0</div>
+                        <ul class="benefit-list">
+                            <li>部分系统课 · 部分学习游戏</li>
+                            <li class="limit">每日活动上限</li>
+                            <li class="none">无多档案 · 无离线</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">VIP Premium <span class="sku-tag tag-premium">VIP</span></div>
+                        <div class="comp-sku-price">$14.99/月 <span class="sub">· $45/年</span></div>
+                        <ul class="benefit-list">
+                            <li>10000+ 活动全解锁</li>
+                            <li>3 儿童主页 · 个性化路径</li>
+                            <li>离线内容 · 屏幕用时管理</li>
+                            <li>30 天 Web 免费试用</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Epic · HOMER · VOOKS · Buddy AI</h4><span class="comp-cat">其他少儿竞品</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Epic Unlimited</div>
+                        <div class="comp-sku-price">$13.99/月 · $84.99/年</div>
+                        <ul class="benefit-list">
+                            <li>4000+ 图书/视频/漫画/有声书</li>
+                            <li>养宠开宝箱 · 自定义播放列表</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">HOMER 订阅</div>
+                        <div class="comp-sku-price">$12.99/月 · $79.99/年</div>
+                        <ul class="benefit-list">
+                            <li>阅读+数学+创造力系统课</li>
+                            <li>7 天免费 · 个性化路径</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">VOOKS 付费版</div>
+                        <div class="comp-sku-price">$9.99/月 · $69.99/年</div>
+                        <ul class="benefit-list">
+                            <li>只听模式 · 睡前读物</li>
+                            <li>自定义播放列表</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Buddy AI</div>
+                        <div class="comp-sku-price">$12.49/月 · $49.99/年</div>
+                        <ul class="benefit-list">
+                            <li>AI 语音陪练 · 音视频互动系统课</li>
+                            <li>半年 $29.99 · 年付最优惠</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>国内竞品 · 伴鱼 / 洪恩 / 叽里呱啦</h4><span class="comp-cat">中国市场参考</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">伴鱼绘本 VIP</div>
+                        <div class="comp-sku-price">¥40/月 · ¥428/年</div>
+                        <ul class="benefit-list">
+                            <li>VIP 绘本 · 智能纠音 · 贝壳翻倍</li>
+                            <li>SVIP/终身 VIP ¥598</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">洪恩英语 包月/包年</div>
+                        <div class="comp-sku-price">¥28/月 · ¥268/年</div>
+                        <ul class="benefit-list">
+                            <li>21 主题课 · 300 词 · 100 句型 · 50 分级阅读</li>
+                            <li>永久包 ¥388–1288 不等</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">叽里呱啦 呱豆</div>
+                        <div class="comp-sku-price">¥88–588/包</div>
+                        <ul class="benefit-list">
+                            <li>呱豆兑换课程 · 2–8 岁英语+思维</li>
+                            <li>全年伴学班等专项课程包</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">斑马 AI 英语 / 口语</div>
+                        <div class="comp-sku-price">¥13 / ¥37.5/课</div>
+                        <ul class="benefit-list">
+                            <li>英语：240 节/年系统课</li>
+                            <li>口语：96 节 · 48 周 · 7–9 岁</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Funexpected</div>
+                        <div class="comp-sku-price">$8.99/月 · 7天试用</div>
+                        <ul class="benefit-list">
+                            <li>数学系统课 · 游戏化</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Image Gen -->
+        <div class="comp-panel" id="c2">
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Canva</h4><span class="comp-cat">订阅 + AI 额度共享池</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Free</div>
+                        <div class="comp-sku-price">$0</div>
+                        <ul class="benefit-list">
+                            <li>基础模板 · Magic Write · 文生图</li>
+                            <li class="limit">200 Standard 或 20 Premium AI</li>
+                            <li class="none">无 Ultra AI</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Pro</div>
+                        <div class="comp-sku-price">$15/月 · $120/年</div>
+                        <ul class="benefit-list">
+                            <li>全模板 · 品牌套件 · 100GB</li>
+                            <li>2000 Standard · 200 Premium · 20 Ultra/月</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Business</div>
+                        <div class="comp-sku-price">$20/月</div>
+                        <ul class="benefit-list">
+                            <li>团队协作 · 高级 AI 图像/视频</li>
+                            <li>4000 Standard · 400 Premium · 40 Ultra/月</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">AI Pass 附加</div>
+                        <div class="comp-sku-price">附加月费</div>
+                        <ul class="benefit-list">
+                            <li>Pro 40× 或 Business 20× 额度</li>
+                            <li>超额后可短间隔继续使用</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>即梦 AI</h4><span class="comp-cat">免费积分 + 三档会员 + 积分包</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">免费用户</div>
+                        <div class="comp-sku-price">$0</div>
+                        <ul class="benefit-list">
+                            <li>AI 图片/视频 · 探索社区 · 做同款</li>
+                            <li class="limit">签到 60–100 积分/天 · 720P · 水印</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">基础会员</div>
+                        <div class="comp-sku-price">¥69/月 · ¥659/年</div>
+                        <ul class="benefit-list">
+                            <li>725 积分/月 · 去水印 · 1080P</li>
+                            <li>延长视频 · 优先渲染</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">标准会员</div>
+                        <div class="comp-sku-price">¥119/月</div>
+                        <ul class="benefit-list">
+                            <li>2210 积分/月 · 视频对口型</li>
+                            <li>商用授权</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">高级会员</div>
+                        <div class="comp-sku-price">¥649/月 · ¥5199/年</div>
+                        <ul class="benefit-list">
+                            <li>6160 积分/月 · 4K 导出</li>
+                            <li>Seedance 2.0 折扣 · VIP 通道</li>
+                            <li class="limit">15s VIP 视频 ≈210 积分/条</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>积分/额度消耗速查</h4><span class="comp-cat">单次功能消耗</span>
+                </div>
+                <div class="table-wrap" style="box-shadow:none;border-radius:0;">
+                    <table class="comp-table consumption-table" style="font-size:12px;">
+                        <thead><tr><th>平台</th><th>功能</th><th>单次消耗</th></tr></thead>
+                        <tbody>
+                            <tr><td>Canva</td><td>Magic Write</td><td class="cost">不计入额度（公平使用）</td></tr>
+                            <tr><td>Canva</td><td>文生图/设计</td><td class="cost">1 Premium use/次</td></tr>
+                            <tr><td>Canva</td><td>Canva AI 2.0 多页</td><td class="cost">高消耗 Ultra</td></tr>
+                            <tr><td>即梦</td><td>文生图</td><td class="cost">8–16 积分/张</td></tr>
+                            <tr><td>即梦</td><td>5s 视频 720P</td><td class="cost">10 积分/条</td></tr>
+                            <tr><td>即梦</td><td>5s 视频 1080P</td><td class="cost">20 积分/条</td></tr>
+                            <tr><td>即梦</td><td>视频 3.0 Pro</td><td class="cost">50 积分/条</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="comp-panel" id="c3">
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Duolingo · Super / Max / Family</h4><span class="comp-cat">语言学习 · AI 分层 · GPT-4 驱动</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Free</div>
+                        <div class="comp-sku-price">$0</div>
+                        <ul class="benefit-list">
+                            <li>全路径课程 · 广告</li>
+                            <li class="limit">5 红心/天 · 错即停</li>
+                            <li class="none">无 AI · 无离线</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Super</div>
+                        <div class="comp-sku-price">$9.99/月 · $83.99/年</div>
+                        <ul class="benefit-list">
+                            <li>无广告 · 无限红心 · 离线</li>
+                            <li>Practice Hub 复习 · 跳级</li>
+                            <li>详细进度报告</li>
+                            <li class="none">无 AI 功能</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Max</div>
+                        <div class="comp-sku-price">$12.99/月 · $95.99/年</div>
+                        <ul class="benefit-list">
+                            <li>Super 全部 + Video Call（Lily）</li>
+                            <li>Roleplay 场景对话 · GPT-4</li>
+                            <li>实时 AI 口语 · 课后分析</li>
+                            <li class="limit">单次通话 1–6 min · 不限次数</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Family / Family Max</div>
+                        <div class="comp-sku-price">$119 / $239/年</div>
+                        <ul class="benefit-list">
+                            <li>6 人账号 · Super 或 Max 权益</li>
+                            <li>≈$20 或 $40/人/年</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Duolingo Max · AI 功能明细</h4><span class="comp-cat">消耗/限制规则</span>
+                </div>
+                <div class="table-wrap" style="box-shadow:none;border-radius:0;">
+                    <table class="comp-table consumption-table" style="font-size:12px;">
+                        <thead><tr><th>功能</th><th>档位</th><th>单次限制</th><th>权益说明</th></tr></thead>
+                        <tbody>
+                            <tr><td>Video Call</td><td>Max</td><td class="cost">1–6 min</td><td>Lily 实时口语 · transcript 复盘 · 不限拨打 · Tap-to-speak</td></tr>
+                            <tr><td>Roleplay</td><td>Max</td><td class="cost">短场景</td><td>Side Quest 节点 · 咖啡馆/酒店等 · XP+反馈</td></tr>
+                            <tr><td>实时 AI 对话</td><td>Max</td><td class="cost">2–15 min</td><td>GPT-4o 语音 · 语法/发音/流利度反馈</td></tr>
+                            <tr><td>Explain My Answer</td><td>全员 Free</td><td>—</td><td>2026.01 下放 · 练习后 AI 语法解释</td></tr>
+                            <tr><td>自定义生成</td><td>Max</td><td class="cost">Token 消耗</td><td>与 AI 对话共用算力池</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Speak · Busuu · Praktika · Learna</h4><span class="comp-cat">AI 口语专项</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Speak Premium</div>
+                        <div class="comp-sku-price">$17.99/月</div>
+                        <ul class="benefit-list">
+                            <li>系统课 · 智慧复习 · AI 话题对话</li>
+                            <li class="limit">10 次/天 AI 纠音</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Speak Premium+</div>
+                        <div class="comp-sku-price">$39.99/月</div>
+                        <ul class="benefit-list">
+                            <li>Premium 全部</li>
+                            <li>无限纠音 · 无限定制课 · 无限专属练习</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Busuu VIP / Plus</div>
+                        <div class="comp-sku-price">$12.49 / $14.9/月</div>
+                        <ul class="benefit-list">
+                            <li>VIP：语法 · 无广告</li>
+                            <li>Plus：AI 对话 · 纠音 · 定制内容</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Praktika / Learna</div>
+                        <div class="comp-sku-price">$14.99 / $9.99/月</div>
+                        <ul class="benefit-list">
+                            <li>Praktika：AI 虚拟外教 · 终身 $249</li>
+                            <li>Learna：AI 模拟对话 · $39.99/年</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Claude · Cursor · Gemini</h4><span class="comp-cat">AI 工具 $20 / $60 / $200 价格锚</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Claude Pro</div>
+                        <div class="comp-sku-price">$20/月</div>
+                        <ul class="benefit-list">
+                            <li>全功能 · Projects · Artifacts</li>
+                            <li>200K 上下文 · 优先响应</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Claude Max 5x / 20x</div>
+                        <div class="comp-sku-price">$100 / $200/月</div>
+                        <ul class="benefit-list">
+                            <li>5×/20× Pro 使用量</li>
+                            <li>并行工作流 · 重度用户</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Cursor Pro / Pro+ / Ultra</div>
+                        <div class="comp-sku-price">$20 / $60 / $200/月</div>
+                        <ul class="benefit-list">
+                            <li>Pro：$20 信用池 · 多模型 · Cloud Agent</li>
+                            <li>Pro+：3× 倍数 · Ultra：20× 倍数</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Gemini AI Pro / Ultra</div>
+                        <div class="comp-sku-price">$19.99 / $99–199/月</div>
+                        <ul class="benefit-list">
+                            <li>Pro：Workspace 集成 · 2TB</li>
+                            <li>Ultra：30TB · Deep Research</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>LingQ · Pingo · Rosetta Stone · Babbel</h4><span class="comp-cat">内容 + AI 混合</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">LingQ Premium / Plus</div>
+                        <div class="comp-sku-price">$14.99 / $29.99/月</div>
+                        <ul class="benefit-list">
+                            <li>Premium：无限保存单词 · 里程碑 · 导入影音</li>
+                            <li>Plus：AI 简化课程 · 音视频转课程</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Pingo AI</div>
+                        <div class="comp-sku-price">$19.98/月 · $119.98/年</div>
+                        <ul class="benefit-list">
+                            <li>主题路径对话 · 情景模拟 · 单词本 · 2 天试用</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Rosetta Stone</div>
+                        <div class="comp-sku-price">$19.99/月 · $159/年</div>
+                        <ul class="benefit-list">
+                            <li>25 语言 · 语音跟读 · 3 天试用 · 专业度高</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Babbel</div>
+                        <div class="comp-sku-price">$17.95/月 · 终身 $299.99</div>
+                        <ul class="benefit-list">
+                            <li>听说读写 · 语音识别 · Group 5人 $30.95/月</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Live / Hybrid -->
+        <div class="comp-panel" id="c4">
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Outschool · BookNook · Savvy · Lingoda</h4><span class="comp-cat">真人外教 · 按课/订阅</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Outschool 小组课</div>
+                        <div class="comp-sku-price">$40–600/月</div>
+                        <ul class="benefit-list">
+                            <li>1–10 次/周梯度 · 免费试听 1 次</li>
+                            <li>1v1：$10–40+/课</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">BookNook 1v1</div>
+                        <div class="comp-sku-price">$15–22/小时</div>
+                        <ul class="benefit-list">
+                            <li>K-8 计划 · 同步平台 · 首次免费</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Savvy 1v1 / 小组</div>
+                        <div class="comp-sku-price">$495/$240 月起</div>
+                        <ul class="benefit-list">
+                            <li>每周 4 节 · 25 min · 固定时间</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Lingoda 课包</div>
+                        <div class="comp-sku-price">$7.99–16.49/节</div>
+                        <ul class="benefit-list">
+                            <li>4/8/16/32 节包 · AI 评估 · 课下练习</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="comp-product">
+                <div class="comp-product-header">
+                    <h4>Cambly · 斑马 AI · italki</h4><span class="comp-cat">1v1 / AI 课 · 中美市场</span>
+                </div>
+                <div class="comp-sku-grid">
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Cambly Private / Pro</div>
+                        <div class="comp-sku-price">¥42–130/节</div>
+                        <ul class="benefit-list">
+                            <li>录像 · 语音转文字 · AI 反馈</li>
+                            <li>Pro：结构化课程 · 年付更低</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Cambly Small Groups</div>
+                        <div class="comp-sku-price">¥19.5–44.5/节</div>
+                        <ul class="benefit-list">
+                            <li>1 外教 + 1–3 学生</li>
+                            <li>无限发音/语法/词汇练习</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">斑马 AI 英语 / 口语</div>
+                        <div class="comp-sku-price">¥13 / ¥37.5/课</div>
+                        <ul class="benefit-list">
+                            <li>英语：240 节/年系统课</li>
+                            <li>口语：96 节 · 48 周 · 7–9 岁</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">italki 1v1</div>
+                        <div class="comp-sku-price">$4–120/课时</div>
+                        <ul class="benefit-list">
+                            <li>按教师/目标弹性定价</li>
+                            <li>备考 · 商务 · 纠音 · 对话</li>
+                        </ul>
+                    </div>
+                    <div class="comp-sku-card">
+                        <div class="comp-sku-name">Brighterly</div>
+                        <div class="comp-sku-price">$17.7–21.9/课</div>
+                        <ul class="benefit-list">
+                            <li>1–9 年级数学/阅读 1v1</li>
+                            <li>每周 2 节 · 买越长越便宜</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dino AI Consumption Mapping -->
+    <div class="section">
+        <div class="section-title">Dino English · 竞品 AI 消耗规则 → 自有 Token 体系映射</div>
+        <div class="detail-note info">以下为方案 2/3 设计 Dino Token 体系时的对标依据，将竞品「隐式限制」转化为 Dino 可感知的「显性 Token 消耗」。</div>
+        <div class="table-wrap">
+            <table class="comp-table consumption-table">
+                <thead>
+                    <tr><th>竞品功能</th><th>竞品限制方式</th><th>单次等价消耗</th><th>Dino Token 类型</th><th>Dino 功能映射</th><th>方案建议</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Duolingo Video Call</td><td>1–6 min/次 · Max 不限次数</td><td class="cost">≈5–15 min AI 算力</td><td>Standard ×5–15</td><td>Dino AI 对话（5 min）</td><td>方案 2/3</td></tr>
+                    <tr><td>Duolingo Roleplay</td><td>场景节点 · 短对话</td><td class="cost">≈1 场景/session</td><td>Standard ×8</td><td>情景模拟课</td><td>方案 2/3</td></tr>
+                    <tr><td>Duolingo 自定义生成</td><td>Token 消耗（Excel 标注）</td><td class="cost">未公开具体值</td><td>Ultra ×20</td><td>BYOM 定制课</td><td>方案 2</td></tr>
+                    <tr><td>Speak Premium 纠音</td><td>10 次/天硬上限</td><td class="cost">1 次/对话</td><td>Standard ×3</td><td>发音纠音+反馈</td><td>方案 3 Pro</td></tr>
+                    <tr><td>Speak Premium+ 纠音</td><td>无限</td><td class="cost">—</td><td>含在 Ultra</td><td>无限 AI 对话纠正</td><td>方案 3 Ultra</td></tr>
+                    <tr><td>Canva 文生图</td><td>1 Premium use/次</td><td class="cost">1 Premium</td><td>Premium ×10</td><td>学情报告生成</td><td>方案 2</td></tr>
+                    <tr><td>Canva Magic Write</td><td>不计入额度 · 公平使用</td><td class="cost">0（含在订阅）</td><td>含在 Basic+</td><td>基础 Dino 对话文案</td><td>方案 2 Basic</td></tr>
+                    <tr><td>即梦 5s 视频 720P</td><td>10 积分/条</td><td class="cost">10 积分</td><td>Ultra ×15</td><td>AI 视频上课反馈</td><td>方案 2</td></tr>
+                    <tr><td>即梦 5s 视频 1080P</td><td>20 积分/条</td><td class="cost">20 积分</td><td>Ultra ×20</td><td>1080P 视频反馈</td><td>方案 2 Standard+</td></tr>
+                    <tr><td>Cursor Pro 信用池</td><td>$20/月 · 按模型扣减</td><td class="cost">~225 Claude 次</td><td>Pro ~300 次/月</td><td>Dino Agent 基础</td><td>方案 3 Pro</td></tr>
+                    <tr><td>Cursor Pro+ 倍数</td><td>3× Pro 池</td><td class="cost">~675 次</td><td>Pro+ ~900 次/月</td><td>BYOM 10 次/月</td><td>方案 3 Pro+</td></tr>
+                    <tr><td>Claude Max 20x</td><td>20× Pro 限额</td><td class="cost">~6000 次</td><td>Ultra ~6000 次/月</td><td>无限 BYOM · 1v1 AI 复盘</td><td>方案 3 Ultra</td></tr>
+                    <tr><td>LingoKids Basic</td><td>3 节/天</td><td class="cost">—</td><td>Free 3 节/天</td><td>免费版每日上限</td><td>方案 2 卖内容</td></tr>
+                    <tr><td>ABCmouse 年付锚点</td><td>$45/年 vs $179.88 月付</td><td class="cost">74% 折扣</td><td>年付 50% OFF</td><td>T0 标价 $499.98 · 售价 $249.99</td><td>方案 2 卖内容</td></tr>
+                    <tr><td>斑马 AI 英语</td><td>¥13/课 · 240 节/年</td><td class="cost">≈¥3120/年</td><td>单级别体系课 标价 $899.99/年</td><td>144 AI 主课 · 卖课</td><td>方案 1 卖课</td></tr>
+                    <tr><td>VIPKid 1v1</td><td>按节/包售卖</td><td class="cost">—</td><td>联名捆绑包</td><td>方案 1/2 + VIPKid 1v1 ×4/月</td><td>方案 1 & 2</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recommendation -->
+    <div class="section">
+        <div class="section-title">方案推荐矩阵</div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>维度</th>
+                        <th>方案 1 · 儿童订阅体系课（卖课）</th>
+                        <th>方案 2 · 儿童app订阅（卖内容）</th>
+                        <th>方案 3 · 生图额度</th>
+                        <th>方案 4 · AI 工具</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>最适合市场</strong></td>
+                        <td>T0 高购买力 · VIPKid 联名 · 韩/沙</td>
+                        <td>T1–T3 欧美/东南亚 · 全球规模化</td>
+                        <td>T0 日韩 · AI 敏感用户</td>
+                        <td>T0–T1 高购买力 · 家长决策</td>
+                    </tr>
+                    <tr>
+                        <td><strong>核心优势</strong></td>
+                        <td>卖课 · 按级别/体系 · 高 ARPU · AI 主课 + VIPKid 联名</td>
+                        <td>卖内容 · LingoKids 认知 · 年包 $200+ · VIPKid 联名</td>
+                        <td>AI 成本可控 · 弹性定价</td>
+                        <td>价格锚点明确 · 升级路径清晰</td>
+                    </tr>
+                    <tr>
+                        <td><strong>T0 年付标价 / 售价</strong></td>
+                        <td><span class="price-strike">$899.99</span> <span class="price-cell">$449.99</span></td>
+                        <td><span class="price-strike">$499.98</span> <span class="price-cell">$249.99</span></td>
+                        <td><span class="price-strike">$559.98</span> <span class="price-cell">$279.99</span></td>
+                        <td><span class="price-strike">$399.98</span> <span class="price-cell">$199.99</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>首发建议</strong></td>
+                        <td>⏳ V1.4+ 体系课包上线</td>
+                        <td>✅ V1.2 · 最快规模化上线</td>
+                        <td>⏳ V1.4 配合 BYOM 上线</td>
+                        <td>⏳ V1.4 配合 Dino Agent</td>
+                    </tr>
+                    <tr>
+                        <td><strong>风险</strong></td>
+                        <td>与卖内容线定价区隔 · VIPKid 联名依赖</td>
+                        <td>与纯内容 App 比价压力 · 需与卖课线区隔</td>
+                        <td>Token 体系用户理解成本</td>
+                        <td>与「课/内容」定位偏离 · 需强价值传递</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">Dino English Pricing Strategy · 基于 dino english售卖策略提案.xlsx · 更新时间 2025-06</div>
+</div>
+
+<script>
+    const COUNTRIES = {
+        T0: '沙特 · 新加坡 · 韩国 · 日本',
+        T1: '英国 · 美国 · 澳洲',
+        T2: '南非 · 波兰 · 匈牙利',
+        T3: '泰国 · 巴西 · 土耳其 · 越南 · 印尼',
+        T4: '缅甸 · 尼泊尔 · 巴基斯坦'
+    };
+
+    const SCHEME_ORDER = ['p4', 'p1', 'p2', 'p3'];
+
+    const PRICING_SCHEMES = {
+        p4: {
+            id: 'p4', cls: 's4', num: 1,
+            badge: '方案 1 · 单级别课包（卖课）',
+            title: '儿童订阅体系课（卖课）',
+            ref: '斑马 AI · 洪恩 · VIPKid 联名',
+            sku: '单级别课包（144 Lesson）',
+            shortName: '儿童订阅体系课（卖课）',
+            logic: '卖课 · 按级别/体系 · 高 ARPU',
+            desc: '课程+AI 融合 · 单级别 $449.99/年 · Plus 含 2000 Token/月 · AI 加购 Pro/Pass/Speak',
+            anchor: '标价 $899.99/单级别/年',
+            anchorDesc: '售价 $449.99/年 · AI Pass +$19.99 · Pro AI $24.99/月',
+            promo: '体系课首发 -28%',
+            promoDesc: '单级别年付首发 $324.99',
+            freeTrial7d: {
+                comp: '对标 VIPKid 体验课 · 洪恩试学 · Buddy AI',
+                benefits: [
+                    '定级测评 + 个性化学习规划',
+                    '3 节 AI 1v1 体系课（完整课型体验）',
+                    '体验课报告 · 知识点掌握 · 薄弱项建议',
+                    'Dino 陪伴聊天 · Explore 单词/绘本限免'
+                ]
+            },
+            entryPrice: 'Free · 5 Token/天',
+            addon: 'AI Pass 40× · Pro AI 分层 · Speak · BYOM · VIPKid',
+            market: 'T0 高购买力 · VIPKid 韩/沙',
+            launch: '⏳ V1.4+ 体系课包',
+            tiers: [
+                { id: 'T0', monthly: 44.99, yearly: 449.99, listMonthly: 89.99, listYearly: 899.99, launchYearly: 324.99, recommended: true },
+                { id: 'T1', monthly: 42.49, yearly: 424.99, listMonthly: 84.99, listYearly: 849.99, launchYearly: 306.99 },
+                { id: 'T2', monthly: 39.99, yearly: 399.99, listMonthly: 79.99, listYearly: 799.99, launchYearly: 288.99 },
+                { id: 'T3', monthly: 37.49, yearly: 374.99, listMonthly: 74.99, listYearly: 749.99, launchYearly: 270.99 },
+                { id: 'T4', monthly: 34.99, yearly: 349.99, listMonthly: 69.99, listYearly: 699.99, launchYearly: 252.99 }
+            ]
+        },
+        p1: {
+            id: 'p1', cls: 's1', num: 2,
+            badge: '方案 2 · Plus 会员 PRO',
+            title: '儿童app订阅（卖内容）',
+            ref: 'LingoKids · ABCmouse · Epic',
+            sku: 'Plus 会员 PRO · 内容解锁',
+            shortName: '儿童app订阅（卖内容）',
+            logic: '卖内容 · Freemium · 年包 $200+',
+            desc: '课程+AI 融合 · Plus $249.99/年 · 含 500 Token/月 · AI 加购 Pro/Pass/Speak',
+            anchor: '年包售价 $200+',
+            anchorDesc: 'Plus $249.99 · AI Pass +$14.99 · Pro AI $19.99/月',
+            promo: '50% OFF 年付',
+            promoDesc: '前三月年付半价 · 买 12 赠 3/6 个月',
+            freeTrial7d: {
+                comp: '对标 LingoKids Plus 7天 · HOMER 7天 · ABCmouse 30天',
+                benefits: [
+                    '7 天全库内容解锁（864 节体系课）',
+                    '每日最多 3 节 AI 实时互动课',
+                    '1 儿童档案 · 进度报告 · 多设备同步',
+                    'Dino 24h 陪伴 · 离线磨耳朵 Radio'
+                ]
+            },
+            entryPrice: 'Free · 5 Token/天',
+            addon: 'AI Pass 40× · Pro AI 分层 · Speak · BYOM · VIPKid',
+            market: 'T1–T3 欧美/东南亚 · 全球',
+            launch: '✅ V1.2 上线',
+            tiers: [
+                { id: 'T0', monthly: 39.99, yearly: 249.99, launchYearly: 124.99, recommended: true },
+                { id: 'T1', monthly: 36.99, yearly: 229.99, launchYearly: 114.99 },
+                { id: 'T2', monthly: 35.99, yearly: 219.99, launchYearly: 109.99 },
+                { id: 'T3', monthly: 33.99, yearly: 199.99, launchYearly: 99.99 },
+                { id: 'T4', monthly: 31.99, yearly: 179.99, launchYearly: 89.99 }
+            ]
+        },
+        p2: {
+            id: 'p2', cls: 's2', num: 3,
+            badge: '方案 3 · Standard 标准会员',
+            title: '生图额度模式',
+            ref: 'Canva · 即梦 AI',
+            sku: 'Standard 标准会员',
+            shortName: '生图额度模式',
+            logic: '订阅 + Token 池 + 加油包',
+            desc: '864 主课 + 2000 Standard Token/月 · AI 定制课 · 1080P 视频反馈 · 优先渲染',
+            anchor: '订阅 + 额度制',
+            anchorDesc: 'AI 功能按 Token 消耗，成本可控',
+            promo: '年付赠 Token',
+            promoDesc: '年付送 20 个 BYOM Token（价值 $60）',
+            freeTrial7d: {
+                comp: '对标 Canva Pro 试用 · 即梦 AI 新用户额度',
+                benefits: [
+                    '200 Standard Token（约 40 次 AI 互动）',
+                    '2 节 AI 定制课 · 720P 视频反馈',
+                    'Explore 单词练习 / 分级绘本全解锁',
+                    '7 天 Priority 渲染 · 无水印导出'
+                ]
+            },
+            entryPrice: 'Basic $14.99/月',
+            addon: 'Token 包 · AI Pass · Ultra BYOM',
+            market: 'T0 日韩 · AI 敏感用户',
+            launch: '⏳ V1.4 + BYOM',
+            tiers: [
+                { id: 'T0', monthly: 34.99, yearly: 279.99, launchYearly: 199.99, recommended: true },
+                { id: 'T1', monthly: 31.99, yearly: 249.99, launchYearly: 179.99 },
+                { id: 'T2', monthly: 29.99, yearly: 229.99, launchYearly: 164.99 },
+                { id: 'T3', monthly: 27.99, yearly: 199.99, launchYearly: 139.99 },
+                { id: 'T4', monthly: 24.99, yearly: 169.99, launchYearly: 119.99 }
+            ]
+        },
+        p3: {
+            id: 'p3', cls: 's3', num: 4,
+            badge: '方案 4 · Pro 专业版',
+            title: 'AI 工具分层',
+            ref: 'Claude · Cursor · Gemini',
+            sku: 'Pro 专业版',
+            shortName: 'AI 工具分层',
+            logic: 'Free → $20 Pro → $60 Pro+ → $200 Ultra',
+            desc: '864 主课 · Dino Agent · ~300 次 AI 对话/月 · 周报 · Pro+ 含 BYOM 10次/月',
+            anchor: '$20 / $60 / $200',
+            anchorDesc: '清晰升级路径，AI 用量分层',
+            promo: '首月 $9.99',
+            promoDesc: 'Pro 档前三月首月特惠 · 低门槛试用',
+            freeTrial7d: {
+                comp: '对标 Duolingo Max 7天 · Cursor Pro 试用 · Claude Pro',
+                benefits: [
+                    'Pro 档 AI 全功能 7 天（无信用卡预扣）',
+                    '~70 次 Dino Agent 对话 / 纠音',
+                    '周报 · 学习分析 · 薄弱项建议预览',
+                    '5 BYOM Token · Speak 口语包体验'
+                ]
+            },
+            entryPrice: 'Free · 5次 AI/天',
+            addon: 'Pro+ / Ultra 升级 · Speak 口语包',
+            market: 'T0–T1 高购买力 · 家长决策',
+            launch: '⏳ V1.4 + Agent',
+            tiers: [
+                { id: 'T0', monthly: 24.99, yearly: 199.99, launchMonthly: 9.99, recommended: true },
+                { id: 'T1', monthly: 22.99, yearly: 179.99, launchMonthly: 9.99 },
+                { id: 'T2', monthly: 21.99, yearly: 169.99, launchMonthly: 9.99 },
+                { id: 'T3', monthly: 19.99, yearly: 149.99, launchMonthly: 9.99 },
+                { id: 'T4', monthly: 17.99, yearly: 129.99, launchMonthly: 9.99 }
+            ]
+        }
+    };
+
+    const COMPARE_ROWS = [
+        { label: '定价逻辑', key: 'logic' },
+        { label: '7 天免费试用', key: 'freeTrial7d', type: 'trial' },
+        { label: 'T0 年付 · 标价', key: 't0price', type: 'listprice' },
+        { label: 'T0 年付 · 售价', key: 't0price', type: 'saleprice' },
+        { label: 'T0 月付 · 标价 / 售价', key: 't0month', type: 'monthpair' },
+        { label: 'T4 年付 · 标价 / 售价', key: 't4price', type: 'pair' },
+        { label: '增值 / 加购', key: 'addon' },
+        { label: '首发策略', key: 'promo', sub: 'promoDesc' },
+        { label: 'T0 售价带', key: 'bar', type: 'bar' }
+    ];
+
+    function getSchemeList() { return SCHEME_ORDER.map(k => PRICING_SCHEMES[k]); }
+
+    function fmtPrice(n) {
+        return n % 1 === 0 ? n.toFixed(0) : n.toFixed(2);
+    }
+
+    function fmtMoney(n) {
+        const fixed = fmtPrice(n);
+        const parts = fixed.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        return parts.join('.');
+    }
+
+    function listPrice(n) { return n * 2; }
+
+    function tierListYearly(t) { return t.listYearly != null ? t.listYearly : listPrice(t.yearly); }
+    function tierListMonthly(t) { return t.listMonthly != null ? t.listMonthly : listPrice(t.monthly); }
+
+    function renderCompareMatrix(activeId) {
+        const schemes = getSchemeList();
+        const maxT0 = Math.max(...schemes.map(s => s.tiers[0].yearly));
+        let html = '<div class="cm-corner">对比维度</div>';
+        schemes.forEach(s => {
+            const badge = s.num === 1 ? '<div class="cm-badge premium">卖课 · 高 ARPU</div>' : '';
+            html += `<div class="cm-head ${s.cls}${s.id === activeId ? ' active' : ''}" data-scheme="${s.id}" data-panel="${s.id}">
+                <div class="cm-num">${s.num}</div>
+                <div class="cm-title">${s.title}</div>
+                <div class="cm-ref">${s.ref}</div>${badge}
+            </div>`;
+        });
+        COMPARE_ROWS.forEach(row => {
+            html += `<div class="cm-label">${row.label}</div>`;
+            schemes.forEach(s => {
+                const t0 = s.tiers[0], t4 = s.tiers[4];
+                let val = '';
+                if (row.type === 'listprice') {
+                    val = `<div class="cm-price" style="color:var(--muted);text-decoration:line-through;font-weight:600;">$${fmtMoney(tierListYearly(t0))}/年</div>`;
+                } else if (row.type === 'saleprice') {
+                    const launch = t0.launchYearly ? `<span class="cm-tag launch">首发 $${fmtMoney(t0.launchYearly)}</span>` : t0.launchMonthly ? `<span class="cm-tag launch">首月 $${fmtMoney(t0.launchMonthly)}</span>` : '';
+                    val = `<div class="cm-price">$${fmtMoney(t0.yearly)}/年</div><div class="cm-price-sub">$${fmtMoney(t0.monthly)}/月 ${launch}</div>`;
+                } else if (row.type === 'monthpair') {
+                    val = `<div class="cm-list-price">标价 $${fmtMoney(tierListMonthly(t0))}/月</div><div class="cm-price">售价 $${fmtMoney(t0.monthly)}/月</div>`;
+                } else if (row.type === 'pair') {
+                    val = `<div class="cm-list-price">标价 $${fmtMoney(tierListYearly(t4))}/年</div><div class="cm-price">售价 $${fmtMoney(t4.yearly)}/年</div><div class="cm-price-sub">月付 标价 $${fmtMoney(tierListMonthly(t4))} · 售价 $${fmtMoney(t4.monthly)}</div>`;
+                } else if (row.type === 'tags') {
+                    val = s[row.key].map(t => `<span class="cm-tag rec">${t}</span>`).join('');
+                } else if (row.type === 'trial') {
+                    const trial = s[row.key];
+                    const items = trial.benefits.map(b => `<li>${b}</li>`).join('');
+                    val = `<span class="cm-tag comp">7 天免费</span><ul class="cm-trial-list">${items}</ul><span class="cm-trial-comp">${trial.comp}</span>`;
+                } else if (row.type === 'bar') {
+                    const pct = (t0.yearly / maxT0 * 100).toFixed(0);
+                    val = `<div class="compare-bar-row"><div class="compare-bar-bg"><div class="compare-bar-fill ${s.cls}" style="width:${pct}%"></div></div><span style="font-size:11px;font-weight:600">$${fmtMoney(t0.yearly)}</span></div>`;
+                } else if (row.sub) {
+                    val = `<strong>${s[row.key]}</strong><br><span style="color:var(--muted);font-size:11px">${s[row.sub]}</span>`;
+                } else {
+                    val = s[row.key];
+                }
+                html += `<div class="cm-cell${s.id === activeId ? ' highlight' : ''}">${val}</div>`;
+            });
+        });
+        document.getElementById('compareMatrix').innerHTML = html;
+        document.querySelectorAll('.cm-head').forEach(h => {
+            h.addEventListener('click', () => selectScheme(h.dataset.scheme, h.dataset.panel));
+        });
+    }
+
+    function renderTierCards(schemeId) {
+        const scheme = PRICING_SCHEMES[schemeId];
+        const container = document.getElementById('tierCards');
+        container.classList.add('updating');
+
+        requestAnimationFrame(() => {
+            container.innerHTML = scheme.tiers.map(t => {
+                const launchHtml = t.launchYearly
+                    ? `<div class="tier-launch">首发售价 $${fmtMoney(t.launchYearly)} · 标价 $${fmtMoney(listPrice(t.launchYearly))}</div>`
+                    : t.launchMonthly
+                        ? `<div class="tier-launch">首月售价 $${fmtMoney(t.launchMonthly)} · 标价 $${fmtMoney(listPrice(t.launchMonthly))}</div>`
+                        : '';
+                return `
+                    <div class="tier-card${t.recommended ? ' recommended' : ''}">
+                        <div class="tier-sku">${scheme.sku}</div>
+                        <div class="tier-label">${t.id}</div>
+                        <div class="tier-list-price">标价 $${fmtMoney(tierListYearly(t))}/年 · $${fmtMoney(tierListMonthly(t))}/月</div>
+                        <div class="tier-price">售价 $${fmtMoney(t.yearly)}/年</div>
+                        <div class="tier-price-sub">售价 $${fmtMoney(t.monthly)}/月</div>
+                        <div class="tier-countries">${COUNTRIES[t.id]}</div>
+                        ${launchHtml}
+                    </div>`;
+            }).join('');
+
+            document.getElementById('tierSchemeBadge').textContent = scheme.badge;
+            document.getElementById('tierSchemeDesc').textContent = scheme.desc;
+
+            const minY = Math.min(...scheme.tiers.map(t => t.yearly));
+            const maxY = Math.max(...scheme.tiers.map(t => t.yearly));
+            const flash = el => { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 200); };
+            const ovRange = document.getElementById('ovPriceRange');
+            ovRange.textContent = `$${fmtMoney(minY)} – $${fmtMoney(maxY)}`;
+            flash(ovRange);
+            const minTier = scheme.tiers.reduce((a, b) => a.yearly < b.yearly ? a : b);
+            const maxTier = scheme.tiers.reduce((a, b) => a.yearly > b.yearly ? a : b);
+            document.getElementById('ovPriceDesc').textContent = `售价区间 · 标价 $${fmtMoney(tierListYearly(minTier))} – $${fmtMoney(tierListYearly(maxTier))}`;
+            document.getElementById('ovSchemeName').textContent = scheme.shortName;
+            document.getElementById('ovSchemeSku').textContent = scheme.sku;
+            document.getElementById('ovAnchor').textContent = scheme.anchor;
+            document.getElementById('ovAnchorDesc').textContent = scheme.anchorDesc;
+            document.getElementById('ovPromo').textContent = scheme.promo;
+            document.getElementById('ovPromoDesc').textContent = scheme.promoDesc;
+
+            container.classList.remove('updating');
+        });
+    }
+
+    function selectScheme(schemeId, panelId) {
+        document.querySelectorAll('#schemeTabs .tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelector(`#schemeTabs .tab[data-scheme="${schemeId}"]`).classList.add('active');
+        document.getElementById(panelId).classList.add('active');
+        renderTierCards(schemeId);
+        renderCompareMatrix(schemeId);
+    }
+
+    document.querySelectorAll('#schemeTabs .tab').forEach(tab => {
+        tab.addEventListener('click', () => selectScheme(tab.dataset.scheme, tab.dataset.panel));
+    });
+
+    document.querySelectorAll('.comp-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.comp-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.comp-panel').forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            document.getElementById(tab.dataset.comp).classList.add('active');
+        });
+    });
+
+    renderCompareMatrix('p1');
+    renderTierCards('p1');
+</script>
+
+<!-- 通用反馈组件：业务可在页面内语音/打字 + 传图，直接提交进飞书反馈表 -->
+<script src="assets/dino-feedback.js"></script>
+<script>
+    DinoFeedback.init({
+        demo: "定价策略",
+        getContext: () => {
+            const tab = document.querySelector('#schemeTabs .tab.active');
+            if (!tab) return '定价策略 · (未选中方案)';
+            const num = tab.querySelector('.num');
+            const label = (num ? tab.textContent.replace(num.textContent, '') : tab.textContent).trim();
+            return `定价策略 · 当前方案${num ? num.textContent : ''}：${label}`;
+        },
+    });
+</script>
+</body>
+</html>
