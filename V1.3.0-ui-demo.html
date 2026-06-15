@@ -2366,12 +2366,6 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    .all-courses-unit-caption {
-      margin: 2px 0 0;
-      font-size: 0.74rem;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.72);
-    }
     /* V1.3.0 weekly study plan strip (3 lessons unlock together each Monday) */
     .week-plan {
       display: flex;
@@ -4666,7 +4660,9 @@
     .cpr-kicker { font-size: 0.92rem; font-weight: 800; color: #b3690b; margin: 0 0 6px; }
     .cpr-pet { font-size: 5.6rem; line-height: 1; margin: 6px 0 4px; filter: drop-shadow(0 10px 18px rgba(160,110,10,0.32));
       animation: cprFloat 2.4s ease-in-out infinite; }
-    .cpr-name { font-size: 1.3rem; font-weight: 900; color: var(--ink); margin: 0 0 16px; }
+    .cpr-name { font-size: 1.3rem; font-weight: 900; color: var(--ink); margin: 0 0 8px; }
+    .cpr-note { font-size: 0.84rem; font-weight: 700; color: #8a6a2a; margin: 0 0 16px; }
+    .cpr-note[hidden] { display: none; }
     .cpr-box .gbtn { width: min(80%, 220px); margin: 0 auto; }
     @keyframes cprPop { 0% { transform: scale(0.7); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); } }
     @keyframes cprFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
@@ -4690,6 +4686,11 @@
     .pk-round { text-align: center; font-size: 0.66rem; font-weight: 800; color: var(--accent-live);
       background: #fff3e8; border-radius: 999px; padding: 3px 12px; align-self: center; margin-bottom: 8px; }
     .spk-rec-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+    .spk-play-btn { border: 1.5px solid var(--forest); background: #fff; color: var(--forest-deep); cursor: pointer;
+      border-radius: 999px; padding: 8px 18px; font-size: 0.82rem; font-weight: 800; transition: transform 0.12s, background 0.12s; }
+    .spk-play-btn:hover { background: #f0faf2; }
+    .spk-play-btn:active { transform: scale(0.95); }
+    .spk-play-btn.playing { background: var(--forest); color: #fff; animation: micpulse 0.9s ease-in-out infinite; }
     .spk-rec-btn { border: none; cursor: pointer; border-radius: 999px; padding: 13px 30px;
       font-family: var(--font); font-weight: 800; font-size: 0.92rem; color: #fff;
       background: linear-gradient(135deg, #ff8a4d, #ea5c25); box-shadow: 0 12px 26px rgba(234,92,37,0.36);
@@ -4876,7 +4877,8 @@
     .levelup-ring .lr-num { position: relative; z-index: 1; font-family: var(--display); font-weight: 800; font-size: 2.3rem; }
     .levelup-card .lu-label { font-size: 0.8rem; letter-spacing: 0.2em; opacity: 0.85; }
     .levelup-card h2 { font-family: var(--display); font-size: 1.5rem; margin: 4px 0 2px; }
-    .levelup-card .lu-title { font-size: 0.92rem; color: var(--gold-1); font-weight: 700; margin-bottom: 18px; }
+    .levelup-card .lu-title { font-size: 0.92rem; color: var(--gold-1); font-weight: 700; margin-bottom: 6px; }
+    .levelup-card .lu-note { font-size: 0.74rem; color: rgba(255,255,255,0.82); font-weight: 600; margin: 0 0 18px; }
     .levelup-card .gbtn { width: 200px; margin: 0 auto; }
 
     /* ---- bottom nav (4 tabs: Dino / Class / Explore / Play; Profile = top-left avatar) + Dino image icon ---- */
@@ -6027,7 +6029,6 @@
               <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
               <button type="button" class="all-courses-level" id="all-courses-level" aria-label="Switch level or unit">Level 2 · Unit 1 <span class="acl-chevron" aria-hidden="true">›</span></button>
             </div>
-            <p class="all-courses-unit-caption" id="all-courses-unit-caption">All lessons in this unit</p>
           </div>
           <section class="all-courses-list" id="all-courses-list"></section>
         </div>
@@ -6340,16 +6341,19 @@
             <div class="machine" id="machine"><div class="glass" id="machine-glass">🦖</div><div class="slot"></div></div>
             <div class="cap-machine-meta">
               <div class="cap-count">🎟️ 1 Capsule Coin — draw it now!</div>
-              <p class="capd-hint" id="capd-prehint">Draw to reveal your pet — this round's XP &amp; coins are bundled in!</p>
+              <p class="capd-hint" id="capd-prehint">Spin to try for a pet — you might win one! Your round XP &amp; coins are safe either way.</p>
             </div>
             <button class="gbtn gbtn-gold cap-draw-btn" id="btn-draw">Draw 🎰</button>
           </div>
-          <!-- (a) Big pet reveal overlay: large pet first, then "Got it!" → reward page -->
+          <!-- (a) Big reveal overlay: themed by draw outcome (new pet / duplicate /
+               empty). For duplicates & misses it's a gentle, kid-friendly message and
+               no coins are spent or refunded. -->
           <div class="cap-pet-reveal" id="cap-pet-reveal" hidden>
             <div class="cpr-box">
-              <p class="cpr-kicker">🎉 New pet unlocked!</p>
+              <p class="cpr-kicker" id="cpr-kicker">🎉 New pet unlocked!</p>
               <div class="cpr-pet" id="cpr-pet">🦖</div>
               <p class="cpr-name" id="cpr-name">Baby Raptor</p>
+              <p class="cpr-note" id="cpr-note" hidden>Give it a happy high-five! 🖐️</p>
               <button class="gbtn gbtn-gold" id="cpr-ok">Got it!</button>
             </div>
           </div>
@@ -6416,8 +6420,9 @@
             </div>
             <div class="pk-q">
               <div class="pk-round" id="spk-round">Sentence 1 / 3</div>
-              <div class="pk-prompt" id="spk-prompt">🎤 Repeat out loud:<br>“I can speak English with confidence!”</div>
+              <div class="pk-prompt" id="spk-prompt">🔊 Listen, then repeat:<br>“I can speak English with confidence!”</div>
               <div class="spk-rec-area">
+                <button type="button" class="spk-play-btn" id="spk-play">🔊 Play audio</button>
                 <button type="button" class="spk-rec-btn" id="spk-rec">🎤 Hold to record</button>
                 <div class="spk-feedback" id="spk-feedback"></div>
               </div>
@@ -6608,8 +6613,8 @@
           </div>
           <div class="shop-panel">
             <div class="shop-tabs" id="bag-tabs">
-              <button class="shop-tab on" data-cat="pet">Dino Pets</button>
-              <button class="shop-tab" data-cat="skin">Dino Skins</button>
+              <button class="shop-tab on" data-cat="skin">Dino Skins</button>
+              <button class="shop-tab" data-cat="pet">Dino Pets</button>
             </div>
             <div class="shop-panel-body">
               <div class="shop-grid" id="bag-grid"></div>
@@ -6648,12 +6653,15 @@
 
       <!-- ============ GAME TOAST + LEVEL-UP OVERLAY ============ -->
       <div class="g-toast" id="g-toast"></div>
+      <!-- Level-up: a TITLE-only celebration (no coin/XP reward) — it simply tells the
+           child their Dino earned a new level title (称号). -->
       <div class="levelup" id="levelup">
         <div class="levelup-card">
           <div class="levelup-ring"><span class="lr-num" id="lu-num">3</span></div>
           <p class="lu-label">LEVEL UP</p>
           <h2 id="lu-h">Reached Lv.3</h2>
           <p class="lu-title" id="lu-title">Brave Dino</p>
+          <p class="lu-note">🎖️ New title unlocked!</p>
           <button class="gbtn gbtn-gold" id="lu-ok">Awesome!</button>
         </div>
       </div>
@@ -6678,7 +6686,7 @@
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
     const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", avatarFrame: "star" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "pass" };
+    const demoState = { levelUpResult: "pass", capsuleOutcome: "random" };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -9060,8 +9068,40 @@
       const CAP_ROUND_SIZE = 5;
       const CAP_ROUND_XP = 20;
       const CAP_ROUND_COINS = 30;
-      const CAP_DRAW_XP = 40;    // draw bonus XP on top of the round (PRD 经济专题)
-      const CAP_DRAW_COINS = 30; // draw bonus coins on top of the round
+      const CAP_DRAW_XP = 40;    // draw bonus XP on top of the round (only when a NEW pet is won)
+      const CAP_DRAW_COINS = 30; // draw bonus coins (only when a NEW pet is won)
+      // The draw is a gacha (PRD 盲盒概率): a Capsule Coin does NOT guarantee a pet.
+      // Outcomes by probability — win a NEW pet, draw a DUPLICATE you already own, or
+      // come up empty (MISS). Duplicates & misses cost no coins and give no consolation
+      // coins (the round XP/coins are already earned from the quiz). Odds are ops-tunable.
+      const CAP_DRAW_ODDS = { miss: 0.20, dup: 0.25, new: 0.55 };
+      // Shared capsule prize pool (mostly pets, with the occasional skin).
+      const CAP_POOL = [
+        { label: "Baby Raptor", item: "pet-raptor", glass: "🦖" },
+        { label: "Sky Pterosaur", item: "pet-ptero", glass: "🦅" },
+        { label: "Golden Dino", item: "pet-golden", glass: "🐲" },
+        { label: "Knight skin", item: "skin-knight", glass: "🛡️" },
+      ];
+      // Decide a draw outcome, honoring the ⚙︎ States override and reconciling with
+      // what's actually owned so the reveal is truthful (e.g. can't show a "new" pet
+      // when the pool is fully collected).
+      function rollCapsuleOutcome() {
+        const unowned = CAP_POOL.filter((p) => !state.owned.has(p.item));
+        const owned = CAP_POOL.filter((p) => state.owned.has(p.item));
+        const forced = demoState.capsuleOutcome;
+        let kind;
+        if (forced && forced !== "random") kind = forced;
+        else {
+          const r = Math.random();
+          kind = r < CAP_DRAW_ODDS.miss ? "miss"
+            : r < CAP_DRAW_ODDS.miss + CAP_DRAW_ODDS.dup ? "dup" : "new";
+        }
+        if (kind === "new" && !unowned.length) kind = owned.length ? "dup" : "miss";
+        if (kind === "dup" && !owned.length) kind = unowned.length ? "new" : "miss";
+        if (kind === "new") return { kind, pet: unowned[Math.floor(Math.random() * unowned.length)] };
+        if (kind === "dup") return { kind, pet: owned[Math.floor(Math.random() * owned.length)] };
+        return { kind: "miss", pet: null };
+      }
       // A Capsule Coin per 5 CUMULATIVE correct answers (not per round); ops-configurable.
       const CAP_COIN_EVERY = 5;
       let capTotalCorrect = 0;  // lifetime cumulative correct (starts at 0 — a coin needs a full 5 correct, no pre-seed)
@@ -9234,7 +9274,7 @@
       // Capsule machine (entered only with a pending coin; the draw is mandatory).
       // capdVisit* accumulate the round + draw reward to show together AFTER the
       // big pet reveal overlay is dismissed.
-      let capdVisitXp = 0, capdVisitCoins = 0, capdPet = null;
+      let capdVisitXp = 0, capdVisitCoins = 0, capdPet = null, capdOutcome = "new";
       function showCapsuleMachine() {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
         if ($("#capd-prehint")) $("#capd-prehint").hidden = false;
@@ -9250,37 +9290,62 @@
       $("#btn-draw")?.addEventListener("click", () => {
         if (!capDrawPending) return;
         capDrawPending = false;
-        // Draw bonus (always) + a collectible pet/skin.
-        grantXp(CAP_DRAW_XP);
-        grantCoins(CAP_DRAW_COINS);
-        capdVisitXp += CAP_DRAW_XP;
-        capdVisitCoins += CAP_DRAW_COINS;
-        const pets = [
-          { label: "Baby Raptor", item: "pet-raptor", glass: "🦖" },
-          { label: "Sky Pterosaur", item: "pet-ptero", glass: "🦅" },
-          { label: "Golden Dino", item: "pet-golden", glass: "🐲" },
-          { label: "Knight skin", item: "skin-knight", glass: "🛡️" },
-        ];
-        const r = pets[Math.floor(Math.random() * pets.length)];
-        capdPet = r;
-        state.owned.add(r.item);
+        const outcome = rollCapsuleOutcome();
+        capdOutcome = outcome.kind;
+        capdPet = outcome.pet;
+        // Reward + collectible ONLY for a NEW pet. Duplicates & misses add nothing and
+        // deduct nothing (the round's XP/coins were already granted in finishCapsuleRound).
+        if (outcome.kind === "new") {
+          grantXp(CAP_DRAW_XP);
+          grantCoins(CAP_DRAW_COINS);
+          capdVisitXp += CAP_DRAW_XP;
+          capdVisitCoins += CAP_DRAW_COINS;
+          state.owned.add(outcome.pet.item);
+        }
         const g = $("#machine-glass");
-        if (g) g.textContent = r.glass;
+        if (g) g.textContent = outcome.kind === "miss" ? "🫧" : outcome.pet.glass;
         const m = $("#machine");
         if (m) { m.classList.add("shake"); setTimeout(() => m.classList.remove("shake"), 500); }
         if ($("#btn-draw")) $("#btn-draw").hidden = true;
         if ($("#capd-prehint")) $("#capd-prehint").hidden = true;
-        // (a) BIG pet reveal overlay first, to emphasise the pet.
-        if ($("#cpr-pet")) $("#cpr-pet").textContent = r.glass;
-        if ($("#cpr-name")) $("#cpr-name").textContent = r.label;
-        $("#cap-pet-reveal")?.removeAttribute("hidden");
+        // (a) BIG reveal overlay first, themed by outcome.
+        showCapsuleReveal(outcome);
       });
+      // Reveal overlay copy by outcome: celebratory for a new pet; gentle & kid-friendly
+      // for a duplicate or an empty capsule (and it states no coins were used).
+      function showCapsuleReveal(outcome) {
+        const isSkin = outcome.pet && String(outcome.pet.item || "").startsWith("skin");
+        const noun = isSkin ? "skin" : "pet";
+        const kicker = $("#cpr-kicker"), pet = $("#cpr-pet"), nm = $("#cpr-name"), note = $("#cpr-note"), ok = $("#cpr-ok");
+        if (outcome.kind === "new") {
+          if (kicker) kicker.textContent = `🎉 New ${noun} unlocked!`;
+          if (pet) pet.textContent = outcome.pet.glass;
+          if (nm) nm.textContent = outcome.pet.label;
+          if (note) note.hidden = true;
+          if (ok) ok.textContent = "Got it!";
+        } else if (outcome.kind === "dup") {
+          if (kicker) kicker.textContent = `💛 You already have this ${noun}!`;
+          if (pet) pet.textContent = outcome.pet.glass;
+          if (nm) nm.textContent = outcome.pet.label;
+          if (note) { note.hidden = false; note.textContent = "Give it a happy high-five! 🖐️ No coins used."; }
+          if (ok) ok.textContent = "OK!";
+        } else {
+          if (kicker) kicker.textContent = "🫧 Aw, the capsule was empty!";
+          if (pet) pet.textContent = "🥚";
+          if (nm) nm.textContent = "No pet this time";
+          if (note) { note.hidden = false; note.textContent = "Try again next round — no coins used! 🌟"; }
+          if (ok) ok.textContent = "OK!";
+        }
+        $("#cap-pet-reveal")?.removeAttribute("hidden");
+      }
       // (b) "Got it!" dismisses the big reveal overlay → (c) the dedicated result
       // page: congrats + this round's quiz result + rewards won (pet + combined
       // XP/coins). Continue / Play-again are handled there (capr-main / capr-again).
       $("#cpr-ok")?.addEventListener("click", () => {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
-        showCapsuleResult({ pet: capdPet });
+        // Only a NEW pet carries to the result page's prize line + draw bonus; duplicates
+        // & misses fall back to the plain round result (no pet line, no extra coins).
+        showCapsuleResult({ outcome: capdOutcome, pet: capdOutcome === "new" ? capdPet : null });
       });
 
       // ---- Word PK: 5 questions vs a matched rival, no timer (PRD) ----
@@ -9343,6 +9408,19 @@
         "Let's read a story together tonight.",
       ];
       let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false;
+      // Each turn plays the model audio FIRST so the child listens, then repeats (PRD:
+      // 口语 PK 先播放跟读句子/单词音频). The 🔊 button replays it; here playback is simulated.
+      function playSpkAudio() {
+        const fb = $("#spk-feedback");
+        const btn = $("#spk-play");
+        if (btn) btn.classList.add("playing");
+        if (fb) fb.textContent = "🔊 Playing audio…";
+        clearTimeout(playSpkAudio._tm);
+        playSpkAudio._tm = setTimeout(() => {
+          if (btn) btn.classList.remove("playing");
+          if (fb && fb.textContent === "🔊 Playing audio…") fb.textContent = "Now repeat it out loud 🎤";
+        }, 900);
+      }
       function renderSpeakPk() {
         if ($("#spk-me")) $("#spk-me").textContent = spkMe;
         if ($("#spk-op")) $("#spk-op").textContent = spkOp;
@@ -9350,11 +9428,13 @@
         if ($("#spk-op-nm")) $("#spk-op-nm").textContent = pkPlan.rival.name;
         if ($("#spk-round")) $("#spk-round").textContent = `Sentence ${Math.min(spkIdx + 1, SPK_SENTENCES.length)} / ${SPK_SENTENCES.length}`;
         const s = SPK_SENTENCES[spkIdx];
-        if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🎤 Repeat out loud:<br>“${s}”`;
+        if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s}”`;
         if ($("#spk-feedback")) $("#spk-feedback").textContent = "";
         $("#spk-rec")?.classList.remove("listening");
+        if (s) playSpkAudio(); // auto-play the model audio for this turn
       }
       function resetSpeakPk() { spkIdx = 0; spkMe = 0; spkOp = 0; spkBusy = false; renderSpeakPk(); }
+      $("#spk-play")?.addEventListener("click", playSpkAudio);
       $("#spk-rec")?.addEventListener("click", () => {
         if (spkBusy || spkIdx >= SPK_SENTENCES.length) return;
         spkBusy = true;
@@ -9536,8 +9616,9 @@
       });
 
       // ---- Backpack (unified with the Shop: preview-left + grid-right, select an
-      // owned item → Wear/Equip button → success toast). Holds owned pets & skins. ----
-      let bagCat = "pet";
+      // owned item → Wear/Equip button → success toast). Holds owned skins & pets.
+      // Skins lead (default tab) since costumes are the primary collection. ----
+      let bagCat = "skin";
       let bagSel = null;
       // Left Dino mirrors the selection (a skin previews that costume; pets keep the
       // equipped skin since pets are companions, not costumes).
@@ -9610,7 +9691,14 @@
       });
       $$("#bag-tabs .shop-tab").forEach((t) => t.addEventListener("click", () => { bagCat = t.dataset.cat; bagSel = null; renderBackpack(); }));
 
-      window.GAME = { syncHud, grantXp, grantCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS };
+      // Demo bridges for the ⚙︎ States panel quick-jumps (functions below live in this
+      // closure, so they're surfaced via window.GAME for the global state panel).
+      function demoLevelUp() {
+        const lv = Math.min(levelInfo(state.xp).cur.lv + 1, LEVELS[LEVELS.length - 1].lv);
+        showLevelUp(lv); // title-only celebration, no coin/XP reward
+      }
+      function openCapsuleDraw() { capDrawPending = true; showCapsuleMachine(); }
+      window.GAME = { syncHud, grantXp, grantCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw };
       syncHud();
       renderPkRanks();
     })();
@@ -10380,6 +10468,7 @@
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
       if (key === "levelUpResult") return demoState.levelUpResult;
+      if (key === "capsuleOutcome") return demoState.capsuleOutcome;
       return null;
     },
     context: function () {
@@ -10393,6 +10482,7 @@
             ? { label: "跳级定级报告", keys: ["levelUpResult"] }
             : { label: "体验课报告",   keys: [] };
         }
+        if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-study-plan")  return { label: "学习计划",        keys: ["membership", "startLevel"] };
@@ -10431,6 +10521,9 @@
           demoState.levelUpResult = v;
           if (document.querySelector("#screen-trial-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
         } },
+      { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
+        options: [["random", "随机概率"], ["new", "新宠物"], ["dup", "已有宠物"], ["miss", "未抽中"]],
+        apply: function (v) { demoState.capsuleOutcome = v; } },
     ],
     jumps: [
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
@@ -10438,6 +10531,8 @@
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
       { label: "学习计划",    run: function () { enterLandscape(); showStudyPlan(); } },
       { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
+      { label: "Dino 升级",   run: function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); } },
+      { label: "盲盒抽取",    run: function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); } },
       { label: "Paywall",    run: function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
       { label: "会员中心",    run: function () { enterLandscape(); showLandScreen("screen-membership"); } },
     ],
