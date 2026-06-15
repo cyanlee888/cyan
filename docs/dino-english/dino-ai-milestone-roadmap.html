@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dino AI · 产品主线串联视图</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7;
+  --paper-deep:#efe7d6;
+  --ink:#1f2a24;
+  --ink-soft:#4c5a52;
+  --ink-faint:#8a958d;
+  --green:#1d5c3f;
+  --green-bright:#2e8b57;
+  --orange:#d9641e;
+  --orange-soft:#f3e0cf;
+  --red:#b3402a;
+  --yellow:#c98a12;
+  --line:#d8cfba;
+  --card:#fffdf8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Noto Sans SC',sans-serif;
+  font-weight:400;
+  line-height:1.75;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 110% -10%, rgba(46,139,87,.07), transparent),
+    radial-gradient(ellipse 60% 50% at -10% 100%, rgba(217,100,30,.06), transparent);
+}
+/* grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:999;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+
+/* ---------- header ---------- */
+header{padding:72px 0 48px;border-bottom:3px double var(--line);position:relative}
+.kicker{
+  font-family:'Fraunces',serif;font-size:13px;letter-spacing:.35em;text-transform:uppercase;
+  color:var(--green);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:14px
+}
+.kicker::before{content:"";width:42px;height:1px;background:var(--green)}
+h1{
+  font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(34px,5vw,58px);
+  line-height:1.15;letter-spacing:.01em
+}
+h1 em{font-style:normal;color:var(--orange);position:relative}
+.lede{margin-top:22px;max-width:640px;color:var(--ink-soft);font-size:15.5px}
+.meta-row{margin-top:28px;display:flex;gap:28px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-faint);letter-spacing:.06em}
+.meta-row b{color:var(--ink-soft);font-weight:500}
+
+/* ---------- positioning ---------- */
+#positioning{padding:56px 0 60px;border-bottom:1px solid var(--line)}
+#positioning .pos-kicker{
+  font-family:'Fraunces',serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--orange);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:12px
+}
+#positioning .pos-kicker::before{content:"";width:32px;height:1px;background:var(--orange)}
+.pos-statement{
+  font-family:'Noto Serif SC',serif;font-size:clamp(20px,2.8vw,30px);font-weight:700;
+  line-height:1.65;max-width:880px;color:var(--ink)
+}
+.pos-statement mark{
+  background:linear-gradient(transparent 62%, rgba(217,100,30,.28) 62%);color:inherit;padding:0 2px
+}
+.pos-grid{display:grid;grid-template-columns:1fr 1.3fr 1fr;gap:26px;margin-top:40px}
+@media(max-width:920px){.pos-grid{grid-template-columns:1fr}}
+.pos-col h4{
+  font-size:12px;letter-spacing:.2em;color:var(--green);font-weight:700;margin-bottom:12px;
+  display:flex;align-items:center;gap:8px
+}
+.pos-col h4::after{content:"";flex:1;height:1px;background:var(--line)}
+.pos-col ul{list-style:none}
+.pos-col li{position:relative;padding:5px 0 5px 18px;font-size:13.5px;color:var(--ink-soft)}
+.pos-col li::before{content:"◆";position:absolute;left:0;top:5px;font-size:8px;color:var(--green-bright)}
+.pos-col li b{color:var(--ink);font-weight:500}
+.diff-item{
+  background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:12px 16px;margin-bottom:10px;font-size:13px;color:var(--ink-soft);line-height:1.7
+}
+.diff-item .vs{
+  display:block;font-family:'Fraunces','Noto Serif SC',serif;font-size:13.5px;font-weight:600;
+  color:var(--ink);margin-bottom:2px
+}
+.diff-item .vs::before{content:"vs ";color:var(--orange);font-style:italic}
+.moat-rank{counter-reset:moat;list-style:none}
+.moat-rank li{counter-increment:moat;padding:6px 0 6px 32px !important}
+.moat-rank li::before{
+  content:counter(moat) !important;position:absolute;left:0;top:7px;width:20px;height:20px;
+  border-radius:50%;background:var(--green);color:#fff;font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif
+}
+.moat-rank li.amp::before{background:var(--ink-faint)}
+.pos-note{margin-top:10px;font-size:12px;color:var(--ink-faint)}
+.northstar{
+  margin-top:14px;padding:12px 16px;background:var(--paper-deep);border-radius:8px;
+  font-size:13px;color:var(--ink-soft);line-height:1.7
+}
+.northstar b{color:var(--green);font-weight:700}
+
+/* ---------- demo strip（弱化：小缩略图 + 文字行） ---------- */
+.demo-strip{
+  margin-top:22px;display:flex;align-items:center;gap:16px;
+  padding:10px 14px;border-top:1px dashed var(--line);opacity:.82;transition:opacity .25s
+}
+.demo-strip:hover{opacity:1}
+.demo-thumb{
+  position:relative;width:128px;flex-shrink:0;overflow:hidden;cursor:zoom-in;
+  border:1px solid var(--line);border-radius:6px;background:#fff
+}
+.demo-thumb iframe{
+  width:1280px;height:860px;border:0;transform-origin:0 0;pointer-events:none;display:block;background:#fff
+}
+.demo-thumb::after{
+  content:"⤢";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#fff;background:rgba(31,42,36,.35);opacity:0;transition:opacity .25s
+}
+.demo-thumb:hover::after{opacity:1}
+.demo-info{flex:1;min-width:0}
+.demo-info .demo-name{
+  display:block;font-family:'Fraunces','Noto Serif SC',serif;font-size:12.5px;font-weight:600;
+  color:var(--ink-soft);letter-spacing:.05em
+}
+.demo-info .demo-hint{font-size:11.5px;color:var(--ink-faint)}
+.demo-actions{display:flex;gap:8px;flex-shrink:0}
+.demo-actions button,.demo-actions a.btn{
+  font-family:'Noto Sans SC',sans-serif;font-size:11px;letter-spacing:.05em;cursor:pointer;
+  padding:3px 11px;border-radius:99px;border:1px solid var(--ink-faint);background:transparent;
+  color:var(--ink-soft);text-decoration:none;transition:all .2s
+}
+.demo-actions button:hover,.demo-actions a.btn:hover{border-color:var(--green);background:var(--green);color:#fff}
+@media(max-width:600px){.demo-actions{display:none}}
+
+/* ---------- demo modal ---------- */
+#demoModal{
+  position:fixed;inset:0;z-index:1000;background:rgba(31,42,36,.78);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:3vh 3vw
+}
+#demoModal.open{display:flex}
+#demoModal .modal-box{
+  width:100%;height:100%;background:var(--card);border-radius:14px;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.4)
+}
+#demoModal .modal-bar{
+  display:flex;align-items:center;gap:12px;padding:12px 20px;
+  background:var(--paper-deep);border-bottom:1px solid var(--line)
+}
+#demoModal .modal-bar .demo-name{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:14px;font-weight:600;flex:1;color:var(--ink)
+}
+#demoModal .modal-bar button{
+  font-size:12px;cursor:pointer;padding:5px 16px;border-radius:99px;
+  border:1px solid var(--ink-soft);background:transparent;color:var(--ink-soft);transition:all .2s
+}
+#demoModal .modal-bar button:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+#demoModal iframe{flex:1;width:100%;border:0;background:#fff}
+
+/* ---------- timeline nav ---------- */
+nav.tl{
+  position:sticky;top:0;z-index:50;background:rgba(246,241,231,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+nav.tl .wrap{display:flex;overflow-x:auto;gap:0}
+nav.tl a{
+  flex:1;min-width:96px;text-align:center;text-decoration:none;color:var(--ink-soft);
+  padding:14px 8px 12px;font-size:12.5px;letter-spacing:.04em;position:relative;
+  border-left:1px solid var(--line);transition:all .25s;white-space:nowrap
+}
+nav.tl a:first-child{border-left:none}
+nav.tl a b{display:block;font-family:'Fraunces','Noto Serif SC',serif;font-size:16px;font-weight:600;color:var(--ink)}
+nav.tl a:hover{background:var(--paper-deep)}
+nav.tl a.core b{color:var(--orange)}
+nav.tl a.core::after{content:"核心";position:absolute;top:6px;right:6px;font-size:9px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.1em}
+
+/* ---------- sections ---------- */
+main{padding:24px 0 60px}
+section.node{
+  display:grid;grid-template-columns:200px 1fr;gap:0;
+  padding:56px 0 52px;border-bottom:1px solid var(--line);position:relative
+}
+/* timeline spine */
+section.node::before{
+  content:"";position:absolute;left:99px;top:0;bottom:0;width:1px;
+  background:repeating-linear-gradient(to bottom,var(--line) 0 6px,transparent 6px 12px)
+}
+.node-marker{position:relative;padding-right:40px}
+.node-marker .dot{
+  position:absolute;left:92px;top:14px;width:15px;height:15px;border-radius:50%;
+  background:var(--paper);border:3px solid var(--green);z-index:2
+}
+section.core .node-marker .dot{border-color:var(--orange);background:var(--orange);box-shadow:0 0 0 6px rgba(217,100,30,.15)}
+section.done .node-marker .dot{background:var(--green)}
+.node-date{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:30px;font-weight:900;line-height:1.1;
+  color:var(--ink);text-align:right;padding-right:0;width:84px
+}
+.node-sub{width:84px;text-align:right;font-size:11.5px;color:var(--ink-faint);letter-spacing:.08em;margin-top:6px;line-height:1.5}
+section.core .node-date{color:var(--orange)}
+
+.node-body{padding-left:48px}
+.node-title{
+  font-family:'Noto Serif SC',serif;font-size:clamp(22px,2.6vw,30px);font-weight:700;line-height:1.3;margin-bottom:6px
+}
+.node-title .tag{
+  display:inline-block;vertical-align:4px;margin-left:12px;font-family:'Noto Sans SC',sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:.12em;padding:3px 10px;border-radius:99px;
+  border:1px solid var(--green);color:var(--green)
+}
+section.core .node-title .tag{border-color:var(--orange);color:var(--orange);background:var(--orange-soft)}
+section.done .node-title .tag{background:var(--green);color:#fff}
+
+.story{
+  margin:18px 0 26px;padding:18px 24px;background:var(--card);border-left:4px solid var(--green);
+  font-family:'Noto Serif SC',serif;font-size:15.5px;line-height:1.9;color:var(--ink);
+  box-shadow:0 2px 12px rgba(31,42,36,.05)
+}
+section.core .story{border-left-color:var(--orange)}
+.story .lab{
+  display:block;font-family:'Noto Sans SC',sans-serif;font-size:11px;letter-spacing:.25em;
+  color:var(--ink-faint);margin-bottom:6px;font-weight:500
+}
+
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:860px){
+  .cols{grid-template-columns:1fr}
+  section.node{grid-template-columns:1fr}
+  section.node::before{display:none}
+  .node-marker{display:flex;gap:14px;align-items:baseline;padding:0 0 14px}
+  .node-marker .dot{display:none}
+  .node-date,.node-sub{width:auto;text-align:left}
+  .node-body{padding-left:0}
+}
+.block h4{
+  font-size:12px;letter-spacing:.2em;color:var(--green);font-weight:700;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px
+}
+.block h4::after{content:"";flex:1;height:1px;background:var(--line)}
+.block ul{list-style:none}
+.block li{
+  position:relative;padding:5px 0 5px 20px;font-size:14px;color:var(--ink-soft)
+}
+.block li::before{content:"◆";position:absolute;left:0;top:5px;font-size:9px;color:var(--green-bright)}
+.block.dep li::before{content:"⇆";color:var(--ink-faint);font-size:12px;top:4px}
+.block li b{color:var(--ink);font-weight:500}
+.block li .who{font-size:12px;color:var(--ink-faint);margin-left:6px}
+
+.risk{
+  margin-top:22px;padding:14px 20px;background:#fbeee8;border:1px dashed var(--red);
+  border-radius:6px;font-size:13.5px;color:#7c3322;line-height:1.8
+}
+.risk b{color:var(--red)}
+
+/* ---------- gaps section ---------- */
+#gaps{padding:72px 0 40px}
+#gaps .sec-head{margin-bottom:36px}
+#gaps h2{
+  font-family:'Noto Serif SC',serif;font-size:clamp(26px,3.4vw,40px);font-weight:900;line-height:1.25
+}
+#gaps h2 em{font-style:normal;color:var(--red)}
+#gaps .sec-head p{color:var(--ink-soft);margin-top:10px;max-width:560px;font-size:14.5px}
+.gap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+@media(max-width:860px){.gap-grid{grid-template-columns:1fr}}
+.gap-card{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px 26px;
+  box-shadow:0 3px 16px rgba(31,42,36,.05);position:relative;overflow:hidden
+}
+.gap-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+.gap-card.lv-red::before{background:var(--red)}
+.gap-card.lv-yellow::before{background:var(--yellow)}
+.gap-card.lv-orange::before{background:var(--orange)}
+.gap-card.lv-grey::before{background:var(--ink-faint)}
+.gap-card h3{
+  font-family:'Noto Serif SC',serif;font-size:17px;font-weight:700;margin-bottom:14px;
+  display:flex;align-items:center;gap:10px
+}
+.pill{font-size:10.5px;font-weight:500;letter-spacing:.12em;padding:2px 9px;border-radius:99px;color:#fff}
+.lv-red .pill{background:var(--red)}
+.lv-yellow .pill{background:var(--yellow)}
+.lv-orange .pill{background:var(--orange)}
+.lv-grey .pill{background:var(--ink-faint)}
+.gap-card ol{padding-left:20px}
+.gap-card li{font-size:13.5px;color:var(--ink-soft);padding:4px 0}
+.gap-card li b{color:var(--ink);font-weight:500}
+
+/* ---------- footer ---------- */
+footer{
+  border-top:3px double var(--line);padding:36px 0 56px;display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--ink-faint);letter-spacing:.05em
+}
+footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-weight:600}
+
+/* ---------- in-content links ---------- */
+.block a{
+  color:var(--green);font-weight:600;text-decoration:none;
+  border-bottom:1px dashed var(--green);padding-bottom:1px;white-space:nowrap
+}
+.block a:hover{border-bottom-style:solid}
+
+/* ---------- plan divider ---------- */
+.plan-divider{
+  display:flex;align-items:center;gap:18px;padding:46px 0 8px;
+}
+.plan-divider::before,.plan-divider::after{
+  content:"";flex:1;height:0;border-top:2px dashed var(--orange);opacity:.45
+}
+.plan-divider span{
+  font-family:'Noto Serif SC',serif;font-size:14px;font-weight:700;color:var(--orange);
+  background:var(--orange-soft);border:1px solid var(--orange);border-radius:99px;
+  padding:7px 22px;letter-spacing:.08em;white-space:nowrap
+}
+@media(max-width:600px){.plan-divider span{font-size:12px;padding:6px 14px}}
+
+/* reveal animation */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Dino AI · Product Roadmap</div>
+  <h1>产品主线<em>串联</em>视图</h1>
+  <p class="lede">以「上线节点」为主线，把里程碑串成一条产品故事线——每个节点回答三件事：用户体验发生了什么变化、产品交付了什么、哪些团队在协同支撑。</p>
+  <div class="meta-row">
+    <span>来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b></span>
+    <span>整理 <b>李双</b></span>
+    <span>更新 <b>2026.06.12</b></span>
+  </div>
+</header>
+
+<!-- ============ 产品定位 ============ -->
+<section id="positioning" class="reveal">
+  <div class="pos-kicker">Positioning · 产品定位</div>
+  <p class="pos-statement">面向 3–12 岁非英语母语国家儿童的<mark>实时互动 AI 外教课</mark>产品——用 AI 数字人老师，以约真人外教 <mark>1/10 的价格</mark>，提供「每节课都开口、每节课有反馈」的结构化英语学习体验。</p>
+  <div class="pos-grid">
+    <div class="pos-col">
+      <h4>目标用户</h4>
+      <ul>
+        <li><b>付费决策人</b>：重视子女英语教育、但被真人外教高价或排课不便劝退的家长</li>
+        <li><b>使用者</b>：3–12 岁儿童（产品风格正从混龄向儿童化迁移）</li>
+        <li><b>首发市场</b>：韩国、沙特（T0 定价 ~$9.99）</li>
+      </ul>
+      <div class="northstar"><b>北极星指标 · MPW</b><br>Meaningful Minutes per Week——有效学习分钟数，而非泛 DAU</div>
+    </div>
+    <div class="pos-col">
+      <h4>差异化 · 为什么是我们</h4>
+      <div class="diff-item"><span class="vs">真人外教 1v1</span>价格 1/10、随时可上、无需预约；AI 老师有记忆和一致性</div>
+      <div class="diff-item"><span class="vs">录播启蒙 App</span>不是看视频点选，而是实时对话——孩子说，老师即时回应、纠错、鼓励（Teaching Moves）</div>
+      <div class="diff-item"><span class="vs">通用 AI 对话产品</span>有 CEFR/GSE 对标的 864 节结构化课程体系 + 定级测评 + 学习报告，是「课」不是「聊天玩具」</div>
+    </div>
+    <div class="pos-col">
+      <h4>护城河排序</h4>
+      <ul class="moat-rank">
+        <li><b>教学动作引擎</b>（Thinker 模型，从「能对话」到「会教学」）</li>
+        <li><b>自有课程体系与定级数据</b></li>
+        <li class="amp">定制 TTS / Avatar 的儿童亲和力</li>
+        <li class="amp">课后练习与游戏化生态</li>
+      </ul>
+      <p class="pos-note">前两者是真壁垒，后两者是体验放大器。</p>
+    </div>
+  </div>
+</section>
+</div>
+
+<nav class="tl">
+  <div class="wrap">
+    <a href="#n610"><b>6/10</b>过程版 · 已交付</a>
+    <a href="#n621"><b>6/24</b>过程版</a>
+    <a href="#n630" class="core"><b>6/30</b>核心上线</a>
+    <a href="#n709"><b>7/9</b>TTS 节点</a>
+    <a href="#n715"><b>7月中</b>~7.15</a>
+  </div>
+</nav>
+
+<div class="wrap">
+<main>
+
+<!-- ============ 6/10 ============ -->
+<section class="node done reveal" id="n610">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">6/10</div>
+    <div class="node-sub">过程版<br>已交付</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title">能跑通的最小链路<span class="tag">已上线</span></div>
+    <div class="story"><span class="lab">用户故事</span>用户能注册登录，登录后直接选老师进一节课，跑通提审流程。</div>
+    <div class="cols">
+      <div class="block">
+        <h4>产品侧交付</h4>
+        <ul>
+          <li><b>直接登录注册页</b>（无价值宣传，先通链路）</li>
+          <li><b>登录后直接选老师进课</b>，新用户无断链</li>
+          <li><b>通用设置</b>（个人中心起步）</li>
+          <li><b>GA4 接入</b> + 产品核心功能埋点</li>
+        </ul>
+      </div>
+      <div class="block dep">
+        <h4>跨团队依赖（已到位）</h4>
+        <ul>
+          <li><b>1 节体验课交付</b>，提审跑通<span class="who">Rudy & Heidi</span></li>
+          <li><b>5 节剑桥课 L1 上线</b><span class="who">Heidi & Liz</span></li>
+          <li><b>TTS 首字延迟 &lt;1.5s</b>（filler words 提速）<span class="who">Jenny & 董鹏</span></li>
+          <li><b>课程大纲拆解</b>，lesson flow 模块确定<span class="who">Liz & Heidi</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo-strip">
+      <div class="demo-thumb" onclick="openDemo('V1.1.0-ui-demo.html','V1.1.0 · UI Demo')">
+        <iframe data-src="V1.1.0-ui-demo.html" loading="lazy" title="V1.1.0 UI Demo"></iframe>
+      </div>
+      <div class="demo-info">
+        <span class="demo-name">V1.1.0 · UI Demo</span>
+        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+      </div>
+      <div class="demo-actions">
+        <button onclick="openDemo('V1.1.0-ui-demo.html','V1.1.0 · UI Demo')">放大查看</button>
+        <a class="btn" href="V1.1.0-ui-demo.html" target="_blank">新窗口打开</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6/24 ============ -->
+<section class="node reveal" id="n621">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">6/24</div>
+    <div class="node-sub">过程版</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title">会说服 + 能收钱</div>
+    <div class="story"><span class="lab">用户故事</span>新用户首次被「说服」——价值宣传页 + 注册流程上线；付费通道第一次打通（6 节 L1 基础支付）；上完课有报告。</div>
+    <div class="cols">
+      <div class="block">
+        <h4>产品侧交付</h4>
+        <ul>
+          <li><b>价值宣传页 + 注册流程</b>，建立宣传页→注册转化基线</li>
+          <li><b>基础支付方案</b>（面向 6 节 L1），支付流程无断链</li>
+          <li><b>Explore 单词练习内容丰富</b>，每个 Level 有可练词包</li>
+          <li><b>个人信息资料展示</b>，采集信息同步展示无错误</li>
+        </ul>
+      </div>
+      <div class="block dep">
+        <h4>跨团队依赖</h4>
+        <ul>
+          <li><b>每节课后报告生成</b>（词汇/发音/进步点）<span class="who">Liz</span></li>
+          <li><b>TTS 持续迭代</b><span class="who">Jenny</span></li>
+          <li><b>产品手册 1.0 英文通用版</b>：定位 & 核心卖点 & 课程体系、目标用户、竞品差异化话术；三方评审通过可作对外统一口径<span class="who">张歆玥</span></li>
+          <li><b>MVP 用研启动</b>（聚焦老师/课程）：覆盖 2 个目标市场、样本 &gt;20，产出可排期的优化建议<span class="who">张歆玥</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo-strip">
+      <div class="demo-thumb" onclick="openDemo('V1.2.0-ui-demo.html','V1.2.0 · UI Demo')">
+        <iframe data-src="V1.2.0-ui-demo.html" loading="lazy" title="V1.2.0 UI Demo"></iframe>
+      </div>
+      <div class="demo-info">
+        <span class="demo-name">V1.2.0 · UI Demo</span>
+        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+      </div>
+      <div class="demo-actions">
+        <button onclick="openDemo('V1.2.0-ui-demo.html','V1.2.0 · UI Demo')">放大查看</button>
+        <a class="btn" href="V1.2.0-ui-demo.html" target="_blank">新窗口打开</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6/30 ============ -->
+<section class="node core reveal" id="n630">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">6/30</div>
+    <div class="node-sub">核心上线<br>全表最重一列</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title">完整验证闭环<span class="tag">⬤ 核心节点</span></div>
+    <div class="story"><span class="lab">用户故事</span>新用户走完：注册 → Onboarding（含模糊定级）→ 6 节体验课（新 UI + 11-labs 声音 + 基础教学动作）→ 体验课报告（高光表现 + AI 点评 + 学习计划预览 + 开课 CTA）→ 付费解锁 → 课后去 Explore 练单词听 Radio、玩卡皮巴拉和 PK 游戏 → 学习有金币和成长。</div>
+    <div class="cols">
+      <div class="block">
+        <h4>产品侧交付</h4>
+        <ul>
+          <li><b>UI 风格化改动完成</b>，新 App 视觉统一</li>
+          <li><b>模糊定级并入 Onboarding</b>，跑通无断链，新用户首课完成率建基线；补充本地登录方式（与 Dino AI 一致）</li>
+          <li><b>完整定价方案确认 + 支付链路打通</b>，沙特/韩国货币支持 · <a href="https://cyanlee888.github.io/cyan/dino-english/dino-english-pricing-strategy.html" target="_blank" rel="noopener">定价方案 ↗</a></li>
+          <li><b>首页 Dino 对话入口</b>，一轮对话响应 &lt;3s</li>
+          <li><b>学习计划基础版 + 课程解锁逻辑</b>，控制课消节奏</li>
+          <li><b>Explore 整合</b>：背单词 + Radio 并入，Radio 改名全端生效，功能渗透率建基线</li>
+          <li><b>头像框展示及更换</b>，与激励体系数据同步</li>
+        </ul>
+      </div>
+      <div class="block dep">
+        <h4>跨团队依赖</h4>
+        <ul>
+          <li><b>6 节体验课 + 注册后定级推荐</b><span class="who">Rudy & Heidi</span></li>
+          <li><b>体验课报告上线</b>：本节高光 + AI 老师点评 + 学习计划预览（仅露前 2 课，解锁需付费）+「立即开课」CTA<span class="who">Liz</span></li>
+          <li><b>TTS 接入 11-labs</b> 提升声音表现力，推动声网修复 TTS bug<span class="who">Jenny</span></li>
+          <li><b>教学动作跑通</b>（动作库配合课程知识点类型计算）：Recast + 鼓励 + 基础纠错<span class="who">Jenny & Heidi</span></li>
+          <li><b>成长体系 + 金币兑换上线</b><span class="who">甜姐 & 晓宇</span></li>
+          <li><b>卡皮巴拉 + PK 游戏上线</b>，可独立运行不影响正课，游戏 DAU/参与率有数据<span class="who">甜姐 & 晓宇</span></li>
+          <li><b>6 Level × Unit1 完成</b> · CMS v1.0（预计 6.23 前完成前后端联调并开始测试，6.30 前交付教研使用）<span class="who">Heidi · Rudy & 建泉</span></li>
+          <li><b>监控课程平台产品方案</b>：需求背景 / 实现方案 / roadmap + MVP 范围<span class="who">Coco & 鹏哥</span></li>
+          <li><b>课中埋点覆盖率 70%</b> · 首页 Dino eval 框架<span class="who">数据组</span></li>
+          <li><b>国际版物料下沉</b>：定位 / 功能 / 亮点 / 体验 / 售卖五类物料齐全、版本统一<span class="who">张歆玥</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo-strip">
+      <div class="demo-thumb" onclick="openDemo('V1.3.0-ui-demo.html','V1.3.0 · UI Demo')">
+        <iframe data-src="V1.3.0-ui-demo.html" loading="lazy" title="V1.3.0 UI Demo"></iframe>
+      </div>
+      <div class="demo-info">
+        <span class="demo-name">V1.3.0 · UI Demo</span>
+        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+      </div>
+      <div class="demo-actions">
+        <button onclick="openDemo('V1.3.0-ui-demo.html','V1.3.0 · UI Demo')">放大查看</button>
+        <a class="btn" href="V1.3.0-ui-demo.html" target="_blank">新窗口打开</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 规划分割线 ============ -->
+<div class="plan-divider reveal">
+  <span>以下内容为大体规划 · 优先级及事项可讨论</span>
+</div>
+
+<!-- ============ 7/9 ============ -->
+<section class="node reveal" id="n709">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">7/9</div>
+    <div class="node-sub">TTS 上线<br>生产环境</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title">体验换代</div>
+    <div class="story"><span class="lab">用户故事</span>声音换代（定制 TTS 正式替换 Minimax）、定级从「模糊」变「精准」（CEFR/GSE 对标）、第一节课有引导；Dino 说话更对路——英文优先、难度匹配孩子等级；课后能读按定级推荐的分级绘本；沙特/韩国本地支付上线、开始收到 Push 提醒。</div>
+    <div class="cols">
+      <div class="block">
+        <h4>产品侧交付</h4>
+        <ul>
+          <li><b>精准定级推荐 + 第一节课引导</b>，推荐课命中率可验证</li>
+          <li><b>分级绘本 / 故事阅读上线</b>（Explore 补充能力）：按定级自动推荐难度，对留存有正提升</li>
+          <li><b>多市场定价（沙特/韩国）+ 本地支付接入</b>，本地货币计价正确</li>
+          <li><b>Dino 重要 Bugfix</b>：回复坚持英文优先（母语不自动跟随）；按用户等级 L1-L6 控制回复语言难度</li>
+          <li><b>个人资料编辑</b>，与采集信息同步</li>
+          <li><b>Push 通知系统接入</b>，送达率 &gt;90%</li>
+        </ul>
+      </div>
+      <div class="block dep">
+        <h4>跨团队依赖</h4>
+        <ul>
+          <li><b>定制 TTS 云端部署（非流式）并正式替换 Minimax</b>：自然度 ≥4.5、异常 &lt;1%、情感表达 ≥4.5、全课覆盖<span class="who">Jenny & 夏老师团队</span></li>
+          <li><b>2D Spine 口型同步上线</b>：9 种基础口型 + 9×9 中间态；口型 + 表情动作完整、每位老师差异化小动作，评分目标 3.0<span class="who">Jenny & 晓宇</span></li>
+          <li><b>体验课报告完善</b>（客观 + AI 评语）<span class="who">Heidi</span></li>
+          <li><b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span></li>
+          <li><b>核心漏斗看板</b>：first open→注册→试用→转化<span class="who">数据组</span></li>
+          <li><b>PostHog 接入</b>，session replay 可查询<span class="who">数据组</span></li>
+          <li><b>本土定制化物料下沉</b>：本地化话术 / 痛点适配 / 合规与文化注意事项<span class="who">张歆玥</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7月中 ============ -->
+<section class="node reveal" id="n715">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">7月中</div>
+    <div class="node-sub">~7.15</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title">家长价值闭环 + 留存钩子上线</div>
+    <div class="story"><span class="lab">用户故事</span>家长每周一收到学习周报（个人中心可查）；孩子课上的弱项自动变成课后复习任务（错词本），排行榜和每日连胜开始把孩子卷入回访；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它。</div>
+    <div class="cols">
+      <div class="block">
+        <h4>产品侧交付</h4>
+        <ul>
+          <li><b>风格本地化</b>：沙特/韩国视觉走查，本地文案排版无溢出</li>
+          <li><b>错词本 / 课后弱项联动</b>：课中弱项一键进练习，复习任务完成率有数据、对留存有正提升</li>
+          <li><b>排行榜 + 每日连胜上线</b>：数据准确、连胜中断有挽回提醒，连胜用户留存可分组查看</li>
+          <li><b>Dino persona 设计 + 老友感记忆</b>：能引用上次学习信息，有背景知识与个人偏好，形成双向记忆</li>
+          <li><b>试用转付费流程优化</b>，转化率有提升</li>
+          <li><b>家长周报入口</b>（个人中心）</li>
+        </ul>
+      </div>
+      <div class="block dep">
+        <h4>跨团队依赖</h4>
+        <ul>
+          <li><b>家长端周报上线</b>，每周一推送<span class="who">Liz</span>（与个人中心入口同节点 ✓）</li>
+          <li><b>CRM 初版上线</b>，能协助销售管理 Leads<span class="who">范迪儿（晓宇团队借调）</span></li>
+          <li><b>多老师音色区分</b><span class="who">Jenny</span></li>
+          <li><b>6 Level × Unit2 完成</b><span class="who">Heidi</span></li>
+          <li><b>管台稳定支持教研快速出课</b><span class="who">Rudy</span></li>
+          <li><b>课程指标看板 + AppsFlyer 归因</b>，可做 CAC 分析<span class="who">数据组</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="sig">Dino AI · Product Milestone Threading View</span>
+</footer>
+</div>
+
+<div id="demoModal" onclick="if(event.target===this)closeDemo()">
+  <div class="modal-box">
+    <div class="modal-bar">
+      <span class="dots" style="display:flex;gap:5px">
+        <i style="width:9px;height:9px;border-radius:50%;background:#e0604f"></i>
+        <i style="width:9px;height:9px;border-radius:50%;background:#e3b341"></i>
+        <i style="width:9px;height:9px;border-radius:50%;background:#5fb878"></i>
+      </span>
+      <span class="demo-name" id="modalTitle"></span>
+      <button onclick="closeDemo()">关闭 ✕</button>
+    </div>
+    <iframe id="modalFrame" title="UI Demo 放大查看"></iframe>
+  </div>
+</div>
+
+<script>
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* demo 缩略图：懒加载 + 按容器宽度等比缩放 */
+const DEMO_W=1280, DEMO_H=860;
+function fitDemos(){
+  document.querySelectorAll('.demo-thumb').forEach(f=>{
+    const ifr=f.querySelector('iframe');
+    const scale=f.clientWidth/DEMO_W;
+    ifr.style.transform=`scale(${scale})`;
+    f.style.height=(DEMO_H*scale)+'px';
+  });
+}
+const demoIO=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      const ifr=e.target.querySelector('iframe');
+      if(ifr&&!ifr.src)ifr.src=ifr.dataset.src;
+      demoIO.unobserve(e.target);
+    }
+  })
+},{rootMargin:'300px'});
+document.querySelectorAll('.demo-thumb').forEach(f=>demoIO.observe(f));
+window.addEventListener('resize',fitDemos);
+fitDemos();
+
+/* demo 放大弹窗 */
+function openDemo(src,title){
+  document.getElementById('modalFrame').src=src;
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('demoModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDemo(){
+  document.getElementById('demoModal').classList.remove('open');
+  document.getElementById('modalFrame').src='';
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDemo()});
+</script>
+
+<!-- 通用反馈组件：页面内语音/打字 + 传图，直接提交进飞书《Dino English Demo 反馈收集》多维表格 -->
+<script src="assets/dino-feedback.js"></script>
+<script>
+DinoFeedback.init({
+  demo: "里程碑串联视图",
+  getContext: () => {
+    let cur = "产品定位";
+    document.querySelectorAll("section.node").forEach(s => {
+      if (s.getBoundingClientRect().top < window.innerHeight * 0.45) {
+        const d = s.querySelector(".node-date");
+        const t = s.querySelector(".node-title");
+        cur = (d ? d.textContent.trim() : "") + " " + (t ? t.textContent.trim() : "");
+      }
+    });
+    return "串联视图 · " + cur;
+  },
+});
+</script>
+</body>
+</html>
