@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dino AI · 产品主线串联视图</title>
+<title data-zh="Dino AI · 产品主线串联视图">Dino AI · Product Throughline</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,900&display=swap" rel="stylesheet">
@@ -179,7 +179,8 @@ nav.tl a:first-child{border-left:none}
 nav.tl a b{display:block;font-family:'Fraunces','Noto Serif SC',serif;font-size:16px;font-weight:600;color:var(--ink)}
 nav.tl a:hover{background:var(--paper-deep)}
 nav.tl a.core b{color:var(--orange)}
-nav.tl a.core::after{content:"核心";position:absolute;top:6px;right:6px;font-size:9px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.1em}
+nav.tl a.core::after{content:"CORE";position:absolute;top:6px;right:6px;font-size:9px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.1em}
+html[lang="zh-CN"] nav.tl a.core::after{content:"核心"}
 
 /* ---------- sections ---------- */
 main{padding:24px 0 60px}
@@ -319,6 +320,21 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 }
 @media(max-width:600px){.plan-divider span{font-size:12px;padding:6px 14px}}
 
+/* ---------- language toggle ---------- */
+.lang-toggle{
+  position:fixed;top:14px;right:16px;z-index:70;display:flex;gap:2px;
+  background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:9999px;
+  padding:3px;box-shadow:0 6px 20px rgba(31,42,36,.14);backdrop-filter:blur(6px)
+}
+.lang-toggle button{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:12.5px;font-weight:600;letter-spacing:.04em;
+  color:var(--ink-soft);background:transparent;border:none;cursor:pointer;
+  padding:5px 13px;border-radius:9999px;line-height:1;transition:all .2s
+}
+.lang-toggle button:hover{color:var(--green)}
+.lang-toggle button.on{background:var(--green);color:#fff}
+@media(max-width:600px){.lang-toggle{top:10px;right:10px}.lang-toggle button{padding:5px 11px;font-size:12px}}
+
 /* reveal animation */
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
@@ -326,47 +342,52 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 </head>
 <body>
 
+<div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+  <button type="button" data-lang="en" class="on">EN</button>
+  <button type="button" data-lang="zh">中</button>
+</div>
+
 <div class="wrap">
 <header>
   <div class="kicker">Dino AI · Product Roadmap</div>
-  <h1>产品主线<em>串联</em>视图</h1>
-  <p class="lede">以「上线节点」为主线，把里程碑串成一条产品故事线——每个节点回答三件事：用户体验发生了什么变化、产品交付了什么、哪些团队在协同支撑。</p>
+  <h1 data-zh="产品主线<em>串联</em>视图">The Product <em>Throughline</em></h1>
+  <p class="lede" data-zh="以「上线节点」为主线，把里程碑串成一条产品故事线——每个节点回答三件事：用户体验发生了什么变化、产品交付了什么、哪些团队在协同支撑。">Organized around launch milestones, this view threads every release into one product story line. Each node answers three things: what changed for the user, what the product shipped, and which teams collaborated to support it.</p>
   <div class="meta-row">
-    <span>来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b></span>
-    <span>整理 <b>李双</b></span>
-    <span>更新 <b>2026.06.12</b></span>
+    <span data-zh="来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b>">Source <b>AI Milestones v2.0 · Li Shuang</b></span>
+    <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
+    <span data-zh="更新 <b>2026.06.12</b>">Updated <b>2026.06.12</b></span>
   </div>
 </header>
 
 <!-- ============ 产品定位 ============ -->
 <section id="positioning" class="reveal">
-  <div class="pos-kicker">Positioning · 产品定位</div>
-  <p class="pos-statement">面向 3–12 岁非英语母语国家儿童的<mark>实时互动 AI 外教课</mark>产品——用 AI 数字人老师，以约真人外教 <mark>1/10 的价格</mark>，提供「每节课都开口、每节课有反馈」的结构化英语学习体验。</p>
+  <div class="pos-kicker" data-zh="Positioning · 产品定位">Positioning · Who We Are</div>
+  <p class="pos-statement" data-zh="面向 3–12 岁非英语母语国家儿童的<mark>实时互动 AI 外教课</mark>产品——用 AI 数字人老师，以约真人外教 <mark>1/10 的价格</mark>，提供「每节课都开口、每节课有反馈」的结构化英语学习体验。">A <mark>real-time, interactive AI English class</mark> for children aged 3–12 in non-English-speaking countries — an AI avatar teacher delivers a structured English-learning experience where kids speak up and get feedback in every lesson, at about <mark>1/10 the price</mark> of a live tutor.</p>
   <div class="pos-grid">
     <div class="pos-col">
-      <h4>目标用户</h4>
+      <h4 data-zh="目标用户">Target Users</h4>
       <ul>
-        <li><b>付费决策人</b>：重视子女英语教育、但被真人外教高价或排课不便劝退的家长</li>
-        <li><b>使用者</b>：3–12 岁儿童（产品风格正从混龄向儿童化迁移）</li>
-        <li><b>首发市场</b>：韩国、沙特（T0 定价 ~$9.99）</li>
+        <li data-zh="<b>付费决策人</b>：重视子女英语教育、但被真人外教高价或排课不便劝退的家长"><b>The buyer</b>: parents who value their child's English education but are put off by the price or scheduling hassle of human tutors</li>
+        <li data-zh="<b>使用者</b>：3–12 岁儿童（产品风格正从混龄向儿童化迁移）"><b>The user</b>: children aged 3–12 (the product style is shifting from mixed-age toward kid-focused)</li>
+        <li data-zh="<b>首发市场</b>：韩国、沙特（T0 定价 ~$9.99）"><b>Launch markets</b>: Korea & Saudi Arabia (T0 pricing ~$9.99)</li>
       </ul>
-      <div class="northstar"><b>北极星指标 · MPW</b><br>Meaningful Minutes per Week——有效学习分钟数，而非泛 DAU</div>
+      <div class="northstar" data-zh="<b>北极星指标 · MPW</b><br>Meaningful Minutes per Week——有效学习分钟数，而非泛 DAU"><b>North Star · MPW</b><br>Meaningful Minutes per Week — real learning minutes, not vanity DAU</div>
     </div>
     <div class="pos-col">
-      <h4>差异化 · 为什么是我们</h4>
-      <div class="diff-item"><span class="vs">真人外教 1v1</span>价格 1/10、随时可上、无需预约；AI 老师有记忆和一致性</div>
-      <div class="diff-item"><span class="vs">录播启蒙 App</span>不是看视频点选，而是实时对话——孩子说，老师即时回应、纠错、鼓励（Teaching Moves）</div>
-      <div class="diff-item"><span class="vs">通用 AI 对话产品</span>有 CEFR/GSE 对标的 864 节结构化课程体系 + 定级测评 + 学习报告，是「课」不是「聊天玩具」</div>
+      <h4 data-zh="差异化 · 为什么是我们">Differentiation · Why Us</h4>
+      <div class="diff-item" data-zh="<span class=&quot;vs&quot;>真人外教 1v1</span>价格 1/10、随时可上、无需预约；AI 老师有记忆和一致性"><span class="vs">Human 1-on-1 tutors</span>1/10 the price, available anytime, no booking; the AI teacher has memory and consistency</div>
+      <div class="diff-item" data-zh="<span class=&quot;vs&quot;>录播启蒙 App</span>不是看视频点选，而是实时对话——孩子说，老师即时回应、纠错、鼓励（Teaching Moves）"><span class="vs">Pre-recorded learning apps</span>not tap-through videos but real-time conversation — the child speaks and the teacher instantly responds, corrects, and encourages (Teaching Moves)</div>
+      <div class="diff-item" data-zh="<span class=&quot;vs&quot;>通用 AI 对话产品</span>有 CEFR/GSE 对标的 864 节结构化课程体系 + 定级测评 + 学习报告，是「课」不是「聊天玩具」"><span class="vs">General AI chat products</span>a structured 864-lesson curriculum mapped to CEFR/GSE, plus placement tests and learning reports — a "course," not a "chat toy"</div>
     </div>
     <div class="pos-col">
-      <h4>护城河排序</h4>
+      <h4 data-zh="护城河排序">Moats, Ranked</h4>
       <ul class="moat-rank">
-        <li><b>教学动作引擎</b>（Thinker 模型，从「能对话」到「会教学」）</li>
-        <li><b>自有课程体系与定级数据</b></li>
-        <li class="amp">定制 TTS / Avatar 的儿童亲和力</li>
-        <li class="amp">课后练习与游戏化生态</li>
+        <li data-zh="<b>教学动作引擎</b>（Thinker 模型，从「能对话」到「会教学」）"><b>Teaching-move engine</b> (the Thinker model — from "can chat" to "can teach")</li>
+        <li data-zh="<b>自有课程体系与定级数据</b>"><b>Proprietary curriculum & placement data</b></li>
+        <li class="amp" data-zh="定制 TTS / Avatar 的儿童亲和力">Custom TTS / Avatar kid appeal</li>
+        <li class="amp" data-zh="课后练习与游戏化生态">Post-class practice & gamification ecosystem</li>
       </ul>
-      <p class="pos-note">前两者是真壁垒，后两者是体验放大器。</p>
+      <p class="pos-note" data-zh="前两者是真壁垒，后两者是体验放大器。">The first two are real moats; the last two are experience amplifiers.</p>
     </div>
   </div>
 </section>
@@ -374,11 +395,11 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 
 <nav class="tl">
   <div class="wrap">
-    <a href="#n610"><b>6/10</b>过程版 · 已交付</a>
-    <a href="#n621"><b>6/24</b>过程版</a>
-    <a href="#n630" class="core"><b>6/30</b>核心上线</a>
-    <a href="#n709"><b>7/9</b>TTS 节点</a>
-    <a href="#n715"><b>7月中</b>~7.15</a>
+    <a href="#n610" data-zh="<b>6/10</b>过程版 · 已交付"><b>6/10</b>Process · Shipped</a>
+    <a href="#n621" data-zh="<b>6/24</b>过程版"><b>6/24</b>Process</a>
+    <a href="#n630" class="core" data-zh="<b>6/30</b>核心上线"><b>6/30</b>Core launch</a>
+    <a href="#n709" data-zh="<b>7/9</b>TTS 节点"><b>7/9</b>TTS node</a>
+    <a href="#n715" data-zh="<b>7月中</b>~7.15"><b>Mid-Jul</b>~7.15</a>
   </div>
 </nav>
 
@@ -390,28 +411,28 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">6/10</div>
-    <div class="node-sub">过程版<br>已交付</div>
+    <div class="node-sub" data-zh='过程版<br>已交付'>Process build<br>Shipped</div>
   </div>
   <div class="node-body">
-    <div class="node-title">能跑通的最小链路<span class="tag">已上线</span></div>
-    <div class="story"><span class="lab">用户故事</span>用户能注册登录，登录后直接选老师进一节课，跑通提审流程。</div>
+    <div class="node-title" data-zh='能跑通的最小链路<span class="tag">已上线</span>'>The minimum working flow<span class="tag">Live</span></div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>用户能注册登录，登录后直接选老师进一节课，跑通提审流程。'><span class="lab">User story</span>Users can register and log in, then go straight from login into a lesson by picking a teacher — enough to clear the app-review flow.</div>
     <div class="cols">
       <div class="block">
-        <h4>产品侧交付</h4>
+        <h4 data-zh='产品侧交付'>Product deliverables</h4>
         <ul>
-          <li><b>直接登录注册页</b>（无价值宣传，先通链路）</li>
-          <li><b>登录后直接选老师进课</b>，新用户无断链</li>
-          <li><b>通用设置</b>（个人中心起步）</li>
-          <li><b>GA4 接入</b> + 产品核心功能埋点</li>
+          <li data-zh='<b>直接登录注册页</b>（无价值宣传，先通链路）'><b>Direct login / registration page</b> (no value pitch yet — just connect the flow)</li>
+          <li data-zh='<b>登录后直接选老师进课</b>，新用户无断链'><b>Pick a teacher and enter class right after login</b>, no dead ends for new users</li>
+          <li data-zh='<b>通用设置</b>（个人中心起步）'><b>Basic settings</b> (the start of the profile center)</li>
+          <li data-zh='<b>GA4 接入</b> + 产品核心功能埋点'><b>GA4 integration</b> + analytics on core features</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4>跨团队依赖（已到位）</h4>
+        <h4 data-zh='跨团队依赖（已到位）'>Cross-team dependencies (in place)</h4>
         <ul>
-          <li><b>1 节体验课交付</b>，提审跑通<span class="who">Rudy & Heidi</span></li>
-          <li><b>5 节剑桥课 L1 上线</b><span class="who">Heidi & Liz</span></li>
-          <li><b>TTS 首字延迟 &lt;1.5s</b>（filler words 提速）<span class="who">Jenny & 董鹏</span></li>
-          <li><b>课程大纲拆解</b>，lesson flow 模块确定<span class="who">Liz & Heidi</span></li>
+          <li data-zh='<b>1 节体验课交付</b>，提审跑通<span class="who">Rudy &amp; Heidi</span>'><b>1 trial lesson delivered</b>, app review passes<span class="who">Rudy & Heidi</span></li>
+          <li data-zh='<b>5 节剑桥课 L1 上线</b><span class="who">Heidi &amp; Liz</span>'><b>5 Cambridge L1 lessons live</b><span class="who">Heidi & Liz</span></li>
+          <li data-zh='<b>TTS 首字延迟 &lt;1.5s</b>（filler words 提速）<span class="who">Jenny &amp; 董鹏</span>'><b>TTS first-token latency &lt;1.5s</b> (sped up with filler words)<span class="who">Jenny & Dong Peng</span></li>
+          <li data-zh='<b>课程大纲拆解</b>，lesson flow 模块确定<span class="who">Liz &amp; Heidi</span>'><b>Course outline broken down</b>, lesson-flow modules finalized<span class="who">Liz & Heidi</span></li>
         </ul>
       </div>
     </div>
@@ -421,11 +442,11 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
       </div>
       <div class="demo-info">
         <span class="demo-name">V1.1.0 · UI Demo</span>
-        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+        <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
       </div>
       <div class="demo-actions">
-        <button onclick="openDemo('V1.1.0-ui-demo.html','V1.1.0 · UI Demo')">放大查看</button>
-        <a class="btn" href="V1.1.0-ui-demo.html" target="_blank">新窗口打开</a>
+        <button onclick="openDemo('V1.1.0-ui-demo.html','V1.1.0 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.1.0-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -436,28 +457,28 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">6/24</div>
-    <div class="node-sub">过程版</div>
+    <div class="node-sub" data-zh='过程版'>Process build</div>
   </div>
   <div class="node-body">
-    <div class="node-title">会说服 + 能收钱</div>
-    <div class="story"><span class="lab">用户故事</span>新用户首次被「说服」——价值宣传页 + 注册流程上线；付费通道第一次打通（6 节 L1 基础支付）；上完课有报告。</div>
+    <div class="node-title" data-zh='会说服 + 能收钱'>Persuade + collect payment</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>新用户首次被「说服」——价值宣传页 + 注册流程上线；付费通道第一次打通（6 节 L1 基础支付）；上完课有报告。'><span class="lab">User story</span>New users get "sold" for the first time — the value pitch page and registration flow go live; the payment channel opens for the first time (basic payment for 6 L1 lessons); finishing a lesson produces a report.</div>
     <div class="cols">
       <div class="block">
-        <h4>产品侧交付</h4>
+        <h4 data-zh='产品侧交付'>Product deliverables</h4>
         <ul>
-          <li><b>价值宣传页 + 注册流程</b>，建立宣传页→注册转化基线</li>
-          <li><b>基础支付方案</b>（面向 6 节 L1），支付流程无断链</li>
-          <li><b>Explore 单词练习内容丰富</b>，每个 Level 有可练词包</li>
-          <li><b>个人信息资料展示</b>，采集信息同步展示无错误</li>
+          <li data-zh='<b>价值宣传页 + 注册流程</b>，建立宣传页→注册转化基线'><b>Value pitch page + registration flow</b>, establishing the pitch→registration conversion baseline</li>
+          <li data-zh='<b>基础支付方案</b>（面向 6 节 L1），支付流程无断链'><b>Basic payment plan</b> (for the 6 L1 lessons), no breaks in the payment flow</li>
+          <li data-zh='<b>Explore 单词练习内容丰富</b>，每个 Level 有可练词包'><b>Richer Explore vocabulary practice</b>, every Level has a practice word pack</li>
+          <li data-zh='<b>个人信息资料展示</b>，采集信息同步展示无错误'><b>Profile information display</b>, collected info shows correctly and in sync</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4>跨团队依赖</h4>
+        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
         <ul>
-          <li><b>每节课后报告生成</b>（词汇/发音/进步点）<span class="who">Liz</span></li>
-          <li><b>TTS 持续迭代</b><span class="who">Jenny</span></li>
-          <li><b>产品手册 1.0 英文通用版</b>：定位 & 核心卖点 & 课程体系、目标用户、竞品差异化话术；三方评审通过可作对外统一口径<span class="who">张歆玥</span></li>
-          <li><b>MVP 用研启动</b>（聚焦老师/课程）：覆盖 2 个目标市场、样本 &gt;20，产出可排期的优化建议<span class="who">张歆玥</span></li>
+          <li data-zh='<b>每节课后报告生成</b>（词汇/发音/进步点）<span class="who">Liz</span>'><b>Post-lesson report generated</b> (vocabulary / pronunciation / progress points)<span class="who">Liz</span></li>
+          <li data-zh='<b>TTS 持续迭代</b><span class="who">Jenny</span>'><b>Ongoing TTS iteration</b><span class="who">Jenny</span></li>
+          <li data-zh='<b>产品手册 1.0 英文通用版</b>：定位 &amp; 核心卖点 &amp; 课程体系、目标用户、竞品差异化话术；三方评审通过可作对外统一口径<span class="who">张歆玥</span>'><b>Product handbook 1.0 (English general edition)</b>: positioning & key selling points & curriculum, target users, competitor-differentiation talking points; once all three parties approve, it becomes the unified external messaging<span class="who">Zhang Xinyue</span></li>
+          <li data-zh='<b>MVP 用研启动</b>（聚焦老师/课程）：覆盖 2 个目标市场、样本 &gt;20，产出可排期的优化建议<span class="who">张歆玥</span>'><b>MVP user research kicks off</b> (focused on teachers / courses): covering 2 target markets, sample &gt;20, producing schedulable optimization recommendations<span class="who">Zhang Xinyue</span></li>
         </ul>
       </div>
     </div>
@@ -467,11 +488,11 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
       </div>
       <div class="demo-info">
         <span class="demo-name">V1.2.0 · UI Demo</span>
-        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+        <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
       </div>
       <div class="demo-actions">
-        <button onclick="openDemo('V1.2.0-ui-demo.html','V1.2.0 · UI Demo')">放大查看</button>
-        <a class="btn" href="V1.2.0-ui-demo.html" target="_blank">新窗口打开</a>
+        <button onclick="openDemo('V1.2.0-ui-demo.html','V1.2.0 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.2.0-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -482,36 +503,36 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">6/30</div>
-    <div class="node-sub">核心上线<br>全表最重一列</div>
+    <div class="node-sub" data-zh='核心上线<br>全表最重一列'>Core launch<br>the heaviest column</div>
   </div>
   <div class="node-body">
-    <div class="node-title">完整验证闭环<span class="tag">⬤ 核心节点</span></div>
-    <div class="story"><span class="lab">用户故事</span>新用户走完：注册 → Onboarding（含模糊定级）→ 6 节体验课（新 UI + 11-labs 声音 + 基础教学动作）→ 体验课报告（高光表现 + AI 点评 + 学习计划预览 + 开课 CTA）→ 付费解锁 → 课后去 Explore 练单词听 Radio、玩卡皮巴拉和 PK 游戏 → 学习有金币和成长。</div>
+    <div class="node-title" data-zh='完整验证闭环<span class="tag">⬤ 核心节点</span>'>A complete validation loop<span class="tag">⬤ Core node</span></div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>新用户走完：注册 → Onboarding（含模糊定级）→ 6 节体验课（新 UI + 11-labs 声音 + 基础教学动作）→ 体验课报告（高光表现 + AI 点评 + 学习计划预览 + 开课 CTA）→ 付费解锁 → 课后去 Explore 练单词听 Radio、玩卡皮巴拉和 PK 游戏 → 学习有金币和成长。'><span class="lab">User story</span>A new user goes end to end: register → Onboarding (with rough placement) → 6 trial lessons (new UI + 11-labs voice + basic teaching moves) → trial report (highlights + AI review + study-plan preview + start-course CTA) → pay to unlock → after class, head to Explore to practice words and listen to Radio, play Capybara and PK games → learning earns coins and growth.</div>
     <div class="cols">
       <div class="block">
-        <h4>产品侧交付</h4>
+        <h4 data-zh='产品侧交付'>Product deliverables</h4>
         <ul>
-          <li><b>UI 风格化改动完成</b>，新 App 视觉统一</li>
-          <li><b>模糊定级并入 Onboarding</b>，跑通无断链，新用户首课完成率建基线；补充本地登录方式（与 Dino AI 一致）</li>
-          <li><b>完整定价方案确认 + 支付链路打通</b>，沙特/韩国货币支持 · <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/RtdmwQlc2i6ESPkfP6cjGeQnp8c?fromScene=spaceOverview&amp;sheet=c1qE7H" target="_blank" rel="noopener">定价方案 ↗</a></li>
-          <li><b>首页 Dino 对话入口</b>，一轮对话响应 &lt;3s</li>
-          <li><b>学习计划基础版 + 课程解锁逻辑</b>，控制课消节奏</li>
-          <li><b>Explore 整合</b>：背单词 + Radio 并入，Radio 改名全端生效，功能渗透率建基线</li>
+          <li data-zh='<b>UI 风格化改动完成</b>，新 App 视觉统一'><b>UI restyle complete</b>, unified visual language across the new app</li>
+          <li data-zh='<b>模糊定级并入 Onboarding</b>，跑通无断链，新用户首课完成率建基线；补充本地登录方式（与 Dino AI 一致）'><b>Rough placement merged into Onboarding</b>, flowing without breaks, establishing a new-user first-lesson completion baseline; add local login methods (consistent with Dino AI)</li>
+          <li data-zh='<b>完整定价方案确认 + 支付链路打通</b>，沙特/韩国货币支持 · <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/RtdmwQlc2i6ESPkfP6cjGeQnp8c?fromScene=spaceOverview&amp;sheet=c1qE7H" target="_blank" rel="noopener">定价方案 ↗</a>'><b>Full pricing plan confirmed + payment flow connected</b>, with Saudi / Korea currency support · <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/RtdmwQlc2i6ESPkfP6cjGeQnp8c?fromScene=spaceOverview&amp;sheet=c1qE7H" target="_blank" rel="noopener">Pricing plan ↗</a></li>
+          <li data-zh='<b>首页 Dino 对话入口</b>，一轮对话响应 &lt;3s'><b>Dino chat entry on the home page</b>, one conversation turn responds in &lt;3s</li>
+          <li data-zh='<b>学习计划基础版 + 课程解锁逻辑</b>，控制课消节奏'><b>Basic study plan + lesson-unlock logic</b>, pacing lesson consumption</li>
+          <li data-zh='<b>Explore 整合</b>：背单词 + Radio 并入，Radio 改名全端生效，功能渗透率建基线'><b>Explore consolidation</b>: vocabulary + Radio merged in, the Radio rename takes effect everywhere, establishing a feature-penetration baseline</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4>跨团队依赖</h4>
+        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
         <ul>
-          <li><b>6 节体验课 + 注册后定级推荐</b><span class="who">Rudy & Heidi</span></li>
-          <li><b>体验课报告上线</b>：本节高光 + AI 老师点评 + 学习计划预览（仅露前 2 课，解锁需付费）+「立即开课」CTA<span class="who">Liz</span></li>
-          <li><b>TTS 接入 11-labs</b> 提升声音表现力，推动声网修复 TTS bug<span class="who">Jenny</span></li>
-          <li><b>教学动作跑通</b>（动作库配合课程知识点类型计算）：Recast + 鼓励 + 基础纠错<span class="who">Jenny & Heidi</span></li>
-          <li><b>成长体系 + 金币兑换上线</b><span class="who">甜姐 & 晓宇</span></li>
-          <li><b>卡皮巴拉 + PK 游戏上线</b>，可独立运行不影响正课，游戏 DAU/参与率有数据<span class="who">甜姐 & 晓宇</span></li>
-          <li><b>6 Level × Unit1 完成</b> · CMS v1.0（预计 6.23 前完成前后端联调并开始测试，6.30 前交付教研使用）<span class="who">Heidi · Rudy & 建泉</span></li>
-          <li><b>监控课程平台产品方案</b>：需求背景 / 实现方案 / roadmap + MVP 范围<span class="who">Coco & 鹏哥</span></li>
-          <li><b>课中埋点覆盖率 70%</b> · 首页 Dino eval 框架<span class="who">数据组</span></li>
-          <li><b>国际版物料下沉</b>：定位 / 功能 / 亮点 / 体验 / 售卖五类物料齐全、版本统一<span class="who">张歆玥</span></li>
+          <li data-zh='<b>6 节体验课 + 注册后定级推荐</b><span class="who">Rudy &amp; Heidi</span>'><b>6 trial lessons + post-registration placement recommendation</b><span class="who">Rudy & Heidi</span></li>
+          <li data-zh='<b>体验课报告上线</b>：本节高光 + AI 老师点评 + 学习计划预览（仅露前 2 课，解锁需付费）+「立即开课」CTA<span class="who">Liz</span>'><b>Trial report goes live</b>: lesson highlights + AI teacher review + study-plan preview (only the first 2 lessons shown; unlocking requires payment) + a "Start now" CTA<span class="who">Liz</span></li>
+          <li data-zh='<b>TTS 接入 11-labs</b> 提升声音表现力，推动声网修复 TTS bug<span class="who">Jenny</span>'><b>TTS integrates 11-labs</b> to improve voice expressiveness, pushing Agora to fix TTS bugs<span class="who">Jenny</span></li>
+          <li data-zh='<b>教学动作跑通</b>（动作库配合课程知识点类型计算）：Recast + 鼓励 + 基础纠错<span class="who">Jenny &amp; Heidi</span>'><b>Teaching moves working end to end</b> (the move library computes against lesson knowledge-point types): Recast + encouragement + basic correction<span class="who">Jenny & Heidi</span></li>
+          <li data-zh='<b>成长体系 + 金币兑换上线</b><span class="who">甜姐 &amp; 晓宇</span>'><b>Growth system + coin redemption live</b><span class="who">Tian & Xiaoyu</span></li>
+          <li data-zh='<b>卡皮巴拉 + PK 游戏上线</b>，可独立运行不影响正课，游戏 DAU/参与率有数据<span class="who">甜姐 &amp; 晓宇</span>'><b>Capybara + PK games live</b>, running standalone without affecting core lessons, with game DAU / engagement data<span class="who">Tian & Xiaoyu</span></li>
+          <li data-zh='<b>6 Level × Unit1 完成</b> · CMS v1.0（预计 6.23 前完成前后端联调并开始测试，6.30 前交付教研使用）<span class="who">Heidi · Rudy &amp; 建泉</span>'><b>6 Levels × Unit 1 complete</b> · CMS v1.0 (front/back-end integration and testing expected before 6/23, delivered to the teaching team before 6/30)<span class="who">Heidi · Rudy & Jianquan</span></li>
+          <li data-zh='<b>监控课程平台产品方案</b>：需求背景 / 实现方案 / roadmap + MVP 范围<span class="who">Coco &amp; 鹏哥</span>'><b>Monitoring / course-platform product plan</b>: background / implementation / roadmap + MVP scope<span class="who">Coco & Peng</span></li>
+          <li data-zh='<b>课中埋点覆盖率 70%</b> · 首页 Dino eval 框架<span class="who">数据组</span>'><b>70% in-class analytics coverage</b> · home-page Dino eval framework<span class="who">Data team</span></li>
+          <li data-zh='<b>国际版物料下沉</b>：定位 / 功能 / 亮点 / 体验 / 售卖五类物料齐全、版本统一<span class="who">张歆玥</span>'><b>International marketing materials rolled out</b>: all five categories — positioning / features / highlights / experience / sales — complete and version-aligned<span class="who">Zhang Xinyue</span></li>
         </ul>
       </div>
     </div>
@@ -521,11 +542,11 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
       </div>
       <div class="demo-info">
         <span class="demo-name">V1.3.0 · UI Demo</span>
-        <span class="demo-hint">本节点对应版本演示，点击缩略图放大查看</span>
+        <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
       </div>
       <div class="demo-actions">
-        <button onclick="openDemo('V1.3.0-ui-demo.html','V1.3.0 · UI Demo')">放大查看</button>
-        <a class="btn" href="V1.3.0-ui-demo.html" target="_blank">新窗口打开</a>
+        <button onclick="openDemo('V1.3.0-ui-demo.html','V1.3.0 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.3.0-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -533,7 +554,7 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 
 <!-- ============ 规划分割线 ============ -->
 <div class="plan-divider reveal">
-  <span>以下内容为大体规划 · 优先级及事项可讨论</span>
+  <span data-zh='以下内容为大体规划 · 优先级及事项可讨论'>Everything below is rough planning · priorities and items open for discussion</span>
 </div>
 
 <!-- ============ 7/9 ============ -->
@@ -541,33 +562,33 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">7/9</div>
-    <div class="node-sub">TTS 上线<br>生产环境</div>
+    <div class="node-sub" data-zh='TTS 上线<br>生产环境'>TTS live<br>production</div>
   </div>
   <div class="node-body">
-    <div class="node-title">体验换代</div>
-    <div class="story"><span class="lab">用户故事</span>声音换代（定制 TTS 正式替换 Minimax）、定级从「模糊」变「精准」（CEFR/GSE 对标）、第一节课有引导；Dino 说话更对路——英文优先、难度匹配孩子等级；课后能读按定级推荐的分级绘本；沙特/韩国本地支付上线、开始收到 Push 提醒。</div>
+    <div class="node-title" data-zh='体验换代'>A generational upgrade in experience</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>声音换代（定制 TTS 正式替换 Minimax）、定级从「模糊」变「精准」（CEFR/GSE 对标）、第一节课有引导；Dino 说话更对路——英文优先、难度匹配孩子等级；课后能读按定级推荐的分级绘本；沙特/韩国本地支付上线、开始收到 Push 提醒。'><span class="lab">User story</span>The voice gets a generational upgrade (custom TTS officially replaces Minimax); placement goes from "rough" to "precise" (mapped to CEFR/GSE); the first lesson has guidance; Dino speaks more on-target — English first, difficulty matched to the child's level; after class, kids can read leveled readers recommended by placement; local payment in Saudi Arabia / Korea goes live, and Push reminders start arriving.</div>
     <div class="cols">
       <div class="block">
-        <h4>产品侧交付</h4>
+        <h4 data-zh='产品侧交付'>Product deliverables</h4>
         <ul>
-          <li><b>精准定级推荐 + 第一节课引导</b>，推荐课命中率可验证</li>
-          <li><b>分级绘本 / 故事阅读上线</b>（Explore 补充能力）：按定级自动推荐难度，对留存有正提升</li>
-          <li><b>多市场定价（沙特/韩国）+ 本地支付接入</b>，本地货币计价正确</li>
-          <li><b>Dino 重要 Bugfix</b>：回复坚持英文优先（母语不自动跟随）；按用户等级 L1-L6 控制回复语言难度</li>
-          <li><b>个人资料编辑</b>，与采集信息同步</li>
-          <li><b>Push 通知系统接入</b>，送达率 &gt;90%</li>
+          <li data-zh='<b>精准定级推荐 + 第一节课引导</b>，推荐课命中率可验证'><b>Precise placement recommendation + first-lesson guidance</b>, with a verifiable recommendation hit rate</li>
+          <li data-zh='<b>分级绘本 / 故事阅读上线</b>（Explore 补充能力）：按定级自动推荐难度，对留存有正提升'><b>Leveled readers / story reading go live</b> (an Explore add-on): difficulty auto-recommended by placement, with a positive lift on retention</li>
+          <li data-zh='<b>多市场定价（沙特/韩国）+ 本地支付接入</b>，本地货币计价正确'><b>Multi-market pricing (Saudi / Korea) + local payment integration</b>, priced correctly in local currency</li>
+          <li data-zh='<b>Dino 重要 Bugfix</b>：回复坚持英文优先（母语不自动跟随）；按用户等级 L1-L6 控制回复语言难度'><b>Key Dino bugfix</b>: replies stay English-first (won't auto-follow the native language); reply difficulty controlled by user level L1–L6</li>
+          <li data-zh='<b>个人资料编辑</b>，与采集信息同步'><b>Profile editing</b>, in sync with collected information</li>
+          <li data-zh='<b>Push 通知系统接入</b>，送达率 &gt;90%'><b>Push notification system integrated</b>, delivery rate &gt;90%</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4>跨团队依赖</h4>
+        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
         <ul>
-          <li><b>定制 TTS 云端部署（非流式）并正式替换 Minimax</b>：自然度 ≥4.5、异常 &lt;1%、情感表达 ≥4.5、全课覆盖<span class="who">Jenny & 夏老师团队</span></li>
-          <li><b>2D Spine 口型同步上线</b>：9 种基础口型 + 9×9 中间态；口型 + 表情动作完整、每位老师差异化小动作，评分目标 3.0<span class="who">Jenny & 晓宇</span></li>
-          <li><b>体验课报告完善</b>（客观 + AI 评语）<span class="who">Heidi</span></li>
-          <li><b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span></li>
-          <li><b>核心漏斗看板</b>：first open→注册→试用→转化<span class="who">数据组</span></li>
-          <li><b>PostHog 接入</b>，session replay 可查询<span class="who">数据组</span></li>
-          <li><b>本土定制化物料下沉</b>：本地化话术 / 痛点适配 / 合规与文化注意事项<span class="who">张歆玥</span></li>
+          <li data-zh='<b>定制 TTS 云端部署（非流式）并正式替换 Minimax</b>：自然度 ≥4.5、异常 &lt;1%、情感表达 ≥4.5、全课覆盖<span class="who">Jenny &amp; 夏老师团队</span>'><b>Custom TTS deployed to the cloud (non-streaming) and officially replacing Minimax</b>: naturalness ≥4.5, error rate &lt;1%, emotional expression ≥4.5, full-lesson coverage<span class="who">Jenny & Teacher Xia's team</span></li>
+          <li data-zh='<b>2D Spine 口型同步上线</b>：9 种基础口型 + 9×9 中间态；口型 + 表情动作完整、每位老师差异化小动作，评分目标 3.0<span class="who">Jenny &amp; 晓宇</span>'><b>2D Spine lip-sync goes live</b>: 9 base mouth shapes + 9×9 in-between states; complete lip-sync + facial expressions, distinct small gestures per teacher, target score 3.0<span class="who">Jenny & Xiaoyu</span></li>
+          <li data-zh='<b>体验课报告完善</b>（客观 + AI 评语）<span class="who">Heidi</span>'><b>Trial report refined</b> (objective metrics + AI comments)<span class="who">Heidi</span></li>
+          <li data-zh='<b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span>'><b>Precise placement assessment goes live</b>, within &lt;1 level of human grading<span class="who">Liz</span></li>
+          <li data-zh='<b>核心漏斗看板</b>：first open→注册→试用→转化<span class="who">数据组</span>'><b>Core funnel dashboard</b>: first open→registration→trial→conversion<span class="who">Data team</span></li>
+          <li data-zh='<b>PostHog 接入</b>，session replay 可查询<span class="who">数据组</span>'><b>PostHog integrated</b>, session replay is queryable<span class="who">Data team</span></li>
+          <li data-zh='<b>本土定制化物料下沉</b>：本地化话术 / 痛点适配 / 合规与文化注意事项<span class="who">张歆玥</span>'><b>Localized marketing materials rolled out</b>: localized messaging / pain-point fit / compliance and cultural considerations<span class="who">Zhang Xinyue</span></li>
         </ul>
       </div>
     </div>
@@ -578,33 +599,33 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 <section class="node reveal" id="n715">
   <div class="node-marker">
     <div class="dot"></div>
-    <div class="node-date">7月中</div>
+    <div class="node-date" data-zh='7月中'>Mid-Jul</div>
     <div class="node-sub">~7.15</div>
   </div>
   <div class="node-body">
-    <div class="node-title">家长价值闭环 + 留存钩子上线</div>
-    <div class="story"><span class="lab">用户故事</span>家长每周一收到学习周报（个人中心可查）；孩子课上的弱项自动变成课后复习任务（错词本），排行榜和每日连胜开始把孩子卷入回访；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它。</div>
+    <div class="node-title" data-zh='家长价值闭环 + 留存钩子上线'>Parent value loop + retention hooks go live</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>家长每周一收到学习周报（个人中心可查）；孩子课上的弱项自动变成课后复习任务（错词本），排行榜和每日连胜开始把孩子卷入回访；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它。'><span class="lab">User story</span>Every Monday parents receive a weekly learning report (viewable in the profile center); a child's in-class weak spots automatically become post-class review tasks (a mistakes notebook), while leaderboards and daily streaks start pulling kids back to return; Dino now has a persona and old-friend memory — it remembers the child, and the child remembers it.</div>
     <div class="cols">
       <div class="block">
-        <h4>产品侧交付</h4>
+        <h4 data-zh='产品侧交付'>Product deliverables</h4>
         <ul>
-          <li><b>风格本地化</b>：沙特/韩国视觉走查，本地文案排版无溢出</li>
-          <li><b>错词本 / 课后弱项联动</b>：课中弱项一键进练习，复习任务完成率有数据、对留存有正提升</li>
-          <li><b>排行榜 + 每日连胜上线</b>：数据准确、连胜中断有挽回提醒，连胜用户留存可分组查看</li>
-          <li><b>Dino persona 设计 + 老友感记忆</b>：能引用上次学习信息，有背景知识与个人偏好，形成双向记忆</li>
-          <li><b>试用转付费流程优化</b>，转化率有提升</li>
-          <li><b>家长周报入口</b>（个人中心）</li>
+          <li data-zh='<b>风格本地化</b>：沙特/韩国视觉走查，本地文案排版无溢出'><b>Style localization</b>: Saudi / Korea visual review, local copy and layout with no overflow</li>
+          <li data-zh='<b>错词本 / 课后弱项联动</b>：课中弱项一键进练习，复习任务完成率有数据、对留存有正提升'><b>Mistakes notebook / post-class weak-spot linkage</b>: in-class weak spots go into practice in one tap, with review-completion data and a positive lift on retention</li>
+          <li data-zh='<b>排行榜 + 每日连胜上线</b>：数据准确、连胜中断有挽回提醒，连胜用户留存可分组查看'><b>Leaderboards + daily streaks go live</b>: accurate data, win-back reminders when a streak breaks, streak-user retention viewable by cohort</li>
+          <li data-zh='<b>Dino persona 设计 + 老友感记忆</b>：能引用上次学习信息，有背景知识与个人偏好，形成双向记忆'><b>Dino persona design + old-friend memory</b>: can reference last session's info, has background knowledge and personal preferences, forming two-way memory</li>
+          <li data-zh='<b>试用转付费流程优化</b>，转化率有提升'><b>Trial-to-paid flow optimization</b>, with an improved conversion rate</li>
+          <li data-zh='<b>家长周报入口</b>（个人中心）'><b>Parent weekly-report entry</b> (profile center)</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4>跨团队依赖</h4>
+        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
         <ul>
-          <li><b>家长端周报上线</b>，每周一推送<span class="who">Liz</span>（与个人中心入口同节点 ✓）</li>
-          <li><b>CRM 初版上线</b>，能协助销售管理 Leads<span class="who">范迪儿（晓宇团队借调）</span></li>
-          <li><b>多老师音色区分</b><span class="who">Jenny</span></li>
-          <li><b>6 Level × Unit2 完成</b><span class="who">Heidi</span></li>
-          <li><b>管台稳定支持教研快速出课</b><span class="who">Rudy</span></li>
-          <li><b>课程指标看板 + AppsFlyer 归因</b>，可做 CAC 分析<span class="who">数据组</span></li>
+          <li data-zh='<b>家长端周报上线</b>，每周一推送<span class="who">Liz</span>（与个人中心入口同节点 ✓）'><b>Parent-side weekly report goes live</b>, pushed every Monday<span class="who">Liz</span> (same node as the profile-center entry ✓)</li>
+          <li data-zh='<b>CRM 初版上线</b>，能协助销售管理 Leads<span class="who">范迪儿（晓宇团队借调）</span>'><b>First CRM version goes live</b>, helping sales manage leads<span class="who">Fan Dier (on loan from Xiaoyu's team)</span></li>
+          <li data-zh='<b>多老师音色区分</b><span class="who">Jenny</span>'><b>Distinct voices across teachers</b><span class="who">Jenny</span></li>
+          <li data-zh='<b>6 Level × Unit2 完成</b><span class="who">Heidi</span>'><b>6 Levels × Unit 2 complete</b><span class="who">Heidi</span></li>
+          <li data-zh='<b>管台稳定支持教研快速出课</b><span class="who">Rudy</span>'><b>Stable admin platform supporting fast lesson production</b><span class="who">Rudy</span></li>
+          <li data-zh='<b>课程指标看板 + AppsFlyer 归因</b>，可做 CAC 分析<span class="who">数据组</span>'><b>Course-metrics dashboard + AppsFlyer attribution</b>, enabling CAC analysis<span class="who">Data team</span></li>
         </ul>
       </div>
     </div>
@@ -627,7 +648,7 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
         <i style="width:9px;height:9px;border-radius:50%;background:#5fb878"></i>
       </span>
       <span class="demo-name" id="modalTitle"></span>
-      <button onclick="closeDemo()">关闭 ✕</button>
+      <button onclick="closeDemo()" data-zh='关闭 ✕'>Close ✕</button>
     </div>
     <iframe id="modalFrame" title="UI Demo 放大查看"></iframe>
   </div>
@@ -660,6 +681,7 @@ const demoIO=new IntersectionObserver(es=>{
 },{rootMargin:'300px'});
 document.querySelectorAll('.demo-thumb').forEach(f=>demoIO.observe(f));
 window.addEventListener('resize',fitDemos);
+window.__fitDemos=fitDemos;
 fitDemos();
 
 /* demo 放大弹窗 */
@@ -680,20 +702,60 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDemo()});
 <!-- 通用反馈组件：页面内语音/打字 + 传图，直接提交进飞书《Dino English Demo 反馈收集》多维表格 -->
 <script src="assets/dino-feedback.js"></script>
 <script>
-DinoFeedback.init({
-  demo: "里程碑串联视图",
-  getContext: () => {
-    let cur = "产品定位";
-    document.querySelectorAll("section.node").forEach(s => {
-      if (s.getBoundingClientRect().top < window.innerHeight * 0.45) {
-        const d = s.querySelector(".node-date");
-        const t = s.querySelector(".node-title");
-        cur = (d ? d.textContent.trim() : "") + " " + (t ? t.textContent.trim() : "");
-      }
+(function () {
+  var pageLang = localStorage.getItem("dinoRoadmapLang");
+  DinoFeedback.init({
+    demo: "里程碑串联视图",
+    lang: pageLang === "zh" ? "zh" : "en", // 反馈面板默认英文，并与页面语言保持一致
+    getContext: function () {
+      var cur = "Positioning";
+      document.querySelectorAll("section.node").forEach(function (s) {
+        if (s.getBoundingClientRect().top < window.innerHeight * 0.45) {
+          var d = s.querySelector(".node-date");
+          var t = s.querySelector(".node-title");
+          cur = (d ? d.textContent.trim() : "") + " " + (t ? t.textContent.trim() : "");
+        }
+      });
+      return "Roadmap · " + cur;
+    },
+  });
+})();
+</script>
+
+<!-- 页面语言切换（右上角 EN / 中）：默认英文，中文文案存于各元素 data-zh -->
+<script>
+(function () {
+  var KEY = "dinoRoadmapLang";
+  var saved = localStorage.getItem(KEY);
+  var lang = saved === "zh" ? "zh" : "en"; // 默认英文
+  var nodes = document.querySelectorAll("[data-zh]");
+  nodes.forEach(function (el) {
+    if (!el.hasAttribute("data-en")) el.setAttribute("data-en", el.innerHTML);
+  });
+  var btns = document.querySelectorAll("#langToggle button");
+  function apply(l) {
+    lang = l;
+    document.documentElement.lang = l === "zh" ? "zh-CN" : "en";
+    nodes.forEach(function (el) {
+      var html = el.getAttribute(l === "zh" ? "data-zh" : "data-en");
+      if (html != null) el.innerHTML = html;
     });
-    return "串联视图 · " + cur;
-  },
-});
+    btns.forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-lang") === l);
+    });
+    if (window.__fitDemos) window.__fitDemos();
+    if (window.DinoFeedback && DinoFeedback.setLang) DinoFeedback.setLang(l);
+  }
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var l = b.getAttribute("data-lang");
+      if (l === lang) return;
+      localStorage.setItem(KEY, l);
+      apply(l);
+    });
+  });
+  apply(lang);
+})();
 </script>
 </body>
 </html>

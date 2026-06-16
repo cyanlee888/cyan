@@ -2,13 +2,16 @@
  * Dino Feedback — Dino English 产品方案 demo 通用反馈组件。
  * 业务同事在 demo 页面内语音/打字写意见、传图，点提交后经 Cloudflare Worker
  * 中转写入飞书多维表格《Dino English Demo 反馈收集》（图文一体，自动附带演示位置）。
- * 面板顶部可切换界面语言（中/EN/한/ع，默认中文，选择会记住），语音识别语言随界面语言，阿拉伯语自动 RTL。
+ * 面板顶部可切换界面语言（中/EN/한/ع，选择会记住），语音识别语言随界面语言，阿拉伯语自动 RTL。
+ * 默认语言为中文，可通过 init 的 lang 参数改默认（仅在用户未手动选过时生效）；
+ * 宿主页面也可调用 DinoFeedback.setLang(code) 与页面自身的语言切换保持同步。
  *
  * 用法（任意 demo html 的 </body> 前）：
  *   <script src="assets/dino-feedback.js"></script>
  *   <script>
  *     DinoFeedback.init({
  *       demo: "V1.3.0",                       // 必填：版本号，落表「版本」字段
+ *       lang: "en",                            // 选填：默认界面语言 zh/en/ko/ar（默认 zh）
  *       getContext: () => "横屏 App · screen-x", // 选填：返回当前演示位置
  *       api: "https://...",                    // 选填：默认线上中转 Worker
  *     });
@@ -267,7 +270,8 @@
         };
 
     var saved = localStorage.getItem(LANG_KEY);
-    var lang = LANGS.indexOf(saved) >= 0 ? saved : "zh";
+    var fallbackLang = LANGS.indexOf(opts.lang) >= 0 ? opts.lang : "zh";
+    var lang = LANGS.indexOf(saved) >= 0 ? saved : fallbackLang;
     var T = I18N[lang];
 
     var style = document.createElement("style");
@@ -511,6 +515,15 @@
         submitBtn.textContent = T.submit;
       }
     });
+
+    // 暴露给宿主页面：外部语言切换（如页面右上角的 EN/中）可同步面板语言
+    window.DinoFeedback.setLang = function (code) {
+      if (LANGS.indexOf(code) < 0 || code === lang) return;
+      stopVoice();
+      lang = code;
+      localStorage.setItem(LANG_KEY, lang);
+      applyLang();
+    };
 
     applyLang();
   }
