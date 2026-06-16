@@ -8690,14 +8690,15 @@
       // gallery (keys/emoji mirror CAP_POOL). Skins use real art (assets/skins/*.png).
       const SHOP_ITEMS = {
         skin: [
+          // Phase-1 launch ladder (1 free + 7 paid) per PRD 四档定价: 基础 200×3 / 进阶 500×2 / 高级 1000×1 / 稀有 2000×1.
           { id: "skin-classic", name: "Classic Dino", img: "assets/dino-mascot.png", price: 0 },
           { id: "skin-dreamteam", name: "Dream Team", img: "assets/skins/dreamteam.png", price: 200 },
-          { id: "skin-explorer", name: "Explorer", img: "assets/skins/explorer.png", price: 500 },
-          { id: "skin-detective", name: "Detective", img: "assets/skins/detective.png", price: 500 },
+          { id: "skin-explorer", name: "Explorer", img: "assets/skins/explorer.png", price: 200 },
+          { id: "skin-detective", name: "Detective", img: "assets/skins/detective.png", price: 200 },
           { id: "skin-adventurer", name: "Adventurer", img: "assets/skins/adventurer.png", price: 500 },
-          { id: "skin-prince", name: "Little Prince", img: "assets/skins/prince.png", price: 800 },
-          { id: "skin-bunny", name: "Bunny Suit", img: "assets/skins/bunny.png", price: 800 },
-          { id: "skin-superhero", name: "Superhero", img: "assets/skins/superhero.png", price: 1000 },
+          { id: "skin-bunny", name: "Bunny Suit", img: "assets/skins/bunny.png", price: 500 },
+          { id: "skin-prince", name: "Little Prince", img: "assets/skins/prince.png", price: 1000 },
+          { id: "skin-superhero", name: "Superhero", img: "assets/skins/superhero.png", price: 2000 },
         ],
         // Pets: collection-only (no price). Pulled from the capsule machine.
         pet: [
