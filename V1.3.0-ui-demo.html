@@ -4476,6 +4476,7 @@
     .machine .glass { position: absolute; top: 12px; width: 98px; height: 88px; border-radius: 14px;
       background: radial-gradient(circle at 40% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.45));
       border: 3px solid rgba(255,255,255,0.6); overflow: hidden; display: grid; place-items: center; font-size: 2.4rem; }
+    .machine .glass img { width: 92%; height: 92%; object-fit: contain; filter: drop-shadow(0 7px 10px rgba(128,74,20,0.28)); }
     .machine .slot { position: absolute; bottom: 14px; width: 54px; height: 12px; border-radius: 6px; background: rgba(0,0,0,0.32); }
     .machine.shake { animation: gshake 0.5s var(--ease); }
     @keyframes gshake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px) rotate(-2deg)} 40%{transform:translateX(5px) rotate(2deg)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
@@ -4492,7 +4493,7 @@
     .cap-machine-meta { width: min(100%, 220px); }
     .cap-machine-meta .cap-count { text-align: center; margin-top: 4px; }
     .cap-draw-btn { width: min(100%, 220px); }
-    /* V1.3.0 draw-first: combined reveal (pet + this round's XP/coins together). */
+    /* V1.3.0 draw-first: combined reveal (Dino Capsule + this round's XP/coins together). */
     .capd-reward { width: min(100%, 260px); text-align: center; background: var(--forest-mist);
       border-radius: 14px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px;
       animation: gpop 0.4s var(--ease); }
@@ -4580,18 +4581,19 @@
     .capd-hint { font-size: 0.7rem; font-weight: 700; color: var(--accent-live); margin-top: 2px; }
     /* Missed question this round (pip stays dim, so an "all-gold" row = a coin). */
     .pip.miss { background: #e7dcd0; box-shadow: inset 0 0 0 1.5px #d9c7b3; }
-    /* Capsule reward page: pet shown as a compact summary line (visually distinct
+    /* Capsule reward page: Dino Capsule shown as a compact summary line (visually distinct
        from the big reveal overlay below). */
     .capd-pet-line { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; margin: 0 auto 8px;
       background: #fff; border: 1.5px solid #ffe0a3; border-radius: 14px; box-shadow: 0 6px 16px rgba(160,110,10,0.12); }
-    /* No Capsule Coin won this round → no pet line at all. The class sets display:inline-flex,
+    /* No Capsule Coin won this round → no Dino Capsule line at all. The class sets display:inline-flex,
        which would otherwise beat the [hidden] attribute, so respect [hidden] explicitly. */
     .capd-pet-line[hidden] { display: none; }
     .capd-pet-emoji { font-size: 1.5rem; line-height: 1; }
+    .capd-pet-emoji img { width: 34px; height: 34px; object-fit: contain; display: block; filter: drop-shadow(0 4px 6px rgba(128,74,20,0.24)); }
     .capd-pet-name { font-size: 0.86rem; font-weight: 800; color: var(--ink); }
     .capd-pet-tag { font-size: 0.62rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase;
       color: #b3690b; background: #fdf0d4; border-radius: 999px; padding: 2px 7px; }
-    /* (a) BIG pet reveal overlay — emphasises the drawn pet before the reward page. */
+    /* (a) BIG Dino Capsule reveal overlay — emphasises the drawn capsule before the reward page. */
     .cap-pet-reveal { position: absolute; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center;
       background: radial-gradient(circle at 50% 38%, rgba(34,84,58,0.5), rgba(12,28,20,0.82)); backdrop-filter: blur(3px); }
     .cap-pet-reveal[hidden] { display: none; }
@@ -4601,6 +4603,7 @@
     .cpr-kicker { font-size: 0.92rem; font-weight: 800; color: #b3690b; margin: 0 0 6px; }
     .cpr-pet { font-size: 5.6rem; line-height: 1; margin: 6px 0 4px; filter: drop-shadow(0 10px 18px rgba(160,110,10,0.32));
       animation: cprFloat 2.4s ease-in-out infinite; }
+    .cpr-pet img { width: min(72vw, 190px); max-height: 190px; object-fit: contain; display: block; margin: 0 auto; }
     .cpr-name { font-size: 1.3rem; font-weight: 900; color: var(--ink); margin: 0 0 8px; }
     .cpr-note { font-size: 0.84rem; font-weight: 700; color: #8a6a2a; margin: 0 0 16px; }
     .cpr-note[hidden] { display: none; }
@@ -4765,7 +4768,7 @@
     .shop-card.sel .shop-card-art { border-color: #ffd34d; box-shadow: 0 0 0 3px rgba(255,211,77,0.28), 0 10px 20px rgba(0,0,0,0.3);
       background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(230,222,255,0.94)); }
     .shop-card.locked .sc-emoji { filter: grayscale(0.85) brightness(0.62); }
-    /* Skin cards render the real Dino artwork; pets stay emoji. */
+    /* Skin cards and Dino Capsules render the real artwork when available. */
     .shop-card-art .sc-img { width: 94%; height: 94%; object-fit: contain;
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35)); }
     .shop-card.locked .sc-img { filter: grayscale(0.9) brightness(0.55); }
@@ -4777,7 +4780,7 @@
     .sc-eq { position: absolute; top: 5px; right: 6px; font-size: 0.8rem; color: #2c2360;
       background: #ffd34d; border-radius: 50%; width: 19px; height: 19px; display: grid; place-items: center; font-weight: 800; }
     .shop-card.sel .sc-eq { box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
-    /* Pet collection count badge (×N) for duplicate pulls; pets are collect-only. */
+    /* Dino Capsule collection count badge (×N) for duplicate pulls; Dino Capsules are collect-only. */
     .sc-count { position: absolute; bottom: 5px; right: 5px; font-size: 0.62rem; font-weight: 800;
       color: #2c2360; background: #ffd34d; border-radius: 8px; padding: 1px 6px; z-index: 2; }
     .shop-card.pet-collect { cursor: default; }
@@ -5888,19 +5891,19 @@
               </div>
               <div class="play-grid">
                 <div class="play-card pc-capsule" data-go-game="screen-capsule-intro">
-                  <span class="pc-seg">Ace 5 Qs → spin</span>
+                  <span class="pc-seg">5 correct → a spin</span>
                   <span class="pc-limit" id="pc-limit-capsule" hidden></span>
                   <div class="pc-emoji">🎰</div>
-                  <div><div class="pc-title">Pet Capsule</div><div class="pc-desc">5 questions a round · win pets / XP / coins</div></div>
+                  <div><div class="pc-title">Dino Capsule Machine</div><div class="pc-desc">5 questions a round · win Dino Capsules / XP / coins</div></div>
                 </div>
                 <div class="play-card pc-word" data-go-game="screen-wordpk">
-                  <span class="pc-seg" id="pc-wordpk-rank">Rank · Word Ranger</span>
+                  <span class="pc-seg" id="pc-wordpk-rank">🏅 Win rate 71%</span>
                   <span class="pc-limit" id="pc-limit-wordpk" hidden></span>
                   <div class="pc-emoji">🔤</div>
-                  <div><div class="pc-title">Word PK</div><div class="pc-desc">Real-time battles for XP &amp; coins</div></div>
+                  <div><div class="pc-title">Word PK</div><div class="pc-desc">Battle a rival for XP &amp; coins</div></div>
                 </div>
                 <div class="play-card pc-speak" data-go-game="screen-speakpk">
-                  <span class="pc-seg" id="pc-speakpk-rank">Rank · Brave Speaker</span>
+                  <span class="pc-seg" id="pc-speakpk-rank">🏅 Win rate 63%</span>
                   <span class="pc-limit" id="pc-limit-speakpk" hidden></span>
                   <div class="pc-emoji">🎤</div>
                   <div><div class="pc-title">Speaking PK</div><div class="pc-desc">Speak up and battle on pronunciation</div></div>
@@ -6327,17 +6330,17 @@
       <section class="screen" id="screen-capsule-intro">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2>Pet Capsule</h2>
+          <h2>Dino Capsule Machine</h2>
           <span class="game-top-spacer"></span>
         </div>
         <div class="game-body game-center">
           <div class="cap-intro-card">
             <img class="cap-intro-dino" src="assets/dino-mascot.png" alt="Dino" decoding="async" />
             <div class="cap-intro-main">
-              <h3>Quiz for Pet Capsule!</h3>
+              <h3>Quiz for Dino Capsules!</h3>
               <p class="cap-intro-rule">Get <b>5</b> answers right — added up across rounds — to earn a Capsule Coin 🎟️</p>
               <div class="cap-intro-bar-line">
-                <div class="cap-intro-bar" id="capi-bar"><i id="capi-bar-fill"></i><span id="capi-bar-label">0 / 5 correct to your next coin</span></div>
+                <div class="cap-intro-bar" id="capi-bar"><i id="capi-bar-fill"></i><span id="capi-bar-label">0 / 5 correct to your next Capsule Coin</span></div>
                 <span class="cap-coupon" id="capi-coupon" aria-label="Capsule Coin">🎟️</span>
               </div>
               <p class="cap-intro-hint" id="capi-hint">Your correct answers add up — keep going!</p>
@@ -6347,11 +6350,11 @@
         </div>
       </section>
 
-      <!-- ============ CAPSULE (Pet Capsule · quiz round, 5 questions) ============ -->
+      <!-- ============ CAPSULE (Dino Capsule Machine · quiz round, 5 questions) ============ -->
       <section class="screen" id="screen-capsule">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2>Pet Capsule</h2>
+          <h2>Dino Capsule Machine</h2>
           <span class="game-top-spacer"></span>
         </div>
         <div class="game-body game-center">
@@ -6375,7 +6378,7 @@
       <section class="screen" id="screen-capsule-result">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2>Pet Capsule</h2>
+          <h2>Dino Capsule Machine</h2>
           <span class="game-top-spacer"></span>
         </div>
         <div class="game-body game-center">
@@ -6383,11 +6386,11 @@
             <div class="settle-burst" id="capr-burst">🎉</div>
             <h2 id="capr-title">Round complete!</h2>
             <p class="sc-sub" id="capr-sub">You got 4 / 5 correct this round</p>
-            <!-- Pet line: only shown when a Capsule Coin was drawn this round -->
+            <!-- Dino Capsule line: only shown when a Capsule Coin was drawn this round -->
             <div class="capd-pet-line" id="capr-pet" hidden>
               <span class="capd-pet-emoji" id="capr-pet-emoji">🦖</span>
-              <span class="capd-pet-name" id="capr-pet-name">Baby Raptor</span>
-              <span class="capd-pet-tag" id="capr-pet-tag">New pet</span>
+              <span class="capd-pet-name" id="capr-pet-name">Tea Party Dino</span>
+              <span class="capd-pet-tag" id="capr-pet-tag">New Dino Capsule</span>
             </div>
             <div class="reward-row">
               <span class="reward-pill xp">+<span id="capr-xp">20</span> XP</span>
@@ -6413,7 +6416,7 @@
       <section class="screen" id="screen-capsule-draw">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2>Pet Capsule</h2>
+          <h2>Dino Capsule Machine</h2>
           <span class="game-top-spacer"></span>
           <span class="coin-pill"><span class="coin-ico"></span><span class="js-coin">888</span></span>
         </div>
@@ -6422,18 +6425,18 @@
             <div class="machine" id="machine"><div class="glass" id="machine-glass">🦖</div><div class="slot"></div></div>
             <div class="cap-machine-meta">
               <div class="cap-count">🎟️ 1 Capsule Coin — draw it now!</div>
-              <p class="capd-hint" id="capd-prehint">Spin to try for a pet — you might win one! Your round XP &amp; coins are safe either way.</p>
+              <p class="capd-hint" id="capd-prehint">Spin to try for a Dino Capsule — you might collect one! Your round XP &amp; coins are safe either way.</p>
             </div>
             <button class="gbtn gbtn-gold cap-draw-btn" id="btn-draw">Draw 🎰</button>
           </div>
-          <!-- (a) Big reveal overlay: themed by draw outcome (new pet / duplicate /
+          <!-- (a) Big reveal overlay: themed by draw outcome (new Dino Capsule / duplicate /
                empty). For duplicates & misses it's a gentle, kid-friendly message and
                no coins are spent or refunded. -->
           <div class="cap-pet-reveal" id="cap-pet-reveal" hidden>
             <div class="cpr-box">
-              <p class="cpr-kicker" id="cpr-kicker">🎉 New pet unlocked!</p>
-              <div class="cpr-pet" id="cpr-pet">🦖</div>
-              <p class="cpr-name" id="cpr-name">Baby Raptor</p>
+              <p class="cpr-kicker" id="cpr-kicker">🎉 New Dino Capsule unlocked!</p>
+              <div class="cpr-pet" id="cpr-pet">🫖</div>
+              <p class="cpr-name" id="cpr-name">Tea Party Dino</p>
               <p class="cpr-note" id="cpr-note" hidden>Give it a happy high-five! 🖐️</p>
               <button class="gbtn gbtn-gold" id="cpr-ok">Got it!</button>
             </div>
@@ -6466,7 +6469,7 @@
       <section class="screen" id="screen-wordpk">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2 id="wpk-rank-h">Word PK · Word Ranger</h2>
+          <h2 id="wpk-rank-h">Word PK</h2>
           <span class="game-top-spacer"></span>
         </div>
         <div class="game-body">
@@ -6489,7 +6492,7 @@
       <section class="screen" id="screen-speakpk">
         <div class="game-top">
           <button type="button" class="game-back" data-game-back>Play</button>
-          <h2 id="spk-rank-h">Speaking PK · Brave Speaker</h2>
+          <h2 id="spk-rank-h">Speaking PK</h2>
           <span class="game-top-spacer"></span>
         </div>
         <div class="game-body">
@@ -6695,7 +6698,7 @@
           <div class="shop-panel">
             <div class="shop-tabs" id="bag-tabs">
               <button class="shop-tab on" data-cat="skin">Dino Skins</button>
-              <button class="shop-tab" data-cat="pet">Dino Pets</button>
+              <button class="shop-tab" data-cat="pet">Dino Capsules</button>
             </div>
             <div class="shop-panel-body">
               <div class="shop-grid" id="bag-grid"></div>
@@ -8395,11 +8398,11 @@
     // Reward rule (PRD V1.3.0 FM 听力奖励):
     //  · Tracks auto-advance (连播). A reward is granted ONLY when a track plays
     //    naturally to the end — not on entering, pausing, seeking, or skipping.
-    //  · Each completed track = +FM_TRACK_XP / +FM_TRACK_COINS (small, since you
+    //  · Each completed track = +FM_TRACK_XP / decayed coins (small, since you
     //    can finish several in one sitting).
-    //  · A daily cap (FM_DAILY_CAP completed tracks) limits farming; after the
-    //    cap you can keep listening freely but earn no more that day.
-    const FM_TRACK_XP = 8, FM_TRACK_COINS = 12, FM_DAILY_CAP = 5;
+    //  · Rewards decay by same-day listening count and keep a +5 floor after
+    //    the high-reward window, so completion never hard-stops at "no coins".
+    const FM_TRACK_XP = 8, FM_TRACK_COINS = 12;
     const FM_DEMO_MS = 7000;   // accelerated track length so the demo completes fast
     const FM_TICK_MS = 140;
     let fmRewardedToday = 0;   // completed tracks rewarded today
@@ -8408,12 +8411,11 @@
     function fmtTime(sec) { const m = Math.floor(sec / 60), s = Math.floor(sec % 60); return `${m}:${s < 10 ? "0" : ""}${s}`; }
     // No persistent XP/coin HUD on the player: the wallet still updates silently
     // via grantXp/grantCoins. Per-track feedback is a small floating pill that pops
-    // for ~1.5s each time a track finishes, then fades out (the daily cap is enforced
-    // silently — no "x/5 today" / "maxed" copy shown to users).
-    function showFmReward() {
+    // for ~1.5s each time a track finishes, then fades out.
+    function showFmReward(coins) {
       const pop = $("#rp-reward-pop");
       if (!pop) return;
-      pop.innerHTML = `+${FM_TRACK_XP} XP <span class="coin-ico"></span> +${FM_TRACK_COINS}`;
+      pop.innerHTML = `+${FM_TRACK_XP} XP <span class="coin-ico"></span> +${coins}`;
       pop.classList.remove("go"); void pop.offsetWidth; pop.classList.add("go");
     }
     function setRadioPlaying(playing) {
@@ -8444,15 +8446,15 @@
       if (rpFrac >= 1) { rpFrac = 1; paintRadioProgress(); onTrackComplete(); return; }
       paintRadioProgress();
     }
-    // A track reached its natural end → reward (if under cap) is granted silently
-    // and a small reward pill pops for ~1.5s, then auto-play next. Past the daily
-    // cap, listening continues freely but nothing pops (no reward that play).
+    // A track reached its natural end → reward is granted silently and a small
+    // reward pill pops for ~1.5s, then auto-play next. Coins decay but keep a floor.
     function onTrackComplete() {
-      if (fmRewardedToday < FM_DAILY_CAP) {
-        fmRewardedToday += 1;
-        if (window.GAME) { window.GAME.grantXp(FM_TRACK_XP); window.GAME.grantCoins(FM_TRACK_COINS); }
-        showFmReward();
-      }
+      fmRewardedToday += 1;
+      const coins = window.GAME && window.GAME.decayedCoins
+        ? window.GAME.decayedCoins("listening", FM_TRACK_COINS)
+        : FM_TRACK_COINS;
+      if (window.GAME) { window.GAME.grantXp(FM_TRACK_XP); window.GAME.grantCoins(coins); }
+      showFmReward(coins);
       // Continuous play: roll to the next track in the category and keep going.
       rpIndex = (rpIndex + 1) % rpPlaylist.length;
       loadTrack(rpPlaylist[rpIndex]);
@@ -8499,7 +8501,7 @@
     const CROSS_SVG = '<svg viewBox="0 0 18 18" fill="none"><path d="M5 5l8 8M13 5l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
     // Post-lesson reward for Words & Sentences quiz (PRD 课后奖励 分级).
     // Listening/FM uses the per-completed-track model defined in the radio
-    // player above (FM_TRACK_XP / FM_TRACK_COINS / FM_DAILY_CAP).
+    // player above (FM_TRACK_XP / decayed FM_TRACK_COINS).
     const WS_REWARD_XP = 30, WS_REWARD_COINS = 40;
     let quizIndex = 0;
     let quizCorrect = 0;
@@ -8583,8 +8585,11 @@
       $("#quiz-progress")?.setAttribute("hidden", "");
       // V1.3.0: show accuracy RATE (not raw count) inline beside XP & coins; no stars.
       const accuracy = QUIZ_TOTAL ? Math.round((quizCorrect / QUIZ_TOTAL) * 100) : 0;
-      // Words & Sentences post-lesson reward (PRD 课后奖励 分级): +30 XP / +40 coins.
-      if (window.GAME) { window.GAME.grantXp(WS_REWARD_XP); window.GAME.grantCoins(WS_REWARD_COINS); }
+      // Words & Sentences post-lesson reward (PRD 课后奖励 分级): +30 XP / decayed coins.
+      const wsCoins = window.GAME && window.GAME.decayedCoins
+        ? window.GAME.decayedCoins("words_sentences", WS_REWARD_COINS)
+        : WS_REWARD_COINS;
+      if (window.GAME) { window.GAME.grantXp(WS_REWARD_XP); window.GAME.grantCoins(wsCoins); }
       $("#quiz-card").innerHTML = `
         <div class="quiz-done">
           ${DINO_CHAR}
@@ -8592,7 +8597,7 @@
           <div class="reward-row reward-row--ws">
             <span class="reward-pill acc">🎯 ${accuracy}% correct</span>
             <span class="reward-pill xp">+${WS_REWARD_XP} XP</span>
-            <span class="reward-pill coin"><span class="coin-ico"></span>+${WS_REWARD_COINS}</span>
+            <span class="reward-pill coin"><span class="coin-ico"></span>+${wsCoins}</span>
           </div>
           <div class="quiz-done-actions">
             <button type="button" class="quiz-btn quiz-btn-primary" id="btn-quiz-done">Continue</button>
@@ -8681,43 +8686,52 @@
       const state = {
         xp: 360,
         coins: 888,
-        equipped: { pet: "none", skin: "skin-classic", prop: "none" },
+        equipped: { pet: "none", skin: "skin-classic" },
         owned: new Set(["skin-classic", "skin-explorer", "pet-raptor"]),
         petCounts: { "pet-raptor": 2 },
       };
-      // Shop sells Dino Skins ONLY (per Figma 1.3.0). Dino Pets are a pure capsule
-      // collection — not purchasable, not equippable — and live in the Backpack pet
+      // Shop sells Dino Skins ONLY (per Figma 1.3.0). Dino Capsules are a pure capsule
+      // collection — not purchasable, not equippable — and live in the Backpack capsule
       // gallery (keys/emoji mirror CAP_POOL). Skins use real art (assets/skins/*.png).
       const SHOP_ITEMS = {
         skin: [
-          // Phase-1 launch ladder (1 free + 7 paid) per PRD 四档定价: 基础 200×3 / 进阶 500×2 / 高级 1000×1 / 稀有 2000×1.
+          // Phase-1 launch ladder (1 free + 7 paid) per PRD 四档定价: 基础 300×3 / 进阶 800×2 / 高级 1500×1 / 稀有 3000×1.
           { id: "skin-classic", name: "Classic Dino", img: "assets/dino-mascot.png", price: 0 },
-          { id: "skin-dreamteam", name: "Dream Team", img: "assets/skins/dreamteam.png", price: 200 },
-          { id: "skin-explorer", name: "Explorer", img: "assets/skins/explorer.png", price: 200 },
-          { id: "skin-detective", name: "Detective", img: "assets/skins/detective.png", price: 200 },
-          { id: "skin-adventurer", name: "Adventurer", img: "assets/skins/adventurer.png", price: 500 },
-          { id: "skin-bunny", name: "Bunny Suit", img: "assets/skins/bunny.png", price: 500 },
-          { id: "skin-prince", name: "Little Prince", img: "assets/skins/prince.png", price: 1000 },
-          { id: "skin-superhero", name: "Superhero", img: "assets/skins/superhero.png", price: 2000 },
+          { id: "skin-dreamteam", name: "Dream Team", img: "assets/skins/dreamteam.png", price: 300 },
+          { id: "skin-explorer", name: "Explorer", img: "assets/skins/explorer.png", price: 300 },
+          { id: "skin-detective", name: "Detective", img: "assets/skins/detective.png", price: 300 },
+          { id: "skin-adventurer", name: "Adventurer", img: "assets/skins/adventurer.png", price: 800 },
+          { id: "skin-bunny", name: "Bunny Suit", img: "assets/skins/bunny.png", price: 800 },
+          { id: "skin-prince", name: "Little Prince", img: "assets/skins/prince.png", price: 1500 },
+          { id: "skin-superhero", name: "Superhero", img: "assets/skins/superhero.png", price: 3000 },
         ],
-        // Pets: collection-only (no price). Pulled from the capsule machine.
+        // Dino Capsules: collection-only (no price). Pulled from the capsule machine.
+      // Full set = 8 in this demo; keys/art mirror CAP_POOL.
         pet: [
-          { id: "pet-raptor", name: "Baby Raptor", emoji: "🦖" },
-          { id: "pet-turtle", name: "Sea Turtle", emoji: "🐢" },
-          { id: "pet-ptero", name: "Pterosaur", emoji: "🐲" },
-          { id: "pet-trike", name: "Triceratops", emoji: "🦕" },
-        ],
-        prop: [
-          { id: "prop-xp2", name: "Double XP Card", emoji: "⚡", price: 80, tag: "Boost" },
-          { id: "prop-hint", name: "Hint Card", emoji: "💡", price: 50 },
-          { id: "prop-revive", name: "Revive Card", emoji: "❤️", price: 60 },
-          { id: "prop-draw", name: "Capsule Ticket", emoji: "🎟️", price: 70 },
+          { id: "pet-raptor", name: "Tea Party Dino", emoji: "🫖", img: "assets/capsules/dino-dessert-1.png" },
+          { id: "pet-turtle", name: "Macaron Dino", emoji: "🧁", img: "assets/capsules/dino-dessert-2.png" },
+          { id: "pet-ptero", name: "Pancake Dino", emoji: "🥞", img: "assets/capsules/dino-dessert-3.png" },
+          { id: "pet-trike", name: "Chef Dino", emoji: "🍳", img: "assets/capsules/dino-dessert-4.png" },
+          { id: "pet-croc", name: "Pudding Dino", emoji: "🍮", img: "assets/capsules/dino-dessert-5.png" },
+          { id: "pet-gecko", name: "Bouquet Dino", emoji: "💐", img: "assets/capsules/dino-dessert-6.png" },
+          { id: "pet-dragon", name: "Picnic Dino", emoji: "🧺", img: "assets/capsules/dino-dessert-7.png" },
+          { id: "pet-cupcake", name: "Cupcake Dino", emoji: "🍰", img: "assets/capsules/dino-dessert-8.png" },
         ],
       };
       // The equipped skin's artwork (left Dino in shop/backpack + the Dino Tab hero).
       function skinImg(id) {
         const s = SHOP_ITEMS.skin.find((i) => i.id === id);
         return s && s.img ? s.img : "assets/dino-mascot.png";
+      }
+      function capsuleVisual(p, className = "sc-img") {
+        if (!p) return "🦖";
+        return p.img
+          ? `<img class="${className}" src="${p.img}" alt="${p.label || p.name || "Dino Capsule"}" decoding="async" />`
+          : (p.glass || p.emoji || "🦖");
+      }
+      function setCapsuleVisual(el, p, className) {
+        if (!el) return;
+        el.innerHTML = capsuleVisual(p, className);
       }
       function equippedSkinImg() { return skinImg(state.equipped.skin); }
       // Equipping a skin must swap every on-screen Dino to that costume.
@@ -8730,7 +8744,7 @@
       }
       // Standalone Dino Coin purchase is deferred to a later version: coins are earned via Play and class rewards only.
       const GAME_SCREENS = new Set(["screen-capsule-intro", "screen-capsule", "screen-capsule-result", "screen-capsule-draw", "screen-pk-match", "screen-wordpk", "screen-speakpk", "screen-pkresult", "screen-shop", "screen-backpack", "screen-dino-chat"]);
-      const catName = (c) => ({ pet: "pets", skin: "skins" }[c] || "items");
+      const catName = (c) => ({ pet: "Dino Capsules", skin: "skins" }[c] || "items");
 
       function levelInfo(xp) {
         let cur = LEVELS[0];
@@ -8798,6 +8812,16 @@
       }
       function grantCoins(n) { state.coins += n; syncHud(); }
       function spendCoins(n) { if (state.coins < n) return false; state.coins -= n; syncHud(); return true; }
+      const COIN_DECAY = [1, 0.8, 0.6, 0.4, 0.25];
+      const COIN_FLOOR = 5;
+      const rewardCounts = { words_sentences: 0, listening: 0, capsule: 0, wordpk: 0, speakpk: 0 };
+      function decayedCoins(source, base) {
+        if (!base) return 0;
+        const count = rewardCounts[source] || 0;
+        rewardCounts[source] = count + 1;
+        if (count >= COIN_DECAY.length) return COIN_FLOOR;
+        return Math.max(COIN_FLOOR, Math.round(base * COIN_DECAY[count]));
+      }
 
       // ---- Navigation across game sub-screens ----
       let gameStack = [];
@@ -8813,7 +8837,7 @@
         else if (id === "screen-speakpk") resetSpeakPk();
         else if (id === "screen-dino-chat") resetDinoChat();
       }
-      // ---- Play daily limits (free tier): Pet Capsule 1 round/day, Word PK 1
+      // ---- Play daily limits (free tier): Dino Capsule Machine 1 round/day, Word PK 1
       // game/day; members unlimited. Counters reset on reload (demo only). ----
       const FREE_DAILY = { capsule: 1, wordpk: 1, speakpk: 1 };
       let playCounts = { capsule: 0, wordpk: 0, speakpk: 0 };
@@ -8821,7 +8845,7 @@
       function canPlay(game) { return playLeft(game) > 0; }
       function notePlay(game) { if (!profile.premiumUnlocked) playCounts[game] += 1; renderPlayLimits(); }
       function showPlayLimit(game) {
-        const name = game === "capsule" ? "Pet Capsule" : game === "speakpk" ? "Speaking PK" : "Word PK";
+        const name = game === "capsule" ? "Dino Capsule Machine" : game === "speakpk" ? "Speaking PK" : "Word PK";
         showPayToast(`🔒 ${name}: 1 free play a day. Go Premium for unlimited!`);
         setTimeout(() => openPaywall(activeLandScreen() || "screen-class", "game_limit"), 800);
       }
@@ -8882,47 +8906,14 @@
         drawShare: 0.30,       // of the non-win space, ~30% become draws (rest losses)
       };
       let pkMatchesPlayed = 0;
-      // ---- Child-friendly, function-related rank ladders (PRD: 段位称号 + 升级规则).
-      // Promotion is by CUMULATIVE win rate + a minimum match count, and is
-      // ONLY-UP (no relegation) so kids never feel punished for a bad streak.
-      const PK_RANKS = {
-        word: [
-          { name: "Word Rookie",   icon: "🐣", minMatches: 0,  minRate: 0    },
-          { name: "Word Explorer", icon: "🧭", minMatches: 5,  minRate: 0.40 },
-          { name: "Word Ranger",   icon: "🎯", minMatches: 12, minRate: 0.50 },
-          { name: "Word Master",   icon: "📚", minMatches: 25, minRate: 0.60 },
-          { name: "Word Champion", icon: "🏆", minMatches: 45, minRate: 0.70 },
-        ],
-        speak: [
-          { name: "Brave Speaker",     icon: "🙋", minMatches: 0,  minRate: 0    },
-          { name: "Chatty Star",       icon: "💬", minMatches: 5,  minRate: 0.40 },
-          { name: "Confident Voice",   icon: "🎤", minMatches: 12, minRate: 0.50 },
-          { name: "Expression Master", icon: "🎭", minMatches: 25, minRate: 0.60 },
-          { name: "Speaking Hero",     icon: "🦸", minMatches: 45, minRate: 0.70 },
-        ],
-      };
-      // Cumulative per-kind stats, both seeded so a mid-ladder rank shows in the demo.
+      // PK surfaces a cumulative WIN RATE only (段位/rank system retired per PRD 9.7).
+      // Stats are seeded so the entry cards show a believable rate in the demo.
       const pkStats = {
-        word:  { played: 14, wins: 10, tier: 0 },
-        speak: { played: 8,  wins: 5,  tier: 0 },
+        word:  { played: 14, wins: 10 },
+        speak: { played: 8,  wins: 5  },
       };
-      function pkWinRate(kind) { const s = pkStats[kind]; return s.played ? s.wins / s.played : 0; }
-      // Highest tier whose (minMatches AND minRate) are both satisfied right now.
-      function pkQualifiedTier(kind) {
-        const ladder = PK_RANKS[kind], s = pkStats[kind], rate = pkWinRate(kind);
-        let t = 0;
-        ladder.forEach((r, i) => { if (s.played >= r.minMatches && rate >= r.minRate) t = i; });
-        return t;
-      }
-      // Only-up promotion: never drop below a tier already earned.
-      function updatePkRank(kind) {
-        pkStats[kind].tier = Math.max(pkStats[kind].tier, pkQualifiedTier(kind));
-        return PK_RANKS[kind][pkStats[kind].tier];
-      }
-      function pkRankLabel(kind) { const r = PK_RANKS[kind][pkStats[kind].tier]; return `${r.icon} ${r.name}`; }
       // Win-rate label for the entry cards (— until the first match is played).
       function pkRatePct(kind) { const s = pkStats[kind]; return s.played ? Math.round(s.wins / s.played * 100) + "%" : "—"; }
-      // Entry now surfaces WIN RATE only (段位/rank removed per product decision):
       // Play hub cards show the win rate; the in-match headers stay plain titles.
       function renderPkRanks() {
         if ($("#pc-wordpk-rank")) $("#pc-wordpk-rank").textContent = `🏅 Win rate ${pkRatePct("word")}`;
@@ -8930,7 +8921,6 @@
         if ($("#wpk-rank-h")) $("#wpk-rank-h").textContent = "Word PK";
         if ($("#spk-rank-h")) $("#spk-rank-h").textContent = "Speaking PK";
       }
-      updatePkRank("word"); updatePkRank("speak");
       let pkPlan = { kind: "word", rival: PK_RIVALS[0], outcome: "win" };
       // Roll the predetermined outcome from the active win-rate target.
       function decidePkOutcome() {
@@ -9074,8 +9064,8 @@
       // ---- Capsule: intro (cumulative-correct progress) → 5-question round → branch ----
       // CUMULATIVE model (restored): the progress bar tracks CORRECT answers added
       // up across rounds (not this round only). Every 5th cumulative correct mints
-      // 1 Capsule Coin → MANDATORY draw on the machine page → big pet reveal overlay
-      // → reward page (pet + XP + coins). A round with no coin crossed shows the
+      // 1 Capsule Coin → MANDATORY draw on the machine page → big Dino Capsule reveal overlay
+      // → reward page (Dino Capsule + XP + coins). A round with no coin crossed shows the
       // round-result page with ONLY this round's XP & coins. The bar is shown both
       // BEFORE the round (intro) and DURING answering, and lights up when a coin
       // is earned.
@@ -9090,23 +9080,27 @@
       const CAP_ROUND_SIZE = 5;
       const CAP_ROUND_XP = 20;
       const CAP_ROUND_COINS = 30;
-      const CAP_DRAW_XP = 40;    // draw bonus XP on top of the round (only when a NEW pet is won)
-      const CAP_DRAW_COINS = 30; // draw bonus coins (only when a NEW pet is won)
-      // The draw is a gacha (PRD 盲盒概率): a Capsule Coin does NOT guarantee a pet.
-      // Outcomes by probability — win a NEW pet, draw a DUPLICATE you already own, or
+      const CAP_DRAW_XP = 40;    // draw bonus XP on top of the round (only when a NEW Dino Capsule is won)
+      const CAP_DRAW_COINS = 30; // draw bonus coins (only when a NEW Dino Capsule is won)
+      // The draw is a gacha (PRD 盲盒概率): a Capsule Coin does NOT guarantee a Dino Capsule.
+      // Outcomes by probability — win a NEW Dino Capsule, draw a DUPLICATE you already own, or
       // come up empty (MISS). Duplicates & misses cost no coins and give no consolation
       // coins (the round XP/coins are already earned from the quiz). Odds are ops-tunable.
       const CAP_DRAW_ODDS = { miss: 0.20, dup: 0.25, new: 0.55 };
-      // Capsule prize pool — PETS ONLY (pure collection; pets aren't purchasable or
-      // equippable). Aligns with the backpack pet collection (SHOP_ITEMS.pet ids).
+      // Capsule prize pool — DINO CAPSULES ONLY (pure collection; Dino Capsules aren't
+      // purchasable or equippable). Aligns with the Backpack Dino Capsule collection.
       const CAP_POOL = [
-        { label: "Baby Raptor", item: "pet-raptor", glass: "🦖" },
-        { label: "Sea Turtle", item: "pet-turtle", glass: "🐢" },
-        { label: "Pterosaur", item: "pet-ptero", glass: "🐲" },
-        { label: "Triceratops", item: "pet-trike", glass: "🦕" },
+        { label: "Tea Party Dino", item: "pet-raptor", glass: "🫖", img: "assets/capsules/dino-dessert-1.png" },
+        { label: "Macaron Dino", item: "pet-turtle", glass: "🧁", img: "assets/capsules/dino-dessert-2.png" },
+        { label: "Pancake Dino", item: "pet-ptero", glass: "🥞", img: "assets/capsules/dino-dessert-3.png" },
+        { label: "Chef Dino", item: "pet-trike", glass: "🍳", img: "assets/capsules/dino-dessert-4.png" },
+        { label: "Pudding Dino", item: "pet-croc", glass: "🍮", img: "assets/capsules/dino-dessert-5.png" },
+        { label: "Bouquet Dino", item: "pet-gecko", glass: "💐", img: "assets/capsules/dino-dessert-6.png" },
+        { label: "Picnic Dino", item: "pet-dragon", glass: "🧺", img: "assets/capsules/dino-dessert-7.png" },
+        { label: "Cupcake Dino", item: "pet-cupcake", glass: "🍰", img: "assets/capsules/dino-dessert-8.png" },
       ];
       // Decide a draw outcome, honoring the ⚙︎ States override and reconciling with
-      // what's actually owned so the reveal is truthful (e.g. can't show a "new" pet
+      // what's actually owned so the reveal is truthful (e.g. can't show a "new" Dino Capsule
       // when the pool is fully collected).
       function rollCapsuleOutcome() {
         const unowned = CAP_POOL.filter((p) => !state.owned.has(p.item));
@@ -9131,6 +9125,7 @@
       let capQIdx = 0;          // global question pointer (cycles the pool)
       let capRoundIdx = 0;      // 0..5 questions answered this round
       let capRoundCorrect = 0;  // correct answers this round (round-result copy only)
+      let capRoundCoinsEarned = CAP_ROUND_COINS;
       let capDrawPending = false; // a coin crossed this round → mandatory draw at round end
       let capJustEarned = false;  // transient: a coin was just minted (celebrate frame)
       let capBusy = false;
@@ -9166,7 +9161,7 @@
       function renderCapsuleIntro() {
         const cycle = capTotalCorrect % CAP_COIN_EVERY;
         if ($("#capi-bar-fill")) $("#capi-bar-fill").style.width = (cycle / CAP_COIN_EVERY * 100) + "%";
-        if ($("#capi-bar-label")) $("#capi-bar-label").textContent = `${cycle} / ${CAP_COIN_EVERY} correct to your next coin`;
+        if ($("#capi-bar-label")) $("#capi-bar-label").textContent = `${cycle} / ${CAP_COIN_EVERY} correct to your next Capsule Coin`;
         const coupon = $("#capi-coupon");
         if (coupon) coupon.classList.toggle("is-earned", capDrawPending);
         if ($("#capi-hint")) $("#capi-hint").textContent = "Your correct answers add up across rounds — keep going!";
@@ -9229,17 +9224,18 @@
       // round-result page with ONLY this round's XP/coins (no capsule coin).
       function finishCapsuleRound() {
         grantXp(CAP_ROUND_XP);
-        grantCoins(CAP_ROUND_COINS);
+        capRoundCoinsEarned = decayedCoins("capsule", CAP_ROUND_COINS);
+        grantCoins(capRoundCoinsEarned);
         // A coin crossed this round → mandatory draw; otherwise just the round result.
         if (capDrawPending) setTimeout(showCapsuleMachine, 500);
         else showCapsuleResult();
       }
       // Round-result page. Two cases:
       //  · No coin this round  → "Round complete!" with ONLY this round's XP/coins
-      //    and the streak distance to the next coin.
+      //    and the streak distance to the next Capsule Coin.
       //  · Coin drawn this round (opts.pet set, after the machine + reveal) →
-      //    "Round complete · Pet won!" congratulating the player, showing the round
-      //    quiz result, the pet won, and the COMBINED XP/coins (round + draw bonus).
+      //    "Round complete · Dino Capsule won!" congratulating the player, showing the
+      //    quiz result, the Dino Capsule won, and the COMBINED XP/coins (round + draw bonus).
       function showCapsuleResult(opts) {
         opts = opts || {};
         const withPet = !!opts.pet;
@@ -9247,19 +9243,16 @@
         if ($("#capr-burst")) $("#capr-burst").textContent = withPet ? "🎰" : "🎉";
         if ($("#capr-sub")) $("#capr-sub").textContent = `You got ${capRoundCorrect} / ${CAP_ROUND_SIZE} correct this round`;
         if ($("#capr-xp")) $("#capr-xp").textContent = withPet ? capdVisitXp : CAP_ROUND_XP;
-        if ($("#capr-coin")) $("#capr-coin").textContent = withPet ? capdVisitCoins : CAP_ROUND_COINS;
-        // The capsule pool mixes pets and the occasional skin — label the prize
-        // accordingly ("New skin" vs "New pet") so a drawn skin doesn't read "New pet".
-        const isSkin = withPet && String(opts.pet.item || "").startsWith("skin");
-        const prizeNoun = isSkin ? "skin" : "pet";
-        if ($("#capr-title")) $("#capr-title").textContent = withPet ? `Round complete · ${isSkin ? "Skin" : "Pet"} won!` : "Round complete!";
-        // Pet/skin line only when a prize was actually drawn this round (no coin
-        // won → no "New pet" line at all).
+        if ($("#capr-coin")) $("#capr-coin").textContent = withPet ? capdVisitCoins : capRoundCoinsEarned;
+        const prizeNoun = "Dino Capsule";
+        if ($("#capr-title")) $("#capr-title").textContent = withPet ? "Round complete · Dino Capsule won!" : "Round complete!";
+        // Dino Capsule line only when a prize was actually drawn this round (no Capsule Coin
+        // won → no "New Dino Capsule" line at all).
         const petBox = $("#capr-pet");
         if (petBox) {
           petBox.hidden = !withPet;
           if (withPet) {
-            if ($("#capr-pet-emoji")) $("#capr-pet-emoji").textContent = opts.pet.glass;
+            setCapsuleVisual($("#capr-pet-emoji"), opts.pet, "capd-pet-img");
             if ($("#capr-pet-name")) $("#capr-pet-name").textContent = opts.pet.label;
             if ($("#capr-pet-tag")) $("#capr-pet-tag").textContent = `New ${prizeNoun}`;
           }
@@ -9282,7 +9275,7 @@
         const hintEl = $("#capr-hint");
         if (hintEl) {
           hintEl.hidden = !withPet; // no-coin uses the progress bar above instead
-          if (withPet) hintEl.textContent = `🎒 Your new ${prizeNoun} is saved to your Backpack — equip it any time!`;
+          if (withPet) hintEl.textContent = `🎒 Your new ${prizeNoun} is saved to your Backpack collection!`;
         }
         if ($("#capr-main")) $("#capr-main").textContent = "Continue";
         showLandScreen("screen-capsule-result");
@@ -9296,7 +9289,7 @@
       });
       // Capsule machine (entered only with a pending coin; the draw is mandatory).
       // capdVisit* accumulate the round + draw reward to show together AFTER the
-      // big pet reveal overlay is dismissed.
+      // big Dino Capsule reveal overlay is dismissed.
       let capdVisitXp = 0, capdVisitCoins = 0, capdPet = null, capdOutcome = "new";
       function showCapsuleMachine() {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
@@ -9306,7 +9299,7 @@
         if ($("#machine-glass")) $("#machine-glass").textContent = "🦖";
         // Round reward already granted in finishCapsuleRound — seed the visit total.
         capdVisitXp = CAP_ROUND_XP;
-        capdVisitCoins = CAP_ROUND_COINS;
+        capdVisitCoins = capRoundCoinsEarned;
         capdPet = null;
         showLandScreen("screen-capsule-draw");
       }
@@ -9316,21 +9309,25 @@
         const outcome = rollCapsuleOutcome();
         capdOutcome = outcome.kind;
         capdPet = outcome.pet;
-        // Reward + collectible ONLY for a NEW pet. Duplicates & misses add nothing and
+        // Reward + collectible ONLY for a NEW Dino Capsule. Duplicates & misses add nothing and
         // deduct nothing (the round's XP/coins were already granted in finishCapsuleRound).
         if (outcome.kind === "new") {
+          const drawCoins = decayedCoins("capsule", CAP_DRAW_COINS);
           grantXp(CAP_DRAW_XP);
-          grantCoins(CAP_DRAW_COINS);
+          grantCoins(drawCoins);
           capdVisitXp += CAP_DRAW_XP;
-          capdVisitCoins += CAP_DRAW_COINS;
+          capdVisitCoins += drawCoins;
           state.owned.add(outcome.pet.item);
           state.petCounts[outcome.pet.item] = 1;
         } else if (outcome.kind === "dup") {
-          // Duplicate pets are pure collection: bump the owned count (no coins).
+          // Duplicate Dino Capsules are pure collection: bump the owned count (no coins).
           state.petCounts[outcome.pet.item] = (state.petCounts[outcome.pet.item] || 1) + 1;
         }
         const g = $("#machine-glass");
-        if (g) g.textContent = outcome.kind === "miss" ? "🫧" : outcome.pet.glass;
+        if (g) {
+          if (outcome.kind === "miss") g.textContent = "🫧";
+          else setCapsuleVisual(g, outcome.pet, "machine-capsule-img");
+        }
         const m = $("#machine");
         if (m) { m.classList.add("shake"); setTimeout(() => m.classList.remove("shake"), 500); }
         if ($("#btn-draw")) $("#btn-draw").hidden = true;
@@ -9338,41 +9335,40 @@
         // (a) BIG reveal overlay first, themed by outcome.
         showCapsuleReveal(outcome);
       });
-      // Reveal overlay copy by outcome: celebratory for a new pet; gentle & kid-friendly
+      // Reveal overlay copy by outcome: celebratory for a new Dino Capsule; gentle & kid-friendly
       // for a duplicate or an empty capsule (and it states no coins were used).
       function showCapsuleReveal(outcome) {
-        const isSkin = outcome.pet && String(outcome.pet.item || "").startsWith("skin");
-        const noun = isSkin ? "skin" : "pet";
+        const noun = "Dino Capsule";
         const kicker = $("#cpr-kicker"), pet = $("#cpr-pet"), nm = $("#cpr-name"), note = $("#cpr-note"), ok = $("#cpr-ok");
         if (outcome.kind === "new") {
           if (kicker) kicker.textContent = `🎉 New ${noun} unlocked!`;
-          if (pet) pet.textContent = outcome.pet.glass;
+          setCapsuleVisual(pet, outcome.pet, "cpr-pet-img");
           if (nm) nm.textContent = outcome.pet.label;
           if (note) note.hidden = true;
           if (ok) ok.textContent = "Got it!";
         } else if (outcome.kind === "dup") {
           const n = state.petCounts[outcome.pet.item] || 2;
           if (kicker) kicker.textContent = `💛 Another ${outcome.pet.label}!`;
-          if (pet) pet.textContent = outcome.pet.glass;
+          setCapsuleVisual(pet, outcome.pet, "cpr-pet-img");
           if (nm) nm.textContent = `${outcome.pet.label} ×${n}`;
           if (note) { note.hidden = false; note.textContent = `Your collection grows — now ×${n}! No coins used.`; }
           if (ok) ok.textContent = "OK!";
         } else {
           if (kicker) kicker.textContent = "🫧 Aw, the capsule was empty!";
           if (pet) pet.textContent = "🥚";
-          if (nm) nm.textContent = "No pet this time";
+          if (nm) nm.textContent = "No Dino Capsule this time";
           if (note) { note.hidden = false; note.textContent = "Try again next round — no coins used! 🌟"; }
           if (ok) ok.textContent = "OK!";
         }
         $("#cap-pet-reveal")?.removeAttribute("hidden");
       }
       // (b) "Got it!" dismisses the big reveal overlay → (c) the dedicated result
-      // page: congrats + this round's quiz result + rewards won (pet + combined
+      // page: congrats + this round's quiz result + rewards won (Dino Capsule + combined
       // XP/coins). Continue / Play-again are handled there (capr-main / capr-again).
       $("#cpr-ok")?.addEventListener("click", () => {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
-        // Only a NEW pet carries to the result page's prize line + draw bonus; duplicates
-        // & misses fall back to the plain round result (no pet line, no extra coins).
+        // Only a NEW Dino Capsule carries to the result page's prize line + draw bonus; duplicates
+        // & misses fall back to the plain round result (no Dino Capsule line, no extra coins).
         showCapsuleResult({ outcome: capdOutcome, pet: capdOutcome === "new" ? capdPet : null });
       });
 
@@ -9496,15 +9492,14 @@
         if (kind === "word") { wpkOp = op; if ($("#wpk-op")) $("#wpk-op").textContent = op; }
         else { spkOp = op; if ($("#spk-op")) $("#spk-op").textContent = op; }
         pkMatchesPlayed += 1;
-        const win = me > op; // ties fall into the loss tier (PRD: win / non-win)
-        // Record cumulative stats, then re-evaluate the (only-up) rank.
+        const win = me > op; // ties count as a loss (PRD: win / non-win)
+        // Record cumulative win-rate stats (no 段位 — retired per PRD 9.7).
         pkStats[kind].played += 1;
         if (win) pkStats[kind].wins += 1;
-        updatePkRank(kind);
         renderPkRanks();
-        // Tiered reward (PRD 经济专题): win +30 XP / +50 coins · otherwise +15 XP / +20 coins.
+        // Tiered reward (PRD 经济专题): win +30 XP / decayed +50 coins · otherwise +15 XP / decayed +20 coins.
         const xp = win ? 30 : 15;
-        const coins = win ? 50 : 20;
+        const coins = decayedCoins(kind === "word" ? "wordpk" : "speakpk", win ? 50 : 20);
         grantXp(xp);
         grantCoins(coins);
         showPkResult(kind, me, op, win, xp, coins);
@@ -9532,16 +9527,16 @@
         const meSide = $("#pkr-me-side"), opSide = $("#pkr-op-side");
         if (meSide) meSide.classList.toggle("is-winner", win);
         if (opSide) opSide.classList.toggle("is-winner", !win && !tie);
-        if ($("#pkr-rate")) $("#pkr-rate").textContent = Math.round(pkWinRate(kind) * 100) + "%";
+        if ($("#pkr-rate")) $("#pkr-rate").textContent = pkRatePct(kind);
         showLandScreen("screen-pkresult");
       }
       $("#pkr-continue")?.addEventListener("click", backToPlay);
 
-      // ---- Shop (night coin exchange, per Figma: Dino Skins / Dino Pets only) ----
+      // ---- Shop (night coin exchange, per Figma: Dino Skins only) ----
       let shopCat = "skin";
       let shopSel = null;
       // The left Dino mirrors the selection: a skin preview shows that costume,
-      // otherwise the currently-equipped skin. Pet selection keeps the equipped skin.
+      // otherwise the currently-equipped skin. Dino Capsule selection keeps the equipped skin.
       function shopPreview() {
         const sel = shopSel ? SHOP_ITEMS[shopCat].find((i) => i.id === shopSel) : null;
         const img = $("#shop-preview-img");
@@ -9640,12 +9635,12 @@
       });
 
       // ---- Backpack: two tabs. Skins (default) = owned costumes with a Wear flow
-      // (preview-left + grid-right + Wear button). Pets = a pure collection gallery
-      // (full set, owned shown with ×N count, unseen locked; no Wear/Equip). ----
+      // (preview-left + grid-right + Wear button). Dino Capsules = a pure collection
+      // gallery (owned shown with ×N count; no Wear/Equip). ----
       let bagCat = "skin";
       let bagSel = null;
-      // Left Dino mirrors the selection (a skin previews that costume; pets keep the
-      // equipped skin since pets are companions, not costumes).
+      // Left Dino mirrors the selection (a skin previews that costume; Dino Capsules keep the
+      // equipped skin since Dino Capsules are collectables, not costumes).
       function bagPreview() {
         const sel = bagSel ? SHOP_ITEMS[bagCat].find((i) => i.id === bagSel) : null;
         const img = $("#bag-preview-img");
@@ -9674,21 +9669,24 @@
         $$("#bag-tabs .shop-tab").forEach((t) => t.classList.toggle("on", t.dataset.cat === bagCat));
         const grid = $("#bag-grid");
         const equipBtn = $("#bag-equip");
-        // PETS = pure collection gallery: show the full set, owned ones with ×N count,
-        // unseen ones locked. No selection, no Equip (pets are companions, not costumes).
+        // DINO CAPSULES = pure collection gallery: owned ones with ×N count.
+        // No selection, no Equip (Dino Capsules are collectables, not costumes).
         if (bagCat === "pet") {
           bagSel = null;
           if (equipBtn) equipBtn.hidden = true;
           const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
           if (grid) {
             if (!owned.length) {
-              // Empty state: no pets pulled yet — point kids to the Pet Capsule.
-              grid.innerHTML = `<div class="empty-note">No pets yet 🥚<br>Play the Pet Capsule in Play to hatch your first dino friend!</div>`;
+              // Empty state: no Dino Capsules pulled yet — point kids to the Capsule.
+              grid.innerHTML = `<div class="empty-note">No Dino Capsules yet 🥚<br>Play the Dino Capsule Machine to collect your first Dino Capsule!</div>`;
             } else {
               grid.innerHTML = owned.map((p) => {
                 const n = state.petCounts[p.id] || 1;
+                const art = p.img
+                  ? `<img class="sc-img" src="${p.img}" alt="${p.name}" decoding="async" />`
+                  : `<span class="sc-emoji">${p.emoji}</span>`;
                 return `<div class="shop-card pet-collect">
-                  <span class="shop-card-art"><span class="sc-emoji">${p.emoji}</span>${n > 1 ? `<span class="sc-count">×${n}</span>` : ""}</span>
+                  <span class="shop-card-art">${art}${n > 1 ? `<span class="sc-count">×${n}</span>` : ""}</span>
                   <span class="shop-card-name">${p.name}</span>
                   <span class="shop-card-price">Collected</span>
                 </div>`;
@@ -9699,8 +9697,8 @@
           const label = $("#bag-preview-label");
           if (img) img.src = equippedSkinImg();
           if (label) label.textContent = owned.length
-            ? `🐾 Pet collection · ${owned.length} collected`
-            : `🐾 Pet collection`;
+            ? `🦕 Dino Capsule collection · ${owned.length} collected`
+            : `🦕 Dino Capsule collection`;
           return;
         }
         // SKINS = owned grid + Wear flow.
@@ -9750,7 +9748,7 @@
         showLevelUp(lv); // title-only celebration, no coin/XP reward
       }
       function openCapsuleDraw() { capDrawPending = true; showCapsuleMachine(); }
-      window.GAME = { syncHud, grantXp, grantCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw };
+      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw };
       syncHud();
       renderPkRanks();
     })();
@@ -10587,7 +10585,7 @@
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
         } },
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
-        options: [["random", "随机概率"], ["new", "新宠物"], ["dup", "已有宠物"], ["miss", "未抽中"]],
+        options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
     ],
     jumps: [
