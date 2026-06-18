@@ -4116,6 +4116,11 @@
     /* Member view: ghost CTA for scheduled (future) lessons — no lock icon */
     .course-cta-scheduled { display: inline-flex; align-items: center; gap: 7px; border: none; border-radius: 999px; padding: 10px 18px; font-size: 0.9rem; font-weight: 700; cursor: pointer; background: rgba(20, 58, 94, 0.08); color: #57738f; box-shadow: none; }
     .all-courses-card-lock { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 700; color: #c47f1d; background: #fff4dd; border-radius: 999px; padding: 3px 9px; }
+    .all-courses-card-lock--scheduled { color: #57738f; background: rgba(20,58,94,0.08); }
+    /* The lock lives on the action button when a card has one (anchored list cards + class-home
+       week cards); hide the duplicate meta indicator there. Compact cards (no button) keep it. */
+    .all-courses-course-card.is-anchored .all-courses-card-lock,
+    .class-home-course-card .all-courses-card-lock { display: none; }
 
     /* ---------- Paywall (V1.2.0) ---------- */
     #screen-paywall, #screen-membership { padding: 0; }
@@ -4125,7 +4130,7 @@
     .pw-restore { background: none; border: none; color: #2a6db0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
     .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 22px; overflow-y: auto; align-items: stretch; }
     .pw-left { flex: 1.1; min-width: 0; padding: 18px 20px; border-radius: 22px; background: linear-gradient(155deg,rgba(255,255,255,.72),rgba(232,248,244,.82)); border: 1px solid rgba(255,255,255,.72); }
-    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: center; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
+    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: flex-start; min-height: 0; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
     .pw-kicker { display: inline-block; background: #fff0d4; color: #c47f1d; border-radius: 999px; padding: 4px 12px; font-size: 0.74rem; font-weight: 800; }
     .pw-title { font-size: 1.3rem; font-weight: 800; color: #143a5e; margin: 10px 0 6px; line-height: 1.25; }
     .pw-sub { font-size: 0.88rem; color: #5a7a98; margin: 0 0 12px; line-height: 1.45; }
@@ -4142,7 +4147,7 @@
     .pw-price-row { display: flex; align-items: baseline; justify-content: flex-start; gap: 5px; }
     .pw-price-amt { font-size: 1.5rem; font-weight: 800; color: #143a5e; }
     .pw-price-period { font-size: 0.82rem; color: #5a7a98; font-weight: 700; }
-    .pw-plans { display: flex; flex-direction: column; gap: 10px; }
+    .pw-plans { display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 6px 4px; }
     .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 14px 16px; cursor: pointer; background: #fff; transition: .15s; }
     .pw-plan.is-selected { border-color: #19c3b2; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); }
     .pw-plan-top { display: flex; align-items: center; justify-content: space-between; }
@@ -4676,6 +4681,20 @@
     .reward-pill.coin { background: linear-gradient(135deg, #fff5dd, #ffe8b8); color: #8a5a00; }
     .reward-pill.acc { background: linear-gradient(135deg, #e3f7ec, #c7efd6); color: #1f8a4c; }
     .reward-pill .coin-ico { width: 20px; height: 20px; }
+    /* In-class drops (skins / Dino Capsules) celebrated on the lesson-complete page —
+       art only, no captions / labels / counts (one lesson never gives duplicates). */
+    .lc-bonus { margin-bottom: 14px; }
+    .lc-bonus-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .lc-bonus-item { background: linear-gradient(135deg, #fff8e8, #ffeec6); border: 1px solid #ffe0a0;
+      border-radius: 16px; padding: 9px; display: grid; place-items: center; }
+    .lc-bonus-art { width: 54px; height: 54px; display: grid; place-items: center; }
+    .lc-bonus-art img { width: 100%; height: 100%; object-fit: contain; }
+    .lc-bonus-art .bonus-emoji { font-size: 2rem; }
+    /* Report-generation gate: the Continue button shows "Generating report…" (greyed,
+       with a spinner) until the report is ready, then lights up to "Continue". */
+    .lc-spin { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.18); border-top-color: #4a4a4a; display: inline-block; vertical-align: -2px; margin-right: 7px; animation: lc-spin 0.7s linear infinite; }
+    @keyframes lc-spin { to { transform: rotate(360deg); } }
+    .gbtn-gold.is-preparing { filter: grayscale(0.55); opacity: 0.7; cursor: not-allowed; box-shadow: none; }
     .settle-card .gbtn { width: min(60%, 240px); margin: 0 auto; }
     .pk-result-meta { display: flex; gap: 10px; justify-content: center; margin-bottom: 14px; }
     .prm { background: var(--forest-mist); border-radius: 12px; padding: 8px 14px; font-size: 0.72rem; color: var(--forest-deep); font-weight: 700; }
@@ -5029,8 +5048,11 @@
     @keyframes icpop2 { to { transform: scale(1); } }
 
     /* ---------- All Courses head: level label + This Week strip (moved off Class home) ---------- */
-    .all-courses-level { font-size: 0.82rem; font-weight: 800; color: #fff; white-space: nowrap; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.22); padding: 7px 13px; border-radius: 999px; flex-shrink: 0; cursor: pointer; font-family: var(--font); transition: background 0.15s var(--ease); }
+    .all-courses-level { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 800; color: #fff; white-space: nowrap; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.22); padding: 7px 13px; border-radius: 999px; flex-shrink: 0; cursor: pointer; font-family: var(--font); transition: background 0.15s var(--ease); }
     .all-courses-level:hover { background: rgba(255,255,255,0.28); }
+    .all-courses-level .acl-ico { font-size: 0.92rem; line-height: 1; }
+    .all-courses-level .acl-scope { font-weight: 800; }
+    .all-courses-level .acl-caret { font-size: 0.7rem; opacity: 0.9; margin-left: 1px; }
     .acl-chevron { opacity: 0.85; font-weight: 800; }
 
     /* ---------- Learning Path (Level → Unit map, V1.3.0) ---------- */
@@ -5065,6 +5087,8 @@
     .cm-unit-cta { flex-shrink: 0; border: none; border-radius: 999px; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: var(--font); background: linear-gradient(135deg, var(--forest-mid), var(--forest-deep)); color: #fff; box-shadow: 0 8px 16px rgba(20,61,42,0.3); }
     .cm-unit-cta--ghost { background: rgba(20,58,94,0.08); color: #57738f; box-shadow: none; }
     .cm-unit-cta--locked { background: rgba(20,58,94,0.06); color: #93a0ad; box-shadow: none; }
+    /* Free user: unit past Unit 1 is a membership lock → Paywall (gold "Unlock"). */
+    .cm-unit-cta--premium { background: linear-gradient(135deg, #ffcf5a, #ff9f1c); color: #4a2d00; box-shadow: 0 8px 16px rgba(255,159,28,0.32); }
     /* Member level-up entry (向上跳级) — shown on the first unit of a higher level. */
     .cm-unit-cta--levelup { background: linear-gradient(135deg, #ffb43b, #ff7a3c); color: #fff; box-shadow: 0 8px 16px rgba(255,122,60,0.34); }
     .cm-unit--levelup { background: linear-gradient(135deg, #fff 0%, #fff7ec 100%); box-shadow: 0 12px 26px rgba(255,140,60,0.22); outline: 1.5px solid rgba(255,150,60,0.4); }
@@ -5075,6 +5099,8 @@
     .cm-unit-tag { flex-shrink: 0; font-size: 0.66rem; font-weight: 800; border-radius: 999px; padding: 4px 10px; }
     .cm-unit-tag--current { background: #ffe9bd; color: #b06d12; }
     .cm-unit-tag--done { background: var(--forest-mist); color: var(--forest-deep); }
+    .cm-unit-tag--premium { background: #fff0cf; color: #b06d12; }
+    .cm-unit-tag--locked { background: rgba(20,58,94,0.08); color: #93a0ad; }
     .week-plan--courses { width: 100%; }
     #device-landscape .week-plan--courses { padding: 6px 10px; }
     #device-landscape .week-plan--courses .week-day { min-width: 0; }
@@ -5121,14 +5147,15 @@
     .sp-tag-done { background: var(--forest-mist); color: var(--forest-deep); }
     .sp-tag-current { background: #ffe9bd; color: #b06d12; }
     .sp-tag-upnext { background: rgba(20,58,94,0.08); color: #57738f; }
-    /* layer 3 · journey map: panorama ladder → 12-unit quest → expandable lessons */
-    .sp-ladder { display: flex; align-items: stretch; gap: 5px; }
-    .sp-rung { flex: 1; min-width: 0; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 7px 2px; display: flex; flex-direction: column; align-items: center; gap: 1px; }
+    /* layer 3 · journey map: 6-Level track → 12-unit timeline */
+    .sp-ladder { display: flex; align-items: stretch; gap: 6px; position: relative; margin-bottom: 12px; }
+    .sp-ladder::before { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 3px; transform: translateY(-50%); border-radius: 3px; background: rgba(255,255,255,0.14); z-index: 0; }
+    .sp-rung { position: relative; z-index: 1; flex: 1; min-width: 0; background: #213a55; border: 1px solid rgba(255,255,255,0.14); border-radius: 11px; padding: 7px 2px; display: flex; flex-direction: column; align-items: center; gap: 1px; }
     .sp-rung b { font-size: 0.62rem; font-weight: 800; color: rgba(255,255,255,0.9); }
-    .sp-rung span { font-size: 0.5rem; color: rgba(255,255,255,0.6); }
-    .sp-rung.is-done { background: rgba(123,214,160,0.18); border-color: rgba(123,214,160,0.42); }
+    .sp-rung span { font-size: 0.55rem; font-weight: 800; color: rgba(255,255,255,0.55); }
+    .sp-rung.is-done { background: linear-gradient(180deg, rgba(123,214,160,0.28), rgba(123,214,160,0.16)); border-color: rgba(123,214,160,0.5); }
     .sp-rung.is-done span { color: #9be3b8; }
-    .sp-rung.is-current { background: #ffe9bd; border-color: #ffd98a; }
+    .sp-rung.is-current { background: linear-gradient(180deg, #fff0cf, #ffe2a4); border-color: #ffd98a; box-shadow: 0 6px 16px rgba(255,201,97,0.32); transform: translateY(-2px); }
     .sp-rung.is-current b, .sp-rung.is-current span { color: #8a5a12; }
     .sp-ladder-anchor { text-align: center; font-size: 0.62rem; color: rgba(255,255,255,0.68); margin: 6px 0 10px; }
     .sp-units { display: flex; flex-direction: column; }
@@ -5168,6 +5195,19 @@
     .sp-hero-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
     .sp-hero-goal { font-size: 0.72rem; color: #eaf6ef; line-height: 1.4; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 11px; padding: 8px 11px; }
     .sp-hero-goal b { color: #bff0d2; }
+    /* Hero journey chart: current level → (months) → goal */
+    .sp-hero-cap { font-family: var(--display); font-size: 1rem; font-weight: 800; color: #fff; line-height: 1.15; }
+    .sp-journey { display: flex; align-items: stretch; gap: 8px; }
+    .sp-jnode { flex: 1; min-width: 0; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 10px 8px; text-align: center; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
+    .sp-jnode--goal { background: rgba(123,214,160,0.18); border-color: rgba(123,214,160,0.45); }
+    .sp-jnode-tag { font-size: 0.56rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.66); }
+    .sp-jnode--goal .sp-jnode-tag { color: #bff0d2; }
+    .sp-jnode-lvl { font-family: var(--display); font-size: 0.92rem; font-weight: 800; color: #fff; line-height: 1.12; }
+    .sp-jnode-cefr { font-size: 0.6rem; color: rgba(255,255,255,0.82); }
+    .sp-jlink { flex: 0 0 46px; display: flex; align-items: center; justify-content: center; }
+    .sp-jlink-line { position: relative; width: 100%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, rgba(255,255,255,0.35), rgba(123,214,160,0.75)); }
+    .sp-jlink-line::after { content: "▶"; position: absolute; right: -3px; top: 50%; transform: translateY(-50%); font-size: 0.55rem; color: rgba(123,214,160,0.95); line-height: 0; }
+    .sp-jlink-dino { position: absolute; top: -11px; left: 50%; transform: translateX(-50%); font-size: 1rem; }
     .sp-block { flex-shrink: 0; display: flex; flex-direction: column; }
     .sp-block-head { display: flex; align-items: baseline; gap: 8px; margin: 0 2px 8px; }
     .sp-block-title { font-size: 0.88rem; font-weight: 800; color: #fff; }
@@ -5187,84 +5227,95 @@
     .sp-wl-day { font-size: 0.6rem; font-weight: 800; color: #ffe0a3; flex-shrink: 0; width: 26px; }
     .sp-wl-title { flex: 1; min-width: 0; font-size: 0.74rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .sp-wl-tag { font-size: 0.55rem; font-weight: 800; border-radius: 999px; padding: 2px 9px; flex-shrink: 0; }
-    .sp-units--compact { display: flex; flex-direction: column; gap: 6px; margin-bottom: 9px; }
-    .sp-uchip { display: flex; align-items: center; gap: 9px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 11px; padding: 7px 11px; }
-    .sp-uchip.is-current { background: rgba(255,233,189,0.14); border-color: rgba(255,217,138,0.42); }
-    .sp-uchip-no { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.22); display: grid; place-items: center; font-size: 0.58rem; font-weight: 800; color: #fff; flex-shrink: 0; }
-    .sp-uchip.is-done .sp-uchip-no { background: #7bd6a0; border-color: #7bd6a0; color: #0c3a22; }
-    .sp-uchip.is-current .sp-uchip-no { background: #ffd98a; border-color: #ffd98a; color: #8a5a12; }
-    .sp-uchip-theme { flex: 1; min-width: 0; font-size: 0.72rem; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .sp-uchip-status { font-size: 0.55rem; font-weight: 800; border-radius: 999px; padding: 2px 8px; flex-shrink: 0; }
+    /* Unit roadmap · connected vertical timeline (numbered dots on a rail, no labels) */
+    .sp-units--timeline { position: relative; display: flex; flex-direction: column; gap: 0; margin-bottom: 4px; }
+    .sp-utl { position: relative; display: flex; align-items: center; gap: 11px; padding: 4px 0; border-radius: 12px; }
+    .sp-utl::before { content: ""; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.15); z-index: 0; }
+    .sp-utl:first-child::before { top: 50%; }
+    .sp-utl:last-child::before { bottom: 50%; }
+    .sp-utl-dot { position: relative; z-index: 1; width: 26px; height: 26px; border-radius: 50%; background: #243a52; border: 2px solid rgba(255,255,255,0.24); display: grid; place-items: center; font-size: 0.6rem; font-weight: 800; color: #cdd9e6; flex-shrink: 0; }
+    .sp-utl-theme { position: relative; z-index: 1; flex: 1; min-width: 0; font-size: 0.74rem; font-weight: 700; color: rgba(255,255,255,0.9); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sp-utl.is-done .sp-utl-dot { background: #7bd6a0; border-color: #7bd6a0; color: #0c3a22; }
+    .sp-utl.is-done .sp-utl-theme { color: rgba(255,255,255,0.66); }
+    .sp-utl.is-current { background: linear-gradient(90deg, rgba(255,233,189,0.18), rgba(255,233,189,0) 82%); }
+    .sp-utl.is-current .sp-utl-dot { background: #ffd98a; border-color: #ffe9bd; color: #8a5a12; box-shadow: 0 0 0 4px rgba(255,217,138,0.2); }
+    .sp-utl.is-current .sp-utl-theme { color: #fff; font-weight: 800; }
     /* ===== First-trial report (portrait, CT trial-report reference design) ===== */
-    #screen-trial-report { padding: 0; }
+    .tp-report { padding: 0; }
     .tp-scroll { position: absolute; inset: 0; display: flex; flex-direction: column; background: #f4f3fb; overflow-y: auto; overflow-x: hidden; }
-    #screen-trial-report .tp-hero { position: relative; padding: 16px 16px 42px; color: #fff; text-align: center; background: linear-gradient(135deg,#7b5cf0 0%,#a98cff 55%,#7aa6ff 110%); }
-    #screen-trial-report .tp-back { position: absolute; left: 12px; top: 12px; border: none; cursor: pointer; background: rgba(255,255,255,0.18); color: #fff; font-size: 0.82rem; font-weight: 800; padding: 6px 12px; border-radius: 999px; }
-    #screen-trial-report .tp-hero-badge { display: inline-block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.22); padding: 4px 12px; border-radius: 999px; margin-top: 6px; }
-    #screen-trial-report .tp-hero-emoji { font-size: 2.4rem; margin: 6px 0 2px; }
-    #screen-trial-report .tp-hero-title { font-family: var(--display); font-size: 1.5rem; font-weight: 900; margin: 0; }
-    #screen-trial-report .tp-hero-sub { font-size: 0.78rem; opacity: 0.92; margin: 6px 0 0; }
-    #screen-trial-report .tp-stack { position: relative; z-index: 2; margin-top: -26px; padding: 0 13px; display: flex; flex-direction: column; }
-    #screen-trial-report .tp-card { background: #fff; border-radius: 22px; box-shadow: 0 14px 30px rgba(40,40,120,0.14); padding: 17px 15px; margin-bottom: 14px; }
-    #screen-trial-report .tp-chead { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
-    #screen-trial-report .tp-ico { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; font-size: 1.05rem; color: #fff; flex: 0 0 34px; }
-    #screen-trial-report .tp-violet { background: linear-gradient(135deg,#a98cff,#7b5cf0); }
-    #screen-trial-report .tp-blue { background: linear-gradient(135deg,#67c0ff,#3f8df4); }
-    #screen-trial-report .tp-orange { background: linear-gradient(135deg,#ffc861,#ff9b3d); }
-    #screen-trial-report .tp-avatar { width: 38px; height: 38px; border-radius: 50%; flex: 0 0 38px; display: grid; place-items: center; font-size: 1.2rem; background: linear-gradient(135deg,#ffe1c7,#ffd0a8); box-shadow: 0 3px 8px rgba(80,80,160,0.2); }
-    #screen-trial-report .tp-h3 { margin: 0; font-size: 1.05rem; font-weight: 900; color: #2c2b3a; }
-    #screen-trial-report .tp-level-badge { margin-left: auto; font-size: 0.8rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 4px; padding: 6px 13px; border-radius: 999px; background: linear-gradient(135deg,#7b5cf0,#a98cff); box-shadow: 0 5px 12px rgba(123,92,240,0.4); white-space: nowrap; }
-    #screen-trial-report .tp-sub-h { font-size: 0.92rem; font-weight: 900; margin: 15px 0 9px; color: #2c2b3a; }
-    #screen-trial-report .tp-box { border-radius: 15px; padding: 12px 13px; margin-bottom: 10px; }
-    #screen-trial-report .tp-box:last-child { margin-bottom: 0; }
-    #screen-trial-report .tp-box p { margin: 0; font-size: 0.84rem; line-height: 1.6; color: #2c2b3a; }
-    #screen-trial-report .tp-box p.tp-warm { margin-top: 9px; }
-    #screen-trial-report .tp-lbl { font-size: 0.8rem; font-weight: 900; margin-bottom: 5px; color: #2c2b3a; }
-    #screen-trial-report .tp-en-lbl { font-size: 0.62rem; color: #7d7c94; font-weight: 600; margin-left: 5px; }
-    #screen-trial-report .tp-box ol, #screen-trial-report .tp-box ul { margin: 5px 0 0; padding-left: 18px; font-size: 0.82rem; line-height: 1.7; color: #2c2b3a; }
-    #screen-trial-report .tp-b-lav { background: #eef0fb; }
-    #screen-trial-report .tp-b-mint { background: #ebf6ee; }
-    #screen-trial-report .tp-b-peach { background: #fdeee2; }
-    #screen-trial-report .tp-b-cream { background: #fbf3df; }
-    #screen-trial-report .tp-hl { color: #7b5cf0; font-weight: 800; }
-    #screen-trial-report .tp-quote { color: #ff7a3d; font-weight: 700; }
-    #screen-trial-report .tp-score-line { font-size: 0.95rem; font-weight: 800; margin: 0 0 9px; display: flex; align-items: center; gap: 7px; color: #2c2b3a; }
-    #screen-trial-report .tp-score-line b { font-size: 1.4rem; }
-    #screen-trial-report .tp-coin { font-size: 1.3rem; }
-    #screen-trial-report .tp-intro { font-size: 0.84rem; color: #4a4960; margin: 0 0 13px; line-height: 1.55; }
-    #screen-trial-report .tp-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
-    #screen-trial-report .tp-tile { border-radius: 16px; padding: 14px 6px 12px; text-align: center; }
-    #screen-trial-report .tp-tile.tp-lav { background: #eef0fb; }
-    #screen-trial-report .tp-tile.tp-mint { background: #ebf6ee; }
-    #screen-trial-report .tp-tile.tp-peach { background: #fdeee2; }
-    #screen-trial-report .tp-tic { font-size: 1.5rem; line-height: 1; margin-bottom: 7px; }
-    #screen-trial-report .tp-tag { font-size: 1.25rem; font-weight: 900; margin-bottom: 3px; }
-    #screen-trial-report .tp-tag.tp-p { color: #7b5cf0; }
-    #screen-trial-report .tp-tag.tp-g { color: #22c08b; }
-    #screen-trial-report .tp-tag.tp-o { color: #ff7a3d; }
-    #screen-trial-report .tp-unit { font-size: 0.8rem; font-weight: 800; margin-left: 1px; }
-    #screen-trial-report .tp-tsub { font-size: 0.66rem; color: #5a5872; font-weight: 700; }
-    #screen-trial-report .tp-segtab { display: flex; background: #fdf0e6; border-radius: 999px; padding: 5px; margin-bottom: 13px; }
-    #screen-trial-report .tp-seg { flex: 1; border: none; background: transparent; font-size: 0.82rem; font-weight: 800; color: #bb8e6e; padding: 9px 0; border-radius: 999px; cursor: pointer; }
-    #screen-trial-report .tp-seg.on { background: linear-gradient(135deg,#ffb24d,#ff8a3d); color: #fff; box-shadow: 0 5px 12px rgba(255,140,60,0.4); }
-    #screen-trial-report .tp-weak-tip { display: flex; align-items: center; gap: 7px; background: #fff6ee; border: 1px solid #ffe1c7; border-radius: 14px; padding: 10px 12px; margin: -2px 0 13px; font-size: 0.74rem; font-weight: 600; color: #c4753c; line-height: 1.4; }
-    #screen-trial-report .tp-wic { font-size: 0.95rem; flex-shrink: 0; }
-    #screen-trial-report .tp-colhead { display: flex; align-items: center; font-size: 0.72rem; color: #7d7c94; font-weight: 700; padding: 0 2px 8px; }
-    #screen-trial-report .tp-cl { flex: 1; }
-    #screen-trial-report .tp-cc { width: 50px; text-align: center; }
-    #screen-trial-report .tp-cdiv { width: 1px; height: 13px; background: #e3e0ee; }
-    #screen-trial-report .tp-dot-div { border-top: 2px dotted #ecdccd; margin-bottom: 2px; }
-    #screen-trial-report .tp-wrow { display: flex; align-items: center; padding: 11px 2px; border-bottom: 1px solid #f4f2fa; }
-    #screen-trial-report .tp-wrow:last-of-type { border-bottom: none; }
-    #screen-trial-report .tp-w { flex: 1; font-size: 0.92rem; font-weight: 700; color: #2c2b3a; }
-    #screen-trial-report .tp-spk { width: 50px; display: flex; justify-content: center; }
-    #screen-trial-report .tp-spk button { width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; background: transparent; color: #ff7a3d; font-size: 1.05rem; display: grid; place-items: center; transition: transform 0.15s; }
-    #screen-trial-report .tp-legal { text-align: center; font-size: 0.7rem; color: #a8a6bd; padding: 4px 18px 2px; }
-    #screen-trial-report .tp-cta-spacer { height: 84px; }
-    #screen-trial-report .tp-cta-bar { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 16px 16px; background: linear-gradient(180deg,rgba(244,243,251,0) 0%,rgba(244,243,251,0.92) 35%,#f4f3fb 100%); z-index: 10; }
-    #screen-trial-report .tp-cta-btn { display: block; width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg,#ff9b3d,#ff7a3d); color: #fff; padding: 14px; border-radius: 16px; box-shadow: 0 10px 24px rgba(255,120,60,0.4); }
-    #screen-trial-report .tp-cta-main { display: block; font-size: 1.02rem; font-weight: 900; letter-spacing: 0.3px; }
-    #screen-trial-report .tp-cta-small { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.92; margin-top: 2px; }
+    .tp-report .tp-hero { position: relative; padding: 16px 16px 42px; color: #fff; text-align: center; background: linear-gradient(135deg,#7b5cf0 0%,#a98cff 55%,#7aa6ff 110%); }
+    .tp-report .tp-back { position: absolute; left: 12px; top: 12px; border: none; cursor: pointer; background: rgba(255,255,255,0.18); color: #fff; font-size: 0.82rem; font-weight: 800; padding: 6px 12px; border-radius: 999px; }
+    .tp-report .tp-hero-badge { display: inline-block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; background: rgba(255,255,255,0.22); padding: 4px 12px; border-radius: 999px; margin-top: 6px; }
+    .tp-report .tp-hero-emoji { font-size: 2.4rem; margin: 6px 0 2px; }
+    .tp-report .tp-hero-title { font-family: var(--display); font-size: 1.5rem; font-weight: 900; margin: 0; }
+    .tp-report .tp-hero-sub { font-size: 0.78rem; opacity: 0.92; margin: 6px 0 0; }
+    .tp-report .tp-stack { position: relative; z-index: 2; margin-top: -26px; padding: 0 13px; display: flex; flex-direction: column; }
+    .tp-report .tp-card { background: #fff; border-radius: 22px; box-shadow: 0 14px 30px rgba(40,40,120,0.14); padding: 17px 15px; margin-bottom: 14px; }
+    .tp-report .tp-chead { display: flex; align-items: center; gap: 10px; margin-bottom: 13px; }
+    .tp-report .tp-ico { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; font-size: 1.05rem; color: #fff; flex: 0 0 34px; }
+    .tp-report .tp-violet { background: linear-gradient(135deg,#a98cff,#7b5cf0); }
+    .tp-report .tp-blue { background: linear-gradient(135deg,#67c0ff,#3f8df4); }
+    .tp-report .tp-orange { background: linear-gradient(135deg,#ffc861,#ff9b3d); }
+    .tp-report .tp-avatar { width: 38px; height: 38px; border-radius: 50%; flex: 0 0 38px; display: grid; place-items: center; font-size: 1.2rem; background: linear-gradient(135deg,#ffe1c7,#ffd0a8); box-shadow: 0 3px 8px rgba(80,80,160,0.2); }
+    .tp-report .tp-h3 { margin: 0; font-size: 1.05rem; font-weight: 900; color: #2c2b3a; }
+    .tp-report .tp-level-badge { margin-left: auto; font-size: 0.8rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 4px; padding: 6px 13px; border-radius: 999px; background: linear-gradient(135deg,#7b5cf0,#a98cff); box-shadow: 0 5px 12px rgba(123,92,240,0.4); white-space: nowrap; }
+    .tp-report .tp-sub-h { font-size: 0.92rem; font-weight: 900; margin: 15px 0 9px; color: #2c2b3a; }
+    .tp-report .tp-box { border-radius: 15px; padding: 12px 13px; margin-bottom: 10px; }
+    .tp-report .tp-box:last-child { margin-bottom: 0; }
+    .tp-report .tp-box p { margin: 0; font-size: 0.84rem; line-height: 1.6; color: #2c2b3a; }
+    .tp-report .tp-box p.tp-warm { margin-top: 9px; }
+    .tp-report .tp-lbl { font-size: 0.8rem; font-weight: 900; margin-bottom: 5px; color: #2c2b3a; }
+    .tp-report .tp-en-lbl { font-size: 0.62rem; color: #7d7c94; font-weight: 600; margin-left: 5px; }
+    .tp-report .tp-box ol, .tp-report .tp-box ul { margin: 5px 0 0; padding-left: 18px; font-size: 0.82rem; line-height: 1.7; color: #2c2b3a; }
+    .tp-report .tp-b-lav { background: #eef0fb; }
+    .tp-report .tp-b-mint { background: #ebf6ee; }
+    .tp-report .tp-b-peach { background: #fdeee2; }
+    .tp-report .tp-b-cream { background: #fbf3df; }
+    .tp-report .tp-hl { color: #7b5cf0; font-weight: 800; }
+    .tp-report .tp-quote { color: #ff7a3d; font-weight: 700; }
+    .tp-report .tp-score-line { font-size: 0.95rem; font-weight: 800; margin: 0 0 9px; display: flex; align-items: center; gap: 7px; color: #2c2b3a; }
+    .tp-report .tp-score-line b { font-size: 1.4rem; }
+    .tp-report .tp-coin { font-size: 1.3rem; }
+    .tp-report .tp-intro { font-size: 0.84rem; color: #4a4960; margin: 0 0 13px; line-height: 1.55; }
+    .tp-report .tp-tiles { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
+    .tp-report .tp-tile { border-radius: 16px; padding: 14px 6px 12px; text-align: center; }
+    .tp-report .tp-tile.tp-lav { background: #eef0fb; }
+    .tp-report .tp-tile.tp-mint { background: #ebf6ee; }
+    .tp-report .tp-tile.tp-peach { background: #fdeee2; }
+    .tp-report .tp-tic { font-size: 1.5rem; line-height: 1; margin-bottom: 7px; }
+    .tp-report .tp-tag { font-size: 1.25rem; font-weight: 900; margin-bottom: 3px; }
+    .tp-report .tp-tag.tp-p { color: #7b5cf0; }
+    .tp-report .tp-tag.tp-g { color: #22c08b; }
+    .tp-report .tp-tag.tp-o { color: #ff7a3d; }
+    .tp-report .tp-unit { font-size: 0.8rem; font-weight: 800; margin-left: 1px; }
+    .tp-report .tp-tsub { font-size: 0.66rem; color: #5a5872; font-weight: 700; }
+    .tp-report .tp-segtab { display: flex; background: #fdf0e6; border-radius: 999px; padding: 5px; margin-bottom: 13px; }
+    .tp-report .tp-seg { flex: 1; border: none; background: transparent; font-size: 0.82rem; font-weight: 800; color: #bb8e6e; padding: 9px 0; border-radius: 999px; cursor: pointer; }
+    .tp-report .tp-seg.on { background: linear-gradient(135deg,#ffb24d,#ff8a3d); color: #fff; box-shadow: 0 5px 12px rgba(255,140,60,0.4); }
+    .tp-report .tp-weak-tip { display: flex; align-items: center; gap: 7px; background: #fff6ee; border: 1px solid #ffe1c7; border-radius: 14px; padding: 10px 12px; margin: -2px 0 13px; font-size: 0.74rem; font-weight: 600; color: #c4753c; line-height: 1.4; }
+    .tp-report .tp-wic { font-size: 0.95rem; flex-shrink: 0; }
+    .tp-report .tp-colhead { display: flex; align-items: center; font-size: 0.72rem; color: #7d7c94; font-weight: 700; padding: 0 2px 8px; }
+    .tp-report .tp-cl { flex: 1; }
+    .tp-report .tp-cc { width: 50px; text-align: center; }
+    .tp-report .tp-cdiv { width: 1px; height: 13px; background: #e3e0ee; }
+    .tp-report .tp-dot-div { border-top: 2px dotted #ecdccd; margin-bottom: 2px; }
+    .tp-report .tp-wrow { display: flex; align-items: center; padding: 11px 2px; border-bottom: 1px solid #f4f2fa; }
+    .tp-report .tp-wrow:last-of-type { border-bottom: none; }
+    .tp-report .tp-w { flex: 1; font-size: 0.92rem; font-weight: 700; color: #2c2b3a; }
+    .tp-report .tp-spk { width: 50px; display: flex; justify-content: center; }
+    .tp-report .tp-spk button { width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer; background: transparent; color: #ff7a3d; font-size: 1.05rem; display: grid; place-items: center; transition: transform 0.15s; }
+    .tp-report .tp-legal { text-align: center; font-size: 0.7rem; color: #a8a6bd; padding: 4px 18px 2px; }
+    .tp-report .tp-cta-spacer { height: 84px; }
+    .tp-report .tp-cta-bar { position: sticky; bottom: 0; left: 0; right: 0; padding: 12px 16px 16px; background: linear-gradient(180deg,rgba(244,243,251,0) 0%,rgba(244,243,251,0.92) 35%,#f4f3fb 100%); z-index: 10; }
+    .tp-report .tp-cta-btn { display: block; width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg,#ff9b3d,#ff7a3d); color: #fff; padding: 14px; border-radius: 16px; box-shadow: 0 10px 24px rgba(255,120,60,0.4); }
+    .tp-report .tp-cta-main { display: block; font-size: 1.02rem; font-weight: 900; letter-spacing: 0.3px; }
+    .tp-report .tp-cta-small { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.92; margin-top: 2px; }
+    /* Formal lesson report extras (#screen-lesson-report) */
+    .tp-report .lr-pill { display: inline-block; background: rgba(255,255,255,0.22); padding: 4px 14px; border-radius: 999px; font-weight: 800; font-size: 0.78rem; }
+    .tp-report .tp-tiles--four { grid-template-columns: repeat(2,1fr); }
+    .tp-report .tp-tile.tp-sky { background: #eaf3fe; }
+    .tp-report .tp-tag.tp-b { color: #3f8df4; }
+    .tp-report .tp-b-sky { background: #eaf3fe; }
   </style>
 </head>
 <body>
@@ -5543,7 +5594,7 @@
           <div class="sp-block">
             <div class="sp-block-head"><span class="sp-block-title">The full course system</span><span class="sp-block-sub" id="sp-path-sub">6 Levels</span></div>
             <div class="sp-ladder" id="sp-ladder" aria-label="All six levels"></div>
-            <div class="sp-units sp-units--compact" id="sp-units" aria-label="Units in this level"></div>
+            <div class="sp-units sp-units--timeline" id="sp-units" aria-label="Units in this level"></div>
           </div>
           <div class="sp-foot">
             <button type="button" class="btn btn-primary" id="btn-study-plan-start">Unlock the full plan →</button>
@@ -5555,7 +5606,7 @@
       <!-- First-trial report (V1.3.0): PORTRAIT takeover built from the CT trial-report
            reference — teacher notes + level, lesson snapshot, what we covered, and a
            pronunciation check. Name + recommended level are personalized in JS. -->
-      <section class="screen" id="screen-trial-report">
+      <section class="screen tp-report" id="screen-trial-report">
         <div class="tp-scroll" id="trp-scroll">
           <div class="tp-hero">
             <button type="button" class="tp-back" id="btn-trip-back">‹ Back</button>
@@ -5654,6 +5705,105 @@
             <button type="button" class="tp-cta-btn" id="btn-trip-start">
               <span class="tp-cta-main" id="trp-cta-main">Get the study plan</span>
               <span class="tp-cta-small" id="trp-cta-sub">Tailored to your level · start the full course</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formal-lesson report (portrait). Reached from the lesson-complete settle page
+           Continue button once the report is generated. Figma node 14816:2180. -->
+      <section class="screen tp-report" id="screen-lesson-report">
+        <div class="tp-scroll" id="lr-scroll">
+          <div class="tp-hero">
+            <button type="button" class="tp-back" id="btn-lr-back">‹ Back</button>
+            <div class="tp-hero-badge">Lesson Report</div>
+            <div class="tp-hero-emoji">📘</div>
+            <h1 class="tp-hero-title">Lesson Report</h1>
+            <p class="tp-hero-sub"><span class="lr-pill" id="lr-unit-pill">Unit 2 · Lesson 2</span></p>
+          </div>
+
+          <div class="tp-stack">
+            <!-- 1 · What you earned (学习情况) -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-violet">🏆</span><h3 class="tp-h3">What you earned</h3></div>
+              <div class="tp-score-line">Earned this lesson <b id="lr-coins">120</b><span class="tp-coin">🪙</span></div>
+              <p class="tp-intro" id="lr-praise">Brilliant focus today — your curiosity is your superpower, little <b>future scientist</b>! 🌟</p>
+              <div class="tp-tiles tp-tiles--four">
+                <div class="tp-tile tp-lav"><div class="tp-tic">⏰</div><div class="tp-tag tp-p">56<span class="tp-unit">m</span></div><div class="tp-tsub">Class time</div></div>
+                <div class="tp-tile tp-mint"><div class="tp-tic">💡</div><div class="tp-tag tp-g">66</div><div class="tp-tsub">Questions answered</div></div>
+                <div class="tp-tile tp-peach"><div class="tp-tic">😀</div><div class="tp-tag tp-o">36</div><div class="tp-tsub">Times speaking</div></div>
+                <div class="tp-tile tp-sky"><div class="tp-tic">🗨️</div><div class="tp-tag tp-b">66</div><div class="tp-tsub">Words used</div></div>
+              </div>
+            </div>
+
+            <!-- 2 · What we covered (课堂所学) -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-blue">📖</span><h3 class="tp-h3">What we covered</h3></div>
+              <div class="tp-box tp-b-lav"><div class="tp-lbl">Topic <span class="tp-en-lbl">主题</span></div><p>Daily Wear</p></div>
+              <div class="tp-box tp-b-lav"><div class="tp-lbl">Title <span class="tp-en-lbl">篇章标题</span></div><p>Clothes That Changed History</p></div>
+              <div class="tp-box tp-b-mint"><div class="tp-lbl">Vocabulary <span class="tp-en-lbl">核心词汇</span></div><p>trench coat, raincoat, high heels, suit</p></div>
+              <div class="tp-box tp-b-cream">
+                <div class="tp-lbl">Key Sentences <span class="tp-en-lbl">重点表达</span></div>
+                <ol>
+                  <li>The trench coat became famous thanks to Sherlock Holmes.</li>
+                  <li>The raincoat became a royal favorite thanks to Queen Elizabeth II.</li>
+                  <li>King Louis XIV loved his red high heels so much that only his rich friends were allowed to wear them!</li>
+                </ol>
+              </div>
+              <div class="tp-box tp-b-peach">
+                <div class="tp-lbl">Reading Skills <span class="tp-en-lbl">阅读策略</span></div>
+                <ol>
+                  <li>Predict from title and picture</li>
+                  <li>Find details and facts</li>
+                  <li>Get the gist</li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- 3 · Pronunciation check (发音分析) -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-ico tp-orange">💬</span><h3 class="tp-h3">Pronunciation check</h3></div>
+              <div class="tp-segtab">
+                <button type="button" class="tp-seg on">Nice try!</button>
+                <button type="button" class="tp-seg">Good!</button>
+                <button type="button" class="tp-seg">Great!</button>
+              </div>
+              <div class="tp-weak-tip">
+                <span class="tp-wic">🎯</span>
+                <span>AI spotted a few sounds to polish. Tap to listen and keep practicing to watch your progress!</span>
+              </div>
+              <div class="tp-colhead"><span class="tp-cl">Word / Phrase</span><span class="tp-cc">You</span><span class="tp-cdiv"></span><span class="tp-cc">Teacher</span></div>
+              <div class="tp-dot-div"></div>
+              <div class="tp-wrow"><span class="tp-w">headphones</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">school</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">circle</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+              <div class="tp-wrow"><span class="tp-w">These are headphones</span><span class="tp-spk"><button type="button">🔊</button></span><span class="tp-spk"><button type="button">🔊</button></span></div>
+            </div>
+
+            <!-- 4 · Teacher's notes (AI 老师点评) -->
+            <div class="tp-card">
+              <div class="tp-chead"><span class="tp-avatar">👩‍🏫</span><h3 class="tp-h3">Teacher's notes</h3></div>
+              <div class="tp-box tp-b-sky">
+                <p id="lr-teacher-overall">Tommy, you brought wonderful energy to English today and a real drive to express yourself — it's a joy to learn with you!</p>
+              </div>
+              <div class="tp-sub-h">Strengths</div>
+              <div class="tp-box tp-b-lav"><p>🙌 Super engaged and active — jumped into the conversation and shared details like building a <span class="tp-quote">"small community"</span> from paper and clay!</p></div>
+              <div class="tp-box tp-b-sky"><p>🎯 Said advanced words like <span class="tp-quote">"fountain"</span> and <span class="tp-quote">"magnetic"</span> clearly, and used them correctly in context.</p></div>
+              <div class="tp-box tp-b-mint"><p>🎵 The sentence <span class="tp-quote">"I made it with my friends."</span> came out smooth and natural, with lovely intonation!</p></div>
+              <div class="tp-box tp-b-cream"><p>💡 Asked questions twice — like <span class="tp-quote">"Why do you want to be a frog?"</span> — showing great curiosity and cross-cultural awareness!</p></div>
+              <div class="tp-sub-h">Room to grow</div>
+              <div class="tp-box tp-b-lav"><p>👂 Paused a little when hearing the playful phrase <span class="tp-quote">"donated her eyes"</span>. Next time, feel free to guess a tricky expression with confidence!</p></div>
+              <div class="tp-box tp-b-sky"><p>👄 <span class="tp-quote">"supplies"</span> sometimes sounded like <span class="tp-quote">"surprise"</span>. A little listen-and-repeat after class will polish it.</p></div>
+            </div>
+
+            <p class="tp-legal">Some of the content above is AI-generated.</p>
+            <div class="tp-cta-spacer"></div>
+          </div>
+
+          <div class="tp-cta-bar">
+            <button type="button" class="tp-cta-btn" id="btn-lr-continue">
+              <span class="tp-cta-main">Continue</span>
+              <span class="tp-cta-small">Back to today's class</span>
             </button>
           </div>
         </div>
@@ -5776,7 +5926,7 @@
                          Learning Path entry on the right. -->
                     <div class="class-week-head">
                       <span class="class-week-title">📅 This week's plan</span>
-                      <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View all courses">All courses <span class="acl-chevron" aria-hidden="true">›</span></button>
+                      <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
                     <div class="class-week-list" id="class-week-list"></div>
                   </section>
@@ -6105,7 +6255,7 @@
           <img class="ic-pt-dino" src="assets/dino-mascot.png" alt="" decoding="async" />
           <div class="ic-pt-title">Practice<br>Time</div>
         </div>
-        <p class="ic-subtitle">Great job! Let's practice what you learned 🚀</p>
+        <p class="ic-subtitle">Let's practice! 🚀</p>
       </section>
 
       <!-- 3) Practice quiz: pick the right bubble -->
@@ -6141,7 +6291,7 @@
           <div class="all-courses-head">
             <div class="all-courses-head-row">
               <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
-              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="Switch level or unit">Level 2 · Unit 1 <span class="acl-chevron" aria-hidden="true">›</span></button>
+              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="Switch level and unit"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">Level 2 · Unit 1</span><span class="acl-caret" aria-hidden="true">▾</span></button>
             </div>
           </div>
           <section class="all-courses-list" id="all-courses-list"></section>
@@ -6270,7 +6420,7 @@
               <div class="pw-plans" id="pw-plans"></div>
               <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
               <p class="pw-legal">
-                <span class="pw-renewal">Auto-renews · cancel anytime</span> ·
+                <span class="pw-renewal">Cancel anytime</span> ·
                 <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
                 ·
                 <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
@@ -6343,7 +6493,7 @@
                 <div class="cap-intro-bar" id="capi-bar"><i id="capi-bar-fill"></i><span id="capi-bar-label">0 / 5 correct to your next Capsule Coin</span></div>
                 <span class="cap-coupon" id="capi-coupon" aria-label="Capsule Coin">🎟️</span>
               </div>
-              <p class="cap-intro-hint" id="capi-hint">Your correct answers add up — keep going!</p>
+              <p class="cap-intro-hint" id="capi-hint">Correct answers add up — keep going!</p>
               <button class="gbtn gbtn-gold cap-intro-start" id="capi-start">Start Game! 🚀</button>
             </div>
           </div>
@@ -6405,7 +6555,7 @@
               </div>
               <span class="cap-count" id="capr-progress-label">0 / 5 correct → your next Capsule Coin</span>
             </div>
-            <p class="capd-hint" id="capr-hint">Answer all 5 right next time to win a Capsule Coin 🎟️</p>
+            <p class="capd-hint" id="capr-hint">Get all 5 right to win a Capsule Coin 🎟️</p>
             <button class="gbtn gbtn-primary" id="capr-main">Continue</button>
             <button class="gbtn gbtn-ghost" id="capr-again">Play another round</button>
           </div>
@@ -6425,7 +6575,7 @@
             <div class="machine" id="machine"><div class="glass" id="machine-glass">🦖</div><div class="slot"></div></div>
             <div class="cap-machine-meta">
               <div class="cap-count">🎟️ 1 Capsule Coin — draw it now!</div>
-              <p class="capd-hint" id="capd-prehint">Spin to try for a Dino Capsule — you might collect one! Your round XP &amp; coins are safe either way.</p>
+              <p class="capd-hint" id="capd-prehint">Spin for a Dino Capsule — your XP &amp; coins are safe either way.</p>
             </div>
             <button class="gbtn gbtn-gold cap-draw-btn" id="btn-draw">Draw 🎰</button>
           </div>
@@ -6521,19 +6671,22 @@
           <div class="settle-card lesson-complete-card">
             <div class="settle-burst">🎉</div>
             <h2 id="lc-h">Lesson complete!</h2>
-            <p class="sc-sub" id="lc-sub">Great work today — here's what you earned</p>
+            <p class="sc-sub" id="lc-sub" hidden></p>
             <div class="reward-row">
               <span class="reward-pill xp">+<span id="lc-xp">30</span> XP</span>
               <span class="reward-pill coin"><span class="coin-ico"></span>+<span id="lc-coin">20</span></span>
             </div>
-            <button class="gbtn gbtn-gold" id="lc-continue">Continue</button>
+            <div class="lc-bonus" id="lc-bonus" hidden>
+              <div class="lc-bonus-row" id="lc-bonus-row"></div>
+            </div>
+            <button class="gbtn gbtn-gold is-preparing" id="lc-continue" disabled><span class="lc-spin"></span>Generating report…</button>
           </div>
         </div>
       </section>
 
       <!-- Level-Up Check report (V1.3.0): LANDSCAPE takeover for the in-app level-up
            trial (向上跳级定级). The first-trial report is a separate PORTRAIT screen
-           (#screen-trial-report) built from the CT trial-report reference. -->
+           (.tp-report) built from the CT trial-report reference. -->
       <section class="screen tr-screen" id="screen-levelup-report">
         <div class="tr-land-shell" id="tr-scroll">
           <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
@@ -6754,7 +6907,7 @@
         <div class="levelup-card coin-short-card">
           <div class="cs-emoji">🪙</div>
           <h2>Not enough Dino Coins</h2>
-          <p class="cs-sub">Finish lessons and play games to earn more coins!</p>
+          <p class="cs-sub">Earn coins from lessons &amp; games.</p>
           <button class="gbtn gbtn-gold" id="cs-earn">Earn coins in Play 🎮</button>
           <button class="gbtn gbtn-ghost" id="cs-close">Maybe later</button>
         </div>
@@ -7038,40 +7191,36 @@
       return makeCourseKey(course.levelId, course.unitId, course.lessonId) !== firstKey;
     }
 
-    // One status indicator per card — never stack two lock icons.
-    // Free user + gated lesson → a single "🔒 Premium" tag (paywall is the only story).
-    // Member + future lesson → a single "📅 Opens <date>" tag (it's a schedule, not a lock).
+    // One lock indicator per card — never stack two. Its HOME depends on the card:
+    //  • Expanded (anchored) card has an action button → the lock lives on the button
+    //    (🔒 Premium for non-members, 🔒 Locked for members not-yet-open); meta shows status + duration only.
+    //  • Compact card has no visible button → the single lock indicator lives in the meta instead.
     function renderCourseListMeta(course, isAnchored) {
-      const locked = isCourseLocked(course);
-      const unlockState = getUnlockState(course);
+      const dur = formatCourseDuration(course.duration);
+      const locked = isCourseLocked(course);                                // non-member: gated lesson → Premium
+      const scheduled = !locked && getUnlockState(course) === "scheduled";  // member: not yet open by weekly pace
       const stateLabel = getLessonStateLabel(getLessonState(course.levelId, course.unitId, course.lessonId));
-      if (locked) {
-        return `
-          <div class="course-card-meta-row">
-            <span class="all-courses-card-lock">🔒 Premium</span>
-            <span class="all-courses-card-duration">${formatCourseDuration(course.duration)}</span>
-          </div>
-        `;
-      }
-      let unlockTag = "";
-      if (unlockState === "scheduled") {
-        unlockTag = `<span class="unlock-tag unlock-tag--scheduled">📅 Opens ${formatUnlockDate(getUnlockWeeksAhead(course))}</span>`;
-      }
+      // Always render the lock / schedule indicator here. On cards that show an action button
+      // (anchored all-courses cards + class-home week cards) CSS hides this duplicate so the
+      // button is the SINGLE indicator; compact all-courses cards have no button → keep it.
+      let lead;
+      if (locked) lead = `<span class="all-courses-card-lock">🔒 Premium</span>`;
+      else if (scheduled) lead = `<span class="all-courses-card-lock all-courses-card-lock--scheduled">🔒 Locked</span>`;
+      else lead = `<span class="all-courses-card-status ${isAnchored ? "is-selected" : ""}">${stateLabel}</span>`;
       return `
         <div class="course-card-meta-row">
-          ${unlockState === "scheduled" ? "" : `<span class="all-courses-card-status ${isAnchored ? "is-selected" : ""}">${stateLabel}</span>`}
-          ${unlockTag}
-          <span class="all-courses-card-duration">${formatCourseDuration(course.duration)}</span>
+          ${lead}
+          <span class="all-courses-card-duration">${dur}</span>
         </div>
       `;
     }
 
     function renderCourseActionButtons(course) {
       if (isCourseLocked(course)) {
-        return `<button type="button" class="course-cta-locked" data-action="unlock">Unlock</button>`;
+        return `<button type="button" class="course-cta-locked" data-action="unlock">🔒 Premium</button>`;
       }
       if (getUnlockState(course) === "scheduled") {
-        return `<button type="button" class="course-cta-scheduled" data-action="scheduled">Opens ${formatUnlockDate(getUnlockWeeksAhead(course))}</button>`;
+        return `<button type="button" class="course-cta-scheduled" data-action="scheduled">🔒 Locked</button>`;
       }
       const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
@@ -7101,7 +7250,7 @@
             return;
           }
           if (action === "scheduled") {
-            showPayToast(`📅 Opens on ${formatUnlockDate(getUnlockWeeksAhead(course))} — next ${WEEK_LESSONS} lessons unlock Monday`);
+            showPayToast("🔒 This lesson isn't open yet — new lessons unlock each week 🦕");
             return;
           }
           setCurrentCourse(course.levelId, course.unitId, course.lessonId);
@@ -7310,7 +7459,7 @@
           : makeCourseKey(courses[0].levelId, courses[0].unitId, courses[0].lessonId);
       }
       const lvEl = $("#all-courses-level");
-      if (lvEl) lvEl.innerHTML = `${getLevelById(levelId).label} · ${unit.label} <span class="acl-chevron" aria-hidden="true">›</span>`;
+      if (lvEl) lvEl.innerHTML = `<span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">${getLevelById(levelId).label} · ${unit.label}</span><span class="acl-caret" aria-hidden="true">▾</span>`;
       $("#all-courses-list").innerHTML = courses.map((course) => {
         const courseKey = makeCourseKey(course.levelId, course.unitId, course.lessonId);
         const isAnchored = courseKey === selectedAllCourseKey;
@@ -7965,27 +8114,47 @@
       const level = getLevelById(courseMapLevelId);
       const levelIdx = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
       const unitsBox = $("#course-map-units");
+      const lvStatus = getLevelStatus(level.id);
+      // Index of the unit the learner is currently on (only meaningful on the
+      // current level; used to gate later units by the weekly schedule pace).
+      const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
       unitsBox.innerHTML = level.units.map((unit, ui) => {
         const total = unit.lessons.length;
         const done = getUnitDoneCount(level.id, unit);
         const pct = Math.round((done / total) * 100);
         const goal = UNIT_GOALS[ui] || unit.theme;
         const isCurrentUnit = level.id === profile.currentLevelId && unit.id === profile.currentUnitId;
-        const tag = isCurrentUnit
-          ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
-          : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         // Current level + already-completed (lower) levels are browsable — open the
         // unit to view / review its lessons. Higher levels stay locked until reached,
         // EXCEPT members get a "Level up" entry on the first unit of a higher level:
         // take that level's trial lesson and, if assessed at/above it, skip ahead.
-        const lvStatus = getLevelStatus(level.id);
-        let cta;
+        // Within the CURRENT level, units past the one the learner has reached are
+        // gated: free users can enter only Unit 1 (every later unit is a membership
+        // lock → Paywall); members unlock units at the weekly schedule pace, so
+        // not-yet-reached units stay locked ("finish the previous unit first"),
+        // mirroring how higher levels lock.
+        const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
+        const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
+        const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
+        let cta, tag;
         if (lvStatus === "next") {
           cta = (profile.premiumUnlocked && ui === 0)
             ? `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">🚀 Level up</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-level>🔒 Locked</button>`;
+          tag = "";
+        } else if (premiumUnitLock) {
+          // Non-member: the lock lives on the button only (🔒 Premium → Paywall); no extra tag.
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>🔒 Premium</button>`;
+          tag = "";
+        } else if (scheduleUnitLock) {
+          // Member, unit not yet reached by the weekly pace: single locked button (finish previous unit first).
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>🔒 Locked</button>`;
+          tag = "";
         } else {
           cta = `<button type="button" class="cm-unit-cta" data-unit-id="${unit.id}">${lvStatus === "done" ? "Review" : "View lessons"}</button>`;
+          tag = isCurrentUnit
+            ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
+            : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
         // Member level-up hint under the first unit of a higher level.
         const levelupHint = (lvStatus === "next" && profile.premiumUnlocked && ui === 0)
@@ -8009,6 +8178,14 @@
       });
       unitsBox.querySelectorAll("[data-locked-level]").forEach((btn) => {
         btn.addEventListener("click", () => showPayToast("Finish your current level first — Dino will unlock it 🦕"));
+      });
+      // Member: later units open as the weekly schedule advances — finish the one you're on first.
+      unitsBox.querySelectorAll("[data-locked-unit]").forEach((btn) => {
+        btn.addEventListener("click", () => showPayToast("Finish the previous unit first — Dino will unlock it 🦕"));
+      });
+      // Free user: every unit past Unit 1 is a membership lock → Paywall.
+      unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
+        btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
       unitsBox.querySelectorAll("[data-levelup-level]").forEach((btn) => {
         btn.addEventListener("click", () => startLevelUpTrial(btn.dataset.levelupLevel));
@@ -8123,6 +8300,10 @@
     const LESSON_REWARD_XP = 50;
     const LESSON_REWARD_COINS = 120;
     let lessonCompleteIsTrial = false;
+    // Continue on the settle page stays greyed until the lesson report is "generated"
+    // (PRD V1.3.0) — applies to trial AND formal lessons.
+    let lcReportReady = false;
+    let lcReportTimer = null;
     function finishInclass() {
       // A level-up trial always routes to the (level-up) trial report on Continue.
       if (levelUpInProgress) {
@@ -8137,26 +8318,66 @@
       showLessonComplete(lessonCompleteIsTrial);
     }
     function showLessonComplete(isTrial) {
-      const name = getDisplayName() || (isParentVoice() ? "your child" : "you");
       if ($("#lc-xp")) $("#lc-xp").textContent = LESSON_REWARD_XP;
       if ($("#lc-coin")) $("#lc-coin").textContent = LESSON_REWARD_COINS;
       const isLevelUp = levelUpInProgress;
-      if ($("#lc-h")) $("#lc-h").textContent = isLevelUp ? "Level-up trial complete! 🚀" : isTrial ? "Trial lesson complete! 🎉" : "Lesson complete! 🎉";
-      if ($("#lc-sub")) $("#lc-sub").textContent = isLevelUp
-        ? `Nice work, ${name}! Let's see how the level-up check went.`
-        : isTrial
-          ? `Brilliant first class, ${name}! Here's what you earned today.`
-          : "Great work today — here's what you earned.";
+      // Kid-facing settle screen: the title alone is the congrats (no extra subtitle).
+      // Only the level-up check keeps a short context line.
+      if ($("#lc-h")) $("#lc-h").textContent = isLevelUp ? "Level-up complete! 🚀" : "Lesson complete! 🎉";
+      const sub = $("#lc-sub");
+      if (sub) {
+        sub.hidden = false;
+        sub.textContent = isLevelUp ? "See your level-up check 🚀" : "Here's what you earned 🎁";
+      }
       // Hand out the in-class reward as the page reveals (feeds the Dino growth loop).
       if (window.GAME) { window.GAME.grantXp(LESSON_REWARD_XP); window.GAME.grantCoins(LESSON_REWARD_COINS); }
+      // In-class drops (skins / Dino Capsules): show the ART only — no captions, no
+      // labels, no counts (one lesson never awards duplicates of the same item).
+      const bonusBox = $("#lc-bonus");
+      const bonusRow = $("#lc-bonus-row");
+      let drops = [];
+      if (!isLevelUp && window.GAME && window.GAME.grantInclassBonus) {
+        drops = window.GAME.grantInclassBonus([
+          { cat: "skin", id: "skin-detective" },
+          { cat: "pet", id: "pet-turtle" },
+        ]);
+      }
+      if (bonusBox && bonusRow) {
+        if (drops.length) {
+          bonusRow.innerHTML = drops.map((d) => {
+            const art = d.img
+              ? `<img src="${d.img}" alt="${d.name}" decoding="async" />`
+              : `<span class="bonus-emoji">${d.emoji}</span>`;
+            return `<div class="lc-bonus-item"><span class="lc-bonus-art">${art}</span></div>`;
+          }).join("");
+          bonusBox.hidden = false;
+        } else {
+          bonusRow.innerHTML = "";
+          bonusBox.hidden = true;
+        }
+      }
       enterLandscape();
       showLandScreen("screen-lesson-complete");
+      // Gate Continue until the report is ready: the BUTTON itself shows the progress
+      // ("Generating report…", greyed/disabled), then lights up to "Continue".
+      const cont = $("#lc-continue");
+      lcReportReady = false;
+      if (cont) { cont.classList.add("is-preparing"); cont.disabled = true; cont.innerHTML = '<span class="lc-spin"></span>Generating report…'; }
+      clearTimeout(lcReportTimer);
+      lcReportTimer = setTimeout(() => {
+        lcReportReady = true;
+        if (cont) { cont.classList.remove("is-preparing"); cont.disabled = false; cont.textContent = "Continue"; }
+      }, 1600);
     }
     $("#lc-continue")?.addEventListener("click", () => {
+      // Locked until the report finishes generating.
+      if (!lcReportReady) return;
       if (lessonCompleteIsTrial) {
+        // First-trial report (portrait) or level-up check (landscape) per trialReportMode.
         showTrialReport();
       } else {
-        showClassHome();
+        // Formal lessons get their own report page (Figma 14816:2180).
+        showLessonReport();
       }
     });
     // Teaching screen → tap to answer → "Excellent!" feedback → Practice Time
@@ -8263,6 +8484,25 @@
         if (sh) sh.scrollTop = 0;
       }
     }
+    // Formal-lesson report (portrait takeover, Figma 14816:2180). Reached from the
+    // settle page Continue for a regular (non-trial, non-level-up) lesson.
+    function renderLessonReport() {
+      const unitNum = (String(profile.currentUnitId).match(/\d+/) || ["1"])[0];
+      const lessonNum = (String(profile.currentLessonId).match(/\d+/) || ["1"])[0];
+      const pill = $("#lr-unit-pill");
+      if (pill) pill.textContent = `Unit ${unitNum} · Lesson ${lessonNum}`;
+      if ($("#lr-coins")) $("#lr-coins").textContent = LESSON_REWARD_COINS;
+      const who = getDisplayName() || "there";
+      const overall = $("#lr-teacher-overall");
+      if (overall) overall.textContent = `${who}, you brought wonderful energy to English today and a real drive to express yourself — it's a joy to learn with you!`;
+    }
+    function showLessonReport() {
+      renderLessonReport();
+      enterPortrait();
+      showPortraitScreen("screen-lesson-report");
+      const sh = $("#lr-scroll");
+      if (sh) sh.scrollTop = 0;
+    }
     // Level-up report actions (landscape #screen-levelup-report only).
     $("#btn-trial-start")?.addEventListener("click", () => { finishLevelUp(getLevelUpVerdict()); });
     $("#btn-trial-back")?.addEventListener("click", () => {
@@ -8275,51 +8515,83 @@
     // First-trial report actions (portrait #screen-trial-report).
     $("#btn-trip-start")?.addEventListener("click", () => { showStudyPlan(); });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
+    // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
+    $("#btn-lr-back")?.addEventListener("click", () => { showClassHome(); });
+    $("#btn-lr-continue")?.addEventListener("click", () => { showClassHome(); });
     // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
-    document.querySelectorAll("#screen-trial-report .tp-seg").forEach((b) => {
-      b.addEventListener("click", () => {
-        document.querySelectorAll("#screen-trial-report .tp-seg").forEach((x) => x.classList.remove("on"));
-        b.classList.add("on");
-        const tip = $("#trp-weak");
-        if (tip) tip.style.display = b.textContent.indexOf("Nice try") === 0 ? "flex" : "none";
+    // Scope toggling to each card's own segtab so the two report screens don't interfere.
+    document.querySelectorAll(".tp-report .tp-segtab").forEach((tabwrap) => {
+      const segs = tabwrap.querySelectorAll(".tp-seg");
+      segs.forEach((b) => {
+        b.addEventListener("click", () => {
+          segs.forEach((x) => x.classList.remove("on"));
+          b.classList.add("on");
+          const card = tabwrap.closest(".tp-card");
+          const tip = card ? card.querySelector(".tp-weak-tip") : null;
+          if (tip) tip.style.display = b.textContent.indexOf("Nice try") === 0 ? "flex" : "none";
+        });
       });
     });
-    document.querySelectorAll("#screen-trial-report .tp-spk button").forEach((b) => {
+    document.querySelectorAll(".tp-report .tp-spk button").forEach((b) => {
       b.addEventListener("click", () => { b.style.transform = "scale(1.25)"; setTimeout(() => { b.style.transform = ""; }, 220); });
     });
     // ----- Study Plan (weekly plan preview, opened from the trial report) -----
     // Shows the value (rich content · 3 lessons a week · clear goal); CTA → paywall,
     // Back → Class tab.
+    // Short, node-friendly version of each onboarding goal (right side of the hero
+    // chart). Falls back to the stored goalLabel, then a generic confident-English line.
+    const GOAL_SHORT = {
+      speak_confidence: "Speak with confidence",
+      school_exam: "Better school English",
+      structured_progress: "A clear path",
+      daily_communication: "Everyday & travel",
+      listening_habit: "A steady habit",
+    };
     function renderStudyPlanScreen() {
       const name = getDisplayName() || (isParentVoice() ? "your child" : "you");
       const level = getCurrentLevel();
       const curLi = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
-      const canDo = LEVEL_CAN_DO[curLi] || "speak more confidently";
       const cefr = profile.level || "A2";
-      // ---- Plan hero · who + start level + ONE goal line (kept deliberately short) ----
-      const hero = $("#sp-hero");
-      if (hero) {
-        hero.innerHTML =
-          `<div class="sp-hero-title">${name}'s English plan</div>` +
-          `<div class="sp-hero-row"><span class="sp-level-chip">Start · ${level.label}</span><span class="sp-cefr">CEFR ${cefr}</span></div>` +
-          `<div class="sp-hero-goal">🎯 Finish ${level.label} → ${name} can <b>${canDo}</b></div>`;
-      }
-      // ---- Value at a glance · rich content · steady rhythm · clear goal ----
-      // No weekday schedule: scheduling no longer runs by weekday, so the page just
-      // conveys the pace (3 lessons a week) and the value to parents. Counts come
-      // from the real curriculum so the copy stays truthful.
-      // Counts reflect the CURRENT level only (Req5) — not all six levels combined.
+      // Curriculum counts (CURRENT level only) — drive both the hero chart and cards.
       const unitsPerLevel = level.units.length;
       const lessonsPerUnit = level.units[0].lessons.length;
       const lessonsThisLevel = unitsPerLevel * lessonsPerUnit;
       const weeksToLevel = Math.ceil(lessonsThisLevel / STUDY_LESSONS_PER_WEEK);
-      const monthsToLevel = Math.max(1, Math.round(weeksToLevel / 4.345));
+      // 4 weeks ≈ 1 month → a clean whole-number, ~1-year milestone (no tilde).
+      const monthsToLevel = Math.max(1, Math.round(weeksToLevel / 4));
+      // Hero goal = the learner's onboarding goal; milestone = the NEXT level up.
+      const goalText = GOAL_SHORT[profile.goal] || profile.goalLabel || "Speak with confidence";
+      const nextLevel = COURSE_LIBRARY[curLi + 1];
+      const reachLabel = nextLevel ? nextLevel.label : level.label;
+      const reachVerb = nextLevel ? `to reach ${reachLabel}` : `to master ${level.label}`;
+      // ---- Plan hero · a simple chart: where they are NOW → their GOAL ----
+      const hero = $("#sp-hero");
+      if (hero) {
+        hero.innerHTML =
+          `<div class="sp-hero-cap">${name}'s English journey</div>` +
+          `<div class="sp-journey">` +
+            `<div class="sp-jnode sp-jnode--now">` +
+              `<div class="sp-jnode-tag">Now</div>` +
+              `<div class="sp-jnode-lvl">${level.label}</div>` +
+              `<div class="sp-jnode-cefr">CEFR ${cefr}</div>` +
+            `</div>` +
+            `<div class="sp-jlink" aria-hidden="true">` +
+              `<div class="sp-jlink-line"><span class="sp-jlink-dino">🦕</span></div>` +
+            `</div>` +
+            `<div class="sp-jnode sp-jnode--goal">` +
+              `<div class="sp-jnode-tag">Goal</div>` +
+              `<div class="sp-jnode-lvl">${goalText}</div>` +
+              `<div class="sp-jnode-cefr">${reachLabel}</div>` +
+            `</div>` +
+          `</div>`;
+      }
+      // ---- Value at a glance · short, punchy proof of value (no weekday schedule) ----
       const valueBox = $("#sp-value");
       if (valueBox) {
         const cards = [
-          { ico: "📚", title: `${unitsPerLevel} themed units · ${lessonsThisLevel} lessons`, sub: `${level.label} of speaking-first content — songs, stories, games &amp; live class practice.` },
-          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week · ~10 min each`, sub: `A new themed unit about every month — steady wins kids keep up with, never rushed.` },
-          { ico: "🎯", title: `~${monthsToLevel} months to finish ${level.label}`, sub: `A clear finish line: real, visible progress toward speaking — not an endless list.`, goal: true },
+          { ico: "📚", title: `${unitsPerLevel} themed units · ${lessonsThisLevel} lessons`, sub: `Live AI-teacher classes — speak, role-play &amp; get instant feedback.` },
+          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Scientifically paced — one new theme at a time.` },
+          { ico: "🎯", title: `${monthsToLevel} months ${reachVerb}`, sub: `A clear finish line, not an endless list.`, goal: true },
         ];
         valueBox.innerHTML = cards.map((v) => `
           <div class="sp-value-card${v.goal ? " is-goal" : ""}">
@@ -8330,42 +8602,41 @@
             </div>
           </div>`).join("");
       }
-      // ---- The full course system · level ladder + compact unit chips ----
-      renderStudyPlanJourney(name, canDo);
+      // ---- The full course system · level ladder + compact unit timeline ----
+      renderStudyPlanJourney();
     }
     // Path ahead: panorama 6-Level ladder + the current Level's units as compact,
     // single-line chips (theme + status only — no nested lessons / expand / milestones),
     // closed with the level's growth endpoint. Lighter than the old quest map.
-    function renderStudyPlanJourney(name, canDo) {
+    function renderStudyPlanJourney() {
       const level = getCurrentLevel();
-      const curLi = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
+      // 6-Level arc: a connected track of level pills (no status words — the marks
+      // and color carry the state). Placement-aware via getLevelStatus.
       const ladder = $("#sp-ladder");
       if (ladder) {
         ladder.innerHTML = COURSE_LIBRARY.map((lv, i) => {
-          // Placement-aware (Req3): levels below the start level read as "not started"
-          // (–), not auto-completed — consistent with the Level·Unit map.
           const status = getLevelStatus(lv.id);
           const st = status === "done" ? "is-done" : status === "current" ? "is-current" : "";
-          const mark = status === "done" ? "✓" : status === "current" ? "now" : status === "notstarted" ? "–" : "•";
+          const mark = status === "done" ? "✓" : status === "current" ? "★" : (i + 1);
           return `<div class="sp-rung ${st}"><b>L${i + 1}</b><span>${mark}</span></div>`;
         }).join("");
       }
       const pathSub = $("#sp-path-sub");
-      if (pathSub) pathSub.textContent = `${COURSE_LIBRARY.length} Levels · ${level.units.length} units in ${level.label}`;
+      if (pathSub) pathSub.textContent = `${COURSE_LIBRARY.length} Levels · ${level.units.length} themed units in ${level.label}`;
+      // Current level's units as a connected vertical timeline — numbered dots on a
+      // rail, current highlighted, finished checked. No status labels (Req: cleaner,
+      // shows the full unit system as one continuous path).
       const unitsBox = $("#sp-units");
       if (unitsBox) {
         const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
         unitsBox.innerHTML = level.units.map((unit, ui) => {
-          let status, sc, dot;
-          if (ui < curUnitIdx) { status = "Done"; sc = "done"; dot = "✓"; }
-          else if (ui === curUnitIdx) { status = "This week"; sc = "current"; dot = "▶"; }
-          else if (ui <= curUnitIdx + 2) { status = "Soon"; sc = "soon"; dot = ui + 1; }
-          else { status = "Later"; sc = "far"; dot = ui + 1; }
-          return `<div class="sp-uchip is-${sc}"><span class="sp-uchip-no">${dot}</span><span class="sp-uchip-theme">Unit ${ui + 1} · ${unit.theme}</span><span class="sp-uchip-status st-${sc}">${status}</span></div>`;
+          let sc, dot;
+          if (ui < curUnitIdx) { sc = "done"; dot = "✓"; }
+          else if (ui === curUnitIdx) { sc = "current"; dot = "▶"; }
+          else { sc = "upcoming"; dot = ui + 1; }
+          return `<div class="sp-utl is-${sc}"><span class="sp-utl-dot">${dot}</span><span class="sp-utl-theme">Unit ${ui + 1} · ${unit.theme}</span></div>`;
         }).join("");
       }
-      // The "Finish Level → can-do" line lives ONCE in the hero goal (Req5); the
-      // duplicate bottom endpoint was removed.
     }
     function showStudyPlan() {
       renderStudyPlanScreen();
@@ -8689,6 +8960,9 @@
         equipped: { pet: "none", skin: "skin-classic" },
         owned: new Set(["skin-classic", "skin-explorer", "pet-raptor"]),
         petCounts: { "pet-raptor": 2 },
+        // Skins can now be granted in-class as rewards, and duplicates can drop, so
+        // the Backpack tracks an owned count per skin (shown as ×N like Dino Capsules).
+        skinCounts: { "skin-explorer": 2 },
       };
       // Shop sells Dino Skins ONLY (per Figma 1.3.0). Dino Capsules are a pure capsule
       // collection — not purchasable, not equippable — and live in the Backpack capsule
@@ -9164,7 +9438,7 @@
         if ($("#capi-bar-label")) $("#capi-bar-label").textContent = `${cycle} / ${CAP_COIN_EVERY} correct to your next Capsule Coin`;
         const coupon = $("#capi-coupon");
         if (coupon) coupon.classList.toggle("is-earned", capDrawPending);
-        if ($("#capi-hint")) $("#capi-hint").textContent = "Your correct answers add up across rounds — keep going!";
+        if ($("#capi-hint")) $("#capi-hint").textContent = "Correct answers add up across rounds — keep going!";
       }
       $("#capi-start")?.addEventListener("click", () => {
         if (!canPlay("capsule")) { showPlayLimit("capsule"); return; }
@@ -9275,7 +9549,7 @@
         const hintEl = $("#capr-hint");
         if (hintEl) {
           hintEl.hidden = !withPet; // no-coin uses the progress bar above instead
-          if (withPet) hintEl.textContent = `🎒 Your new ${prizeNoun} is saved to your Backpack collection!`;
+          if (withPet) hintEl.textContent = `🎒 Saved to your Backpack!`;
         }
         if ($("#capr-main")) $("#capr-main").textContent = "Continue";
         showLandScreen("screen-capsule-result");
@@ -9715,11 +9989,14 @@
           } else {
             grid.innerHTML = items.map((item) => {
               const eq = state.equipped[bagCat] === item.id;
+              // Skins can be granted in-class (and can repeat), so show ×N when a
+              // skin has been earned more than once — same count badge as Dino Capsules.
+              const n = bagCat === "skin" ? (state.skinCounts[item.id] || 1) : 1;
               const art = item.img
                 ? `<img class="sc-img" src="${item.img}" alt="${item.name}" decoding="async" />`
                 : `<span class="sc-emoji">${item.emoji}</span>`;
               return `<button type="button" class="shop-card ${bagSel === item.id ? "sel" : ""}" data-id="${item.id}">
-                <span class="shop-card-art">${art}${eq ? '<span class="sc-eq">✓</span>' : ""}</span>
+                <span class="shop-card-art">${art}${n > 1 ? `<span class="sc-count">×${n}</span>` : ""}${eq ? '<span class="sc-eq">✓</span>' : ""}</span>
                 <span class="shop-card-name">${item.name}</span>
                 <span class="shop-card-price">${eq ? "Worn" : "Owned"}</span>
               </button>`;
@@ -9748,7 +10025,25 @@
         showLevelUp(lv); // title-only celebration, no coin/XP reward
       }
       function openCapsuleDraw() { capDrawPending = true; showCapsuleMachine(); }
-      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw };
+      // In-class reward drops: a lesson may also hand out skins / Dino Capsules on top
+      // of XP + coins. Record them (so the Backpack ×N reflects repeats) and return the
+      // resolved list for the lesson-complete page to celebrate.
+      function grantInclassBonus(drops) {
+        const out = [];
+        (drops || []).forEach((d) => {
+          const item = (SHOP_ITEMS[d.cat] || []).find((i) => i.id === d.id);
+          if (!item) return;
+          const had = state.owned.has(item.id);
+          state.owned.add(item.id);
+          if (d.cat === "pet") state.petCounts[item.id] = (state.petCounts[item.id] || (had ? 1 : 0)) + 1;
+          else if (d.cat === "skin") state.skinCounts[item.id] = (state.skinCounts[item.id] || (had ? 1 : 0)) + 1;
+          out.push({ cat: d.cat, name: item.name, img: item.img || "", emoji: item.emoji || "🎁",
+            count: d.cat === "pet" ? state.petCounts[item.id] : state.skinCounts[item.id] });
+        });
+        if (out.length) { applyEquippedSkin(); syncHud(); }
+        return out;
+      }
+      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, grantInclassBonus };
       syncHud();
       renderPkRanks();
     })();
@@ -10214,12 +10509,13 @@
 
     // ----- Payment / Paywall / Membership -----
     // T1 (US/EU) sample prices. Configurable per region tier T0–T4.
-    // V1.3.0: paywall exposes MONTHLY + ANNUAL only (weekly SKU retired).
-    // Annual is the default selection and shows a discount badge; benefits are
-    // identical to monthly — only the billing cycle differs.
+    // V1.3.0: paywall exposes WEEKLY + MONTHLY + ANNUAL (3 tiers).
+    // Annual is the default selection (top, highlighted) and shows a discount
+    // badge; benefits are identical across tiers — only the billing cycle differs.
     const PLANS = [
       { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Save 50%", hero: true },
       { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly" },
+      { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly" },
     ];
 
     function getSelectedPlan() {
@@ -10242,7 +10538,7 @@
     function renderPaywallPlans() {
       const box = $("#pw-plans");
       if (!box) return;
-      // V1.3.0 two-plan paywall: annual (default, discount badge) vs monthly.
+      // V1.3.0 three-tier paywall: annual (default, discount badge) · monthly · weekly.
       if (!PLANS.some((p) => p.id === profile.selectedPlan)) profile.selectedPlan = "annual";
       box.innerHTML = PLANS.map((plan) => `
         <div class="pw-plan ${plan.hero ? "pw-plan--hero" : "pw-plan--minor"} ${plan.id === profile.selectedPlan ? "is-selected" : ""}" data-plan-id="${plan.id}" role="button" tabindex="0">
@@ -10308,7 +10604,7 @@
       if (card) {
         if (profile.premiumUnlocked) {
           card.classList.remove("is-free");
-          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews automatically · next billing date: ${profile.nextBillingDate} · all lessons unlocked.</p>`;
+          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews ${profile.nextBillingDate} · all lessons unlocked.</p>`;
         } else {
           card.classList.add("is-free");
           card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Free</p><p class="ms-status-desc">First class & samples unlocked. Go Premium for the full path.</p>`;
@@ -10554,6 +10850,7 @@
       var pid = pel ? pel.id : null;
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
       if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["startLevel"] };
+      if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
     groups: [
@@ -10594,6 +10891,7 @@
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
       { label: "学习计划",    run: function () { showStudyPlan(); } },
       { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
+      { label: "正价课报告",  run: function () { showLessonReport(); } },
       { label: "Dino 升级",   run: function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); } },
       { label: "盲盒抽取",    run: function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); } },
       { label: "Paywall",    run: function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
