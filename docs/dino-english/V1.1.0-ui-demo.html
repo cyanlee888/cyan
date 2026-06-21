@@ -2,6 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+<!-- lark-auth-gate (begin) -->
+<script>
+(function () {
+  var WORKER = "https://dino-auth.cyanlee888.workers.dev";
+  var KEY = "lark_token", el = document.documentElement;
+  el.style.visibility = "hidden";
+  function login(){ location.replace(WORKER + "/login?redirect=" + encodeURIComponent(location.href)); }
+  var m = location.hash.match(/[#&]lark_token=([^&]+)/);
+  if (m) { localStorage.setItem(KEY, decodeURIComponent(m[1])); history.replaceState(null, "", location.pathname + location.search); }
+  var t = localStorage.getItem(KEY);
+  if (!t) { login(); return; }
+  fetch(WORKER + "/verify?token=" + encodeURIComponent(t))
+    .then(function (r) { return r.json(); })
+    .then(function (x) { if (x.ok) { el.style.visibility = ""; } else { localStorage.removeItem(KEY); login(); } })
+    .catch(function () { el.style.visibility = ""; });
+})();
+</script>
+<!-- lark-auth-gate (end) -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Dino English — V1.1.0 UI Demo</title>
   <!-- DESIGN.md · PRD V1.1.0 -->
