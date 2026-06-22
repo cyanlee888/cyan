@@ -2,24 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-<!-- lark-auth-gate (begin) -->
-<script>
-(function () {
-  var WORKER = "https://dino-auth.cyanlee888.workers.dev";
-  var KEY = "lark_token", el = document.documentElement;
-  el.style.visibility = "hidden";
-  function login(){ location.replace(WORKER + "/login?redirect=" + encodeURIComponent(location.href)); }
-  var m = location.hash.match(/[#&]lark_token=([^&]+)/);
-  if (m) { localStorage.setItem(KEY, decodeURIComponent(m[1])); history.replaceState(null, "", location.pathname + location.search); }
-  var t = localStorage.getItem(KEY);
-  if (!t) { login(); return; }
-  fetch(WORKER + "/verify?token=" + encodeURIComponent(t))
-    .then(function (r) { return r.json(); })
-    .then(function (x) { if (x.ok) { el.style.visibility = ""; } else { localStorage.removeItem(KEY); login(); } })
-    .catch(function () { el.style.visibility = ""; });
-})();
-</script>
-<!-- lark-auth-gate (end) -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Dino English — V1.3.0 UI Demo</title>
   <!-- DESIGN.md · PRD V1.3.0 · V1.2.0 flow + gamification (Dino growth / Play games / merged Practice) -->
@@ -8453,8 +8435,17 @@
       if ($("#trp-level")) $("#trp-level").textContent = lvlLabel;
       if ($("#trp-overall")) $("#trp-overall").innerHTML =
         `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>, with a solid foundation already! Your trial places you at <span class="tp-hl">CEFR ${cefr} · recommended ${lvlLabel}</span>.`;
-      if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
-      if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
+      // Trial-report CTA branches by membership (PRD V1.3.0): free users go to the
+      // study-plan value page → Paywall; members are already entitled, so the button
+      // is just Continue → Class (no plan page, no Paywall). The trial (lesson0) is
+      // not re-takeable — re-opening this report later hits the same membership branch.
+      if (profile.premiumUnlocked) {
+        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Continue`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Back to your classes`;
+      } else {
+        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
+      }
     }
     // Level-up trial report: same layout, but the level recommendation reflects the
     // pass/fail verdict and the CTA either re-plans (jump ahead) or keeps the level.
@@ -8531,7 +8522,11 @@
       showCourseMap();
     });
     // First-trial report actions (portrait #screen-trial-report).
-    $("#btn-trip-start")?.addEventListener("click", () => { showStudyPlan(); });
+    $("#btn-trip-start")?.addEventListener("click", () => {
+      // Members are already entitled → skip the study-plan value page + Paywall and
+      // go straight back to Class; only free users see the conversion funnel.
+      if (profile.premiumUnlocked) { showClassHome(); } else { showStudyPlan(); }
+    });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
     $("#btn-lr-back")?.addEventListener("click", () => { showClassHome(); });
@@ -10865,7 +10860,7 @@
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
-      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["startLevel"] };
+      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel"] };
       if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
