@@ -3,3 +3,11 @@
 .env.*
 *.log
 Thumbs.db
+__pycache__/
+*.pyc
+
+# Google / GA4 / BigQuery 凭证（service account / ADC 等，切勿提交）
+*-sa.json
+*service-account*.json
+*-credentials.json
+application_default_credentials.json
