@@ -324,13 +324,15 @@
       padding-top: 20px;
       gap: 0;
     }
-    /* V1.3.0: Dino intro merged into the "Who's learning?" step. */
+    /* V1.3.0: Dino intro merged into the "Who's learning?" step.
+       Horizontal layout — Dino on the left, greeting bubble on the right — so the
+       question + options below get more vertical room (avoids the "stacked & stiff" feel). */
     .who-intro {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 0;
-      margin-bottom: 22px;
+      gap: 12px;
+      margin-bottom: 18px;
     }
     .dino-wrap { width: 96px; margin-bottom: -6px; z-index: 2; }
     .dino-mascot {
@@ -374,6 +376,19 @@
       text-align: center;
     }
     .speech-bubble strong { color: var(--forest-mid); }
+    /* Step-1 horizontal overrides (Dino left + bubble right). Scoped so the Dino
+       chat screen's .dino-wrap / .speech-bubble stay untouched. */
+    .who-intro .dino-wrap { width: 84px; height: auto; margin: 0; flex: 0 0 auto; }
+    .who-intro .speech-bubble { flex: 1 1 auto; max-width: none; padding: 14px 16px; }
+    .who-intro .speech-bubble p { text-align: left; }
+    .who-intro .speech-bubble::before {
+      top: 50%; left: -10px; transform: translateY(-50%);
+      border-bottom-color: transparent; border-right-color: var(--border);
+    }
+    .who-intro .speech-bubble::after {
+      top: 50%; left: -6px; transform: translateY(-50%);
+      border-bottom-color: transparent; border-right-color: #fff;
+    }
     /* Loading */
     .loading-body {
       flex: 1;
@@ -10019,24 +10034,51 @@
       { id: "self", label: "For myself" },
     ];
     // Placement test: ONE self-assessment question (replaces the old 4 skill questions).
-    // The parent picks the single description that fits the learner best; each option
-    // maps directly to a CEFR band / start level (no scoring). The last option ("I'm
-    // not sure") starts gently at the beginning and lets Dino adjust as the child learns.
-    const PLACEMENT_QUESTIONS = [
-      {
-        prompt: "Which best describes {name}'s English right now?",
-        hint: "Pick the one that fits best \u2014 Dino adjusts the level as {name} learns.",
-        choices: [
-          { label: "Beginner \u2014 knows \u201Chello\u201D and \u201Cbye\u201D", result: 0 },
-          { label: "Knows common words, can't make sentences yet", result: 1 },
-          { label: "Reads simple sentences, gives short answers", result: 2 },
-          { label: "Reads short stories, can describe things", result: 3 },
-          { label: "Reads full stories alone, talks about experiences", result: 4 },
-          { label: "Reads longer texts, gives opinions with reasons", result: 5 },
-          { label: "I'm not sure", result: 0, unsure: true },
-        ],
-      },
-    ];
+    // V1.3.0: the OPTIONS vary by the age band chosen in the previous step — a 4-year-old
+    // and a teenager describe their English very differently. Each option maps straight to
+    // a CEFR band / start level (index into PT_RESULTS, no scoring); "I'm not sure" → a
+    // gentle start (the lowest band offered for that age). The exact CEFR-per-option below
+    // is a sensible default and can be re-tuned by 教研 without touching the flow.
+    const PLACEMENT_PROMPT = {
+      prompt: "Which best describes {name}'s English right now?",
+      hint: "Pick the one that fits best \u2014 Dino adjusts the level as {name} learns.",
+    };
+    // Keys MUST match AGES exactly (en-dash U+2013). result = index into PT_RESULTS.
+    const PLACEMENT_BY_AGE = {
+      "3\u20135": [
+        { label: "New to English", result: 0 },
+        { label: "Knows a little", result: 1 },
+        { label: "Can speak up", result: 2 },
+        { label: "I'm not sure", result: 0, unsure: true },
+      ],
+      "6\u20138": [
+        { label: "Just starting", result: 1 },
+        { label: "Knows the basics", result: 2 },
+        { label: "Simple conversations", result: 3 },
+        { label: "I'm not sure", result: 1, unsure: true },
+      ],
+      "9\u201312": [
+        { label: "Basic level", result: 2 },
+        { label: "Can read & talk", result: 3 },
+        { label: "Can read & write", result: 4 },
+        { label: "I'm not sure", result: 2, unsure: true },
+      ],
+      "13\u201317": [
+        { label: "Basic level", result: 3 },
+        { label: "Can communicate", result: 4 },
+        { label: "Advanced", result: 5 },
+        { label: "I'm not sure", result: 3, unsure: true },
+      ],
+      "18+": [
+        { label: "Basic level", result: 3 },
+        { label: "Can communicate", result: 4 },
+        { label: "More advanced", result: 5 },
+        { label: "I'm not sure", result: 3, unsure: true },
+      ],
+    };
+    function placementChoices() {
+      return PLACEMENT_BY_AGE[profile.age] || PLACEMENT_BY_AGE["6\u20138"];
+    }
     // Each option maps straight to a CEFR band / start level:
     // Pre-A1 · A1 · A1+ · A2 · A2+ · B1 ("I'm not sure" → a gentle Pre-A1 start).
     const PT_RESULTS = [
@@ -10294,18 +10336,17 @@
     let ptCurrentIdx = 0;
 
     function renderPlacementQuestion(idx) {
-      const q = PLACEMENT_QUESTIONS[idx];
-      const total = PLACEMENT_QUESTIONS.length;
+      const total = 1; // V1.3.0: one self-assessment question; its options vary by age.
       const name = profile.name || "your child";
-      $("#pt-question").textContent = q.prompt.replace(/\{name\}/g, name);
+      $("#pt-question").textContent = PLACEMENT_PROMPT.prompt.replace(/\{name\}/g, name);
       const hintEl = $("#pt-hint");
       if (hintEl) {
-        if (q.hint) { hintEl.hidden = false; hintEl.textContent = q.hint.replace(/\{name\}/g, name); }
-        else hintEl.hidden = true;
+        hintEl.hidden = false;
+        hintEl.textContent = PLACEMENT_PROMPT.hint.replace(/\{name\}/g, name);
       }
       const box = $("#pt-options");
       box.innerHTML = "";
-      q.choices.forEach((c, ci) => {
+      placementChoices().forEach((c, ci) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "option-item";
@@ -10332,8 +10373,8 @@
     // straight to a CEFR band / start level (written to the profile), then the flow
     // continues to the goal step — no standalone "A+ result" screen.
     function applyPlacementResult() {
-      const q = PLACEMENT_QUESTIONS[0];
-      const choice = q.choices[ptAnswers[0]] || q.choices[0];
+      const choices = placementChoices();
+      const choice = choices[ptAnswers[0]] || choices[0];
       const result = PT_RESULTS[choice.result] || PT_RESULTS[0];
       profile.level = result.badge;
       profile.currentLevelId = result.levelId;
@@ -10403,7 +10444,7 @@
       });
       // Goal step back: return to the placement test's last question.
       $("#btn-goal-back")?.addEventListener("click", () => {
-        ptCurrentIdx = PLACEMENT_QUESTIONS.length - 1;
+        ptCurrentIdx = 0;
         renderPlacementQuestion(ptCurrentIdx);
         showPortraitScreen("screen-placement");
       });
