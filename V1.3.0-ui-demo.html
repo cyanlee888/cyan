@@ -324,6 +324,14 @@
       padding-top: 20px;
       gap: 0;
     }
+    /* V1.3.0: Dino intro merged into the "Who's learning?" step. */
+    .who-intro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 22px;
+    }
     .dino-wrap { width: 96px; margin-bottom: -6px; z-index: 2; }
     .dino-mascot {
       width: 100%;
@@ -396,6 +404,21 @@
       border-color: var(--forest-mid);
       box-shadow: 0 0 0 3px rgba(45,107,69,0.12);
     }
+    .name-field.is-error {
+      border-color: #e5484d;
+      box-shadow: 0 0 0 3px rgba(229,72,77,0.12);
+    }
+    /* Required-field hint above the name step's Continue button: hidden until the
+       user taps Continue with an empty field. */
+    .name-required-hint {
+      display: none;
+      margin: 0;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5484d;
+      text-align: center;
+    }
+    .name-required-hint.is-show { display: block; }
     .progress-ring {
       width: 88px;
       height: 88px;
@@ -417,23 +440,6 @@
       min-height: 1.4em;
     }
     .loading-sub { font-size: 0.8125rem; color: var(--ink-muted); }
-    .age-value-hero {
-      background: linear-gradient(160deg, var(--forest-mist), #fff);
-      border-radius: var(--radius-md);
-      padding: 20px;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .age-value-hero .age-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #fff;
-      background: var(--forest-mid);
-      padding: 6px 14px;
-      border-radius: var(--radius-pill);
-      margin-bottom: 12px;
-    }
     .logo {
       font-family: var(--display);
       font-size: 1.35rem;
@@ -481,16 +487,6 @@
       border-radius: var(--radius-md);
       padding: 14px;
       margin: 14px 0;
-    }
-    .chosen-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--forest-mid);
-      background: var(--forest-mist);
-      padding: 6px 12px;
-      border-radius: var(--radius-pill);
-      margin-bottom: 12px;
     }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 10px 0; }
     .chip {
@@ -1574,14 +1570,6 @@
     .lg-sheet-title { flex: 1; text-align: center; font-family: var(--display); font-weight: 800; font-size: 0.96rem; color: #23314f; }
     .lg-sheet-close, .lg-sheet-back { border: none; background: #f1f3f7; width: 28px; height: 28px; border-radius: 50%;
       font-size: 0.92rem; color: #5b6b86; cursor: pointer; flex: none; line-height: 1; }
-    .lg-method { display: flex; align-items: center; gap: 12px; width: 100%; border: 1.5px solid #e7ebf2; background: #fff;
-      border-radius: 14px; padding: 13px 14px; margin-bottom: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 700; color: #23314f; }
-    .lg-method:hover { background: #f7f9fc; }
-    .lg-method-ic { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; font-size: 1.05rem; flex: none; background: #eef2f8; }
-    .lg-method-ic.lg-fb { background: #1877f2; color: #fff; font-weight: 900; font-family: Georgia, "Times New Roman", serif; }
-    .lg-method-ic.lg-kakao { background: #fee500; color: #3c1e1e; font-weight: 900; }
-    .lg-method-tx { flex: 1; text-align: left; }
-    .lg-method-ar { color: #b3bccd; font-weight: 800; }
     .lg-phone-row { display: flex; gap: 8px; position: relative; }
     .lg-cc { flex: none; border: 1.5px solid #e7ebf2; background: #f7f9fc; border-radius: 12px; padding: 0 12px; font-size: 0.9rem; font-weight: 700; color: #23314f; cursor: pointer; white-space: nowrap; }
     .lg-phone-input { flex: 1; min-width: 0; border: 1.5px solid #e7ebf2; border-radius: 12px; padding: 12px 14px; font-size: 0.95rem; font-family: var(--font); }
@@ -1608,11 +1596,21 @@
     .lg-auth-spin { width: 30px; height: 30px; border-radius: 50%; border: 3px solid #e7ebf2; border-top-color: #35a0e6; margin: 0 auto 10px; animation: lgSpin 0.8s linear infinite; }
     @keyframes lgSpin { to { transform: rotate(360deg); } }
     .lg-auth-tx { font-size: 0.85rem; font-weight: 700; color: #23314f; }
-    /* "More login options" entry button (weak text link under Google) */
-    .login-more-entry { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; cursor: pointer;
-      font-size: 0.82rem; font-weight: 700; color: #5b6b86; margin: 14px auto 0; }
-    .login-more-entry::after { content: "›"; font-weight: 800; }
-    .login-land-actions .login-more-entry { color: rgba(255,255,255,0.95); margin-top: 12px; }
+    /* V1.3.0: "More ways to log in" shown directly as small round icon buttons
+       (phone / Facebook / Kakao) — no drawer. */
+    .login-more { margin-top: 16px; }
+    .login-more-sep { display: flex; align-items: center; gap: 10px; color: #8a93a6; font-size: 0.72rem; font-weight: 700; }
+    .login-more-sep::before, .login-more-sep::after { content: ""; flex: 1; height: 1px; background: #e7ebf2; }
+    .login-more-icons { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .lg-ic-btn { width: 46px; height: 46px; border-radius: 50%; border: 1.5px solid #e7ebf2; background: #fff; cursor: pointer;
+      display: grid; place-items: center; font-size: 1.15rem; font-weight: 900; color: #23314f; transition: background 0.15s, transform 0.1s; }
+    .lg-ic-btn:hover { background: #f5f7fb; }
+    .lg-ic-btn:active { transform: translateY(1px); }
+    .lg-ic-btn.lg-ic-fb { background: #1877f2; border-color: #1877f2; color: #fff; font-family: Georgia, "Times New Roman", serif; }
+    .lg-ic-btn.lg-ic-kakao { background: #fee500; border-color: #fee500; color: #3c1e1e; }
+    /* Landscape login sits on a dark glass card — lighten the separator. */
+    .login-land-actions .login-more-sep { color: rgba(255,255,255,0.85); }
+    .login-land-actions .login-more-sep::before, .login-land-actions .login-more-sep::after { background: rgba(255,255,255,0.32); }
     .hub-content-head {
       position: relative;
       z-index: 1;
@@ -1712,21 +1710,6 @@
     @keyframes justDonePulse {
       0%, 100% { box-shadow: 0 16px 32px rgba(22, 40, 100, 0.28); }
       50% { box-shadow: 0 0 0 6px rgba(25, 195, 178, 0.35), 0 16px 32px rgba(22, 40, 100, 0.28); }
-    }
-    /* "Free" hook tag on the first item of each category (non-member view) */
-    .hub-card-free {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      font-size: 0.68rem;
-      font-weight: 800;
-      color: #1d5c33;
-      background: linear-gradient(135deg, #c8f7d8, #8fe6ae);
-      border-radius: 999px;
-      padding: 4px 9px;
     }
     .hub-story-title {
       margin: 12px 0 0;
@@ -2624,6 +2607,7 @@
       gap: 12px;
     }
     .all-courses-head-row .all-courses-level { margin-left: auto; }
+    .all-courses-title { font-family: var(--display); font-size: 1.05rem; font-weight: 800; color: #fff; white-space: nowrap; }
     .all-courses-list {
       flex: 1;
       min-height: 0;
@@ -4055,6 +4039,8 @@
     .device.portrait .logo { font-size: 1rem; font-weight: 800; color: #19c3b2; letter-spacing: .3px; }
     .name-field { border: 2px solid #d6e4f0; border-radius: 14px; padding: 14px 16px; font-size: 1rem; outline: none; }
     .name-field:focus { border-color: #19c3b2; }
+    /* Error border must win even while the field is focused (defined after :focus). */
+    .name-field.is-error, .name-field.is-error:focus { border-color: #e5484d; box-shadow: 0 0 0 3px rgba(229,72,77,0.12); }
     .name-suggest-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
     .name-suggest-label { font-size: 0.82rem; color: #5a7a98; font-weight: 600; }
     .name-suggest { border: 2px solid #d6e4f0; background: #fff; color: #143a5e; border-radius: 999px; padding: 7px 16px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: .15s; }
@@ -4083,8 +4069,6 @@
     .illo-slot { width: 100%; height: 150px; display: flex; align-items: center; justify-content: center; }
     .illo-slot svg, .illo-slot img { max-width: 100%; max-height: 100%; }
     .value-illo-slot { height: 160px; }
-    .age-value-hero, .age-value-hero + .bullets { text-align: left; }
-    .age-badge, .chosen-tag { display: inline-block; background: #effbf9; color: #129; border-radius: 999px; padding: 5px 12px; font-size: 0.78rem; font-weight: 700; color: #0d8f80; width: fit-content; }
     .bullets { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 8px; }
     .bullets li { position: relative; padding-left: 24px; font-size: 0.9rem; color: #3a5a76; line-height: 1.4; }
     .bullets li::before { content: "✓"; position: absolute; left: 0; color: #19c3b2; font-weight: 800; }
@@ -4109,7 +4093,6 @@
 
     /* ---------- Placement test (V1.3.0) — reuses standard onboarding option-list + value-page styles ---------- */
     #screen-placement .option-item { line-height: 1.45; font-size: 0.9rem; font-weight: 600; }
-    #pt-result-bullets { margin-top: 10px; }
 
     /* ---------- Locked course CTA (V1.2.0) ---------- */
     .course-cta-locked { display: inline-flex; align-items: center; gap: 7px; border: none; border-radius: 999px; padding: 10px 18px; font-size: 0.9rem; font-weight: 700; cursor: pointer; background: linear-gradient(135deg,#ffd36b,#ff9f43); color: #6b3b00; box-shadow: 0 8px 18px rgba(255,159,67,.35); }
@@ -4825,6 +4808,15 @@
     .bag-top-actions { position: absolute; top: 15px; right: 16px; z-index: 6; display: flex; align-items: center; gap: 8px; }
     .bag-shop-link { cursor: pointer; }
     #bag-grid .empty-note { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.28); }
+    /* Capsule empty state: hint copy + a CTA that jumps to the Play tab. */
+    .capsule-empty { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .capsule-empty .ce-egg { font-size: 2rem; line-height: 1; }
+    .capsule-empty .ce-title { margin: 4px 0 0; font-size: 0.92rem; font-weight: 800; color: #fff; }
+    .capsule-empty .ce-sub { margin: 0; font-size: 0.74rem; color: rgba(255,255,255,0.82); }
+    .bag-empty-cta { margin-top: 10px; border: none; cursor: pointer; border-radius: 999px;
+      padding: 10px 22px; font-family: var(--font); font-size: 0.82rem; font-weight: 800; color: #5a3700;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold-3)); box-shadow: 0 10px 20px rgba(240,135,29,0.32); }
+    .bag-empty-cta:active { transform: translateY(1px); }
 
     /* ---- Game toast + level-up overlay ---- */
     .g-toast { position: absolute; left: 50%; top: 14px; transform: translateX(-50%) translateY(-20px);
@@ -5079,7 +5071,6 @@
     .cm-unit-info b { display: block; font-size: 0.9rem; font-weight: 800; color: var(--ink); }
     .cm-unit-info span { display: block; font-size: 0.72rem; color: var(--ink-muted); margin-top: 2px; }
     .cm-unit-info .cm-unit-goal { color: var(--forest-deep); font-weight: 700; }
-    .cm-endpoint { flex-shrink: 0; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 800; color: #bff0d2; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 14px; padding: 11px 15px; }
     .cm-unit-progress { flex-shrink: 0; text-align: right; }
     .cm-unit-progress .cm-bar { width: 96px; height: 7px; border-radius: 999px; background: rgba(20,61,42,0.12); overflow: hidden; margin-bottom: 4px; }
     .cm-unit-progress .cm-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #ffe48f, #ffb43b); }
@@ -5339,29 +5330,20 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-purpose">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body dino-guide">
-          <div class="dino-wrap" id="dino-purpose"></div>
-          <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong> for your learning.</p>
-          </div>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-purpose-continue">Continue</button>
-        </div>
-      </section>
-
+      <!-- V1.3.0: Dino intro is merged into the first onboarding step (Who's learning) -->
       <section class="screen" id="screen-who">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-purpose">Back</button>
+          <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
           <span class="step-label">Step 1 of 5</span>
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
+          <div class="who-intro">
+            <div class="dino-wrap" id="dino-who"></div>
+            <div class="speech-bubble">
+              <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong>.</p>
+            </div>
+          </div>
           <h1 class="title">Who's learning?</h1>
           <p class="hint">We'll personalize the learning plan for the learner.</p>
           <div class="option-list" id="who-options"></div>
@@ -5380,9 +5362,10 @@
         <div class="scroll-body">
           <h1 class="title">What should we call your child?</h1>
           <p class="hint">We'll use this name in lessons.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="32" />
+          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" value="Alex" autocomplete="name" maxlength="32" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
+            <button type="button" class="name-suggest is-selected" data-name="Alex">Alex</button>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
             <button type="button" class="name-suggest" data-name="Liam">Liam</button>
             <button type="button" class="name-suggest" data-name="Noah">Noah</button>
@@ -5392,6 +5375,7 @@
           </div>
         </div>
         <div class="foot-actions">
+          <p class="name-required-hint" id="name-required-hint">Please fill in your child's name</p>
           <button type="button" class="btn btn-primary" id="btn-name-continue">Continue</button>
         </div>
       </section>
@@ -5409,24 +5393,6 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-age-value">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-age">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body">
-          <div class="illo-slot value-illo-slot" id="illo-age-value"></div>
-          <div class="age-value-hero">
-            <h1 class="title" id="age-value-h1" style="font-size:1.1rem"></h1>
-            <p class="sub" id="age-value-h2"></p>
-          </div>
-          <ul class="bullets" id="age-value-bullets"></ul>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-age-value-continue">Continue</button>
-        </div>
-      </section>
-
       <!-- Placement test blends into onboarding as a normal question step (single onboarding progress bar) -->
       <section class="screen" id="screen-placement">
         <div class="top-bar">
@@ -5441,27 +5407,9 @@
         </div>
       </section>
 
-      <!-- Placement result shown as a normal onboarding value page -->
-      <section class="screen" id="screen-placement-result">
-        <div class="top-bar">
-          <button type="button" class="btn-back" id="btn-pt-result-back">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="scroll-body">
-          <div class="illo-slot value-illo-slot" id="illo-pt-result"></div>
-          <span class="chosen-tag" id="pt-result-badge">Level 2</span>
-          <h1 class="title" id="pt-result-title">We found a great starting point!</h1>
-          <p class="sub" id="pt-result-sub"></p>
-          <ul class="bullets" id="pt-result-bullets"></ul>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-pt-result-continue">Continue</button>
-        </div>
-      </section>
-
       <section class="screen" id="screen-goal">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-placement-result">Back</button>
+          <button type="button" class="btn-back" id="btn-goal-back">Back</button>
           <span class="step-label">Step 5 of 5</span>
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
@@ -5527,7 +5475,17 @@
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="#4285F4" d="M17.64 9.2c0-.74-.06-1.28-.19-1.84H9v3.34h4.96c-.1.83-.64 2.08-1.84 2.88l2.84 2.2c1.7-1.57 2.68-3.88 2.68-6.58z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.84-2.2c-.76.53-1.78.9-3.12.9-2.38 0-4.4-1.61-5.12-3.77H.96v2.27C2.45 15.98 5.48 18 9 18z"/><path fill="#FBBC05" d="M3.88 10.75A5.41 5.41 0 0 1 3.7 9c0-.62.11-1.22.18-1.75v-2.27H.96A8.96 8.96 0 0 0 0 9c0 1.45.35 2.82.96 4.02l2.92-2.27z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.22.57 2.73 1.05l1.99-1.94C13.47.89 11.43 0 9 0 5.48 0 2.45 2.02.96 4.98L3.88 7.25C4.6 5.09 6.62 3.58 9 3.58z"/></svg>
               Continue with Google
             </button>
-            <button type="button" class="login-more-entry" data-lg-open>More login options</button>
+            <!-- V1.3.0: more login methods shown directly as small icons (no drawer). -->
+            <div class="login-more">
+              <div class="login-more-sep"><span>More ways to log in</span></div>
+              <div class="login-more-icons" role="group" aria-label="More login options">
+                <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+                </button>
+                <button type="button" class="lg-ic-btn lg-ic-fb" data-lg-method="facebook" aria-label="Continue with Facebook">f</button>
+                <button type="button" class="lg-ic-btn lg-ic-kakao" data-lg-method="kakao" aria-label="Continue with Kakao">K</button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="foot-actions">
@@ -5538,18 +5496,11 @@
             <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
           </p>
         </div>
-        <!-- V1.3.0 More login options: bottom sheets (phone OTP / Facebook / Kakao) -->
-        <div class="lg-sheet-overlay login-more-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><span class="lg-sheet-spacer" style="width:28px"></span><span class="lg-sheet-title">More login options</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <button type="button" class="lg-method" data-lg-method="phone"><span class="lg-method-ic">📱</span><span class="lg-method-tx">Continue with phone number</span><span class="lg-method-ar">›</span></button>
-            <button type="button" class="lg-method" data-lg-method="facebook"><span class="lg-method-ic lg-fb">f</span><span class="lg-method-tx">Continue with Facebook</span><span class="lg-method-ar">›</span></button>
-            <button type="button" class="lg-method" data-lg-method="kakao"><span class="lg-method-ic lg-kakao">K</span><span class="lg-method-tx">Continue with Kakao</span><span class="lg-method-ar">›</span></button>
-          </div>
-        </div>
+        <!-- V1.3.0 Phone-number login: 2-step bottom sheets (number → OTP). Facebook &
+             Kakao authorize directly from the icon row, so there's no method-list drawer. -->
         <div class="lg-sheet-overlay login-phone-sheet" aria-hidden="true">
           <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-back="more" aria-label="Back">‹</button><span class="lg-sheet-title">Enter your phone number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
+            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-close aria-label="Back">‹</button><span class="lg-sheet-title">Enter your phone number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
             <div class="lg-phone-row">
               <button type="button" class="lg-cc" data-lg-cc>🇺🇸 +1 ▾</button>
               <input type="tel" class="lg-phone-input" placeholder="Phone number" inputmode="numeric" autocomplete="off" />
@@ -5838,7 +5789,17 @@
                 <img src="assets/login/icon-google.svg" alt="" width="24" height="24" decoding="async" />
                 Continue with Google
               </button>
-              <button type="button" class="login-more-entry" data-lg-open>More login options</button>
+              <!-- V1.3.0: more login methods shown directly as small icons (no drawer). -->
+              <div class="login-more">
+                <div class="login-more-sep"><span>More ways to log in</span></div>
+                <div class="login-more-icons" role="group" aria-label="More login options">
+                  <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+                  </button>
+                  <button type="button" class="lg-ic-btn lg-ic-fb" data-lg-method="facebook" aria-label="Continue with Facebook">f</button>
+                  <button type="button" class="lg-ic-btn lg-ic-kakao" data-lg-method="kakao" aria-label="Continue with Kakao">K</button>
+                </div>
+              </div>
             </div>
             <p class="login-land-legal">
               You agree to our
@@ -5848,18 +5809,11 @@
             </p>
           </div>
         </div>
-        <!-- V1.3.0 More login options: bottom sheets (phone OTP / Facebook / Kakao) -->
-        <div class="lg-sheet-overlay login-more-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><span class="lg-sheet-spacer" style="width:28px"></span><span class="lg-sheet-title">More login options</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <button type="button" class="lg-method" data-lg-method="phone"><span class="lg-method-ic">📱</span><span class="lg-method-tx">Continue with phone number</span><span class="lg-method-ar">›</span></button>
-            <button type="button" class="lg-method" data-lg-method="facebook"><span class="lg-method-ic lg-fb">f</span><span class="lg-method-tx">Continue with Facebook</span><span class="lg-method-ar">›</span></button>
-            <button type="button" class="lg-method" data-lg-method="kakao"><span class="lg-method-ic lg-kakao">K</span><span class="lg-method-tx">Continue with Kakao</span><span class="lg-method-ar">›</span></button>
-          </div>
-        </div>
+        <!-- V1.3.0 Phone-number login: 2-step bottom sheets (number → OTP). Facebook &
+             Kakao authorize directly from the icon row, so there's no method-list drawer. -->
         <div class="lg-sheet-overlay login-phone-sheet" aria-hidden="true">
           <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-back="more" aria-label="Back">‹</button><span class="lg-sheet-title">Enter your phone number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
+            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-close aria-label="Back">‹</button><span class="lg-sheet-title">Enter your phone number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
             <div class="lg-phone-row">
               <button type="button" class="lg-cc" data-lg-cc>🇺🇸 +1 ▾</button>
               <input type="tel" class="lg-phone-input" placeholder="Phone number" inputmode="numeric" autocomplete="off" />
@@ -6291,14 +6245,15 @@
           <div class="all-courses-head">
             <div class="all-courses-head-row">
               <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
-              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="Switch level and unit"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">Level 2 · Unit 1</span><span class="acl-caret" aria-hidden="true">▾</span></button>
+              <span class="all-courses-title" id="all-courses-title">Level 2 · Unit 1</span>
+              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="View all courses"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">All courses</span><span class="acl-caret" aria-hidden="true">›</span></button>
             </div>
           </div>
           <section class="all-courses-list" id="all-courses-list"></section>
         </div>
       </section>
 
-      <!-- Learning Path: Level → Unit map (opened from the Level · Unit pill on All Lessons) -->
+      <!-- Learning Path: Level → Unit map (opened from the "All courses" button on the lesson list) -->
       <section class="screen app-shell" id="screen-course-map">
         <div class="course-map-shell">
           <div class="course-map-head">
@@ -7198,7 +7153,7 @@
     function renderCourseListMeta(course, isAnchored) {
       const dur = formatCourseDuration(course.duration);
       const locked = isCourseLocked(course);                                // non-member: gated lesson → Premium
-      const scheduled = !locked && getUnlockState(course) === "scheduled";  // member: not yet open by weekly pace
+      const scheduled = !locked && getUnlockState(course) === "scheduled";  // member: not yet open by 7-day pace
       const stateLabel = getLessonStateLabel(getLessonState(course.levelId, course.unitId, course.lessonId));
       // Always render the lock / schedule indicator here. On cards that show an action button
       // (anchored all-courses cards + class-home week cards) CSS hides this duplicate so the
@@ -7250,7 +7205,7 @@
             return;
           }
           if (action === "scheduled") {
-            showPayToast("🔒 This lesson isn't open yet — new lessons unlock each week 🦕");
+            showPayToast("🔒 This lesson isn't open yet — new lessons unlock every 7 days 🦕");
             return;
           }
           setCurrentCourse(course.levelId, course.unitId, course.lessonId);
@@ -7263,11 +7218,11 @@
       return `${levelId}::${unitId}::${lessonId}`;
     }
 
-    // ----- V1.3.0 weekly unlock schedule (demo) -----
-    // The whole week's batch of 3 lessons unlocks together each Monday (not by
-    // weekday). 1 Unit = 12 lessons = 4 weekly batches. This week's batch (and
-    // earlier) are all unlocked; later batches open on upcoming Mondays.
-    // Lessons per weekly batch (unlocked together each Monday, no weekday pacing).
+    // ----- V1.3.0 rolling unlock schedule (demo) -----
+    // The whole batch of 3 lessons unlocks together each 7-day rolling cycle (not by
+    // weekday). 1 Unit = 12 lessons = 4 cycles. This cycle's batch (and earlier) are
+    // all unlocked; later batches open on upcoming cycles.
+    // Lessons per cycle (unlocked together each 7-day cycle, no weekday pacing).
     // Same number drives the Class home swiper and the study-plan "3 lessons a week".
     const WEEK_LESSONS = 3;
     const STUDY_LESSONS_PER_WEEK = WEEK_LESSONS;
@@ -7289,19 +7244,6 @@
       const courseBatch = idx - (idx % WEEK_LESSONS);
       const weeks = (courseBatch - currentBatchStartIndex()) / WEEK_LESSONS;
       return Math.max(0, weeks);
-    }
-    // The Monday a future batch opens. This week is already unlocked, so the next
-    // batch (weeksAhead = 1) opens the upcoming Monday, the one after +7d, etc.
-    function nextMondayDate(weeksAhead) {
-      const d = new Date();
-      const iso = d.getDay() === 0 ? 7 : d.getDay(); // Mon=1 … Sun=7
-      const daysToMonday = (8 - iso) % 7 || 7;
-      d.setDate(d.getDate() + daysToMonday + (Math.max(1, weeksAhead) - 1) * 7);
-      return d;
-    }
-    function formatUnlockDate(weeksAhead) {
-      if (weeksAhead <= 0) return "";
-      return nextMondayDate(weeksAhead).toLocaleDateString("en-US", { month: "short", day: "numeric" });
     }
     function getUnlockState(course) {
       return getUnlockWeeksAhead(course) > 0 ? "scheduled" : "unlocked";
@@ -7458,8 +7400,8 @@
           ? defaultCourseKey
           : makeCourseKey(courses[0].levelId, courses[0].unitId, courses[0].lessonId);
       }
-      const lvEl = $("#all-courses-level");
-      if (lvEl) lvEl.innerHTML = `<span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">${getLevelById(levelId).label} · ${unit.label}</span><span class="acl-caret" aria-hidden="true">▾</span>`;
+      const titleEl = $("#all-courses-title");
+      if (titleEl) titleEl.textContent = `${getLevelById(levelId).label} · ${unit.label}`;
       $("#all-courses-list").innerHTML = courses.map((course) => {
         const courseKey = makeCourseKey(course.levelId, course.unitId, course.lessonId);
         const isAnchored = courseKey === selectedAllCourseKey;
@@ -7564,7 +7506,8 @@
     function onLoginSuccess() {
       // New account with no profile yet (entered via "I already have an account"
       // but never went through Onboarding) → force questions-only info collection
-      // after Dino's purpose page, then show a personalized Loading before teacher pick.
+      // starting at the first onboarding step (Who's learning, which now carries
+      // Dino's intro), then a personalized Loading before teacher pick.
       if (profile.skipOnboarding && !profile.profileComplete) {
         postLoginInfo = true;
         const landscape = $("#wrap-landscape");
@@ -7572,7 +7515,7 @@
         if (landscape) landscape.style.display = "none";
         if (portrait) portrait.style.display = "";
         applyVoiceWording();
-        showPortraitScreen("screen-purpose");
+        showPortraitScreen("screen-who");
         return;
       }
       profile.profileComplete = true;
@@ -7657,13 +7600,13 @@
     // Delegated clicks (works for both login screens, no duplicate IDs).
     document.addEventListener("click", (e) => {
       const t = e.target;
-      const openBtn = t.closest("[data-lg-open]");
-      if (openBtn) { const s = lgScope(openBtn); if (s) lgShow(s, "login-more-sheet"); return; }
       const scope = lgScope(t);
       if (!scope) return;
       if (t.closest("[data-lg-close]")) { lgCloseAll(scope); return; }
+      // Only the OTP sheet steps back (to the phone-number sheet); the phone sheet's
+      // back closes outright (handled by data-lg-close above).
       const back = t.closest("[data-lg-back]");
-      if (back) { lgShow(scope, back.dataset.lgBack === "phone" ? "login-phone-sheet" : "login-more-sheet"); return; }
+      if (back) { lgShow(scope, "login-phone-sheet"); return; }
       const method = t.closest("[data-lg-method]");
       if (method) {
         const m = method.dataset.lgMethod;
@@ -7853,10 +7796,9 @@
         : PRACTICE_STORIES.filter((story) => story.level === Number(practiceFilter));
       $("#practice-carousel").innerHTML = filtered.map((story) => {
         const locked = isPracticeLocked(story);
-        const freeTag = !locked && !profile.premiumUnlocked ? `<span class="hub-card-free">Free</span>` : "";
         return `
         <article class="hub-story-card ${locked ? "is-locked" : ""}" data-story-id="${story.id}" role="button" tabindex="0">
-          <div class="hub-story-art">${uniqueSvgIds(story.art, story.id)}${locked ? `<span class="hub-card-lock">🔒 Premium</span>` : freeTag}</div>
+          <div class="hub-story-art">${uniqueSvgIds(story.art, story.id)}${locked ? `<span class="hub-card-lock">🔒 Premium</span>` : ""}</div>
           <p class="hub-story-title">${story.title}</p>
         </article>`;
       }).join("");
@@ -7874,11 +7816,10 @@
         : RADIO_STATIONS.filter((station) => station.categories.includes(radioFilter));
       $("#radio-carousel").innerHTML = filtered.map((station) => {
         const locked = isRadioLocked(station);
-        const freeTag = !locked && !profile.premiumUnlocked ? `<span class="hub-card-free">Free</span>` : "";
         return `
         <article class="hub-radio-card ${locked ? "is-locked" : ""}" data-station-id="${station.id}" role="button" tabindex="0">
           <div class="hub-radio-visual">
-            <div class="hub-radio-cover">${station.art}${locked ? `<span class="hub-card-lock">🔒 Premium</span>` : freeTag}</div>
+            <div class="hub-radio-cover">${station.art}${locked ? `<span class="hub-card-lock">🔒 Premium</span>` : ""}</div>
             <div class="hub-radio-vinyl" aria-hidden="true"></div>
           </div>
           <p class="hub-radio-title">${station.title}</p>
@@ -8037,7 +7978,7 @@
     }
     // ----- Learning Path (Level → Unit map, V1.3.0) -----
     // Level is the placement-driven main hierarchy; Units group lessons inside a
-    // level. The "Level · Unit" pill on All Lessons opens this map.
+    // level. The "All courses" button on the lesson list opens this map.
     // Level cards describe what the learner can do at that level (no lesson counts).
     const LEVEL_ABILITIES = [
       "Says first words, greetings & polite replies",
@@ -8046,16 +7987,6 @@
       "Describes past events & future plans",
       "Keeps real conversations going with opinions",
       "Tells stories & handles longer conversations",
-    ];
-    // Parent-legible "growth endpoint" per level (verb-first so it reads as
-    // "Finish Level X → [child] can ___"). Used by the Study Plan top + map endpoint.
-    const LEVEL_CAN_DO = [
-      "say first words, greetings & polite replies",
-      "ask & answer simple everyday questions",
-      "talk about daily life in full sentences",
-      "describe past events & future plans",
-      "keep real conversations going with opinions",
-      "tell stories & handle longer conversations",
     ];
     // One short can-do goal per Unit (1–12), aligned to UNIT_BLUEPRINTS themes —
     // turns each quest station into a concrete ability rather than a topic label.
@@ -8167,8 +8098,7 @@
             <div class="cm-unit-progress"><div class="cm-bar"><i style="width:${pct}%"></i></div><em>${done}/${total} done</em></div>
             ${cta}
           </div>`;
-      }).join("") +
-        `<div class="cm-endpoint">🎓 Finish ${level.label} → ${LEVEL_CAN_DO[levelIdx] || "speak more confidently"}</div>`;
+      }).join("");
       unitsBox.querySelectorAll(".cm-unit-cta[data-unit-id]").forEach((btn) => {
         btn.addEventListener("click", () => {
           // Open the SELECTED map level's unit (which may be a lower, completed level).
@@ -8197,7 +8127,7 @@
       renderCourseMap();
       showLandScreen("screen-course-map");
     }
-    // Top-right "Level · Unit" pill on All Courses = the switcher → opens the map.
+    // Top-right "All courses" button on the lesson list → opens the Level/Unit map (Learning Path).
     $("#all-courses-level")?.addEventListener("click", showCourseMap);
     // The map is now reached FROM the lesson list (as a switcher), so its Back returns
     // to All Courses (the unit lesson list), not straight to Class home.
@@ -8435,8 +8365,17 @@
       if ($("#trp-level")) $("#trp-level").textContent = lvlLabel;
       if ($("#trp-overall")) $("#trp-overall").innerHTML =
         `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>, with a solid foundation already! Your trial places you at <span class="tp-hl">CEFR ${cefr} · recommended ${lvlLabel}</span>.`;
-      if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
-      if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
+      // Trial-report CTA branches by membership (PRD V1.3.0): free users go to the
+      // study-plan value page → Paywall; members are already entitled, so the button
+      // is just Continue → Class (no plan page, no Paywall). The trial (lesson0) is
+      // not re-takeable — re-opening this report later hits the same membership branch.
+      if (profile.premiumUnlocked) {
+        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Continue`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Back to your classes`;
+      } else {
+        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
+      }
     }
     // Level-up trial report: same layout, but the level recommendation reflects the
     // pass/fail verdict and the CTA either re-plans (jump ahead) or keeps the level.
@@ -8513,7 +8452,11 @@
       showCourseMap();
     });
     // First-trial report actions (portrait #screen-trial-report).
-    $("#btn-trip-start")?.addEventListener("click", () => { showStudyPlan(); });
+    $("#btn-trip-start")?.addEventListener("click", () => {
+      // Members are already entitled → skip the study-plan value page + Paywall and
+      // go straight back to Class; only free users see the conversion funnel.
+      if (profile.premiumUnlocked) { showClassHome(); } else { showStudyPlan(); }
+    });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
     $("#btn-lr-back")?.addEventListener("click", () => { showClassHome(); });
@@ -8654,7 +8597,7 @@
     });
     $("#btn-change-teacher").addEventListener("click", () => openTeacherPicker("app"));
     // V1.3.0 nav (Req1): Class home's "All courses" entry opens the specific Unit's
-    // lesson list FIRST (All Courses). The Level·Unit switcher there opens the map.
+    // lesson list FIRST (All Courses). The "All courses" button there opens the map.
     //  • From Class → All Courses, Back returns to Class.
     //  • From the map's "View lessons" → All Courses, Back returns to the map.
     $("#btn-open-all-courses").addEventListener("click", () => showAllCourses(undefined, "class"));
@@ -9170,8 +9113,8 @@
         { name: "Ben", ava: "🐵" }, { name: "Ava", ava: "🐷" },
       ];
       const PK_CONFIG = {
-        word:  { perQuestionSec: 0, rivalAccuracy: 0.62 }, // no per-question countdown (PRD P3a)
-        speak: { perQuestionSec: 0, rivalAccuracy: 0.55 }, // record-based, no countdown
+        word:  { perQuestionSec: 0 }, // no per-question countdown (PRD P3a)
+        speak: { perQuestionSec: 0 }, // record-based, no countdown
         targetWinRate: 0.75,   // steady-state win rate after newbie window
         newbieWinRate: 0.90,   // first matches are kinder
         newbieMatches: 3,
@@ -9202,13 +9145,18 @@
         if (r < wr + (1 - wr) * PK_CONFIG.drawShare) return "draw";
         return "loss";
       }
-      // Given the player's REAL score, derive the rival's final score so the
-      // displayed result matches the predetermined outcome (clamped to bounds).
-      function resolveOpponentScore(me, qCount, outcome) {
-        const clamp = (v) => Math.max(0, Math.min(qCount, v));
-        if (outcome === "draw") return clamp(me);
-        if (outcome === "win") return me <= 0 ? 0 : clamp(me - (Math.random() < 0.4 ? 2 : 1));
-        return me >= qCount ? qCount : clamp(me + (Math.random() < 0.4 ? 2 : 1)); // loss
+      // 方案A — the rival's LIVE score tracks the player's running REAL score,
+      // offset by a fixed per-match margin in the planned direction, advancing at
+      // most +1 per question. It is therefore monotonic (never jumps backward) and
+      // the score shown mid-match IS the final score (finishPk no longer overrides
+      // it). The two impossible corners resolve to a tie by construction: full
+      // marks vs a planned loss caps both sides equal; 0 vs a planned win keeps the
+      // rival pinned at 0.
+      function rivalStep(shown, me, qCount, plan) {
+        const target = plan.outcome === "draw" ? me
+          : plan.outcome === "win" ? Math.max(0, me - plan.margin)
+          : Math.min(qCount, me + plan.margin); // loss: keep the rival ahead
+        return shown < target ? shown + 1 : shown; // +1 per question, never backward
       }
       let pkMatchTimer = null;
       let pkMatchCycle = null;
@@ -9216,7 +9164,9 @@
         const isWord = target === "screen-wordpk";
         const kind = isWord ? "word" : "speak";
         const rival = PK_RIVALS[Math.floor(Math.random() * PK_RIVALS.length)];
-        pkPlan = { kind, rival, outcome: decidePkOutcome() };
+        // margin = how far the rival ultimately leads/trails (1~2 pts), fixed per
+        // match so the live tracking stays consistent from first question to last.
+        pkPlan = { kind, rival, outcome: decidePkOutcome(), margin: Math.random() < 0.4 ? 2 : 1 };
         if ($("#pkm-title")) $("#pkm-title").textContent = isWord ? "Word PK" : "Speaking PK";
         if ($("#pkm-status")) $("#pkm-status").textContent = "Finding your rival…";
         if ($("#pkm-op")) $("#pkm-op").textContent = "❓";
@@ -9684,9 +9634,9 @@
           box?.querySelector(`.pk-opt[data-i="${item.a}"]`)?.classList.add("right");
           gToast("Oops, not quite!");
         }
-        // Live rival activity for tension; the FINAL score is reconciled to the
-        // predetermined outcome in finishPk (win-rate control).
-        if (Math.random() < PK_CONFIG.word.rivalAccuracy) wpkOp += 1;
+        // 方案A: rival score chases the player's running score toward the planned
+        // outcome (see rivalStep) — what you see during play is the real result.
+        wpkOp = rivalStep(wpkOp, wpkMe, WPK_QUESTIONS.length, pkPlan);
         updateWpkScore();
         setTimeout(() => {
           wpkIdx += 1;
@@ -9743,7 +9693,7 @@
           const good = Math.random() > 0.25;
           if (good) { spkMe += 1; if (fb) fb.textContent = "⭐ Great pronunciation! +1"; }
           else if (fb) fb.textContent = "💪 Good try — keep going!";
-          if (Math.random() < PK_CONFIG.speak.rivalAccuracy) spkOp += 1; // simulated rival turn
+          spkOp = rivalStep(spkOp, spkMe, SPK_SENTENCES.length, pkPlan); // 方案A live tracking
           if ($("#spk-me")) $("#spk-me").textContent = spkMe;
           if ($("#spk-op")) $("#spk-op").textContent = spkOp;
           setTimeout(() => {
@@ -9755,14 +9705,11 @@
         }, 1000);
       });
 
-      // ---- PK finish: reconcile rival score to the planned outcome, then
-      // unified settlement first, then battle result (PRD order) ----
+      // ---- PK finish: the rival's live score already reflects the planned
+      // outcome (方案A tracking), then unified settlement, then battle result ----
       function finishPk(kind, me) {
-        const qCount = kind === "word" ? WPK_QUESTIONS.length : SPK_SENTENCES.length;
-        // Win-rate control: override the rival's final score from the plan.
-        const op = resolveOpponentScore(me, qCount, pkPlan.outcome);
-        if (kind === "word") { wpkOp = op; if ($("#wpk-op")) $("#wpk-op").textContent = op; }
-        else { spkOp = op; if ($("#spk-op")) $("#spk-op").textContent = op; }
+        // Final score = the last shown live score; no reconcile/override.
+        const op = kind === "word" ? wpkOp : spkOp;
         pkMatchesPlayed += 1;
         const win = me > op; // ties count as a loss (PRD: win / non-win)
         // Record cumulative win-rate stats (no 段位 — retired per PRD 9.7).
@@ -9949,8 +9896,14 @@
           const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
           if (grid) {
             if (!owned.length) {
-              // Empty state: no Dino Capsules pulled yet — point kids to the Capsule.
-              grid.innerHTML = `<div class="empty-note">No Dino Capsules yet 🥚<br>Play the Dino Capsule Machine to collect your first Dino Capsule!</div>`;
+              // Empty state: no Dino Capsules pulled yet — show a hint + a CTA that
+              // jumps to the Play tab (where the Dino Capsule Machine lives).
+              grid.innerHTML = `<div class="empty-note capsule-empty">
+                <span class="ce-egg">🥚</span>
+                <p class="ce-title">No Dino Capsules yet</p>
+                <p class="ce-sub">Play the Dino Capsule Machine to collect your first one!</p>
+                <button type="button" class="bag-empty-cta" data-hub-go="play">Go to Play 🎮</button>
+              </div>`;
             } else {
               grid.innerHTML = owned.map((p) => {
                 const n = state.petCounts[p.id] || 1;
@@ -10049,7 +10002,7 @@
     /* ===================== V1.2.0: Onboarding + Payment ===================== */
     function showPortraitScreen(id) {
       $$("#device-portrait .screen").forEach((s) => s.classList.toggle("active", s.id === id));
-      $("#screen-purpose .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-purpose");
+      $("#screen-who .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-who");
       $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
       const dp = $("#device-portrait");
       if (dp) dp.scrollTop = 0;
@@ -10110,6 +10063,7 @@
         nameTitle: "What should we call your child?",
         nameHint: "We'll use this name in lessons.",
         namePlaceholder: "Your child's name or nickname",
+        nameRequired: "Please fill in your child's name",
         ageTitle: "How old is your child?",
         ageHint: "This helps us recommend the right starting level and lessons for your child.",
         goalTitle: "What's your child's main learning goal right now?",
@@ -10119,55 +10073,33 @@
         nameTitle: "What should we call you?",
         nameHint: "We'll use this name in your lessons.",
         namePlaceholder: "Your name",
+        nameRequired: "Please fill in your name",
         ageTitle: "How old are you?",
         ageHint: "This helps us recommend the right starting level and lessons for you.",
         goalTitle: "What's your main learning goal right now?",
         goalHint: "We'll use this to recommend the best first lesson for you.",
       },
     };
-    // Age is collected for tone/analytics and future grading only. This version
-    // is NOT graded by age (6 lessons, no levels), so the value page is
-    // experience-led — "speak from lesson 1" — and must not promise age-tailored
-    // content. Voice still forks parent ("your child") vs self ("you").
-    const AGE_VALUE_COPY = {
-      child: { h1: "Speak from the very first lesson", h2: "Real conversations every lesson—child speaks, and the AI teacher responds.", bullets: ["Speaking practice in every lesson", "Instant feedback as they go", "A learning report after every lesson"] },
-      self: { h1: "Speak from your very first lesson", h2: "Real conversations every lesson—you speak, and the AI teacher responds.", bullets: ["Speaking practice in every lesson", "Instant feedback as they go", "A learning report after every lesson"] },
-    };
-    const AGE_VALUE_PAGES = {
-      "3–5": AGE_VALUE_COPY,
-      "6–8": AGE_VALUE_COPY,
-      "9–12": AGE_VALUE_COPY,
-      "13–17": AGE_VALUE_COPY,
-      "18+": AGE_VALUE_COPY,
-    };
     // Voice is decided by the "Who's learning?" choice: "For my child" (default)
     // → parent voice; "For myself" → self voice. Age no longer decides this.
     function isParentVoice() {
       return profile.learner !== "self";
     }
-    // Goal value pages fork voice the same way (parent vs self).
-    const VALUE_PAGES = {
-      speak_confidence: {
-        child: { h1: "Help your child speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for a real answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
-        self: { h1: "Help you speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for your answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
-      },
-      structured_progress: {
-        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every lesson"] },
-        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after lessons"] },
-      },
-      school_exam: {
-        child: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Aligned with school goals", "Track lessons completed", "Review anytime"] },
-        self: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
-      },
-      daily_communication: {
-        child: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak up in every lesson", "Quick practice after lessons"] },
-        self: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak in every lesson", "Quick practice after lessons"] },
-      },
-      listening_habit: {
-        child: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
-        self: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
-      },
+    // V1.3.0: ONE non-personalized value page (no per-age / per-goal variants).
+    // It lists everything the course gives the learner, then frames the trial
+    // lesson as the way to claim a personalized study plan. Only the voice
+    // (parent "your child" vs self "you") forks the trial-lesson line.
+    const VALUE_PAGE = {
+      child: { h2: "Take the free trial lesson to unlock a study plan made just for your child." },
+      self: { h2: "Take the free trial lesson to unlock a study plan made just for you." },
     };
+    const VALUE_PAGE_BULLETS = [
+      "Speak in every lesson — the AI teacher listens and replies",
+      "A clear path: 6 levels of themed units, step by step",
+      "Words, listening & speaking practice anytime",
+      "Fun games and rewards that keep learning going",
+      "A learning report after every lesson",
+    ];
     // Loading copy forks by voice (parent vs self) via isParentVoice().
     const LOADING_LINES = [
       (p) => `Hi ${p.name || "there"}—setting up your first lessons…`,
@@ -10205,22 +10137,15 @@
       });
     }
 
-    function fillAgeValuePage() {
-      const entry = AGE_VALUE_PAGES[profile.age] || AGE_VALUE_PAGES["9–12"];
-      const data = isParentVoice() ? entry.child : entry.self;
-      $("#illo-age-value").innerHTML = (ILLUSTRATIONS.ageValue && ILLUSTRATIONS.ageValue[profile.age]) || (ILLUSTRATIONS.ageValue && ILLUSTRATIONS.ageValue["9–12"]) || "";
-      $("#age-value-h1").textContent = data.h1;
-      $("#age-value-h2").textContent = data.h2;
-      $("#age-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
-    }
-
+    // Single, non-personalized value page: everything the course gives + a trial-to-plan CTA.
     function fillGoalValuePage() {
-      const entry = VALUE_PAGES[profile.goal] || VALUE_PAGES.speak_confidence;
-      const data = isParentVoice() ? entry.child : entry.self;
-      $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue[profile.goal]) || (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || "";
-      $("#goal-value-h1").textContent = data.h1;
+      const data = isParentVoice() ? VALUE_PAGE.child : VALUE_PAGE.self;
+      $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || DINO_CHAR || "";
+      $("#goal-value-h1").textContent = profile.name
+        ? `Everything ${profile.name} gets with Dino English`
+        : (isParentVoice() ? "Everything your child gets with Dino English" : "Everything you get with Dino English");
       $("#goal-value-h2").textContent = data.h2;
-      $("#goal-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
+      $("#goal-value-bullets").innerHTML = VALUE_PAGE_BULLETS.map((b) => `<li>${b}</li>`).join("");
     }
 
     function fillLogin() {
@@ -10350,6 +10275,8 @@
       if (nameHint) nameHint.textContent = v.nameHint;
       const nameInput = $("#input-name");
       if (nameInput) nameInput.setAttribute("placeholder", v.namePlaceholder);
+      const nameRequired = $("#name-required-hint");
+      if (nameRequired) nameRequired.textContent = v.nameRequired;
       const ageTitle = document.querySelector("#screen-age .title");
       if (ageTitle) ageTitle.textContent = v.ageTitle;
       const ageHint = document.querySelector("#screen-age .hint");
@@ -10393,7 +10320,7 @@
               ptCurrentIdx = idx + 1;
               renderPlacementQuestion(ptCurrentIdx);
             } else {
-              showPlacementResult();
+              applyPlacementResult();
             }
           }, 280);
         });
@@ -10401,9 +10328,10 @@
       });
     }
 
-    function showPlacementResult() {
-      const name = profile.name || "your child";
-      // Single-question placement: the chosen option maps straight to a CEFR band.
+    // V1.3.0: the placement result page is removed. The chosen option still maps
+    // straight to a CEFR band / start level (written to the profile), then the flow
+    // continues to the goal step — no standalone "A+ result" screen.
+    function applyPlacementResult() {
       const q = PLACEMENT_QUESTIONS[0];
       const choice = q.choices[ptAnswers[0]] || q.choices[0];
       const result = PT_RESULTS[choice.result] || PT_RESULTS[0];
@@ -10412,17 +10340,7 @@
       // Record the placement level so the Learning Path can show levels BELOW it as
       // "not started" (skipped at placement), not auto-completed.
       profile.placementLevelId = result.levelId;
-      $("#pt-result-badge").textContent = "Recommended · " + result.badge;
-      // "I'm not sure" → reassuring gentle-start copy; otherwise the band's own copy.
-      $("#pt-result-title").textContent = choice.unsure ? "We'll start gently" : result.title;
-      $("#pt-result-sub").innerHTML = choice.unsure
-        ? `No problem! We'll begin with the basics and move ${name} up as soon as it feels easy.`
-        : result.sub(name);
-      const illo = $("#illo-pt-result");
-      if (illo && !illo.dataset.filled) { illo.innerHTML = DINO_CHAR; illo.dataset.filled = "1"; }
-      const bx = $("#pt-result-bullets");
-      if (bx) bx.innerHTML = (result.bullets || []).map((b) => `<li>${b}</li>`).join("");
-      showPortraitScreen("screen-placement-result");
+      showPortraitScreen("screen-goal");
     }
 
     function startPlacementTest() {
@@ -10433,18 +10351,16 @@
     }
 
     function initOnboarding() {
-      $("#dino-purpose").innerHTML = DINO_CHAR;
+      $("#dino-who").innerHTML = DINO_CHAR;
       renderWhoOptions();
       renderGoalOptions();
       applyVoiceWording();
-      renderOptions("age-options", AGES, "age", () => {
-        if (postLoginInfo) { startPlacementTest(); return; }
-        fillAgeValuePage(); showPortraitScreen("screen-age-value");
-      });
+      // Age selection always leads straight into the placement test (the standalone
+      // post-age "value page" has been removed).
+      renderOptions("age-options", AGES, "age", () => { startPlacementTest(); });
 
-      $("#btn-get-started")?.addEventListener("click", () => { profile.skipOnboarding = false; showPortraitScreen("screen-purpose"); });
+      $("#btn-get-started")?.addEventListener("click", () => { profile.skipOnboarding = false; showPortraitScreen("screen-who"); });
       $("#btn-has-account-welcome")?.addEventListener("click", () => { profile.skipOnboarding = true; fillLogin(); showPortraitScreen("screen-login"); });
-      $("#btn-purpose-continue")?.addEventListener("click", () => showPortraitScreen("screen-who"));
       $("#btn-who-continue")?.addEventListener("click", () => { applyVoiceWording(); showPortraitScreen("screen-name"); });
       $$("#name-suggest-row .name-suggest").forEach((chip) => {
         chip.addEventListener("click", () => {
@@ -10454,32 +10370,43 @@
         });
       });
       $("#input-name")?.addEventListener("input", () => {
+        const val = ($("#input-name").value || "").trim();
         $$("#name-suggest-row .name-suggest").forEach((c) => {
-          c.classList.toggle("is-selected", c.dataset.name === $("#input-name").value.trim());
+          c.classList.toggle("is-selected", c.dataset.name === val);
         });
+        // Typing clears the required-field warning.
+        if (val) {
+          $("#name-required-hint")?.classList.remove("is-show");
+          $("#input-name")?.classList.remove("is-error");
+        }
       });
       $("#btn-name-continue")?.addEventListener("click", () => {
         const name = ($("#input-name")?.value || "").trim();
-        if (!name) { $("#input-name")?.focus(); return; }
+        if (!name) {
+          // Surface the required-field hint and focus the field instead of advancing.
+          $("#name-required-hint")?.classList.add("is-show");
+          $("#input-name")?.classList.add("is-error");
+          $("#input-name")?.focus();
+          return;
+        }
         profile.name = name;
         showPortraitScreen("screen-age");
       });
-      $("#btn-age-value-continue")?.addEventListener("click", startPlacementTest);
-      // Placement test back: go to previous question or back to age-value
+      // Placement test back: go to previous question or back to the age step.
       $("#btn-pt-back")?.addEventListener("click", () => {
         if (ptCurrentIdx > 0) {
           ptCurrentIdx--;
           renderPlacementQuestion(ptCurrentIdx);
         } else {
-          showPortraitScreen(postLoginInfo ? "screen-age" : "screen-age-value");
+          showPortraitScreen("screen-age");
         }
       });
-      $("#btn-pt-result-back")?.addEventListener("click", () => {
+      // Goal step back: return to the placement test's last question.
+      $("#btn-goal-back")?.addEventListener("click", () => {
         ptCurrentIdx = PLACEMENT_QUESTIONS.length - 1;
         renderPlacementQuestion(ptCurrentIdx);
         showPortraitScreen("screen-placement");
       });
-      $("#btn-pt-result-continue")?.addEventListener("click", () => showPortraitScreen("screen-goal"));
       $("#btn-goal-continue")?.addEventListener("click", () => {
         if (!profile.goal) return;
         if (postLoginInfo) { finishPostLoginInfo(); return; }
@@ -10494,10 +10421,8 @@
       $$("#device-portrait .btn-back[data-back]").forEach((btn) => {
         btn.addEventListener("click", () => {
           let target = btn.dataset.back;
-          if (postLoginInfo) {
-            if (target === "screen-age-value") target = "screen-age";
-            if (target === "screen-welcome") return;
-          }
+          // During post-login info completion the user can't go back to the welcome screen.
+          if (postLoginInfo && target === "screen-welcome") return;
           showPortraitScreen(target);
         });
       });
@@ -10847,7 +10772,7 @@
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
-      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["startLevel"] };
+      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel"] };
       if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
