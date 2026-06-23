@@ -2304,7 +2304,7 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
-    /* V1.3.0 weekly study plan strip (3 lessons unlock together each Monday) */
+    /* V1.3.0 weekly study plan strip (3 lessons unlock together each 7-day cycle) */
     .week-plan {
       display: flex;
       align-items: center;
@@ -7040,7 +7040,8 @@
       { title: "Show and Tell Day", duration: "12 min live class", words: "show, tell, toy, special", sentence: "This is my special toy.", summary: "Present a favorite object in two or three sentences.", objectives: ["Introduce an object with this is.", "Add one detail about it.", "Listen and respond to a friend's show and tell."] },
     ].forEach((lesson, i) => Object.assign(COURSE_LIBRARY[1].units[0].lessons[i], lesson));
 
-    // V1.3.0 schedule: the week's 3 lessons all unlock together each Monday. There
+    // V1.3.0 schedule: the week's 3 lessons all unlock together each 7-day rolling
+    // cycle (not bound to any weekday). There
     // is no weekday-specific scheduling any more — learners pace themselves through
     // the batch. LESSON_DOWS is kept only to seed a believable "current lesson"
     // position in the demo (how far through the week's batch we pretend to be).
@@ -7952,7 +7953,7 @@
       // themselves — so the decision tree is now purely member / progress based:
       //  • Free user still on the free first lesson → start / continue it.
       //  • Free user, first lesson done → rest is gated → upgrade prompt.
-      //  • Member, all of this week's batch done → "all caught up", next batch Monday.
+      //  • Member, all of this week's batch done → "all caught up", next batch unlocks next 7-day cycle.
       //  • Member, lessons left this week → "This week's lessons".
       // V1.3.0 (Req4): no promo banner on Class home — no "🎁 Free Lesson" /
       // "Pick up your free lesson" / "📅 This Week". Just a friendly greeting that
