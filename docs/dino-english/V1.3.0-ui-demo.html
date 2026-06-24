@@ -4523,7 +4523,6 @@
     /* Capsule result page extras */
     .reward-pill.ticket { background: #fdf0d4; color: #8a5a12; }
     #screen-capsule-result .settle-card .gbtn { display: block; }
-    #capr-again { margin-top: 8px !important; }
     /* Standalone capsule machine page */
     .capsule-machine--solo { width: min(92%, 420px); margin: 0 auto; }
     .capsule-machine--solo #capd-continue { width: min(80%, 240px); }
@@ -5349,9 +5348,9 @@
       <section class="screen" id="screen-who">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
-          <span class="step-label">Step 1 of 5</span>
+          <span class="step-label">Step 1 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
           <div class="who-intro">
             <div class="dino-wrap" id="dino-who"></div>
@@ -5371,16 +5370,16 @@
       <section class="screen" id="screen-name">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-who">Back</button>
-          <span class="step-label">Step 2 of 5</span>
+          <span class="step-label">Step 2 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What should we call your child?</h1>
           <p class="hint">We'll use this name in lessons.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" value="Alex" autocomplete="name" maxlength="32" />
+          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="20" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
-            <button type="button" class="name-suggest is-selected" data-name="Alex">Alex</button>
+            <button type="button" class="name-suggest" data-name="Alex">Alex</button>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
             <button type="button" class="name-suggest" data-name="Liam">Liam</button>
             <button type="button" class="name-suggest" data-name="Noah">Noah</button>
@@ -5398,9 +5397,9 @@
       <section class="screen" id="screen-age">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-name">Back</button>
-          <span class="step-label">Step 3 of 5</span>
+          <span class="step-label">Step 3 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
           <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
@@ -5412,9 +5411,9 @@
       <section class="screen" id="screen-placement">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-pt-back">Back</button>
-          <span class="step-label">Step 4 of 5</span>
+          <span class="step-label">Step 4 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="pt-question">Quick question</h1>
           <p class="hint" id="pt-hint">Pick the one that fits best</p>
@@ -5422,25 +5421,9 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-goal">
-        <div class="top-bar">
-          <button type="button" class="btn-back" id="btn-goal-back">Back</button>
-          <span class="step-label">Step 5 of 5</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">What's your child's main learning goal right now?</h1>
-          <p class="hint">We'll use this to recommend the best first lesson for your child.</p>
-          <div class="option-list" id="goal-options"></div>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-goal-continue" disabled>Continue</button>
-        </div>
-      </section>
-
       <section class="screen" id="screen-goal-value">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
+          <button type="button" class="btn-back" data-back="screen-placement">Back</button>
           <span class="top-spacer"></span>
         </div>
         <div class="scroll-body">
@@ -5894,7 +5877,7 @@
                          swiper (zero clicks). Browsing the full catalog moves to the single
                          Learning Path entry on the right. -->
                     <div class="class-week-head">
-                      <span class="class-week-title">📅 This week's plan</span>
+                      <span class="class-week-title">This week's plan</span>
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
                     <div class="class-week-list" id="class-week-list"></div>
@@ -6261,7 +6244,7 @@
             <div class="all-courses-head-row">
               <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
               <span class="all-courses-title" id="all-courses-title">Level 2 · Unit 1</span>
-              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="View all courses"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">All courses</span><span class="acl-caret" aria-hidden="true">›</span></button>
+              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="View all lessons"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">All lessons</span><span class="acl-caret" aria-hidden="true">›</span></button>
             </div>
           </div>
           <section class="all-courses-list" id="all-courses-list"></section>
@@ -6527,7 +6510,6 @@
             </div>
             <p class="capd-hint" id="capr-hint">Get all 5 right to win a Capsule Coin 🎟️</p>
             <button class="gbtn gbtn-primary" id="capr-main">Continue</button>
-            <button class="gbtn gbtn-ghost" id="capr-again">Play another round</button>
           </div>
         </div>
       </section>
@@ -7961,7 +7943,7 @@
       // (the swiper). Per-lesson lock/unlock still lives on each week card.
       const kickerEl = $("#class-hero-kicker");
       if (kickerEl) kickerEl.hidden = true;
-      const leadTitle = name ? `Let's learn today, ${name}! 👋` : "Let's learn today! 👋";
+      const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
       renderClassWeek();
@@ -9518,12 +9500,11 @@
         if ($("#capr-main")) $("#capr-main").textContent = "Continue";
         showLandScreen("screen-capsule-result");
       }
-      $("#capr-main")?.addEventListener("click", backToPlay);
-      $("#capr-again")?.addEventListener("click", () => {
-        if (!canPlay("capsule")) { showPlayLimit("capsule"); return; }
-        notePlay("capsule");
-        startCapsuleRound();
-        showLandScreen("screen-capsule");
+      // V1.3.0: the result page keeps a single Continue that returns to the capsule
+      // game's home (intro) page; the separate "Play another round" button is removed.
+      $("#capr-main")?.addEventListener("click", () => {
+        renderCapsuleIntro();
+        showLandScreen("screen-capsule-intro");
       });
       // Capsule machine (entered only with a pending coin; the draw is mandatory).
       // capdVisit* accumulate the round + draw reward to show together AFTER the
@@ -9602,7 +9583,7 @@
       }
       // (b) "Got it!" dismisses the big reveal overlay → (c) the dedicated result
       // page: congrats + this round's quiz result + rewards won (Dino Capsule + combined
-      // XP/coins). Continue / Play-again are handled there (capr-main / capr-again).
+      // XP/coins). Its single Continue (capr-main) returns to the capsule intro page.
       $("#cpr-ok")?.addEventListener("click", () => {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
         // Only a NEW Dino Capsule carries to the result page's prize line + draw bonus; duplicates
@@ -10286,30 +10267,7 @@
       });
     }
 
-    function renderGoalOptions() {
-      const box = $("#goal-options");
-      const next = $("#btn-goal-continue");
-      if (!box) return;
-      box.innerHTML = GOALS.map((it) =>
-        `<button type="button" class="option-item${profile.goal === it.id ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
-      ).join("");
-      const syncGoalState = () => {
-        const selected = GOALS.find((g) => g.id === profile.goal);
-        profile.goalLabel = selected?.label || "";
-        if (next) next.disabled = !selected;
-      };
-      box.querySelectorAll(".option-item").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          box.querySelectorAll(".option-item").forEach((b) => b.classList.remove("is-selected"));
-          btn.classList.add("is-selected");
-          profile.goal = btn.dataset.val;
-          syncGoalState();
-        });
-      });
-      syncGoalState();
-    }
-
-    // Apply parent vs self wording to the name/age/goal question screens.
+    // Apply parent vs self wording to the name/age question screens.
     function applyVoiceWording() {
       const v = VOICE_WORDING[profile.learner] || VOICE_WORDING.child;
       const nameTitle = document.querySelector("#screen-name .title");
@@ -10324,10 +10282,6 @@
       if (ageTitle) ageTitle.textContent = v.ageTitle;
       const ageHint = document.querySelector("#screen-age .hint");
       if (ageHint) ageHint.textContent = v.ageHint;
-      const goalTitle = document.querySelector("#screen-goal .title");
-      if (goalTitle) goalTitle.textContent = v.goalTitle;
-      const goalHint = document.querySelector("#screen-goal .hint");
-      if (goalHint) goalHint.textContent = v.goalHint;
     }
 
     // ---- Placement test logic ----
@@ -10370,9 +10324,10 @@
       });
     }
 
-    // V1.3.0: the placement result page is removed. The chosen option still maps
-    // straight to a CEFR band / start level (written to the profile), then the flow
-    // continues to the goal step — no standalone "A+ result" screen.
+    // V1.3.0: the placement result page AND the goal-selection page are removed.
+    // Placement is now the LAST onboarding step: the chosen option maps straight to a
+    // CEFR band / start level (written to the profile), then the flow goes directly to
+    // the value page (or finishes post-login info collection) — no result/goal screens.
     function applyPlacementResult() {
       const choices = placementChoices();
       const choice = choices[ptAnswers[0]] || choices[0];
@@ -10382,7 +10337,9 @@
       // Record the placement level so the Learning Path can show levels BELOW it as
       // "not started" (skipped at placement), not auto-completed.
       profile.placementLevelId = result.levelId;
-      showPortraitScreen("screen-goal");
+      if (postLoginInfo) { finishPostLoginInfo(); return; }
+      fillGoalValuePage();
+      showPortraitScreen("screen-goal-value");
     }
 
     function startPlacementTest() {
@@ -10395,7 +10352,6 @@
     function initOnboarding() {
       $("#dino-who").innerHTML = DINO_CHAR;
       renderWhoOptions();
-      renderGoalOptions();
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
       // post-age "value page" has been removed).
@@ -10442,18 +10398,6 @@
         } else {
           showPortraitScreen("screen-age");
         }
-      });
-      // Goal step back: return to the placement test's last question.
-      $("#btn-goal-back")?.addEventListener("click", () => {
-        ptCurrentIdx = 0;
-        renderPlacementQuestion(ptCurrentIdx);
-        showPortraitScreen("screen-placement");
-      });
-      $("#btn-goal-continue")?.addEventListener("click", () => {
-        if (!profile.goal) return;
-        if (postLoginInfo) { finishPostLoginInfo(); return; }
-        fillGoalValuePage();
-        showPortraitScreen("screen-goal-value");
       });
       $("#btn-goal-value-continue")?.addEventListener("click", startLoadingSequence);
       $("#btn-login-back")?.addEventListener("click", () => {
