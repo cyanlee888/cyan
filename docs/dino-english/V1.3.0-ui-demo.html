@@ -2238,6 +2238,27 @@
       justify-content: flex-end;
       gap: 8px;
     }
+    /* V1.3.0: Class-home entry to re-open the trial (placement) report. The trial
+       lesson is removed from the All-lessons / Level·Unit lists but stays here. */
+    .class-trial-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: calc(100% - 8px);
+      margin: 10px 4px 0;
+      padding: 10px 13px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 13px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .class-trial-entry[hidden] { display: none; }
+    .class-trial-text { display: flex; flex-direction: column; gap: 1px; }
+    .class-trial-text b { font-size: 0.84rem; color: #fff; font-weight: 800; }
+    .class-trial-text span { font-size: 0.72rem; color: rgba(255, 255, 255, 0.82); }
+    .class-trial-cta { font-size: 0.78rem; font-weight: 800; color: #fff; white-space: nowrap; }
     .class-week-title {
       font-family: var(--display);
       font-weight: 800;
@@ -5879,6 +5900,12 @@
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
                     <div class="class-week-list" id="class-week-list"></div>
+                    <!-- V1.3.0: trial lesson lives only on Class home (removed from
+                         All-lessons / Level·Unit lists); its report stays viewable. -->
+                    <button type="button" class="class-trial-entry" id="class-trial-entry" hidden>
+                      <span class="class-trial-text"><b>Trial lesson report</b><span>See your placement result anytime</span></span>
+                      <span class="class-trial-cta">View report ›</span>
+                    </button>
                   </section>
                 </div>
               </div>
@@ -7175,10 +7202,10 @@
       }
       const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
-        return `
-          <button type="button" class="btn btn-primary" data-action="retake">Review</button>
-          <button type="button" class="course-cta-secondary" data-action="report">Report</button>
-        `;
+        // V1.3.0: completed lessons can't be retaken — no "Review" / re-enter entry.
+        // Only the learning report stays reachable (read-only); the words / sentences
+        // / objectives on the card itself remain visible for content review.
+        return `<button type="button" class="course-cta-secondary" data-action="report">View report</button>`;
       }
       if (state === "InProgress") {
         return `<button type="button" class="btn btn-primary" data-action="continue">Continue</button>`;
@@ -7249,6 +7276,34 @@
       profile.currentLevelId = levelId;
       profile.currentUnitId = unitId;
       profile.currentLessonId = lessonId;
+    }
+
+    // V1.3.0 natural progression: finishing a FORMAL lesson moves the learner's
+    // pointer forward one lesson (rolling across units). Completing the level's last
+    // lesson promotes the learner's CURRENT level — their 定级 rises to the next
+    // Level (study plan keeps scheduling there). The original placement level stays
+    // put so already-completed lower levels keep reading as Completed. This is the
+    // sequential path; the member "Level up" trial is the separate skip-ahead path.
+    function advanceAfterFormalLesson() {
+      const seq = getCurrentLevelCourseSequence();
+      const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      const idx = seq.findIndex((c) => makeCourseKey(c.levelId, c.unitId, c.lessonId) === curKey);
+      if (idx === -1) return;
+      if (idx + 1 < seq.length) {
+        const nxt = seq[idx + 1];
+        setCurrentCourse(nxt.levelId, nxt.unitId, nxt.lessonId);
+        return;
+      }
+      // Last lesson of the level done → advance 定级 to the next Level.
+      const lvOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
+      const nextLevel = COURSE_LIBRARY[lvOrder + 1];
+      if (!nextLevel) return; // already at the top Level (L6) — stay put.
+      const fromLabel = getCurrentLevel().label;
+      const u0 = nextLevel.units[0];
+      setCurrentCourse(nextLevel.id, u0.id, u0.lessons[0].id);
+      profile.level = levelCefrLabel(nextLevel.id);
+      if (typeof courseMapLevelId !== "undefined") courseMapLevelId = nextLevel.id;
+      showPayToast(`🎉 ${fromLabel} complete — you're now on ${nextLevel.label}!`);
     }
 
     function getLessonState(levelId, unitId, lessonId) {
@@ -7945,6 +8000,11 @@
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
       renderClassWeek();
+      // V1.3.0: the trial lesson is removed from the All-lessons / Level·Unit lists,
+      // but its report stays reachable from Class home. Show the entry once the
+      // trial has been completed (placement report generated).
+      const trialEntry = $("#class-trial-entry");
+      if (trialEntry) trialEntry.hidden = !profile.trialReportShown;
       renderClassTeacherVisual();
     }
     function openTeacherPicker(mode = "onboarding") {
@@ -8455,8 +8515,12 @@
     });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
-    $("#btn-lr-back")?.addEventListener("click", () => { showClassHome(); });
-    $("#btn-lr-continue")?.addEventListener("click", () => { showClassHome(); });
+    // Completing a formal lesson advances the learner one lesson (and rolls the
+    // level / 定级 forward once the level's last lesson is done) — V1.3.0 natural
+    // progression. Advancing on BOTH buttons keeps the finished lesson reading as
+    // Completed (no accidental re-entry).
+    $("#btn-lr-back")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
+    $("#btn-lr-continue")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
     // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
     // Scope toggling to each card's own segtab so the two report screens don't interfere.
     document.querySelectorAll(".tp-report .tp-segtab").forEach((tabwrap) => {
@@ -8597,6 +8661,8 @@
     //  • From Class → All Courses, Back returns to Class.
     //  • From the map's "View lessons" → All Courses, Back returns to the map.
     $("#btn-open-all-courses").addEventListener("click", () => showAllCourses(undefined, "class"));
+    // Class-home trial-report entry → re-open the trial (placement) report read-only.
+    $("#class-trial-entry")?.addEventListener("click", () => { trialReportMode = "trial"; showTrialReport(); });
     $("#btn-all-courses-back").addEventListener("click", () => {
       if (allCoursesFrom === "map") showCourseMap();
       else showClassHome();
@@ -10107,21 +10173,63 @@
     function isParentVoice() {
       return profile.learner !== "self";
     }
-    // V1.3.0: ONE non-personalized value page (no per-age / per-goal variants).
-    // It lists everything the course gives the learner, then frames the trial
-    // lesson as the way to claim a personalized study plan. Only the voice
-    // (parent "your child" vs self "you") forks the trial-lesson line.
-    const VALUE_PAGE = {
-      child: { h2: "Take the free trial lesson to unlock a study plan made just for your child." },
-      self: { h2: "Take the free trial lesson to unlock a study plan made just for you." },
+    // V1.3.0: the value page is AGE-BANDED — 4 variants keyed by the age chosen in
+    // onboarding. 13–17 and 18+ share the teen/adult variant. Voice (parent vs self)
+    // only swaps the subject pronoun in the trial line / heading.
+    const VALUE_PAGE_BY_AGE = {
+      "3–5": {
+        h2: "Take the free trial lesson to unlock a play-based plan made for {who}.",
+        bullets: [
+          "First words through songs, play and Dino friends",
+          "Short, joyful lessons built for little ones",
+          "Speak and repeat with a patient AI teacher",
+          "Stickers and rewards that build a happy habit",
+          "A simple report so you can follow along",
+        ],
+      },
+      "6–8": {
+        h2: "Take the free trial lesson to unlock a study plan made for {who}.",
+        bullets: [
+          "Speak in every lesson — the AI teacher listens and replies",
+          "Phonics, everyday words and simple conversations",
+          "A clear path: themed units, step by step",
+          "Fun games and rewards that keep learning going",
+          "A learning report after every lesson",
+        ],
+      },
+      "9–12": {
+        h2: "Take the free trial lesson to unlock a study plan made for {who}.",
+        bullets: [
+          "Speak with confidence — real conversation practice each lesson",
+          "Richer vocabulary & grammar that supports school English",
+          "A clear path: 6 levels of themed units, step by step",
+          "Words, listening & speaking practice anytime",
+          "A learning report after every lesson to track progress",
+        ],
+      },
+      // Shared by 13–17 and 18+ (teens & adults).
+      teen: {
+        h2: "Take the free trial lesson to unlock a study plan made for {who}.",
+        bullets: [
+          "Speak in every lesson — practical, real-life conversation",
+          "English for daily life, travel, school and work",
+          "A clear path: 6 levels, learn at your own pace",
+          "Words, listening & speaking practice anytime",
+          "A learning report after every lesson",
+        ],
+      },
     };
-    const VALUE_PAGE_BULLETS = [
-      "Speak in every lesson — the AI teacher listens and replies",
-      "A clear path: 6 levels of themed units, step by step",
-      "Words, listening & speaking practice anytime",
-      "Fun games and rewards that keep learning going",
-      "A learning report after every lesson",
-    ];
+    function valuePageForAge(age) {
+      if (age === "13–17" || age === "18+") return VALUE_PAGE_BY_AGE.teen;
+      return VALUE_PAGE_BY_AGE[age] || VALUE_PAGE_BY_AGE["6–8"];
+    }
+    // Subject phrase for the trial line: name if known, else voice/age pronoun.
+    function valueSubject() {
+      const nm = (typeof getDisplayName === "function") ? getDisplayName() : (profile.name || "");
+      if (nm) return nm;
+      if (!isParentVoice()) return "you";
+      return profile.age === "13–17" ? "your teen" : "your child";
+    }
     // Loading copy forks by voice (parent vs self) via isParentVoice().
     const LOADING_LINES = [
       (p) => `Hi ${p.name || "there"}—setting up your first lessons…`,
@@ -10159,15 +10267,19 @@
       });
     }
 
-    // Single, non-personalized value page: everything the course gives + a trial-to-plan CTA.
+    // Age-banded value page: content varies by the onboarding age, voice only swaps
+    // the subject pronoun (13–17 and 18+ share the teen/adult variant).
     function fillGoalValuePage() {
-      const data = isParentVoice() ? VALUE_PAGE.child : VALUE_PAGE.self;
+      const data = valuePageForAge(profile.age);
+      const who = valueSubject();
       $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || DINO_CHAR || "";
       $("#goal-value-h1").textContent = profile.name
         ? `Everything ${profile.name} gets with Dino English`
-        : (isParentVoice() ? "Everything your child gets with Dino English" : "Everything you get with Dino English");
-      $("#goal-value-h2").textContent = data.h2;
-      $("#goal-value-bullets").innerHTML = VALUE_PAGE_BULLETS.map((b) => `<li>${b}</li>`).join("");
+        : (isParentVoice()
+            ? (profile.age === "13–17" ? "Everything your teen gets with Dino English" : "Everything your child gets with Dino English")
+            : "Everything you get with Dino English");
+      $("#goal-value-h2").textContent = data.h2.replace("{who}", who);
+      $("#goal-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
     }
 
     function fillLogin() {
@@ -10420,7 +10532,7 @@
     // Annual is the default selection (top, highlighted) and shows a discount
     // badge; benefits are identical across tiers — only the billing cycle differs.
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Save 50%", hero: true },
+      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Best value", hero: true },
       { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly" },
       { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly" },
     ];
@@ -10796,6 +10908,17 @@
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
       { label: "课程列表",    run: function () { enterLandscape(); showAllCourses(undefined, "class"); } },
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
+      { label: "完成当前 Level", run: function () {
+          // Demo Req: finishing the current level promotes the learner's 定级 to the
+          // next Level. Jump the pointer to this level's last lesson, then run the
+          // natural-progression roll (shows the toast + advances current level).
+          var lv = getCurrentLevel();
+          var lastUnit = lv.units[lv.units.length - 1];
+          setCurrentCourse(lv.id, lastUnit.id, lastUnit.lessons[lastUnit.lessons.length - 1].id);
+          advanceAfterFormalLesson();
+          enterLandscape();
+          if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
+        } },
       { label: "学习计划",    run: function () { showStudyPlan(); } },
       { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
       { label: "正价课报告",  run: function () { showLessonReport(); } },
