@@ -2235,7 +2235,7 @@
     .class-week-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 8px;
     }
     .class-week-title {
@@ -5379,7 +5379,6 @@
           <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="20" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
-            <button type="button" class="name-suggest" data-name="Alex">Alex</button>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
             <button type="button" class="name-suggest" data-name="Liam">Liam</button>
             <button type="button" class="name-suggest" data-name="Noah">Noah</button>
@@ -5877,7 +5876,6 @@
                          swiper (zero clicks). Browsing the full catalog moves to the single
                          Learning Path entry on the right. -->
                     <div class="class-week-head">
-                      <span class="class-week-title">This week's plan</span>
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
                     <div class="class-week-list" id="class-week-list"></div>
@@ -6257,7 +6255,7 @@
           <div class="course-map-head">
             <button type="button" class="btn-back-land" id="btn-course-map-back">Back</button>
             <span class="course-map-title">Learning Path</span>
-            <span class="course-map-here" id="course-map-here">You are here: Level 2 · Unit 1 · Lesson 1</span>
+            <span class="course-map-here" id="course-map-here">You are here: Level 2 · Unit 1</span>
           </div>
           <div class="course-map-body">
             <div class="course-map-levels" id="course-map-levels" role="tablist" aria-label="Levels"></div>
@@ -8024,7 +8022,7 @@
     function renderCourseMap() {
       const cur = getCurrentCourse();
       const hereEl = $("#course-map-here");
-      if (hereEl) hereEl.textContent = `You are here: ${cur.levelLabel} · ${cur.unitLabel} · ${cur.lessonLabel}`;
+      if (hereEl) hereEl.textContent = `You are here: ${cur.levelLabel} · ${cur.unitLabel}`;
       const levelsBox = $("#course-map-levels");
       if (!levelsBox) return;
       levelsBox.innerHTML = COURSE_LIBRARY.map((level, li) => {
