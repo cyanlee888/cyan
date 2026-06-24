@@ -2238,27 +2238,12 @@
       justify-content: flex-end;
       gap: 8px;
     }
-    /* V1.3.0: Class-home entry to re-open the trial (placement) report. The trial
-       lesson is removed from the All-lessons / Level·Unit lists but stays here. */
-    .class-trial-entry {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      width: calc(100% - 8px);
-      margin: 10px 4px 0;
-      padding: 10px 13px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-radius: 13px;
-      cursor: pointer;
-      text-align: left;
+    /* V1.3.0: the completed trial lesson shows on Class home as a normal lesson card
+       (same chrome as a week card) badged "Trial lesson" with a distinct accent. */
+    .course-card-thumb-badge--trial {
+      background: #ffb020;
+      color: #4a2c00;
     }
-    .class-trial-entry[hidden] { display: none; }
-    .class-trial-text { display: flex; flex-direction: column; gap: 1px; }
-    .class-trial-text b { font-size: 0.84rem; color: #fff; font-weight: 800; }
-    .class-trial-text span { font-size: 0.72rem; color: rgba(255, 255, 255, 0.82); }
-    .class-trial-cta { font-size: 0.78rem; font-weight: 800; color: #fff; white-space: nowrap; }
     .class-week-title {
       font-family: var(--display);
       font-weight: 800;
@@ -5899,13 +5884,12 @@
                     <div class="class-week-head">
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
+                    <!-- V1.3.0: the trial lesson (lesson0) is removed from the
+                         All-lessons / Level·Unit lists, but on Class home it shows as a
+                         normal lesson-style card badged "Trial lesson" (prepended to the
+                         week swiper by renderClassWeek). Completed + no retake → the card
+                         only opens its report. -->
                     <div class="class-week-list" id="class-week-list"></div>
-                    <!-- V1.3.0: trial lesson lives only on Class home (removed from
-                         All-lessons / Level·Unit lists); its report stays viewable. -->
-                    <button type="button" class="class-trial-entry" id="class-trial-entry" hidden>
-                      <span class="class-trial-text"><b>Trial lesson report</b><span>See your placement result anytime</span></span>
-                      <span class="class-trial-cta">View report ›</span>
-                    </button>
                   </section>
                 </div>
               </div>
@@ -7933,6 +7917,38 @@
     // to see the plan. Each card carries the same lesson detail/CTA as the old hero;
     // free users still get Lesson 1 open and the rest gated (Unlock CTA on the card).
     // Browsing the whole catalog moves to the single Learning Path entry (the map).
+    // V1.3.0 (req): the trial lesson (lesson0) appears on Class home as a lesson-style
+    // card — same chrome as a week lesson card — badged "Trial lesson". It's removed
+    // from the All-lessons / Level·Unit lists and can't be retaken, so the card's only
+    // action opens its report (read-only). Shown once the trial has been completed.
+    function renderClassTrialCard() {
+      const trial = buildCourse(profile.placementLevelId, "unit-1", "lesson-1");
+      const dur = formatCourseDuration(trial.duration);
+      return `
+        <article class="course-bridge-card class-home-course-card class-week-card is-trial" data-trial="1">
+          <div class="class-home-course-scroll">
+            <div class="course-card-top">
+              <div class="course-card-topcopy">
+                <span class="course-card-stage">Trial lesson</span>
+                <h3 class="course-card-title">${trial.unitTheme}</h3>
+                <div class="course-card-meta-row">
+                  <span class="all-courses-card-status">Completed</span>
+                  <span class="all-courses-card-duration">${dur}</span>
+                </div>
+              </div>
+              <div class="course-card-thumb" aria-hidden="true">
+                <span class="course-card-thumb-badge course-card-thumb-badge--trial">Trial lesson</span>
+                <img src="assets/dino-mascot.png" alt="" decoding="async" />
+              </div>
+            </div>
+            <div class="course-card-lines course-content-preview">${renderCourseContentPreview(trial)}</div>
+            <div class="course-card-scroll-inner">${renderCourseObjectivesBlock(trial)}</div>
+          </div>
+          <div class="course-card-actions class-home-actions">
+            <div class="course-card-cta-wrap"><button type="button" class="course-cta-secondary" data-action="trial-report">View report</button></div>
+          </div>
+        </article>`;
+    }
     function renderClassWeek() {
       const list = $("#class-week-list");
       if (!list) return;
@@ -7940,7 +7956,8 @@
       const batchStart = currentBatchStartIndex();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
       const weekCourses = Array.from({ length: WEEK_LESSONS }, (_, i) => sequence[batchStart + i]).filter(Boolean);
-      list.innerHTML = weekCourses.map((course, i) => {
+      const trialCardHtml = profile.trialReportShown ? renderClassTrialCard() : "";
+      list.innerHTML = trialCardHtml + weekCourses.map((course, i) => {
         const isCurrent = makeCourseKey(course.levelId, course.unitId, course.lessonId) === curKey;
         return `
           <article class="course-bridge-card class-home-course-card class-week-card${isCurrent ? " is-current" : ""}" data-level-id="${course.levelId}" data-unit-id="${course.unitId}" data-lesson-id="${course.lessonId}">
@@ -7965,6 +7982,15 @@
           </article>`;
       }).join("");
       list.querySelectorAll(".class-week-card").forEach((card) => {
+        if (card.dataset.trial) {
+          // Trial card: report-only (completed, no retake) — not a real course node.
+          card.querySelector("[data-action='trial-report']")?.addEventListener("click", (event) => {
+            event.stopPropagation();
+            trialReportMode = "trial";
+            showTrialReport();
+          });
+          return;
+        }
         const course = buildCourse(card.dataset.levelId, card.dataset.unitId, card.dataset.lessonId);
         bindCourseCardActions(card.querySelector(".course-card-cta-wrap"), course, "class-week");
       });
@@ -7999,12 +8025,9 @@
       const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
+      // renderClassWeek also prepends the completed trial lesson as a "Trial lesson"
+      // card (removed from the All-lessons / Level·Unit lists, report stays viewable).
       renderClassWeek();
-      // V1.3.0: the trial lesson is removed from the All-lessons / Level·Unit lists,
-      // but its report stays reachable from Class home. Show the entry once the
-      // trial has been completed (placement report generated).
-      const trialEntry = $("#class-trial-entry");
-      if (trialEntry) trialEntry.hidden = !profile.trialReportShown;
       renderClassTeacherVisual();
     }
     function openTeacherPicker(mode = "onboarding") {
@@ -8662,7 +8685,6 @@
     //  • From the map's "View lessons" → All Courses, Back returns to the map.
     $("#btn-open-all-courses").addEventListener("click", () => showAllCourses(undefined, "class"));
     // Class-home trial-report entry → re-open the trial (placement) report read-only.
-    $("#class-trial-entry")?.addEventListener("click", () => { trialReportMode = "trial"; showTrialReport(); });
     $("#btn-all-courses-back").addEventListener("click", () => {
       if (allCoursesFrom === "map") showCourseMap();
       else showClassHome();
