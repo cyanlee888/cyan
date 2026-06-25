@@ -2235,8 +2235,14 @@
     .class-week-head {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-end;
       gap: 8px;
+    }
+    /* V1.3.0: the completed trial lesson shows on Class home as a normal lesson card
+       (same chrome as a week card) badged "Trial lesson" with a distinct accent. */
+    .course-card-thumb-badge--trial {
+      background: #ffb020;
+      color: #4a2c00;
     }
     .class-week-title {
       font-family: var(--display);
@@ -4523,7 +4529,6 @@
     /* Capsule result page extras */
     .reward-pill.ticket { background: #fdf0d4; color: #8a5a12; }
     #screen-capsule-result .settle-card .gbtn { display: block; }
-    #capr-again { margin-top: 8px !important; }
     /* Standalone capsule machine page */
     .capsule-machine--solo { width: min(92%, 420px); margin: 0 auto; }
     .capsule-machine--solo #capd-continue { width: min(80%, 240px); }
@@ -5158,7 +5163,7 @@
     .sp-ladder::before { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 3px; transform: translateY(-50%); border-radius: 3px; background: rgba(255,255,255,0.14); z-index: 0; }
     .sp-rung { position: relative; z-index: 1; flex: 1; min-width: 0; background: #213a55; border: 1px solid rgba(255,255,255,0.14); border-radius: 11px; padding: 7px 2px; display: flex; flex-direction: column; align-items: center; gap: 1px; }
     .sp-rung b { font-size: 0.62rem; font-weight: 800; color: rgba(255,255,255,0.9); }
-    .sp-rung span { font-size: 0.55rem; font-weight: 800; color: rgba(255,255,255,0.55); }
+    .sp-rung span { font-size: 0.54rem; font-weight: 800; color: rgba(255,255,255,0.55); white-space: nowrap; }
     .sp-rung.is-done { background: linear-gradient(180deg, rgba(123,214,160,0.28), rgba(123,214,160,0.16)); border-color: rgba(123,214,160,0.5); }
     .sp-rung.is-done span { color: #9be3b8; }
     .sp-rung.is-current { background: linear-gradient(180deg, #fff0cf, #ffe2a4); border-color: #ffd98a; box-shadow: 0 6px 16px rgba(255,201,97,0.32); transform: translateY(-2px); }
@@ -5203,6 +5208,11 @@
     .sp-hero-goal b { color: #bff0d2; }
     /* Hero journey chart: current level → (months) → goal */
     .sp-hero-cap { font-family: var(--display); font-size: 1rem; font-weight: 800; color: #fff; line-height: 1.15; }
+    /* Page main title ({name}'s English Journey) + CEFR-aligned current → goal cards */
+    .sp-page-title { flex-shrink: 0; margin: 0; font-family: var(--display); font-size: 1.25rem; font-weight: 800; color: #fff; line-height: 1.18; }
+    .sp-cefr-title { font-size: 0.72rem; font-weight: 800; color: rgba(255,255,255,0.86); text-align: center; }
+    .sp-jnode-goal { font-size: 0.66rem; font-weight: 700; color: #eaf6ef; line-height: 1.3; }
+    .sp-jnode--goal .sp-jnode-goal { color: #d6f4e2; }
     .sp-journey { display: flex; align-items: stretch; gap: 8px; }
     .sp-jnode { flex: 1; min-width: 0; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 10px 8px; text-align: center; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
     .sp-jnode--goal { background: rgba(123,214,160,0.18); border-color: rgba(123,214,160,0.45); }
@@ -5349,9 +5359,9 @@
       <section class="screen" id="screen-who">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-welcome">Back</button>
-          <span class="step-label">Step 1 of 5</span>
+          <span class="step-label">Step 1 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
           <div class="who-intro">
             <div class="dino-wrap" id="dino-who"></div>
@@ -5371,16 +5381,15 @@
       <section class="screen" id="screen-name">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-who">Back</button>
-          <span class="step-label">Step 2 of 5</span>
+          <span class="step-label">Step 2 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What should we call your child?</h1>
           <p class="hint">We'll use this name in lessons.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" value="Alex" autocomplete="name" maxlength="32" />
+          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="20" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
-            <button type="button" class="name-suggest is-selected" data-name="Alex">Alex</button>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
             <button type="button" class="name-suggest" data-name="Liam">Liam</button>
             <button type="button" class="name-suggest" data-name="Noah">Noah</button>
@@ -5398,9 +5407,9 @@
       <section class="screen" id="screen-age">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-name">Back</button>
-          <span class="step-label">Step 3 of 5</span>
+          <span class="step-label">Step 3 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
           <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
@@ -5412,9 +5421,9 @@
       <section class="screen" id="screen-placement">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-pt-back">Back</button>
-          <span class="step-label">Step 4 of 5</span>
+          <span class="step-label">Step 4 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="pt-question">Quick question</h1>
           <p class="hint" id="pt-hint">Pick the one that fits best</p>
@@ -5422,25 +5431,9 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-goal">
-        <div class="top-bar">
-          <button type="button" class="btn-back" id="btn-goal-back">Back</button>
-          <span class="step-label">Step 5 of 5</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-        <div class="scroll-body">
-          <h1 class="title">What's your child's main learning goal right now?</h1>
-          <p class="hint">We'll use this to recommend the best first lesson for your child.</p>
-          <div class="option-list" id="goal-options"></div>
-        </div>
-        <div class="foot-actions">
-          <button type="button" class="btn btn-primary" id="btn-goal-continue" disabled>Continue</button>
-        </div>
-      </section>
-
       <section class="screen" id="screen-goal-value">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal">Back</button>
+          <button type="button" class="btn-back" data-back="screen-placement">Back</button>
           <span class="top-spacer"></span>
         </div>
         <div class="scroll-body">
@@ -5548,23 +5541,24 @@
           <div class="study-plan-head">
             <button type="button" class="btn-back-land" id="btn-study-plan-back">Back</button>
           </div>
-          <!-- Plan hero · who + start level + one goal line -->
+          <!-- Page main title · {name}'s English Journey -->
+          <h1 class="sp-page-title" id="sp-page-title"></h1>
+          <!-- Current → Next goal cards, aligned with CEFR -->
           <div class="sp-hero" id="sp-hero"></div>
-          <!-- Value at a glance · rich content · steady rhythm · clear goal. No weekday
-               schedule — lessons unlock as a batch and learners set their own pace. -->
+          <!-- Personalized learning plan · 3 value points -->
           <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">Why it works</span><span class="sp-block-sub">Rich content · steady pace · real progress</span></div>
-            <div class="sp-value" id="sp-value" aria-label="Why this plan works"></div>
+            <div class="sp-block-head"><span class="sp-block-title">Personalized learning plan</span></div>
+            <div class="sp-value" id="sp-value" aria-label="Personalized learning plan"></div>
           </div>
-          <!-- The path ahead · 6-Level ladder + compact unit chips -->
+          <!-- The full 6-level system · level ladder (with CEFR) + unit timeline -->
           <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">The full course system</span><span class="sp-block-sub" id="sp-path-sub">6 Levels</span></div>
+            <div class="sp-block-head"><span class="sp-block-title">The full 6-level system</span></div>
             <div class="sp-ladder" id="sp-ladder" aria-label="All six levels"></div>
             <div class="sp-units sp-units--timeline" id="sp-units" aria-label="Units in this level"></div>
           </div>
           <div class="sp-foot">
-            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Unlock the full plan →</button>
-            <p class="sp-foot-note">Unlock the full path · cancel anytime</p>
+            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Start your Journey</button>
+            <p class="sp-foot-note">Personalized plan · see real progress</p>
           </div>
         </div>
       </section>
@@ -5894,9 +5888,13 @@
                          swiper (zero clicks). Browsing the full catalog moves to the single
                          Learning Path entry on the right. -->
                     <div class="class-week-head">
-                      <span class="class-week-title">📅 This week's plan</span>
                       <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
                     </div>
+                    <!-- V1.3.0: the trial lesson (lesson0) is removed from the
+                         All-lessons / Level·Unit lists, but on Class home it shows as a
+                         normal lesson-style card badged "Trial lesson" (prepended to the
+                         week swiper by renderClassWeek). Completed + no retake → the card
+                         only opens its report. -->
                     <div class="class-week-list" id="class-week-list"></div>
                   </section>
                 </div>
@@ -6261,7 +6259,7 @@
             <div class="all-courses-head-row">
               <button type="button" class="btn-back-land" id="btn-all-courses-back">Back</button>
               <span class="all-courses-title" id="all-courses-title">Level 2 · Unit 1</span>
-              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="View all courses"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">All courses</span><span class="acl-caret" aria-hidden="true">›</span></button>
+              <button type="button" class="all-courses-level" id="all-courses-level" aria-label="View all lessons"><span class="acl-ico" aria-hidden="true">📚</span><span class="acl-scope">All lessons</span><span class="acl-caret" aria-hidden="true">›</span></button>
             </div>
           </div>
           <section class="all-courses-list" id="all-courses-list"></section>
@@ -6274,7 +6272,7 @@
           <div class="course-map-head">
             <button type="button" class="btn-back-land" id="btn-course-map-back">Back</button>
             <span class="course-map-title">Learning Path</span>
-            <span class="course-map-here" id="course-map-here">You are here: Level 2 · Unit 1 · Lesson 1</span>
+            <span class="course-map-here" id="course-map-here">You are here: Level 2 · Unit 1</span>
           </div>
           <div class="course-map-body">
             <div class="course-map-levels" id="course-map-levels" role="tablist" aria-label="Levels"></div>
@@ -6527,7 +6525,6 @@
             </div>
             <p class="capd-hint" id="capr-hint">Get all 5 right to win a Capsule Coin 🎟️</p>
             <button class="gbtn gbtn-primary" id="capr-main">Continue</button>
-            <button class="gbtn gbtn-ghost" id="capr-again">Play another round</button>
           </div>
         </div>
       </section>
@@ -7195,10 +7192,10 @@
       }
       const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
-        return `
-          <button type="button" class="btn btn-primary" data-action="retake">Review</button>
-          <button type="button" class="course-cta-secondary" data-action="report">Report</button>
-        `;
+        // V1.3.0: completed lessons can't be retaken — no "Review" / re-enter entry.
+        // Only the learning report stays reachable (read-only); the words / sentences
+        // / objectives on the card itself remain visible for content review.
+        return `<button type="button" class="course-cta-secondary" data-action="report">View report</button>`;
       }
       if (state === "InProgress") {
         return `<button type="button" class="btn btn-primary" data-action="continue">Continue</button>`;
@@ -7269,6 +7266,34 @@
       profile.currentLevelId = levelId;
       profile.currentUnitId = unitId;
       profile.currentLessonId = lessonId;
+    }
+
+    // V1.3.0 natural progression: finishing a FORMAL lesson moves the learner's
+    // pointer forward one lesson (rolling across units). Completing the level's last
+    // lesson promotes the learner's CURRENT level — their 定级 rises to the next
+    // Level (study plan keeps scheduling there). The original placement level stays
+    // put so already-completed lower levels keep reading as Completed. This is the
+    // sequential path; the member "Level up" trial is the separate skip-ahead path.
+    function advanceAfterFormalLesson() {
+      const seq = getCurrentLevelCourseSequence();
+      const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      const idx = seq.findIndex((c) => makeCourseKey(c.levelId, c.unitId, c.lessonId) === curKey);
+      if (idx === -1) return;
+      if (idx + 1 < seq.length) {
+        const nxt = seq[idx + 1];
+        setCurrentCourse(nxt.levelId, nxt.unitId, nxt.lessonId);
+        return;
+      }
+      // Last lesson of the level done → advance 定级 to the next Level.
+      const lvOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
+      const nextLevel = COURSE_LIBRARY[lvOrder + 1];
+      if (!nextLevel) return; // already at the top Level (L6) — stay put.
+      const fromLabel = getCurrentLevel().label;
+      const u0 = nextLevel.units[0];
+      setCurrentCourse(nextLevel.id, u0.id, u0.lessons[0].id);
+      profile.level = levelCefrLabel(nextLevel.id);
+      if (typeof courseMapLevelId !== "undefined") courseMapLevelId = nextLevel.id;
+      showPayToast(`🎉 ${fromLabel} complete — you're now on ${nextLevel.label}!`);
     }
 
     function getLessonState(levelId, unitId, lessonId) {
@@ -7898,6 +7923,38 @@
     // to see the plan. Each card carries the same lesson detail/CTA as the old hero;
     // free users still get Lesson 1 open and the rest gated (Unlock CTA on the card).
     // Browsing the whole catalog moves to the single Learning Path entry (the map).
+    // V1.3.0 (req): the trial lesson (lesson0) appears on Class home as a lesson-style
+    // card — same chrome as a week lesson card — badged "Trial lesson". It's removed
+    // from the All-lessons / Level·Unit lists and can't be retaken, so the card's only
+    // action opens its report (read-only). Shown once the trial has been completed.
+    function renderClassTrialCard() {
+      const trial = buildCourse(profile.placementLevelId, "unit-1", "lesson-1");
+      const dur = formatCourseDuration(trial.duration);
+      return `
+        <article class="course-bridge-card class-home-course-card class-week-card is-trial" data-trial="1">
+          <div class="class-home-course-scroll">
+            <div class="course-card-top">
+              <div class="course-card-topcopy">
+                <span class="course-card-stage">Trial lesson</span>
+                <h3 class="course-card-title">${trial.unitTheme}</h3>
+                <div class="course-card-meta-row">
+                  <span class="all-courses-card-status">Completed</span>
+                  <span class="all-courses-card-duration">${dur}</span>
+                </div>
+              </div>
+              <div class="course-card-thumb" aria-hidden="true">
+                <span class="course-card-thumb-badge course-card-thumb-badge--trial">Trial lesson</span>
+                <img src="assets/dino-mascot.png" alt="" decoding="async" />
+              </div>
+            </div>
+            <div class="course-card-lines course-content-preview">${renderCourseContentPreview(trial)}</div>
+            <div class="course-card-scroll-inner">${renderCourseObjectivesBlock(trial)}</div>
+          </div>
+          <div class="course-card-actions class-home-actions">
+            <div class="course-card-cta-wrap"><button type="button" class="course-cta-secondary" data-action="trial-report">View report</button></div>
+          </div>
+        </article>`;
+    }
     function renderClassWeek() {
       const list = $("#class-week-list");
       if (!list) return;
@@ -7905,7 +7962,8 @@
       const batchStart = currentBatchStartIndex();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
       const weekCourses = Array.from({ length: WEEK_LESSONS }, (_, i) => sequence[batchStart + i]).filter(Boolean);
-      list.innerHTML = weekCourses.map((course, i) => {
+      const trialCardHtml = profile.trialReportShown ? renderClassTrialCard() : "";
+      list.innerHTML = trialCardHtml + weekCourses.map((course, i) => {
         const isCurrent = makeCourseKey(course.levelId, course.unitId, course.lessonId) === curKey;
         return `
           <article class="course-bridge-card class-home-course-card class-week-card${isCurrent ? " is-current" : ""}" data-level-id="${course.levelId}" data-unit-id="${course.unitId}" data-lesson-id="${course.lessonId}">
@@ -7930,6 +7988,15 @@
           </article>`;
       }).join("");
       list.querySelectorAll(".class-week-card").forEach((card) => {
+        if (card.dataset.trial) {
+          // Trial card: report-only (completed, no retake) — not a real course node.
+          card.querySelector("[data-action='trial-report']")?.addEventListener("click", (event) => {
+            event.stopPropagation();
+            trialReportMode = "trial";
+            showTrialReport();
+          });
+          return;
+        }
         const course = buildCourse(card.dataset.levelId, card.dataset.unitId, card.dataset.lessonId);
         bindCourseCardActions(card.querySelector(".course-card-cta-wrap"), course, "class-week");
       });
@@ -7961,9 +8028,11 @@
       // (the swiper). Per-lesson lock/unlock still lives on each week card.
       const kickerEl = $("#class-hero-kicker");
       if (kickerEl) kickerEl.hidden = true;
-      const leadTitle = name ? `Let's learn today, ${name}! 👋` : "Let's learn today! 👋";
+      const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
+      // renderClassWeek also prepends the completed trial lesson as a "Trial lesson"
+      // card (removed from the All-lessons / Level·Unit lists, report stays viewable).
       renderClassWeek();
       renderClassTeacherVisual();
     }
@@ -8042,7 +8111,7 @@
     function renderCourseMap() {
       const cur = getCurrentCourse();
       const hereEl = $("#course-map-here");
-      if (hereEl) hereEl.textContent = `You are here: ${cur.levelLabel} · ${cur.unitLabel} · ${cur.lessonLabel}`;
+      if (hereEl) hereEl.textContent = `You are here: ${cur.levelLabel} · ${cur.unitLabel}`;
       const levelsBox = $("#course-map-levels");
       if (!levelsBox) return;
       levelsBox.innerHTML = COURSE_LIBRARY.map((level, li) => {
@@ -8475,8 +8544,12 @@
     });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
-    $("#btn-lr-back")?.addEventListener("click", () => { showClassHome(); });
-    $("#btn-lr-continue")?.addEventListener("click", () => { showClassHome(); });
+    // Completing a formal lesson advances the learner one lesson (and rolls the
+    // level / 定级 forward once the level's last lesson is done) — V1.3.0 natural
+    // progression. Advancing on BOTH buttons keeps the finished lesson reading as
+    // Completed (no accidental re-entry).
+    $("#btn-lr-back")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
+    $("#btn-lr-continue")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
     // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
     // Scope toggling to each card's own segtab so the two report screens don't interfere.
     document.querySelectorAll(".tp-report .tp-segtab").forEach((tabwrap) => {
@@ -8506,30 +8579,41 @@
       daily_communication: "Everyday & travel",
       listening_habit: "A steady habit",
     };
+    // Study-plan ladder mappings (by level order): CEFR band + the ability goal that
+    // each Level sets. Used by both the hero cards and the 6-level system.
+    const SP_LEVEL_CEFR = ["Pre-A1", "A1", "A1+", "A2", "A2+", "B1"];
+    const SP_LEVEL_GOAL = [
+      "Understands English and starts learning",
+      "Speaks with confidence",
+      "Speaks in complete sentences and shares ideas",
+      "Understands texts and writes simple sentences",
+      "Reads extensively and develops writing skills",
+      "Develops academic English skills",
+    ];
     function renderStudyPlanScreen() {
-      const name = getDisplayName() || (isParentVoice() ? "your child" : "you");
+      const dn = getDisplayName();
+      const subjectPoss = dn ? `${dn}'s` : (isParentVoice() ? (profile.age === "13–17" ? "your teen's" : "your child's") : "your");
       const level = getCurrentLevel();
-      const curLi = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
-      const cefr = profile.level || "A2";
-      // Curriculum counts (CURRENT level only) — drive both the hero chart and cards.
+      const curLi = Math.max(0, COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId));
+      // CURRENT level's CEFR + the ability goal it sets (the next milestone).
+      const cefr = SP_LEVEL_CEFR[curLi] || "A2";
+      const goalText = SP_LEVEL_GOAL[curLi] || SP_LEVEL_GOAL[1];
+      // Curriculum counts (CURRENT level): 12 units · 144 lessons.
       const unitsPerLevel = level.units.length;
-      const lessonsPerUnit = level.units[0].lessons.length;
-      const lessonsThisLevel = unitsPerLevel * lessonsPerUnit;
-      const weeksToLevel = Math.ceil(lessonsThisLevel / STUDY_LESSONS_PER_WEEK);
-      // 4 weeks ≈ 1 month → a clean whole-number, ~1-year milestone (no tilde).
-      const monthsToLevel = Math.max(1, Math.round(weeksToLevel / 4));
-      // Hero goal = the learner's onboarding goal phrase only — no level on the Goal
-      // node (this is what avoids the top-level L6 "no next level" edge case). The
-      // milestone is framed as finishing the CURRENT level, valid at every level incl. L6.
-      const goalText = GOAL_SHORT[profile.goal] || profile.goalLabel || "Speak with confidence";
-      // ---- Plan hero · a simple chart: where they are NOW → their GOAL ----
+      const lessonsThisLevel = unitsPerLevel * level.units[0].lessons.length;
+      // Level reached in ~12 months = the next level (capped at the top L6).
+      const targetLevelNum = Math.min(curLi + 2, COURSE_LIBRARY.length);
+      // ---- Page main title ----
+      const pageTitle = $("#sp-page-title");
+      if (pageTitle) pageTitle.textContent = `${subjectPoss} English Journey`;
+      // ---- Current → Next goal cards (aligned with CEFR) ----
       const hero = $("#sp-hero");
       if (hero) {
         hero.innerHTML =
-          `<div class="sp-hero-cap">${name}'s English journey</div>` +
+          `<div class="sp-cefr-title">Aligned with CEFR international standards</div>` +
           `<div class="sp-journey">` +
             `<div class="sp-jnode sp-jnode--now">` +
-              `<div class="sp-jnode-tag">Now</div>` +
+              `<div class="sp-jnode-tag">Current</div>` +
               `<div class="sp-jnode-lvl">${level.label}</div>` +
               `<div class="sp-jnode-cefr">CEFR ${cefr}</div>` +
             `</div>` +
@@ -8537,18 +8621,18 @@
               `<div class="sp-jlink-line"><span class="sp-jlink-dino">🦕</span></div>` +
             `</div>` +
             `<div class="sp-jnode sp-jnode--goal">` +
-              `<div class="sp-jnode-tag">Goal</div>` +
-              `<div class="sp-jnode-lvl">${goalText}</div>` +
+              `<div class="sp-jnode-tag">Next goal</div>` +
+              `<div class="sp-jnode-goal">${goalText}</div>` +
             `</div>` +
           `</div>`;
       }
-      // ---- Value at a glance · short, punchy proof of value (no weekday schedule) ----
+      // ---- Personalized learning plan · 3 value points ----
       const valueBox = $("#sp-value");
       if (valueBox) {
         const cards = [
-          { ico: "📚", title: `${unitsPerLevel} themed units · ${lessonsThisLevel} lessons`, sub: `Live AI-teacher classes — speak, role-play &amp; get instant feedback.` },
-          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Scientifically paced — one new theme at a time.` },
-          { ico: "🎯", title: `${monthsToLevel} months to finish ${level.label}`, sub: `A clear finish line, not an endless list.`, goal: true },
+          { ico: "📚", title: `${unitsPerLevel} units · ${lessonsThisLevel} lessons`, sub: `Multiple lesson types tailored to each level: Vocabulary · Sentences · Reading · Phonics · Writing · Grammar · Review` },
+          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Short lessons weekly. Steady progress ahead.` },
+          { ico: "🎯", title: `Level ${targetLevelNum} in 12 months`, sub: `A clear goal. Easy to track.`, goal: true },
         ];
         valueBox.innerHTML = cards.map((v) => `
           <div class="sp-value-card${v.goal ? " is-goal" : ""}">
@@ -8559,7 +8643,10 @@
             </div>
           </div>`).join("");
       }
-      // ---- The full course system · level ladder + compact unit timeline ----
+      // ---- Bottom CTA personalized with the learner's name ----
+      const startBtn = $("#btn-study-plan-start");
+      if (startBtn) startBtn.textContent = `Start ${subjectPoss} Journey`;
+      // ---- The full 6-level system · level ladder + compact unit timeline ----
       renderStudyPlanJourney();
     }
     // Path ahead: panorama 6-Level ladder + the current Level's units as compact,
@@ -8567,19 +8654,16 @@
     // closed with the level's growth endpoint. Lighter than the old quest map.
     function renderStudyPlanJourney() {
       const level = getCurrentLevel();
-      // 6-Level arc: a connected track of level pills (no status words — the marks
-      // and color carry the state). Placement-aware via getLevelStatus.
+      // 6-Level arc: a connected track of level pills showing each Level + its CEFR band
+      // (status carried by color / placement). Placement-aware via getLevelStatus.
       const ladder = $("#sp-ladder");
       if (ladder) {
         ladder.innerHTML = COURSE_LIBRARY.map((lv, i) => {
           const status = getLevelStatus(lv.id);
           const st = status === "done" ? "is-done" : status === "current" ? "is-current" : "";
-          const mark = status === "done" ? "✓" : status === "current" ? "★" : (i + 1);
-          return `<div class="sp-rung ${st}"><b>L${i + 1}</b><span>${mark}</span></div>`;
+          return `<div class="sp-rung ${st}"><b>L${i + 1}</b><span>${SP_LEVEL_CEFR[i] || ""}</span></div>`;
         }).join("");
       }
-      const pathSub = $("#sp-path-sub");
-      if (pathSub) pathSub.textContent = `${COURSE_LIBRARY.length} Levels · ${level.units.length} themed units in ${level.label}`;
       // Current level's units as a connected vertical timeline — numbered dots on a
       // rail, current highlighted, finished checked. No status labels (Req: cleaner,
       // shows the full unit system as one continuous path).
@@ -8617,6 +8701,7 @@
     //  • From Class → All Courses, Back returns to Class.
     //  • From the map's "View lessons" → All Courses, Back returns to the map.
     $("#btn-open-all-courses").addEventListener("click", () => showAllCourses(undefined, "class"));
+    // Class-home trial-report entry → re-open the trial (placement) report read-only.
     $("#btn-all-courses-back").addEventListener("click", () => {
       if (allCoursesFrom === "map") showCourseMap();
       else showClassHome();
@@ -9518,12 +9603,11 @@
         if ($("#capr-main")) $("#capr-main").textContent = "Continue";
         showLandScreen("screen-capsule-result");
       }
-      $("#capr-main")?.addEventListener("click", backToPlay);
-      $("#capr-again")?.addEventListener("click", () => {
-        if (!canPlay("capsule")) { showPlayLimit("capsule"); return; }
-        notePlay("capsule");
-        startCapsuleRound();
-        showLandScreen("screen-capsule");
+      // V1.3.0: the result page keeps a single Continue that returns to the capsule
+      // game's home (intro) page; the separate "Play another round" button is removed.
+      $("#capr-main")?.addEventListener("click", () => {
+        renderCapsuleIntro();
+        showLandScreen("screen-capsule-intro");
       });
       // Capsule machine (entered only with a pending coin; the draw is mandatory).
       // capdVisit* accumulate the round + draw reward to show together AFTER the
@@ -9602,7 +9686,7 @@
       }
       // (b) "Got it!" dismisses the big reveal overlay → (c) the dedicated result
       // page: congrats + this round's quiz result + rewards won (Dino Capsule + combined
-      // XP/coins). Continue / Play-again are handled there (capr-main / capr-again).
+      // XP/coins). Its single Continue (capr-main) returns to the capsule intro page.
       $("#cpr-ok")?.addEventListener("click", () => {
         $("#cap-pet-reveal")?.setAttribute("hidden", "");
         // Only a NEW Dino Capsule carries to the result page's prize line + draw bonus; duplicates
@@ -10128,21 +10212,63 @@
     function isParentVoice() {
       return profile.learner !== "self";
     }
-    // V1.3.0: ONE non-personalized value page (no per-age / per-goal variants).
-    // It lists everything the course gives the learner, then frames the trial
-    // lesson as the way to claim a personalized study plan. Only the voice
-    // (parent "your child" vs self "you") forks the trial-lesson line.
-    const VALUE_PAGE = {
-      child: { h2: "Take the free trial lesson to unlock a study plan made just for your child." },
-      self: { h2: "Take the free trial lesson to unlock a study plan made just for you." },
+    // V1.3.0: the value page is AGE-BANDED — 4 variants keyed by the age chosen in
+    // onboarding. 13–17 and 18+ share the teen/adult variant. Voice (parent vs self)
+    // only swaps the subject pronoun in the trial line / heading.
+    const VALUE_PAGE_BY_AGE = {
+      "3–5": {
+        sub: "Language Awakening",
+        bullets: [
+          "Songs, chants & animated stories",
+          "Pressure-free vocabulary play",
+          "Games & daily rewards",
+          "Picture books & visual storytelling",
+          "AI companion at child's own pace",
+        ],
+      },
+      "6–8": {
+        sub: "Literacy Launch",
+        bullets: [
+          "Full sentences & active expression",
+          "Phonics, sight words & sentence building",
+          "Leveled readers & daily reading habits",
+          "Classroom-ready listening skills",
+          "Interactive routine-building lessons",
+        ],
+      },
+      "9–12": {
+        sub: "Independent Literacy",
+        bullets: [
+          "Fluent speaking: opinions & logic",
+          "Long-text reading: articles & non-fiction",
+          "Structured paragraph writing",
+          "Critical thinking in English",
+          "CEFR A2→B1 milestone tracking",
+        ],
+      },
+      // Shared by 13–17 and 18+ (teens & adults).
+      teen: {
+        sub: "Academic & Beyond",
+        bullets: [
+          "Academic reading: essays & reports",
+          "Formal & structured writing style",
+          "IELTS / TOEFL / Cambridge prep (B2→C2)",
+          "Advanced debate & presentation skills",
+          "Goal-driven milestone reports",
+        ],
+      },
     };
-    const VALUE_PAGE_BULLETS = [
-      "Speak in every lesson — the AI teacher listens and replies",
-      "A clear path: 6 levels of themed units, step by step",
-      "Words, listening & speaking practice anytime",
-      "Fun games and rewards that keep learning going",
-      "A learning report after every lesson",
-    ];
+    function valuePageForAge(age) {
+      if (age === "13–17" || age === "18+") return VALUE_PAGE_BY_AGE.teen;
+      return VALUE_PAGE_BY_AGE[age] || VALUE_PAGE_BY_AGE["6–8"];
+    }
+    // Subject phrase for the trial line: name if known, else voice/age pronoun.
+    function valueSubject() {
+      const nm = (typeof getDisplayName === "function") ? getDisplayName() : (profile.name || "");
+      if (nm) return nm;
+      if (!isParentVoice()) return "you";
+      return profile.age === "13–17" ? "your teen" : "your child";
+    }
     // Loading copy forks by voice (parent vs self) via isParentVoice().
     const LOADING_LINES = [
       (p) => `Hi ${p.name || "there"}—setting up your first lessons…`,
@@ -10180,15 +10306,16 @@
       });
     }
 
-    // Single, non-personalized value page: everything the course gives + a trial-to-plan CTA.
+    // Age-banded value page: content varies by the onboarding age, voice only swaps
+    // the subject pronoun (13–17 and 18+ share the teen/adult variant).
     function fillGoalValuePage() {
-      const data = isParentVoice() ? VALUE_PAGE.child : VALUE_PAGE.self;
+      const data = valuePageForAge(profile.age);
       $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || DINO_CHAR || "";
-      $("#goal-value-h1").textContent = profile.name
-        ? `Everything ${profile.name} gets with Dino English`
-        : (isParentVoice() ? "Everything your child gets with Dino English" : "Everything you get with Dino English");
-      $("#goal-value-h2").textContent = data.h2;
-      $("#goal-value-bullets").innerHTML = VALUE_PAGE_BULLETS.map((b) => `<li>${b}</li>`).join("");
+      // Title: "English that grows with {name}" — name if known, else voice/age pronoun.
+      $("#goal-value-h1").textContent = `English that grows with ${valueSubject()}`;
+      // Sub: age-band tagline (Language Awakening / Literacy Launch / …).
+      $("#goal-value-h2").textContent = data.sub;
+      $("#goal-value-bullets").innerHTML = data.bullets.map((b) => `<li>${b}</li>`).join("");
     }
 
     function fillLogin() {
@@ -10286,30 +10413,7 @@
       });
     }
 
-    function renderGoalOptions() {
-      const box = $("#goal-options");
-      const next = $("#btn-goal-continue");
-      if (!box) return;
-      box.innerHTML = GOALS.map((it) =>
-        `<button type="button" class="option-item${profile.goal === it.id ? " is-selected" : ""}" data-val="${it.id}">${it.label}</button>`
-      ).join("");
-      const syncGoalState = () => {
-        const selected = GOALS.find((g) => g.id === profile.goal);
-        profile.goalLabel = selected?.label || "";
-        if (next) next.disabled = !selected;
-      };
-      box.querySelectorAll(".option-item").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          box.querySelectorAll(".option-item").forEach((b) => b.classList.remove("is-selected"));
-          btn.classList.add("is-selected");
-          profile.goal = btn.dataset.val;
-          syncGoalState();
-        });
-      });
-      syncGoalState();
-    }
-
-    // Apply parent vs self wording to the name/age/goal question screens.
+    // Apply parent vs self wording to the name/age question screens.
     function applyVoiceWording() {
       const v = VOICE_WORDING[profile.learner] || VOICE_WORDING.child;
       const nameTitle = document.querySelector("#screen-name .title");
@@ -10324,10 +10428,6 @@
       if (ageTitle) ageTitle.textContent = v.ageTitle;
       const ageHint = document.querySelector("#screen-age .hint");
       if (ageHint) ageHint.textContent = v.ageHint;
-      const goalTitle = document.querySelector("#screen-goal .title");
-      if (goalTitle) goalTitle.textContent = v.goalTitle;
-      const goalHint = document.querySelector("#screen-goal .hint");
-      if (goalHint) goalHint.textContent = v.goalHint;
     }
 
     // ---- Placement test logic ----
@@ -10370,9 +10470,10 @@
       });
     }
 
-    // V1.3.0: the placement result page is removed. The chosen option still maps
-    // straight to a CEFR band / start level (written to the profile), then the flow
-    // continues to the goal step — no standalone "A+ result" screen.
+    // V1.3.0: the placement result page AND the goal-selection page are removed.
+    // Placement is now the LAST onboarding step: the chosen option maps straight to a
+    // CEFR band / start level (written to the profile), then the flow goes directly to
+    // the value page (or finishes post-login info collection) — no result/goal screens.
     function applyPlacementResult() {
       const choices = placementChoices();
       const choice = choices[ptAnswers[0]] || choices[0];
@@ -10382,7 +10483,9 @@
       // Record the placement level so the Learning Path can show levels BELOW it as
       // "not started" (skipped at placement), not auto-completed.
       profile.placementLevelId = result.levelId;
-      showPortraitScreen("screen-goal");
+      if (postLoginInfo) { finishPostLoginInfo(); return; }
+      fillGoalValuePage();
+      showPortraitScreen("screen-goal-value");
     }
 
     function startPlacementTest() {
@@ -10395,7 +10498,6 @@
     function initOnboarding() {
       $("#dino-who").innerHTML = DINO_CHAR;
       renderWhoOptions();
-      renderGoalOptions();
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
       // post-age "value page" has been removed).
@@ -10443,18 +10545,6 @@
           showPortraitScreen("screen-age");
         }
       });
-      // Goal step back: return to the placement test's last question.
-      $("#btn-goal-back")?.addEventListener("click", () => {
-        ptCurrentIdx = 0;
-        renderPlacementQuestion(ptCurrentIdx);
-        showPortraitScreen("screen-placement");
-      });
-      $("#btn-goal-continue")?.addEventListener("click", () => {
-        if (!profile.goal) return;
-        if (postLoginInfo) { finishPostLoginInfo(); return; }
-        fillGoalValuePage();
-        showPortraitScreen("screen-goal-value");
-      });
       $("#btn-goal-value-continue")?.addEventListener("click", startLoadingSequence);
       $("#btn-login-back")?.addEventListener("click", () => {
         if (!profile.name && !profile.age && !profile.goal && !profile.level) { showPortraitScreen("screen-welcome"); return; }
@@ -10478,7 +10568,7 @@
     // Annual is the default selection (top, highlighted) and shows a discount
     // badge; benefits are identical across tiers — only the billing cycle differs.
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Save 50%", hero: true },
+      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Best value", hero: true },
       { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly" },
       { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly" },
     ];
@@ -10854,6 +10944,17 @@
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
       { label: "课程列表",    run: function () { enterLandscape(); showAllCourses(undefined, "class"); } },
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
+      { label: "完成当前 Level", run: function () {
+          // Demo Req: finishing the current level promotes the learner's 定级 to the
+          // next Level. Jump the pointer to this level's last lesson, then run the
+          // natural-progression roll (shows the toast + advances current level).
+          var lv = getCurrentLevel();
+          var lastUnit = lv.units[lv.units.length - 1];
+          setCurrentCourse(lv.id, lastUnit.id, lastUnit.lessons[lastUnit.lessons.length - 1].id);
+          advanceAfterFormalLesson();
+          enterLandscape();
+          if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
+        } },
       { label: "学习计划",    run: function () { showStudyPlan(); } },
       { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
       { label: "正价课报告",  run: function () { showLessonReport(); } },
