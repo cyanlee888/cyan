@@ -7161,7 +7161,7 @@
 
     // One lock indicator per card — never stack two. Its HOME depends on the card:
     //  • Expanded (anchored) card has an action button → the lock lives on the button
-    //    (🔒 Premium for non-members, 🔒 Locked for members not-yet-open); meta shows status + duration only.
+    //    (Go Premium for non-members, Opens soon for members not-yet-open); meta shows status + duration only.
     //  • Compact card has no visible button → the single lock indicator lives in the meta instead.
     function renderCourseListMeta(course, isAnchored) {
       const dur = formatCourseDuration(course.duration);
@@ -7172,8 +7172,8 @@
       // (anchored all-courses cards + class-home week cards) CSS hides this duplicate so the
       // button is the SINGLE indicator; compact all-courses cards have no button → keep it.
       let lead;
-      if (locked) lead = `<span class="all-courses-card-lock">🔒 Premium</span>`;
-      else if (scheduled) lead = `<span class="all-courses-card-lock all-courses-card-lock--scheduled">🔒 Locked</span>`;
+      if (locked) lead = `<span class="all-courses-card-lock">Go Premium</span>`;
+      else if (scheduled) lead = `<span class="all-courses-card-lock all-courses-card-lock--scheduled">Opens soon</span>`;
       else lead = `<span class="all-courses-card-status ${isAnchored ? "is-selected" : ""}">${stateLabel}</span>`;
       return `
         <div class="course-card-meta-row">
@@ -7185,10 +7185,10 @@
 
     function renderCourseActionButtons(course) {
       if (isCourseLocked(course)) {
-        return `<button type="button" class="course-cta-locked" data-action="unlock">🔒 Premium</button>`;
+        return `<button type="button" class="course-cta-locked" data-action="unlock">Go Premium</button>`;
       }
       if (getUnlockState(course) === "scheduled") {
-        return `<button type="button" class="course-cta-scheduled" data-action="scheduled">🔒 Locked</button>`;
+        return `<button type="button" class="course-cta-scheduled" data-action="scheduled">Opens soon</button>`;
       }
       const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
@@ -7200,7 +7200,13 @@
       if (state === "InProgress") {
         return `<button type="button" class="btn btn-primary" data-action="continue">Continue</button>`;
       }
-      return `<button type="button" class="btn btn-primary" data-action="start">Start Class</button>`;
+      if (state === "Current") {
+        return `<button type="button" class="btn btn-primary" data-action="start">Start Class</button>`;
+      }
+      // Unlocked this week but earlier in the batch than the learner's pointer:
+      // the batch is sequential — keep the Start affordance but guard the tap with
+      // "Finish the previous lesson first" (no jumping ahead within the batch).
+      return `<button type="button" class="btn btn-primary" data-action="seq-locked">Start Class</button>`;
     }
 
     function bindCourseCardActions(container, course, source) {
@@ -7218,7 +7224,11 @@
             return;
           }
           if (action === "scheduled") {
-            showPayToast("🔒 This lesson isn't open yet — new lessons unlock every 7 days 🦕");
+            showPayToast("This lesson isn't open yet");
+            return;
+          }
+          if (action === "seq-locked") {
+            showPayToast("Finish the previous lesson first");
             return;
           }
           setCurrentCourse(course.levelId, course.unitId, course.lessonId);
@@ -8140,10 +8150,10 @@
         const pct = Math.round((done / total) * 100);
         const goal = UNIT_GOALS[ui] || unit.theme;
         const isCurrentUnit = level.id === profile.currentLevelId && unit.id === profile.currentUnitId;
-        // Current level + already-completed (lower) levels are browsable — open the
-        // unit to view / review its lessons. Higher levels stay locked until reached,
-        // EXCEPT members get a "Level up" entry on the first unit of a higher level:
-        // take that level's trial lesson and, if assessed at/above it, skip ahead.
+        // Current level + lower levels are browsable — open the unit to view its
+        // lessons. Higher levels stay locked until reached, EXCEPT the first unit of
+        // every higher level shows a "Level up" entry (free + member): take that
+        // level's trial lesson and, if assessed at/above it, skip ahead.
         // Within the CURRENT level, units past the one the learner has reached are
         // gated: free users can enter only Unit 1 (every later unit is a membership
         // lock → Paywall); members unlock units at the weekly schedule pace, so
@@ -8152,33 +8162,43 @@
         const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
         const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
         const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
+        // Level up entry sits on the FIRST unit of every higher level (not just the
+        // adjacent one), and is offered to free users too — they can take the higher
+        // trial, but adopting the new plan converts via Paywall in the report.
+        const isLevelUpEntry = lvStatus === "next" && ui === 0;
         let cta, tag;
-        if (lvStatus === "next") {
-          cta = (profile.premiumUnlocked && ui === 0)
-            ? `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">🚀 Level up</button>`
-            : `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-level>🔒 Locked</button>`;
+        if (isLevelUpEntry) {
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Level up</button>`;
+          tag = "";
+        } else if (lvStatus === "next") {
+          // Higher level, non-first unit: free → Go Premium (Paywall); member → sequential lock.
+          cta = profile.premiumUnlocked
+            ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>Locked</button>`
+            : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
           tag = "";
         } else if (premiumUnitLock) {
-          // Non-member: the lock lives on the button only (🔒 Premium → Paywall); no extra tag.
-          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>🔒 Premium</button>`;
+          // Non-member: payment gate (Go Premium → Paywall); no extra tag.
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
           tag = "";
         } else if (scheduleUnitLock) {
-          // Member, unit not yet reached by the weekly pace: single locked button (finish previous unit first).
-          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>🔒 Locked</button>`;
+          // Member, unit not yet reached by the weekly pace: sequential lock (finish previous unit first).
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>Locked</button>`;
           tag = "";
         } else {
-          cta = `<button type="button" class="cm-unit-cta" data-unit-id="${unit.id}">${lvStatus === "done" ? "Review" : "View lessons"}</button>`;
+          // Reachable unit (current level reached, or any lower level) — browse its
+          // lessons. No "Review" split: a level skipped at placement was never studied.
+          cta = `<button type="button" class="cm-unit-cta" data-unit-id="${unit.id}">View lessons</button>`;
           tag = isCurrentUnit
             ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
-        // Member level-up hint under the first unit of a higher level.
-        const levelupHint = (lvStatus === "next" && profile.premiumUnlocked && ui === 0)
-          ? `<span class="cm-unit-levelup-hint">⚡ Try the ${level.label} trial — pass it and Dino moves you up.</span>`
+        // Level-up hint under the first unit of a higher level (free + member).
+        const levelupHint = isLevelUpEntry
+          ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — pass it and Dino moves you up.</span>`
           : "";
         return `
-          <div class="cm-unit${(lvStatus === "next" && profile.premiumUnlocked && ui === 0) ? " cm-unit--levelup" : ""}">
-            <div class="cm-unit-info"><b>${unit.label} · ${unit.theme}</b><span class="cm-unit-goal">🎯 ${goal}</span><span>${total} lessons</span>${levelupHint}</div>
+          <div class="cm-unit${isLevelUpEntry ? " cm-unit--levelup" : ""}">
+            <div class="cm-unit-info"><b>${unit.label} · ${unit.theme}</b><span class="cm-unit-goal">${goal}</span><span>${total} lessons</span>${levelupHint}</div>
             ${tag}
             <div class="cm-unit-progress"><div class="cm-bar"><i style="width:${pct}%"></i></div><em>${done}/${total} done</em></div>
             ${cta}
@@ -8191,12 +8211,10 @@
           showAllCourses(makeCourseKey(level.id, unit.id, unit.lessons[0].id), "map");
         });
       });
-      unitsBox.querySelectorAll("[data-locked-level]").forEach((btn) => {
-        btn.addEventListener("click", () => showPayToast("Finish your current level first — Dino will unlock it 🦕"));
-      });
-      // Member: later units open as the weekly schedule advances — finish the one you're on first.
+      // Member: later units (current level not-yet-reached, or higher-level non-first
+      // units) open in order — finish the previous unit first.
       unitsBox.querySelectorAll("[data-locked-unit]").forEach((btn) => {
-        btn.addEventListener("click", () => showPayToast("Finish the previous unit first — Dino will unlock it 🦕"));
+        btn.addEventListener("click", () => showPayToast("Finish the previous unit first"));
       });
       // Free user: every unit past Unit 1 is a membership lock → Paywall.
       unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
@@ -8229,7 +8247,9 @@
     let trialReportMode = "trial"; // "trial" | "levelup"
     function getLevelUpVerdict() { return demoState.levelUpResult === "fail" ? "fail" : "pass"; }
     function startLevelUpTrial(targetLevelId) {
-      if (!profile.premiumUnlocked) { openPaywall(activeLandScreen() || "screen-class", "membership_entry"); return; }
+      // Both members and free users can take a higher level's trial (free = one extra
+      // trial lesson). Free users can sample it, but adopting the new plan converts
+      // via Paywall on the level-up report; members re-plan directly.
       // Remember where the learner actually is, so a fail (or back-out) restores it.
       levelUpSavedState = {
         levelId: profile.currentLevelId,
@@ -8277,12 +8297,12 @@
         refreshUnlockState();
         enterLandscape();
         showClassHome();
-        showPayToast(`Levelled up to ${targetLabel} — plan re-planned 🚀`);
+        showPayToast(`Levelled up to ${targetLabel} — plan updated`);
       } else {
         restoreLevelUpState();
         enterLandscape();
         showClassHome();
-        showPayToast("Staying at your current level — keep it up 💪");
+        showPayToast("Staying at your current level — keep it up");
       }
     }
     // ----- In-class lesson flow (teach → feedback → Practice Time → quiz) -----
@@ -8473,23 +8493,33 @@
       const assessedBadge = verdict === "pass" ? levelCefrLabel(targetId) : levelCefrLabel(curId);
       const pass = verdict === "pass";
       if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level-Up Check · ${targetLabel}`;
-      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = pass ? "Ready to level up! 🚀" : "Great effort! 💪";
+      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = pass ? "Ready to level up!" : "Great effort!";
       if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = `${targetLabel} trial lesson`;
       if ($("#tr-perf-title")) $("#tr-perf-title").textContent = `How ${name} did`;
       if ($("#tr-encourage")) $("#tr-encourage").innerHTML = pass
-        ? `“${name} handled ${targetLabel} with real confidence — ready to jump ahead! 🚀”`
-        : `“${name} gave ${targetLabel} a brave go! A little more practice and it'll be within reach. 💪”`;
+        ? `“${name} handled ${targetLabel} with real confidence — ready to jump ahead!”`
+        : `“${name} gave ${targetLabel} a brave go! A little more practice and it'll be within reach.”`;
       if ($("#tr-level")) $("#tr-level").textContent = assessedBadge;
       if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = pass
-        ? `${name}'s trial scored at <strong>${targetLabel} (${assessedBadge})</strong> — at or above the level you wanted to skip to, so the jump is on! 🎉`
+        ? `${name}'s trial scored at <strong>${targetLabel} (${assessedBadge})</strong> — at or above the level you wanted to skip to, so the jump is on!`
         : `${name}'s trial scored below <strong>${targetLabel}</strong> — staying at <strong>${curLabel}</strong> keeps progress solid and confident.`;
       if ($("#tr-level-dir")) $("#tr-level-dir").textContent = pass
-        ? `Up next: start ${targetLabel} → we'll re-plan the study plan`
+        ? `Up next: start ${targetLabel} — we'll update your study plan`
         : `Up next: keep building at ${curLabel} — try again any time`;
       if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} level-up trial went:`;
-      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = pass ? "Re-plan study plan →" : "Keep my current plan →";
+      // CTA branches by membership: a passing FREE user can't adopt the new plan
+      // without subscribing → "Get study plan" → Paywall (trigger_source=level_up);
+      // members re-plan in place ("Update my plan") or keep their level.
+      const poss = (name === "you") ? "your" : `${name}'s`;
+      if ($("#btn-trial-start")) {
+        $("#btn-trial-start").textContent = pass
+          ? (profile.premiumUnlocked ? "Update my plan" : `Get ${poss} study plan`)
+          : "Keep my current plan";
+      }
       if ($("#tr-foot-note")) $("#tr-foot-note").textContent = pass
-        ? `Re-plan around ${targetLabel} and jump to your class`
+        ? (profile.premiumUnlocked
+            ? `Update your plan around ${targetLabel} and jump to your class`
+            : `Unlock the full ${targetLabel} plan to jump ahead`)
         : `Back to your ${curLabel} plan — your streak stays safe`;
     }
     function showTrialReport() {
@@ -8528,7 +8558,17 @@
       if (sh) sh.scrollTop = 0;
     }
     // Level-up report actions (landscape #screen-levelup-report only).
-    $("#btn-trial-start")?.addEventListener("click", () => { finishLevelUp(getLevelUpVerdict()); });
+    $("#btn-trial-start")?.addEventListener("click", () => {
+      const verdict = getLevelUpVerdict();
+      // Free user who passed: can't adopt the higher plan without subscribing — keep
+      // current level and route to Paywall (trigger_source=level_up).
+      if (verdict === "pass" && !profile.premiumUnlocked) {
+        restoreLevelUpState();
+        openPaywall("screen-class", "level_up");
+        return;
+      }
+      finishLevelUp(verdict);
+    });
     $("#btn-trial-back")?.addEventListener("click", () => {
       // Backing out of a level-up check cancels it (keeps the current level) and
       // returns to the Level·Unit map it was launched from.
