@@ -8134,6 +8134,7 @@
       });
       const level = getLevelById(courseMapLevelId);
       const levelIdx = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
+      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const unitsBox = $("#course-map-units");
       const lvStatus = getLevelStatus(level.id);
       // Index of the unit the learner is currently on (only meaningful on the
@@ -8147,8 +8148,9 @@
         const isCurrentUnit = level.id === profile.currentLevelId && unit.id === profile.currentUnitId;
         // Current level + lower levels are browsable — open the unit to view its
         // lessons. Higher levels stay locked until reached, EXCEPT the first unit of
-        // every higher level shows a "Level up" entry (free + member): take that
-        // level's trial lesson and, if assessed at/above it, skip ahead.
+        // the ADJACENT next level (current + 1) shows a "Level up" entry (free +
+        // member): take that level's trial lesson and, if assessed at/above it, skip
+        // ahead. Levels two or more above (current + 2…) get NO Level up entry.
         // Within the CURRENT level, units past the one the learner has reached are
         // gated: free users can enter only Unit 1 (every later unit is a membership
         // lock → Paywall); members unlock units at the weekly schedule pace, so
@@ -8157,10 +8159,13 @@
         const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
         const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
         const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
-        // Level up entry sits on the FIRST unit of every higher level (not just the
-        // adjacent one), and is offered to free users too — they can take the higher
-        // trial, but adopting the new plan converts via Paywall in the report.
-        const isLevelUpEntry = lvStatus === "next" && ui === 0;
+        // Level up entry sits ONLY on the FIRST unit of the ADJACENT next level
+        // (current + 1). Placement only ever assesses within current ±1, so skipping
+        // more than one level at a time is impossible — higher levels (current + 2 and
+        // up) get no Level up entry and fall back to the normal lock (Go Premium /
+        // Locked). Offered to free users too: they can take the trial, but adopting the
+        // new plan converts via Paywall in the report.
+        const isLevelUpEntry = (levelIdx === curOrder + 1) && ui === 0;
         let cta, tag;
         if (isLevelUpEntry) {
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Level up</button>`;
@@ -8187,7 +8192,7 @@
             ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
-        // Level-up hint under the first unit of a higher level (free + member).
+        // Level-up hint under the first unit of the adjacent next level (free + member).
         const levelupHint = isLevelUpEntry
           ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — pass it and Dino moves you up.</span>`
           : "";
@@ -8216,7 +8221,7 @@
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
       unitsBox.querySelectorAll("[data-levelup-level]").forEach((btn) => {
-        btn.addEventListener("click", () => startLevelUpTrial(btn.dataset.levelupLevel));
+        btn.addEventListener("click", () => openLevelUpEntry(btn.dataset.levelupLevel));
       });
     }
     function showCourseMap() {
@@ -8240,7 +8245,32 @@
     let levelUpTargetLevelId = null;
     let levelUpSavedState = null;
     let trialReportMode = "trial"; // "trial" | "levelup"
+    // Target levels whose level-up trial has already been taken but NOT adopted (fail,
+    // free-not-subscribed, or backed out). The trial itself can't be retaken, so a
+    // repeat tap on its Level up entry routes straight to the existing report instead.
+    const levelUpTaken = new Set();
     function getLevelUpVerdict() { return demoState.levelUpResult === "fail" ? "fail" : "pass"; }
+    // Entry point from the map's "Level up" button: first time → take the trial;
+    // already taken (not adopted) → re-open the existing report (no retake).
+    function openLevelUpEntry(targetLevelId) {
+      if (levelUpTaken.has(targetLevelId)) { viewLevelUpReport(targetLevelId); }
+      else { startLevelUpTrial(targetLevelId); }
+    }
+    // Re-open the level-up report for an already-taken target without re-running the
+    // classroom. A passing member can still adopt ("Update my plan") from here.
+    function viewLevelUpReport(targetLevelId) {
+      levelUpSavedState = {
+        levelId: profile.currentLevelId,
+        unitId: profile.currentUnitId,
+        lessonId: profile.currentLessonId,
+        hasStartedClass: profile.hasStartedClass,
+        trialReportShown: profile.trialReportShown,
+      };
+      levelUpInProgress = true;
+      levelUpTargetLevelId = targetLevelId;
+      trialReportMode = "levelup";
+      showTrialReport();
+    }
     function startLevelUpTrial(targetLevelId) {
       // Both members and free users can take a higher level's trial (free = one extra
       // trial lesson). Free users can sample it, but adopting the new plan converts
@@ -8285,6 +8315,9 @@
         profile.currentLessonId = "lesson-1";
         profile.level = levelCefrLabel(targetId);
         profile.hasStartedClass = false;
+        // Adopted: the target is now the current level, so it's no longer a Level up
+        // entry. Drop it from the taken set (kept clean for any later re-attempts).
+        levelUpTaken.delete(targetId);
         levelUpInProgress = false;
         levelUpTargetLevelId = null;
         levelUpSavedState = null;
@@ -8520,6 +8553,9 @@
     function showTrialReport() {
       renderTrialReport();
       if (trialReportMode === "levelup") {
+        // The trial has now been taken; remember it so a repeat tap shows the report
+        // (the trial itself can't be retaken).
+        if (levelUpTargetLevelId) levelUpTaken.add(levelUpTargetLevelId);
         // Level-up check stays a LANDSCAPE takeover.
         enterLandscape();
         showLandScreen("screen-levelup-report");
