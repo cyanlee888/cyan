@@ -1187,6 +1187,19 @@
       color: #fff;
       max-width: 12ch;
     }
+    .is-program-complete .course-card-title { max-width: none; }
+    .is-program-complete .course-card-top { margin-bottom: 0; }
+    .is-program-complete .course-card-thumb { display: none; }
+    .is-program-complete .course-card-topcopy { gap: 8px; }
+    .course-card-grad-body {
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 0;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+      max-width: none;
+    }
     .course-card-thumb {
       position: relative;
       z-index: 1;
@@ -5330,6 +5343,247 @@
     .tp-report .tp-tile.tp-sky { background: #eaf3fe; }
     .tp-report .tp-tag.tp-b { color: #3f8df4; }
     .tp-report .tp-b-sky { background: #eaf3fe; }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ① hub (visual only, flow/copy unchanged)
+       Assets: assets/v13fx/*  ·  Aesthetic: 3D + glassmorphism, blue/purple sky
+       ============================================================ */
+    #screen-class .hub-app{
+      background: radial-gradient(125% 90% at 50% 2%, #cde6ff 0%, #7ec0ff 34%, #4794f2 72%, #2f7fe6 100%) !important;
+      position: relative; overflow: hidden;
+    }
+    #screen-class .hub-app::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(38% 30% at 10% 80%, rgba(96,206,140,.55), transparent 72%),
+        radial-gradient(42% 30% at 90% 82%, rgba(120,196,255,.5), transparent 72%),
+        radial-gradient(70% 42% at 50% 116%, rgba(255,255,255,.45), transparent 70%);
+    }
+    #screen-class .hub-panel{ background:transparent !important; }
+    #screen-class .hub-panels{ position:relative; z-index:1; }
+
+    /* avatar (top-left) */
+    #screen-class .hub-avatar-entry{
+      width:46px; height:46px; border-radius:50%; padding:0; overflow:hidden;
+      border:2.5px solid rgba(255,255,255,.92); box-shadow:0 6px 16px rgba(20,50,110,.28);
+      background:#dfeeff; z-index:25;
+    }
+    #screen-class .hub-avatar-entry img{ width:100%; height:100%; object-fit:cover; }
+
+    /* coin pill + coin icon */
+    #screen-class .dn-pill--coin{
+      background:rgba(255,255,255,.92) !important; color:#2a3550 !important; font-weight:800;
+      border:1px solid rgba(255,255,255,.7); box-shadow:0 6px 16px rgba(20,50,110,.22);
+    }
+    #screen-class .coin-ico{
+      width:22px; height:22px; background:url(assets/v13fx/coin.png) center/contain no-repeat !important;
+      border-radius:0 !important;
+    }
+    #screen-class .dn-pill--shop{
+      background:rgba(255,255,255,.9) !important; border:1px solid rgba(255,255,255,.7);
+      box-shadow:0 6px 16px rgba(20,50,110,.22);
+    }
+
+    /* ---------- floating glass bottom nav ---------- */
+    #screen-class .hub-app > .class-bottom-nav,
+    #screen-class .class-bottom-nav--four{
+      position:absolute !important; left:50% !important; bottom:14px !important; top:auto !important;
+      transform:translateX(-50%) !important; width:auto !important; max-width:none !important;
+      display:flex !important; grid-template-columns:none !important; gap:2px !important;
+      background:rgba(255,255,255,.32) !important; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,.55) !important; border-radius:999px !important;
+      padding:7px 9px !important; box-shadow:0 16px 36px rgba(18,42,92,.30) !important; z-index:40 !important;
+    }
+    #screen-class .class-bottom-item{
+      display:flex !important; flex-direction:column; align-items:center; gap:2px;
+      border:none; background:transparent; color:#274a86 !important; font-weight:700;
+      font-size:.6rem; letter-spacing:.01em; padding:6px 13px !important; border-radius:999px; cursor:pointer; min-width:60px;
+    }
+    #screen-class .class-bottom-item.is-active{
+      background:#fff !important; color:#2563eb !important; box-shadow:0 6px 14px rgba(30,90,210,.22);
+    }
+    #screen-class .class-bottom-icon{
+      width:34px; height:30px; background-size:contain; background-repeat:no-repeat; background-position:center; border-radius:0;
+    }
+    #screen-class .class-bottom-icon > *{ display:none !important; }
+    #screen-class [data-hub-tab="dino"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-chat.png); }
+    #screen-class [data-hub-tab="class"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-class.png); }
+    #screen-class [data-hub-tab="practice"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-explore.png); }
+    #screen-class [data-hub-tab="play"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-play.png); }
+
+    /* ---------- DINO home panel — precise Figma layout (812×375 proportional) ---------- */
+    #screen-class #hub-panel-dino{ padding:0 !important; position:absolute !important; inset:0 !important; }
+    #screen-class #hub-panel-dino .dino-night-bg{ display:none !important; }
+    /* glowing platform under Dino */
+    #screen-class #hub-panel-dino::after{
+      content:""; position:absolute; left:6%; bottom:7%; width:24%; height:46px; z-index:1; pointer-events:none;
+      background:radial-gradient(50% 50% at 50% 50%, rgba(130,225,255,.75), rgba(130,225,255,0) 72%); filter:blur(2px);
+    }
+    /* top HUD: name (left, by avatar) + coin (right) */
+    #screen-class .dino-hud--night{
+      position:absolute !important; top:18px; left:92px; right:16px; z-index:6;
+      display:flex; align-items:center; justify-content:space-between; padding:0 !important; margin:0 !important;
+    }
+    #screen-class .dino-id-name{ color:#fff !important; font-weight:800; text-shadow:0 2px 6px rgba(20,40,90,.35); }
+    #screen-class .dino-mini-entries{ display:flex; gap:8px; }
+
+    /* Dino character — left, large */
+    #screen-class .dino-night-stage{ position:absolute !important; inset:0 !important; padding:0 !important; display:block !important; }
+    #screen-class .dino-night-char{
+      position:absolute !important; left:7%; bottom:5%; width:16%; align-items:center; gap:6px; z-index:3;
+    }
+    #screen-class .dino-night-char img{
+      width:100% !important; height:auto !important; max-height:none !important;
+      filter:drop-shadow(0 16px 22px rgba(20,40,90,.34));
+    }
+    /* level badge bottom-left (Figma: hex + title + bar) */
+    #screen-class .dino-night-char .dino-name-tag,
+    #screen-class .dino-night-char .dino-id-level--char{ position:relative; z-index:4; }
+    #screen-class .dino-name-tag{ background:rgba(255,255,255,.9) !important; color:#2a3550 !important; font-weight:800; }
+    #screen-class .dino-lv-badge{
+      background:linear-gradient(135deg,#a07bff,#7c4dff) !important; color:#fff !important;
+      width:26px !important; height:26px !important; clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+      border-radius:0 !important; box-shadow:none !important;
+    }
+    #screen-class .dino-lv-bar{ width:80px !important; }
+
+    /* greeting bubble — center-upper */
+    #screen-class .dino-night-right{
+      position:absolute !important; left:32%; top:24%; width:42%; max-width:none !important;
+      align-items:center !important; justify-content:flex-start !important; gap:20px !important; z-index:5;
+    }
+    #screen-class .dino-greet-bubble{
+      background:rgba(255,255,255,.95) !important; color:#2a3550 !important; width:100%;
+      border:1px solid rgba(255,255,255,.85); border-radius:22px !important;
+      box-shadow:0 14px 30px rgba(20,50,110,.2) !important; font-weight:600;
+    }
+    #screen-class .dino-greet-bubble.dino-greet-bubble--night::after{ background:rgba(255,255,255,.95) !important; }
+
+    /* main CTA — wide orange "Chat with Dino" pill (label via CSS, copy unchanged) */
+    #screen-class .dino-mic-round{
+      width:auto !important; height:56px !important; border-radius:999px !important;
+      padding:0 26px !important; display:inline-flex !important; align-items:center; gap:12px;
+      background:linear-gradient(135deg,#ffb049,#ff7a1a) !important; color:#fff !important;
+      box-shadow:0 14px 28px rgba(255,130,30,.5) !important; border:3px solid rgba(255,255,255,.85) !important;
+    }
+    #screen-class .dino-mic-round svg{ width:24px; height:24px; }
+    #screen-class .dino-mic-round::after{ content:"Chat with Dino"; font-weight:800; font-size:1rem; white-space:nowrap; }
+
+    /* right-side stack — Store (top) + Backpack (bottom), no DOM change.
+       Shop pill positions inside .dino-hud--night (its positioned ancestor):
+       top is offset from HUD top (18px), right:0 aligns to HUD right edge (panel-16px). */
+    #screen-class .dino-mini-entries .dn-pill--shop{
+      position:absolute !important; right:0 !important; top:56px !important; left:auto !important;
+      width:120px; height:84px;
+      flex-direction:column; gap:6px; border-radius:20px !important; font-size:1.9rem !important; padding:0 !important;
+      background:rgba(255,255,255,.42) !important; border:1px solid rgba(255,255,255,.6) !important;
+      backdrop-filter:blur(10px); box-shadow:0 12px 26px rgba(20,50,110,.24) !important; color:#23406f !important; z-index:6;
+    }
+    #screen-class .dino-mini-entries .dn-pill--shop::after{ content:"Store"; font-size:.74rem; font-weight:800; }
+    #screen-class .dino-backpack-card{
+      position:absolute !important; left:auto !important; right:16px !important; top:166px !important; bottom:auto !important;
+      width:120px; height:84px; justify-content:center; border-radius:20px !important;
+      background:rgba(255,255,255,.42) !important; border:1px solid rgba(255,255,255,.6) !important;
+      backdrop-filter:blur(10px); box-shadow:0 12px 26px rgba(20,50,110,.24) !important; color:#23406f !important; z-index:6;
+    }
+    #screen-class .dino-backpack-card .dbc-ico{ font-size:1.9rem; }
+    #screen-class .dino-backpack-card .dbc-label{ font-size:.74rem; }
+
+    /* ---------- generic glass card + orange CTA inside hub ---------- */
+    #screen-class .class-week-card{
+      background:linear-gradient(160deg, rgba(120,180,255,.42), rgba(80,140,240,.30)) !important;
+      border:1px solid rgba(255,255,255,.5) !important; border-radius:24px !important;
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 18px 40px rgba(18,46,100,.26) !important; color:#fff !important;
+    }
+    #screen-class .class-week-card .course-card-title,
+    #screen-class .class-week-card .course-card-stage,
+    #screen-class .class-week-card .course-card-lines,
+    #screen-class .class-week-card .course-card-scroll-inner{ color:#fff !important; }
+    #screen-class .course-card-cta-wrap button,
+    #screen-class .class-week-card [data-action]{
+      background:linear-gradient(135deg,#ffb049,#ff7a1a) !important; color:#fff !important;
+      border:none !important; box-shadow:0 10px 22px rgba(255,130,30,.42) !important; border-radius:999px !important;
+    }
+    #screen-class .class-teacher-visual{
+      background:url(assets/v13fx/teacher.png) bottom center/contain no-repeat !important;
+    }
+    #screen-class .teacher-switch-pill,
+    #screen-class .class-allcourses-link{
+      background:rgba(255,255,255,.4) !important; border:1px solid rgba(255,255,255,.6) !important;
+      color:#23406f !important; backdrop-filter:blur(10px); border-radius:999px !important;
+    }
+    #screen-class .class-home-lead-title,
+    #screen-class .class-hero-kicker{ color:#fff !important; text-shadow:0 2px 6px rgba(20,40,90,.3); }
+
+    /* ---------- EXPLORE panel — full-bleed illustrated cards ---------- */
+    #screen-class #hub-panel-practice .explore-head,
+    #screen-class #hub-panel-play .explore-head{ text-align:center; padding-bottom:10px; }
+    #screen-class #hub-panel-practice .explore-title,
+    #screen-class #hub-panel-play .explore-title{ color:#fff !important; text-shadow:0 2px 6px rgba(20,40,90,.3); }
+    #screen-class #hub-panel-practice .explore-lead,
+    #screen-class #hub-panel-play .explore-lead{ display:none !important; }
+    #screen-class .explore-entries{
+      display:flex !important; flex-direction:row !important; gap:16px !important;
+      overflow-x:auto; padding:4px 4px 8px; align-items:stretch; justify-content:center;
+    }
+    #screen-class .explore-entry{
+      flex:0 0 200px; width:200px; height:238px; flex-direction:column !important; align-items:flex-start !important;
+      border-radius:26px !important; padding:18px 18px 16px !important; position:relative; overflow:hidden;
+      box-shadow:0 18px 38px rgba(18,46,100,.28) !important; color:#fff !important;
+    }
+    #screen-class .explore-entry .ee-emoji,
+    #screen-class .explore-entry .ee-thumbs,
+    #screen-class .explore-entry .ee-arrow{ display:none !important; }
+    #screen-class .explore-entry .ee-info{ display:flex; flex-direction:column; gap:3px; z-index:2; }
+    #screen-class .explore-entry .ee-info b{ font-size:1.16rem; font-weight:800; line-height:1.12; }
+    #screen-class .explore-entry .ee-info span{ font-size:.72rem; opacity:.92; }
+    #screen-class .explore-entry::after{
+      content:""; position:absolute; left:0; right:0; bottom:0; height:64%;
+      background-size:cover; background-repeat:no-repeat; background-position:bottom center; z-index:1;
+    }
+    #screen-class .explore-entry::before{
+      content:"›"; position:absolute; left:16px; bottom:14px; z-index:3;
+      width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.92); color:#2563eb;
+      display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:800;
+      box-shadow:0 6px 14px rgba(20,50,110,.25);
+    }
+    #screen-class .ee-story{ background:linear-gradient(160deg,#36c98f,#1f9e74) !important; }
+    #screen-class .ee-radio{ background:linear-gradient(160deg,#54a8ff,#3f7ef0) !important; }
+    #screen-class .ee-speak{ background:linear-gradient(160deg,#ffb14d,#ff7a1a) !important; }
+    #screen-class .ee-story::after{ background-image:url(assets/v13fx/ex-words.png); }
+    #screen-class .ee-radio::after{ background-image:url(assets/v13fx/ex-listening.png); }
+    #screen-class .ee-speak::after{ background-image:url(assets/v13fx/dino.png); background-size:auto 150px; background-position:bottom right; }
+
+    /* ---------- PLAY panel — full-bleed battle cards ---------- */
+    #screen-class .play-grid{
+      display:flex !important; flex-direction:row !important; gap:16px !important;
+      grid-template-columns:none !important; overflow-x:auto; padding:4px 4px 8px; align-items:stretch; justify-content:center;
+    }
+    #screen-class .play-card{
+      flex:0 0 224px; width:224px; height:204px; position:relative; overflow:hidden;
+      border-radius:26px !important; padding:0 !important; border:1px solid rgba(255,255,255,.32) !important;
+      box-shadow:0 18px 38px rgba(18,46,100,.30) !important; color:#fff !important;
+      display:flex !important; flex-direction:column; justify-content:flex-end;
+      background-size:cover, cover !important; background-position:center, center !important; background-repeat:no-repeat !important;
+    }
+    #screen-class .play-card .pc-emoji{ display:none !important; }
+    #screen-class .pc-word{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-word.png) !important; }
+    #screen-class .pc-capsule{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-blind.png) !important; }
+    #screen-class .pc-speak{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-speak.png) !important; }
+    #screen-class .play-card .pc-title{ position:relative; z-index:2; font-size:1.18rem; font-weight:800; padding:0 16px; }
+    #screen-class .play-card .pc-desc{ position:relative; z-index:2; font-size:.74rem; opacity:.92; padding:2px 56px 16px 16px; }
+    #screen-class .play-card::after{
+      content:"›"; position:absolute; right:14px; bottom:14px; z-index:3;
+      width:36px; height:36px; border-radius:50%; background:#fff; color:#5b53ff;
+      display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:800;
+      box-shadow:0 6px 14px rgba(20,30,90,.3);
+    }
+    #screen-class .play-card .pc-limit{
+      position:absolute; top:12px; right:12px; left:auto; z-index:3; display:inline-block !important;
+      background:rgba(20,24,60,.62); color:#fff; border:1px solid rgba(255,255,255,.35);
+      padding:3px 10px; border-radius:999px; font-size:.6rem; font-weight:700;
+    }
   </style>
 </head>
 <body>
@@ -5977,7 +6231,7 @@
               <!-- Stage: Dino on the grass + greeting bubble + central voice button -->
               <div class="dino-night-stage">
                 <div class="dino-night-char">
-                  <img src="assets/dino-mascot.png" alt="Dino" id="dino-tab-img" decoding="async" />
+                  <img src="assets/v13fx/dino.png" alt="Dino" id="dino-tab-img" decoding="async" />
                   <div class="dino-name-tag dino-name-tag--night" id="dino-tab-tag">Dino · Hatchling</div>
                   <!-- Dino level + XP progress, shown together under the Dino character -->
                   <span class="dino-id-level dino-id-level--char">
@@ -6883,9 +7137,11 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", programComplete: false };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "pass", capsuleOutcome: "random" };
+    // levelChange = the Level up trial placement outcome (V1.3.0: assessed within
+    // current±1, applied directly): up (+1) / same / down (-1).
+    const demoState = { levelChange: "up", capsuleOutcome: "random" };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -7292,7 +7548,14 @@
       // Last lesson of the level done → advance 定级 to the next Level.
       const lvOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const nextLevel = COURSE_LIBRARY[lvOrder + 1];
-      if (!nextLevel) return; // already at the top Level (L6) — stay put.
+      if (!nextLevel) {
+        // Finished the last lesson of the top Level (L6 · Unit 12 · Lesson 12) — the
+        // whole 6-level program is complete. Flip the terminal "结业 / Program complete"
+        // state: Class home swaps the weekly cards for the completion card. (Members
+        // only — free users are Paywall-gated long before the finish line.)
+        profile.programComplete = true;
+        return;
+      }
       const fromLabel = getCurrentLevel().label;
       const u0 = nextLevel.units[0];
       setCurrentCourse(nextLevel.id, u0.id, u0.lessons[0].id);
@@ -7960,9 +8223,42 @@
           </div>
         </article>`;
     }
+    // Terminal "结业 / Program complete" state: the learner finished L6 · Unit 12 ·
+    // Lesson 12 (the last formal lesson) — no higher level, nothing more to schedule.
+    function isProgramComplete() { return !!profile.programComplete; }
+    // V1.2.0-style "title + body + single button" completion card (no week cards).
+    // Single CTA → Explore (carries the old Practice "keep building vocabulary" intent);
+    // no level/continue copy since L6 is the cap.
+    function renderProgramCompleteCard() {
+      return `
+        <article class="course-bridge-card class-home-course-card class-week-card is-program-complete" data-program-complete="1">
+          <div class="class-home-course-scroll">
+            <div class="course-card-top">
+              <div class="course-card-topcopy">
+                <span class="course-card-stage">Program complete</span>
+                <h3 class="course-card-title">You've completed the entire program!</h3>
+                <p class="course-card-grad-body">You've finished all 6 levels and every lesson. Head to Explore to keep building vocabulary, listening, and speaking.</p>
+              </div>
+              <div class="course-card-thumb" aria-hidden="true">
+                <span class="course-card-thumb-badge">🎓</span>
+                <img src="assets/dino-mascot.png" alt="" decoding="async" />
+              </div>
+            </div>
+          </div>
+          <div class="course-card-actions class-home-actions">
+            <div class="course-card-cta-wrap"><button type="button" class="btn btn-primary" data-action="program-explore">Go to Explore</button></div>
+          </div>
+        </article>`;
+    }
     function renderClassWeek() {
       const list = $("#class-week-list");
       if (!list) return;
+      if (isProgramComplete()) {
+        // Hide the weekly cards; show only the milestone completion card.
+        list.innerHTML = renderProgramCompleteCard();
+        list.querySelector("[data-action='program-explore']")?.addEventListener("click", () => { setHubTab("practice"); });
+        return;
+      }
       const sequence = getCurrentLevelCourseSequence();
       const batchStart = currentBatchStartIndex();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
@@ -8033,7 +8329,12 @@
       // (the swiper). Per-lesson lock/unlock still lives on each week card.
       const kickerEl = $("#class-hero-kicker");
       if (kickerEl) kickerEl.hidden = true;
-      const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
+      // At program completion there's nothing more to browse — hide the "More lessons" link.
+      const moreLessonsBtn = $("#btn-open-all-courses");
+      if (moreLessonsBtn) moreLessonsBtn.style.display = isProgramComplete() ? "none" : "";
+      const leadTitle = isProgramComplete()
+        ? (name ? `Congratulations, ${name}!` : "Congratulations!")
+        : (name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week");
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
       // renderClassWeek also prepends the completed trial lesson as a "Trial lesson"
@@ -8134,12 +8435,12 @@
       });
       const level = getLevelById(courseMapLevelId);
       const levelIdx = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
-      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const unitsBox = $("#course-map-units");
       const lvStatus = getLevelStatus(level.id);
       // Index of the unit the learner is currently on (only meaningful on the
       // current level; used to gate later units by the weekly schedule pace).
       const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
+      const curLevelOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       unitsBox.innerHTML = level.units.map((unit, ui) => {
         const total = unit.lessons.length;
         const done = getUnitDoneCount(level.id, unit);
@@ -8148,9 +8449,8 @@
         const isCurrentUnit = level.id === profile.currentLevelId && unit.id === profile.currentUnitId;
         // Current level + lower levels are browsable — open the unit to view its
         // lessons. Higher levels stay locked until reached, EXCEPT the first unit of
-        // the ADJACENT next level (current + 1) shows a "Level up" entry (free +
-        // member): take that level's trial lesson and, if assessed at/above it, skip
-        // ahead. Levels two or more above (current + 2…) get NO Level up entry.
+        // the ADJACENT next level (current+1) shows a "Level up" entry (free + member):
+        // take that trial lesson and the placement (current±1) is applied directly.
         // Within the CURRENT level, units past the one the learner has reached are
         // gated: free users can enter only Unit 1 (every later unit is a membership
         // lock → Paywall); members unlock units at the weekly schedule pace, so
@@ -8159,13 +8459,11 @@
         const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
         const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
         const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
-        // Level up entry sits ONLY on the FIRST unit of the ADJACENT next level
-        // (current + 1). Placement only ever assesses within current ±1, so skipping
-        // more than one level at a time is impossible — higher levels (current + 2 and
-        // up) get no Level up entry and fall back to the normal lock (Go Premium /
-        // Locked). Offered to free users too: they can take the trial, but adopting the
-        // new plan converts via Paywall in the report.
-        const isLevelUpEntry = (levelIdx === curOrder + 1) && ui === 0;
+        // Level up entry sits ONLY on the FIRST unit of the adjacent next level
+        // (current+1) — placement is bounded to current±1, so jumping ≥2 levels can
+        // never qualify. current+2 and above fall back to a plain lock (member Locked
+        // / free Go Premium). Offered to free users too (they convert via Paywall).
+        const isLevelUpEntry = lvStatus === "next" && levelIdx === curLevelOrder + 1 && ui === 0;
         let cta, tag;
         if (isLevelUpEntry) {
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Level up</button>`;
@@ -8192,9 +8490,9 @@
             ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
-        // Level-up hint under the first unit of the adjacent next level (free + member).
+        // Level-up hint under the first unit of a higher level (free + member).
         const levelupHint = isLevelUpEntry
-          ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — pass it and Dino moves you up.</span>`
+          ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — your result sets your level.</span>`
           : "";
         return `
           <div class="cm-unit${isLevelUpEntry ? " cm-unit--levelup" : ""}">
@@ -8221,7 +8519,7 @@
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
       unitsBox.querySelectorAll("[data-levelup-level]").forEach((btn) => {
-        btn.addEventListener("click", () => openLevelUpEntry(btn.dataset.levelupLevel));
+        btn.addEventListener("click", () => startLevelUpTrial(btn.dataset.levelupLevel));
       });
     }
     function showCourseMap() {
@@ -8236,40 +8534,32 @@
     // to All Courses (the unit lesson list), not straight to Class home.
     $("#btn-course-map-back")?.addEventListener("click", () => showAllCourses(selectedAllCourseKey, "class"));
 
-    // ----- Member level-up (向上跳级) -----
-    // From the Level·Unit map a member can take a higher level's trial lesson. The
-    // trial report then shows a placement verdict: pass (assessed ≥ target) → re-plan
-    // the study plan and jump to that level; fail (assessed < target) → keep the
-    // current level. The pass/fail outcome is demo-driven via demoState.levelUpResult.
+    // ----- Level up (向上跳级) -----
+    // From the Level·Unit map the learner can take the ADJACENT next level's
+    // (current+1) trial lesson. The trial produces a real placement within current±1
+    // (max ±1) that is applied DIRECTLY — no pass/fail gate, no "keep my plan" branch:
+    //   up   → re-plan at current+1
+    //   same → plan unchanged (current)
+    //   down → re-plan at current-1 (downgrade allowed, floored at L1)
+    // Members re-plan in place (single CTA "Update my plan" → Class); free users get
+    // the same data-layer placement but convert via Paywall (trigger_source=level_up).
+    // The outcome is demo-driven via demoState.levelChange.
     let levelUpInProgress = false;
     let levelUpTargetLevelId = null;
     let levelUpSavedState = null;
     let trialReportMode = "trial"; // "trial" | "levelup"
-    // Target levels whose level-up trial has already been taken but NOT adopted (fail,
-    // free-not-subscribed, or backed out). The trial itself can't be retaken, so a
-    // repeat tap on its Level up entry routes straight to the existing report instead.
-    const levelUpTaken = new Set();
-    function getLevelUpVerdict() { return demoState.levelUpResult === "fail" ? "fail" : "pass"; }
-    // Entry point from the map's "Level up" button: first time → take the trial;
-    // already taken (not adopted) → re-open the existing report (no retake).
-    function openLevelUpEntry(targetLevelId) {
-      if (levelUpTaken.has(targetLevelId)) { viewLevelUpReport(targetLevelId); }
-      else { startLevelUpTrial(targetLevelId); }
+    function getLevelChange() {
+      const v = demoState.levelChange;
+      return (v === "same" || v === "down") ? v : "up";
     }
-    // Re-open the level-up report for an already-taken target without re-running the
-    // classroom. A passing member can still adopt ("Update my plan") from here.
-    function viewLevelUpReport(targetLevelId) {
-      levelUpSavedState = {
-        levelId: profile.currentLevelId,
-        unitId: profile.currentUnitId,
-        lessonId: profile.currentLessonId,
-        hasStartedClass: profile.hasStartedClass,
-        trialReportShown: profile.trialReportShown,
-      };
-      levelUpInProgress = true;
-      levelUpTargetLevelId = targetLevelId;
-      trialReportMode = "levelup";
-      showTrialReport();
+    // Resolve the placement outcome to a concrete level id, bounded to current±1 and
+    // clamped to the L1–L6 range (so "down" at L1 or "up" at L6 collapses to "same").
+    function levelUpResolvedId(change) {
+      const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
+      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === curId);
+      if (change === "up")   return COURSE_LIBRARY[Math.min(curOrder + 1, COURSE_LIBRARY.length - 1)].id;
+      if (change === "down") return COURSE_LIBRARY[Math.max(curOrder - 1, 0)].id;
+      return curId;
     }
     function startLevelUpTrial(targetLevelId) {
       // Both members and free users can take a higher level's trial (free = one extra
@@ -8303,35 +8593,43 @@
       levelUpSavedState = null;
       trialReportMode = "trial";
     }
-    function finishLevelUp(verdict) {
-      if (verdict === "pass") {
-        const targetId = levelUpTargetLevelId;
-        const targetLabel = levelLabelOf(targetId);
-        // Promote: the target level becomes the current level (start at Unit 1 · Lesson 1).
+    function finishLevelUp(change) {
+      const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
+      const newId = levelUpResolvedId(change);
+      const newLabel = levelLabelOf(newId);
+      const wasFree = !profile.premiumUnlocked;
+      if (newId !== curId) {
+        // Re-plan: the assessed level becomes the current level (start at Unit 1 · Lesson 1).
         // placementLevelId stays put, so levels below the original placement remain
-        // "not started" while the skipped-over middle levels read as completed.
-        profile.currentLevelId = targetId;
+        // "not started" while skipped middle levels read as completed.
+        profile.currentLevelId = newId;
         profile.currentUnitId = "unit-1";
         profile.currentLessonId = "lesson-1";
-        profile.level = levelCefrLabel(targetId);
+        profile.level = levelCefrLabel(newId);
         profile.hasStartedClass = false;
-        // Adopted: the target is now the current level, so it's no longer a Level up
-        // entry. Drop it from the taken set (kept clean for any later re-attempts).
-        levelUpTaken.delete(targetId);
-        levelUpInProgress = false;
-        levelUpTargetLevelId = null;
-        levelUpSavedState = null;
-        trialReportMode = "trial";
-        refreshUnlockState();
-        enterLandscape();
-        showClassHome();
-        showPayToast(`Levelled up to ${targetLabel} — plan updated`);
-      } else {
-        restoreLevelUpState();
-        enterLandscape();
-        showClassHome();
-        showPayToast("Staying at your current level — keep it up");
+        if (typeof courseMapLevelId !== "undefined") courseMapLevelId = newId;
+      } else if (levelUpSavedState) {
+        // Same level: plan unchanged — restore the saved position.
+        profile.currentLevelId = levelUpSavedState.levelId;
+        profile.currentUnitId = levelUpSavedState.unitId;
+        profile.currentLessonId = levelUpSavedState.lessonId;
+        profile.hasStartedClass = levelUpSavedState.hasStartedClass;
+        profile.trialReportShown = levelUpSavedState.trialReportShown;
       }
+      levelUpInProgress = false;
+      levelUpTargetLevelId = null;
+      levelUpSavedState = null;
+      trialReportMode = "trial";
+      refreshUnlockState();
+      enterLandscape();
+      // Free users: the placement/re-plan happens at the data layer, but accessing
+      // the plan still converts via Paywall (trigger_source=level_up).
+      if (wasFree) { openPaywall("screen-class", "level_up"); return; }
+      showClassHome();
+      const toast = change === "up"   ? `Levelled up to ${newLabel} — plan updated`
+                  : change === "down" ? `Placed at ${newLabel} — plan updated`
+                  :                      `Staying at ${newLabel} — keep it up`;
+      showPayToast(toast);
     }
     // ----- In-class lesson flow (teach → feedback → Practice Time → quiz) -----
     let inclassIsFirst = false;
@@ -8510,52 +8808,50 @@
         if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
       }
     }
-    // Level-up trial report: same layout, but the level recommendation reflects the
-    // pass/fail verdict and the CTA either re-plans (jump ahead) or keeps the level.
+    // Level-up trial report: same layout, but the recommendation reflects the placement
+    // outcome (up / same / down) and a SINGLE CTA applies it directly (no keep-plan branch).
     function renderLevelUpReport(name) {
-      const verdict = getLevelUpVerdict();
-      const targetId = levelUpTargetLevelId;
+      const change = getLevelChange();
+      const targetId = levelUpTargetLevelId; // the trial level taken (= current+1)
       const targetLabel = levelLabelOf(targetId);
       const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
-      const curLabel = levelLabelOf(curId);
-      const assessedBadge = verdict === "pass" ? levelCefrLabel(targetId) : levelCefrLabel(curId);
-      const pass = verdict === "pass";
-      if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level-Up Check · ${targetLabel}`;
-      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = pass ? "Ready to level up!" : "Great effort!";
+      const newId = levelUpResolvedId(change);
+      const newLabel = levelLabelOf(newId);
+      const assessedBadge = levelCefrLabel(newId);
+      const up = change === "up", down = change === "down";
+      if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level Check · ${targetLabel}`;
+      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = up ? "Ready to level up!" : down ? "Here's your best fit" : "Great effort!";
       if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = `${targetLabel} trial lesson`;
       if ($("#tr-perf-title")) $("#tr-perf-title").textContent = `How ${name} did`;
-      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = pass
+      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = up
         ? `“${name} handled ${targetLabel} with real confidence — ready to jump ahead!”`
-        : `“${name} gave ${targetLabel} a brave go! A little more practice and it'll be within reach.”`;
+        : down
+          ? `“${name} gave it a brave go! Starting at ${newLabel} keeps every class feeling just right.”`
+          : `“${name} is right on track — ${newLabel} is the perfect fit to keep building.”`;
       if ($("#tr-level")) $("#tr-level").textContent = assessedBadge;
-      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = pass
-        ? `${name}'s trial scored at <strong>${targetLabel} (${assessedBadge})</strong> — at or above the level you wanted to skip to, so the jump is on!`
-        : `${name}'s trial scored below <strong>${targetLabel}</strong> — staying at <strong>${curLabel}</strong> keeps progress solid and confident.`;
-      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = pass
-        ? `Up next: start ${targetLabel} — we'll update your study plan`
-        : `Up next: keep building at ${curLabel} — try again any time`;
-      if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} level-up trial went:`;
-      // CTA branches by membership: a passing FREE user can't adopt the new plan
-      // without subscribing → "Get study plan" → Paywall (trigger_source=level_up);
-      // members re-plan in place ("Update my plan") or keep their level.
-      const poss = (name === "you") ? "your" : `${name}'s`;
+      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = up
+        ? `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — the jump is on, and the plan updates to match.`
+        : down
+          ? `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — we'll re-plan there so progress stays solid and confident.`
+          : `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — your current plan already fits.`;
+      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = up
+        ? `Up next: start ${newLabel} — we'll update your study plan`
+        : down
+          ? `Up next: start ${newLabel} — your plan is updated to match`
+          : `Up next: keep building at ${newLabel}`;
+      if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} trial went:`;
+      // Single CTA — the assessed level is applied directly. Members re-plan in place
+      // ("Update my plan"); free users convert via Paywall (trigger_source=level_up).
       if ($("#btn-trial-start")) {
-        $("#btn-trial-start").textContent = pass
-          ? (profile.premiumUnlocked ? "Update my plan" : `Get ${poss} study plan`)
-          : "Keep my current plan";
+        $("#btn-trial-start").textContent = profile.premiumUnlocked ? "Update my plan" : "Get my study plan";
       }
-      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = pass
-        ? (profile.premiumUnlocked
-            ? `Update your plan around ${targetLabel} and jump to your class`
-            : `Unlock the full ${targetLabel} plan to jump ahead`)
-        : `Back to your ${curLabel} plan — your streak stays safe`;
+      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = profile.premiumUnlocked
+        ? `Update your plan around ${newLabel} and jump to your class`
+        : `Unlock your ${newLabel} plan to keep learning`;
     }
     function showTrialReport() {
       renderTrialReport();
       if (trialReportMode === "levelup") {
-        // The trial has now been taken; remember it so a repeat tap shows the report
-        // (the trial itself can't be retaken).
-        if (levelUpTargetLevelId) levelUpTaken.add(levelUpTargetLevelId);
         // Level-up check stays a LANDSCAPE takeover.
         enterLandscape();
         showLandScreen("screen-levelup-report");
@@ -8588,17 +8884,11 @@
       const sh = $("#lr-scroll");
       if (sh) sh.scrollTop = 0;
     }
-    // Level-up report actions (landscape #screen-levelup-report only).
+    // Level-up report action (landscape #screen-levelup-report only). The assessed
+    // placement (up / same / down) is applied directly; finishLevelUp routes members
+    // to Class and free users to Paywall (trigger_source=level_up).
     $("#btn-trial-start")?.addEventListener("click", () => {
-      const verdict = getLevelUpVerdict();
-      // Free user who passed: can't adopt the higher plan without subscribing — keep
-      // current level and route to Paywall (trigger_source=level_up).
-      if (verdict === "pass" && !profile.premiumUnlocked) {
-        restoreLevelUpState();
-        openPaywall("screen-class", "level_up");
-        return;
-      }
-      finishLevelUp(verdict);
+      finishLevelUp(getLevelChange());
     });
     $("#btn-trial-back")?.addEventListener("click", () => {
       // Backing out of a level-up check cancels it (keeps the current level) and
@@ -10951,8 +11241,9 @@
     getValue: function (key) {
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
-      if (key === "levelUpResult") return demoState.levelUpResult;
+      if (key === "levelChange") return demoState.levelChange;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
+      if (key === "programComplete") return profile.programComplete ? "on" : "off";
       return null;
     },
     context: function () {
@@ -10960,13 +11251,13 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id === "screen-levelup-report") return { label: "跳级定级报告", keys: ["levelUpResult"] };
+        if (id === "screen-levelup-report") return { label: "跳级定级报告", keys: ["levelChange"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
-        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
+        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelChange"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-paywall")     return { label: "Paywall",         keys: ["membership"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
-        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
+        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel", "programComplete"] };
         return { label: "App 内", keys: ["membership"] };
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -10999,11 +11290,17 @@
           if (activeLandScreen() === "screen-course-map") renderCourseMap();
           if (document.querySelector("#screen-study-plan")?.classList.contains("active")) renderStudyPlanScreen();
         } },
-      { key: "levelUpResult", label: "跳级体验课定级结果",
-        options: [["pass", "达标·可跳级"], ["fail", "未达标·留级"]],
+      { key: "levelChange", label: "Level up 定级结果（按结果落位）",
+        options: [["up", "升一级 current+1"], ["same", "持平 current"], ["down", "降一级 current-1"]],
         apply: function (v) {
-          demoState.levelUpResult = v;
+          demoState.levelChange = v;
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
+        } },
+      { key: "programComplete", label: "全部课程学完态（结业 / 仅会员）",
+        options: [["off", "学习中"], ["on", "结业完成"]],
+        apply: function (v) {
+          profile.programComplete = (v === "on");
+          if (activeLandScreen() === "screen-class") fillClassTab();
         } },
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
