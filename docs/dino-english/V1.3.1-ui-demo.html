@@ -9670,14 +9670,17 @@
         xp: 360,
         coins: 888,
         equipped: { pet: "none", skin: "skin-classic" },
-        // V1.3.1 (Req5): seeded figures span 3 IPs (Dino / Mama / Baby) and 2 series
-        // (Dessert / Zodiac) so the Backpack IP-tab → series grouping is visible.
+        // V1.3.1 (Req5): seeded figures span all 5 IPs (Dino family — Dino / Emma / Bob /
+        // Hena / Bruce) and 3 series (Dessert / Zodiac / Festival) so the Backpack
+        // IP-tab → series grouping is visible.
         owned: new Set([
           "skin-classic", "skin-explorer",
           "pet-raptor", "pet-turtle", "pet-ptero", // Dino · Dessert
           "pet-z-aries", "pet-z-leo",              // Dino · Zodiac
-          "pet-m-cake",                            // Mama · Dessert
-          "pet-b-candy",                           // Baby · Dessert
+          "pet-m-cake",                            // Hena (Mum) · Dessert
+          "pet-p-pie",                             // Bruce (Dad) · Dessert
+          "pet-b-candy",                           // Emma (Sister) · Dessert
+          "pet-b-star",                            // Bob (Brother) · Zodiac
         ]),
         petCounts: { "pet-raptor": 2, "pet-z-aries": 3 },
         // Skins can now be granted in-class as rewards, and duplicates can drop, so
@@ -9717,23 +9720,24 @@
           { id: "pet-z-aries", name: "Aries Dino",     emoji: "♈", ip: "dino", series: "zodiac" },
           { id: "pet-z-leo",   name: "Leo Dino",       emoji: "♌", ip: "dino", series: "zodiac" },
           { id: "pet-z-libra", name: "Libra Dino",     emoji: "♎", ip: "dino", series: "zodiac" },
-          // IP: Mama Dino
-          { id: "pet-m-cake",  name: "Mama Cupcake",   emoji: "🧁", ip: "mama", series: "dessert" },
-          { id: "pet-m-tea",   name: "Mama Tea",       emoji: "🫖", ip: "mama", series: "dessert" },
-          { id: "pet-m-leo",   name: "Mama Leo",       emoji: "♌", ip: "mama", series: "zodiac" },
-          // IP: Papa Dino
-          { id: "pet-p-pie",   name: "Papa Pie",       emoji: "🥧", ip: "papa", series: "dessert" },
-          { id: "pet-p-santa", name: "Santa Papa",     emoji: "🎅", ip: "papa", series: "festival" },
-          // IP: Baby Dino
-          { id: "pet-b-candy", name: "Baby Candy",     emoji: "🍬", ip: "baby", series: "dessert" },
-          { id: "pet-b-star",  name: "Baby Star",      emoji: "⭐", ip: "baby", series: "zodiac" },
+          // IP: Hena (Mum)
+          { id: "pet-m-cake",  name: "Hena Cupcake",   emoji: "🧁", ip: "hena", series: "dessert" },
+          { id: "pet-m-tea",   name: "Hena Tea",       emoji: "🫖", ip: "hena", series: "dessert" },
+          { id: "pet-m-leo",   name: "Hena Leo",       emoji: "♌", ip: "hena", series: "zodiac" },
+          // IP: Bruce (Dad)
+          { id: "pet-p-pie",   name: "Bruce Pie",      emoji: "🥧", ip: "bruce", series: "dessert" },
+          { id: "pet-p-santa", name: "Santa Bruce",    emoji: "🎅", ip: "bruce", series: "festival" },
+          // IP: Emma (Sister)
+          { id: "pet-b-candy", name: "Emma Candy",     emoji: "🍬", ip: "emma", series: "dessert" },
+          // IP: Bob (Brother)
+          { id: "pet-b-star",  name: "Bob Star",       emoji: "⭐", ip: "bob", series: "zodiac" },
         ],
       };
       // V1.3.1 (Req5): IP + series metadata (label / emoji / display order) for the
       // Backpack figure gallery. IPs = the Dino family characters; series = themed sets.
-      const PET_IP_ORDER = ["dino", "mama", "papa", "baby"];
-      const PET_IP_LABEL = { dino: "Dino", mama: "Mama Dino", papa: "Papa Dino", baby: "Baby Dino" };
-      const PET_IP_EMOJI = { dino: "🦖", mama: "🦕", papa: "🦴", baby: "🥚" };
+      const PET_IP_ORDER = ["dino", "emma", "bob", "hena", "bruce"];
+      const PET_IP_LABEL = { dino: "Dino", emma: "Emma", bob: "Bob", hena: "Hena", bruce: "Bruce" };
+      const PET_IP_EMOJI = { dino: "🦖", emma: "🦕", bob: "🐊", hena: "🐢", bruce: "🦎" };
       const PET_SERIES_ORDER = ["dessert", "zodiac", "festival"];
       const PET_SERIES_LABEL = { dessert: "Dessert · 甜品系列", zodiac: "Zodiac · 星座系列", festival: "Festival · 节日系列" };
       // The equipped skin's artwork (left Dino in shop/backpack + the Dino Tab hero).
@@ -11878,7 +11882,7 @@
       { label: "Kakao 登录·手机号绑定", run: function () { demoState.kakaoPhoneBound = false; openBindPhone("kakao"); } },
       { label: "设备上限提醒（3 台）", run: function () { showDeviceLimitNotice(); } },
       { label: "背包·手办 IP/系列", run: function () {
-          // Req5: Backpack › Dino Figures → IP tabs (Dino / Mama / Baby) → series groups.
+          // Req5: Backpack › Dino Figures → IP tabs (Dino / Emma / Bob / Hena / Bruce) → series groups.
           enterLandscape();
           if (window.GAME && window.GAME.openBackpackPets) window.GAME.openBackpackPets("dino");
         } },
