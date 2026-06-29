@@ -4173,8 +4173,10 @@
     .pw-sub { font-size: 0.88rem; color: #5a7a98; margin: 0 0 12px; line-height: 1.45; }
     /* Direct benefit list (replaces the old Free vs Premium compare table) */
     .pw-benefits { list-style: none; padding: 0; margin: 8px 0 12px; display: flex; flex-direction: column; gap: 11px; }
-    .pw-benefits li { position: relative; padding-left: 30px; font-size: 0.9rem; font-weight: 600; color: #2c4a66; line-height: 1.35; }
-    .pw-benefits li::before { content: "✓"; position: absolute; left: 0; top: -1px; width: 20px; height: 20px; border-radius: 50%; background: #19c3b2; color: #fff; font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .pw-benefits li { position: relative; padding-left: 30px; font-size: 0.9rem; font-weight: 600; color: #2c4a66; line-height: 1.3; }
+    .pw-benefits li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 20px; height: 20px; border-radius: 50%; background: #19c3b2; color: #fff; font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .pw-benefits li strong { display: block; font-weight: 800; color: #1f3b56; }
+    .pw-benefits li .pw-benefit-sub { display: block; margin-top: 2px; font-size: 0.78rem; font-weight: 600; color: #6f8aa3; }
     .pw-fairuse { font-size: 0.72rem; color: #7a93ad; margin: 0 0 10px; line-height: 1.4; }
     /* Single-plan price card (weekly only on MVP paywall) */
     .pw-price-card { border: 2px solid #19c3b2; border-radius: 16px; padding: 16px 18px; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); text-align: left; }
@@ -6112,11 +6114,12 @@
             <p class="pwpt-lead">One subscription opens every lesson, story and report.</p>
           </div>
           <ul class="pwpt-benefits">
-            <li>Unlock all AI speaking lessons</li>
-            <li>All vocabulary &amp; sentence practice</li>
-            <li>All English radio (Listening)</li>
-            <li>A learning report after every lesson</li>
-            <li>One plan unlocks every section</li>
+            <li><strong>All 864 core lessons unlocked</strong><span class="pwpt-benefit-sub">Structured learning, real progress</span></li>
+            <li><strong>A personalized learning path</strong><span class="pwpt-benefit-sub">3 lessons/week, built around child's level</span></li>
+            <li><strong>Report after every lesson</strong><span class="pwpt-benefit-sub">See how they're doing</span></li>
+            <li><strong>All extension resources unlocked</strong><span class="pwpt-benefit-sub">Explore freely, learn more</span></li>
+            <li><strong>Full rewards &amp; gamified learning</strong><span class="pwpt-benefit-sub">Keeps them motivated</span></li>
+            <li><strong>Chat freely with Dino</strong><span class="pwpt-benefit-sub">Practice anytime</span></li>
           </ul>
           <div class="pwpt-plans" id="pwpt-plans"></div>
           <p class="pwpt-legal">
@@ -6183,9 +6186,11 @@
     .pwpt-title{margin:0;font-size:1.3rem;line-height:1.22;color:#16241c;font-weight:800}
     .pwpt-lead{margin:12px 0 0;font-size:.9rem;color:#4c5a52}
     .pwpt-benefits{list-style:none;margin:6px auto 16px;padding:14px 16px;max-width:420px;background:#fff;border:1px solid #e7eee9;border-radius:14px;box-shadow:0 6px 18px rgba(29,92,63,.06)}
-    .pwpt-benefits li{position:relative;padding:7px 0 7px 26px;font-size:.9rem;color:#26342c;border-bottom:1px solid #f1f4f2}
+    .pwpt-benefits li{position:relative;padding:9px 0 9px 28px;font-size:.9rem;color:#26342c;border-bottom:1px solid #f1f4f2}
     .pwpt-benefits li:last-child{border-bottom:none}
-    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:7px;width:18px;height:18px;border-radius:50%;background:#e6f4ec;color:#1d5c3f;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:10px;width:18px;height:18px;border-radius:50%;background:#e6f4ec;color:#1d5c3f;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+    .pwpt-benefits li strong{display:block;font-weight:800;color:#1f3b2e}
+    .pwpt-benefits li .pwpt-benefit-sub{display:block;margin-top:2px;font-size:.78rem;font-weight:600;color:#7a8c82}
     .pwpt-plans{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto}
     .pwpt-plan{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:2px solid #e3e9e5;border-radius:14px;padding:14px 16px;cursor:pointer}
     .pwpt-plan.is-selected{border-color:#1d5c3f;background:#f3fbf6}
@@ -6809,11 +6814,12 @@
               <span class="pw-kicker">Dino Premium</span>
               <h2 class="pw-title" id="pw-title">Unlock everything in Dino English</h2>
               <ul class="pw-benefits">
-                <li>Unlock all AI speaking lessons</li>
-                <li>All vocabulary practice</li>
-                <li>All English radio (FM)</li>
-                <li>Learning report after every lesson</li>
-                <li>One subscription unlocks every section</li>
+                <li><strong>All 864 core lessons unlocked</strong><span class="pw-benefit-sub">Structured learning, real progress</span></li>
+                <li><strong>A personalized learning path</strong><span class="pw-benefit-sub">3 lessons/week, built around child's level</span></li>
+                <li><strong>Report after every lesson</strong><span class="pw-benefit-sub">See how they're doing</span></li>
+                <li><strong>All extension resources unlocked</strong><span class="pw-benefit-sub">Explore freely, learn more</span></li>
+                <li><strong>Full rewards &amp; gamified learning</strong><span class="pw-benefit-sub">Keeps them motivated</span></li>
+                <li><strong>Chat freely with Dino</strong><span class="pw-benefit-sub">Practice anytime</span></li>
               </ul>
             </div>
             <div class="pw-right">
