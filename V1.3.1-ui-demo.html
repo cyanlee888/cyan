@@ -8882,21 +8882,26 @@
     // to All Courses (the unit lesson list), not straight to Class home.
     $("#btn-course-map-back")?.addEventListener("click", () => showAllCourses(selectedAllCourseKey, "class"));
 
-    // ----- Level check via trying a higher level (升/降级安全阀) -----
-    // From the Level·Unit map the learner takes a higher level's trial lesson ("Try this
-    // level"). The trial yields a REAL best-fit level within current±1; the plan can be
-    // updated in EITHER direction (V1.3.1) — only "assessed == current" means keep. The
-    // assessed direction is demo-driven via demoState.levelUpResult ("up"|"same"|"down").
+    // ----- Level check via trying a higher level (升级安全阀 · 只升 / 保持) -----
+    // From the Level·Unit map the learner takes the next level's trial lesson ("Try this
+    // level"). The trial only answers "ready for current+1?": pass → move plan up to
+    // current+1; not yet → keep current. It NEVER demotes (V1.3.1) — a hard trial is no
+    // evidence against the already-validated current. Demo-driven via demoState.levelUpResult
+    // ("up" = pass, anything else = hold). True downgrades only come from the user's own
+    // current-1 downgrade entry.
     let levelUpInProgress = false;
     let levelUpTargetLevelId = null;
     let levelUpSavedState = null;
     let trialReportMode = "trial"; // "trial" | "levelup"
     function levelByOrder(order) { return (COURSE_LIBRARY[order] && COURSE_LIBRARY[order].id) || null; }
     function levelUpAssessedLevelId() {
+      // V1.3.1 口径：升级尝试（Try this level）只判定"够不够上 current+1"——
+      // 达标 → 升到 current+1；未达标 → **保持 current**。体验课**永不降级**：
+      // 主动挑战更难，失败只说明"还没到上一档"，不代表要否定已坐实的 current。
+      // 真正的下行只来自用户自己主动点降级（current-1 入口）。
       const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
       const curOrder = levelOrderOf(curId);
-      const r = demoState.levelUpResult;
-      let order = curOrder + (r === "up" ? 1 : r === "down" ? -1 : 0);
+      let order = curOrder + (demoState.levelUpResult === "up" ? 1 : 0); // 其它一律保持 current
       order = Math.max(0, Math.min(COURSE_LIBRARY.length - 1, order));
       return levelByOrder(order);
     }
@@ -9178,38 +9183,34 @@
       const assessedId = levelUpAssessedLevelId();
       const assessedLabel = levelLabelOf(assessedId);
       const assessedCefr = levelCefrLabel(assessedId);
-      // V1.3.1: the trial yields a REAL best-fit level (within current±1). The plan can
-      // be updated in EITHER direction — only "assessed == current" means keep. Both up
-      // and down use ONE unified "Update my plan" CTA (no direction-specific copy).
-      const isSame = assessedId === curId;
+      // V1.3.1 口径：升级尝试只有两种结果——达标(升 current+1) / 未达标(保持 current)。
+      // 体验课永不降级，故没有 down 分支、没有方向歧义。
+      const passed = levelOrderOf(assessedId) > levelOrderOf(curId); // 升一档
       if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level check · ${targetLabel}`;
-      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = isSame ? `${curLabel} is a great fit!` : `We found ${name}'s best-fit level`;
+      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = passed ? `${name} is ready to level up!` : `Not quite ready for ${targetLabel} yet`;
       if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = `${targetLabel} trial lesson`;
       if ($("#tr-perf-title")) $("#tr-perf-title").textContent = `How ${name} did`;
-      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = isSame
-        ? `“${name} is right on track at ${curLabel} — keep that momentum going!”`
-        : `“Great effort from ${name}! Here's the level that fits best right now.”`;
+      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = passed
+        ? `“Great job from ${name} — today's trial shows ${targetLabel} is within reach!”`
+        : `“Great effort from ${name}! A bit more practice at ${curLabel} and ${targetLabel} will be ready.”`;
       if ($("#tr-level")) $("#tr-level").textContent = assessedCefr;
-      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = isSame
-        ? `${name}'s trial scored at <strong>${curLabel} (${assessedCefr})</strong> — the current plan is the right fit.`
-        : `${name}'s trial scored at <strong>${assessedLabel} (${assessedCefr})</strong> — update the plan to match this level for the best fit.`;
-      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = isSame
-        ? `Up next: keep building at ${curLabel}`
-        : `Up next: switch the plan to ${assessedLabel}`;
+      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = passed
+        ? `${name}'s trial scored at <strong>${assessedLabel} (${assessedCefr})</strong> — ready to move the plan up to this level.`
+        : `${name}'s trial scored at <strong>${curLabel} (${assessedCefr})</strong> — ${curLabel} is still the right fit for now.`;
+      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = passed
+        ? `Up next: move the plan up to ${assessedLabel}`
+        : `Up next: keep building at ${curLabel}`;
       if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} trial went:`;
-      // Unified manual confirm: "Update my plan" whenever the best-fit level differs from
-      // the current one (UP or DOWN); otherwise the single button is "Keep my current plan".
-      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = isSame ? "Keep my current plan" : "Update my plan";
+      // Manual confirm: pass → "Level up my plan" (+ keep option); not yet → only "Keep my current plan".
+      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = passed ? "Level up my plan" : "Keep my current plan";
       const keepBtn = $("#btn-trial-keep");
       if (keepBtn) {
-        keepBtn.style.display = isSame ? "none" : "";
+        keepBtn.style.display = passed ? "" : "none";
         keepBtn.textContent = "Keep my current plan";
       }
-      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = isSame
-        ? `Back to your ${curLabel} plan — keep it up`
-        : (profile.premiumUnlocked
-            ? `We'll move your plan to ${assessedLabel}`
-            : `Unlock to start your ${assessedLabel} plan`);
+      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = passed
+        ? (profile.premiumUnlocked ? `We'll move your plan up to ${assessedLabel}` : `Unlock to start your ${assessedLabel} plan`)
+        : `Back to your ${curLabel} plan — keep it up`;
     }
     function showTrialReport() {
       renderTrialReport();
@@ -9250,14 +9251,13 @@
     $("#btn-trial-start")?.addEventListener("click", () => {
       const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
       const assessedId = levelUpAssessedLevelId();
-      // Best-fit == current → this primary button is "Keep my current plan".
-      if (assessedId === curId) { keepCurrentLevelUp(); return; }
-      const goingUp = levelOrderOf(assessedId) > levelOrderOf(curId);
-      // Free users can't study formal lessons either way → updating routes to Paywall
-      // (trigger_source=level_up when moving up, downgrade when moving down).
+      // Not passed (assessed == current) → this primary button is "Keep my current plan".
+      if (levelOrderOf(assessedId) <= levelOrderOf(curId)) { keepCurrentLevelUp(); return; }
+      // Passed → level up. Free users can't study formal lessons → route to Paywall
+      // (trigger_source=level_up). The upgrade trial never demotes, so no downgrade path.
       if (!profile.premiumUnlocked) {
         restoreLevelUpState();
-        openPaywall("screen-class", goingUp ? "level_up" : "downgrade");
+        openPaywall("screen-class", "level_up");
         return;
       }
       applyLevelUpChange(assessedId);
@@ -11823,7 +11823,7 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id === "screen-levelup-report") return { label: "定级报告（升/降）", keys: ["levelUpResult"] };
+        if (id === "screen-levelup-report") return { label: "定级报告（升级尝试）", keys: ["levelUpResult"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
@@ -11866,8 +11866,8 @@
           if (activeLandScreen() === "screen-course-map") renderCourseMap();
           if (document.querySelector("#screen-study-plan")?.classList.contains("active")) renderStudyPlanScreen();
         } },
-      { key: "levelUpResult", label: "体验课定级结果（相对当前 Level）",
-        options: [["up", "高一档·current+1"], ["same", "持平·current"], ["down", "低一档·current-1"]],
+      { key: "levelUpResult", label: "升级尝试结果（只升 / 保持，永不降）",
+        options: [["up", "达标·升 current+1"], ["same", "未达标·保持 current"]],
         apply: function (v) {
           demoState.levelUpResult = v;
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
