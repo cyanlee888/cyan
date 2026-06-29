@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dino English · 竞品全景分析</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f7f5f1;--surface:#fff;--ink:#16121f;--muted:#6f6a78;--border:rgba(22,18,31,.08);
+  --purple:#5536a3;--purple-soft:#f0ebfa;--teal:#1f7a66;--teal-soft:#e8f5f1;
+  --coral:#d94e2b;--coral-soft:#fdf0eb;--blue:#3568c7;--blue-soft:#ecf2fc;
+  --gold:#9a7200;--radius:18px;--radius-sm:12px;
+  --shadow:0 2px 16px rgba(22,18,31,.06);--shadow-lg:0 12px 40px rgba(22,18,31,.08);
+  --font:"Plus Jakarta Sans","PingFang SC","Microsoft YaHei",sans-serif;
+  --display:"Fraunces",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);line-height:1.6;font-size:15px;
+  background-image:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(85,54,163,.06),transparent),
+    radial-gradient(ellipse 60% 40% at 95% 5%,rgba(31,122,102,.05),transparent)}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 20px 72px}
+
+/* Hero — 三个大卡片 */
+.hero{padding:8px 0 36px;margin-bottom:8px}
+.hero-copy{margin-bottom:24px}
+.hero h1{font-family:var(--display);font-size:clamp(26px,3.8vw,36px);font-weight:700;
+  letter-spacing:-.02em;margin-bottom:8px;line-height:1.2;color:var(--ink)}
+.hero .lead{font-size:14px;color:var(--muted);max-width:640px;line-height:1.65}
+.hero-cats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+@media(max-width:960px){.hero-cats{grid-template-columns:1fr}}
+.cat-card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:18px 16px 16px;box-shadow:var(--shadow);cursor:pointer;
+  transition:transform .2s,box-shadow .2s,border-color .2s;border-top:4px solid var(--accent)}
+.cat-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(22,18,31,.12)}
+.cat-head{display:flex;align-items:center;gap:10px}
+.cat-num{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;border-radius:50%;background:var(--accent);color:#fff;flex-shrink:0}
+.cat-head h3{flex:1;min-width:0;font-size:16px;font-weight:700;line-height:1.3;color:var(--ink)}
+.cat-desc{font-size:11px;color:var(--muted);line-height:1.45;margin-top:6px}
+.cat-count{font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0;
+  padding:3px 8px;border-radius:999px;background:var(--bg)}
+.cat-examples{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.cat-ex{display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;color:inherit;
+  padding:8px 4px;border-radius:12px;transition:background .15s}
+.cat-ex:hover{background:var(--bg)}
+.cat-ex:hover .cat-ex-name{color:var(--purple)}
+.cat-ex-ico{width:40px;height:40px;border-radius:10px;object-fit:cover;background:#fff;
+  box-shadow:0 1px 6px rgba(0,0,0,.1)}
+.cat-ex-name{font-size:10px;font-weight:600;text-align:center;color:var(--muted);line-height:1.25;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:color .15s}
+.app-icon,.ov-icon,.bp-icon{border-radius:22%;object-fit:cover;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.icon-fallback{display:inline-flex;align-items:center;justify-content:center;background:var(--purple-soft);color:var(--purple);font-weight:700;border-radius:22%}
+
+/* Nav */
+.nav-bar{position:sticky;top:0;z-index:200;background:rgba(247,245,241,.88);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);margin:0 -20px 20px;padding:10px 20px}
+.nav-row{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.nav-row a{font-size:12px;font-weight:600;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:999px;transition:.15s}
+.nav-row a:hover,.nav-row a.active{color:var(--purple);background:var(--purple-soft)}
+.search-box{margin-left:auto;position:relative;min-width:180px;flex:0 1 240px}
+.search-box input{width:100%;padding:8px 14px 8px 34px;border:1px solid var(--border);border-radius:999px;
+  font-size:13px;background:var(--surface);outline:none;transition:.15s}
+.search-box input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(85,54,163,.12)}
+.search-box::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+
+/* Sections */
+.section{margin-bottom:40px}
+.sh{font-family:var(--display);font-size:21px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.section-hint{font-size:12px;color:var(--muted);margin:-8px 0 14px;line-height:1.5}
+.badge{font-family:var(--font);font-size:10px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--purple-soft);color:var(--purple);letter-spacing:.03em}
+
+/* Exec — 核心结论 · 独立突出 */
+#exec{scroll-margin-top:80px}
+.exec-section{background:linear-gradient(180deg,#faf9fc 0%,#fff 48%);
+  border:1px solid rgba(85,54,163,.12);border-radius:20px;padding:40px 44px 48px;
+  margin:36px 0 52px;box-shadow:0 4px 28px rgba(85,54,163,.07);position:relative}
+.exec-section::before{content:"";position:absolute;left:0;top:28px;bottom:28px;width:3px;
+  border-radius:0 2px 2px 0;background:var(--purple)}
+.exec-section .sh{font-size:22px;margin-bottom:32px;font-weight:700;padding-left:4px}
+.callout-hero{margin-bottom:0;max-width:820px;padding-bottom:32px;
+  border-bottom:1px solid var(--border)}
+.callout-hero h3{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--muted);margin-bottom:16px}
+.callout-lead{font-size:18px;line-height:1.9;color:var(--ink);font-weight:400}
+.callout-lead strong{font-weight:650;color:var(--ink)}
+.exec-meta{font-size:13px;color:var(--muted);margin-top:20px;line-height:1.6;letter-spacing:.01em}
+.exec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px 28px;margin-top:32px}
+@media(max-width:720px){.exec-section{padding:28px 24px 32px;margin:24px 0 36px}
+  .exec-grid{grid-template-columns:1fr;gap:20px}}
+.exec-tile{padding:0}
+.exec-tile h4{font-size:12px;font-weight:650;color:var(--muted);margin-bottom:10px;letter-spacing:.02em}
+.exec-tile ul{list-style:none;font-size:13px;color:#4a4555;line-height:1.65}
+.exec-tile li{padding:4px 0;padding-left:14px;position:relative}
+.exec-tile li::before{content:"";position:absolute;left:0;top:.65em;width:4px;height:4px;
+  border-radius:50%;background:var(--border)}
+
+/* 品牌墙 — 无限轮播 */
+.brand-marquee-wrap{overflow:hidden;padding:8px 0 16px;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.brand-marquee-track{display:flex;gap:12px;width:max-content;animation:marquee 90s linear infinite}
+.brand-marquee-wrap:hover .brand-marquee-track{animation-play-state:paused}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.wall-tile{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 14px 10px;
+  min-width:108px;background:var(--surface);border-radius:14px;border:1px solid var(--border);
+  text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s,border-color .2s}
+.wall-tile:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(85,54,163,.2)}
+.wall-tile[data-cat="cat1"]{border-top:2px solid #3568c7}
+.wall-tile[data-cat="cat2"]{border-top:2px solid #d94e2b}
+.wall-tile[data-cat="cat3"]{border-top:2px solid #5536a3}
+.wall-ico{width:44px;height:44px;border-radius:11px}
+.wall-name{font-size:11px;font-weight:700;text-align:center;line-height:1.25;max-width:96px}
+.wall-cat{font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.wall-ref{font-size:8px;font-weight:700;padding:2px 6px;border-radius:999px;background:var(--coral-soft);color:var(--coral)}
+.wall-cn{font-size:8px;font-weight:700;padding:2px 6px;border-radius:999px;background:#fff0e6;color:#c45a1a}
+.overview-scroll{display:none}
+
+/* Filters — 品类专属色 */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.filter-chip{padding:7px 16px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);
+  font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none}
+.filter-chip:hover{transform:translateY(-1px)}
+.filter-chip.on{color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.filter-chip[data-filter="all"].on{background:#4a4560;border-color:#4a4560}
+.filter-chip[data-filter="cat1"]:not(.on){border-color:rgba(53,104,199,.35);color:#3568c7}
+.filter-chip[data-filter="cat1"].on{background:#3568c7;border-color:#3568c7}
+.filter-chip[data-filter="cat2"]:not(.on){border-color:rgba(217,78,43,.35);color:#d94e2b}
+.filter-chip[data-filter="cat2"].on{background:#d94e2b;border-color:#d94e2b}
+.filter-chip[data-filter="cat3"]:not(.on){border-color:rgba(85,54,163,.35);color:#5536a3}
+.filter-chip[data-filter="cat3"].on{background:#5536a3;border-color:#5536a3}
+.result-count{font-size:12px;color:var(--muted);margin-left:auto}
+
+/* 深度分析 — 品类主题区 */
+.brands-section{transition:background .35s}
+.brands-section[data-active-cat="cat1"]{--zone-bg:#eef3fc;--zone-border:rgba(53,104,199,.22)}
+.brands-section[data-active-cat="cat2"]{--zone-bg:#fdf3ef;--zone-border:rgba(217,78,43,.22)}
+.brands-section[data-active-cat="cat3"]{--zone-bg:#f3eef9;--zone-border:rgba(85,54,163,.22)}
+.brands-section[data-active-cat="all"]{--zone-bg:#f5f4f2;--zone-border:rgba(22,18,31,.08)}
+
+.cat-context-bar{margin-bottom:14px;min-height:52px}
+.ctx{display:none;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;
+  border:1px solid var(--border);animation:ctxIn .35s ease}
+.brands-section[data-active-cat="all"] .ctx-all{display:flex;background:#fff;border-left:4px solid #6f6a78}
+.brands-section[data-active-cat="cat1"] .ctx-cat1{display:flex;background:#ecf2fc;border-left:4px solid #3568c7}
+.brands-section[data-active-cat="cat2"] .ctx-cat2{display:flex;background:#fdf0eb;border-left:4px solid #d94e2b}
+.brands-section[data-active-cat="cat3"] .ctx-cat3{display:flex;background:#f0ebfa;border-left:4px solid #5536a3}
+@keyframes ctxIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.ctx-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ctx-text{flex:1;min-width:0}
+.ctx-text strong{display:block;font-size:14px;font-weight:700;margin-bottom:2px}
+.ctx-text span{font-size:12px;color:var(--muted)}
+.ctx-count{font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.7);flex-shrink:0}
+
+.brands-zone{background:var(--zone-bg);border:2px solid var(--zone-border);border-radius:20px;
+  padding:16px;transition:background .35s,border-color .35s,box-shadow .35s}
+.brands-section[data-active-cat="cat1"] .brands-zone{box-shadow:0 8px 32px rgba(53,104,199,.08)}
+.brands-section[data-active-cat="cat2"] .brands-zone{box-shadow:0 8px 32px rgba(217,78,43,.08)}
+.brands-section[data-active-cat="cat3"] .brands-zone{box-shadow:0 8px 32px rgba(85,54,163,.08)}
+.brands-zone.cat-switching .brands-flow{opacity:.4;transform:translateY(4px)}
+.brands-flow{transition:opacity .25s,transform .25s}
+
+/* Overview cards — 保留供搜索引用 */
+.overview-scroll{display:none}
+.overview-card{flex:0 0 min(240px,70vw);scroll-snap-align:start;display:flex;gap:12px;padding:14px;
+  background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);text-decoration:none;color:inherit;
+  transition:transform .2s,box-shadow .2s;border:1px solid transparent}
+.overview-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:rgba(85,54,163,.15)}
+.ov-body{min-width:0;flex:1}
+.ov-top{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.ov-top strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ov-cat{font-size:10px;font-weight:600;color:var(--purple);text-transform:uppercase;letter-spacing:.04em}
+.ov-usp{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.stars{font-size:11px;color:var(--gold);letter-spacing:-1px}
+
+/* Brand panels — 双列网格，一屏呈现更多 */
+.brands-flow{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;align-items:start}
+.brand-panel{background:var(--surface);border-radius:var(--radius);padding:0;box-shadow:var(--shadow);
+  border:1px solid var(--border);overflow:hidden;transition:box-shadow .2s,border-color .2s;height:100%;
+  display:flex;flex-direction:column;border-top:3px solid transparent}
+.brand-panel[data-cat="cat1"]{border-top-color:#3568c7}
+.brand-panel[data-cat="cat2"]{border-top-color:#d94e2b}
+.brand-panel[data-cat="cat3"]{border-top-color:#5536a3}
+.brand-panel:hover{box-shadow:var(--shadow-lg)}
+.brand-panel.hidden{display:none}
+.bp-head{display:flex;gap:12px;padding:16px 18px 12px;align-items:flex-start}
+.bp-icon-wrap{flex-shrink:0;transition:transform .2s}
+.bp-icon-wrap:hover{transform:scale(1.05)}
+.bp-icon{width:48px;height:48px;border-radius:12px}
+.bp-meta{flex:1;min-width:0}
+.bp-title-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px}
+.bp-title-row h3{font-size:16px;font-weight:700;line-height:1.25}
+.bp-title-row h3 a{color:inherit;text-decoration:none}
+.bp-title-row h3 a:hover{color:var(--purple)}
+.cat-pill{font-size:9px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--teal-soft);color:var(--teal)}
+.cat-pill-cn{background:#fff0e6;color:#c45a1a}
+.bp-tagline{font-size:12px;color:var(--muted);line-height:1.45}
+.bp-links{margin-top:6px}
+.site-link{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;
+  background:var(--blue-soft);color:var(--blue);font-size:11px;font-weight:600;text-decoration:none;
+  border:1px solid rgba(53,104,199,.15);transition:background .15s,transform .15s,box-shadow .15s}
+.site-link:hover{background:#dce8fb;transform:translateY(-1px);box-shadow:0 2px 8px rgba(53,104,199,.15)}
+.site-link-icon{flex-shrink:0;opacity:.85;width:12px;height:12px}
+.site-domain{opacity:.75;font-weight:500;font-size:10px}
+.site-domain::before{content:"·";margin:0 2px;opacity:.5}
+.bp-price-hint{font-size:10px;color:var(--muted);margin-top:4px;opacity:.85}
+
+.bp-flow{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0 18px 12px;flex:1}
+.flow-item{padding:8px 10px}
+.flow-item label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:4px}
+.flow-item p{font-size:12px;color:#3a3545;line-height:1.5}
+.flow-wide{grid-column:1/-1}
+.usp-row{display:flex;flex-wrap:wrap;gap:5px}
+.usp-chip{font-size:11px;padding:3px 9px;border-radius:999px;background:var(--blue-soft);color:var(--blue);font-weight:500}
+.usp-zone{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.usp-main{flex:1;min-width:140px}
+.usp-shots{display:flex;gap:6px;flex-shrink:0;padding-top:1px}
+.usp-shot{display:block;padding:0;border:1.5px solid rgba(22,18,31,.12);border-radius:8px;background:#fff;
+  cursor:pointer;overflow:hidden;line-height:0;transition:transform .15s,box-shadow .15s,border-color .15s}
+.usp-shot:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(53,104,199,.15);border-color:rgba(53,104,199,.35)}
+.usp-shot img{display:block;width:52px;height:auto;max-height:92px;object-fit:cover;object-position:top center}
+.usp-shot:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+.shot-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(12,10,18,.72);display:flex;align-items:center;
+  justify-content:center;padding:24px;backdrop-filter:blur(4px)}
+.shot-lightbox.hidden{display:none}
+.shot-lightbox img{max-width:min(360px,90vw);max-height:85vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.shot-lb-close{position:absolute;top:16px;right:20px;width:36px;height:36px;border:none;border-radius:50%;
+  background:rgba(255,255,255,.15);color:#fff;font-size:22px;line-height:1;cursor:pointer}
+.shot-lb-close:hover{background:rgba(255,255,255,.28)}
+
+/* 核心 SKU 模块 — 独特卖点下方 */
+.sku-block{margin:0 18px 12px;padding:14px 16px;background:linear-gradient(135deg,#f4f6fb 0%,#faf8ff 100%);
+  border:1.5px solid rgba(85,54,163,.14);border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.sku-block label{display:block;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--purple);margin-bottom:10px}
+.sku-grid{display:flex;flex-direction:column;gap:8px}
+.sku-card{background:#fff;border-radius:10px;padding:10px 12px;border:1px solid var(--border);
+  border-left:4px solid #3568c7;transition:box-shadow .15s}
+.sku-card:hover{box-shadow:0 4px 12px rgba(53,104,199,.1)}
+.sku-card.sku-free{border-left-color:#1f7a66}
+.sku-card.sku-core{border-left-color:#3568c7}
+.sku-card.sku-premium{border-left-color:#5536a3}
+.sku-card.sku-live{border-left-color:#d94e2b}
+.sku-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px;flex-wrap:wrap}
+.sku-name{font-size:13px;font-weight:700;color:var(--ink)}
+.sku-price{font-size:12px;font-weight:700;color:var(--purple);white-space:nowrap}
+.sku-benefits{margin:0;padding-left:16px;font-size:11px;color:#3a3545;line-height:1.55}
+.sku-benefits li{margin-bottom:2px}
+.sku-limit{font-size:10px;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px dashed rgba(22,18,31,.1);line-height:1.45}
+.bp-flow-tail{padding-top:0!important}
+
+.dino-insight{display:flex;gap:8px;align-items:flex-start;padding:10px 18px;background:linear-gradient(90deg,var(--purple-soft),var(--teal-soft));
+  font-size:12px;color:#3a3545;line-height:1.5;border-top:1px solid var(--border);margin-top:auto}
+.dino-label{flex-shrink:0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--purple);background:var(--surface);padding:3px 8px;border-radius:999px}
+
+/* Strategy + roles */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.strat-card{background:var(--surface);border-radius:var(--radius-sm);padding:16px;font-size:13px;
+  border:1px solid var(--border);transition:transform .15s}
+.strat-card:hover{transform:translateY(-2px)}
+.strat-card strong{display:block;font-size:11px;font-weight:700;color:var(--purple);margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em}
+.role-flow{display:flex;flex-wrap:wrap;gap:10px}
+.role-tag{flex:1 1 180px;background:var(--surface);border-radius:var(--radius-sm);padding:14px 16px;
+  font-size:12px;border:1px dashed var(--border);line-height:1.55}
+.role-tag em{font-style:normal;font-weight:700;color:var(--purple);display:block;margin-bottom:4px;font-size:13px}
+
+.footer{text-align:center;font-size:11px;color:var(--muted);margin-top:36px;padding-top:20px;border-top:1px solid var(--border)}
+
+@media(max-width:960px){
+  .brands-flow{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .bp-head{flex-direction:column;align-items:flex-start}
+  .bp-flow{grid-template-columns:1fr}
+  .search-box{margin-left:0;flex:1 1 100%;order:10}
+  .nav-row{gap:6px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section class="hero">
+  <div class="hero-copy">
+    <h1>海外英语竞品全景扫描</h1>
+    <p class="lead">三大赛道逐品牌拆解定位、独特卖点、SKU 权益与 Dino 启示</p>
+  </div>
+  <div class="hero-cats"><div class="cat-card" data-cat="cat1" style="--accent:#3568c7">
+  <div class="cat-head">
+    <span class="cat-num">01</span>
+    <h3>自学工具类</h3>
+    <span class="cat-count">13 家</span>
+  </div>
+  <p class="cat-desc">内容订阅 · 游戏化路径 · 无 AI 老师核心关系</p>
+  <div class="cat-examples"><a class="cat-ex" href="#brand-lingokids" title="Lingokids">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/52/d0/7e52d02a-0ed5-6413-f8fe-85203eff4b16/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Lingokids" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+      <span class="cat-ex-name">Lingokids</span>
+    </a><a class="cat-ex" href="#brand-duolingo-abc" title="Duolingo ABC">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/98/01/13/980113b8-da7c-7c23-26c5-4697e7fb522b/AppIcon-1x_U007epad-0-sRGB-85-220.png/128x128bb.jpg" alt="Duolingo ABC" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+      <span class="cat-ex-name">Duolingo ABC</span>
+    </a><a class="cat-ex" href="#brand-epic" title="Epic!">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6f/d3/d0/6fd3d070-f449-6d71-be8b-231b42de01a9/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Epic!" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'E'}))"/>
+      <span class="cat-ex-name">Epic!</span>
+    </a></div>
+</div><div class="cat-card" data-cat="cat2" style="--accent:#d94e2b">
+  <div class="cat-head">
+    <span class="cat-num">02</span>
+    <h3>1V1 真人外教</h3>
+    <span class="cat-count">7 家</span>
+  </div>
+  <p class="cat-desc">Live 教学 · 按课 / 订阅 / 固定频次</p>
+  <div class="cat-examples"><a class="cat-ex" href="#brand-cambly" title="Cambly">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/f6/6a/fbf66a8a-2ed5-1f17-ff5a-4e174e745ccf/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/128x128bb.jpg" alt="Cambly" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'C'}))"/>
+      <span class="cat-ex-name">Cambly</span>
+    </a><a class="cat-ex" href="#brand-italki" title="italki">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/3f/3f/fe3f3f09-c5b8-1b73-2e3e-9492fb75d210/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128bb.jpg" alt="italki" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'i'}))"/>
+      <span class="cat-ex-name">italki</span>
+    </a><a class="cat-ex" href="#brand-outschool" title="Outschool">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/91/cd/5991cdec-8f9b-0d24-dcfa-efd1a81e0109/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="Outschool" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'O'}))"/>
+      <span class="cat-ex-name">Outschool</span>
+    </a></div>
+</div><div class="cat-card" data-cat="cat3" style="--accent:#5536a3">
+  <div class="cat-head">
+    <span class="cat-num">03</span>
+    <h3>AI 老师 + 学习规划类</h3>
+    <span class="cat-count">6 家</span>
+  </div>
+  <p class="cat-desc">AI 数字人带练 · 体系课 · 定级与计划</p>
+  <div class="cat-examples"><a class="cat-ex" href="#brand-buddy-ai" title="Buddy AI">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7b/6d/25/7b6d25aa-f706-3b85-d3cb-11bf4b2543f6/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Buddy AI" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+      <span class="cat-ex-name">Buddy AI</span>
+    </a><a class="cat-ex" href="#brand-speak" title="Speak">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/9d/8e/5f9d8e16-9e31-592f-7906-9d4724c1b6a1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Speak" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+      <span class="cat-ex-name">Speak</span>
+    </a><a class="cat-ex" href="#brand-斑马-ai-口语" title="斑马 AI 口语">
+      <img class="cat-ex-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6c/7a/a8/6c7aa8f8-c8f8-e8b8-8ad4-6dddb4ab3578/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/128x128bb.jpg" alt="斑马 AI 口语" width="40" height="40" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'斑'}))"/>
+      <span class="cat-ex-name">斑马 AI 口语</span>
+    </a></div>
+</div></div>
+</section>
+
+<nav class="nav-bar">
+  <div class="nav-row">
+    <a href="#exec">核心结论</a>
+    <a href="#overview">品牌速览</a>
+    <a href="#brands">深度分析</a>
+    <a href="#dino">Dino 策略</a>
+    <a href="#roles">阅读指南</a>
+    <div class="search-box"><input type="search" id="search" placeholder="搜索品牌…" autocomplete="off"/></div>
+  </div>
+</nav>
+
+<section class="section exec-section" id="exec">
+  <h2 class="sh">核心结论</h2>
+  <div class="callout-hero">
+    <h3>一句话定位</h3>
+    <p class="callout-lead">Dino English 是一套面向 4–13 岁海外家庭的<strong>完整 AI 英语学习方案</strong>——以 <strong>864 节 Dino English 旗舰主修课</strong>（Class · 6 级体系）为核心，由 <strong>四大模块</strong>（Dino · Class · Explore · Play）构成完整路径，配 <strong>AI 数字人实时带练</strong>、<strong>智能定级与学习规划</strong>、<strong>课后报告</strong>，而非单点聊天工具或纯内容库。</p>
+    <p class="exec-meta">864 节主课 · 4 大模块 · 3 位 AI 外教 · 4–13 岁全阶段</p>
+  </div>
+  <div class="exec-grid"><div class="exec-tile"><h4>完整方案 · 四模块协同</h4><ul><li>Class 864 主课 · 三位 AI 外教</li><li>Dino 24/7 陪练 · 计划驾驶舱</li><li>Explore 探索拓展 · Play 游戏中心</li></ul></div><div class="exec-tile"><h4>学习闭环 · 规划驱动</h4><ul><li>定级测试 → 定制学习计划</li><li>课中 AI 互动 · 强制开口产出</li><li>课后词汇 / 开口时长 / 正答率报告</li></ul></div><div class="exec-tile"><h4>竞争站位 · 空白带</h4><ul><li>vs 内容 App：有 AI 带练与语言产出</li><li>vs 真人外教：24h 可用 · 有记忆可因材施教</li><li>vs AI 聊天：864 结构化体系课</li></ul></div><div class="exec-tile"><h4>教研背书 · 可感知专业</h4><ul><li>CCSS × CEFR × 剑桥 三体系对标</li><li>Level 1–6 · 4–13 岁全阶段</li><li>13 年全球 180 万家庭验证</li></ul></div></div>
+</section>
+
+<section class="section" id="overview">
+  <h2 class="sh">品牌速览</h2>
+  <div class="brand-marquee-wrap" aria-label="品牌速览">
+  <div class="brand-marquee-track"><a class="wall-tile" href="#brand-buddy-ai" data-cat="cat3" title="Buddy AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7b/6d/25/7b6d25aa-f706-3b85-d3cb-11bf4b2543f6/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Buddy AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Buddy AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-lingokids" data-cat="cat1" title="Lingokids">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/52/d0/7e52d02a-0ed5-6413-f8fe-85203eff4b16/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Lingokids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Lingokids</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-斑马-ai-口语" data-cat="cat3" title="斑马 AI 口语">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6c/7a/a8/6c7aa8f8-c8f8-e8b8-8ad4-6dddb4ab3578/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/128x128bb.jpg" alt="斑马 AI 口语" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'斑'}))"/>
+  <span class="wall-name">斑马 AI 口语</span>
+  <span class="wall-cat">AI 老师+规划</span><span class="wall-cn">国内</span>
+</a><a class="wall-tile" href="#brand-duolingo" data-cat="cat1" title="Duolingo">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/3b/c6/173bc63c-c1fb-3695-9a55-5bc1cc582abd/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Duolingo" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <span class="wall-name">Duolingo</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-speak" data-cat="cat3" title="Speak">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/9d/8e/5f9d8e16-9e31-592f-7906-9d4724c1b6a1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Speak" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <span class="wall-name">Speak</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-cambly" data-cat="cat2" title="Cambly">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/f6/6a/fbf66a8a-2ed5-1f17-ff5a-4e174e745ccf/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/128x128bb.jpg" alt="Cambly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'C'}))"/>
+  <span class="wall-name">Cambly</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-duolingo-abc" data-cat="cat1" title="Duolingo ABC">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/98/01/13/980113b8-da7c-7c23-26c5-4697e7fb522b/AppIcon-1x_U007epad-0-sRGB-85-220.png/128x128bb.jpg" alt="Duolingo ABC" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <span class="wall-name">Duolingo ABC</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-praktika" data-cat="cat3" title="Praktika">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/04/30/2c/04302c3a-8a04-8e8d-472b-1d585430de86/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Praktika" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <span class="wall-name">Praktika</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-homer" data-cat="cat1" title="HOMER">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9f/b5/cf/9fb5cf70-9493-2e55-b450-dc68826b3a26/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="HOMER" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'H'}))"/>
+  <span class="wall-name">HOMER</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-khan-academy-kids" data-cat="cat1" title="Khan Academy Kids">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f8/fd/08/f8fd080d-d62d-b288-0b3f-5567514949bc/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/128x128bb.jpg" alt="Khan Academy Kids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'K'}))"/>
+  <span class="wall-name">Khan Academy Kids</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-epic" data-cat="cat1" title="Epic!">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6f/d3/d0/6fd3d070-f449-6d71-be8b-231b42de01a9/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Epic!" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'E'}))"/>
+  <span class="wall-name">Epic!</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-lingoda" data-cat="cat2" title="Lingoda">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/43/07/2943078c-0f22-f5cc-1d29-3cfaebe6de7f/AppIconProd-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Lingoda" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Lingoda</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-italki" data-cat="cat2" title="italki">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/3f/3f/fe3f3f09-c5b8-1b73-2e3e-9492fb75d210/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128bb.jpg" alt="italki" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'i'}))"/>
+  <span class="wall-name">italki</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-outschool" data-cat="cat2" title="Outschool">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/91/cd/5991cdec-8f9b-0d24-dcfa-efd1a81e0109/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="Outschool" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'O'}))"/>
+  <span class="wall-name">Outschool</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-vooks" data-cat="cat1" title="VOOKS">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/33/90/e9/3390e941-b809-baf4-6d2e-3b8e42ba747a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="VOOKS" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'V'}))"/>
+  <span class="wall-name">VOOKS</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-abcmouse" data-cat="cat1" title="ABCmouse">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9e/71/e3/9e71e3ba-4a93-23ad-c4cb-d9c82a97b812/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="ABCmouse" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'A'}))"/>
+  <span class="wall-name">ABCmouse</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-learna-ai" data-cat="cat3" title="Learna AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1e/c2/59/1ec259c5-78a4-1599-dc06-cbef59da8bc6/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Learna AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Learna AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-pingo-ai" data-cat="cat3" title="Pingo AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/92/4c/6d924c04-80c8-397f-ee65-e419a74ccc7a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Pingo AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <span class="wall-name">Pingo AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-booknook" data-cat="cat2" title="BookNook">
+  <img class="wall-ico" src="https://logo.clearbit.com/booknook.com" alt="BookNook" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">BookNook</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-savvy-learning" data-cat="cat2" title="Savvy Learning">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/ee/0c/d5/ee0cd50d-7683-9dad-36b4-c37d80d5f9bc/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/128x128bb.jpg" alt="Savvy Learning" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <span class="wall-name">Savvy Learning</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-brighterly" data-cat="cat2" title="Brighterly">
+  <img class="wall-ico" src="https://logo.clearbit.com/brighterly.com" alt="Brighterly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Brighterly</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-rosetta-stone" data-cat="cat1" title="Rosetta Stone">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/21/a7/6e21a7f8-4c8a-2ec2-907a-bb5a4984c27a/RosettaStoneClassic-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/128x128bb.jpg" alt="Rosetta Stone" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'R'}))"/>
+  <span class="wall-name">Rosetta Stone</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-babbel" data-cat="cat1" title="Babbel">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d6/87/d9/d687d97c-ae76-3b3b-a1b7-967801479eb5/AppIcon-Default-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Babbel" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Babbel</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-busuu" data-cat="cat1" title="Busuu">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bc/a3/6e/bca36e47-8c37-dbd3-0a14-37b7d090495f/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-0-85-220.png/128x128bb.jpg" alt="Busuu" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Busuu</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-lingq" data-cat="cat1" title="LingQ">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/03/1e/5f031e89-f6bb-e302-974b-889bf3a42b29/AppIcon-0-0-1x_U007epad-0-5-0-85-220.png/128x128bb.jpg" alt="LingQ" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">LingQ</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-funexpected-math" data-cat="cat1" title="Funexpected Math">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/af/c6/32/afc6322e-2fb9-5467-5450-25b4d7bdb0d4/AppIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/128x128bb.jpg" alt="Funexpected Math" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'F'}))"/>
+  <span class="wall-name">Funexpected Math</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-buddy-ai" data-cat="cat3" title="Buddy AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7b/6d/25/7b6d25aa-f706-3b85-d3cb-11bf4b2543f6/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Buddy AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Buddy AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-lingokids" data-cat="cat1" title="Lingokids">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/52/d0/7e52d02a-0ed5-6413-f8fe-85203eff4b16/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Lingokids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Lingokids</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-斑马-ai-口语" data-cat="cat3" title="斑马 AI 口语">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6c/7a/a8/6c7aa8f8-c8f8-e8b8-8ad4-6dddb4ab3578/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/128x128bb.jpg" alt="斑马 AI 口语" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'斑'}))"/>
+  <span class="wall-name">斑马 AI 口语</span>
+  <span class="wall-cat">AI 老师+规划</span><span class="wall-cn">国内</span>
+</a><a class="wall-tile" href="#brand-duolingo" data-cat="cat1" title="Duolingo">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/3b/c6/173bc63c-c1fb-3695-9a55-5bc1cc582abd/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Duolingo" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <span class="wall-name">Duolingo</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-speak" data-cat="cat3" title="Speak">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/9d/8e/5f9d8e16-9e31-592f-7906-9d4724c1b6a1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Speak" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <span class="wall-name">Speak</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-cambly" data-cat="cat2" title="Cambly">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/f6/6a/fbf66a8a-2ed5-1f17-ff5a-4e174e745ccf/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/128x128bb.jpg" alt="Cambly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'C'}))"/>
+  <span class="wall-name">Cambly</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-duolingo-abc" data-cat="cat1" title="Duolingo ABC">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/98/01/13/980113b8-da7c-7c23-26c5-4697e7fb522b/AppIcon-1x_U007epad-0-sRGB-85-220.png/128x128bb.jpg" alt="Duolingo ABC" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <span class="wall-name">Duolingo ABC</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-praktika" data-cat="cat3" title="Praktika">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/04/30/2c/04302c3a-8a04-8e8d-472b-1d585430de86/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Praktika" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <span class="wall-name">Praktika</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-homer" data-cat="cat1" title="HOMER">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9f/b5/cf/9fb5cf70-9493-2e55-b450-dc68826b3a26/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="HOMER" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'H'}))"/>
+  <span class="wall-name">HOMER</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-khan-academy-kids" data-cat="cat1" title="Khan Academy Kids">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f8/fd/08/f8fd080d-d62d-b288-0b3f-5567514949bc/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/128x128bb.jpg" alt="Khan Academy Kids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'K'}))"/>
+  <span class="wall-name">Khan Academy Kids</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-epic" data-cat="cat1" title="Epic!">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6f/d3/d0/6fd3d070-f449-6d71-be8b-231b42de01a9/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Epic!" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'E'}))"/>
+  <span class="wall-name">Epic!</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-lingoda" data-cat="cat2" title="Lingoda">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/43/07/2943078c-0f22-f5cc-1d29-3cfaebe6de7f/AppIconProd-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Lingoda" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Lingoda</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-italki" data-cat="cat2" title="italki">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/3f/3f/fe3f3f09-c5b8-1b73-2e3e-9492fb75d210/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128bb.jpg" alt="italki" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'i'}))"/>
+  <span class="wall-name">italki</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-outschool" data-cat="cat2" title="Outschool">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/91/cd/5991cdec-8f9b-0d24-dcfa-efd1a81e0109/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="Outschool" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'O'}))"/>
+  <span class="wall-name">Outschool</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-vooks" data-cat="cat1" title="VOOKS">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/33/90/e9/3390e941-b809-baf4-6d2e-3b8e42ba747a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="VOOKS" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'V'}))"/>
+  <span class="wall-name">VOOKS</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-abcmouse" data-cat="cat1" title="ABCmouse">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9e/71/e3/9e71e3ba-4a93-23ad-c4cb-d9c82a97b812/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="ABCmouse" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'A'}))"/>
+  <span class="wall-name">ABCmouse</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-learna-ai" data-cat="cat3" title="Learna AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1e/c2/59/1ec259c5-78a4-1599-dc06-cbef59da8bc6/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Learna AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">Learna AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-pingo-ai" data-cat="cat3" title="Pingo AI">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/92/4c/6d924c04-80c8-397f-ee65-e419a74ccc7a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Pingo AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <span class="wall-name">Pingo AI</span>
+  <span class="wall-cat">AI 老师+规划</span>
+</a><a class="wall-tile" href="#brand-booknook" data-cat="cat2" title="BookNook">
+  <img class="wall-ico" src="https://logo.clearbit.com/booknook.com" alt="BookNook" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">BookNook</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-savvy-learning" data-cat="cat2" title="Savvy Learning">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/ee/0c/d5/ee0cd50d-7683-9dad-36b4-c37d80d5f9bc/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/128x128bb.jpg" alt="Savvy Learning" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <span class="wall-name">Savvy Learning</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-brighterly" data-cat="cat2" title="Brighterly">
+  <img class="wall-ico" src="https://logo.clearbit.com/brighterly.com" alt="Brighterly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Brighterly</span>
+  <span class="wall-cat">1V1 真人外教</span>
+</a><a class="wall-tile" href="#brand-rosetta-stone" data-cat="cat1" title="Rosetta Stone">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/21/a7/6e21a7f8-4c8a-2ec2-907a-bb5a4984c27a/RosettaStoneClassic-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/128x128bb.jpg" alt="Rosetta Stone" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'R'}))"/>
+  <span class="wall-name">Rosetta Stone</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-babbel" data-cat="cat1" title="Babbel">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d6/87/d9/d687d97c-ae76-3b3b-a1b7-967801479eb5/AppIcon-Default-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Babbel" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Babbel</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-busuu" data-cat="cat1" title="Busuu">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bc/a3/6e/bca36e47-8c37-dbd3-0a14-37b7d090495f/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-0-85-220.png/128x128bb.jpg" alt="Busuu" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <span class="wall-name">Busuu</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-lingq" data-cat="cat1" title="LingQ">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/03/1e/5f031e89-f6bb-e302-974b-889bf3a42b29/AppIcon-0-0-1x_U007epad-0-5-0-85-220.png/128x128bb.jpg" alt="LingQ" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <span class="wall-name">LingQ</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a><a class="wall-tile" href="#brand-funexpected-math" data-cat="cat1" title="Funexpected Math">
+  <img class="wall-ico" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/af/c6/32/afc6322e-2fb9-5467-5450-25b4d7bdb0d4/AppIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/128x128bb.jpg" alt="Funexpected Math" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'F'}))"/>
+  <span class="wall-name">Funexpected Math</span>
+  <span class="wall-cat">AI 自学工具</span>
+</a></div>
+</div>
+  <div class="overview-scroll" id="overview-grid" aria-hidden="true">
+<a class="overview-card" href="#brand-lingokids" data-cat="cat1" data-name="lingokids">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/52/d0/7e52d02a-0ed5-6413-f8fe-85203eff4b16/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Lingokids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Lingokids</strong><span class="stars">★★★★★</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">剧情地图任务链</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-duolingo-abc" data-cat="cat1" data-name="duolingo abc">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/98/01/13/980113b8-da7c-7c23-26c5-4697e7fb522b/AppIcon-1x_U007epad-0-sRGB-85-220.png/128x128bb.jpg" alt="Duolingo ABC" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Duolingo ABC</strong><span class="stars">★★★★★</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">完全免费无广告</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-homer" data-cat="cat1" data-name="homer">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9f/b5/cf/9fb5cf70-9493-2e55-b450-dc68826b3a26/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="HOMER" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'H'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>HOMER</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">可解释自适应</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-vooks" data-cat="cat1" data-name="vooks">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/33/90/e9/3390e941-b809-baf4-6d2e-3b8e42ba747a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="VOOKS" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'V'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>VOOKS</strong><span class="stars">★★★☆☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">动画绘本独家</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-abcmouse" data-cat="cat1" data-name="abcmouse">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9e/71/e3/9e71e3ba-4a93-23ad-c4cb-d9c82a97b812/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="ABCmouse" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'A'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>ABCmouse</strong><span class="stars">★★★☆☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">10000+ 活动</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-khan-academy-kids" data-cat="cat1" data-name="khan academy kids">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f8/fd/08/f8fd080d-d62d-b288-0b3f-5567514949bc/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/128x128bb.jpg" alt="Khan Academy Kids" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'K'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Khan Academy Kids</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">100% 免费无广告</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-epic" data-cat="cat1" data-name="epic!">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6f/d3/d0/6fd3d070-f449-6d71-be8b-231b42de01a9/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Epic!" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'E'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Epic!</strong><span class="stars">★★★☆☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">4000+ 全库</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-funexpected-math" data-cat="cat1" data-name="funexpected math">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/af/c6/32/afc6322e-2fb9-5467-5450-25b4d7bdb0d4/AppIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/128x128bb.jpg" alt="Funexpected Math" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'F'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Funexpected Math</strong><span class="stars">★★★☆☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">谜题关卡驱动</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-duolingo" data-cat="cat1" data-name="duolingo">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/3b/c6/173bc63c-c1fb-3695-9a55-5bc1cc582abd/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Duolingo" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Duolingo</strong><span class="stars">★★★★★</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">游戏化学习路径</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-rosetta-stone" data-cat="cat1" data-name="rosetta stone">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/21/a7/6e21a7f8-4c8a-2ec2-907a-bb5a4984c27a/RosettaStoneClassic-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/128x128bb.jpg" alt="Rosetta Stone" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'R'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Rosetta Stone</strong><span class="stars">★★★☆☆</span></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">25 语言</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-babbel" data-cat="cat1" data-name="babbel">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d6/87/d9/d687d97c-ae76-3b3b-a1b7-967801479eb5/AppIcon-Default-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Babbel" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Babbel</strong></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">14 语言</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-busuu" data-cat="cat1" data-name="busuu">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bc/a3/6e/bca36e47-8c37-dbd3-0a14-37b7d090495f/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-0-85-220.png/128x128bb.jpg" alt="Busuu" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Busuu</strong></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">社区互助</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-lingq" data-cat="cat1" data-name="lingq">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/03/1e/5f031e89-f6bb-e302-974b-889bf3a42b29/AppIcon-0-0-1x_U007epad-0-5-0-85-220.png/128x128bb.jpg" alt="LingQ" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>LingQ</strong></div>
+    <span class="ov-cat">AI 自学工具</span>
+    <p class="ov-usp">内容导入建课</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-outschool" data-cat="cat2" data-name="outschool">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/91/cd/5991cdec-8f9b-0d24-dcfa-efd1a81e0109/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="Outschool" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'O'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Outschool</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">140+ 主题</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-booknook" data-cat="cat2" data-name="booknook">
+  <img class="ov-icon" src="https://logo.clearbit.com/booknook.com" alt="BookNook" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>BookNook</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">K-8 教学计划</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-savvy-learning" data-cat="cat2" data-name="savvy learning">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/ee/0c/d5/ee0cd50d-7683-9dad-36b4-c37d80d5f9bc/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/128x128bb.jpg" alt="Savvy Learning" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Savvy Learning</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">固定 4 节/周</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-brighterly" data-cat="cat2" data-name="brighterly">
+  <img class="ov-icon" src="https://logo.clearbit.com/brighterly.com" alt="Brighterly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Brighterly</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">数学/阅读专项</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-lingoda" data-cat="cat2" data-name="lingoda">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/43/07/2943078c-0f22-f5cc-1d29-3cfaebe6de7f/AppIconProd-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Lingoda" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Lingoda</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">课包梯度</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-italki" data-cat="cat2" data-name="italki">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/3f/3f/fe3f3f09-c5b8-1b73-2e3e-9492fb75d210/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128bb.jpg" alt="italki" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'i'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>italki</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">150+ 语言</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-cambly" data-cat="cat2" data-name="cambly">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/f6/6a/fbf66a8a-2ed5-1f17-ff5a-4e174e745ccf/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/128x128bb.jpg" alt="Cambly" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'C'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Cambly</strong></div>
+    <span class="ov-cat">1V1 真人外教</span>
+    <p class="ov-usp">Cambly Kids 4–15 岁</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-buddy-ai" data-cat="cat3" data-name="buddy ai">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7b/6d/25/7b6d25aa-f706-3b85-d3cb-11bf4b2543f6/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Buddy AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Buddy AI</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">AI 虚拟老师实时语音</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-斑马-ai-口语" data-cat="cat3" data-name="斑马 ai 口语">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6c/7a/a8/6c7aa8f8-c8f8-e8b8-8ad4-6dddb4ab3578/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/128x128bb.jpg" alt="斑马 AI 口语" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'斑'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>斑马 AI 口语</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">L3 AI 老师口语带练</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-speak" data-cat="cat3" data-name="speak">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/9d/8e/5f9d8e16-9e31-592f-7906-9d4724c1b6a1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Speak" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Speak</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">系统课路径</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-praktika" data-cat="cat3" data-name="praktika">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/04/30/2c/04302c3a-8a04-8e8d-472b-1d585430de86/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Praktika" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Praktika</strong><span class="stars">★★★★☆</span></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">AI 虚拟外教</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-learna-ai" data-cat="cat3" data-name="learna ai">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1e/c2/59/1ec259c5-78a4-1599-dc06-cbef59da8bc6/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Learna AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Learna AI</strong></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">AI 模拟对话</p>
+  </div>
+</a>
+<a class="overview-card" href="#brand-pingo-ai" data-cat="cat3" data-name="pingo ai">
+  <img class="ov-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/92/4c/6d924c04-80c8-397f-ee65-e419a74ccc7a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Pingo AI" width="44" height="44" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+  <div class="ov-body">
+    <div class="ov-top"><strong>Pingo AI</strong></div>
+    <span class="ov-cat">AI 老师+规划</span>
+    <p class="ov-usp">主题路径对话</p>
+  </div>
+</a></div>
+</section>
+
+<section class="section brands-section" id="brands" data-active-cat="all">
+  <h2 class="sh">深度分析 <span class="badge">开放阅读 · 无折叠</span></h2>
+  <div class="toolbar" id="bd-filters">
+    <span class="filter-chip on" data-filter="all">全部</span>
+    <span class="filter-chip" data-filter="cat1">AI 自学 · 13</span>
+    <span class="filter-chip" data-filter="cat2">1V1 外教 · 7</span>
+    <span class="filter-chip" data-filter="cat3">AI 老师+规划 · 6</span>
+  </div>
+  <div class="cat-context-bar"><div class="ctx ctx-all">
+      <span class="ctx-dot" style="background:#6f6a78"></span>
+      <div class="ctx-text"><strong>全部竞品</strong><span>三大赛道完整视图 · 共 26 家</span></div>
+      <span class="ctx-count">26 家</span>
+    </div><div class="ctx ctx-cat1">
+      <span class="ctx-dot" style="background:#3568c7"></span>
+      <div class="ctx-text"><strong>品类一 · AI 自学工具类</strong><span>内容订阅 + 游戏化路径 · 无 AI 老师核心关系</span></div>
+      <span class="ctx-count">13 家</span>
+    </div><div class="ctx ctx-cat2">
+      <span class="ctx-dot" style="background:#d94e2b"></span>
+      <div class="ctx-text"><strong>品类二 · 1V1 真人外教课程类</strong><span>Live 教学 · 按课 / 订阅 / 固定频次</span></div>
+      <span class="ctx-count">7 家</span>
+    </div><div class="ctx ctx-cat3">
+      <span class="ctx-dot" style="background:#5536a3"></span>
+      <div class="ctx-text"><strong>品类三 · AI 老师 + 学习规划类</strong><span>AI 数字人带练 · 体系课 · 定级与学习计划</span></div>
+      <span class="ctx-count">6 家</span>
+    </div></div>
+  <div class="brands-zone" id="brands-zone">
+    <div class="brands-flow" id="brands-list">
+<article class="brand-panel" id="brand-lingokids" data-cat="cat1" data-name="lingokids">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://lingokids.com" target="_blank" rel="noopener noreferrer" title="Lingokids 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7e/52/d0/7e52d02a-0ed5-6413-f8fe-85203eff4b16/AppIconMain-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Lingokids" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Lingokids</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★★★</span>
+      </div>
+      <p class="bp-tagline">2–8 岁 · 玩学混合 · 5000 万+ 家庭</p>
+      <div class="bp-links"><a class="site-link" href="https://lingokids.com" target="_blank" rel="noopener noreferrer" title="访问 Lingokids 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">lingokids.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>学龄前—小学低段<strong>游戏化英语启蒙平台</strong>，Playlearning™ 覆盖听说读写 + STEAM。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>海量互动内容 + 家长进度报告，降低「纯玩无学」焦虑。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">剧情地图任务链</span><span class="usp-chip">双端叙事（孩子沉浸+家长 KPI）</span><span class="usp-chip">线下单词卡片 O2O</span><span class="usp-chip">COPPA 合规</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/69/c3/4f/69c34f0d-cc53-4783-78cc-d0a36ef48699/6.9_Default_set_Toy_Story_EN_1.png/960x540bb-60.jpg" title="剧情地图" aria-label="查看 剧情地图">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/69/c3/4f/69c34f0d-cc53-4783-78cc-d0a36ef48699/6.9_Default_set_Toy_Story_EN_1.png/156x0w.jpg" alt="剧情地图" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8b/fc/86/8bfc86a1-4b18-dbe5-9541-7c1f496f3cbf/6.9_Default_set_Toy_Story_EN_2.png/960x540bb-60.jpg" title="互动任务" aria-label="查看 互动任务">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8b/fc/86/8bfc86a1-4b18-dbe5-9541-7c1f496f3cbf/6.9_Default_set_Toy_Story_EN_2.png/156x0w.jpg" alt="互动任务" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">Basic 免费版</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>3000+ 游戏/播客/动画</li><li>1 儿童档案 · 无广告</li></ul><div class="sku-limit">每日限 3 节 · 无离线 · 无进阶报告</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Plus 订阅</span><span class="sku-price">$14.99/月 · $71.99/年</span></div>
+          <ul class="sku-benefits"><li>全内容解锁</li><li>4 儿童档案</li><li>离线 · 多设备同步</li><li>进阶进度报告</li></ul><div class="sku-limit">7 天免费试用</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>2–8 岁海外家庭；怕纯玩家长；北美/欧洲/拉美</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★★★ 剧情任务 + 家长开口数据 + 任务绑定语言产出</footer>
+</article>
+<article class="brand-panel" id="brand-duolingo-abc" data-cat="cat1" data-name="duolingo abc">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.duolingo.com/abc" target="_blank" rel="noopener noreferrer" title="Duolingo ABC 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/98/01/13/980113b8-da7c-7c23-26c5-4697e7fb522b/AppIcon-1x_U007epad-0-sRGB-85-220.png/128x128bb.jpg" alt="Duolingo ABC" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Duolingo ABC</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★★★</span>
+      </div>
+      <p class="bp-tagline">3–8 岁 · 读写启蒙 · Duolingo 延伸</p>
+      <div class="bp-links"><a class="site-link" href="https://www.duolingo.com/abc" target="_blank" rel="noopener noreferrer" title="访问 Duolingo ABC 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">duolingo.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Duolingo 旗下<strong>儿童读写专项 App</strong>，字母/拼读/词汇，继承 Duolingo 练习心智。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>零门槛结构化读写课；微任务链符合低龄注意力窗口。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">完全免费无广告</span><span class="usp-chip">微任务链单步意图</span><span class="usp-chip">触屏互动写字</span><span class="usp-chip">温和 retry</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/be/c8/3e/bec83ed1-c7a0-340a-56be-10dc211d2a57/63d22b57-0391-4008-b114-5e2c1a4b4df7_Duolingo_Inc_Duolingo_US_iOS_5.5_Inch_Screenshot_Mockups_220503-1.png/960x540bb.png" title="字母互动" aria-label="查看 字母互动">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/be/c8/3e/bec83ed1-c7a0-340a-56be-10dc211d2a57/63d22b57-0391-4008-b114-5e2c1a4b4df7_Duolingo_Inc_Duolingo_US_iOS_5.5_Inch_Screenshot_Mockups_220503-1.png/156x0w.png" alt="字母互动" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/e0/6d/19/e06d19b9-893a-0c27-5905-2c0bfa8852b1/bfded329-6712-4e55-88ec-6bbf7605e63f_Duolingo_Inc_Duolingo_US_iOS_5.5_Inch_Screenshot_Mockups_220503-2.png/960x540bb.png" title="跟读练习" aria-label="查看 跟读练习">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/e0/6d/19/e06d19b9-893a-0c27-5905-2c0bfa8852b1/bfded329-6712-4e55-88ec-6bbf7605e63f_Duolingo_Inc_Duolingo_US_iOS_5.5_Inch_Screenshot_Mockups_220503-2.png/156x0w.png" alt="跟读练习" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">完全免费</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>系统读写课 · 触屏写字</li><li>无广告 · 无内购</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>3–8 岁读写起步；熟悉 Duolingo 打卡的家庭</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★★★ 微任务链 + 示范控件 + 温和重试 → AI 回合节奏</footer>
+</article>
+<article class="brand-panel" id="brand-homer" data-cat="cat1" data-name="homer">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://learnwithhomer.com" target="_blank" rel="noopener noreferrer" title="HOMER 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/9f/b5/cf/9fb5cf70-9493-2e55-b450-dc68826b3a26/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="HOMER" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'H'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>HOMER</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">2–8 岁 · 自适应读写</p>
+      <div class="bp-links"><a class="site-link" href="https://learnwithhomer.com" target="_blank" rel="noopener noreferrer" title="访问 HOMER 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">learnwithhomer.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Begin Learning 旗下<strong>个性化早期读写+数学+创造力</strong>系统课。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>基于年龄/进度/薄弱项的个性化推荐，家长可理解推荐理由。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">可解释自适应</span><span class="usp-chip">三选一任务卡</span><span class="usp-chip">技能树+支线并行</span><span class="usp-chip">7 天试用</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/de/65/7d/de657de9-47f1-2162-6cb5-d33dc573fc4b/ffe05434-9201-450c-906f-f896efc0d65b_1242x2208-01.png/960x540bb.png" title="阅读路径" aria-label="查看 阅读路径">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/de/65/7d/de657de9-47f1-2162-6cb5-d33dc573fc4b/ffe05434-9201-450c-906f-f896efc0d65b_1242x2208-01.png/156x0w.png" alt="阅读路径" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/03/08/8d/03088d90-395c-5d34-7573-9ecb475f033f/70fe56f2-6adb-4cba-b6e3-80d87180af07_1242x2208-02.png/960x540bb.png" title="个性化课" aria-label="查看 个性化课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/03/08/8d/03088d90-395c-5d34-7573-9ecb475f033f/70fe56f2-6adb-4cba-b6e3-80d87180af07_1242x2208-02.png/156x0w.png" alt="个性化课" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">7 天试用</span><span class="sku-price">免费</span></div>
+          <ul class="sku-benefits"><li>系统课全功能体验</li></ul><div class="sku-limit">7 天后需订阅</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">订阅</span><span class="sku-price">$12.99/月 · $79.99/年</span></div>
+          <ul class="sku-benefits"><li>阅读+数学+创造力系统课</li><li>个性化学习路径</li><li>进度报告</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>重视教育解释权的家长；2–8 岁读写起步</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★★☆ 可解释推荐 + 三选一任务卡</footer>
+</article>
+<article class="brand-panel" id="brand-vooks" data-cat="cat1" data-name="vooks">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.vooks.com" target="_blank" rel="noopener noreferrer" title="VOOKS 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/33/90/e9/3390e941-b809-baf4-6d2e-3b8e42ba747a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="VOOKS" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'V'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>VOOKS</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★☆☆</span>
+      </div>
+      <p class="bp-tagline">2–8 岁 · 动画绘本流媒体</p>
+      <div class="bp-links"><a class="site-link" href="https://www.vooks.com" target="_blank" rel="noopener noreferrer" title="访问 VOOKS 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">vooks.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>动画故事书平台，<strong>静态绘本→动画有声书</strong>，聚焦阅读兴趣。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>高质量动画绘本 + 只听模式，适合睡前/碎片时间。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">动画绘本独家</span><span class="usp-chip">只听/睡前模式</span><span class="usp-chip">自定义播放列表</span><span class="usp-chip">节拍控回合</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8b/e9/ac/8be9ac5b-6873-6347-f968-621189db5564/Vooks_App_Store_-_6.9_inch_iPhone_BRIGHTS_1.jpg/960x540bb-60.jpg" title="绘本库" aria-label="查看 绘本库">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/8b/e9/ac/8be9ac5b-6873-6347-f968-621189db5564/Vooks_App_Store_-_6.9_inch_iPhone_BRIGHTS_1.jpg/156x0w.jpg" alt="绘本库" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b7/f7/d1/b7f7d1b0-2423-934c-19d7-3308669129c1/Vooks_App_Store_-_6.9_inch_iPhone_BRIGHTS_2.jpg/960x540bb-60.jpg" title="动画播放" aria-label="查看 动画播放">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b7/f7/d1/b7f7d1b0-2423-934c-19d7-3308669129c1/Vooks_App_Store_-_6.9_inch_iPhone_BRIGHTS_2.jpg/156x0w.jpg" alt="动画播放" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">基础版</span><span class="sku-price">—</span></div>
+          <ul class="sku-benefits"><li>故事绘本音视频 · 有限播放</li></ul><div class="sku-limit">无只听模式</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">付费版</span><span class="sku-price">$9.99/月 · $69.99/年</span></div>
+          <ul class="sku-benefits"><li>全库解锁</li><li>只听/睡前模式</li><li>自定义播放列表</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>2–8 岁亲子共读；阅读兴趣培养</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★☆☆ 节拍控回合适合 AI 伴读；读后 retell 模板</footer>
+</article>
+<article class="brand-panel" id="brand-abcmouse" data-cat="cat1" data-name="abcmouse">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.abcmouse.com" target="_blank" rel="noopener noreferrer" title="ABCmouse 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/9e/71/e3/9e71e3ba-4a93-23ad-c4cb-d9c82a97b812/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="ABCmouse" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'A'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>ABCmouse</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★☆☆</span>
+      </div>
+      <p class="bp-tagline">2–8 岁 · 全科启蒙 · Age of Learning</p>
+      <div class="bp-links"><a class="site-link" href="https://www.abcmouse.com" target="_blank" rel="noopener noreferrer" title="访问 ABCmouse 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">abcmouse.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Age of Learning 旗下<strong>全科早期学习平台</strong>，10000+ 活动，美国学校广泛采用。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>超大体量结构化内容 + 个性化路径 + 屏幕时间管理。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">10000+ 活动</span><span class="usp-chip">年付性价比极高</span><span class="usp-chip">3 儿童档案</span><span class="usp-chip">30 天 Web 试用</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://www.abcmouse.com/abc/images/ABCmouse_Homepage_Preview.png" title="学习路径" aria-label="查看 学习路径">
+          <img src="https://www.abcmouse.com/abc/images/ABCmouse_Homepage_Preview.png" alt="学习路径" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://www.abcmouse.com/assets-mkt/routes/home/learning_path_v1_2x.png" title="活动地图" aria-label="查看 活动地图">
+          <img src="https://www.abcmouse.com/assets-mkt/routes/home/learning_path_v1_2x.png" alt="活动地图" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">Basic Access</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>部分系统课 · 部分游戏</li></ul><div class="sku-limit">每日活动上限 · 无多档案</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">VIP Premium</span><span class="sku-price">$14.99/月 · $45/年</span></div>
+          <ul class="sku-benefits"><li>10000+ 活动全解锁</li><li>3 儿童档案</li><li>个性化路径 · 离线 · 屏幕管理</li></ul><div class="sku-limit">Web 注册 30 天试用</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>2–8 岁美国家庭；全科启蒙；价格敏感</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>年付 $45 是内容类价格锚；Dino 用 AI 互动差异化</footer>
+</article>
+<article class="brand-panel" id="brand-khan-academy-kids" data-cat="cat1" data-name="khan academy kids">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://learn.khanacademy.org/khan-academy-kids/" target="_blank" rel="noopener noreferrer" title="Khan Academy Kids 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/f8/fd/08/f8fd080d-d62d-b288-0b3f-5567514949bc/AppIcon-0-0-1x_U007emarketing-0-8-0-0-85-220.png/128x128bb.jpg" alt="Khan Academy Kids" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'K'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Khan Academy Kids</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">2–8 岁 · 公益免费</p>
+      <div class="bp-links"><a class="site-link" href="https://learn.khanacademy.org/khan-academy-kids/" target="_blank" rel="noopener noreferrer" title="访问 Khan Academy Kids 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">learn.khanacademy.org</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Khan Academy 旗下<strong>非盈利儿童启蒙 App</strong>，阅读/数学/逻辑/社交情感。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>完全免费 + 高质量教研 + 无广告，公益背书降低试用门槛。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">100% 免费无广告</span><span class="usp-chip">非盈利信任背书</span><span class="usp-chip">单元地图</span><span class="usp-chip">低惩罚反馈</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/cc/86/ff/cc86ff69-aa24-84f3-c43a-d0946579ea7c/khankids_english_iphonex4.png/960x540bb-60.jpg" title="主界面" aria-label="查看 主界面">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/cc/86/ff/cc86ff69-aa24-84f3-c43a-d0946579ea7c/khankids_english_iphonex4.png/156x0w.jpg" alt="主界面" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d7/7b/22/d77b2269-9972-4462-17b6-d6ef13527e49/khankids_english_iphonex6.png/960x540bb-60.jpg" title="互动练习" aria-label="查看 互动练习">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d7/7b/22/d77b2269-9972-4462-17b6-d6ef13527e49/khankids_english_iphonex6.png/156x0w.jpg" alt="互动练习" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">完全免费</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>互动课 · 小游戏 · 阅读</li><li>进度追踪 · 无广告</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>2–8 岁全球家庭；重视教育公平</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★★☆ 单元地图 + 低惩罚脚手架 → 可信 AI 课表</footer>
+</article>
+<article class="brand-panel" id="brand-epic" data-cat="cat1" data-name="epic!">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.getepic.com" target="_blank" rel="noopener noreferrer" title="Epic! 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6f/d3/d0/6fd3d070-f449-6d71-be8b-231b42de01a9/AppIcon-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Epic!" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'E'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Epic!</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★☆☆</span>
+      </div>
+      <p class="bp-tagline">12 岁前 · 数字图书馆 4000+</p>
+      <div class="bp-links"><a class="site-link" href="https://www.getepic.com" target="_blank" rel="noopener noreferrer" title="访问 Epic! 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">getepic.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>全球最大儿童数字阅读平台，<strong>订阅制图书馆</strong>（图书/视频/漫画/有声书）。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>4000+ 资源广度 + 个性化推荐 + 养宠/开宝箱游戏化。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">4000+ 全库</span><span class="usp-chip">养宠开宝箱</span><span class="usp-chip">发现→书架→阅读器</span><span class="usp-chip">教师端免费</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/9e/81/99/9e819915-6a8b-07ed-0262-f2805fd37886/02_2025_App_Store_Screenshot_1.jpg/960x540bb.jpg" title="书库首页" aria-label="查看 书库首页">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/9e/81/99/9e819915-6a8b-07ed-0262-f2805fd37886/02_2025_App_Store_Screenshot_1.jpg/156x0w.jpg" alt="书库首页" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/51/46/b6/5146b6c0-2b58-7f91-d606-c0446bcd099e/02_2025_App_Store_Screenshot_2.jpg/960x540bb.jpg" title="阅读界面" aria-label="查看 阅读界面">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/51/46/b6/5146b6c0-2b58-7f91-d606-c0446bcd099e/02_2025_App_Store_Screenshot_2.jpg/156x0w.jpg" alt="阅读界面" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">Epic Basic</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>有限图书/视频 · 个人书架</li></ul><div class="sku-limit">每日阅读时间限制</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Epic Unlimited</span><span class="sku-price">$13.99/月 · $84.99/年</span></div>
+          <ul class="sku-benefits"><li>4000+ 图书/视频/漫画/有声书</li><li>养宠开宝箱 · 无限阅读</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>12 岁前重度阅读家庭；教师/学校</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★☆☆ 同线复现 + retell 模板 + 标签分支对话</footer>
+</article>
+<article class="brand-panel" id="brand-funexpected-math" data-cat="cat1" data-name="funexpected math">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://funexpected.com" target="_blank" rel="noopener noreferrer" title="Funexpected Math 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/af/c6/32/afc6322e-2fb9-5467-5450-25b4d7bdb0d4/AppIcon-0-0-1x_U007emarketing-0-6-0-85-220.png/128x128bb.jpg" alt="Funexpected Math" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'F'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Funexpected Math</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★☆☆</span>
+      </div>
+      <p class="bp-tagline">3–7 岁 · 探究式数学</p>
+      <div class="bp-links"><a class="site-link" href="https://funexpected.com" target="_blank" rel="noopener noreferrer" title="访问 Funexpected Math 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">funexpected.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>探究式<strong>数学思维游戏</strong>，谜题驱动，UX 脚手架参考。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>可视化脚手架 + 分层提示，「少刷题、多动脑」。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">谜题关卡驱动</span><span class="usp-chip">分层脚手架</span><span class="usp-chip">7 天试用</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f0/d9/6a/f0d96a86-432b-78df-a1ba-77aa6585e2a9/5_01_screen.jpg/960x540bb.jpg" title="数学游戏" aria-label="查看 数学游戏">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f0/d9/6a/f0d96a86-432b-78df-a1ba-77aa6585e2a9/5_01_screen.jpg/156x0w.jpg" alt="数学游戏" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/b9/6c/c8/b96cc89c-8d77-7268-2cb7-4a9e8248da08/5_02_screen.jpg/960x540bb.jpg" title="关卡挑战" aria-label="查看 关卡挑战">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/b9/6c/c8/b96cc89c-8d77-7268-2cb7-4a9e8248da08/5_02_screen.jpg/156x0w.jpg" alt="关卡挑战" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">7 天试用</span><span class="sku-price">免费</span></div>
+          <ul class="sku-benefits"><li>数学系统课全功能</li></ul><div class="sku-limit">7 天后需订阅</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">订阅</span><span class="sku-price">$8.99/月</span></div>
+          <ul class="sku-benefits"><li>数学系统课 · 游戏化 · 进度追踪</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>3–7 岁愿为思维质感付费的家长（非英语直接竞品）</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★☆☆ 分层脚手架 → 语言情境→词块→示范句</footer>
+</article>
+<article class="brand-panel" id="brand-duolingo" data-cat="cat1" data-name="duolingo">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.duolingo.com" target="_blank" rel="noopener noreferrer" title="Duolingo 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/17/3b/c6/173bc63c-c1fb-3695-9a55-5bc1cc582abd/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Duolingo" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'D'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Duolingo</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★★★</span>
+      </div>
+      <p class="bp-tagline">全年龄 · 3.5 亿用户 · 游戏化路径</p>
+      <div class="bp-links"><a class="site-link" href="https://www.duolingo.com" target="_blank" rel="noopener noreferrer" title="访问 Duolingo 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">duolingo.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>全球最大语言 App，<strong>游戏化自学路径</strong> + Super/Max 分层订阅。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>免费获客 + 路径化练习；Max 档含 AI Video Call / Roleplay。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">游戏化学习路径</span><span class="usp-chip">Super 去广告</span><span class="usp-chip">Max AI 口语</span><span class="usp-chip">Family 6 人</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/_hN3NmTd_wOdrNcQQii5Eswmydr3RZLQtyklVZGiDpeVrZvNk8V5nuJ5kRpx-Pp3Ikv9LCxSnmd7DfxFmaZ6BKU=w526-h296-rw" title="学习路径" aria-label="查看 学习路径">
+          <img src="https://play-lh.googleusercontent.com/_hN3NmTd_wOdrNcQQii5Eswmydr3RZLQtyklVZGiDpeVrZvNk8V5nuJ5kRpx-Pp3Ikv9LCxSnmd7DfxFmaZ6BKU=w120-h214-rw" alt="学习路径" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/ANYL2VoUZlVBnpDYYLB2Gs5AUbHfw652d-YmhPiV2wmCdKkdqnaQz-3COfhvy044ZryYslrTZp5gfkk4J1wJ=w526-h296-rw" title="Max AI 对话" aria-label="查看 Max AI 对话">
+          <img src="https://play-lh.googleusercontent.com/ANYL2VoUZlVBnpDYYLB2Gs5AUbHfw652d-YmhPiV2wmCdKkdqnaQz-3COfhvy044ZryYslrTZp5gfkk4J1wJ=w120-h214-rw" alt="Max AI 对话" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">Free</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>全路径课程</li></ul><div class="sku-limit">广告 · 5 红心/天 · 无 AI</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Super</span><span class="sku-price">$9.99/月 · $83.99/年</span></div>
+          <ul class="sku-benefits"><li>无广告 · 无限红心</li><li>离线 · Practice Hub</li></ul><div class="sku-limit">无 AI 功能</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Max</span><span class="sku-price">$12.99/月 · $95.99/年</span></div>
+          <ul class="sku-benefits"><li>Super 全部</li><li>Video Call (Lily)</li><li>Roleplay · GPT-4 口语</li></ul><div class="sku-limit">单次通话 1–6 min</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Family Max</span><span class="sku-price">$239/年</span></div>
+          <ul class="sku-benefits"><li>6 人账号</li><li>含 Max AI 权益</li></ul><div class="sku-limit">≈$40/人/年</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>全年龄；Duolingo ABC 覆盖儿童；全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>路径 UX + Max AI → Dino 可对标的分层逻辑</footer>
+</article>
+<article class="brand-panel" id="brand-rosetta-stone" data-cat="cat1" data-name="rosetta stone">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.rosettastone.com" target="_blank" rel="noopener noreferrer" title="Rosetta Stone 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6e/21/a7/6e21a7f8-4c8a-2ec2-907a-bb5a4984c27a/RosettaStoneClassic-0-0-1x_U007epad-0-1-0-sRGB-85-220.png/128x128bb.jpg" alt="Rosetta Stone" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'R'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Rosetta Stone</h3>
+        <span class="cat-pill">AI 自学工具</span><span class="stars">★★★☆☆</span>
+      </div>
+      <p class="bp-tagline">全年龄 · 25 语言 · 沉浸式</p>
+      <div class="bp-links"><a class="site-link" href="https://www.rosettastone.com" target="_blank" rel="noopener noreferrer" title="访问 Rosetta Stone 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">rosettastone.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>老牌<strong>沉浸式语言自学</strong>，TruAccent 语音识别，专业度高。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>沉浸式无翻译 + 语音跟读 + 短语集/故事拓展。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">25 语言</span><span class="usp-chip">TruAccent 语音识别</span><span class="usp-chip">沉浸式无翻译</span><span class="usp-chip">3 天试用</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/cd/33/cd/cd33cd2d-0893-a33b-2f8d-07121f849c2e/pr_source.png/392x696bb.png" title="沉浸式课" aria-label="查看 沉浸式课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/cd/33/cd/cd33cd2d-0893-a33b-2f8d-07121f849c2e/pr_source.png/156x0w.png" alt="沉浸式课" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/ac/ab/91/acab91fe-d1b7-2c1e-1fcc-040bc099926b/pr_source.png/392x696bb.png" title="TruAccent 跟读" aria-label="查看 TruAccent 跟读">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/ac/ab/91/acab91fe-d1b7-2c1e-1fcc-040bc099926b/pr_source.png/156x0w.png" alt="TruAccent 跟读" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">3 天试用</span><span class="sku-price">免费</span></div>
+          <ul class="sku-benefits"><li>系统课+拓展各板块首节</li></ul><div class="sku-limit">3 天后需订阅</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">订阅</span><span class="sku-price">$19.99/月 · $159/年</span></div>
+          <ul class="sku-benefits"><li>25 语言全解锁</li><li>TruAccent 语音跟读</li><li>短语集/故事/离线音频</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人/青少年；重视专业度和沉浸式</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>沉浸式 + 语音跟读参考；儿童场景需更游戏化</footer>
+</article>
+<article class="brand-panel" id="brand-babbel" data-cat="cat1" data-name="babbel">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.babbel.com" target="_blank" rel="noopener noreferrer" title="Babbel 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/d6/87/d9/d687d97c-ae76-3b3b-a1b7-967801479eb5/AppIcon-Default-0-0-1x_U007epad-0-1-0-0-85-220.png/128x128bb.jpg" alt="Babbel" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Babbel</h3>
+        <span class="cat-pill">AI 自学工具</span>
+      </div>
+      <p class="bp-tagline">成人 · 14 语言 · 结构化自学</p>
+      <div class="bp-links"><a class="site-link" href="https://www.babbel.com" target="_blank" rel="noopener noreferrer" title="访问 Babbel 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">babbel.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>欧洲老牌<strong>结构化语言自学 App</strong> + Babbel Live 真人小组。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>结构化课程 + 语音识别 + Live 小组混合。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">14 语言</span><span class="usp-chip">语音识别</span><span class="usp-chip">Babbel Live 小组</span><span class="usp-chip">终身选项</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5a/f7/45/5af74565-ee7f-8b68-877c-ea36f1360d30/01-ENG.jpg/392x696bb.jpg" title="系统课" aria-label="查看 系统课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/5a/f7/45/5af74565-ee7f-8b68-877c-ea36f1360d30/01-ENG.jpg/156x0w.jpg" alt="系统课" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b7/88/c4/b788c499-1d5a-31a5-35e2-ebdb417429ec/02-ENG.jpg/392x696bb.jpg" title="Live 小组" aria-label="查看 Live 小组">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/b7/88/c4/b788c499-1d5a-31a5-35e2-ebdb417429ec/02-ENG.jpg/156x0w.jpg" alt="Live 小组" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">订阅</span><span class="sku-price">$17.95/月</span></div>
+          <ul class="sku-benefits"><li>14 语言 · 听说读写</li><li>语音识别</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">终身</span><span class="sku-price">$299.99 一次性</span></div>
+          <ul class="sku-benefits"><li>永久解锁</li></ul>
+        </div><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">Live Group</span><span class="sku-price">$30.95/月</span></div>
+          <ul class="sku-benefits"><li>5 人小组 Live 课</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人语言学习；欧洲/全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>Live 小组 + App 混合模式参考</footer>
+</article>
+<article class="brand-panel" id="brand-busuu" data-cat="cat1" data-name="busuu">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.busuu.com" target="_blank" rel="noopener noreferrer" title="Busuu 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/bc/a3/6e/bca36e47-8c37-dbd3-0a14-37b7d090495f/AppIcon-0-0-1x_U007emarketing-0-8-0-sRGB-0-0-85-220.png/128x128bb.jpg" alt="Busuu" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Busuu</h3>
+        <span class="cat-pill">AI 自学工具</span>
+      </div>
+      <p class="bp-tagline">成人 · 社区 + 自学分层</p>
+      <div class="bp-links"><a class="site-link" href="https://www.busuu.com" target="_blank" rel="noopener noreferrer" title="访问 Busuu 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">busuu.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>社区驱动语言自学 App，Plus 档含 AI 对话/纠音。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>社区母语者纠错 + AI 对话（Plus）+ 语法课（VIP）。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">社区互助</span><span class="usp-chip">AI 对话/纠音 (Plus)</span><span class="usp-chip">7 天免费</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e4/66/49/e466490d-d2b5-eddf-3e3e-e401f1a3132d/ef40b8ee-049e-453f-bb7c-6595f19fe712_iOS-5.5-EN-RealLife.jpg/392x696bb.jpg" title="Real Life 场景" aria-label="查看 Real Life 场景">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/e4/66/49/e466490d-d2b5-eddf-3e3e-e401f1a3132d/ef40b8ee-049e-453f-bb7c-6595f19fe712_iOS-5.5-EN-RealLife.jpg/156x0w.jpg" alt="Real Life 场景" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a9/54/38/a9543848-fca6-3f4d-a5bf-e199e1fde343/6e7682ab-be8e-47f7-8625-5dd7b3522eea_iOS-5.5-EN-Study.jpg/392x696bb.jpg" title="AI 对话 Plus" aria-label="查看 AI 对话 Plus">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a9/54/38/a9543848-fca6-3f4d-a5bf-e199e1fde343/6e7682ab-be8e-47f7-8625-5dd7b3522eea_iOS-5.5-EN-Study.jpg/156x0w.jpg" alt="AI 对话 Plus" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">7 天试用</span><span class="sku-price">免费</span></div>
+          <ul class="sku-benefits"><li>全功能体验</li></ul><div class="sku-limit">7 天后需订阅</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">VIP</span><span class="sku-price">$12.49/月</span></div>
+          <ul class="sku-benefits"><li>语法 · 单词回顾 · 无广告</li></ul><div class="sku-limit">无 AI</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Plus</span><span class="sku-price">$14.9/月</span></div>
+          <ul class="sku-benefits"><li>VIP 全部</li><li>AI 对话 · 纠音</li><li>私人定制内容</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人语言学习；重视社区互动</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>AI 纠音分层逻辑可借鉴</footer>
+</article>
+<article class="brand-panel" id="brand-lingq" data-cat="cat1" data-name="lingq">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.lingq.com" target="_blank" rel="noopener noreferrer" title="LingQ 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/03/1e/5f031e89-f6bb-e302-974b-889bf3a42b29/AppIcon-0-0-1x_U007epad-0-5-0-85-220.png/128x128bb.jpg" alt="LingQ" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>LingQ</h3>
+        <span class="cat-pill">AI 自学工具</span>
+      </div>
+      <p class="bp-tagline">成人 · 内容导入自学</p>
+      <div class="bp-links"><a class="site-link" href="https://www.lingq.com" target="_blank" rel="noopener noreferrer" title="访问 LingQ 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">lingq.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>内容驱动自学平台，Plus 档 AI 简化/转化影音为课程。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>导入影音创建课程 + AI 简化（Plus）+ 无限保存单词。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">内容导入建课</span><span class="usp-chip">AI 简化/转化 (Plus)</span><span class="usp-chip">小语种覆盖</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/74/99/7a/74997a59-bd51-6cb1-fe30-1215ac946c8d/7a9791a9-af4c-475a-a078-37a762fb2f51_0_APP_IPHONE_55_0.png/392x696bb.png" title="内容导入" aria-label="查看 内容导入">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/74/99/7a/74997a59-bd51-6cb1-fe30-1215ac946c8d/7a9791a9-af4c-475a-a078-37a762fb2f51_0_APP_IPHONE_55_0.png/156x0w.png" alt="内容导入" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/0c/0f/14/0c0f14de-5832-398d-8db0-56e7f0818541/1e6a9312-100c-48dd-859a-a93cb96823da_1_APP_IPHONE_55_1.png/392x696bb.png" title="AI 简化课" aria-label="查看 AI 简化课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/0c/0f/14/0c0f14de-5832-398d-8db0-56e7f0818541/1e6a9312-100c-48dd-859a-a93cb96823da_1_APP_IPHONE_55_1.png/156x0w.png" alt="AI 简化课" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Premium</span><span class="sku-price">$14.99/月</span></div>
+          <ul class="sku-benefits"><li>无限保存单词 · 里程碑</li><li>导入影音创建课程</li></ul><div class="sku-limit">无 AI</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Plus</span><span class="sku-price">$29.99/月</span></div>
+          <ul class="sku-benefits"><li>Premium 全部</li><li>AI 简化课程</li><li>音视频转课程</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>中高级学习者；重视真实内容输入</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>拓展资源可借鉴导入/AI 转化逻辑</footer>
+</article>
+<article class="brand-panel" id="brand-outschool" data-cat="cat2" data-name="outschool">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://outschool.com" target="_blank" rel="noopener noreferrer" title="Outschool 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/59/91/cd/5991cdec-8f9b-0d24-dcfa-efd1a81e0109/AppIcon-1x_U007emarketing-0-8-0-85-220-0.png/128x128bb.jpg" alt="Outschool" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'O'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Outschool</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">3–18 岁 · Live 课程 Marketplace</p>
+      <div class="bp-links"><a class="site-link" href="https://outschool.com" target="_blank" rel="noopener noreferrer" title="访问 Outschool 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">outschool.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>全球最大<strong>在线 live 课程 marketplace</strong>，140+ 主题，小组/1v1 弹性预约。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>海量课程选择 + 灵活频次 + 免费试听。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">140+ 主题</span><span class="usp-chip">小组/1v1 弹性</span><span class="usp-chip">免费试听</span><span class="usp-chip">教师自定价</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/s050cXiBRoUrfW0-dwSb1HotmkjdWpuMpjxRG0_laRk21UOg0vUFe_03W13vhTmVfglv9UaOC7rOlAf4XYhqzw=w526-h296-rw" title="课程浏览" aria-label="查看 课程浏览">
+          <img src="https://play-lh.googleusercontent.com/s050cXiBRoUrfW0-dwSb1HotmkjdWpuMpjxRG0_laRk21UOg0vUFe_03W13vhTmVfglv9UaOC7rOlAf4XYhqzw=w120-h214-rw" alt="课程浏览" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/4_p47caHJs0da1N-BMqhXgcLBlYMwbpnqCVxI0iSZHUAradbw7EnjSZc72sUR0RhwRZmhu5PE4Jj3BOoDxGUE5k=w526-h296-rw" title="Live 课堂" aria-label="查看 Live 课堂">
+          <img src="https://play-lh.googleusercontent.com/4_p47caHJs0da1N-BMqhXgcLBlYMwbpnqCVxI0iSZHUAradbw7EnjSZc72sUR0RhwRZmhu5PE4Jj3BOoDxGUE5k=w120-h214-rw" alt="Live 课堂" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">试听课</span><span class="sku-price">$0</span></div>
+          <ul class="sku-benefits"><li>首次免费试听</li></ul><div class="sku-limit">1 次</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">小组课</span><span class="sku-price">$40–600/月</span></div>
+          <ul class="sku-benefits"><li>1–10 次/周梯度</li><li>140+ 主题</li></ul><div class="sku-limit">按频次定价</div>
+        </div><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">1v1 预约</span><span class="sku-price">$10–40+/课</span></div>
+          <ul class="sku-benefits"><li>按教师等级弹性定价</li><li>线上预约</li></ul><div class="sku-limit">按课计费</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>3–18 岁 homeschool/补充教育；北美/全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>AI 24h 外教 + Outschool 真人补充的混合方案</footer>
+</article>
+<article class="brand-panel" id="brand-booknook" data-cat="cat2" data-name="booknook">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://booknook.com" target="_blank" rel="noopener noreferrer" title="BookNook 官网">
+      <img class="bp-icon" src="https://logo.clearbit.com/booknook.com" alt="BookNook" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>BookNook</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">K-8 · 1v1 阅读/数学</p>
+      <div class="bp-links"><a class="site-link" href="https://booknook.com" target="_blank" rel="noopener noreferrer" title="访问 BookNook 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">booknook.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>K-8 <strong>1v1 线上辅导</strong>，整合同步教学平台 + 阅读/数学。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>融入 K-8 教学计划的结构化 1v1；首次免费降低门槛。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">K-8 教学计划</span><span class="usp-chip">同步教学平台</span><span class="usp-chip">及时反馈纠错</span><span class="usp-chip">首次试听免费</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://www.booknook.com/hubfs/WEBSITE%202023/Home-Hero2.webp" title="1v1 辅导" aria-label="查看 1v1 辅导">
+          <img src="https://www.booknook.com/hubfs/WEBSITE%202023/Home-Hero2.webp" alt="1v1 辅导" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://www.booknook.com/hs-fs/hubfs/Home-Card-Image-Math.webp" title="同步平台课" aria-label="查看 同步平台课">
+          <img src="https://www.booknook.com/hs-fs/hubfs/Home-Card-Image-Math.webp" alt="同步平台课" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">1v1 辅导</span><span class="sku-price">$15–22/小时</span></div>
+          <ul class="sku-benefits"><li>K-8 教学计划</li><li>同步平台 · 阅读+数学</li><li>及时反馈纠错</li></ul><div class="sku-limit">首次试听免费</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>K-8 需阅读/数学补强的美国家庭</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>Dino AI 覆盖高频低单价 1v1 场景</footer>
+</article>
+<article class="brand-panel" id="brand-savvy-learning" data-cat="cat2" data-name="savvy learning">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://savvylearning.com" target="_blank" rel="noopener noreferrer" title="Savvy Learning 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/ee/0c/d5/ee0cd50d-7683-9dad-36b4-c37d80d5f9bc/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/128x128bb.jpg" alt="Savvy Learning" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Savvy Learning</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">4–12 岁 · 固定频次订阅</p>
+      <div class="bp-links"><a class="site-link" href="https://savvylearning.com" target="_blank" rel="noopener noreferrer" title="访问 Savvy Learning 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">savvylearning.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Mon–Thu 每周 4 节 × 25 min 的<strong>高频 1v1/小组订阅</strong>。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>固定时间表 + 高频次建立学习习惯；订阅制降低决策摩擦。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">固定 4 节/周</span><span class="usp-chip">25 min/节</span><span class="usp-chip">1v1 与小组并行</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/66/5f/13/665f1371-4893-03dc-e35e-9c6b71cfb20e/mzl.wkqytlme.png/392x696bb.png" title="固定课表" aria-label="查看 固定课表">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/66/5f/13/665f1371-4893-03dc-e35e-9c6b71cfb20e/mzl.wkqytlme.png/156x0w.png" alt="固定课表" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/0d/32/43/0d324343-7aa7-5e39-fae4-d0424a875ba0/mzl.ictzfmyn.png/392x696bb.png" title="1v1 课堂" aria-label="查看 1v1 课堂">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Purple123/v4/0d/32/43/0d324343-7aa7-5e39-fae4-d0424a875ba0/mzl.ictzfmyn.png/156x0w.png" alt="1v1 课堂" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">1v1 私教</span><span class="sku-price">$495/月 · $4740/年</span></div>
+          <ul class="sku-benefits"><li>每周 4 节 · 25 min</li><li>Mon–Thu 固定时间</li></ul><div class="sku-limit">16 节/月</div>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">小组课</span><span class="sku-price">$240/月 · $2040/年</span></div>
+          <ul class="sku-benefits"><li>同上频次 · 小组订阅</li></ul><div class="sku-limit">16 节/月</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>4–12 岁需高频固定辅导；重视学习连续性</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>AI 覆盖 Mon–Thu 固定课表高频场景</footer>
+</article>
+<article class="brand-panel" id="brand-brighterly" data-cat="cat2" data-name="brighterly">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://brighterly.com" target="_blank" rel="noopener noreferrer" title="Brighterly 官网">
+      <img class="bp-icon" src="https://logo.clearbit.com/brighterly.com" alt="Brighterly" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Brighterly</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">1–9 年级 · 数学/阅读 1v1</p>
+      <div class="bp-links"><a class="site-link" href="https://brighterly.com" target="_blank" rel="noopener noreferrer" title="访问 Brighterly 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">brighterly.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>1–9 年级<strong>数学/阅读 1v1</strong>，每周 2 节，长周期折扣。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>结构化 1v1 + 长周期折扣激励。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">数学/阅读专项</span><span class="usp-chip">每周 2 节</span><span class="usp-chip">买越长越便宜</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://brighterly.com/wp-content/uploads/2026/03/Pic_Mobile-17.7-1.png" title="1v1 数学课" aria-label="查看 1v1 数学课">
+          <img src="https://brighterly.com/wp-content/uploads/2026/03/Pic_Mobile-17.7-1.png" alt="1v1 数学课" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://brighterly.com/wp-content/uploads/2024/08/math-tutoring-768x502.png" title="互动白板" aria-label="查看 互动白板">
+          <img src="https://brighterly.com/wp-content/uploads/2024/08/math-tutoring-768x502.png" alt="互动白板" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">月付</span><span class="sku-price">$21.9/课</span></div>
+          <ul class="sku-benefits"><li>数学/阅读 1v1</li><li>每周 2 节 · 25 min</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">年付</span><span class="sku-price">$17.7/课</span></div>
+          <ul class="sku-benefits"><li>同上 · 最低单价</li></ul><div class="sku-limit">买越长越便宜</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>1–9 年级需数学/阅读 1v1 的美国家庭</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>长周期折扣策略可借鉴</footer>
+</article>
+<article class="brand-panel" id="brand-lingoda" data-cat="cat2" data-name="lingoda">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.lingoda.com" target="_blank" rel="noopener noreferrer" title="Lingoda 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/29/43/07/2943078c-0f22-f5cc-1d29-3cfaebe6de7f/AppIconProd-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Lingoda" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Lingoda</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">多语种 · 小组课包 + AI 评估</p>
+      <div class="bp-links"><a class="site-link" href="https://www.lingoda.com" target="_blank" rel="noopener noreferrer" title="访问 Lingoda 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">lingoda.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>多语种<strong>真人小组课 + AI 课堂评估</strong>，4/8/16/32 节梯度。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>真人小组 + AI 评估 + 课下练习 + 免费解谜/阅读库。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">课包梯度</span><span class="usp-chip">AI 课堂评估</span><span class="usp-chip">课下迷你练习</span><span class="usp-chip">免费内容</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/8bcj242KdZ23IExfO3xyNUsnCGpu3UaNKMtdzdMCT0AvH0QFWqW-bmYe1FndqAcBM0MzYwSoC7wBEB4AL8oveg=w526-h296-rw" title="小组课预约" aria-label="查看 小组课预约">
+          <img src="https://play-lh.googleusercontent.com/8bcj242KdZ23IExfO3xyNUsnCGpu3UaNKMtdzdMCT0AvH0QFWqW-bmYe1FndqAcBM0MzYwSoC7wBEB4AL8oveg=w120-h214-rw" alt="小组课预约" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/QjBD7NFWEWnzQYJ8B7Q1SoDvtOeanh4mX8EonxbJGmuXOw88x5kzliPcyef8NpiXG3_bBp0bSDHRqXY-XuTa1g=w526-h296-rw" title="Live 课堂" aria-label="查看 Live 课堂">
+          <img src="https://play-lh.googleusercontent.com/QjBD7NFWEWnzQYJ8B7Q1SoDvtOeanh4mX8EonxbJGmuXOw88x5kzliPcyef8NpiXG3_bBp0bSDHRqXY-XuTa1g=w120-h214-rw" alt="Live 课堂" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">4 次课包</span><span class="sku-price">$16.49/节</span></div>
+          <ul class="sku-benefits"><li>真人小组课</li><li>AI 课堂评估 · 课下练习</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">32 次课包</span><span class="sku-price">$7.99/节</span></div>
+          <ul class="sku-benefits"><li>同上 · 最低单价</li><li>免费解谜/阅读库</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人语言学习为主；部分少儿；欧洲/全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>AI 课 + Lingoda 真人小组混合</footer>
+</article>
+<article class="brand-panel" id="brand-italki" data-cat="cat2" data-name="italki">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.italki.com" target="_blank" rel="noopener noreferrer" title="italki 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fe/3f/3f/fe3f3f09-c5b8-1b73-2e3e-9492fb75d210/AppIcon-0-0-1x_U007epad-0-1-0-85-220.png/128x128bb.jpg" alt="italki" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'i'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>italki</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">全年龄 · 1v1 Marketplace</p>
+      <div class="bp-links"><a class="site-link" href="https://www.italki.com" target="_blank" rel="noopener noreferrer" title="访问 italki 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">italki.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>全球最大<strong>1v1 真人外教 marketplace</strong>，150+ 语言，弹性定价。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>海量教师 + 弹性预约 + 多目标（备考/商务/纠音/对话）。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">150+ 语言</span><span class="usp-chip">弹性定价</span><span class="usp-chip">按目标选课</span><span class="usp-chip">社区语言交换</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a8/68/9a/a8689aac-b716-3328-2970-50899c2c5049/italki_Set2_5.5_1.jpg/392x696bb.jpg" title="教师选择" aria-label="查看 教师选择">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a8/68/9a/a8689aac-b716-3328-2970-50899c2c5049/italki_Set2_5.5_1.jpg/156x0w.jpg" alt="教师选择" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9b/94/57/9b94579c-421c-5dc6-9b28-78e064b65e95/italki_Set2_5.5_2.jpg/392x696bb.jpg" title="1v1 预约" aria-label="查看 1v1 预约">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9b/94/57/9b94579c-421c-5dc6-9b28-78e064b65e95/italki_Set2_5.5_2.jpg/156x0w.jpg" alt="1v1 预约" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">1v1 预约</span><span class="sku-price">$4–120/课时</span></div>
+          <ul class="sku-benefits"><li>真人母语外教</li><li>按目标选课（备考/商务/纠音/对话）</li></ul><div class="sku-limit">按教师/目标弹性定价</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>全年龄；成人为主；全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>Dino AI 定位高频低单价场景</footer>
+</article>
+<article class="brand-panel" id="brand-cambly" data-cat="cat2" data-name="cambly">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.cambly.com" target="_blank" rel="noopener noreferrer" title="Cambly 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/fb/f6/6a/fbf66a8a-2ed5-1f17-ff5a-4e174e745ccf/CamblyAppIcon-0-0-1x_U007epad-0-1-0-0-sRGB-85-220.png/128x128bb.jpg" alt="Cambly" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'C'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Cambly</h3>
+        <span class="cat-pill">1V1 真人外教</span>
+      </div>
+      <p class="bp-tagline">全年龄 · 1v1/小班 · Cambly Kids</p>
+      <div class="bp-links"><a class="site-link" href="https://www.cambly.com" target="_blank" rel="noopener noreferrer" title="访问 Cambly 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">cambly.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>母语外教<strong>1v1/小班平台</strong>；<strong>Cambly Kids</strong> 面向 4–15 岁结构化课。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>录像 + 语音转文字 + 课后 AI 反馈；Kids 线结构化儿童课程。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">Cambly Kids 4–15 岁</span><span class="usp-chip">录像/转写/AI 反馈</span><span class="usp-chip">Private/Pro/小班三档</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/bc/2d/28/bc2d28fa-258c-142c-63cb-b80f9c15ccaf/f23cde70-5a51-4e12-8280-2bf167e14c62_Cambly-AppStore-iPhone55-01-EN.png/392x696bb.png" title="1v1 视频课" aria-label="查看 1v1 视频课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/bc/2d/28/bc2d28fa-258c-142c-63cb-b80f9c15ccaf/f23cde70-5a51-4e12-8280-2bf167e14c62_Cambly-AppStore-iPhone55-01-EN.png/156x0w.png" alt="1v1 视频课" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/00/30/e6/0030e6a0-f614-261e-9966-564c6041afac/92219d60-46a4-4746-adee-05e3f74ade31_Cambly-AppStore-iPhone55-02-EN.png/392x696bb.png" title="Kids 结构化课" aria-label="查看 Kids 结构化课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/00/30/e6/0030e6a0-f614-261e-9966-564c6041afac/92219d60-46a4-4746-adee-05e3f74ade31_Cambly-AppStore-iPhone55-02-EN.png/156x0w.png" alt="Kids 结构化课" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Private 基础</span><span class="sku-price">¥39–92/节</span></div>
+          <ul class="sku-benefits"><li>1v1 私教</li><li>录像 · 语音转文字</li><li>课后 AI 反馈 · 全部教材</li></ul><div class="sku-limit">年付更低 · 2–10 节/周</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Private Pro</span><span class="sku-price">¥55–130/节</span></div>
+          <ul class="sku-benefits"><li>Pro 外教</li><li>结构化目标课程 · 针对性纠正</li></ul>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Small Groups</span><span class="sku-price">¥19.5–44.5/节</span></div>
+          <ul class="sku-benefits"><li>1 外教 + 1–3 学生</li><li>无限发音/语法/词汇练习</li></ul>
+        </div><div class="sku-card sku-live">
+          <div class="sku-head"><span class="sku-name">Cambly Kids</span><span class="sku-price">同 Private 定价</span></div>
+          <ul class="sku-benefits"><li>4–15 岁结构化儿童课</li><li>游戏化 · 进度追踪</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>全年龄；Kids 线面向 4–15 岁海外家庭</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>Cambly Kids 直接竞品；AI + 真人 Pro 双师混合</footer>
+</article>
+<article class="brand-panel" id="brand-buddy-ai" data-cat="cat3" data-name="buddy ai">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://buddy.ai" target="_blank" rel="noopener noreferrer" title="Buddy AI 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/7b/6d/25/7b6d25aa-f706-3b85-d3cb-11bf4b2543f6/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Buddy AI" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'B'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Buddy AI</h3>
+        <span class="cat-pill">AI 老师+规划</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">3–10 岁 · AI 数字人互动课</p>
+      <div class="bp-links"><a class="site-link" href="https://buddy.ai" target="_blank" rel="noopener noreferrer" title="访问 Buddy AI 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">buddy.ai</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Origin AI 旗下<strong>AI 数字人儿童英语 App</strong>，最接近 Dino 品类。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>AI 实时语音互动 + 结构化系统课，介于内容 App 与真人外教之间。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">AI 虚拟老师实时语音</span><span class="usp-chip">音视频互动系统课</span><span class="usp-chip">韩国市场验证</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://umbraco.int.mybuddy.ai/media/rwrnd1x2/1.webp" title="AI 老师互动" aria-label="查看 AI 老师互动">
+          <img src="https://umbraco.int.mybuddy.ai/media/rwrnd1x2/1.webp" alt="AI 老师互动" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://umbraco.int.mybuddy.ai/media/lnogkko1/1-copy-2.webp" title="系统课场景" aria-label="查看 系统课场景">
+          <img src="https://umbraco.int.mybuddy.ai/media/lnogkko1/1-copy-2.webp" alt="系统课场景" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">月付</span><span class="sku-price">$12.49/月</span></div>
+          <ul class="sku-benefits"><li>AI 语音陪练</li><li>音视频互动系统课</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">年付</span><span class="sku-price">$49.99/年</span></div>
+          <ul class="sku-benefits"><li>同上 · 最低月均成本</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>3–10 岁寻求 AI 互动但不愿付真人外教的家长</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>直接竞品：Dino 需在内容深度与 AI 能力上超越</footer>
+</article>
+<article class="brand-panel" id="brand-斑马-ai-口语" data-cat="cat3" data-name="斑马 ai 口语">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.bbanx.com" target="_blank" rel="noopener noreferrer" title="斑马 AI 口语 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/6c/7a/a8/6c7aa8f8-c8f8-e8b8-8ad4-6dddb4ab3578/AppIcon-0-0-1x_U007emarketing-0-11-0-0-85-220.png/128x128bb.jpg" alt="斑马 AI 口语" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'斑'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>斑马 AI 口语</h3>
+        <span class="cat-pill">AI 老师+规划</span><span class="cat-pill cat-pill-cn">国内</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">国内 · 7–9 岁 · L3 AI 口语系统课</p>
+      <div class="bp-links"><a class="site-link" href="https://www.bbanx.com" target="_blank" rel="noopener noreferrer" title="访问 斑马 AI 口语 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">bbanx.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>猿辅导旗下<strong>少儿 AI 口语专项系统课</strong>（斑马 AI 学 App），L3 AI 老师带练，48 周固定学习路径。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>按课售卖的 AI 互动口语课 + 定级测试 + 定制学习计划，国内验证「AI 数字人 + 体系课」付费心智。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">L3 AI 老师口语带练</span><span class="usp-chip">96 节 / 48 周路径</span><span class="usp-chip">每周固定 2 次</span><span class="usp-chip">按课透明计费</span><span class="usp-chip">定级 + 学习计划</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f4/5c/e1/f45ce110-8729-8be1-e93b-1e385c9c6ebb/_U5e02_U573a_U56fe-1.png/392x696bb.png" title="AI 口语课" aria-label="查看 AI 口语课">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/f4/5c/e1/f45ce110-8729-8be1-e93b-1e385c9c6ebb/_U5e02_U573a_U56fe-1.png/156x0w.png" alt="AI 口语课" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/02/e9/9c/02e99c20-1287-2161-667f-79bff845adac/_U5e02_U573a_U56fe-2.png/392x696bb.png" title="学习报告" aria-label="查看 学习报告">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/02/e9/9c/02e99c20-1287-2161-667f-79bff845adac/_U5e02_U573a_U56fe-2.png/156x0w.png" alt="学习报告" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">L3 AI 口语课</span><span class="sku-price">¥37.5/课</span></div>
+          <ul class="sku-benefits"><li>96 节 / 48 周</li><li>L3 AI 老师带练</li><li>定级测试 · 定制学习计划</li><li>每课学习报告</li></ul><div class="sku-limit">每周 2 次 · 7–9 岁 · ≈¥3600/级别</div>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>7–9 岁国内家庭；口语专项诉求；已接受 AI 课形态</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>★★★★☆ 国内 AI 口语系统课标杆：固定频次 + 按课售卖 + 课节报告</footer>
+</article>
+<article class="brand-panel" id="brand-speak" data-cat="cat3" data-name="speak">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://www.speak.com" target="_blank" rel="noopener noreferrer" title="Speak 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/5f/9d/8e/5f9d8e16-9e31-592f-7906-9d4724c1b6a1/AppIcon-0-0-1x_U007emarketing-0-8-0-85-220.png/128x128bb.jpg" alt="Speak" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'S'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Speak</h3>
+        <span class="cat-pill">AI 老师+规划</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">成人 · AI 口语 + 系统课</p>
+      <div class="bp-links"><a class="site-link" href="https://www.speak.com" target="_blank" rel="noopener noreferrer" title="访问 Speak 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">speak.com</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>Speakeasy Labs 旗下<strong>AI 口语 App</strong>，系统课 + 纠音 Premium/Premium+ 分层。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>AI 即时纠音 + 话题对话 + 智慧复习 + 学习规划。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">系统课路径</span><span class="usp-chip">10 次/天纠音 (Premium)</span><span class="usp-chip">无限纠音 (Premium+)</span><span class="usp-chip">无限定制课</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/2a/c4/e9/2ac4e973-91ee-f3de-88e3-0eb00ff60a6f/a6cd0677-6e0b-4b08-84bc-8b74bf5ce510_iPhone5.5__screenshots01.jpg/392x696bb.jpg" title="AI 话题对话" aria-label="查看 AI 话题对话">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/2a/c4/e9/2ac4e973-91ee-f3de-88e3-0eb00ff60a6f/a6cd0677-6e0b-4b08-84bc-8b74bf5ce510_iPhone5.5__screenshots01.jpg/156x0w.jpg" alt="AI 话题对话" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a6/ea/f2/a6eaf2be-6fe0-1380-0831-7a50a3156d6c/1c64a449-e121-4407-bfa1-8f441dc6d51e_iPhone5.5__screenshots02.jpg/392x696bb.jpg" title="纠音反馈" aria-label="查看 纠音反馈">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a6/ea/f2/a6eaf2be-6fe0-1380-0831-7a50a3156d6c/1c64a449-e121-4407-bfa1-8f441dc6d51e_iPhone5.5__screenshots02.jpg/156x0w.jpg" alt="纠音反馈" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">Premium</span><span class="sku-price">$17.99/月</span></div>
+          <ul class="sku-benefits"><li>系统课 · 智慧复习</li><li>AI 话题对话</li></ul><div class="sku-limit">10 次/天 AI 纠音</div>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">Premium+</span><span class="sku-price">$39.99/月</span></div>
+          <ul class="sku-benefits"><li>Premium 全部</li><li>无限纠音 · 无限定制课</li><li>无限专属练习</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人口语提升；韩国/日本/全球</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>纠音分层 + 路径化 → Dino Token 映射</footer>
+</article>
+<article class="brand-panel" id="brand-praktika" data-cat="cat3" data-name="praktika">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://praktika.ai" target="_blank" rel="noopener noreferrer" title="Praktika 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/04/30/2c/04302c3a-8a04-8e8d-472b-1d585430de86/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Praktika" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Praktika</h3>
+        <span class="cat-pill">AI 老师+规划</span><span class="stars">★★★★☆</span>
+      </div>
+      <p class="bp-tagline">成人 · AI 虚拟外教 + 规划</p>
+      <div class="bp-links"><a class="site-link" href="https://praktika.ai" target="_blank" rel="noopener noreferrer" title="访问 Praktika 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">praktika.ai</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>AI 虚拟外教<strong>1v1 对话</strong>，多 AI 角色，带学习路径感。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>AI 实时对话 + 多角色 + 终身买断降低 LTV 不确定。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">AI 虚拟外教</span><span class="usp-chip">多 AI 角色</span><span class="usp-chip">终身买断选项</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/pR9UN1zFIWmSDY1YTpX2Ljo-VKg-CGK2UgTGXS4yKOvL_ddi3xGnRVl9exXdo97LxZ4SahHSBF55aMbHSFnoAA=w526-h296-rw" title="AI 虚拟外教" aria-label="查看 AI 虚拟外教">
+          <img src="https://play-lh.googleusercontent.com/pR9UN1zFIWmSDY1YTpX2Ljo-VKg-CGK2UgTGXS4yKOvL_ddi3xGnRVl9exXdo97LxZ4SahHSBF55aMbHSFnoAA=w120-h214-rw" alt="AI 虚拟外教" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/x_11MQ2WTyBWO5dtscYBUtt5hV5PdiuTRqtrEWOCkubVXu2yeSweJ20yAiZZG2HgPYBlAkyABiw83kExepcVDQ=w526-h296-rw" title="角色对话" aria-label="查看 角色对话">
+          <img src="https://play-lh.googleusercontent.com/x_11MQ2WTyBWO5dtscYBUtt5hV5PdiuTRqtrEWOCkubVXu2yeSweJ20yAiZZG2HgPYBlAkyABiw83kExepcVDQ=w120-h214-rw" alt="角色对话" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">月付</span><span class="sku-price">$14.99/月</span></div>
+          <ul class="sku-benefits"><li>AI 虚拟外教 · 多角色对话</li></ul>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">年付</span><span class="sku-price">$99/年</span></div>
+          <ul class="sku-benefits"><li>同上 · 年付优惠</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">终身</span><span class="sku-price">$249 一次性</span></div>
+          <ul class="sku-benefits"><li>永久解锁 · 无续费</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人口语练习；重视 AI 对话自然度</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>AI 虚拟外教竞品；Dino 儿童+系统课差异化</footer>
+</article>
+<article class="brand-panel" id="brand-learna-ai" data-cat="cat3" data-name="learna ai">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://learna.ai" target="_blank" rel="noopener noreferrer" title="Learna AI 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1e/c2/59/1ec259c5-78a4-1599-dc06-cbef59da8bc6/AppIcon-0-0-1x_U007emarketing-0-11-0-85-220.png/128x128bb.jpg" alt="Learna AI" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'L'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Learna AI</h3>
+        <span class="cat-pill">AI 老师+规划</span>
+      </div>
+      <p class="bp-tagline">成人 · AI 模拟对话 + 路径</p>
+      <div class="bp-links"><a class="site-link" href="https://learna.ai" target="_blank" rel="noopener noreferrer" title="访问 Learna AI 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">learna.ai</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>AI 情景模拟<strong>口语练习</strong>，带学习路径与报告。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>AI 情景模拟 + 单词本 + 学习报告。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">AI 模拟对话</span><span class="usp-chip">情景练习</span><span class="usp-chip">低价年付</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/KEUH27xiUCkC3gLV3tJqQtYuke4H1hhD4hJXFkuSyzF8LZy33RSGMRvxLiQ_g6JP2qfaIWnC7C_yxK8EpZ1boA=w526-h296-rw" title="情景对话" aria-label="查看 情景对话">
+          <img src="https://play-lh.googleusercontent.com/KEUH27xiUCkC3gLV3tJqQtYuke4H1hhD4hJXFkuSyzF8LZy33RSGMRvxLiQ_g6JP2qfaIWnC7C_yxK8EpZ1boA=w120-h214-rw" alt="情景对话" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/d2KNAsgVQuSyGI6t5VnpSI9ncJt-gw7xxo1UtNG1d_XzYiBdxFfw6KY9iZBvSgcdHRYoLrb1LfJ4_2EiQHU5jg=w526-h296-rw" title="AI 模拟练习" aria-label="查看 AI 模拟练习">
+          <img src="https://play-lh.googleusercontent.com/d2KNAsgVQuSyGI6t5VnpSI9ncJt-gw7xxo1UtNG1d_XzYiBdxFfw6KY9iZBvSgcdHRYoLrb1LfJ4_2EiQHU5jg=w120-h214-rw" alt="AI 模拟练习" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">月付</span><span class="sku-price">$9.99/月</span></div>
+          <ul class="sku-benefits"><li>AI 模拟对话 · 情景练习</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">年付</span><span class="sku-price">$39.99/年</span></div>
+          <ul class="sku-benefits"><li>同上 · 极低年付</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人口语入门；价格敏感</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>不应与此比价；锚定系统课 + AI 互动</footer>
+</article>
+<article class="brand-panel" id="brand-pingo-ai" data-cat="cat3" data-name="pingo ai">
+  <header class="bp-head">
+    <a class="bp-icon-wrap" href="https://pingo.ai" target="_blank" rel="noopener noreferrer" title="Pingo AI 官网">
+      <img class="bp-icon" src="https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/6d/92/4c/6d924c04-80c8-397f-ee65-e419a74ccc7a/AppIcon-0-0-1x_U007epad-0-1-85-220.png/128x128bb.jpg" alt="Pingo AI" width="48" height="48" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon-fallback',textContent:'P'}))"/>
+    </a>
+    <div class="bp-meta">
+      <div class="bp-title-row">
+        <h3>Pingo AI</h3>
+        <span class="cat-pill">AI 老师+规划</span>
+      </div>
+      <p class="bp-tagline">成人 · 主题路径 + AI 对话</p>
+      <div class="bp-links"><a class="site-link" href="https://pingo.ai" target="_blank" rel="noopener noreferrer" title="访问 Pingo AI 官网">
+      <svg class="site-link-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <span>官网</span><span class="site-domain">pingo.ai</span></a></div>
+    </div>
+  </header>
+  <div class="bp-flow">
+    <div class="flow-item"><label>产品定位</label><p>AI 对话<strong>口语陪练</strong>，主题路径 + 情景模拟 + 规划感。</p></div>
+    <div class="flow-item"><label>核心价值</label><p>主题路径 AI 对话 + 情景模拟 + 词汇记录。</p></div>
+    <div class="flow-item flow-wide"><label>独特卖点</label><div class="usp-zone">
+      <div class="usp-main"><div class="usp-row"><span class="usp-chip">主题路径对话</span><span class="usp-chip">情景模拟</span><span class="usp-chip">单词本</span><span class="usp-chip">2 天试用</span></div></div>
+      <div class="usp-shots"><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/2h2ZrQJhxxpYZVD3iewqALBIytaorwoekotMXIz1dI_rH-dRQQJIwVYCSxv7sPog_1hvGK0tCKXyh9Cqcg41=w526-h296-rw" title="主题路径" aria-label="查看 主题路径">
+          <img src="https://play-lh.googleusercontent.com/2h2ZrQJhxxpYZVD3iewqALBIytaorwoekotMXIz1dI_rH-dRQQJIwVYCSxv7sPog_1hvGK0tCKXyh9Cqcg41=w120-h214-rw" alt="主题路径" loading="lazy" width="52" height="92"/>
+        </button><button type="button" class="usp-shot" data-full="https://play-lh.googleusercontent.com/tERAosxs5ycczTi_qGBpcX-FvQ42L7EfdRK9mumKgT9JphfztAPTdfPmK3Rv49sy6eOh3Q3UxOsURMRiy1aoGw=w526-h296-rw" title="情景模拟" aria-label="查看 情景模拟">
+          <img src="https://play-lh.googleusercontent.com/tERAosxs5ycczTi_qGBpcX-FvQ42L7EfdRK9mumKgT9JphfztAPTdfPmK3Rv49sy6eOh3Q3UxOsURMRiy1aoGw=w120-h214-rw" alt="情景模拟" loading="lazy" width="52" height="92"/>
+        </button></div>
+    </div></div>
+  </div>
+  <div class="sku-block">
+      <label>核心 SKU · 权益</label>
+      <div class="sku-grid"><div class="sku-card sku-free">
+          <div class="sku-head"><span class="sku-name">2 天试用</span><span class="sku-price">免费</span></div>
+          <ul class="sku-benefits"><li>全功能体验</li></ul>
+        </div><div class="sku-card sku-core">
+          <div class="sku-head"><span class="sku-name">月付</span><span class="sku-price">$19.98/月</span></div>
+          <ul class="sku-benefits"><li>主题路径对话</li><li>情景模拟 · 单词本</li></ul>
+        </div><div class="sku-card sku-premium">
+          <div class="sku-head"><span class="sku-name">年付</span><span class="sku-price">$119.98/年</span></div>
+          <ul class="sku-benefits"><li>同上 · 年付优惠</li></ul>
+        </div></div>
+    </div>
+  <div class="bp-flow bp-flow-tail">
+    <div class="flow-item flow-wide"><label>目标用户</label><p>成人口语提升；重视路径化学习</p></div>
+  </div>
+  <footer class="dino-insight"><span class="dino-label">Dino 启示</span>主题路径 + 情景模拟 → Dino 剧情任务链</footer>
+</article></div>
+  </div>
+</section>
+
+<section class="section" id="dino">
+  <h2 class="sh">Dino 行动策略 <span class="badge">竞品 → 落地</span></h2>
+  <div class="strategy-grid">
+    <div class="strat-card"><strong>产品 V1.2</strong>借鉴 Lingokids 剧情地图 + 家长 KPI；Duo ABC 微任务链 + 温和 retry；每段强制语言产出。</div>
+    <div class="strat-card"><strong>商业化首发</strong>Freemium 卖内容 · Free 体验课 1 节完整 AI 课 · 年付促销策略见 SKU 文档。</div>
+    <div class="strat-card"><strong>AI 分层 V1.4+</strong>Token 池 + Pro/Ultra 分层 · Speak 纠音加购 · BYOM 定制课。</div>
+    <div class="strat-card"><strong>混合双师</strong>AI 24h 主课 + VIPKid/Cambly 真人 1v1 联名 · 双师 UI。</div>
+    <div class="strat-card"><strong>区域策略</strong>T0 韩/日/新/沙 · T3/T4 课次包 · 韩国 web-first 首发。</div>
+    <div class="strat-card"><strong>竞品监控</strong>Duolingo Max 儿童化 · Buddy AI 扩品类 · Cambly Kids · Speak 纠音策略。</div>
+  </div>
+</section>
+
+<section class="section" id="roles">
+  <h2 class="sh">分角色阅读指南</h2>
+  <div class="role-flow">
+    <div class="role-tag"><em>老板 / GM</em>§核心结论 + §Dino 策略 · 定位与竞争格局决策</div>
+    <div class="role-tag"><em>产品</em>品类一 Lingokids/Duo ABC · 品类三 Buddy AI/斑马 · 四模块完整方案对标</div>
+    <div class="role-tag"><em>商业化</em>§核心结论商业化项 + SKU 文档 · Freemium 漏斗、区域分层</div>
+    <div class="role-tag"><em>运营</em>品类二频次模型 + 品类三试用策略 · web-first 韩国漏斗</div>
+    <div class="role-tag"><em>业务线</em>§品牌速览横向对比 · 区域差异化打法</div>
+    <div class="role-tag"><em>体验</em>品类一 USP 芯片 + 《竞品扫描》截图 · 双端叙事、低惩罚反馈</div>
+  </div>
+</section>
+
+<div class="footer">Dino English 竞品全景分析 · 2025年6月 · 售价基于公开信息，以 SKU 文档为准</div>
+</div>
+
+<script>
+(function(){
+  const search = document.getElementById('search');
+  const brandsList = document.getElementById('brands-list');
+  const brandsSection = document.getElementById('brands');
+  const brandsZone = document.getElementById('brands-zone');
+
+  function setCategoryTheme(cat){
+    if (brandsSection) brandsSection.dataset.activeCat = cat;
+    if (brandsZone) {
+      brandsZone.classList.add('cat-switching');
+      setTimeout(() => brandsZone.classList.remove('cat-switching'), 280);
+    }
+  }
+
+  function applyFilters(cat, query){
+    const q = (query || '').trim().toLowerCase();
+    document.querySelectorAll('.brand-panel').forEach(el => {
+      const matchCat = cat === 'all' || el.dataset.cat === cat;
+      const matchQ = !q || el.dataset.name.includes(q);
+      el.classList.toggle('hidden', !(matchCat && matchQ));
+    });
+    setCategoryTheme(cat);
+  }
+
+  function bindFilters(container){
+    container.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.filter;
+        document.querySelectorAll('#bd-filters .filter-chip').forEach(c => c.classList.toggle('on', c.dataset.filter === cat));
+        applyFilters(cat, search.value);
+      });
+    });
+  }
+
+  bindFilters(document.getElementById('bd-filters'));
+
+  search.addEventListener('input', () => {
+    const active = document.querySelector('#bd-filters .filter-chip.on');
+    applyFilters(active ? active.dataset.filter : 'all', search.value);
+  });
+
+  document.querySelectorAll('.cat-card').forEach(card => {
+    card.addEventListener('click', e => {
+      if (e.target.closest('.cat-ex')) return;
+      const cat = card.dataset.cat;
+      if (!cat) return;
+      e.preventDefault();
+      document.querySelectorAll('#bd-filters .filter-chip').forEach(c => c.classList.toggle('on', c.dataset.filter === cat));
+      applyFilters(cat, '');
+      document.getElementById('brands')?.scrollIntoView({behavior:'smooth'});
+    });
+  });
+
+  // Scroll spy
+  const sections = ['exec','overview','brands','dino','roles'];
+  const navLinks = document.querySelectorAll('.nav-row a[href^="#"]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      }
+    });
+  }, {rootMargin:'-30% 0px -60% 0px'});
+  sections.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+
+  // USP 截图预览 — 点击放大
+  const lb = document.getElementById('shot-lightbox');
+  const lbImg = lb ? lb.querySelector('img') : null;
+  const closeLb = () => lb && lb.classList.add('hidden');
+  document.querySelectorAll('.usp-shot').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!lb || !lbImg) return;
+      lbImg.src = btn.dataset.full;
+      lbImg.alt = btn.getAttribute('aria-label') || '';
+      lb.classList.remove('hidden');
+    });
+  });
+  if (lb) {
+    lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('shot-lb-close')) closeLb(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+  }
+})();
+</script>
+<div id="shot-lightbox" class="shot-lightbox hidden" role="dialog" aria-modal="true" aria-label="端内界面大图">
+  <button type="button" class="shot-lb-close" aria-label="关闭">&times;</button>
+  <img src="" alt=""/>
+</div>
+<style>.overview-card.hidden,.brand-panel.hidden{display:none!important}</style>
+</body>
+</html>
