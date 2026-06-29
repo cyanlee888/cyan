@@ -1623,14 +1623,9 @@
     .lg-ic-btn:active { transform: translateY(1px); }
     .lg-ic-btn.lg-ic-fb { background: #1877f2; border-color: #1877f2; color: #fff; font-family: Georgia, "Times New Roman", serif; }
     .lg-ic-btn.lg-ic-kakao { background: #fee500; border-color: #fee500; color: #3c1e1e; }
-    .lg-ic-btn.lg-ic-card { background: #fff; color: #2b66e0; }
     /* Landscape login sits on a dark glass card — lighten the separator. */
     .login-land-actions .login-more-sep { color: rgba(255,255,255,0.85); }
     .login-land-actions .login-more-sep::before, .login-land-actions .login-more-sep::after { background: rgba(255,255,255,0.32); }
-    /* V1.3.1 卡号登录 sheet inputs (reuse phone-sheet shell). */
-    .lg-card-no, .lg-card-pw { width: 100%; box-sizing: border-box; border: 1.5px solid #e7ebf2; border-radius: 12px; padding: 12px 14px; font-size: 0.95rem; font-family: var(--font); margin-top: 10px; }
-    .lg-card-no:focus, .lg-card-pw:focus { outline: none; border-color: #35b6e6; }
-    .lg-card-login { width: 100%; margin-top: 14px; }
     /* V1.3.1 手机号绑定页（竖屏 takeover）— Figma 4867:18878. */
     #screen-bind-phone { padding: 0; }
     .bindp-scene { position: absolute; inset: 0; display: flex; flex-direction: column; color: #fff; overflow: hidden;
@@ -5788,7 +5783,6 @@
             <div class="login-more">
               <div class="login-more-sep"><span>More ways to log in</span></div>
               <div class="login-more-icons" role="group" aria-label="More login options">
-                <button type="button" class="lg-ic-btn lg-ic-card" data-lg-method="card" aria-label="Log in with a card number"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><line x1="2" y1="10" x2="22" y2="10"/></svg></button>
                 <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
                   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
                 </button>
@@ -5834,17 +5828,6 @@
             <p class="lg-otp-hint">Demo: enter any 6 digits to continue</p>
           </div>
         </div>
-        <!-- V1.3.1 卡号登录：卡号 + 卡密 → Log in。登录成功后若未获取到手机号，进入手机号绑定页。 -->
-        <div class="lg-sheet-overlay login-card-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-close aria-label="Back">‹</button><span class="lg-sheet-title">Log in with card number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <input type="text" class="lg-card-no" placeholder="Card number" inputmode="numeric" autocomplete="off" />
-            <input type="password" class="lg-card-pw" placeholder="Card password" autocomplete="off" />
-            <p class="lg-phone-hint">Use the number &amp; password printed on your Dino learning card.</p>
-            <button type="button" class="gbtn gbtn-primary lg-card-login" disabled>Log in</button>
-            <p class="lg-legal">You agree to our Terms of Use and Privacy Policy</p>
-          </div>
-        </div>
         <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
       </section>
 
@@ -5855,7 +5838,7 @@
           <div class="bindp-scroll">
             <h1 class="bindp-title">Please add a contact phone number</h1>
             <p class="bindp-sub">We will be using this phone number to provide you the best service possible.</p>
-            <div class="bindp-linked"><span class="bindp-linked-ic">✓</span><span id="bindp-linked-tx">Your card account has been logged in</span></div>
+            <div class="bindp-linked"><span class="bindp-linked-ic">✓</span><span id="bindp-linked-tx">Your Kakao account has been logged in</span></div>
             <div class="bindp-field bindp-phone-field">
               <button type="button" class="bindp-cc" id="bindp-cc">🇸🇦 +966 ▾</button>
               <input type="tel" class="bindp-phone-input" id="bindp-phone-input" inputmode="numeric" placeholder="Phone number" autocomplete="off" />
@@ -6254,8 +6237,7 @@
               <div class="login-more">
                 <div class="login-more-sep"><span>More ways to log in</span></div>
                 <div class="login-more-icons" role="group" aria-label="More login options">
-                  <button type="button" class="lg-ic-btn lg-ic-card" data-lg-method="card" aria-label="Log in with a card number"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><line x1="2" y1="10" x2="22" y2="10"/></svg></button>
-                <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
+                  <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
                   </button>
                   <button type="button" class="lg-ic-btn lg-ic-fb" data-lg-method="facebook" aria-label="Continue with Facebook">f</button>
@@ -6297,17 +6279,6 @@
             <button type="button" class="lg-resend" disabled>Resend in 60s</button>
             <button type="button" class="gbtn gbtn-primary lg-otp-continue" disabled>Continue</button>
             <p class="lg-otp-hint">Demo: enter any 6 digits to continue</p>
-          </div>
-        </div>
-        <!-- V1.3.1 卡号登录：卡号 + 卡密 → Log in。登录成功后若未获取到手机号，进入手机号绑定页。 -->
-        <div class="lg-sheet-overlay login-card-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-close aria-label="Back">‹</button><span class="lg-sheet-title">Log in with card number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <input type="text" class="lg-card-no" placeholder="Card number" inputmode="numeric" autocomplete="off" />
-            <input type="password" class="lg-card-pw" placeholder="Card password" autocomplete="off" />
-            <p class="lg-phone-hint">Use the number &amp; password printed on your Dino learning card.</p>
-            <button type="button" class="gbtn gbtn-primary lg-card-login" disabled>Log in</button>
-            <p class="lg-legal">You agree to our Terms of Use and Privacy Policy</p>
           </div>
         </div>
         <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
@@ -7352,7 +7323,7 @@
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
     const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "up", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, cardPhoneBound: false };
+    const demoState = { levelUpResult: "up", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -8108,14 +8079,12 @@
       const tx = scope.querySelector(".lg-auth-tx");
       if (tx) tx.textContent = `Authorizing with ${label}…`;
       veil?.classList.add("show");
-      setTimeout(() => { lgCloseAll(scope); onLoginSuccess(); }, 1200);
-    }
-    // V1.3.1 卡号登录：卡号(≥4 位) + 卡密(非空) 后可登录。
-    function lgRefreshCardLogin(scope) {
-      const no = (scope.querySelector(".lg-card-no")?.value || "").replace(/\D/g, "");
-      const pw = (scope.querySelector(".lg-card-pw")?.value || "").trim();
-      const btn = scope.querySelector(".lg-card-login");
-      if (btn) btn.disabled = !(no.length >= 4 && pw.length >= 1);
+      setTimeout(() => {
+        lgCloseAll(scope);
+        // V1.3.1 Kakao 登录成功后：未获取到手机号 → 强制进入手机号绑定页；已获取 → 直接进 App。
+        if (label === "Kakao" && !demoState.kakaoPhoneBound) { openBindPhone("kakao"); return; }
+        onLoginSuccess();
+      }, 1200);
     }
     // Delegated clicks (works for both login screens, no duplicate IDs).
     document.addEventListener("click", (e) => {
@@ -8131,7 +8100,6 @@
       if (method) {
         const m = method.dataset.lgMethod;
         if (m === "phone") { lgRefreshGetCode(scope); lgShow(scope, "login-phone-sheet"); scope.querySelector(".lg-phone-input")?.focus(); }
-        else if (m === "card") { lgRefreshCardLogin(scope); lgShow(scope, "login-card-sheet"); scope.querySelector(".lg-card-no")?.focus(); }
         else if (m === "facebook") lgOauth(scope, "Facebook");
         else if (m === "kakao") lgOauth(scope, "Kakao");
         return;
@@ -8168,31 +8136,12 @@
         }
         return;
       }
-      if (t.closest(".lg-card-login")) {
-        const b = t.closest(".lg-card-login");
-        if (b && !b.disabled) {
-          const veil = scope.querySelector(".lg-auth-veil");
-          const tx = scope.querySelector(".lg-auth-tx");
-          if (tx) tx.textContent = "Logging in…";
-          scope.querySelectorAll(".lg-sheet-overlay").forEach((o) => o.classList.remove("show"));
-          veil?.classList.add("show");
-          // After card login, check whether a phone number was obtained. No phone →
-          // forced phone-binding page; has phone → straight into the app.
-          setTimeout(() => {
-            lgCloseAll(scope);
-            if (demoState.cardPhoneBound) onLoginSuccess();
-            else openBindPhone("card");
-          }, 900);
-        }
-        return;
-      }
     });
     // Phone-number input → enable Get code once it looks like a number.
     document.addEventListener("input", (e) => {
       const scope = lgScope(e.target);
       if (!scope) return;
       if (e.target.classList.contains("lg-phone-input")) { lgRefreshGetCode(scope); return; }
-      if (e.target.classList.contains("lg-card-no") || e.target.classList.contains("lg-card-pw")) { lgRefreshCardLogin(scope); return; }
       if (e.target.classList.contains("lg-otp-d")) {
         e.target.value = e.target.value.replace(/\D/g, "").slice(0, 1);
         if (e.target.value) { const n = e.target.nextElementSibling; if (n && n.classList.contains("lg-otp-d")) n.focus(); }
@@ -8209,7 +8158,7 @@
         if (p && p.classList.contains("lg-otp-d")) { p.focus(); p.value = ""; }
       }
     });
-    // ===== V1.3.1 手机号绑定（卡号登录后未获取到手机号 → 强制绑定）=====
+    // ===== V1.3.1 手机号绑定（Kakao 登录后未获取到手机号 → 强制绑定）=====
     let bindCC = LG_COUNTRIES.find((c) => c.code === "+966") || LG_COUNTRIES[0];
     let bindCodeSent = false, bindResendTimer = null, bindResendLeft = 60;
     function bindDigits() { return ($("#bindp-phone-input")?.value || "").replace(/\D/g, ""); }
@@ -8225,7 +8174,7 @@
     function openBindPhone(method) {
       enterPortrait();
       const lk = $("#bindp-linked-tx");
-      if (lk) lk.textContent = method === "kakao" ? "Your Kakao account has been logged in" : "Your card account has been logged in";
+      if (lk) lk.textContent = "Your Kakao account has been logged in";
       const inp = $("#bindp-phone-input"); if (inp) inp.value = "";
       const code = $("#bindp-code-input"); if (code) { code.value = ""; code.disabled = true; }
       bindCodeSent = false; clearInterval(bindResendTimer);
@@ -8277,7 +8226,7 @@
       lg.disabled = true; lg.textContent = "Logging in…";
       clearInterval(bindResendTimer);
       // Phone now bound to the account → continue into the app.
-      demoState.cardPhoneBound = true;
+      demoState.kakaoPhoneBound = true;
       profile.phoneBound = true;
       setTimeout(() => { onLoginSuccess(); }, 700);
     });
@@ -11757,7 +11706,7 @@
       if (key === "levelUpResult") return demoState.levelUpResult;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
       if (key === "paywallLayout") return demoState.paywallLayout;
-      if (key === "cardPhoneBound") return demoState.cardPhoneBound ? "true" : "false";
+      if (key === "kakaoPhoneBound") return demoState.kakaoPhoneBound ? "true" : "false";
       return null;
     },
     context: function () {
@@ -11769,7 +11718,7 @@
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
-        if (id === "screen-login-landscape") return { label: "登录", keys: ["cardPhoneBound"] };
+        if (id === "screen-login-landscape") return { label: "登录", keys: ["kakaoPhoneBound"] };
         if (id === "screen-paywall")     return { label: "Paywall（横屏·旧版）", keys: ["paywallLayout", "membership"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
@@ -11778,8 +11727,8 @@
       // V1.3.0: study plan + trial report are portrait takeovers.
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
-      if (pid === "screen-bind-phone")   return { label: "手机号绑定", keys: ["cardPhoneBound"] };
-      if (pid === "screen-login")        return { label: "登录", keys: ["cardPhoneBound"] };
+      if (pid === "screen-bind-phone")   return { label: "手机号绑定", keys: ["kakaoPhoneBound"] };
+      if (pid === "screen-login")        return { label: "登录", keys: ["kakaoPhoneBound"] };
       if (pid === "screen-paywall-pt")   return { label: "Paywall（竖屏）", keys: ["paywallLayout", "membership"] };
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
       if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel"] };
@@ -11814,9 +11763,9 @@
           demoState.levelUpResult = v;
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
         } },
-      { key: "cardPhoneBound", label: "卡号登录·是否已获取手机号",
+      { key: "kakaoPhoneBound", label: "Kakao 登录·是否已获取手机号",
         options: [["false", "未获取·需绑定"], ["true", "已获取·直接进"]],
-        apply: function (v) { demoState.cardPhoneBound = (v === "true"); } },
+        apply: function (v) { demoState.kakaoPhoneBound = (v === "true"); } },
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
@@ -11883,7 +11832,7 @@
           refreshUnlockState(); enterLandscape(); showCourseMap();
           courseMapLevelId = "level-1"; renderCourseMap(); // select the lower level → banner shows
         } },
-      { label: "卡号登录·手机号绑定", run: function () { demoState.cardPhoneBound = false; openBindPhone("card"); } },
+      { label: "Kakao 登录·手机号绑定", run: function () { demoState.kakaoPhoneBound = false; openBindPhone("kakao"); } },
       { label: "设备上限提醒（3 台）", run: function () { showDeviceLimitNotice(); } },
       { label: "背包·手办 IP/系列", run: function () {
           // Req5: Backpack › Dino Figures → IP tabs (Dino / Mama / Baby) → series groups.
