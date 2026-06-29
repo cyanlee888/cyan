@@ -6346,7 +6346,7 @@
                   <span class="ee-emoji">📖</span>
                   <span class="ee-info">
                     <b>Words &amp; Sentences</b>
-                    <span>Practice words &amp; sentences · Levels 1–6</span>
+                    <span>Learn by doing</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-story" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -6356,7 +6356,7 @@
                   <span class="ee-emoji">🎧</span>
                   <span class="ee-info">
                     <b>Listening</b>
-                    <span>Radio stories · Goodnight / Morning</span>
+                    <span>Radio stories</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-radio" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -6366,7 +6366,7 @@
                   <span class="ee-emoji">🗣️</span>
                   <span class="ee-info">
                     <b>Speaking</b>
-                    <span>Talk with Dino · Free speaking practice</span>
+                    <span>Talk with Dino</span>
                   </span>
                   <span class="ee-thumbs ee-thumbs--dino" aria-hidden="true"><img src="assets/dino-mascot.png" alt="" decoding="async" /></span>
                   <span class="ee-arrow">›</span>
@@ -7617,9 +7617,28 @@
     }
 
     function renderCourseActionButtons(course) {
+      // Free tier: everything except the single open trial lesson is paywalled — any
+      // other level (higher OR lower) → Go Premium. So cross-level Switch / Try entries
+      // below are effectively member-only (free never gets past this gate).
       if (isCourseLocked(course)) {
         return `<button type="button" class="course-cta-locked" data-action="unlock">Go Premium</button>`;
       }
+      // Member cross-level handling (owns all content; schedule anchored at current level).
+      const rel = levelRel(course);
+      if (rel === "skipped-lower") {
+        // Never-studied lower level: the ONLY way to actually study it is to switch the
+        // plan down (re-anchor schedule). No re-assessment, no re-定级 — pure choice.
+        const lbl = (typeof levelLabelOf === "function") ? levelLabelOf(course.levelId) : "lower level";
+        return `<button type="button" class="btn btn-primary" data-action="switch-down" data-switch-level="${course.levelId}">Switch to ${lbl}</button>`;
+      }
+      if (rel === "next-up") {
+        // current+1 → Level check (take this level's trial → real 定级 → confirm).
+        return `<button type="button" class="btn btn-primary" data-action="try-level" data-try-level="${course.levelId}">Try this level</button>`;
+      }
+      if (rel === "higher-locked") {
+        return `<button type="button" class="course-cta-scheduled" data-action="higher-locked">Locked</button>`;
+      }
+      // current level (and completed-lower, which resolves to View report below).
       if (getUnlockState(course) === "scheduled") {
         return `<button type="button" class="course-cta-scheduled" data-action="scheduled">Opens soon</button>`;
       }
@@ -7662,6 +7681,26 @@
           }
           if (action === "seq-locked") {
             showPayToast("Finish the previous lesson first");
+            return;
+          }
+          if (action === "higher-locked") {
+            showPayToast("Finish your current level first");
+            return;
+          }
+          if (action === "try-level") {
+            // current+1 Level check: take this level's trial → real 定级 → confirm.
+            startLevelUpTrial(btn.dataset.tryLevel);
+            return;
+          }
+          if (action === "switch-down") {
+            // Member-only (free is paywalled before reaching here). Pure choice-based
+            // downgrade: re-anchor the plan to the chosen lower level, no trial / no 定级.
+            const lvl = btn.dataset.switchLevel;
+            const lbl = (typeof levelLabelOf === "function") ? levelLabelOf(lvl) : "that level";
+            if (!profile.premiumUnlocked) { openPaywall(activeLandScreen() || "screen-class", "downgrade"); return; }
+            if (!confirm(`Switch your plan down to ${lbl}? Your schedule restarts from ${lbl} · Unit 1.`)) return;
+            startDowngrade(lvl);
+            showClassHome();
             return;
           }
           setCurrentCourse(course.levelId, course.unitId, course.lessonId);
@@ -7769,6 +7808,23 @@
       if (state === "InProgress") return "In progress";
       if (state === "Current") return "Current";
       return "Not started";
+    }
+
+    // V1.3.1: where a course's LEVEL sits relative to the learner (schedule is anchored
+    // at the current level; placement marks the original start). Drives the lesson-card
+    // CTA so lower / higher levels never dead-end on a misleading "Start Class".
+    //   current        → on plan now (normal weekly schedule)
+    //   completed-lower → placement ≤ lvl < current : studied via progression → review only
+    //   skipped-lower   → lvl < placement : never studied → must Switch down (member) to study
+    //   next-up         → current+1 : Level check ("Try this level")
+    //   higher-locked   → > current+1 : not reachable yet
+    function levelRel(course) {
+      const cur = levelOrderOf(profile.currentLevelId);
+      const place = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
+      const lv = levelOrderOf(course.levelId);
+      if (lv === cur) return "current";
+      if (lv < cur) return lv < place ? "skipped-lower" : "completed-lower";
+      return lv === cur + 1 ? "next-up" : "higher-locked";
     }
 
     function getTeacher() {
@@ -8788,7 +8844,13 @@
     function renderDowngradeBanner(level) {
       const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const selOrder = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
+      const placeOrder = COURSE_LIBRARY.findIndex((l) => l.id === (profile.placementLevelId || profile.currentLevelId));
       if (selOrder !== curOrder - 1) return ""; // only the adjacent lower level
+      // Only when current−1 is a SKIPPED (never-studied) level — i.e. the learner is still
+      // on the originally-placed level (current == placement). Once natural progression
+      // moves current above placement, current−1 is a COMPLETED level (review, not a
+      // downgrade target), so the banner retires.
+      if (curOrder !== placeOrder) return "";
       const sub = profile.premiumUnlocked
         ? `Switch ${getDisplayName() || "your learner"}'s plan down to ${level.label} right away — no trial needed.`
         : `Take one ${level.label} trial to see if it fits better.`;
