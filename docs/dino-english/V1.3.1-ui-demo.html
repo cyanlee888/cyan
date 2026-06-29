@@ -7321,9 +7321,9 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "up", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
+    const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -8448,7 +8448,7 @@
     // from the All-lessons / Level·Unit lists and can't be retaken, so the card's only
     // action opens its report (read-only). Shown once the trial has been completed.
     function renderClassTrialCard() {
-      const trial = buildCourse(profile.placementLevelId, "unit-1", "lesson-1");
+      const trial = buildCourse(profile.trialTakenLevelId || profile.placementLevelId, "unit-1", "lesson-1");
       const dur = formatCourseDuration(trial.duration);
       return `
         <article class="course-bridge-card class-home-course-card class-week-card is-trial" data-trial="1">
@@ -8832,6 +8832,33 @@
       order = Math.max(0, Math.min(COURSE_LIBRARY.length - 1, order));
       return levelByOrder(order);
     }
+    // First (onboarding) trial: the fuzzy placement only decides WHICH level's trial the
+    // learner takes; the report then gives a REAL best-fit level from how the child did
+    // in that trial — within the trial level ±1 (demo-driven via demoState.trialResult).
+    function firstTrialAssessedLevelId(trialLevelId) {
+      const base = trialLevelId || profile.placementLevelId || profile.currentLevelId || "level-2";
+      const r = demoState.trialResult;
+      let order = levelOrderOf(base) + (r === "up" ? 1 : r === "down" ? -1 : 0);
+      order = Math.max(0, Math.min(COURSE_LIBRARY.length - 1, order));
+      return levelByOrder(order);
+    }
+    // Commit the assessed best-fit level as the learner's plan (Unit 1 · Lesson 1). Runs
+    // once, when leaving the first-trial report. The trial level itself is remembered so
+    // the Class-home "Trial lesson" card keeps showing the lesson the child actually took.
+    function applyFirstTrialPlacement() {
+      if (profile.trialTakenLevelId) return; // already committed
+      const trialLevelId = profile.placementLevelId || profile.currentLevelId || "level-2";
+      const assessedId = firstTrialAssessedLevelId(trialLevelId);
+      profile.trialTakenLevelId = trialLevelId;
+      if (assessedId === trialLevelId) return; // best-fit == trial level → no plan move
+      profile.placementLevelId = assessedId;
+      profile.currentLevelId = assessedId;
+      profile.currentUnitId = "unit-1";
+      profile.currentLessonId = "lesson-1";
+      profile.level = levelCefrLabel(assessedId);
+      profile.hasStartedClass = false; // plan starts fresh at the assessed level
+      if (typeof courseMapLevelId !== "undefined") courseMapLevelId = assessedId;
+    }
     function startLevelUpTrial(targetLevelId) {
       // Both members and free users can take a higher level's trial (free = one extra
       // trial lesson). Free users can sample it, but adopting the new plan converts
@@ -9047,15 +9074,20 @@
       const name = getDisplayName() || (isParentVoice() ? "your child" : "you");
       if (trialReportMode === "levelup") { renderLevelUpReport(name); return; }
       // ---- First-trial report (PORTRAIT) — content modeled on the CT trial-report
-      //      reference; name + recommended level are personalized from Onboarding. ----
-      const lvlId = profile.placementLevelId || profile.currentLevelId || "level-3";
-      const lvlLabel = (typeof levelLabelOf === "function") ? levelLabelOf(lvlId) : "Level 3";
+      //      reference. The fuzzy placement only picked WHICH level's trial to run; the
+      //      report now gives a REAL best-fit level from today's performance (trial ±1).
+      //      Once committed (trialTakenLevelId set), show the actual assessed plan level. ----
+      const trialLevelId = profile.trialTakenLevelId || profile.placementLevelId || profile.currentLevelId || "level-2";
+      const lvlId = profile.trialTakenLevelId
+        ? (profile.placementLevelId || profile.currentLevelId || trialLevelId)
+        : firstTrialAssessedLevelId(trialLevelId);
+      const lvlLabel = (typeof levelLabelOf === "function") ? levelLabelOf(lvlId) : "Level 2";
       const cefr = ((typeof levelCefrLabel === "function") ? levelCefrLabel(lvlId) : null) || profile.level || "A1+";
       const lead = (name === "you") ? "You" : `<b>${name}</b>, you`;
       const poss = (name === "you") ? "your" : `${name}'s`;
       if ($("#trp-level")) $("#trp-level").textContent = lvlLabel;
       if ($("#trp-overall")) $("#trp-overall").innerHTML =
-        `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>, with a solid foundation already! Your trial places you at <span class="tp-hl">CEFR ${cefr} · recommended ${lvlLabel}</span>.`;
+        `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>! Based on how ${name === "you" ? "you" : name} did in today's trial, ${poss} best-fit level is <span class="tp-hl">CEFR ${cefr} · ${lvlLabel}</span>.`;
       // Trial-report CTA branches by membership (PRD V1.3.0): free users go to the
       // study-plan value page → Paywall; members are already entitled, so the button
       // is just Continue → Class (no plan page, no Paywall). The trial (lesson0) is
@@ -9173,6 +9205,9 @@
     });
     // First-trial report actions (portrait #screen-trial-report).
     $("#btn-trip-start")?.addEventListener("click", () => {
+      // Commit the performance-based best-fit level as the plan (first placement → no
+      // keep/update choice; the assessed level IS the plan).
+      applyFirstTrialPlacement();
       // Members are already entitled → skip the study-plan value page + Paywall and
       // go straight back to Class; only free users see the conversion funnel.
       if (profile.premiumUnlocked) { showClassHome(); } else { showStudyPlan(); }
@@ -11667,6 +11702,7 @@
     if (typeof courseMapLevelId !== "undefined") courseMapLevelId = targetLevelId;
     profile.hasStartedClass = false;
     profile.trialReportShown = false;
+    profile.trialTakenLevelId = null;
     trialReportMode = "trial";
     showPayToast(`Trying an easier ${label} trial`);
     openClassroomDemo("downgrade-trial");
@@ -11704,6 +11740,7 @@
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
       if (key === "levelUpResult") return demoState.levelUpResult;
+      if (key === "trialResult") return demoState.trialResult;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
       if (key === "paywallLayout") return demoState.paywallLayout;
       if (key === "kakaoPhoneBound") return demoState.kakaoPhoneBound ? "true" : "false";
@@ -11731,7 +11768,7 @@
       if (pid === "screen-login")        return { label: "登录", keys: ["kakaoPhoneBound"] };
       if (pid === "screen-paywall-pt")   return { label: "Paywall（竖屏）", keys: ["paywallLayout", "membership"] };
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
-      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel"] };
+      if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel", "trialResult"] };
       if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
@@ -11762,6 +11799,12 @@
         apply: function (v) {
           demoState.levelUpResult = v;
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
+        } },
+      { key: "trialResult", label: "首体验课定级结果（相对所上体验课 Level）",
+        options: [["up", "高一档·trial+1"], ["same", "持平·trial"], ["down", "低一档·trial-1"]],
+        apply: function (v) {
+          demoState.trialResult = v;
+          if (document.querySelector("#screen-trial-report")?.classList.contains("active") && trialReportMode === "trial") { profile.trialTakenLevelId = null; renderTrialReport(); }
         } },
       { key: "kakaoPhoneBound", label: "Kakao 登录·是否已获取手机号",
         options: [["false", "未获取·需绑定"], ["true", "已获取·直接进"]],
@@ -11794,7 +11837,7 @@
           if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
         } },
       { label: "学习计划",    run: function () { showStudyPlan(); } },
-      { label: "体验课报告",  run: function () { trialReportMode = "trial"; showTrialReport(); } },
+      { label: "体验课报告",  run: function () { trialReportMode = "trial"; profile.trialTakenLevelId = null; showTrialReport(); } },
       { label: "正价课报告",  run: function () { showLessonReport(); } },
       { label: "Dino 升级",   run: function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); } },
       { label: "盲盒抽取",    run: function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); } },
