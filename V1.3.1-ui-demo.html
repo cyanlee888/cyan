@@ -7590,12 +7590,12 @@
 
     function isCourseLocked(course) {
       if (profile.premiumUnlocked) return false;
-      // Free tier opens exactly ONE lesson: the first lesson in the path.
-      // Everything from the second lesson onward stays locked until purchase.
-      const sequence = getCurrentLevelCourseSequence();
-      if (!sequence.length) return false;
-      const firstKey = makeCourseKey(sequence[0].levelId, sequence[0].unitId, sequence[0].lessonId);
-      return makeCourseKey(course.levelId, course.unitId, course.lessonId) !== firstKey;
+      // Free tier: the 体验课 (trial) is the ONLY free lesson, and it lives as its own
+      // "Trial lesson" card (renderClassTrialCard) — it is NOT part of the formal
+      // sequence. EVERY formal lesson (Lesson 1 onward, any level) is locked until
+      // purchase → Go Premium. (current+1 "Try this level" is handled before this gate
+      // in renderCourseActionButtons as a free placement trial.)
+      return true;
     }
 
     // One lock indicator per card — never stack two. Its HOME depends on the card:
@@ -8509,7 +8509,8 @@
     // The week's lesson batch (3 lessons, unlocked together — no weekday scheduling)
     // renders as full-width, scroll-snapped cards right on Class home — zero clicks
     // to see the plan. Each card carries the same lesson detail/CTA as the old hero;
-    // free users still get Lesson 1 open and the rest gated (Unlock CTA on the card).
+    // free users have EVERY formal lesson gated (Go Premium) — only the 体验课 (trial
+    // card) is free; the formal Lesson 1 onward is locked.
     // Browsing the whole catalog moves to the single Learning Path entry (the map).
     // V1.3.0 (req): the trial lesson (lesson0) appears on Class home as a lesson-style
     // card — same chrome as a week lesson card — badged "Trial lesson". It's removed
