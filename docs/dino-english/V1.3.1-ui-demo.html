@@ -7623,23 +7623,25 @@
     }
 
     function renderCourseActionButtons(course) {
-      // Free tier: everything except the single open trial lesson is paywalled — any
-      // other level (higher OR lower) → Go Premium. So cross-level Switch / Try entries
-      // below are effectively member-only (free never gets past this gate).
+      // current+1 ("next-up") is the one cross-level TRIAL entry open to BOTH tiers —
+      // handled before the free paywall gate below:
+      //   • Free   → placement trial (上这一档体验课 → ±1 真实定级 → 学习计划 → Paywall)
+      //   • Member → level-up check (升要证明：达标才升、未达标保持、永不降)
+      const rel = levelRel(course);
+      if (rel === "next-up") {
+        return `<button type="button" class="btn btn-primary" data-action="try-level" data-try-level="${course.levelId}">Try this level</button>`;
+      }
+      // Free tier: everything else except the single open trial lesson is paywalled —
+      // skipped / completed lower levels and higher-locked levels → Go Premium.
       if (isCourseLocked(course)) {
         return `<button type="button" class="course-cta-locked" data-action="unlock">Go Premium</button>`;
       }
       // Member cross-level handling (owns all content; schedule anchored at current level).
-      const rel = levelRel(course);
       if (rel === "skipped-lower") {
         // Never-studied lower level: the ONLY way to actually study it is to switch the
         // plan down (re-anchor schedule). No re-assessment, no re-定级 — pure choice.
         const lbl = (typeof levelLabelOf === "function") ? levelLabelOf(course.levelId) : "lower level";
         return `<button type="button" class="btn btn-primary" data-action="switch-down" data-switch-level="${course.levelId}">Switch to ${lbl}</button>`;
-      }
-      if (rel === "next-up") {
-        // current+1 → Level check (take this level's trial → real 定级 → confirm).
-        return `<button type="button" class="btn btn-primary" data-action="try-level" data-try-level="${course.levelId}">Try this level</button>`;
       }
       if (rel === "higher-locked") {
         return `<button type="button" class="course-cta-scheduled" data-action="higher-locked">Locked</button>`;
@@ -7694,8 +7696,12 @@
             return;
           }
           if (action === "try-level") {
-            // current+1 Level check: take this level's trial → real 定级 → confirm.
-            startLevelUpTrial(btn.dataset.tryLevel);
+            // current+1 trial entry, branched by tier:
+            //   • Free   → placement trial (re-定级 → 学习计划 → Paywall)
+            //   • Member → level-up check (升要证明：达标才升、永不降)
+            const lvl = btn.dataset.tryLevel;
+            if (!profile.premiumUnlocked) { startPlacementTrial(lvl); return; }
+            startLevelUpTrial(lvl);
             return;
           }
           if (action === "switch-down") {
@@ -11751,6 +11757,27 @@
   // Req4: downgrade ("向下上课"). Asymmetric with Level up — going down needs no proof:
   //   • Member → switch straight to the easier formal plan, no trial.
   //   • Free   → take ONE easier trial → right-fit report → Paywall.
+  // Free-tier placement trial (any adjacent level, higher OR lower). Runs the chosen
+  // level's trial as a FIRST-trial so it ends on the portrait trial report (±1 real
+  // 定级) → study plan → Paywall — the symmetric "sample → place → convert" funnel.
+  // Members never use this: they switch DOWN directly (no trial) and take the level-up
+  // CHECK to go up (升要证明). For free there is no current to protect, so every trial
+  // is just placement + plan + conversion.
+  function startPlacementTrial(targetLevelId) {
+    const label = levelLabelOf(targetLevelId);
+    levelUpInProgress = false; // force the trial (not level-up) report path
+    profile.placementLevelId = targetLevelId;
+    setCurrentCourse(targetLevelId, "unit-1", "lesson-1");
+    profile.level = levelCefrLabel(targetLevelId);
+    if (typeof courseMapLevelId !== "undefined") courseMapLevelId = targetLevelId;
+    profile.hasStartedClass = false;
+    profile.trialReportShown = false;
+    profile.trialTakenLevelId = null;
+    trialReportMode = "trial";
+    showPayToast(`Trying a ${label} trial`);
+    openClassroomDemo("placement-trial");
+  }
+
   function startDowngrade(targetLevelId) {
     const label = levelLabelOf(targetLevelId);
     if (profile.premiumUnlocked) {
@@ -11766,18 +11793,9 @@
       showPayToast(`Switched to ${label} — plan updated`);
       return;
     }
-    // Free: run an easier trial as a first-trial so it ends on the portrait trial
-    // report → study plan → Paywall (the conversion-recovery path).
-    profile.placementLevelId = targetLevelId;
-    setCurrentCourse(targetLevelId, "unit-1", "lesson-1");
-    profile.level = levelCefrLabel(targetLevelId);
-    if (typeof courseMapLevelId !== "undefined") courseMapLevelId = targetLevelId;
-    profile.hasStartedClass = false;
-    profile.trialReportShown = false;
-    profile.trialTakenLevelId = null;
-    trialReportMode = "trial";
-    showPayToast(`Trying an easier ${label} trial`);
-    openClassroomDemo("downgrade-trial");
+    // Free: run this level's trial as a placement trial → portrait trial report →
+    // study plan → Paywall (conversion-recovery path; symmetric with try-higher).
+    startPlacementTrial(targetLevelId);
   }
 
   // Req3: device limit (max 3 active devices). Backend-owned; the app only surfaces a
