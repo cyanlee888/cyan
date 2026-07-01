@@ -5842,7 +5842,7 @@
             <p class="bindp-sub">We will be using this phone number to provide you the best service possible.</p>
             <div class="bindp-linked"><span class="bindp-linked-ic">✓</span><span id="bindp-linked-tx">Your Kakao account has been logged in</span></div>
             <div class="bindp-field bindp-phone-field">
-              <button type="button" class="bindp-cc" id="bindp-cc">🇸🇦 +966 ▾</button>
+              <button type="button" class="bindp-cc" id="bindp-cc">🇰🇷 +82 ▾</button>
               <input type="tel" class="bindp-phone-input" id="bindp-phone-input" inputmode="numeric" placeholder="Phone number" autocomplete="off" />
               <div class="bindp-cc-menu" id="bindp-cc-menu"></div>
             </div>
@@ -6224,6 +6224,7 @@
     .pwpt-plan-l{display:flex;flex-direction:column;gap:3px;min-width:0}
     .pwpt-plan-name{font-size:.98rem;font-weight:800;color:#16241c}
     .pwpt-plan-price{font-size:.78rem;font-weight:600;color:#8a958d}
+    .pwpt-plan-orig{color:#c0473a;text-decoration:line-through;font-weight:700;margin-right:2px}
     .pwpt-plan-week{flex:0 0 auto;font-size:1.34rem;font-weight:900;color:#1d7a4d;line-height:1.05;white-space:nowrap;text-align:right}
     .pwpt-badge{position:absolute;top:-9px;left:14px;white-space:nowrap;background:#d9641e;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
     .pwpt-legal{text-align:center;margin:8px auto 0;font-size:.72rem;color:#8a958d}
@@ -8250,7 +8251,8 @@
       }
     });
     // ===== V1.3.1 手机号绑定（Kakao 登录后未获取到手机号 → 强制绑定）=====
-    let bindCC = LG_COUNTRIES.find((c) => c.code === "+966") || LG_COUNTRIES[0];
+    // Kakao is a Korea-first login, so the phone-binding step defaults to South Korea (+82).
+    let bindCC = LG_COUNTRIES.find((c) => c.code === "+82") || LG_COUNTRIES[0];
     let bindCodeSent = false, bindResendTimer = null, bindResendLeft = 60;
     function bindDigits() { return ($("#bindp-phone-input")?.value || "").replace(/\D/g, ""); }
     function bindRefreshGetCode() {
@@ -8264,6 +8266,9 @@
     }
     function openBindPhone(method) {
       enterPortrait();
+      // Kakao login → default the country code to South Korea (+82).
+      bindCC = LG_COUNTRIES.find((c) => c.code === "+82") || LG_COUNTRIES[0];
+      const ccBtn = $("#bindp-cc"); if (ccBtn) ccBtn.textContent = `${bindCC.flag} ${bindCC.code} ▾`;
       const lk = $("#bindp-linked-tx");
       if (lk) lk.textContent = "Your Kakao account has been logged in";
       const inp = $("#bindp-phone-input"); if (inp) inp.value = "";
@@ -11439,10 +11444,12 @@
     // V1.3.0: paywall exposes WEEKLY + MONTHLY + ANNUAL (3 tiers).
     // Annual is the default selection (top, highlighted) and shows a discount
     // badge; benefits are identical across tiers — only the billing cycle differs.
+    // origPrice = 划掉的原价，实际由后台配置（默认公式：真实价格 + X）。此处为演示值。
+    // perDay = 折算到「天」的价格（真实价 ÷ 周期天数），作为卡片主视觉。
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perWeek: "≈ $4.42/week", badge: "Recommended", hero: true },
-      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly", perWeek: "≈ $8.77/week" },
-      { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly", perWeek: "$10.99/week" },
+      { id: "annual", name: "Annual", price: "$229.99", origPrice: "$329.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perDay: "≈ $0.63/day", badge: "Recommended", hero: true },
+      { id: "monthly", name: "Monthly", price: "$37.99", origPrice: "$49.99", period: "/ month", per: "$37.99/month · billed monthly", perDay: "≈ $1.27/day" },
+      { id: "weekly", name: "Weekly", price: "$10.99", origPrice: "$14.99", period: "/ week", per: "$10.99/week · billed weekly", perDay: "≈ $1.57/day" },
     ];
 
     function getSelectedPlan() {
@@ -11506,9 +11513,9 @@
           ${plan.badge ? `<span class="pwpt-badge">${plan.badge}</span>` : ""}
           <span class="pwpt-plan-l">
             <span class="pwpt-plan-name">${plan.name}</span>
-            <span class="pwpt-plan-price">${plan.price} ${plan.period}</span>
+            <span class="pwpt-plan-price">${plan.origPrice ? `<s class="pwpt-plan-orig">${plan.origPrice}</s> ` : ""}${plan.price} ${plan.period}</span>
           </span>
-          <span class="pwpt-plan-week">${plan.perWeek}</span>
+          <span class="pwpt-plan-week">${plan.perDay}</span>
         </div>`).join("");
       box.querySelectorAll("[data-pwpt-plan]").forEach((card) => {
         card.addEventListener("click", () => { profile.selectedPlan = card.dataset.pwptPlan; renderPaywallPortrait(); });
