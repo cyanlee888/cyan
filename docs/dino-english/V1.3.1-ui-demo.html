@@ -6105,22 +6105,26 @@
           </div>
           <!-- V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle to its right,
                then a full-width benefits list below; plan cards side-by-side; arrow CTA. -->
+          <!-- V1.3.1: top-exposure trust proof, then a concise benefits list. -->
+          <div class="pwpt-trust">
+            <span class="pwpt-trust-badge">13 Years of Proven Trust</span>
+            <p class="pwpt-trust-sub">Backed by over a decade of refinement and trusted by 1.8M families worldwide.</p>
+          </div>
           <div class="pwpt-hero-card">
             <div class="pwpt-hero-top">
               <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
               <div class="pwpt-hero-intro">
                 <span class="pwpt-kicker">Dino Premium</span>
                 <h2 class="pwpt-title" id="pwpt-title">Unlock everything in Dino English</h2>
-                <p class="pwpt-lead">One subscription opens every lesson, story and report.</p>
               </div>
             </div>
             <ul class="pwpt-benefits">
-              <li><strong>All 864 core lessons unlocked</strong><span class="pwpt-benefit-sub">Structured learning, real progress</span></li>
-              <li><strong>A personalized learning path</strong><span class="pwpt-benefit-sub">3 lessons/week, built around child's level</span></li>
-              <li><strong>Report after every lesson</strong><span class="pwpt-benefit-sub">See how they're doing</span></li>
-              <li><strong>All extension resources unlocked</strong><span class="pwpt-benefit-sub">Explore freely, learn more</span></li>
-              <li><strong>Full rewards &amp; gamified learning</strong><span class="pwpt-benefit-sub">Keeps them motivated</span></li>
-              <li><strong>Chat freely with Dino</strong><span class="pwpt-benefit-sub">Practice anytime</span></li>
+              <li><strong>All 864 core lessons unlocked</strong></li>
+              <li><strong>Personalized learning path · 3 lessons/week</strong></li>
+              <li><strong>Report after every lesson</strong></li>
+              <li><strong>All extension resources unlocked</strong></li>
+              <li><strong>Full rewards &amp; gamified learning</strong></li>
+              <li><strong>Chat freely with Dino</strong></li>
             </ul>
           </div>
           <div class="pwpt-plans" id="pwpt-plans"></div>
@@ -6192,6 +6196,11 @@
     .pwpt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;position:sticky;top:0;background:transparent}
     .pwpt-back{width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,.06);color:#1f2a24;font-size:1.4rem;line-height:1;cursor:pointer}
     .pwpt-restore{border:none;background:transparent;color:#1d5c3f;font-size:.82rem;font-weight:700;cursor:pointer}
+    /* V1.3.1: top-exposure trust proof strip */
+    .pwpt-trust{margin:10px 0 12px;padding:13px 16px;border-radius:18px;text-align:center;
+      background:linear-gradient(135deg,#1d5c3f 0%,#2f9e63 100%);box-shadow:0 12px 26px rgba(29,92,63,.22)}
+    .pwpt-trust-badge{display:block;font-size:1.02rem;font-weight:900;letter-spacing:.01em;color:#fff}
+    .pwpt-trust-sub{margin:5px 0 0;font-size:.78rem;line-height:1.5;color:#eafaf0}
     /* V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle right, full-width benefits below */
     .pwpt-hero-card{display:flex;flex-direction:column;gap:14px;margin:8px 0 14px;padding:16px 16px;
       background:linear-gradient(160deg,#fff6e6 0%,#eef9f1 100%);border:1px solid #f0e6cf;
@@ -6817,38 +6826,7 @@
         </div>
       </section>
 
-      <section class="screen app-shell" id="screen-paywall">
-        <div class="pw-shell">
-          <div class="pw-head">
-            <button type="button" class="btn-back-land" id="btn-paywall-back">Back</button>
-            <button type="button" class="pw-restore" id="btn-paywall-restore">Restore</button>
-          </div>
-          <div class="pw-body">
-            <div class="pw-left">
-              <span class="pw-kicker">Dino Premium</span>
-              <h2 class="pw-title" id="pw-title">Unlock everything in Dino English</h2>
-              <ul class="pw-benefits">
-                <li><strong>All 864 core lessons unlocked</strong><span class="pw-benefit-sub">Structured learning, real progress</span></li>
-                <li><strong>A personalized learning path</strong><span class="pw-benefit-sub">3 lessons/week, built around child's level</span></li>
-                <li><strong>Report after every lesson</strong><span class="pw-benefit-sub">See how they're doing</span></li>
-                <li><strong>All extension resources unlocked</strong><span class="pw-benefit-sub">Explore freely, learn more</span></li>
-                <li><strong>Full rewards &amp; gamified learning</strong><span class="pw-benefit-sub">Keeps them motivated</span></li>
-                <li><strong>Chat freely with Dino</strong><span class="pw-benefit-sub">Practice anytime</span></li>
-              </ul>
-            </div>
-            <div class="pw-right">
-              <div class="pw-plans" id="pw-plans"></div>
-              <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
-              <p class="pw-legal">
-                <span class="pw-renewal">Cancel anytime</span> ·
-                <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
-                ·
-                <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!-- V1.3.1: the landscape Paywall was removed — Paywall is portrait-only now (see #screen-paywall-pt). -->
 
       <section class="screen app-shell" id="screen-membership">
         <div class="ms-shell">
@@ -7343,7 +7321,7 @@
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
     const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
+    const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -11512,18 +11490,11 @@
     function openPaywall(returnScreen, triggerSource) {
       paywallReturnScreen = returnScreen || activeLandScreen() || "screen-class";
       paywallTrigger = triggerSource || "course";
-      // V1.3.1 (Req1): Paywall is now a PORTRAIT takeover by default. The landscape
-      // version is kept only for side-by-side comparison via the ⚙︎ States panel.
-      if (demoState.paywallLayout !== "landscape") {
-        renderPaywallPortrait();
-        enterPortrait();
-        showPortraitScreen("screen-paywall-pt");
-        const sh = $("#pwpt-scroll"); if (sh) sh.scrollTop = 0;
-        return;
-      }
-      enterLandscape();
-      renderPaywallPlans();
-      showLandScreen("screen-paywall");
+      // V1.3.1 (Req1): Paywall is a PORTRAIT takeover — the old landscape version is gone.
+      renderPaywallPortrait();
+      enterPortrait();
+      showPortraitScreen("screen-paywall-pt");
+      const sh = $("#pwpt-scroll"); if (sh) sh.scrollTop = 0;
     }
     // V1.3.1 (Req1): render the portrait paywall plan cards (annual default · Best value).
     function renderPaywallPortrait() {
@@ -11905,7 +11876,6 @@
       if (key === "levelUpResult") return demoState.levelUpResult;
       if (key === "trialResult") return demoState.trialResult;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
-      if (key === "paywallLayout") return demoState.paywallLayout;
       if (key === "kakaoPhoneBound") return demoState.kakaoPhoneBound ? "true" : "false";
       return null;
     },
@@ -11916,10 +11886,9 @@
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
         if (id === "screen-levelup-report") return { label: "定级报告（升级尝试）", keys: ["levelUpResult"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
-        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
+        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-login-landscape") return { label: "登录", keys: ["kakaoPhoneBound"] };
-        if (id === "screen-paywall")     return { label: "Paywall（横屏·旧版）", keys: ["paywallLayout", "membership"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
         return { label: "App 内", keys: ["membership"] };
@@ -11929,7 +11898,7 @@
       var pid = pel ? pel.id : null;
       if (pid === "screen-bind-phone")   return { label: "手机号绑定", keys: ["kakaoPhoneBound"] };
       if (pid === "screen-login")        return { label: "登录", keys: ["kakaoPhoneBound"] };
-      if (pid === "screen-paywall-pt")   return { label: "Paywall（竖屏）", keys: ["paywallLayout", "membership"] };
+      if (pid === "screen-paywall-pt")   return { label: "Paywall（竖屏）", keys: ["membership"] };
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
       if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel", "trialResult"] };
       if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
@@ -11975,14 +11944,6 @@
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
-      { key: "paywallLayout", label: "Paywall 版式（1.3.1：竖屏）",
-        options: [["portrait", "竖屏（新）"], ["landscape", "横屏（旧）"]],
-        apply: function (v) {
-          demoState.paywallLayout = v;
-          // Re-open the paywall in the chosen layout so the switch is visible at once.
-          var onPw = activeLandScreen() === "screen-paywall" || document.querySelector("#screen-paywall-pt")?.classList.contains("active");
-          if (onPw) openPaywall(paywallReturnScreen || "screen-class", paywallTrigger || "membership_entry");
-        } },
     ],
     jumps: [
       { label: "Class 首页",  run: function () { demoState.weekCaughtUp = false; enterLandscape(); showClassHome(); } },
@@ -12010,7 +11971,7 @@
     // V1.3.1 变更专用快捷入口：直达本期 4 个需求的关键状态，方便评审。
     jumps131Label: "1.3.1 变更",
     jumps131: [
-      { label: "竖屏 Paywall", run: function () { demoState.paywallLayout = "portrait"; openPaywall("screen-class", "membership_entry"); } },
+      { label: "竖屏 Paywall", run: function () { openPaywall("screen-class", "membership_entry"); } },
       { label: "Explore 引导卡（会员·本周已上完）", run: function () {
           // Req2: member who finished this week's batch and is waiting for the next
           // unlock → Class home shows the "Explore more" nudge card.
