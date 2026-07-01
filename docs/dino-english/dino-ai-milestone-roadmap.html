@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-zh="Dino AI · 产品主线串联视图">Dino AI · Product Throughline</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -319,6 +320,33 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 }
 @media(max-width:600px){.plan-divider span{font-size:12px;padding:6px 14px}}
 
+/* ---------- milestone divider & achievement banner ---------- */
+.ms-divider{display:flex;align-items:center;gap:16px;padding:14px 0 4px}
+.ms-divider::before,.ms-divider::after{content:"";flex:1;height:0;border-top:2px solid var(--green);opacity:.5}
+.ms-divider span{
+  font-family:'Noto Serif SC',serif;font-size:13.5px;font-weight:700;color:#fff;background:var(--green);
+  border-radius:99px;padding:7px 22px;letter-spacing:.06em;white-space:nowrap
+}
+.ms-banner{
+  display:flex;gap:18px;align-items:center;margin:30px 0 4px;padding:20px 26px;
+  background:linear-gradient(90deg,rgba(29,92,63,.10),rgba(46,139,87,.03));
+  border:1px solid var(--green);border-left:5px solid var(--green);border-radius:12px
+}
+.ms-banner .ms-badge{
+  flex-shrink:0;width:46px;height:46px;border-radius:50%;background:var(--green);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;
+  box-shadow:0 0 0 6px rgba(29,92,63,.12)
+}
+.ms-banner b{font-family:'Noto Serif SC',serif;font-size:16.5px;color:var(--green);display:block;margin-bottom:3px}
+.ms-banner p{font-size:13px;color:var(--ink-soft);line-height:1.7}
+@media(max-width:600px){.ms-banner{flex-direction:column;text-align:center;align-items:flex-start}}
+
+/* priority pills inside future nodes */
+.p0,.p1,.p2{font-size:10px;font-weight:600;letter-spacing:.06em;padding:1px 7px;border-radius:99px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.p0{background:var(--red);color:#fff}
+.p1{background:var(--orange-soft);color:var(--orange);border:1px solid var(--orange)}
+.p2{background:var(--paper-deep);color:var(--ink-faint);border:1px solid var(--line)}
+
 /* ---------- language toggle ---------- */
 .lang-toggle{
   position:fixed;top:14px;right:16px;z-index:70;display:flex;gap:2px;
@@ -354,7 +382,7 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="meta-row">
     <span data-zh="来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b>">Source <b>AI Milestones v2.0 · Li Shuang</b></span>
     <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
-    <span data-zh="更新 <b>2026.06.12</b>">Updated <b>2026.06.12</b></span>
+    <span data-zh="更新 <b>2026.07.01</b>">Updated <b>2026.07.01</b></span>
   </div>
 </header>
 
@@ -394,16 +422,21 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 
 <nav class="tl">
   <div class="wrap">
-    <a href="#n610" data-zh="<b>6/10</b>过程版 · 已交付"><b>6/10</b>Process · Shipped</a>
-    <a href="#n621" data-zh="<b>6/24</b>过程版"><b>6/24</b>Process</a>
-    <a href="#n630" class="core" data-zh="<b>6/30</b>核心上线"><b>6/30</b>Core launch</a>
-    <a href="#n709" data-zh="<b>7/9</b>TTS 节点"><b>7/9</b>TTS node</a>
-    <a href="#n715" data-zh="<b>7月中</b>~7.15"><b>Mid-Jul</b>~7.15</a>
+    <a href="#n610" data-zh="<b>6/10</b>MVP · V1.1.0"><b>6/10</b>MVP · V1.1.0</a>
+    <a href="#n621" data-zh="<b>6/24</b>MVP · V1.2.0"><b>6/24</b>MVP · V1.2.0</a>
+    <a href="#n630" class="core" data-zh="<b>6/30</b>MVP 上线 · V1.3.0"><b>6/30</b>MVP launch · V1.3.0</a>
+    <a href="#n131" data-zh="<b>V1.3.1</b>功能性迭代"><b>V1.3.1</b>Iteration</a>
+    <a href="#n140" data-zh="<b>V1.4.0</b>体验换代"><b>V1.4.0</b>Upgrade</a>
   </div>
 </nav>
 
 <div class="wrap">
 <main>
+
+<!-- ============ 第一里程碑 · MVP ============ -->
+<div class="ms-divider reveal">
+  <span data-zh='第一里程碑 · MVP（6/10 → 6/30）'>Milestone 1 · MVP (6/10 → 6/30)</span>
+</div>
 
 <!-- ============ 6/10 ============ -->
 <section class="node done reveal" id="n610">
@@ -452,14 +485,14 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 </section>
 
 <!-- ============ 6/24 ============ -->
-<section class="node reveal" id="n621">
+<section class="node done reveal" id="n621">
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">6/24</div>
-    <div class="node-sub" data-zh='过程版'>Process build</div>
+    <div class="node-sub" data-zh='过程版<br>已交付'>Process build<br>Shipped</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='会说服 + 能收钱'>Persuade + collect payment</div>
+    <div class="node-title" data-zh='会说服 + 能收钱<span class="tag">已交付</span>'>Persuade + collect payment<span class="tag">Shipped</span></div>
     <div class="story" data-zh='<span class="lab">用户故事</span>新用户首次被「说服」——价值宣传页 + 注册流程上线；付费通道第一次打通（6 节 L1 基础支付）；上完课有报告。'><span class="lab">User story</span>New users get "sold" for the first time — the value pitch page and registration flow go live; the payment channel opens for the first time (basic payment for 6 L1 lessons); finishing a lesson produces a report.</div>
     <div class="cols">
       <div class="block">
@@ -498,14 +531,14 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 </section>
 
 <!-- ============ 6/30 ============ -->
-<section class="node core reveal" id="n630">
+<section class="node core done reveal" id="n630">
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">6/30</div>
-    <div class="node-sub" data-zh='核心上线<br>全表最重一列'>Core launch<br>the heaviest column</div>
+    <div class="node-sub" data-zh='MVP 核心上线<br>已提审上线'>MVP core launch<br>Submitted & live</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='完整验证闭环<span class="tag">⬤ 核心节点</span>'>A complete validation loop<span class="tag">⬤ Core node</span></div>
+    <div class="node-title" data-zh='完整验证闭环<span class="tag">⬤ MVP 已上线</span>'>A complete validation loop<span class="tag">⬤ MVP live</span></div>
     <div class="story" data-zh='<span class="lab">用户故事</span>新用户走完：注册 → Onboarding（含模糊定级）→ 6 节体验课（新 UI + 11-labs 声音 + 基础教学动作）→ 体验课报告（高光表现 + AI 点评 + 学习计划预览 + 开课 CTA）→ 付费解锁 → 课后去 Explore 练单词听 Radio、玩卡皮巴拉和 PK 游戏 → 学习有金币和成长。'><span class="lab">User story</span>A new user goes end to end: register → Onboarding (with rough placement) → 6 trial lessons (new UI + 11-labs voice + basic teaching moves) → trial report (highlights + AI review + study-plan preview + start-course CTA) → pay to unlock → after class, head to Explore to practice words and listen to Radio, play Capybara and PK games → learning earns coins and growth.</div>
     <div class="cols">
       <div class="block">
@@ -551,80 +584,97 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   </div>
 </section>
 
-<!-- ============ 规划分割线 ============ -->
-<div class="plan-divider reveal">
-  <span data-zh='以下内容为大体规划 · 优先级及事项可讨论'>Everything below is rough planning · priorities and items open for discussion</span>
+<!-- ============ 第一里程碑达成 ============ -->
+<div class="ms-banner reveal">
+  <div class="ms-badge">✓</div>
+  <div>
+    <b data-zh='第一里程碑达成：MVP 完整验证闭环已提审上线'>Milestone 1 achieved: the MVP complete-validation loop is submitted & live</b>
+    <p data-zh='V1.1.0（6/10）→ V1.2.0（6/24）→ V1.3.0（6/30）三个版本构成 MVP：从「能跑通」到「会说服 + 能收钱」再到「注册→定级→体验课→报告→付费→课后练习与游戏」的完整闭环。6/30 版本已提审上线。'>V1.1.0 (6/10) → V1.2.0 (6/24) → V1.3.0 (6/30) together form the MVP: from "it works," to "it persuades and collects payment," to the full loop of register → placement → trial lessons → report → payment → post-class practice & games. The 6/30 release is submitted and live.</p>
+  </div>
 </div>
 
-<!-- ============ 7/9 ============ -->
-<section class="node reveal" id="n709">
+<!-- ============ MVP 之后的迭代 ============ -->
+<div class="plan-divider reveal">
+  <span data-zh='以下为 MVP 之后的迭代版本 · 内容拉取自<a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">需求池</a> · 优先级及排期可讨论'>Below are post-MVP iterations · pulled from the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">requirement pool</a> · priorities & schedule open for discussion</span>
+</div>
+
+<!-- ============ V1.3.1 ============ -->
+<section class="node reveal" id="n131">
   <div class="node-marker">
     <div class="dot"></div>
-    <div class="node-date">7/9</div>
-    <div class="node-sub" data-zh='TTS 上线<br>生产环境'>TTS live<br>production</div>
+    <div class="node-date">1.3.1</div>
+    <div class="node-sub" data-zh='功能性迭代<br>7 月初'>Functional iteration<br>Early Jul</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='体验换代'>A generational upgrade in experience</div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>声音换代（定制 TTS 正式替换 Minimax）、定级从「模糊」变「精准」（CEFR/GSE 对标）、第一节课有引导；Dino 说话更对路——英文优先、难度匹配孩子等级；课后能读按定级推荐的分级绘本；沙特/韩国本地支付上线、开始收到 Push 提醒。'><span class="lab">User story</span>The voice gets a generational upgrade (custom TTS officially replaces Minimax); placement goes from "rough" to "precise" (mapped to CEFR/GSE); the first lesson has guidance; Dino speaks more on-target — English first, difficulty matched to the child's level; after class, kids can read leveled readers recommended by placement; local payment in Saudi Arabia / Korea goes live, and Push reminders start arriving.</div>
+    <div class="node-title" data-zh='转化补齐 + 定级安全阀<span class="tag">迭代版</span>'>Conversion polish + placement safety valve<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>用户从竖屏报告一路到竖屏支付，不再横竖切换；本周课上完被引导去 Explore 练习；定级不合适时能在当前 Level 顶部一键升 / 降（免费＝采样定级、会员＝升要证明·降直切）；背包手办按角色和系列收集；Kakao 登录补绑手机号；单账号最多 3 台设备。'><span class="lab">User story</span>Users flow from the vertical report straight into vertical checkout with no rotation; after finishing the week's lessons they're nudged into Explore to practice; when the level doesn't fit, they can step up / down right from the top of the current Level (free = sampling re-placement, member = level-up needs proof · downgrade is instant); backpack figures are collected by character and series; Kakao login binds a phone number; each account allows up to 3 devices.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='产品侧交付'>Product deliverables</h4>
+        <h4 data-zh='产品侧交付（需求池 1.3.1）'>Product deliverables (pool · 1.3.1)</h4>
         <ul>
-          <li data-zh='<b>精准定级推荐 + 第一节课引导</b>，推荐课命中率可验证'><b>Precise placement recommendation + first-lesson guidance</b>, with a verifiable recommendation hit rate</li>
-          <li data-zh='<b>分级绘本 / 故事阅读上线</b>（Explore 补充能力）：按定级自动推荐难度，对留存有正提升'><b>Leveled readers / story reading go live</b> (an Explore add-on): difficulty auto-recommended by placement, with a positive lift on retention</li>
-          <li data-zh='<b>多市场定价（沙特/韩国）+ 本地支付接入</b>，本地货币计价正确'><b>Multi-market pricing (Saudi / Korea) + local payment integration</b>, priced correctly in local currency</li>
-          <li data-zh='<b>Dino 重要 Bugfix</b>：回复坚持英文优先（母语不自动跟随）；按用户等级 L1-L6 控制回复语言难度'><b>Key Dino bugfix</b>: replies stay English-first (won't auto-follow the native language); reply difficulty controlled by user level L1–L6</li>
-          <li data-zh='<b>个人资料编辑</b>，与采集信息同步'><b>Profile editing</b>, in sync with collected information</li>
-          <li data-zh='<b>Push 通知系统接入</b>，送达率 &gt;90%'><b>Push notification system integrated</b>, delivery rate &gt;90%</li>
+          <li data-zh='<b>支付页改竖屏</b><span class="p0">P0</span>：Paywall 竖屏单栏沉浸式，承接 onboarding / 报告竖屏链路，减少横竖切换'><b>Vertical paywall</b><span class="p0">P0</span>: an immersive single-column vertical Paywall that matches the onboarding / report vertical flow, removing the rotate step</li>
+          <li data-zh='<b>课程升降级 · 定级安全阀</b><span class="p0">P0</span>：当前 Level 顶部双向 stepper，免费＝采样定级 / 会员＝升要证明·降直切'><b>Level up / down · placement safety valve</b><span class="p0">P0</span>: a two-way stepper at the top of the current Level — free = sampling re-placement, member = level-up needs proof · downgrade is direct</li>
+          <li data-zh='<b>Class「本周上完」探索引导</b><span class="p2">P2</span>：本周批次全部完成后追加引导卡，把空窗导向 Explore'><b>"Weekly lessons done" Explore nudge</b><span class="p2">P2</span>: after the week's batch is fully complete, a nudge card steers the gap time into Explore</li>
+          <li data-zh='<b>背包手办 IP / 系列分层</b><span class="p1">P1</span>：手办 Tab 按 IP → 系列 → 手办三层收集展示'><b>Backpack figures by IP / series</b><span class="p1">P1</span>: the figures tab shows a three-tier IP → series → figure collection</li>
+          <li data-zh='<b>登录设备上限 3 台</b><span class="p1">P1</span>：第 4 台设备登录被拦截，提示先退出旧设备'><b>3-device login cap</b><span class="p1">P1</span>: a 4th device is blocked at login, prompting the user to sign out an old device first</li>
+          <li data-zh='<b>Kakao 登录手机号绑定</b><span class="p1">P1</span>：Kakao 登录后缺手机号强制补绑（手机号 + 短信验证码）'><b>Kakao login phone binding</b><span class="p1">P1</span>: if Kakao login returns no phone number, force a bind (phone + SMS code)</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
+        <h4 data-zh='同期排期 · 配套（需求池）'>Same-cycle items (pool)</h4>
         <ul>
-          <li data-zh='<b>定制 TTS 云端部署（非流式）并正式替换 Minimax</b>：自然度 ≥4.5、异常 &lt;1%、情感表达 ≥4.5、全课覆盖<span class="who">Jenny &amp; 夏老师团队</span>'><b>Custom TTS deployed to the cloud (non-streaming) and officially replacing Minimax</b>: naturalness ≥4.5, error rate &lt;1%, emotional expression ≥4.5, full-lesson coverage<span class="who">Jenny & Teacher Xia's team</span></li>
-          <li data-zh='<b>2D Spine 口型同步上线</b>：9 种基础口型 + 9×9 中间态；口型 + 表情动作完整、每位老师差异化小动作，评分目标 3.0<span class="who">Jenny &amp; 晓宇</span>'><b>2D Spine lip-sync goes live</b>: 9 base mouth shapes + 9×9 in-between states; complete lip-sync + facial expressions, distinct small gestures per teacher, target score 3.0<span class="who">Jenny & Xiaoyu</span></li>
-          <li data-zh='<b>体验课报告完善</b>（客观 + AI 评语）<span class="who">Heidi</span>'><b>Trial report refined</b> (objective metrics + AI comments)<span class="who">Heidi</span></li>
-          <li data-zh='<b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span>'><b>Precise placement assessment goes live</b>, within &lt;1 level of human grading<span class="who">Liz</span></li>
-          <li data-zh='<b>核心漏斗看板</b>：first open→注册→试用→转化<span class="who">数据组</span>'><b>Core funnel dashboard</b>: first open→registration→trial→conversion<span class="who">Data team</span></li>
-          <li data-zh='<b>PostHog 接入</b>，session replay 可查询<span class="who">数据组</span>'><b>PostHog integrated</b>, session replay is queryable<span class="who">Data team</span></li>
-          <li data-zh='<b>本土定制化物料下沉</b>：本地化话术 / 痛点适配 / 合规与文化注意事项<span class="who">张歆玥</span>'><b>Localized marketing materials rolled out</b>: localized messaging / pain-point fit / compliance and cultural considerations<span class="who">Zhang Xinyue</span></li>
+          <li data-zh='<b>1.3.0 遗留 bug 及优化处理</b><span class="p0">P0</span>'><b>V1.3.0 leftover bug fixes & polish</b><span class="p0">P0</span></li>
+          <li data-zh='<b>AppsFlyer 接入 + 埋点补充</b><span class="p0">P0</span>，可做归因与 CAC 分析<span class="who">数据组</span>'><b>AppsFlyer integration + analytics fill-in</b><span class="p0">P0</span>, enabling attribution & CAC analysis<span class="who">Data team</span></li>
+          <li data-zh='<b>Facebook / Kakao 登录方式接入</b><span class="p0">P0</span>'><b>Facebook / Kakao login methods</b><span class="p0">P0</span></li>
+          <li data-zh='<b>品牌改名 Dino AI → Dino Daily</b><span class="p0">P0</span>（需求池待评审）'><b>Rebrand Dino AI → Dino Daily</b><span class="p0">P0</span> (pool · pending review)</li>
         </ul>
+      </div>
+    </div>
+    <div class="demo-strip">
+      <div class="demo-thumb" onclick="openDemo('V1.3.1-ui-demo.html','V1.3.1 · UI Demo')">
+        <iframe data-src="V1.3.1-ui-demo.html" loading="lazy" title="V1.3.1 UI Demo"></iframe>
+      </div>
+      <div class="demo-info">
+        <span class="demo-name">V1.3.1 · UI Demo</span>
+        <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
+      </div>
+      <div class="demo-actions">
+        <button onclick="openDemo('V1.3.1-ui-demo.html','V1.3.1 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.3.1-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 7月中 ============ -->
-<section class="node reveal" id="n715">
+<!-- ============ V1.4.0 ============ -->
+<section class="node reveal" id="n140">
   <div class="node-marker">
     <div class="dot"></div>
-    <div class="node-date" data-zh='7月中'>Mid-Jul</div>
-    <div class="node-sub">~7.15</div>
+    <div class="node-date">1.4.0</div>
+    <div class="node-sub" data-zh='体验换代<br>7 月中'>Experience upgrade<br>Mid-Jul</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='家长价值闭环 + 留存钩子上线'>Parent value loop + retention hooks go live</div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>家长每周一收到学习周报（个人中心可查）；孩子课上的弱项自动变成课后复习任务（错词本），排行榜和每日连胜开始把孩子卷入回访；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它。'><span class="lab">User story</span>Every Monday parents receive a weekly learning report (viewable in the profile center); a child's in-class weak spots automatically become post-class review tasks (a mistakes notebook), while leaderboards and daily streaks start pulling kids back to return; Dino now has a persona and old-friend memory — it remembers the child, and the child remembers it.</div>
+    <div class="node-title" data-zh='体验换代 + 内容与后台补齐'>Experience upgrade + content & back-office</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>声音换代（定制 TTS 替换 Minimax），课后能读按定级推荐的分级绘本，开始收到课程提醒 Push；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它；物料图片跟随系统语言本地化；教研用 CMS 快速出课、销售用管台查用户与订单。'><span class="lab">User story</span>The voice gets a generational upgrade (custom TTS replaces Minimax); after class kids read leveled readers recommended by placement and start receiving lesson-reminder push; Dino now has a persona and old-friend memory — it remembers the child, and the child remembers it; marketing images localize to the system language; the teaching team ships lessons fast via the CMS, and sales look up users and orders in the admin console.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='产品侧交付'>Product deliverables</h4>
+        <h4 data-zh='产品侧交付（需求池 1.4.0）'>Product deliverables (pool · 1.4.0)</h4>
         <ul>
-          <li data-zh='<b>风格本地化</b>：沙特/韩国视觉走查，本地文案排版无溢出'><b>Style localization</b>: Saudi / Korea visual review, local copy and layout with no overflow</li>
-          <li data-zh='<b>错词本 / 课后弱项联动</b>：课中弱项一键进练习，复习任务完成率有数据、对留存有正提升'><b>Mistakes notebook / post-class weak-spot linkage</b>: in-class weak spots go into practice in one tap, with review-completion data and a positive lift on retention</li>
-          <li data-zh='<b>排行榜 + 每日连胜上线</b>：数据准确、连胜中断有挽回提醒，连胜用户留存可分组查看'><b>Leaderboards + daily streaks go live</b>: accurate data, win-back reminders when a streak breaks, streak-user retention viewable by cohort</li>
-          <li data-zh='<b>Dino persona 设计 + 老友感记忆</b>：能引用上次学习信息，有背景知识与个人偏好，形成双向记忆'><b>Dino persona design + old-friend memory</b>: can reference last session's info, has background knowledge and personal preferences, forming two-way memory</li>
-          <li data-zh='<b>试用转付费流程优化</b>，转化率有提升'><b>Trial-to-paid flow optimization</b>, with an improved conversion rate</li>
-          <li data-zh='<b>家长周报入口</b>（个人中心）'><b>Parent weekly-report entry</b> (profile center)</li>
+          <li data-zh='<b>Dino persona 设计 + 老友感记忆</b><span class="p1">P1</span>：能引用上次学习信息，形成用户与 Dino 双向记忆'><b>Dino persona design + old-friend memory</b><span class="p1">P1</span>: references last session's info, forming two-way memory between the child and Dino</li>
+          <li data-zh='<b>分级绘本 / 故事阅读</b><span class="p1">P1</span>：按精准定级推荐难度（Explore 补充能力）'><b>Leveled readers / story reading</b><span class="p1">P1</span>: difficulty recommended by precise placement (an Explore add-on)</li>
+          <li data-zh='<b>Push 通知系统接入</b><span class="p1">P1</span>：基础课程提醒 push，送达率 &gt;90%'><b>Push notification system</b><span class="p1">P1</span>: basic lesson-reminder push, delivery rate &gt;90%</li>
+          <li data-zh='<b>图片资源本地化配置</b><span class="p1">P1</span>：跟随系统语言取不同物料（含产品宣传物料）'><b>Localized image assets</b><span class="p1">P1</span>: images follow the system language, including in-product marketing assets</li>
+          <li data-zh='<b>品牌改名 Dino English → Dino AI</b><span class="p0">P0</span>（需求池待评审）'><b>Rebrand Dino English → Dino AI</b><span class="p0">P0</span> (pool · pending review)</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4 data-zh='跨团队依赖'>Cross-team dependencies</h4>
+        <h4 data-zh='平台 / 后台 · 跨团队'>Platform / back-office · cross-team</h4>
         <ul>
-          <li data-zh='<b>家长端周报上线</b>，每周一推送<span class="who">Liz</span>（与个人中心入口同节点 ✓）'><b>Parent-side weekly report goes live</b>, pushed every Monday<span class="who">Liz</span> (same node as the profile-center entry ✓)</li>
-          <li data-zh='<b>CRM 初版上线</b>，能协助销售管理 Leads<span class="who">范迪儿（晓宇团队借调）</span>'><b>First CRM version goes live</b>, helping sales manage leads<span class="who">Fan Dier (on loan from Xiaoyu's team)</span></li>
-          <li data-zh='<b>多老师音色区分</b><span class="who">Jenny</span>'><b>Distinct voices across teachers</b><span class="who">Jenny</span></li>
-          <li data-zh='<b>6 Level × Unit2 完成</b><span class="who">Heidi</span>'><b>6 Levels × Unit 2 complete</b><span class="who">Heidi</span></li>
-          <li data-zh='<b>管台稳定支持教研快速出课</b><span class="who">Rudy</span>'><b>Stable admin platform supporting fast lesson production</b><span class="who">Rudy</span></li>
-          <li data-zh='<b>课程指标看板 + AppsFlyer 归因</b>，可做 CAC 分析<span class="who">数据组</span>'><b>Course-metrics dashboard + AppsFlyer attribution</b>, enabling CAC analysis<span class="who">Data team</span></li>
+          <li data-zh='<b>CMS 课程生产平台</b><span class="p1">P1</span>：教研灵活编排 Blocks、一键 AIGC 生图、预览发布<span class="who">Rudy &amp; Coco</span>'><b>CMS lesson-production platform</b><span class="p1">P1</span>: flexible block editing, one-click AIGC images, preview & publish<span class="who">Rudy & Coco</span></li>
+          <li data-zh='<b>Dino English 管台一期（CRM 初版）</b><span class="p1">P1</span>：支持查询用户信息与订单信息<span class="who">晓宇团队</span>'><b>Admin console phase 1 (first CRM)</b><span class="p1">P1</span>: look up user and order information<span class="who">Xiaoyu's team</span></li>
+          <li data-zh='<b>定制 TTS 云端部署并正式替换 Minimax</b>：自然度 / 情感表达 ≥4.5、异常 &lt;1%、全课覆盖<span class="who">Jenny &amp; 夏老师团队</span>'><b>Custom TTS deployed to cloud, officially replacing Minimax</b>: naturalness / emotion ≥4.5, error rate &lt;1%, full-lesson coverage<span class="who">Jenny & Teacher Xia's team</span></li>
+          <li data-zh='<b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span>'><b>Precise placement assessment</b>, within &lt;1 level of human grading<span class="who">Liz</span></li>
+          <li data-zh='<b>分级绘本内容产能</b>（需与教研对齐）<span class="who">Heidi &amp; Liz</span>'><b>Leveled-reader content capacity</b> (align with teaching team)<span class="who">Heidi & Liz</span></li>
         </ul>
       </div>
     </div>
