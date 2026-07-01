@@ -6103,34 +6103,36 @@
             <button type="button" class="pwpt-back" id="btn-pwpt-back" aria-label="Close">‹</button>
             <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore</button>
           </div>
-          <div class="pwpt-hero">
-            <div class="pwpt-hero-row">
-              <img class="pwpt-hero-dino" src="assets/dino-mascot.png" alt="" decoding="async" />
-              <div class="pwpt-hero-copy">
+          <!-- V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle to its right,
+               then a full-width benefits list below; plan cards side-by-side; arrow CTA. -->
+          <div class="pwpt-hero-card">
+            <div class="pwpt-hero-top">
+              <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
+              <div class="pwpt-hero-intro">
                 <span class="pwpt-kicker">Dino Premium</span>
                 <h2 class="pwpt-title" id="pwpt-title">Unlock everything in Dino English</h2>
+                <p class="pwpt-lead">One subscription opens every lesson, story and report.</p>
               </div>
             </div>
-            <p class="pwpt-lead">One subscription opens every lesson, story and report.</p>
+            <ul class="pwpt-benefits">
+              <li><strong>All 864 core lessons unlocked</strong><span class="pwpt-benefit-sub">Structured learning, real progress</span></li>
+              <li><strong>A personalized learning path</strong><span class="pwpt-benefit-sub">3 lessons/week, built around child's level</span></li>
+              <li><strong>Report after every lesson</strong><span class="pwpt-benefit-sub">See how they're doing</span></li>
+              <li><strong>All extension resources unlocked</strong><span class="pwpt-benefit-sub">Explore freely, learn more</span></li>
+              <li><strong>Full rewards &amp; gamified learning</strong><span class="pwpt-benefit-sub">Keeps them motivated</span></li>
+              <li><strong>Chat freely with Dino</strong><span class="pwpt-benefit-sub">Practice anytime</span></li>
+            </ul>
           </div>
-          <ul class="pwpt-benefits">
-            <li><strong>All 864 core lessons unlocked</strong><span class="pwpt-benefit-sub">Structured learning, real progress</span></li>
-            <li><strong>A personalized learning path</strong><span class="pwpt-benefit-sub">3 lessons/week, built around child's level</span></li>
-            <li><strong>Report after every lesson</strong><span class="pwpt-benefit-sub">See how they're doing</span></li>
-            <li><strong>All extension resources unlocked</strong><span class="pwpt-benefit-sub">Explore freely, learn more</span></li>
-            <li><strong>Full rewards &amp; gamified learning</strong><span class="pwpt-benefit-sub">Keeps them motivated</span></li>
-            <li><strong>Chat freely with Dino</strong><span class="pwpt-benefit-sub">Practice anytime</span></li>
-          </ul>
           <div class="pwpt-plans" id="pwpt-plans"></div>
+          <div class="pwpt-cta-spacer"></div>
+        </div>
+        <div class="pwpt-cta-bar">
+          <button type="button" class="btn btn-primary pwpt-cta" id="btn-pwpt-purchase">Subscribe now <span class="pwpt-cta-arrow" aria-hidden="true">→</span></button>
           <p class="pwpt-legal">
             <span>Cancel anytime</span> ·
             <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms</a> ·
             <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy</a>
           </p>
-          <div class="pwpt-cta-spacer"></div>
-        </div>
-        <div class="pwpt-cta-bar">
-          <button type="button" class="btn btn-primary pwpt-cta" id="btn-pwpt-purchase">Subscribe now</button>
         </div>
       </section>
     </div>
@@ -6169,7 +6171,6 @@
     .dl-box{width:min(360px,86vw);background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 24px 60px rgba(0,0,0,.28);text-align:center}
     .dl-box h3{margin:0 0 8px;font-size:1.05rem;color:#1f2a24}
     .dl-box p{margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#4c5a52}
-    .dl-box .dl-list{text-align:left;margin:0 0 16px;padding-left:18px;font-size:.82rem;color:#4c5a52;line-height:1.6}
     .dl-box button{border:none;background:#1d5c3f;color:#fff;border-radius:10px;padding:11px 18px;font-size:.86rem;font-weight:700;cursor:pointer;width:100%}
     /* Req1: portrait paywall */
     .pwpt{background:linear-gradient(180deg,#fef6ec 0%,#f4fbf6 38%,#ffffff 100%)}
@@ -6177,38 +6178,37 @@
     .pwpt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;position:sticky;top:0;background:transparent}
     .pwpt-back{width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,.06);color:#1f2a24;font-size:1.4rem;line-height:1;cursor:pointer}
     .pwpt-restore{border:none;background:transparent;color:#1d5c3f;font-size:.82rem;font-weight:700;cursor:pointer}
-    /* Req2 (1.3.1 调整): Dino 与第一句引导文案并排，不再单独占顶，给下方留出空间 */
-    .pwpt-hero{padding:4px 2px 12px}
-    .pwpt-hero-row{display:flex;align-items:center;gap:14px}
-    .pwpt-hero-dino{width:74px;height:74px;object-fit:contain;flex:0 0 auto;margin:0;display:block}
-    .pwpt-hero-copy{display:flex;flex-direction:column;gap:3px;min-width:0;text-align:left}
-    .pwpt-kicker{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#d9641e}
-    .pwpt-title{margin:0;font-size:1.3rem;line-height:1.22;color:#16241c;font-weight:800}
-    .pwpt-lead{margin:12px 0 0;font-size:.9rem;color:#4c5a52}
-    .pwpt-benefits{list-style:none;margin:6px auto 16px;padding:14px 16px;max-width:420px;background:#fff;border:1px solid #e7eee9;border-radius:14px;box-shadow:0 6px 18px rgba(29,92,63,.06)}
-    .pwpt-benefits li{position:relative;padding:9px 0 9px 28px;font-size:.9rem;color:#26342c;border-bottom:1px solid #f1f4f2}
-    .pwpt-benefits li:last-child{border-bottom:none}
-    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:10px;width:18px;height:18px;border-radius:50%;background:#e6f4ec;color:#1d5c3f;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center}
-    .pwpt-benefits li strong{display:block;font-weight:800;color:#1f3b2e}
-    .pwpt-benefits li .pwpt-benefit-sub{display:block;margin-top:2px;font-size:.78rem;font-weight:600;color:#7a8c82}
-    .pwpt-plans{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto}
-    .pwpt-plan{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:2px solid #e3e9e5;border-radius:14px;padding:14px 16px;cursor:pointer}
-    .pwpt-plan.is-selected{border-color:#1d5c3f;background:#f3fbf6}
-    .pwpt-plan--hero{border-color:#cfe7d8}
-    .pwpt-plan-l{display:flex;flex-direction:column;gap:2px}
+    /* V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle right, full-width benefits below */
+    .pwpt-hero-card{display:flex;flex-direction:column;gap:14px;margin:8px 0 14px;padding:16px 16px;
+      background:linear-gradient(160deg,#fff6e6 0%,#eef9f1 100%);border:1px solid #f0e6cf;
+      border-radius:22px;box-shadow:0 12px 28px rgba(40,90,60,.12)}
+    .pwpt-hero-top{display:flex;align-items:center;gap:14px}
+    .pwpt-hero-figure{flex:0 0 auto;width:96px;object-fit:contain}
+    .pwpt-hero-intro{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:4px;text-align:left}
+    .pwpt-kicker{align-self:flex-start;display:inline-flex;align-items:center;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#3fb27a,#1d5c3f);padding:4px 10px;border-radius:999px}
+    .pwpt-title{margin:6px 0 0;font-size:1.24rem;line-height:1.2;color:#16241c;font-weight:800}
+    .pwpt-lead{margin:4px 0 0;font-size:.82rem;line-height:1.4;color:#4c5a52}
+    /* benefits span full card width — single vertical column */
+    .pwpt-benefits{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+    .pwpt-benefits li{position:relative;padding:0 0 0 25px;font-size:.82rem;color:#26342c}
+    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:#3fb27a;color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+    .pwpt-benefits li strong{display:block;font-weight:700;color:#1f3b2e;line-height:1.25}
+    .pwpt-benefits li .pwpt-benefit-sub{display:block;margin-top:1px;font-size:.72rem;font-weight:600;color:#7a8c82;line-height:1.3}
+    /* Plan cards stacked vertically; weekly-equivalent price is the emphasised figure */
+    .pwpt-plans{display:flex;flex-direction:column;gap:10px;max-width:420px;margin:18px auto 0}
+    .pwpt-plan{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:2px solid #e3e9e5;border-radius:16px;padding:14px 16px;cursor:pointer}
+    .pwpt-plan.is-selected{border-color:#1d9e63;background:#eefaf2;box-shadow:0 8px 18px rgba(29,92,63,.16)}
+    .pwpt-plan-l{display:flex;flex-direction:column;gap:3px;min-width:0}
     .pwpt-plan-name{font-size:.98rem;font-weight:800;color:#16241c}
-    .pwpt-plan-note{font-size:.76rem;color:#6b7a72}
-    .pwpt-plan-price{font-size:1.02rem;font-weight:800;color:#16241c;white-space:nowrap}
-    .pwpt-plan-price small{font-size:.72rem;font-weight:600;color:#8a958d}
-    .pwpt-badge{position:absolute;top:-10px;right:14px;background:#d9641e;color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
-    .pwpt-radio{width:20px;height:20px;border-radius:50%;border:2px solid #c2cdc6;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-    .pwpt-plan.is-selected .pwpt-radio{border-color:#1d5c3f}
-    .pwpt-plan.is-selected .pwpt-radio::after{content:"";width:10px;height:10px;border-radius:50%;background:#1d5c3f}
-    .pwpt-legal{text-align:center;margin:14px auto 0;font-size:.72rem;color:#8a958d}
+    .pwpt-plan-price{font-size:.78rem;font-weight:600;color:#8a958d}
+    .pwpt-plan-week{flex:0 0 auto;font-size:1.34rem;font-weight:900;color:#1d7a4d;line-height:1.05;white-space:nowrap;text-align:right}
+    .pwpt-badge{position:absolute;top:-9px;left:14px;white-space:nowrap;background:#d9641e;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
+    .pwpt-legal{text-align:center;margin:8px auto 0;font-size:.72rem;color:#8a958d}
     .pwpt-legal a{color:#6b7a72}
-    .pwpt-cta-spacer{height:96px}
+    .pwpt-cta-spacer{height:124px}
     .pwpt-cta-bar{position:absolute;left:0;right:0;bottom:0;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 32%)}
-    .pwpt-cta{width:100%;font-size:1rem;padding:14px}
+    .pwpt-cta{width:100%;font-size:1rem;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px}
+    .pwpt-cta-arrow{font-size:1.15rem;font-weight:900;line-height:1}
   </style>
 
   <div class="device-wrap landscape" id="wrap-landscape" style="display:none">
@@ -7327,7 +7327,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", paywallLayout: "portrait", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
@@ -7623,11 +7623,18 @@
     }
 
     function renderCourseActionButtons(course) {
+      const rel = levelRel(course);
+      // V1.3.1 one-time 体验课: a level sampled via a trial that isn't part of the
+      // formal progression — next-up (level-up / placement trial) or a skipped lower
+      // level — can't be re-taken. Its verdict is already folded into the current plan,
+      // so the ONLY entry is View report (which always reflects the current best-fit).
+      if (isTrialConsumed(course.levelId) && (rel === "next-up" || rel === "skipped-lower")) {
+        return `<button type="button" class="course-cta-secondary" data-action="trial-report-view">View report</button>`;
+      }
       // current+1 ("next-up") is the one cross-level TRIAL entry open to BOTH tiers —
       // handled before the free paywall gate below:
       //   • Free   → placement trial (上这一档体验课 → ±1 真实定级 → 学习计划 → Paywall)
       //   • Member → level-up check (升要证明：达标才升、未达标保持、永不降)
-      const rel = levelRel(course);
       if (rel === "next-up") {
         return `<button type="button" class="btn btn-primary" data-action="try-level" data-try-level="${course.levelId}">Try this level</button>`;
       }
@@ -7677,6 +7684,14 @@
           const action = btn.dataset.action;
           if (action === "report") {
             alert("Demo: this would open the learning report for this lesson.");
+            return;
+          }
+          if (action === "trial-report-view") {
+            // One-time-trial level (consumed): re-open the placement / level report,
+            // which always reflects the learner's current best-fit level (= current).
+            // Free → report → study plan → Paywall; member → report → Continue → Class.
+            trialReportMode = "trial";
+            showTrialReport();
             return;
           }
           if (action === "unlock") {
@@ -7822,6 +7837,17 @@
       return "Not started";
     }
 
+    // V1.3.1 one-time 体验课: which levels' trial the learner has already consumed.
+    // A trial is a single-use sample — once a level's trial is taken it can't be
+    // re-taken; that level shows View report (reflecting current) instead of Try.
+    function isTrialConsumed(levelId) {
+      return Array.isArray(profile.trialDoneLevels) && profile.trialDoneLevels.indexOf(levelId) !== -1;
+    }
+    function markTrialConsumed(levelId) {
+      if (!levelId) return;
+      if (!Array.isArray(profile.trialDoneLevels)) profile.trialDoneLevels = [];
+      if (profile.trialDoneLevels.indexOf(levelId) === -1) profile.trialDoneLevels.push(levelId);
+    }
     // V1.3.1: where a course's LEVEL sits relative to the learner (schedule is anchored
     // at the current level; placement marks the original start). Drives the lesson-card
     // CTA so lower / higher levels never dead-end on a misleading "Start Class".
@@ -8025,6 +8051,7 @@
     renderTeacherCards();
     fillClassTab();
     function showLandScreen(id) {
+      dismissDeviceLimitNotice();
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
     }
     function fillTeacherGuide() {
@@ -8039,13 +8066,20 @@
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Class";
       renderTeacherCards();
     }
+    // V1.3.1: dismiss the device-limit modal whenever we navigate / switch demo states,
+    // so it never lingers over a different screen after a States-panel jump.
+    function dismissDeviceLimitNotice() {
+      document.getElementById("dl-overlay")?.classList.remove("show");
+    }
     function enterLandscape() {
+      dismissDeviceLimitNotice();
       const portrait = $("#wrap-portrait");
       const landscape = $("#wrap-landscape");
       if (portrait) portrait.style.display = "none";
       if (landscape) landscape.style.display = "";
     }
     function enterPortrait() {
+      dismissDeviceLimitNotice();
       const portrait = $("#wrap-portrait");
       const landscape = $("#wrap-landscape");
       if (landscape) landscape.style.display = "none";
@@ -8560,10 +8594,9 @@
         <article class="course-bridge-card class-home-course-card class-week-card class-explore-card" data-explore-card>
           <span class="class-explore-emoji" aria-hidden="true">🎉</span>
           <h3 class="class-explore-title">All caught up this week, ${name}!</h3>
-          <p class="class-explore-sub">Your next lessons unlock soon. Explore stories &amp; listening, or play a quick game while you wait.</p>
+          <p class="class-explore-sub">Next lessons unlock soon — explore more while you wait.</p>
           <div class="class-explore-actions">
-            <button type="button" class="class-explore-btn class-explore-btn--primary" data-explore-nudge>Explore content</button>
-            <button type="button" class="class-explore-btn class-explore-btn--ghost" data-play-nudge>Play a game</button>
+            <button type="button" class="class-explore-btn class-explore-btn--primary" data-explore-nudge>Go to Explore</button>
           </div>
         </article>`;
     }
@@ -8578,7 +8611,6 @@
         const trialOnly = profile.trialReportShown ? renderClassTrialCard() : "";
         list.innerHTML = trialOnly + renderClassExploreCard([], true);
         list.querySelector("[data-explore-nudge]")?.addEventListener("click", () => { setHubTab("practice"); });
-        list.querySelector("[data-play-nudge]")?.addEventListener("click", () => { setHubTab("play"); });
         list.querySelector("[data-trial]") && list.querySelector("[data-action='trial-report']")?.addEventListener("click", (event) => { event.stopPropagation(); trialReportMode = "trial"; showTrialReport(); });
         return;
       }
@@ -8613,10 +8645,9 @@
       }).join("");
       // V1.3.1 (Req2): once this week's whole batch is finished and the next batch
       // hasn't unlocked yet (the member spare-time window), append an "Explore more"
-      // nudge card after the lessons so the wait turns into Explore / Play discovery.
+      // nudge card after the lessons so the wait turns into Explore discovery.
       list.innerHTML = trialCardHtml + weekCardsHtml + renderClassExploreCard(weekCourses);
       list.querySelector("[data-explore-nudge]")?.addEventListener("click", () => { setHubTab("practice"); });
-      list.querySelector("[data-play-nudge]")?.addEventListener("click", () => { setHubTab("play"); });
       list.querySelectorAll(".class-week-card").forEach((card) => {
         if (card.dataset.trial) {
           // Trial card: report-only (completed, no retake) — not a real course node.
@@ -8759,6 +8790,7 @@
       });
       const level = getLevelById(courseMapLevelId);
       const levelIdx = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
+      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const unitsBox = $("#course-map-units");
       const lvStatus = getLevelStatus(level.id);
       // Index of the unit the learner is currently on (only meaningful on the
@@ -8785,9 +8817,17 @@
         // Level up entry sits on the FIRST unit of every higher level (not just the
         // adjacent one), and is offered to free users too — they can take the higher
         // trial, but adopting the new plan converts via Paywall in the report.
-        const isLevelUpEntry = lvStatus === "next" && ui === 0;
+        // V1.3.1: the "Try this level" trial entry sits ONLY on the immediate next
+        // level (current+1) — matching the lesson-card model (higher levels stay
+        // Locked / Go Premium). If that level's trial is already consumed it can't be
+        // re-taken → View report (reflects current) instead.
+        const isLevelUpEntry = lvStatus === "next" && ui === 0 && levelIdx === curOrder + 1;
+        const levelUpConsumed = isLevelUpEntry && isTrialConsumed(level.id);
         let cta, tag;
-        if (isLevelUpEntry) {
+        if (levelUpConsumed) {
+          cta = `<button type="button" class="cm-unit-cta" data-report-level="${level.id}">View report</button>`;
+          tag = "";
+        } else if (isLevelUpEntry) {
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Try this level</button>`;
           tag = "";
         } else if (lvStatus === "next") {
@@ -8813,7 +8853,7 @@
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
         // Level-up hint under the first unit of a higher level (free + member).
-        const levelupHint = isLevelUpEntry
+        const levelupHint = (isLevelUpEntry && !levelUpConsumed)
           ? `<span class="cm-unit-levelup-hint">Take a ${level.label} lesson — we'll set the best-fit plan from how it goes.</span>`
           : "";
         return `
@@ -8841,7 +8881,17 @@
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
       unitsBox.querySelectorAll("[data-levelup-level]").forEach((btn) => {
-        btn.addEventListener("click", () => startLevelUpTrial(btn.dataset.levelupLevel));
+        btn.addEventListener("click", () => {
+          // Match the lesson-card routing: free → placement trial (re-定级 → 学习计划 →
+          // Paywall); member → level-up check (升要证明：达标才升、永不降).
+          const lvl = btn.dataset.levelupLevel;
+          if (!profile.premiumUnlocked) { startPlacementTrial(lvl); return; }
+          startLevelUpTrial(lvl);
+        });
+      });
+      // Consumed next-up level → View report (reflects the current best-fit level).
+      unitsBox.querySelectorAll("[data-report-level]").forEach((btn) => {
+        btn.addEventListener("click", () => { trialReportMode = "trial"; showTrialReport(); });
       });
       // V1.3.1 (Req4): downgrade entry on the adjacent lower level.
       unitsBox.querySelector("[data-downgrade-level]")?.addEventListener("click", (e) => {
@@ -8864,6 +8914,11 @@
       // moves current above placement, current−1 is a COMPLETED level (review, not a
       // downgrade target), so the banner retires.
       if (curOrder !== placeOrder) return "";
+      // Free: the banner offers a NEW placement trial of the easier level — only valid
+      // while that level's trial is unconsumed. Once consumed it can't be re-taken, so
+      // the banner retires and the level's card shows View report instead. Members
+      // switch directly (no trial), so consumption never gates their banner.
+      if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
       const sub = profile.premiumUnlocked
         ? `Switch ${getDisplayName() || "your learner"}'s plan down to ${level.label} right away — no trial needed.`
         : `Take one ${level.label} trial to see if it fits better.`;
@@ -8930,6 +8985,7 @@
       const trialLevelId = profile.placementLevelId || profile.currentLevelId || "level-2";
       const assessedId = firstTrialAssessedLevelId(trialLevelId);
       profile.trialTakenLevelId = trialLevelId;
+      markTrialConsumed(trialLevelId); // one-time trial: this level can't be sampled again
       if (assessedId === trialLevelId) return; // best-fit == trial level → no plan move
       profile.placementLevelId = assessedId;
       profile.currentLevelId = assessedId;
@@ -8953,6 +9009,7 @@
       };
       levelUpInProgress = true;
       levelUpTargetLevelId = targetLevelId;
+      markTrialConsumed(targetLevelId); // one-time trial: level-up check can't be re-run
       trialReportMode = "levelup";
       // Run the trial against the TARGET level's first lesson so the content matches.
       setCurrentCourse(targetLevelId, "unit-1", "lesson-1");
@@ -10919,6 +10976,7 @@
 
     /* ===================== V1.2.0: Onboarding + Payment ===================== */
     function showPortraitScreen(id) {
+      dismissDeviceLimitNotice();
       $$("#device-portrait .screen").forEach((s) => s.classList.toggle("active", s.id === id));
       $("#screen-who .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-who");
       $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
@@ -11386,9 +11444,9 @@
     // Annual is the default selection (top, highlighted) and shows a discount
     // badge; benefits are identical across tiers — only the billing cycle differs.
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", badge: "Best value", hero: true },
-      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly" },
-      { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly" },
+      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perWeek: "≈ $4.42/week", badge: "Recommended", hero: true },
+      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly", perWeek: "≈ $8.77/week" },
+      { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly", perWeek: "$10.99/week" },
     ];
 
     function getSelectedPlan() {
@@ -11455,14 +11513,13 @@
       if (!box) return;
       if (!PLANS.some((p) => p.id === profile.selectedPlan)) profile.selectedPlan = "annual";
       box.innerHTML = PLANS.map((plan) => `
-        <div class="pwpt-plan ${plan.hero ? "pwpt-plan--hero" : ""} ${plan.id === profile.selectedPlan ? "is-selected" : ""}" data-pwpt-plan="${plan.id}" role="button" tabindex="0">
+        <div class="pwpt-plan ${plan.id === profile.selectedPlan ? "is-selected" : ""}" data-pwpt-plan="${plan.id}" role="button" tabindex="0">
           ${plan.badge ? `<span class="pwpt-badge">${plan.badge}</span>` : ""}
-          <span class="pwpt-radio" aria-hidden="true"></span>
           <span class="pwpt-plan-l">
             <span class="pwpt-plan-name">${plan.name}</span>
-            <span class="pwpt-plan-note">${plan.per}</span>
+            <span class="pwpt-plan-price">${plan.price} ${plan.period}</span>
           </span>
-          <span class="pwpt-plan-price">${plan.price} <small>${plan.period}</small></span>
+          <span class="pwpt-plan-week">${plan.perWeek}</span>
         </div>`).join("");
       box.querySelectorAll("[data-pwpt-plan]").forEach((card) => {
         card.addEventListener("click", () => { profile.selectedPlan = card.dataset.pwptPlan; renderPaywallPortrait(); });
@@ -11799,8 +11856,9 @@
     startPlacementTrial(targetLevelId);
   }
 
-  // Req3: device limit (max 3 active devices). Backend-owned; the app only surfaces a
-  // gentle notice when a new sign-in pushes out the least-active device. Demo modal.
+  // Req3: device limit (max 3 active devices). Backend-owned; when a 4th device tries to
+  // sign in, the login is blocked and the user is asked to sign out an existing device
+  // first. Demo modal (shown on that 4th sign-in attempt).
   function showDeviceLimitNotice() {
     let ov = document.getElementById("dl-overlay");
     if (!ov) {
@@ -11809,12 +11867,8 @@
       ov.id = "dl-overlay";
       ov.innerHTML = `
         <div class="dl-box">
-          <h3>New device signed in</h3>
-          <p>Your account can stay signed in on up to <b>3 devices</b>. To make room, we signed out your least-active device.</p>
-          <ul class="dl-list">
-            <li>Signed out: iPad (last active 12 days ago)</li>
-            <li>Now active: this device + 2 others</li>
-          </ul>
+          <h3>Device limit reached</h3>
+          <p>Your account has reached its device limit. Please sign out of another device, then sign in again.</p>
           <button type="button" id="dl-ok">Got it</button>
         </div>`;
       document.body.appendChild(ov);
@@ -11967,7 +12021,7 @@
           courseMapLevelId = "level-1"; renderCourseMap(); // select the lower level → banner shows
         } },
       { label: "Kakao 登录·手机号绑定", run: function () { demoState.kakaoPhoneBound = false; openBindPhone("kakao"); } },
-      { label: "设备上限提醒（3 台）", run: function () { showDeviceLimitNotice(); } },
+      { label: "设备上限提醒（第 4 台登录被拦）", run: function () { enterPortrait(); showPortraitScreen("screen-login"); showDeviceLimitNotice(); } },
       { label: "背包·手办 IP/系列", run: function () {
           // Req5: Backpack › Dino Figures → IP tabs (Dino / Emma / Bob / Hena / Bruce) → series groups.
           enterLandscape();
