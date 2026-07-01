@@ -6165,6 +6165,20 @@
     .cm-downgrade-copy span{font-size:.76rem;line-height:1.4;color:#6b5847}
     .cm-downgrade-cta{flex:0 0 auto;border:none;background:#d9641e;color:#fff;border-radius:9px;padding:9px 14px;font-size:.78rem;font-weight:700;cursor:pointer}
     .cm-downgrade-cta:hover{background:#c2561a}
+    /* V1.3.1: unified dual-direction level stepper (↑ level up / ↓ too hard) at the top of the current level's LP */
+    .cm-stepper{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    .cm-stepper-row{display:flex;align-items:center;gap:12px;justify-content:space-between;border-radius:12px;padding:11px 13px}
+    .cm-stepper-row--up{background:#eef7f0;border:1px dashed #9cccaa}
+    .cm-stepper-row--down{background:#fff6ee;border:1px dashed #e6b894}
+    .cm-stepper-copy{display:flex;flex-direction:column;gap:2px}
+    .cm-stepper-row--up .cm-stepper-copy b{font-size:.86rem;color:#1f7a3d}
+    .cm-stepper-row--down .cm-stepper-copy b{font-size:.86rem;color:#a8521b}
+    .cm-stepper-copy span{font-size:.76rem;line-height:1.4;color:#6b5847}
+    .cm-stepper-cta{flex:0 0 auto;border:none;color:#fff;border-radius:9px;padding:9px 14px;font-size:.78rem;font-weight:700;cursor:pointer}
+    .cm-stepper-cta--up{background:#2f9c57}
+    .cm-stepper-cta--up:hover{background:#268049}
+    .cm-stepper-cta--down{background:#d9641e}
+    .cm-stepper-cta--down:hover{background:#c2561a}
     /* Req3: device-limit modal */
     .dl-overlay{position:fixed;inset:0;z-index:99998;display:none;align-items:center;justify-content:center;background:rgba(20,30,26,.5)}
     .dl-overlay.show{display:flex}
@@ -7631,27 +7645,18 @@
       if (isTrialConsumed(course.levelId) && (rel === "next-up" || rel === "skipped-lower")) {
         return `<button type="button" class="course-cta-secondary" data-action="trial-report-view">View report</button>`;
       }
-      // current+1 ("next-up") is the one cross-level TRIAL entry open to BOTH tiers —
-      // handled before the free paywall gate below:
-      //   • Free   → placement trial (上这一档体验课 → ±1 真实定级 → 学习计划 → Paywall)
-      //   • Member → level-up check (升要证明：达标才升、未达标保持、永不降)
-      if (rel === "next-up") {
-        return `<button type="button" class="btn btn-primary" data-action="try-level" data-try-level="${course.levelId}">Try this level</button>`;
-      }
-      // Free tier: everything else except the single open trial lesson is paywalled —
-      // skipped / completed lower levels and higher-locked levels → Go Premium.
+      // Free tier: everything except the single open trial lesson is paywalled —
+      // next-up / skipped / completed lower / higher-locked all → Go Premium.
       if (isCourseLocked(course)) {
         return `<button type="button" class="course-cta-locked" data-action="unlock">Go Premium</button>`;
       }
       // Member cross-level handling (owns all content; schedule anchored at current level).
-      if (rel === "skipped-lower") {
-        // Never-studied lower level: the ONLY way to actually study it is to switch the
-        // plan down (re-anchor schedule). No re-assessment, no re-定级 — pure choice.
-        const lbl = (typeof levelLabelOf === "function") ? levelLabelOf(course.levelId) : "lower level";
-        return `<button type="button" class="btn btn-primary" data-action="switch-down" data-switch-level="${course.levelId}">Switch to ${lbl}</button>`;
-      }
-      if (rel === "higher-locked") {
-        return `<button type="button" class="course-cta-scheduled" data-action="higher-locked">Locked</button>`;
+      // V1.3.1: 升 / 降 are done ONLY via the dual stepper (↑ / ↓) at the top of the
+      // CURRENT level's Learning Path — cards never carry Try / Switch. Any off-plan
+      // level (next-up, a skipped lower, or a higher-locked level) reads as Locked;
+      // tapping points the learner back to the stepper.
+      if (rel === "next-up" || rel === "skipped-lower" || rel === "higher-locked") {
+        return `<button type="button" class="course-cta-scheduled" data-action="use-stepper">Locked</button>`;
       }
       // current level (and completed-lower, which resolves to View report below).
       if (getUnlockState(course) === "scheduled") {
@@ -7708,6 +7713,11 @@
           }
           if (action === "higher-locked") {
             showPayToast("Finish your current level first");
+            return;
+          }
+          if (action === "use-stepper") {
+            // Cross-level moves live on the current level's ↑ / ↓ stepper, not on cards.
+            showPayToast("Use the ↑ / ↓ at the top of your current level to change level");
             return;
           }
           if (action === "try-level") {
@@ -8796,7 +8806,10 @@
       // Index of the unit the learner is currently on (only meaningful on the
       // current level; used to gate later units by the weekly schedule pace).
       const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
-      unitsBox.innerHTML = renderDowngradeBanner(level) + level.units.map((unit, ui) => {
+      // V1.3.1:升 / 降统一入口 = 当前 level 顶部的双向 stepper（↑ 升 / ↓ 降）。
+      // 只在浏览「当前 level」时出现；其它 level 不再各自散落 Try / Switch / 横幅。
+      const stepperHtml = (level.id === profile.currentLevelId) ? renderLevelStepper() : "";
+      unitsBox.innerHTML = stepperHtml + level.units.map((unit, ui) => {
         const total = unit.lessons.length;
         const done = getUnitDoneCount(level.id, unit);
         const pct = Math.round((done / total) * 100);
@@ -8814,24 +8827,12 @@
         const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
         const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
         const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
-        // Level up entry sits on the FIRST unit of every higher level (not just the
-        // adjacent one), and is offered to free users too — they can take the higher
-        // trial, but adopting the new plan converts via Paywall in the report.
-        // V1.3.1: the "Try this level" trial entry sits ONLY on the immediate next
-        // level (current+1) — matching the lesson-card model (higher levels stay
-        // Locked / Go Premium). If that level's trial is already consumed it can't be
-        // re-taken → View report (reflects current) instead.
-        const isLevelUpEntry = lvStatus === "next" && ui === 0 && levelIdx === curOrder + 1;
-        const levelUpConsumed = isLevelUpEntry && isTrialConsumed(level.id);
+        // V1.3.1: cross-level 升 / 降 no longer sits on unit CTAs — it's unified into
+        // the top-of-current-level dual stepper (↑ / ↓). Every higher level (incl.
+        // current+1) therefore renders as a plain locked level: member → sequential
+        // lock; free → Go Premium (Paywall). Upgrading is done via the stepper ↑.
         let cta, tag;
-        if (levelUpConsumed) {
-          cta = `<button type="button" class="cm-unit-cta" data-report-level="${level.id}">View report</button>`;
-          tag = "";
-        } else if (isLevelUpEntry) {
-          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Try this level</button>`;
-          tag = "";
-        } else if (lvStatus === "next") {
-          // Higher level, non-first unit: free → Go Premium (Paywall); member → sequential lock.
+        if (lvStatus === "next") {
           cta = profile.premiumUnlocked
             ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>Locked</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
@@ -8852,13 +8853,9 @@
             ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
-        // Level-up hint under the first unit of a higher level (free + member).
-        const levelupHint = (isLevelUpEntry && !levelUpConsumed)
-          ? `<span class="cm-unit-levelup-hint">Take a ${level.label} lesson — we'll set the best-fit plan from how it goes.</span>`
-          : "";
         return `
-          <div class="cm-unit${isLevelUpEntry ? " cm-unit--levelup" : ""}">
-            <div class="cm-unit-info"><b>${unit.label} · ${unit.theme}</b><span class="cm-unit-goal">${goal}</span><span>${total} lessons</span>${levelupHint}</div>
+          <div class="cm-unit">
+            <div class="cm-unit-info"><b>${unit.label} · ${unit.theme}</b><span class="cm-unit-goal">${goal}</span><span>${total} lessons</span></div>
             ${tag}
             <div class="cm-unit-progress"><div class="cm-bar"><i style="width:${pct}%"></i></div><em>${done}/${total} done</em></div>
             ${cta}
@@ -8880,57 +8877,71 @@
       unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
-      unitsBox.querySelectorAll("[data-levelup-level]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          // Match the lesson-card routing: free → placement trial (re-定级 → 学习计划 →
-          // Paywall); member → level-up check (升要证明：达标才升、永不降).
-          const lvl = btn.dataset.levelupLevel;
-          if (!profile.premiumUnlocked) { startPlacementTrial(lvl); return; }
-          startLevelUpTrial(lvl);
-        });
+      // V1.3.1: dual-direction level stepper (top of current level).
+      // ↑ Level up: free → placement trial (re-定级 → 学习计划 → Paywall); member →
+      //   level-up check (升要证明：达标才升、永不降).
+      unitsBox.querySelector("[data-step-up]")?.addEventListener("click", (e) => {
+        const lvl = e.currentTarget.dataset.stepUp;
+        if (!profile.premiumUnlocked) { startPlacementTrial(lvl); return; }
+        startLevelUpTrial(lvl);
       });
-      // Consumed next-up level → View report (reflects the current best-fit level).
-      unitsBox.querySelectorAll("[data-report-level]").forEach((btn) => {
-        btn.addEventListener("click", () => { trialReportMode = "trial"; showTrialReport(); });
+      // ↓ Too hard: member → direct switch (no trial); free → easier placement trial.
+      unitsBox.querySelector("[data-step-down]")?.addEventListener("click", (e) => {
+        startDowngrade(e.currentTarget.dataset.stepDown);
       });
-      // V1.3.1 (Req4): downgrade entry on the adjacent lower level.
-      unitsBox.querySelector("[data-downgrade-level]")?.addEventListener("click", (e) => {
-        startDowngrade(e.currentTarget.dataset.downgradeLevel);
+      // ↑ but that level's trial is already consumed → View report (reflects current).
+      unitsBox.querySelector("[data-step-report]")?.addEventListener("click", () => {
+        trialReportMode = "trial"; showTrialReport();
       });
     }
-    // V1.3.1 (Req4): "Too hard?" downgrade banner. Shown only on the adjacent lower
-    // level (current-1) — the safety valve to step down one level. Going DOWN needs
-    // no proof, so the copy differs by member/free per the asymmetric rule:
-    //   • Member  → direct switch to the easier formal plan (no trial).
-    //   • Free    → take one easier trial → right-fit report → Paywall.
-    //               (Free can't take formal lessons anyway.)
-    function renderDowngradeBanner(level) {
-      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
-      const selOrder = COURSE_LIBRARY.findIndex((l) => l.id === level.id);
-      const placeOrder = COURSE_LIBRARY.findIndex((l) => l.id === (profile.placementLevelId || profile.currentLevelId));
-      if (selOrder !== curOrder - 1) return ""; // only the adjacent lower level
-      // Only when current−1 is a SKIPPED (never-studied) level — i.e. the learner is still
-      // on the originally-placed level (current == placement). Once natural progression
-      // moves current above placement, current−1 is a COMPLETED level (review, not a
-      // downgrade target), so the banner retires.
-      if (curOrder !== placeOrder) return "";
-      // Free: the banner offers a NEW placement trial of the easier level — only valid
-      // while that level's trial is unconsumed. Once consumed it can't be re-taken, so
-      // the banner retires and the level's card shows View report instead. Members
-      // switch directly (no trial), so consumption never gates their banner.
-      if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
-      const sub = profile.premiumUnlocked
-        ? `Switch ${getDisplayName() || "your learner"}'s plan down to ${level.label} right away — no trial needed.`
-        : `Take one ${level.label} trial to see if it fits better.`;
-      const btnLabel = profile.premiumUnlocked ? `Switch to ${level.label}` : `Try ${level.label}`;
-      return `
-        <div class="cm-downgrade" data-downgrade-banner>
-          <div class="cm-downgrade-copy">
-            <b>Feeling too hard?</b>
-            <span>${sub}</span>
-          </div>
-          <button type="button" class="cm-downgrade-cta" data-downgrade-level="${level.id}">${btnLabel}</button>
-        </div>`;
+    // V1.3.1: unified dual-direction level stepper — the SINGLE entry for adjacent
+    // ±1 升 / 降, shown at the top of the CURRENT level's Learning Path. Symmetric by
+    // design (both directions are banner rows, not scattered card CTAs):
+    //   ↑ Level up (current+1)  → free = placement trial · member = level-up check
+    //                              (升要证明：达标才升、永不降)。已消耗 → View report。
+    //   ↓ Feeling too hard (current-1) → member = direct switch (no trial) · free =
+    //                              easier placement trial。仅当 current == 定级起点，
+    //                              且（免费）该更低档体验课未消耗时出现。
+    function renderLevelStepper() {
+      const curOrder = levelOrderOf(profile.currentLevelId);
+      const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
+      const upId = levelByOrder(curOrder + 1);
+      const downId = levelByOrder(curOrder - 1);
+      let rows = "";
+      // ↑ Level up — available whenever a higher level exists.
+      if (upId) {
+        const upLabel = levelLabelOf(upId);
+        if (isTrialConsumed(upId)) {
+          rows += `
+            <div class="cm-stepper-row cm-stepper-row--up">
+              <div class="cm-stepper-copy"><b>You've already tried ${upLabel}</b><span>That trial is folded into your current plan — take a look back.</span></div>
+              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-report="${upId}">View report</button>
+            </div>`;
+        } else {
+          rows += `
+            <div class="cm-stepper-row cm-stepper-row--up">
+              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>Take a ${upLabel} lesson — we'll set the best-fit plan from how it goes.</span></div>
+              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up="${upId}">Try ${upLabel}</button>
+            </div>`;
+        }
+      }
+      // ↓ Too hard — only while still on the originally-placed level (current == placement);
+      // after natural progression current-1 is a Completed (review) level, not a downgrade
+      // target. Free also needs that easier trial to be unconsumed (can't re-take).
+      if (downId && curOrder === placeOrder && !(!profile.premiumUnlocked && isTrialConsumed(downId))) {
+        const downLabel = levelLabelOf(downId);
+        const sub = profile.premiumUnlocked
+          ? `Switch ${getDisplayName() || "your learner"}'s plan down to ${downLabel} right away — no trial needed.`
+          : `Take one ${downLabel} trial to see if it fits better.`;
+        const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
+        rows += `
+            <div class="cm-stepper-row cm-stepper-row--down">
+              <div class="cm-stepper-copy"><b>Feeling too hard?</b><span>${sub}</span></div>
+              <button type="button" class="cm-stepper-cta cm-stepper-cta--down" data-step-down="${downId}">${btnLabel}</button>
+            </div>`;
+      }
+      if (!rows) return "";
+      return `<div class="cm-stepper" data-level-stepper>${rows}</div>`;
     }
     function showCourseMap() {
       // Open the switcher on the level currently being browsed (falls back to current).
