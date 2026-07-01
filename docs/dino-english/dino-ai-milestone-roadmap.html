@@ -347,6 +347,12 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 .p1{background:var(--orange-soft);color:var(--orange);border:1px solid var(--orange)}
 .p2{background:var(--paper-deep);color:var(--ink-faint);border:1px solid var(--line)}
 
+/* de-emphasized minor note (experience fixes) + inline story link */
+.minor-note{margin-top:16px;padding-top:12px;border-top:1px dashed var(--line);font-size:12px;color:var(--ink-faint);line-height:1.75}
+.minor-note .minor-lab{display:inline-block;font-size:10px;letter-spacing:.14em;color:var(--ink-faint);font-weight:600;text-transform:uppercase;margin-right:8px;padding:1px 8px;border:1px solid var(--line);border-radius:99px;white-space:nowrap}
+.story a{color:var(--green);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--green);white-space:nowrap}
+.story a:hover{border-bottom-style:solid}
+
 /* ---------- language toggle ---------- */
 .lang-toggle{
   position:fixed;top:14px;right:16px;z-index:70;display:flex;gap:2px;
@@ -606,29 +612,39 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
     <div class="node-sub" data-zh='功能性迭代<br>7 月初'>Functional iteration<br>Early Jul</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='转化补齐 + 定级安全阀<span class="tag">迭代版</span>'>Conversion polish + placement safety valve<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>用户从竖屏报告一路到竖屏支付，不再横竖切换；本周课上完被引导去 Explore 练习；定级不合适时能在当前 Level 顶部一键升 / 降（免费＝采样定级、会员＝升要证明·降直切）；背包手办按角色和系列收集；Kakao 登录补绑手机号；单账号最多 3 台设备。'><span class="lab">User story</span>Users flow from the vertical report straight into vertical checkout with no rotation; after finishing the week's lessons they're nudged into Explore to practice; when the level doesn't fit, they can step up / down right from the top of the current Level (free = sampling re-placement, member = level-up needs proof · downgrade is instant); backpack figures are collected by character and series; Kakao login binds a phone number; each account allows up to 3 devices.</div>
+    <div class="node-title" data-zh='功能性迭代 · 多线补齐<span class="tag">迭代版</span>'>Functional iteration · multi-track<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>在 V1.3.0 之上做多线功能迭代：支付页改竖屏、课程升降级逻辑优化、背包手办按人物 / 系列收集；账号侧上设备上限与 Kakao / Facebook 登录（Kakao 补绑手机号）、手机号登录新增马来西亚 / 印尼；课中补齐全流程监课，内容生产 CMS 与管台一期起步；同时接入 AppsFlyer 埋点、完成 Dino AI → Dino Daily 改名。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.1 需求文档 ↗</a>。'><span class="lab">User story</span>A multi-track functional iteration on top of V1.3.0: a vertical paywall, refined level up/down logic, and backpack figures collected by character/series; on the account side, a device cap plus Kakao/Facebook login (Kakao phone binding) and phone login for Malaysia/Indonesia; in-class adds full-flow lesson monitoring, with the content-production CMS and admin console phase 1 starting up; alongside AppsFlyer analytics and the Dino AI → Dino Daily rename. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.1 PRD ↗</a>.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='产品侧交付（需求池 1.3.1）'>Product deliverables (pool · 1.3.1)</h4>
+        <h4 data-zh='需求 · 学习 / 课程 / 内容'>Requirements · learning / lessons / content</h4>
         <ul>
-          <li data-zh='<b>支付页改竖屏</b><span class="p0">P0</span>：Paywall 竖屏单栏沉浸式，承接 onboarding / 报告竖屏链路，减少横竖切换'><b>Vertical paywall</b><span class="p0">P0</span>: an immersive single-column vertical Paywall that matches the onboarding / report vertical flow, removing the rotate step</li>
-          <li data-zh='<b>课程升降级 · 定级安全阀</b><span class="p0">P0</span>：当前 Level 顶部双向 stepper，免费＝采样定级 / 会员＝升要证明·降直切'><b>Level up / down · placement safety valve</b><span class="p0">P0</span>: a two-way stepper at the top of the current Level — free = sampling re-placement, member = level-up needs proof · downgrade is direct</li>
-          <li data-zh='<b>Class「本周上完」探索引导</b><span class="p2">P2</span>：本周批次全部完成后追加引导卡，把空窗导向 Explore'><b>"Weekly lessons done" Explore nudge</b><span class="p2">P2</span>: after the week's batch is fully complete, a nudge card steers the gap time into Explore</li>
-          <li data-zh='<b>背包手办 IP / 系列分层</b><span class="p1">P1</span>：手办 Tab 按 IP → 系列 → 手办三层收集展示'><b>Backpack figures by IP / series</b><span class="p1">P1</span>: the figures tab shows a three-tier IP → series → figure collection</li>
-          <li data-zh='<b>登录设备上限 3 台</b><span class="p1">P1</span>：第 4 台设备登录被拦截，提示先退出旧设备'><b>3-device login cap</b><span class="p1">P1</span>: a 4th device is blocked at login, prompting the user to sign out an old device first</li>
-          <li data-zh='<b>Kakao 登录手机号绑定</b><span class="p1">P1</span>：Kakao 登录后缺手机号强制补绑（手机号 + 短信验证码）'><b>Kakao login phone binding</b><span class="p1">P1</span>: if Kakao login returns no phone number, force a bind (phone + SMS code)</li>
+          <li data-zh='<b>支付页竖屏改版</b><span class="p1">P1</span>：Paywall 改竖屏单栏，承接 onboarding / 报告竖屏链路'><b>Vertical paywall redesign</b><span class="p1">P1</span>: single-column vertical Paywall matching the onboarding / report flow</li>
+          <li data-zh='<b>课程升降级逻辑优化</b><span class="p1">P1</span>：定级安全阀，纠正定级偏差'><b>Refined level up/down logic</b><span class="p1">P1</span>: a placement safety valve that corrects mis-placement</li>
+          <li data-zh='<b>课中全流程监课功能</b><span class="p0">P0</span>：上课全流程可监控'><b>Full-flow in-class monitoring</b><span class="p0">P0</span>: monitor the whole lesson flow</li>
+          <li data-zh='<b>一系列课中小需求</b><span class="p1">P1</span>'><b>A batch of in-class small requirements</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Class 本周完课引导去 Explore</b><span class="p2">P2</span>：完课空窗导向练习'><b>End-of-week Class → Explore nudge</b><span class="p2">P2</span>: steer the post-lesson gap into practice</li>
+          <li data-zh='<b>Play 游戏题目资源变更</b><span class="p1">P1</span>'><b>Play game question-resource update</b><span class="p1">P1</span></li>
+          <li data-zh='<b>手办增加人物 / 系列 Tab</b><span class="p1">P1</span>：按人物 → 系列分层收集'><b>Figures gain character / series tabs</b><span class="p1">P1</span>: collect by character → series</li>
+          <li data-zh='<b>手办及剩余皮肤资源更新</b><span class="p2">P2</span>'><b>Figure & remaining skin resources refresh</b><span class="p2">P2</span></li>
         </ul>
       </div>
-      <div class="block dep">
-        <h4 data-zh='同期排期 · 配套（需求池）'>Same-cycle items (pool)</h4>
+      <div class="block">
+        <h4 data-zh='需求 · 账号 / 平台 / 投放'>Requirements · account / platform / growth</h4>
         <ul>
-          <li data-zh='<b>1.3.0 遗留 bug 及优化处理</b><span class="p0">P0</span>'><b>V1.3.0 leftover bug fixes & polish</b><span class="p0">P0</span></li>
-          <li data-zh='<b>AppsFlyer 接入 + 埋点补充</b><span class="p0">P0</span>，可做归因与 CAC 分析<span class="who">数据组</span>'><b>AppsFlyer integration + analytics fill-in</b><span class="p0">P0</span>, enabling attribution & CAC analysis<span class="who">Data team</span></li>
-          <li data-zh='<b>Facebook / Kakao 登录方式接入</b><span class="p0">P0</span>'><b>Facebook / Kakao login methods</b><span class="p0">P0</span></li>
-          <li data-zh='<b>品牌改名 Dino AI → Dino Daily</b><span class="p0">P0</span>（需求池待评审）'><b>Rebrand Dino AI → Dino Daily</b><span class="p0">P0</span> (pool · pending review)</li>
+          <li data-zh='<b>Kakao / Facebook 登录</b><span class="p0">P0</span>：含 Kakao 登录后手机号绑定'><b>Kakao / Facebook login</b><span class="p0">P0</span>: including Kakao post-login phone binding</li>
+          <li data-zh='<b>品牌改名 Dino AI → Dino Daily</b><span class="p0">P0</span>'><b>Rebrand Dino AI → Dino Daily</b><span class="p0">P0</span></li>
+          <li data-zh='<b>登录设备上限 3 台</b><span class="p1">P1</span>：单账号最多同时登录 3 台设备'><b>3-device login cap</b><span class="p1">P1</span>: at most 3 devices signed in per account</li>
+          <li data-zh='<b>手机号登录新增马来西亚 / 印尼</b><span class="p1">P1</span>'><b>Phone login adds Malaysia / Indonesia</b><span class="p1">P1</span></li>
+          <li data-zh='<b>内容生产 CMS 管台 / 管台使用 SOP</b><span class="p0">P0</span>'><b>Content-production CMS / admin-console SOP</b><span class="p0">P0</span></li>
+          <li data-zh='<b>Dino English 管台一期</b><span class="p0">P0</span>：查询用户与订单信息'><b>Admin console phase 1</b><span class="p0">P0</span>: look up user & order info</li>
+          <li data-zh='<b>AppsFlyer 接入 + 埋点补充</b><span class="p0">P0</span>：可做归因与 CAC 分析'><b>AppsFlyer integration + analytics fill-in</b><span class="p0">P0</span>: enables attribution & CAC analysis</li>
+          <li data-zh='<b>onboarding 资源提前加载</b><span class="p1">P1</span>：预载选老师资源（研发优化）'><b>Onboarding resource preloading</b><span class="p1">P1</span>: preload teacher-picker assets (dev optimization)</li>
         </ul>
       </div>
+    </div>
+    <div class="minor-note">
+      <span class="minor-lab" data-zh='体验优化 · 随版修复'>UX fixes · shipped alongside</span>
+      <span data-zh='学习路径级别卡片信息显示不全（L3 / L4）、登入价值宣传页对话文案更新、登入 loading 页双 Dino 展示优化、学习计划宣传页标题遮挡 / 伪交互等。'>Level-path card info clipped (L3 / L4), login value-page copy update, login loading dual-Dino tweak, study-plan page title overlap / fake-interaction, etc.</span>
     </div>
     <div class="demo-strip">
       <div class="demo-thumb" onclick="openDemo('V1.3.1-ui-demo.html','V1.3.1 · UI Demo')">
