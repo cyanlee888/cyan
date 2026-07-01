@@ -6103,15 +6103,18 @@
             <button type="button" class="pwpt-back" id="btn-pwpt-back" aria-label="Close">‹</button>
             <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore</button>
           </div>
-          <!-- V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle to its right,
-               then a full-width benefits list below; plan cards side-by-side; arrow CTA. -->
-          <!-- V1.3.1: hero + benefits first, trust proof strip below. -->
+          <!-- V1.3.1 (布局调整): title block on top; then Dino left + trust proof right;
+               then a full-width benefits list. -->
           <div class="pwpt-hero-card">
+            <div class="pwpt-hero-intro">
+              <span class="pwpt-kicker">Dino Premium</span>
+              <h2 class="pwpt-title" id="pwpt-title">Unlock everything in Dino English</h2>
+            </div>
             <div class="pwpt-hero-top">
               <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
-              <div class="pwpt-hero-intro">
-                <span class="pwpt-kicker">Dino Premium</span>
-                <h2 class="pwpt-title" id="pwpt-title">Unlock everything in Dino English</h2>
+              <div class="pwpt-trust">
+                <span class="pwpt-trust-badge">13 Years of Proven Trust</span>
+                <p class="pwpt-trust-sub">Backed by over a decade of refinement and trusted by 2M families worldwide.</p>
               </div>
             </div>
             <ul class="pwpt-benefits">
@@ -6122,10 +6125,6 @@
               <li><strong>Full rewards &amp; gamified learning</strong></li>
               <li><strong>Chat freely with Dino</strong></li>
             </ul>
-          </div>
-          <div class="pwpt-trust">
-            <span class="pwpt-trust-badge">13 Years of Proven Trust</span>
-            <p class="pwpt-trust-sub">Backed by over a decade of refinement and trusted by 2M families worldwide.</p>
           </div>
           <div class="pwpt-plans" id="pwpt-plans"></div>
           <div class="pwpt-cta-spacer"></div>
@@ -6196,11 +6195,11 @@
     .pwpt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;position:sticky;top:0;background:transparent}
     .pwpt-back{width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,.06);color:#1f2a24;font-size:1.4rem;line-height:1;cursor:pointer}
     .pwpt-restore{border:none;background:transparent;color:#1d5c3f;font-size:.82rem;font-weight:700;cursor:pointer}
-    /* V1.3.1: top-exposure trust proof strip */
-    .pwpt-trust{margin:10px 0 12px;padding:13px 16px;border-radius:18px;text-align:center;
-      background:linear-gradient(135deg,#1d5c3f 0%,#2f9e63 100%);box-shadow:0 12px 26px rgba(29,92,63,.22)}
-    .pwpt-trust-badge{display:block;font-size:1.02rem;font-weight:900;letter-spacing:.01em;color:#fff}
-    .pwpt-trust-sub{margin:5px 0 0;font-size:.78rem;line-height:1.5;color:#eafaf0}
+    /* V1.3.1: trust proof — sits to the right of the Dino mascot inside the hero card */
+    .pwpt-trust{flex:1 1 auto;min-width:0;margin:0;padding:12px 14px;border-radius:16px;text-align:left;
+      background:linear-gradient(135deg,#1d5c3f 0%,#2f9e63 100%);box-shadow:0 10px 22px rgba(29,92,63,.2)}
+    .pwpt-trust-badge{display:block;font-size:.96rem;font-weight:900;letter-spacing:.01em;color:#fff}
+    .pwpt-trust-sub{margin:5px 0 0;font-size:.76rem;line-height:1.5;color:#eafaf0}
     /* V1.3.1 (布局调整): hero card — mascot top-left + title/subtitle right, full-width benefits below */
     .pwpt-hero-card{display:flex;flex-direction:column;gap:14px;margin:8px 0 14px;padding:16px 16px;
       background:linear-gradient(160deg,#fff6e6 0%,#eef9f1 100%);border:1px solid #f0e6cf;
@@ -6224,7 +6223,7 @@
     .pwpt-plan-l{display:flex;flex-direction:column;gap:3px;min-width:0}
     .pwpt-plan-name{font-size:.98rem;font-weight:800;color:#16241c}
     .pwpt-plan-price{font-size:.78rem;font-weight:600;color:#8a958d}
-    .pwpt-plan-orig{color:#c0473a;text-decoration:line-through;font-weight:700;margin-right:2px}
+    .pwpt-plan-orig{color:#9aa5a0;text-decoration:line-through;font-weight:600;margin-right:2px}
     .pwpt-plan-week{flex:0 0 auto;font-size:1.34rem;font-weight:900;color:#1d7a4d;line-height:1.05;white-space:nowrap;text-align:right}
     .pwpt-badge{position:absolute;top:-9px;left:14px;white-space:nowrap;background:#d9641e;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
     .pwpt-legal{text-align:center;margin:8px auto 0;font-size:.72rem;color:#8a958d}
@@ -8817,11 +8816,17 @@
         // current+1) therefore renders as a plain locked level: member → sequential
         // lock; free → Go Premium (Paywall). Upgrading is done via the stepper ↑.
         let cta, tag;
-        if (lvStatus === "next") {
+        if (lvStatus !== "current") {
+          // V1.3.1: any level OTHER than the current one — higher OR lower — is not
+          // directly enterable from the map. Free → payment gate (Go Premium → Paywall);
+          // member → Locked (study stays anchored at the current level; cross-level moves
+          // go through the adjacent-level up / down banners, not the unit CTAs).
           cta = profile.premiumUnlocked
-            ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>Locked</button>`
+            ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit data-lock-msg="This level isn't in your current plan">Locked</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
-          tag = "";
+          tag = (lvStatus === "done" && done === total)
+            ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>`
+            : "";
         } else if (premiumUnitLock) {
           // Non-member: payment gate (Go Premium → Paywall); no extra tag.
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
@@ -8856,7 +8861,7 @@
       // Member: later units (current level not-yet-reached, or higher-level non-first
       // units) open in order — finish the previous unit first.
       unitsBox.querySelectorAll("[data-locked-unit]").forEach((btn) => {
-        btn.addEventListener("click", () => showPayToast("Finish the previous unit first"));
+        btn.addEventListener("click", () => showPayToast(btn.dataset.lockMsg || "Finish the previous unit first"));
       });
       // Free user: every unit past Unit 1 is a membership lock → Paywall.
       unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
