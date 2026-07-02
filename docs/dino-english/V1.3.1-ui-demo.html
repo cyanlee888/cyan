@@ -5633,7 +5633,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.3.1 · 竖屏 Paywall · Class 本周上完 Explore 引导 · 设备上限 3 台 · 课程升降级（会员直切 / 免费试更简单 level）· 背包手办 IP/系列分层 — 详见右上 ⚙︎ States 的「1.3.1 变更」</p>
+  <p class="demo-bar">V1.3.1 · 竖屏 Paywall · Class 本周上完 Explore 引导 · 课程升降级（会员直切 / 免费试更简单 level）· 背包手办 IP/系列分层 · Kakao 登录手机号绑定 — 详见右上 ⚙︎ States 的「1.3.1 变更」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8770,12 +8770,18 @@
       if (!levelsBox) return;
       levelsBox.innerHTML = COURSE_LIBRARY.map((level, li) => {
         const status = getLevelStatus(level.id);
-        const stateLabel = status === "done" ? "Completed" : status === "current" ? "You are here" : status === "notstarted" ? "Not started" : "Up next";
+        // Minimal map: only the current level is active ("You are here"); every other
+        // level (higher OR lower) reads as one muted "Locked". Content ships weekly and
+        // study is anchored at the current level, so past levels aren't re-browsed and
+        // future levels aren't ready — no per-level Completed / progress labels.
+        const isCurLv = status === "current";
+        const stateLabel = isCurLv ? "You are here" : "Locked";
+        const stateCls = isCurLv ? "current" : "notstarted";
         return `
           <button type="button" class="cm-level ${level.id === courseMapLevelId ? "is-selected" : ""} ${status === "current" ? "is-current" : ""}" data-level-id="${level.id}" role="tab" aria-selected="${level.id === courseMapLevelId}">
             <b>${level.label}</b>
             <span>${LEVEL_ABILITIES[li] || ""}</span>
-            <span class="cm-level-state cm-level-state--${status}">${stateLabel}</span>
+            <span class="cm-level-state cm-level-state--${stateCls}">${stateLabel}</span>
           </button>`;
       }).join("");
       levelsBox.querySelectorAll(".cm-level").forEach((btn) => {
@@ -8815,6 +8821,11 @@
         // the top-of-current-level dual stepper (↑ / ↓). Every higher level (incl.
         // current+1) therefore renders as a plain locked level: member → sequential
         // lock; free → Go Premium (Paywall). Upgrading is done via the stepper ↑.
+        // Minimal map: only the CURRENT level shows per-unit progress + tags (it's the
+        // active plan). Every other level is a plain locked list — no progress bar, no
+        // Completed / Skipped tags — so a level left mid-way (e.g. leveled up out of L3)
+        // never mis-reports "100% Completed", and no partial-progress snapshot is needed.
+        const showProgress = lvStatus === "current";
         let cta, tag;
         if (lvStatus !== "current") {
           // V1.3.1: any level OTHER than the current one — higher OR lower — is not
@@ -8824,9 +8835,7 @@
           cta = profile.premiumUnlocked
             ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit data-lock-msg="This level isn't in your current plan">Locked</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
-          tag = (lvStatus === "done" && done === total)
-            ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>`
-            : "";
+          tag = "";
         } else if (premiumUnitLock) {
           // Non-member: payment gate (Go Premium → Paywall); no extra tag.
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
@@ -8843,11 +8852,14 @@
             ? `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`
             : (done === total ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>` : "");
         }
+        const progressHtml = showProgress
+          ? `<div class="cm-unit-progress"><div class="cm-bar"><i style="width:${pct}%"></i></div><em>${done}/${total} done</em></div>`
+          : "";
         return `
           <div class="cm-unit">
             <div class="cm-unit-info"><b>${unit.label} · ${unit.theme}</b><span class="cm-unit-goal">${goal}</span><span>${total} lessons</span></div>
             ${tag}
-            <div class="cm-unit-progress"><div class="cm-bar"><i style="width:${pct}%"></i></div><em>${done}/${total} done</em></div>
+            ${progressHtml}
             ${cta}
           </div>`;
       }).join("");
@@ -12012,7 +12024,6 @@
           courseMapLevelId = "level-1"; renderCourseMap(); // select the lower level → banner shows
         } },
       { label: "Kakao 登录·手机号绑定", run: function () { demoState.kakaoPhoneBound = false; openBindPhone("kakao"); } },
-      { label: "设备上限提醒（第 4 台登录被拦）", run: function () { enterPortrait(); showPortraitScreen("screen-login"); showDeviceLimitNotice(); } },
       { label: "背包·手办 IP/系列", run: function () {
           // Req5: Backpack › Dino Figures → IP tabs (Dino / Emma / Bob / Hena / Bruce) → series groups.
           enterLandscape();
