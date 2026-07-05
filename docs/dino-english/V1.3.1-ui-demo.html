@@ -2549,6 +2549,26 @@
     .course-cta-secondary:hover {
       background: rgba(255,255,255,0.2);
     }
+    /* V1.3.1 (Req7): "Chat with Dino" entry on completed lesson cards. */
+    .course-cta-chat {
+      flex: 1 1 auto;
+      min-width: 140px;
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: linear-gradient(135deg,#4fd1a5,#2fb389);
+      border: none;
+      color: #063b2b;
+      box-shadow: 0 8px 18px rgba(47,179,137,.32);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 800;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+    }
+    .course-cta-chat:hover { filter: brightness(1.04); }
     .class-home-course-title {
       max-width: none;
       white-space: nowrap;
@@ -2575,7 +2595,8 @@
       box-shadow: none;
     }
     .class-home-actions .course-card-cta-wrap .btn-primary,
-    .class-home-actions .course-card-cta-wrap .course-cta-secondary {
+    .class-home-actions .course-card-cta-wrap .course-cta-secondary,
+    .class-home-actions .course-card-cta-wrap .course-cta-chat {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -3814,6 +3835,7 @@
     }
     #device-landscape .class-home-actions .course-card-cta-wrap .btn-primary,
     #device-landscape .class-home-actions .course-card-cta-wrap .course-cta-secondary,
+    #device-landscape .class-home-actions .course-card-cta-wrap .course-cta-chat,
     #device-landscape .class-home-secondary {
       min-height: 44px;
       font-size: 0.82rem;
@@ -4889,8 +4911,23 @@
     .bag-series-head { display: flex; align-items: center; gap: 8px; margin: 0 2px 8px; }
     .bag-series-name { color: #fff; font-family: var(--display); font-weight: 800; font-size: 0.82rem; letter-spacing: 0.01em; }
     .bag-series-head::after { content: ""; flex: 1; height: 1px; background: rgba(255,255,255,0.16); }
-    .bag-series-count { color: rgba(255,255,255,0.7); font-size: 0.66rem; font-weight: 800; }
+    .bag-series-count { color: rgba(255,255,255,0.7); font-size: 0.66rem; font-weight: 800; order: 1; }
     .bag-series-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    /* When a series is fully collected, the progress count is REPLACED by the
+       "Series complete" achievement chip (in the same slot — no separate title badge). */
+    .bag-series.is-complete .bag-series-count { color: #5a3700; font-size: 0.58rem;
+      background: linear-gradient(135deg, #ffe08a, #ffd34d); border-radius: 999px; padding: 2px 8px;
+      box-shadow: 0 3px 8px rgba(240,135,29,0.35); white-space: nowrap; }
+    /* Un-obtained figure: the real figure shown GRAYED OUT (+ its name) as a collection
+       target, so the goal + per-series progress are visible without spoiling nothing. */
+    .shop-card.pet-locked { cursor: default; }
+    .shop-card.pet-locked .shop-card-art { background: rgba(20,14,52,0.4);
+      border-style: dashed; border-color: rgba(255,255,255,0.2); }
+    .shop-card.pet-locked .sc-img { filter: grayscale(1) brightness(0.6); opacity: 0.72; }
+    .shop-card.pet-locked .sc-emoji { filter: grayscale(1); opacity: 0.5; }
+    .shop-card.pet-locked .shop-card-name { color: rgba(255,255,255,0.55); }
+    .shop-card.pet-locked .shop-card-price { color: rgba(255,255,255,0.45);
+      background: rgba(20,14,52,0.4); border-color: rgba(255,255,255,0.1); }
 
     /* ---- Game toast + level-up overlay ---- */
     .g-toast { position: absolute; left: 50%; top: 14px; transform: translateX(-50%) translateY(-20px);
@@ -4935,7 +4972,7 @@
     .tr-hero-badge { display: inline-block; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; background: rgba(255,255,255,0.24); padding: 4px 11px; border-radius: 999px; }
     .tr-hero h1 { font-size: 1.18rem; font-weight: 800; margin: 6px 0 2px; }
     .tr-hero-sub { font-size: 0.76rem; opacity: 0.92; margin: 0; }
-    .tr-cards { flex: 1; padding: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 11px; align-content: start; }
+    .tr-cards { flex: 1; padding: 13px; display: grid; grid-template-columns: 1fr; gap: 11px; align-content: start; }
     .tr-card { background: #fff; border-radius: 16px; padding: 12px 14px; box-shadow: 0 6px 18px rgba(80,60,140,0.08); }
     .tr-card-head { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
     .tr-card-ico { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; font-size: 0.95rem; background: #eef0ff; flex-shrink: 0; }
@@ -5155,6 +5192,8 @@
     .cm-unit-cta { flex-shrink: 0; border: none; border-radius: 999px; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: var(--font); background: linear-gradient(135deg, var(--forest-mid), var(--forest-deep)); color: #fff; box-shadow: 0 8px 16px rgba(20,61,42,0.3); }
     .cm-unit-cta--ghost { background: rgba(20,58,94,0.08); color: #57738f; box-shadow: none; }
     .cm-unit-cta--locked { background: rgba(20,58,94,0.06); color: #93a0ad; box-shadow: none; }
+    /* Member: unit opens later on the weekly schedule (calendar tone, not a hard lock). */
+    .cm-unit-cta--soon { background: rgba(20,58,94,0.08); color: #57738f; box-shadow: none; }
     /* Free user: unit past Unit 1 is a membership lock → Paywall (gold "Unlock"). */
     .cm-unit-cta--premium { background: linear-gradient(135deg, #ffcf5a, #ff9f1c); color: #4a2d00; box-shadow: 0 8px 16px rgba(255,159,28,0.32); }
     /* Member level-up entry (向上跳级) — shown on the first unit of a higher level. */
@@ -5383,6 +5422,7 @@
     .tp-report .tp-cta-btn { display: block; width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg,#ff9b3d,#ff7a3d); color: #fff; padding: 14px; border-radius: 16px; box-shadow: 0 10px 24px rgba(255,120,60,0.4); }
     .tp-report .tp-cta-main { display: block; font-size: 1.02rem; font-weight: 900; letter-spacing: 0.3px; }
     .tp-report .tp-cta-small { display: block; font-size: 0.68rem; font-weight: 600; opacity: 0.92; margin-top: 2px; }
+    /* Secondary "Chat with Dino" entry under the primary trial-report CTA (post-trial engagement). */
     /* Formal lesson report extras (#screen-lesson-report) */
     .tp-report .lr-pill { display: inline-block; background: rgba(255,255,255,0.22); padding: 4px 14px; border-radius: 999px; font-weight: 800; font-size: 0.78rem; }
     .tp-report .tp-tiles--four { grid-template-columns: repeat(2,1fr); }
@@ -6094,6 +6134,69 @@
         </div>
       </section>
 
+      <!-- Level-Up Check report: PORTRAIT takeover for the in-app level-up trial
+           (向上跳级定级). V1.3.1 unified all reports to portrait; this reuses the same
+           .tr-* markup/render (#tr-* ids, renderLevelUpReport) with a single-column card
+           stack so it reads consistently with the first-trial / lesson reports. -->
+      <section class="screen tr-screen" id="screen-levelup-report">
+        <div class="tr-land-shell" id="tr-scroll">
+          <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
+          <div class="tr-hero">
+            <div class="tr-hero-dino"><img src="assets/dino-mascot.png" alt="Dino" decoding="async" /></div>
+            <div class="tr-hero-copy">
+              <span class="tr-hero-badge" id="tr-hero-badge">Trial Lesson Report</span>
+              <h1 id="tr-hero-h">Great first class! 🎉</h1>
+              <p class="tr-hero-sub" id="tr-hero-sub">Your first lesson</p>
+            </div>
+          </div>
+          <div class="tr-cards">
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">⭐</span><span class="tr-card-title" id="tr-perf-title">How it went</span></div>
+              <div class="tr-perf-row">
+                <div class="tr-stat"><b>10<small>m</small></b><span>Class time</span></div>
+                <div class="tr-stat"><b>😊</b><span>Engagement</span></div>
+                <div class="tr-stat"><b>12</b><span>Times spoken</span></div>
+              </div>
+              <p class="tr-encourage" id="tr-encourage"></p>
+            </div>
+
+            <div class="tr-card tr-card--level">
+              <div class="tr-card-head"><span class="tr-card-ico">🦕</span><span class="tr-card-title">Dino's level recommendation</span></div>
+              <div class="tr-level-badge"><b id="tr-level">A2</b><span>recommended CEFR level</span></div>
+              <p class="tr-level-reason" id="tr-level-reason"></p>
+              <div class="tr-level-dir" id="tr-level-dir"></div>
+            </div>
+
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">📚</span><span class="tr-card-title">What we learned today</span></div>
+              <span class="tr-topic">Topic · A Forest Lake Adventure</span>
+              <div class="tr-vocab"><span>🌊 lake</span><span>🌲 forest</span><span>🐾 footprint</span><span>🔍 explore</span></div>
+              <ul class="tr-expr">
+                <li><i>“</i>Let's explore the forest!<i>”</i></li>
+                <li><i>“</i>I can see a footprint.<i>”</i></li>
+              </ul>
+            </div>
+
+            <div class="tr-card">
+              <div class="tr-card-head"><span class="tr-card-ico">👩‍🏫</span><span class="tr-card-title">AI teacher's notes</span></div>
+              <div class="tr-rev">
+                <p class="tr-rev-line" id="tr-rev-line"></p>
+                <div class="tr-pill good"><b>👍 Did well:</b> Spoke up confidently and copied new words with clear sounds.</div>
+                <div class="tr-pill good"><b>👍 Did well:</b> Stayed curious and answered the teacher's questions.</div>
+                <div class="tr-pill grow"><b>🌱 Next step:</b> Try linking two words into a short sentence — we'll practice this next class.</div>
+              </div>
+            </div>
+
+            <p class="tr-disclaimer">Some of the content above is AI-generated.</p>
+          </div>
+          <div class="foot-actions tr-foot">
+            <button type="button" class="btn btn-primary" id="btn-trial-start">Get my study plan →</button>
+            <button type="button" class="btn btn-ghost tr-foot-keep" id="btn-trial-keep">Keep my current plan</button>
+            <p class="tr-foot-note" id="tr-foot-note">See your weekly plan, then unlock to keep learning</p>
+          </div>
+        </div>
+      </section>
+
       <!-- ============ V1.3.1 (Req1) PORTRAIT PAYWALL ============ -->
       <!-- Paywall redesigned to a single-column portrait takeover: hero → benefits →
            stacked plan cards (annual default / Best value) → sticky Subscribe bar. -->
@@ -6114,7 +6217,7 @@
               <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
               <div class="pwpt-trust">
                 <span class="pwpt-trust-badge">13 Years of Proven Trust</span>
-                <p class="pwpt-trust-sub">Backed by over a decade of refinement and trusted by 2M families worldwide.</p>
+                <p class="pwpt-trust-sub">Backed by over a decade of refinement and trusted by 1.8M families worldwide.</p>
               </div>
             </div>
             <ul class="pwpt-benefits">
@@ -6130,7 +6233,7 @@
           <div class="pwpt-cta-spacer"></div>
         </div>
         <div class="pwpt-cta-bar">
-          <button type="button" class="btn btn-primary pwpt-cta" id="btn-pwpt-purchase">Subscribe now <span class="pwpt-cta-arrow" aria-hidden="true">→</span></button>
+          <button type="button" class="btn btn-primary pwpt-cta" id="btn-pwpt-purchase">Subscribe now</button>
           <p class="pwpt-legal">
             <span>Cancel anytime</span> ·
             <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms</a> ·
@@ -6189,6 +6292,9 @@
     .dl-box h3{margin:0 0 8px;font-size:1.05rem;color:#1f2a24}
     .dl-box p{margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#4c5a52}
     .dl-box button{border:none;background:#1d5c3f;color:#fff;border-radius:10px;padding:11px 18px;font-size:.86rem;font-weight:700;cursor:pointer;width:100%}
+    .dl-box .dl-actions{display:flex;gap:10px}
+    .dl-box .dl-actions button{width:auto;flex:1}
+    .dl-box .dl-cancel{background:#eef2ef;color:#38463d}
     /* Req1: portrait paywall */
     .pwpt{background:linear-gradient(180deg,#fef6ec 0%,#f4fbf6 38%,#ffffff 100%)}
     .pwpt-scroll{position:absolute;inset:0;overflow-y:auto;padding:0 20px}
@@ -6231,7 +6337,6 @@
     .pwpt-cta-spacer{height:124px}
     .pwpt-cta-bar{position:absolute;left:0;right:0;bottom:0;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 32%)}
     .pwpt-cta{width:100%;font-size:1rem;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px}
-    .pwpt-cta-arrow{font-size:1.15rem;font-weight:900;line-height:1}
   </style>
 
   <div class="device-wrap landscape" id="wrap-landscape" style="display:none">
@@ -6241,76 +6346,8 @@
         <p>Turn your device — Class is landscape</p>
       </div>
       <div class="pay-toast" id="pay-toast">Premium unlocked 🎉</div>
-      <section class="screen active" id="screen-login-landscape">
-        <div class="login-land-scene">
-          <div class="login-land-bg" aria-hidden="true">
-            <img src="assets/login/bg-layer-1.png" alt="" decoding="async" />
-            <img class="login-land-bg-overlay" src="assets/login/bg-layer-2.png" alt="" decoding="async" />
-          </div>
-          <div class="login-land-card">
-            <div class="login-land-head">
-              <h1 class="login-land-brand">Dino English</h1>
-              <p class="login-land-tagline">Welcome to Dino English!<br />Let's explore English together!</p>
-            </div>
-            <div class="login-land-actions">
-              <button type="button" class="btn btn-oauth" id="btn-login-apple-land">
-                <img src="assets/login/icon-apple.svg" alt="" width="24" height="24" decoding="async" />
-                Continue with Apple
-              </button>
-              <button type="button" class="btn btn-oauth" id="btn-login-google-land">
-                <img src="assets/login/icon-google.svg" alt="" width="24" height="24" decoding="async" />
-                Continue with Google
-              </button>
-              <!-- V1.3.0: more login methods shown directly as small icons (no drawer). -->
-              <div class="login-more">
-                <div class="login-more-sep"><span>More ways to log in</span></div>
-                <div class="login-more-icons" role="group" aria-label="More login options">
-                  <button type="button" class="lg-ic-btn" data-lg-method="phone" aria-label="Continue with phone number">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-                  </button>
-                  <button type="button" class="lg-ic-btn lg-ic-fb" data-lg-method="facebook" aria-label="Continue with Facebook">f</button>
-                  <button type="button" class="lg-ic-btn lg-ic-kakao" data-lg-method="kakao" aria-label="Continue with Kakao">K</button>
-                </div>
-              </div>
-            </div>
-            <p class="login-land-legal">
-              You agree to our
-              <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
-              and
-              <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
-            </p>
-          </div>
-        </div>
-        <!-- V1.3.0 Phone-number login: 2-step bottom sheets (number → OTP). Facebook &
-             Kakao authorize directly from the icon row, so there's no method-list drawer. -->
-        <div class="lg-sheet-overlay login-phone-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-close aria-label="Back">‹</button><span class="lg-sheet-title">Enter your phone number</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <div class="lg-phone-row">
-              <button type="button" class="lg-cc" data-lg-cc>🇺🇸 +1 ▾</button>
-              <input type="tel" class="lg-phone-input" placeholder="Phone number" inputmode="numeric" autocomplete="off" />
-              <div class="lg-cc-menu"></div>
-            </div>
-            <p class="lg-phone-hint">We'll text you a verification code.</p>
-            <button type="button" class="gbtn gbtn-primary lg-getcode" disabled>Get code</button>
-            <p class="lg-legal">You agree to our Terms of Use and Privacy Policy</p>
-          </div>
-        </div>
-        <div class="lg-sheet-overlay login-otp-sheet" aria-hidden="true">
-          <div class="lg-sheet">
-            <div class="lg-sheet-head"><button type="button" class="lg-sheet-back" data-lg-back="phone" aria-label="Back">‹</button><span class="lg-sheet-title">Enter the verification code</span><button type="button" class="lg-sheet-close" data-lg-close aria-label="Close">✕</button></div>
-            <p class="lg-otp-to">Code sent to <b class="lg-otp-num">+1 ••• ••• ••••</b></p>
-            <div class="lg-otp-boxes">
-              <input class="lg-otp-d" maxlength="1" inputmode="numeric" /><input class="lg-otp-d" maxlength="1" inputmode="numeric" /><input class="lg-otp-d" maxlength="1" inputmode="numeric" /><input class="lg-otp-d" maxlength="1" inputmode="numeric" /><input class="lg-otp-d" maxlength="1" inputmode="numeric" /><input class="lg-otp-d" maxlength="1" inputmode="numeric" />
-            </div>
-            <p class="lg-otp-err" hidden>Incorrect code, please try again</p>
-            <button type="button" class="lg-resend" disabled>Resend in 60s</button>
-            <button type="button" class="gbtn gbtn-primary lg-otp-continue" disabled>Continue</button>
-            <p class="lg-otp-hint">Demo: enter any 6 digits to continue</p>
-          </div>
-        </div>
-        <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
-      </section>
+      <!-- V1.3.1: the legacy landscape login screen was removed — login is portrait-only
+           (#screen-login). The landscape device now opens on the teacher picker / class. -->
       <section class="screen" id="screen-teacher">
         <div class="land-body teacher-pick">
           <div class="teacher-intro">
@@ -7081,68 +7118,6 @@
         </div>
       </section>
 
-      <!-- Level-Up Check report (V1.3.0): LANDSCAPE takeover for the in-app level-up
-           trial (向上跳级定级). The first-trial report is a separate PORTRAIT screen
-           (.tp-report) built from the CT trial-report reference. -->
-      <section class="screen tr-screen" id="screen-levelup-report">
-        <div class="tr-land-shell" id="tr-scroll">
-          <button type="button" class="tr-back" id="btn-trial-back">‹ Back</button>
-          <div class="tr-hero">
-            <div class="tr-hero-dino"><img src="assets/dino-mascot.png" alt="Dino" decoding="async" /></div>
-            <div class="tr-hero-copy">
-              <span class="tr-hero-badge" id="tr-hero-badge">Trial Lesson Report</span>
-              <h1 id="tr-hero-h">Great first class! 🎉</h1>
-              <p class="tr-hero-sub" id="tr-hero-sub">Your first lesson</p>
-            </div>
-          </div>
-          <div class="tr-cards">
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">⭐</span><span class="tr-card-title" id="tr-perf-title">How it went</span></div>
-              <div class="tr-perf-row">
-                <div class="tr-stat"><b>10<small>m</small></b><span>Class time</span></div>
-                <div class="tr-stat"><b>😊</b><span>Engagement</span></div>
-                <div class="tr-stat"><b>12</b><span>Times spoken</span></div>
-              </div>
-              <p class="tr-encourage" id="tr-encourage"></p>
-            </div>
-
-            <div class="tr-card tr-card--level">
-              <div class="tr-card-head"><span class="tr-card-ico">🦕</span><span class="tr-card-title">Dino's level recommendation</span></div>
-              <div class="tr-level-badge"><b id="tr-level">A2</b><span>recommended CEFR level</span></div>
-              <p class="tr-level-reason" id="tr-level-reason"></p>
-              <div class="tr-level-dir" id="tr-level-dir"></div>
-            </div>
-
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">📚</span><span class="tr-card-title">What we learned today</span></div>
-              <span class="tr-topic">Topic · A Forest Lake Adventure</span>
-              <div class="tr-vocab"><span>🌊 lake</span><span>🌲 forest</span><span>🐾 footprint</span><span>🔍 explore</span></div>
-              <ul class="tr-expr">
-                <li><i>“</i>Let's explore the forest!<i>”</i></li>
-                <li><i>“</i>I can see a footprint.<i>”</i></li>
-              </ul>
-            </div>
-
-            <div class="tr-card">
-              <div class="tr-card-head"><span class="tr-card-ico">👩‍🏫</span><span class="tr-card-title">AI teacher's notes</span></div>
-              <div class="tr-rev">
-                <p class="tr-rev-line" id="tr-rev-line"></p>
-                <div class="tr-pill good"><b>👍 Did well:</b> Spoke up confidently and copied new words with clear sounds.</div>
-                <div class="tr-pill good"><b>👍 Did well:</b> Stayed curious and answered the teacher's questions.</div>
-                <div class="tr-pill grow"><b>🌱 Next step:</b> Try linking two words into a short sentence — we'll practice this next class.</div>
-              </div>
-            </div>
-
-            <p class="tr-disclaimer">Some of the content above is AI-generated.</p>
-          </div>
-          <div class="foot-actions tr-foot">
-            <button type="button" class="btn btn-primary" id="btn-trial-start">Get my study plan →</button>
-            <button type="button" class="btn btn-ghost tr-foot-keep" id="btn-trial-keep">Keep my current plan</button>
-            <p class="tr-foot-note" id="tr-foot-note">See your weekly plan, then unlock to keep learning</p>
-          </div>
-        </div>
-      </section>
-
       <!-- ============ PK RESULT (battle card: you vs rival outcome + rewards) ============ -->
       <section class="screen" id="screen-pkresult">
         <div class="game-body game-center">
@@ -7319,7 +7294,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
@@ -7645,7 +7620,10 @@
         // V1.3.0: completed lessons can't be retaken — no "Review" / re-enter entry.
         // Only the learning report stays reachable (read-only); the words / sentences
         // / objectives on the card itself remain visible for content review.
-        return `<button type="button" class="course-cta-secondary" data-action="report">View report</button>`;
+        // V1.3.1 (Req7): a completed card also offers "Chat with Dino" → immersive chat,
+        // carrying an entry identifier (class_card) for the dialogue engine.
+        return `<button type="button" class="course-cta-secondary" data-action="report">View report</button>`
+          + `<button type="button" class="course-cta-chat" data-action="chat-dino" data-chat-level="${course.levelId}" data-chat-unit="${course.unitId}" data-chat-lesson="${course.lessonId}">Chat with Dino</button>`;
       }
       if (state === "InProgress") {
         return `<button type="button" class="btn btn-primary" data-action="continue">Continue</button>`;
@@ -7667,6 +7645,14 @@
           const action = btn.dataset.action;
           if (action === "report") {
             alert("Demo: this would open the learning report for this lesson.");
+            return;
+          }
+          if (action === "chat-dino") {
+            // V1.3.1 (Req7): immersive Dino chat launched from a completed lesson card.
+            // The entry identifier (class_card) + lesson context is handed to the chat
+            // so the dialogue engine can ground the conversation in today's lesson.
+            const ctx = { levelId: btn.dataset.chatLevel, unitId: btn.dataset.chatUnit, lessonId: btn.dataset.chatLesson };
+            if (window.GAME && window.GAME.openDinoChat) window.GAME.openDinoChat("class_card", ctx);
             return;
           }
           if (action === "trial-report-view") {
@@ -7756,8 +7742,24 @@
       const weeks = (courseBatch - currentBatchStartIndex()) / WEEK_LESSONS;
       return Math.max(0, weeks);
     }
+    // V1.3.1 weekly unlock budget (by COMPLETED, per 7-day cycle). The promise is
+    // "3 lessons of progress per cycle" — counted by completion, so switching level
+    // redirects the REMAINING budget to the new level but never refills it. Only the
+    // 7-day cycle roll resets it (demo: the "下一周期" control / cycle-roll).
+    function weekBudgetRemaining() {
+      return Math.max(0, WEEK_LESSONS - (profile.weekDoneCount || 0));
+    }
+    // A lesson is: completed (before the pointer) → unlocked·done; within this cycle's
+    // remaining budget (pointer .. pointer+budget-1) → unlocked·startable; beyond →
+    // scheduled ("Opens soon", next cycle). Budget spent (0) makes even the pointer
+    // lesson read as Opens soon — the next cycle hasn't started yet.
     function getUnlockState(course) {
-      return getUnlockWeeksAhead(course) > 0 ? "scheduled" : "unlocked";
+      const idx = getCourseSequenceIndex(course.levelId, course.unitId, course.lessonId);
+      const cur = getCourseSequenceIndex(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      if (idx === -1 || cur === -1) return "unlocked";
+      if (idx < cur) return "unlocked";                       // already completed
+      if (idx < cur + weekBudgetRemaining()) return "unlocked"; // this cycle, startable
+      return "scheduled";                                     // Opens soon (next cycle)
     }
 
     function setCurrentCourse(levelId, unitId, lessonId) {
@@ -7773,6 +7775,10 @@
     // put so already-completed lower levels keep reading as Completed. This is the
     // sequential path; the member "Level up" trial is the separate skip-ahead path.
     function advanceAfterFormalLesson() {
+      // V1.3.1: each completed formal lesson consumes one of this 7-day cycle's 3
+      // unlock slots (budget by COMPLETED). Once 3 are done the rest of the cycle
+      // reads "Opens soon" until the cycle rolls.
+      profile.weekDoneCount = Math.min(WEEK_LESSONS, (profile.weekDoneCount || 0) + 1);
       const seq = getCurrentLevelCourseSequence();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
       const idx = seq.findIndex((c) => makeCourseKey(c.levelId, c.unitId, c.lessonId) === curKey);
@@ -8121,7 +8127,7 @@
     ];
     let lgCC = LG_COUNTRIES[0];
     let lgResendTimer = null, lgResendLeft = 60;
-    const lgScope = (el) => el.closest("#screen-login, #screen-login-landscape");
+    const lgScope = (el) => el.closest("#screen-login");
     function lgShow(scope, sel) {
       scope.querySelectorAll(".lg-sheet-overlay").forEach((o) => o.classList.toggle("show", o.classList.contains(sel)));
     }
@@ -8279,7 +8285,7 @@
       showPortraitScreen("screen-bind-phone");
       const sc = document.querySelector("#screen-bind-phone .bindp-scroll"); if (sc) sc.scrollTop = 0;
     }
-    $("#bindp-back")?.addEventListener("click", () => { enterLandscape(); showLandScreen("screen-login-landscape"); });
+    $("#bindp-back")?.addEventListener("click", () => { enterPortrait(); showPortraitScreen("screen-login"); });
     $("#bindp-cc")?.addEventListener("click", () => {
       const menu = $("#bindp-cc-menu");
       if (!menu) return;
@@ -8596,20 +8602,16 @@
     function renderClassWeek() {
       const list = $("#class-week-list");
       if (!list) return;
-      // V1.3.1 (Req2): "caught up" window — this week's batch is finished and the next
-      // batch hasn't unlocked yet. The pointer model always points at the next to-do
-      // lesson, so this waiting state is surfaced via a demo flag. Show the trial card
-      // (if any) + the Explore nudge only.
-      if (demoState.weekCaughtUp) {
-        const trialOnly = profile.trialReportShown ? renderClassTrialCard() : "";
-        list.innerHTML = trialOnly + renderClassExploreCard([], true);
-        list.querySelector("[data-explore-nudge]")?.addEventListener("click", () => { setHubTab("practice"); });
-        list.querySelector("[data-trial]") && list.querySelector("[data-action='trial-report']")?.addEventListener("click", (event) => { event.stopPropagation(); trialReportMode = "trial"; showTrialReport(); });
-        return;
-      }
+      // V1.3.1: this cycle's batch is ALWAYS 3 lesson cards (4 with the first trial),
+      // anchored at the cycle start (pointer − lessons already done this cycle) so it
+      // stays put as the learner completes them — completed cards read "View report",
+      // the active one "Start / Continue", any beyond the remaining budget "Opens soon".
+      // Clamp so a fresh level after a switch just shows its first lessons.
       const sequence = getCurrentLevelCourseSequence();
-      const batchStart = currentBatchStartIndex();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      const curIdx = getCourseSequenceIndex(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
+      const doneThisCycle = profile.weekDoneCount || 0;
+      const batchStart = curIdx === -1 ? 0 : Math.max(0, curIdx - doneThisCycle);
       const weekCourses = Array.from({ length: WEEK_LESSONS }, (_, i) => sequence[batchStart + i]).filter(Boolean);
       const trialCardHtml = profile.trialReportShown ? renderClassTrialCard() : "";
       const weekCardsHtml = weekCourses.map((course, i) => {
@@ -8636,10 +8638,11 @@
             </div>
           </article>`;
       }).join("");
-      // V1.3.1 (Req2): once this week's whole batch is finished and the next batch
-      // hasn't unlocked yet (the member spare-time window), append an "Explore more"
-      // nudge card after the lessons so the wait turns into Explore discovery.
-      list.innerHTML = trialCardHtml + weekCardsHtml + renderClassExploreCard(weekCourses);
+      // V1.3.1 (Req2): once this cycle's budget is spent (all 3 done) the next batch is
+      // still "Opens soon" — append an "Explore more" nudge AFTER the (completed) lesson
+      // cards so the wait turns into Explore discovery. The lesson cards stay visible.
+      const caughtUp = profile.premiumUnlocked && weekBudgetRemaining() === 0;
+      list.innerHTML = trialCardHtml + weekCardsHtml + renderClassExploreCard(weekCourses, caughtUp);
       list.querySelector("[data-explore-nudge]")?.addEventListener("click", () => { setHubTab("practice"); });
       list.querySelectorAll(".class-week-card").forEach((card) => {
         if (card.dataset.trial) {
@@ -8841,8 +8844,9 @@
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
           tag = "";
         } else if (scheduleUnitLock) {
-          // Member, unit not yet reached by the weekly pace: sequential lock (finish previous unit first).
-          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit>Locked</button>`;
+          // Member, unit not yet reached by the weekly schedule: it OPENS as the plan
+          // advances (mirrors the lesson card's "Opens soon"), not a hard "Locked".
+          cta = `<button type="button" class="cm-unit-cta cm-unit-cta--soon" data-soon-unit>Opens soon</button>`;
           tag = "";
         } else {
           // Reachable unit (current level reached, or any lower level) — browse its
@@ -8875,6 +8879,10 @@
       unitsBox.querySelectorAll("[data-locked-unit]").forEach((btn) => {
         btn.addEventListener("click", () => showPayToast(btn.dataset.lockMsg || "Finish the previous unit first"));
       });
+      // Member: units that open later on the weekly schedule ("Opens soon").
+      unitsBox.querySelectorAll("[data-soon-unit]").forEach((btn) => {
+        btn.addEventListener("click", () => showPayToast("This unit isn't open yet"));
+      });
       // Free user: every unit past Unit 1 is a membership lock → Paywall.
       unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
@@ -8891,8 +8899,33 @@
       unitsBox.querySelector("[data-step-down]")?.addEventListener("click", (e) => {
         startDowngrade(e.currentTarget.dataset.stepDown);
       });
-      // ↑ but that level's trial is already consumed → View report (reflects current).
-      unitsBox.querySelector("[data-step-report]")?.addEventListener("click", () => {
+      // ↑ Back up: member returning to a validated level they voluntarily left → direct
+      //   switch (no trial), with the same scheduling-timing confirm as any plan switch.
+      unitsBox.querySelector("[data-step-up-back]")?.addEventListener("click", (e) => {
+        const lvl = e.currentTarget.dataset.stepUpBack;
+        confirmPlanSwitch(lvl, function () { applyMemberDowngrade(lvl); });
+      });
+      // ↑ that level's trial is already consumed → View report.
+      //   • Member who PASSED but didn't confirm → reopen the level-up report so
+      //     "Level up my plan" is still available (confirm the upgrade later).
+      //   • Otherwise → reopen the placement report (reflects current best-fit).
+      unitsBox.querySelector("[data-step-report]")?.addEventListener("click", (e) => {
+        const lvl = e.currentTarget.dataset.stepReport;
+        if (profile.premiumUnlocked && levelUpPassedUnconfirmed.has(lvl)) {
+          levelUpSavedState = {
+            levelId: profile.currentLevelId,
+            unitId: profile.currentUnitId,
+            lessonId: profile.currentLessonId,
+            hasStartedClass: profile.hasStartedClass,
+            trialReportShown: profile.trialReportShown,
+          };
+          levelUpTargetLevelId = lvl;
+          levelUpInProgress = true;
+          demoState.levelUpResult = "up"; // reflect the remembered pass
+          trialReportMode = "levelup";
+          showTrialReport();
+          return;
+        }
         trialReportMode = "trial"; showTrialReport();
       });
     }
@@ -8908,10 +8941,27 @@
     function renderUpgradeBanner(level) {
       const curOrder = levelOrderOf(profile.currentLevelId);
       const selOrder = levelOrderOf(level.id);
+      const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
       if (selOrder !== curOrder + 1) return ""; // only the adjacent higher level
       const upLabel = level.label;
       let row;
-      if (isTrialConsumed(level.id)) {
+      if (profile.premiumUnlocked && selOrder <= placeOrder) {
+        // The learner voluntarily switched DOWN below their validated level; the level
+        // just above is one they already validated → switching back up is a direct plan
+        // re-anchor (no trial), symmetric with the downgrade switch.
+        row = `
+            <div class="cm-stepper-row cm-stepper-row--up">
+              <div class="cm-stepper-copy"><b>Ready to go back up?</b><span>Switch your study plan back to ${upLabel}.</span></div>
+              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up-back="${level.id}">Switch to ${upLabel}</button>
+            </div>`;
+      } else if (profile.premiumUnlocked && levelUpPassedUnconfirmed.has(level.id)) {
+        // Passed the level-up check but hasn't confirmed yet → still one tap away.
+        row = `
+            <div class="cm-stepper-row cm-stepper-row--up">
+              <div class="cm-stepper-copy"><b>You're ready for ${upLabel}!</b><span>Your trial passed — view the report to move your plan up.</span></div>
+              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-report="${level.id}">View report</button>
+            </div>`;
+      } else if (isTrialConsumed(level.id)) {
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
               <div class="cm-stepper-copy"><b>You've already tried ${upLabel}</b><span>That trial is folded into your current plan — take a look back.</span></div>
@@ -8920,7 +8970,7 @@
       } else {
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>Take a ${upLabel} lesson — we'll set the best-fit plan from how it goes.</span></div>
+              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>Try a trial lesson — we'll set your study plan based on how you do.</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up="${level.id}">Try ${upLabel}</button>
             </div>`;
       }
@@ -8928,21 +8978,22 @@
     }
 
     // ↓ Downgrade banner — top of the current-1 level's Learning Path.
-    //   Only while still on the originally-placed level (current == placement); after
-    //   natural progression current-1 is a Completed (review) level, so the banner
-    //   retires. member = direct switch (no trial) · free = easier placement trial
+    //   Shown while at or below the validated placement level (current ≤ placement, i.e.
+    //   the learner hasn't naturally progressed ABOVE placement — where current-1 would
+    //   be a Completed/review level). This keeps the downgrade path available even after
+    //   a voluntary switch-down (so a learner can keep going lower).
+    //   member = direct switch (no trial) · free = easier placement trial
     //   (free also needs that easier trial unconsumed — can't re-take).
     function renderDowngradeBanner(level) {
       const curOrder = levelOrderOf(profile.currentLevelId);
       const selOrder = levelOrderOf(level.id);
       const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
       if (selOrder !== curOrder - 1) return ""; // only the adjacent lower level
-      if (curOrder !== placeOrder) return "";
+      if (curOrder > placeOrder) return ""; // progressed above placement → lower is review
       if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
       const downLabel = level.label;
-      const sub = profile.premiumUnlocked
-        ? `Switch ${getDisplayName() || "your learner"}'s plan down to ${downLabel} right away — no trial needed.`
-        : `Take one ${downLabel} trial to see if it fits better.`;
+      // Unified, minimal sub-copy for both member & free — just says what it does.
+      const sub = `Switch your study plan to ${downLabel}.`;
       const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
       return `<div class="cm-stepper" data-downgrade-banner>
             <div class="cm-stepper-row cm-stepper-row--down">
@@ -8973,6 +9024,10 @@
     let levelUpTargetLevelId = null;
     let levelUpSavedState = null;
     let trialReportMode = "trial"; // "trial" | "levelup"
+    // V1.3.1 (point 1): a member can PASS a level-up check but leave without tapping
+    // "Level up my plan". The pass is remembered here so the banner's "View report"
+    // reopens the level-up report with "Level up my plan" STILL available (confirm later).
+    const levelUpPassedUnconfirmed = new Set();
     function levelByOrder(order) { return (COURSE_LIBRARY[order] && COURSE_LIBRARY[order].id) || null; }
     function levelUpAssessedLevelId() {
       // V1.3.1 口径：升级尝试（Try this level）只判定"够不够上 current+1"——
@@ -9004,6 +9059,7 @@
       const assessedId = firstTrialAssessedLevelId(trialLevelId);
       profile.trialTakenLevelId = trialLevelId;
       markTrialConsumed(trialLevelId); // one-time trial: this level can't be sampled again
+      profile.weekDoneCount = 0; // first placement starts a fresh 7-day cycle
       if (assessedId === trialLevelId) return; // best-fit == trial level → no plan move
       profile.placementLevelId = assessedId;
       profile.currentLevelId = assessedId;
@@ -9046,7 +9102,17 @@
       levelUpSavedState = null;
       trialReportMode = "trial";
     }
+    // Member passed a level-up check but is leaving WITHOUT confirming → remember the
+    // pass so the banner's "View report" can still offer "Level up my plan" later.
+    function noteLevelUpPassedUnconfirmed() {
+      if (!profile.premiumUnlocked || !levelUpTargetLevelId) return;
+      const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
+      if (levelOrderOf(levelUpAssessedLevelId()) > levelOrderOf(curId)) {
+        levelUpPassedUnconfirmed.add(levelUpTargetLevelId);
+      }
+    }
     function keepCurrentLevelUp() {
+      noteLevelUpPassedUnconfirmed();
       restoreLevelUpState();
       enterLandscape();
       showClassHome();
@@ -9064,6 +9130,7 @@
       // Going down moves the placement start down too (the lower level reads as "current",
       // not "completed"); going up keeps placement so skipped middle levels read completed.
       if (goingDown) profile.placementLevelId = targetId;
+      levelUpPassedUnconfirmed.delete(targetId); // confirmed → no longer pending
       levelUpInProgress = false;
       levelUpTargetLevelId = null;
       levelUpSavedState = null;
@@ -9297,9 +9364,10 @@
     function showTrialReport() {
       renderTrialReport();
       if (trialReportMode === "levelup") {
-        // Level-up check stays a LANDSCAPE takeover.
-        enterLandscape();
-        showLandScreen("screen-levelup-report");
+        // V1.3.1: level-up check unified to a PORTRAIT takeover (consistent with the
+        // first-trial / lesson reports).
+        enterPortrait();
+        showPortraitScreen("screen-levelup-report");
         const sh = $("#tr-scroll");
         if (sh) sh.scrollTop = 0;
       } else {
@@ -9329,7 +9397,7 @@
       const sh = $("#lr-scroll");
       if (sh) sh.scrollTop = 0;
     }
-    // Level check report actions (landscape #screen-levelup-report only).
+    // Level check report actions (portrait #screen-levelup-report only).
     $("#btn-trial-start")?.addEventListener("click", () => {
       const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
       const assessedId = levelUpAssessedLevelId();
@@ -9342,13 +9410,15 @@
         openPaywall("screen-class", "level_up");
         return;
       }
-      applyLevelUpChange(assessedId);
+      // Member: confirm the plan change (with scheduling timing) before adopting.
+      confirmPlanSwitch(assessedId, function () { applyLevelUpChange(assessedId); });
     });
     // V1.3.1: explicit decline — keep the current plan (no change), in either direction.
     $("#btn-trial-keep")?.addEventListener("click", () => { keepCurrentLevelUp(); });
     $("#btn-trial-back")?.addEventListener("click", () => {
-      // Backing out of a level-up check cancels it (keeps the current level) and
-      // returns to the Level·Unit map it was launched from.
+      // Backing out of a level-up check keeps the current level. If the trial PASSED,
+      // remember it so "View report" can still confirm the level-up later.
+      noteLevelUpPassedUnconfirmed();
       restoreLevelUpState();
       enterLandscape();
       showCourseMap();
@@ -9877,9 +9947,9 @@
           // IP: Bruce (Dad)
           { id: "pet-p-pie",   name: "Bruce Pie",      emoji: "🥧", ip: "bruce", series: "dessert" },
           { id: "pet-p-santa", name: "Santa Bruce",    emoji: "🎅", ip: "bruce", series: "festival" },
-          // IP: Emma (Sister)
+          // IP: Emma (older sister)
           { id: "pet-b-candy", name: "Emma Candy",     emoji: "🍬", ip: "emma", series: "dessert" },
-          // IP: Bob (Brother)
+          // IP: Bob (younger brother)
           { id: "pet-b-star",  name: "Bob Star",       emoji: "⭐", ip: "bob", series: "zodiac" },
         ],
       };
@@ -10160,7 +10230,14 @@
       const land = $("#device-landscape") || document;
       land.addEventListener("click", (e) => {
         const go = e.target.closest("[data-go-game]");
-        if (go) { e.preventDefault(); goGame(go.dataset.goGame); return; }
+        if (go) {
+          e.preventDefault();
+          // Generic entries (Play-hub mic, Explore › Speaking) are a plain "play_hub"
+          // chat; the class-card entry goes through openDinoChat("class_card").
+          if (go.dataset.goGame === "screen-dino-chat") { dinoChatEntry = "play_hub"; dinoChatCtx = null; }
+          goGame(go.dataset.goGame);
+          return;
+        }
         const back = e.target.closest("[data-game-back]");
         if (back) { e.preventDefault(); gameBack(); return; }
         const hubGo = e.target.closest("[data-hub-go]");
@@ -10188,16 +10265,32 @@
         const box = $("#dchat-suggest");
         if (!box) return;
         const turn = DCHAT_TURNS[dchatIdx % DCHAT_TURNS.length];
-        box.innerHTML = `<button type="button" class="dchat-chip">💬 Try saying: “${turn.you}”</button>`;
+        box.innerHTML = `<button type="button" class="dchat-chip">Try saying: “${turn.you}”</button>`;
         box.querySelector(".dchat-chip")?.addEventListener("click", dinoChatTurn);
+      }
+      // V1.3.1 (Req7): where the immersive chat was opened from. Handed to the dialogue
+      // engine (reflected on the screen as data-chat-source) so it can ground the chat.
+      let dinoChatEntry = "play_hub", dinoChatCtx = null;
+      function openDinoChat(src, ctx) {
+        dinoChatEntry = src || "play_hub";
+        dinoChatCtx = ctx || null;
+        // Chat lives in the landscape game area; ensure we're there (the trial report
+        // that can launch this is a portrait takeover).
+        enterLandscape();
+        goGame("screen-dino-chat");
       }
       function resetDinoChat() {
         dchatIdx = 0;
         dchatBusy = false;
+        const chatScreen = $("#screen-dino-chat");
+        if (chatScreen) chatScreen.setAttribute("data-chat-source", dinoChatEntry);
         const log = $("#dchat-log");
         if (log) log.innerHTML = "";
         const name = profile.name || "friend";
-        dchatBubble("dino", `Hi ${name}! I'm Dino. Hold the big button and talk to me! <button type="button" class="dmsg-play">🔊</button>`);
+        const opening = dinoChatEntry === "class_card"
+          ? `Hi ${name}! Great job finishing today's lesson. Want to chat about what we just learned? Hold the big button and talk to me! <button type="button" class="dmsg-play">🔊</button>`
+          : `Hi ${name}! I'm Dino. Hold the big button and talk to me! <button type="button" class="dmsg-play">🔊</button>`;
+        dchatBubble("dino", opening);
         const hint = $("#dchat-hint");
         if (hint) hint.textContent = "Hold the big button and talk to Dino";
         const mic = $("#dchat-mic");
@@ -10848,7 +10941,9 @@
         if (bagCat === "pet") {
           bagSel = null;
           if (equipBtn) equipBtn.hidden = true;
-          // Collection gallery: only OWNED figures are shown, grouped as IP → series.
+          // Collection album grouped as IP → series: owned figures show their art,
+          // un-obtained ones show the same figure GRAYED OUT + name ("Not yet") as a
+          // collection target (per-series progress + a "Series complete" achievement).
           const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
           if (grid) {
             if (!owned.length) {
@@ -10863,23 +10958,41 @@
               </div>`;
             } else {
               grid.classList.add("bag-ip-mode");
-              // IP tabs: only IPs that have at least one owned figure.
-              const ips = PET_IP_ORDER.filter((ip) => owned.some((p) => p.ip === ip));
+              // Collection album: show ALL IPs (fixed family order) that have catalog
+              // figures. Under the selected IP show ALL its series with EVERY figure —
+              // owned ones in full colour, un-obtained ones grayed out (+ name) — so the
+              // collection goal + per-series progress (owned / total) are always visible.
+              const ips = PET_IP_ORDER.filter((ip) => SHOP_ITEMS.pet.some((p) => p.ip === ip));
               if (!ips.includes(bagPetIp)) bagPetIp = ips[0];
               const ipTabs = ips.map((ip) => {
-                const cnt = owned.filter((p) => p.ip === ip).length;
+                const total = SHOP_ITEMS.pet.filter((p) => p.ip === ip).length;
+                const cnt = SHOP_ITEMS.pet.filter((p) => p.ip === ip && state.owned.has(p.id)).length;
                 return `<button type="button" class="bag-ip-tab ${ip === bagPetIp ? "on" : ""}" data-ip="${ip}">
                   <span class="bag-ip-emoji">${PET_IP_EMOJI[ip] || "🦖"}</span>
                   <span class="bag-ip-name">${PET_IP_LABEL[ip] || ip}</span>
-                  <span class="bag-ip-count">${cnt}</span>
+                  <span class="bag-ip-count">${cnt}/${total}</span>
                 </button>`;
               }).join("");
-              // Under the selected IP, group owned figures by series (only series with owned).
-              const ipOwned = owned.filter((p) => p.ip === bagPetIp);
-              const seriesList = PET_SERIES_ORDER.filter((s) => ipOwned.some((p) => p.series === s));
+              // Under the selected IP, group by series (all series defined for this IP).
+              const ipFigs = SHOP_ITEMS.pet.filter((p) => p.ip === bagPetIp);
+              const seriesList = PET_SERIES_ORDER.filter((s) => ipFigs.some((p) => p.series === s));
               const groups = seriesList.map((s) => {
-                const figs = ipOwned.filter((p) => p.series === s);
+                const figs = ipFigs.filter((p) => p.series === s);
+                const ownedN = figs.filter((p) => state.owned.has(p.id)).length;
+                const complete = ownedN === figs.length;
                 const cards = figs.map((p) => {
+                  if (!state.owned.has(p.id)) {
+                    // Un-obtained: show the figure GRAYED OUT + its real name, as a clear
+                    // collection target ("Not yet"). Revealing (not hiding) drives collection.
+                    const gart = p.img
+                      ? `<img class="sc-img" src="${p.img}" alt="${p.name}" decoding="async" />`
+                      : `<span class="sc-emoji">${p.emoji}</span>`;
+                    return `<div class="shop-card pet-collect pet-locked">
+                      <span class="shop-card-art">${gart}</span>
+                      <span class="shop-card-name">${p.name}</span>
+                      <span class="shop-card-price">Not yet</span>
+                    </div>`;
+                  }
                   const n = state.petCounts[p.id] || 1;
                   const art = p.img
                     ? `<img class="sc-img" src="${p.img}" alt="${p.name}" decoding="async" />`
@@ -10890,10 +11003,10 @@
                     <span class="shop-card-price">Collected</span>
                   </div>`;
                 }).join("");
-                return `<div class="bag-series">
+                return `<div class="bag-series ${complete ? "is-complete" : ""}">
                   <div class="bag-series-head">
                     <span class="bag-series-name">${PET_SERIES_LABEL[s] || s}</span>
-                    <span class="bag-series-count">${figs.length}</span>
+                    <span class="bag-series-count">${complete ? "✨ Series complete" : `${ownedN}/${figs.length}`}</span>
                   </div>
                   <div class="bag-series-grid">${cards}</div>
                 </div>`;
@@ -10987,7 +11100,7 @@
         renderBackpack();
         showLandScreen("screen-backpack");
       }
-      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, grantInclassBonus, openBackpackPets };
+      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, grantInclassBonus, openBackpackPets, openDinoChat };
       syncHud();
       renderPkRanks();
     })();
@@ -11461,12 +11574,24 @@
     // V1.3.0: paywall exposes WEEKLY + MONTHLY + ANNUAL (3 tiers).
     // Annual is the default selection (top, highlighted) and shows a discount
     // badge; benefits are identical across tiers — only the billing cycle differs.
-    // origPrice = 划掉的原价，实际由后台配置（默认公式：真实价格 + X）。此处为演示值。
+    // 划掉的原价 = 真实价格 × X（X 后台配置）。用乘数而非「+X」：各地区货币不同，
+    // 固定加数在不同币种下不通用，按比例缩放才跨币种一致。此处为演示值。
     // perDay = 折算到「天」的价格（真实价 ÷ 周期天数），作为卡片主视觉。
+    const ORIG_PRICE_MULTIPLIER = 1.4; // X：划线原价相对真实价格的倍数（后台可配）
+    // 由真实价格按倍数算出划线原价，保留原字符串的货币符号与小数位（跨币种通用）。
+    function strikePrice(priceStr) {
+      const m = String(priceStr).match(/([^\d.,]*)([\d.,]+)([^\d.,]*)/);
+      if (!m) return "";
+      const num = parseFloat(m[2].replace(/,/g, ""));
+      if (!isFinite(num)) return "";
+      const orig = num * ORIG_PRICE_MULTIPLIER;
+      const val = /[.,]\d/.test(m[2]) ? orig.toFixed(2) : String(Math.round(orig));
+      return `${m[1]}${val}${m[3]}`;
+    }
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", origPrice: "$329.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perDay: "≈ $0.63/day", badge: "Recommended", hero: true },
-      { id: "monthly", name: "Monthly", price: "$37.99", origPrice: "$49.99", period: "/ month", per: "$37.99/month · billed monthly", perDay: "≈ $1.27/day" },
-      { id: "weekly", name: "Weekly", price: "$10.99", origPrice: "$14.99", period: "/ week", per: "$10.99/week · billed weekly", perDay: "≈ $1.57/day" },
+      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perDay: "≈ $0.63/day", badge: "Recommended", hero: true },
+      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly", perDay: "≈ $1.27/day" },
+      { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly", perDay: "≈ $1.57/day" },
     ];
 
     function getSelectedPlan() {
@@ -11530,7 +11655,7 @@
           ${plan.badge ? `<span class="pwpt-badge">${plan.badge}</span>` : ""}
           <span class="pwpt-plan-l">
             <span class="pwpt-plan-name">${plan.name}</span>
-            <span class="pwpt-plan-price">${plan.origPrice ? `<s class="pwpt-plan-orig">${plan.origPrice}</s> ` : ""}${plan.price} ${plan.period}</span>
+            <span class="pwpt-plan-price">${strikePrice(plan.price) ? `<s class="pwpt-plan-orig">${strikePrice(plan.price)}</s> ` : ""}${plan.price} ${plan.period}</span>
           </span>
           <span class="pwpt-plan-week">${plan.perDay}</span>
         </div>`).join("");
@@ -11849,19 +11974,70 @@
     openClassroomDemo("placement-trial");
   }
 
-  function startDowngrade(targetLevelId) {
+  // V1.3.1: confirm dialog for a plan switch (member downgrade + member level-up adopt).
+  // States clearly WHEN the new level gets scheduled, per the weekly budget: budget left
+  // → this week right away; budget spent → next week. Member-only (free switches go
+  // through the trial → Paywall path, which has no scheduling promise).
+  function confirmPlanSwitch(targetLevelId, onConfirm) {
     const label = levelLabelOf(targetLevelId);
+    const budget = weekBudgetRemaining();
+    const done = profile.weekDoneCount || 0;
+    const timing = budget > 0
+      ? `You've done ${done} of this week's ${WEEK_LESSONS} lessons — we'll schedule your ${label} ${budget === 1 ? "lesson" : "lessons"} right away (${budget} left this week).`
+      : `You've finished this week's ${WEEK_LESSONS} lessons — your ${label} plan starts next week.`;
+    let ov = document.getElementById("switch-confirm-overlay");
+    if (!ov) {
+      ov = document.createElement("div");
+      ov.className = "dl-overlay";
+      ov.id = "switch-confirm-overlay";
+      ov.innerHTML = `
+        <div class="dl-box">
+          <h3 id="swc-title">Switch your plan?</h3>
+          <p id="swc-body"></p>
+          <div class="dl-actions">
+            <button type="button" class="dl-cancel" id="swc-cancel">Cancel</button>
+            <button type="button" id="swc-ok">Confirm</button>
+          </div>
+        </div>`;
+      document.body.appendChild(ov);
+      ov.addEventListener("click", (e) => { if (e.target === ov || e.target.id === "swc-cancel") ov.classList.remove("show"); });
+    }
+    ov.querySelector("#swc-title").textContent = `Switch your plan to ${label}?`;
+    ov.querySelector("#swc-body").textContent = timing;
+    // Rebind Confirm cleanly (drop any previous target's listener).
+    const okBtn = ov.querySelector("#swc-ok");
+    const fresh = okBtn.cloneNode(true);
+    okBtn.parentNode.replaceChild(fresh, okBtn);
+    fresh.addEventListener("click", () => { ov.classList.remove("show"); if (typeof onConfirm === "function") onConfirm(); });
+    ov.classList.add("show");
+  }
+
+  // V1.3.1: member plan switch between VALIDATED levels — used by BOTH the downgrade
+  // banner (current-1) and the "switch back up" branch of the upgrade banner (a level
+  // ≤ placement that the learner already validated but voluntarily left). Pure plan
+  // re-anchor: NO trial, NO 定级. placementLevelId is the validated CEILING and is left
+  // UNTOUCHED, so after switching down the learner can always switch back up to it; the
+  // level left behind is NOT marked trial-consumed — it stays a real switchable level.
+  // weekDoneCount PERSISTS (a switch doesn't refill the weekly budget).
+  function applyMemberDowngrade(targetLevelId) {
+    const label = levelLabelOf(targetLevelId);
+    profile.currentLevelId = targetLevelId;
+    profile.currentUnitId = "unit-1";
+    profile.currentLessonId = "lesson-1";
+    profile.level = levelCefrLabel(targetLevelId);
+    profile.hasStartedClass = true; // not a new trial — keep the existing trial card
+    if (typeof courseMapLevelId !== "undefined") courseMapLevelId = targetLevelId;
+    refreshUnlockState();
+    if (activeLandScreen() === "screen-course-map") renderCourseMap();
+    showPayToast(weekBudgetRemaining() === 0
+      ? `Switched to ${label} — new lessons open next week`
+      : `Switched to ${label} — plan updated`);
+  }
+
+  function startDowngrade(targetLevelId) {
     if (profile.premiumUnlocked) {
-      profile.placementLevelId = targetLevelId;
-      profile.currentLevelId = targetLevelId;
-      profile.currentUnitId = "unit-1";
-      profile.currentLessonId = "lesson-1";
-      profile.level = levelCefrLabel(targetLevelId);
-      profile.hasStartedClass = true; // not a new trial — keep the existing trial card
-      if (typeof courseMapLevelId !== "undefined") courseMapLevelId = targetLevelId;
-      refreshUnlockState();
-      if (activeLandScreen() === "screen-course-map") renderCourseMap();
-      showPayToast(`Switched to ${label} — plan updated`);
+      // Member: confirm (with scheduling timing) → direct switch, no trial.
+      confirmPlanSwitch(targetLevelId, function () { applyMemberDowngrade(targetLevelId); });
       return;
     }
     // Free: run this level's trial as a placement trial → portrait trial report →
@@ -11908,11 +12084,9 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id === "screen-levelup-report") return { label: "定级报告（升级尝试）", keys: ["levelUpResult"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
-        if (id === "screen-login-landscape") return { label: "登录", keys: ["kakaoPhoneBound"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
         return { label: "App 内", keys: ["membership"] };
@@ -11925,6 +12099,7 @@
       if (pid === "screen-paywall-pt")   return { label: "Paywall（竖屏）", keys: ["membership"] };
       if (pid === "screen-study-plan")   return { label: "学习计划",   keys: ["membership", "startLevel"] };
       if (pid === "screen-trial-report") return { label: "体验课报告", keys: ["membership", "startLevel", "trialResult"] };
+      if (pid === "screen-levelup-report") return { label: "定级报告（升级尝试）", keys: ["levelUpResult"] };
       if (pid === "screen-lesson-report") return { label: "正价课报告", keys: ["startLevel"] };
       return { label: "Onboarding", keys: [] };
     },
@@ -11970,17 +12145,28 @@
         apply: function (v) { demoState.capsuleOutcome = v; } },
     ],
     jumps: [
-      { label: "Class 首页",  run: function () { demoState.weekCaughtUp = false; enterLandscape(); showClassHome(); } },
+      { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
       { label: "课程列表",    run: function () { enterLandscape(); showAllCourses(undefined, "class"); } },
       { label: "Level·Unit", run: function () { enterLandscape(); showCourseMap(); } },
+      { label: "下一周期（解锁下批）", run: function () {
+          // Demo: roll the 7-day cycle → refill this cycle's 3-lesson budget so the
+          // next batch opens (Opens soon → startable). Pointer already sits at the
+          // next to-do lesson from the last completion.
+          profile.weekDoneCount = 0;
+          refreshUnlockState();
+          enterLandscape();
+          if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
+        } },
       { label: "完成当前 Level", run: function () {
           // Demo Req: finishing the current level promotes the learner's 定级 to the
           // next Level. Jump the pointer to this level's last lesson, then run the
-          // natural-progression roll (shows the toast + advances current level).
+          // natural-progression roll (shows the toast + advances current level). Reset
+          // the weekly budget so the fresh next level isn't stuck on "Opens soon".
           var lv = getCurrentLevel();
           var lastUnit = lv.units[lv.units.length - 1];
           setCurrentCourse(lv.id, lastUnit.id, lastUnit.lessons[lastUnit.lessons.length - 1].id);
           advanceAfterFormalLesson();
+          profile.weekDoneCount = 0;
           enterLandscape();
           if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
         } },
@@ -11997,31 +12183,29 @@
     jumps131: [
       { label: "竖屏 Paywall", run: function () { openPaywall("screen-class", "membership_entry"); } },
       { label: "Explore 引导卡（会员·本周已上完）", run: function () {
-          // Req2: member who finished this week's batch and is waiting for the next
-          // unlock → Class home shows the "Explore more" nudge card.
+          // Req2: member who finished this cycle's 3 lessons and is waiting for the next
+          // batch → Class home shows the 3 completed cards + the "Explore more" nudge.
+          // Advance the pointer 3 lessons into the level and spend the budget (3/3).
           profile.premiumUnlocked = true;
           if (!profile.nextBillingDate) profile.nextBillingDate = "Jul 8, 2026";
           profile.trialReportShown = true;
-          demoState.weekCaughtUp = true;
+          profile.placementLevelId = "level-2"; profile.currentLevelId = "level-2";
+          profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-4";
+          profile.level = levelCefrLabel("level-2");
+          profile.weekDoneCount = WEEK_LESSONS; // this cycle's 3 lessons all done
           refreshUnlockState();
           enterLandscape(); showClassHome();
         } },
-      { label: "降级·会员直切（L1）", run: function () {
-          profile.premiumUnlocked = true;
-          if (!profile.nextBillingDate) profile.nextBillingDate = "Jul 8, 2026";
+      { label: "升 / 降级横幅（上方切会员·等级查看）", run: function () {
+          // One entry for the whole 升/降级 state: land on the Level·Unit map at the
+          // placement level. Use the top controls (会员状态 / 定级起始 Level) + tap the
+          // level chips to view the DOWN banner on current-1 or the UP banner on current+1
+          // (free vs member, consumed vs not, all reachable from here).
           profile.placementLevelId = "level-2"; profile.currentLevelId = "level-2";
           profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-1";
           profile.level = levelCefrLabel("level-2");
           refreshUnlockState(); enterLandscape(); showCourseMap();
-          courseMapLevelId = "level-1"; renderCourseMap(); // select the lower level → banner shows
-        } },
-      { label: "降级·免费试更简单（L1）", run: function () {
-          profile.premiumUnlocked = false;
-          profile.placementLevelId = "level-2"; profile.currentLevelId = "level-2";
-          profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-1";
-          profile.level = levelCefrLabel("level-2");
-          refreshUnlockState(); enterLandscape(); showCourseMap();
-          courseMapLevelId = "level-1"; renderCourseMap(); // select the lower level → banner shows
+          courseMapLevelId = "level-1"; renderCourseMap(); // 选相邻低档→降级横幅；点 L3 看升级横幅
         } },
       { label: "Kakao 登录·手机号绑定", run: function () { demoState.kakaoPhoneBound = false; openBindPhone("kakao"); } },
       { label: "背包·手办 IP/系列", run: function () {
