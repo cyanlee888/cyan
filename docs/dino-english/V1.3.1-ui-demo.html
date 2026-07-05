@@ -5203,6 +5203,8 @@
     /* Levels skipped at placement (below the start level) read as "not started". */
     .cm-level-state--notstarted { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); }
     .cm-level.is-selected .cm-level-state--notstarted { background: rgba(20,58,94,0.08); color: #8497a8; }
+    .cm-level-state--done { background: rgba(29,122,77,0.18); color: #d6f5e4; }
+    .cm-level.is-selected .cm-level-state--done { background: rgba(29,122,77,0.14); color: #1d7a4d; }
     .cm-unit-tag { flex-shrink: 0; font-size: 0.66rem; font-weight: 800; border-radius: 999px; padding: 4px 10px; }
     .cm-unit-tag--current { background: #ffe9bd; color: #b06d12; }
     .cm-unit-tag--done { background: var(--forest-mist); color: var(--forest-deep); }
@@ -6328,9 +6330,9 @@
     .pwpt-plan.is-selected{border-color:#1d9e63;background:#eefaf2;box-shadow:0 8px 18px rgba(29,92,63,.16)}
     .pwpt-plan-l{display:flex;flex-direction:column;gap:3px;min-width:0}
     .pwpt-plan-name{font-size:.98rem;font-weight:800;color:#16241c}
-    .pwpt-plan-price{font-size:.78rem;font-weight:600;color:#8a958d}
-    .pwpt-plan-orig{color:#9aa5a0;text-decoration:line-through;font-weight:600;margin-right:2px}
-    .pwpt-plan-week{flex:0 0 auto;font-size:1.34rem;font-weight:900;color:#1d7a4d;line-height:1.05;white-space:nowrap;text-align:right}
+    .pwpt-plan-price{font-size:1.04rem;font-weight:800;color:#16241c}
+    .pwpt-plan-orig{font-size:.82rem;color:#9aa5a0;text-decoration:line-through;font-weight:600;margin-right:2px}
+    .pwpt-plan-week{flex:0 0 auto;font-size:.82rem;font-weight:700;color:#8a958d;line-height:1.05;white-space:nowrap;text-align:right}
     .pwpt-badge{position:absolute;top:-9px;left:14px;white-space:nowrap;background:#d9641e;color:#fff;font-size:.6rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px}
     .pwpt-legal{text-align:center;margin:8px auto 0;font-size:.72rem;color:#8a958d}
     .pwpt-legal a{color:#6b7a72}
@@ -8773,13 +8775,14 @@
       if (!levelsBox) return;
       levelsBox.innerHTML = COURSE_LIBRARY.map((level, li) => {
         const status = getLevelStatus(level.id);
-        // Minimal map: only the current level is active ("You are here"); every other
-        // level (higher OR lower) reads as one muted "Locked". Content ships weekly and
-        // study is anchored at the current level, so past levels aren't re-browsed and
-        // future levels aren't ready — no per-level Completed / progress labels.
-        const isCurLv = status === "current";
-        const stateLabel = isCurLv ? "You are here" : "Locked";
-        const stateCls = isCurLv ? "current" : "notstarted";
+        // V1.3.1 level-card status (3 states): current → "You are here"; a lower level
+        // the learner genuinely finished & progressed past → "Completed"; everything
+        // else (higher/not-yet-unlocked, or a skipped lower level never studied) →
+        // "Locked". No "Recommended" — up/down guidance stays on the current±1 banners.
+        // "Completed" tags the CARD only; drilling into that lower level still shows the
+        // minimal locked-unit list below (content ships weekly, past isn't re-browsed).
+        const stateLabel = status === "current" ? "You are here" : status === "done" ? "Completed" : "Locked";
+        const stateCls = status === "current" ? "current" : status === "done" ? "done" : "notstarted";
         return `
           <button type="button" class="cm-level ${level.id === courseMapLevelId ? "is-selected" : ""} ${status === "current" ? "is-current" : ""}" data-level-id="${level.id}" role="tab" aria-selected="${level.id === courseMapLevelId}">
             <b>${level.label}</b>
@@ -8992,8 +8995,12 @@
       if (curOrder > placeOrder) return ""; // progressed above placement → lower is review
       if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
       const downLabel = level.label;
-      // Unified, minimal sub-copy for both member & free — just says what it does.
-      const sub = `Switch your study plan to ${downLabel}.`;
+      // Identity-aware sub-copy: members have a running plan to switch DOWN; free users
+      // have no running plan, so their downgrade reads as "try the easier lesson"
+      // (→ right-fit report → Paywall), not "switch your study plan".
+      const sub = profile.premiumUnlocked
+        ? `Switch your study plan to ${downLabel}.`
+        : `Try the ${downLabel} lesson — see if it fits better.`;
       const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
       return `<div class="cm-stepper" data-downgrade-banner>
             <div class="cm-stepper-row cm-stepper-row--down">
@@ -11576,7 +11583,8 @@
     // badge; benefits are identical across tiers — only the billing cycle differs.
     // 划掉的原价 = 真实价格 × X（X 后台配置）。用乘数而非「+X」：各地区货币不同，
     // 固定加数在不同币种下不通用，按比例缩放才跨币种一致。此处为演示值。
-    // perDay = 折算到「天」的价格（真实价 ÷ 周期天数），作为卡片主视觉。
+    // perDay = 折算到「天」的价格（真实价 ÷ 周期天数），仅作小字辅助参考；
+    // 主视觉是真实价格 + 计费周期（与 App Store 实际扣费口径一致，避免审核风险）。
     const ORIG_PRICE_MULTIPLIER = 1.4; // X：划线原价相对真实价格的倍数（后台可配）
     // 由真实价格按倍数算出划线原价，保留原字符串的货币符号与小数位（跨币种通用）。
     function strikePrice(priceStr) {
@@ -11589,7 +11597,7 @@
       return `${m[1]}${val}${m[3]}`;
     }
     const PLANS = [
-      { id: "annual", name: "Annual", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perDay: "≈ $0.63/day", badge: "Recommended", hero: true },
+      { id: "annual", name: "Yearly", price: "$229.99", period: "/ year", per: "≈ $19.17/month · billed yearly", perDay: "≈ $0.63/day", badge: "Recommended", hero: true },
       { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "$37.99/month · billed monthly", perDay: "≈ $1.27/day" },
       { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly", perDay: "≈ $1.57/day" },
     ];
