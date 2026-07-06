@@ -431,7 +431,7 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
     <a href="#n610" data-zh="<b>6/10</b>MVP · V1.1.0"><b>6/10</b>MVP · V1.1.0</a>
     <a href="#n621" data-zh="<b>6/24</b>MVP · V1.2.0"><b>6/24</b>MVP · V1.2.0</a>
     <a href="#n630" class="core" data-zh="<b>6/30</b>MVP 上线 · V1.3.0"><b>6/30</b>MVP launch · V1.3.0</a>
-    <a href="#n131" data-zh="<b>V1.3.1</b>归因与打磨"><b>V1.3.1</b>Attribution</a>
+    <a href="#n131" data-zh="<b>V1.3.1</b>投放归因"><b>V1.3.1</b>Attribution</a>
     <a href="#n132" data-zh="<b>V1.3.2</b>功能性迭代"><b>V1.3.2</b>Iteration</a>
     <a href="#n140" data-zh="<b>V1.4.0</b>体验换代"><b>V1.4.0</b>Upgrade</a>
   </div>
@@ -610,22 +610,16 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.3.1</div>
-    <div class="node-sub" data-zh='归因与打磨<br>7 月初'>Attribution & polish<br>Early Jul</div>
+    <div class="node-sub" data-zh='投放接入<br>7 月初'>Marketing integration<br>Early Jul</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='埋点归因 + 体验打磨<span class="tag">迭代版</span>'>Analytics attribution + polish<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>V1.3.0 上线后的一次轻量迭代：接入 AppsFlyer 并补齐埋点，打通投放归因与 CAC 分析；同时给体验课 songtime 环节的老师加上舞动动作，让课堂更生动。'><span class="lab">User story</span>A lightweight iteration after V1.3.0 ships: integrate AppsFlyer and fill in analytics to unlock attribution and CAC analysis; and add a dancing animation to the teacher during the trial-lesson song time to make the class livelier.</div>
+    <div class="node-title" data-zh='投放归因接入<span class="tag">迭代版</span>'>Marketing attribution<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>V1.3.0 上线后的一次轻量迭代：接入 AppsFlyer（AF）并补齐埋点，打通投放归因与 CAC 分析，为后续买量与增长打好数据底座。'><span class="lab">User story</span>A lightweight iteration after V1.3.0 ships: integrate AppsFlyer (AF) and fill in analytics to unlock attribution and CAC analysis, laying the data foundation for user acquisition and growth.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='需求 · 数据与增长'>Requirements · data & growth</h4>
+        <h4 data-zh='需求 · 投放与增长'>Requirements · marketing & growth</h4>
         <ul>
-          <li data-zh='<b>AppsFlyer 接入 + 埋点补充</b><span class="p0">P0</span>：打通投放归因与 CAC 分析'><b>AppsFlyer integration + analytics fill-in</b><span class="p0">P0</span>: unlocks attribution & CAC analysis</li>
-        </ul>
-      </div>
-      <div class="block">
-        <h4 data-zh='需求 · 课堂内容'>Requirements · class content</h4>
-        <ul>
-          <li data-zh='<b>体验课教师舞动动作</b><span class="p1">P1</span>：songtime 教学环节老师增加舞动动作'><b>Teacher dancing animation</b><span class="p1">P1</span>: the teacher dances during the trial-lesson song time</li>
+          <li data-zh='<b>AppsFlyer（AF）接入 + 埋点补充</b><span class="p0">P0</span>：打通投放归因与 CAC 分析'><b>AppsFlyer (AF) integration + analytics fill-in</b><span class="p0">P0</span>: unlocks attribution & CAC analysis</li>
         </ul>
       </div>
     </div>
@@ -641,46 +635,54 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='功能性迭代 · 多线补齐<span class="tag">迭代版</span>'>Functional iteration · multi-track<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>在 V1.3.0 之上做一次多线功能迭代：转化与养成侧上竖屏支付、课程升降级、手办 IP / 系列分层、完课引导（去 Explore / 和 Dino 聊）；账号侧补齐 Kakao / Facebook 登录与 Kakao 手机号绑定，并完成 Dino AI → Dino Daily 改名；课中教学集中打磨——全流程监课、体验课 prompt 与兜底逻辑、测评 / ASR 与 filler words、音画同步与音量音色统一；对话工程新增引导体验课与多入口对话设计，管台支持扫码进课调试。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 需求文档 ↗</a>。'><span class="lab">User story</span>A multi-track functional iteration on top of V1.3.0. Conversion & retention: a vertical paywall, course level up/down, backpack figures by IP/series, and end-of-lesson nudges (to Explore / chat with Dino). Account: Kakao / Facebook login with Kakao phone binding, plus the Dino AI → Dino Daily rename. In-class teaching gets a focused polish — full-flow lesson monitoring, trial-lesson prompt & fallback logic, assessment / ASR & filler words, audio-visual sync and unified volume/voice. The Dino agent adds trial-lesson guidance and multi-entry conversation design, and the console supports scan-to-enter-class for debugging. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 PRD ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>在 V1.3.0 之上做一次多线功能迭代：会员支付上竖屏 Paywall，Class 侧优化课程升降级与完课引导；账号侧补齐 Kakao / Facebook 登录与 Kakao 手机号绑定、手机号登录新增马来西亚 / 印尼，并完成 Dino AI → Dino Daily 改名；课中教学打磨全流程监课、数字人口型（张嘴与声音同步）、Filler words 与测评机制；首页 Dino 引导未上体验课用户去上课、商城手办按人物 / 系列分层；管理后台上线管台一期、课程视频生产 CMS 与扫码进课。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 需求文档 ↗</a>。'><span class="lab">User story</span>A multi-track functional iteration on top of V1.3.0. Membership & Class: a vertical Paywall, refined level up/down, and end-of-lesson nudges. Account: Kakao / Facebook login with Kakao phone binding, phone login for Malaysia / Indonesia, plus the Dino AI → Dino Daily rename. In-class teaching gets a polish — full-flow monitoring, digital-human lip sync (mouth-and-sound sync), filler words and the assessment mechanism. The home Dino guides users who haven't taken the trial lesson, and backpack figures are tiered by character / series; the admin side ships console phase 1, the lesson-video CMS, and scan-to-enter-class. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 PRD ↗</a>.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='需求 · App 转化与养成'>Requirements · App growth</h4>
+        <h4 data-zh='需求 · 会员支付 · 转化'>Requirements · membership & conversion</h4>
         <ul>
-          <li data-zh='<b>课程升降级逻辑</b><span class="p1">P1</span>：定级安全阀纠偏——免费偏高可下探、会员升要证明 · 降可直切'><b>Course level up/down</b><span class="p1">P1</span>: a placement safety valve — free users can step down, members prove up / switch down directly</li>
-          <li data-zh='<b>支付页竖屏改版</b><span class="p1">P1</span>：Paywall 改竖屏单栏，承接 onboarding / 报告竖屏链路'><b>Vertical paywall redesign</b><span class="p1">P1</span>: single-column vertical Paywall matching the onboarding / report flow</li>
-          <li data-zh='<b>背包手办 IP / 系列分层</b><span class="p1">P1</span>：按 IP → 系列 → 手办三层收集，未获得置灰 + 系列集齐成就'><b>Backpack figures by IP / series</b><span class="p1">P1</span>: collect by IP → series → figure, greyed-out targets + series-complete achievement</li>
-          <li data-zh='<b>完课引导：去 Explore / 和 Dino 聊</b><span class="p2">P2</span>：本周完课空窗导向 Explore，完课课卡跳 Dino 对话'><b>End-of-lesson nudges: Explore / chat with Dino</b><span class="p2">P2</span>: steer the post-lesson gap to Explore; completed cards jump into Dino chat</li>
+          <li data-zh='<b>支付页竖屏改版</b><span class="p0">P0</span>：Paywall 改竖屏单栏，承接 onboarding / 报告竖屏链路'><b>Vertical paywall redesign</b><span class="p0">P0</span>: single-column vertical Paywall matching the onboarding / report flow</li>
+          <li data-zh='<b>课程升降级逻辑优化</b><span class="p1">P1</span>：定级安全阀纠偏——免费偏高可下探、会员升要证明 · 降可直切'><b>Refined course level up/down</b><span class="p1">P1</span>: a placement safety valve — free users can step down, members prove up / switch down directly</li>
+          <li data-zh='<b>Class 完课引导</b><span class="p2">P2</span>：一周完课去 Explore、每课完课去 Dino'><b>Class end-of-lesson nudges</b><span class="p2">P2</span>: weekly completion → Explore, per-lesson completion → Dino</li>
         </ul>
       </div>
       <div class="block">
         <h4 data-zh='需求 · 账号 · 品牌'>Requirements · account & brand</h4>
         <ul>
           <li data-zh='<b>Kakao / Facebook 登录 + Kakao 手机号绑定</b><span class="p0">P0</span>'><b>Kakao / Facebook login + Kakao phone binding</b><span class="p0">P0</span></li>
+          <li data-zh='<b>手机号登录新增马来西亚 / 印尼</b><span class="p0">P0</span>'><b>Phone login adds Malaysia / Indonesia</b><span class="p0">P0</span></li>
           <li data-zh='<b>品牌改名 Dino AI → Dino Daily</b><span class="p0">P0</span>'><b>Rebrand Dino AI → Dino Daily</b><span class="p0">P0</span></li>
-          <li data-zh='<b>V1.3.0 遗留 bug 及优化处理</b><span class="p0">P0</span>'><b>V1.3.0 leftover bug fixes & optimizations</b><span class="p0">P0</span></li>
         </ul>
       </div>
       <div class="block">
         <h4 data-zh='需求 · 课中教学体验'>Requirements · in-class teaching</h4>
         <ul>
           <li data-zh='<b>上课全流程监课功能</b><span class="p0">P0</span>：进出教室全流程录制，配合埋点排查流失'><b>Full-flow lesson monitoring</b><span class="p0">P0</span>: record the whole classroom flow to trace drop-off with analytics</li>
-          <li data-zh='<b>体验课 prompt 优化 + 兜底逻辑优化</b><span class="p0">P0</span>：逐字稿改为约束轮次；对话 + 游戏练习兜底'><b>Trial-lesson prompt + fallback optimization</b><span class="p0">P0</span>: scripts become turn constraints; conversation + game fallbacks</li>
-          <li data-zh='<b>测评 / ASR + Filler words 机制优化</b><span class="p0">P0</span>：收音超时与 filler words 表现打磨'><b>Assessment / ASR + filler-words tuning</b><span class="p0">P0</span>: fix ASR timeouts and filler-word behavior</li>
-          <li data-zh='<b>音画同步 + 音量 / 音色统一</b><span class="p0">P0</span>：张嘴才出声、口型-语音-动作对齐；课中课外全场景音量与音色一致'><b>A/V sync + unified volume / voice</b><span class="p0">P0</span>: sound only when the mouth moves; consistent volume & voice across all scenes</li>
+          <li data-zh='<b>数字人口型优化</b><span class="p0">P0</span>：张嘴与声音同步'><b>Digital-human lip-sync</b><span class="p0">P0</span>: mouth movements synced with sound</li>
+          <li data-zh='<b>Filler words 机制优化</b><span class="p0">P0</span>'><b>Filler-words mechanism tuning</b><span class="p0">P0</span></li>
+          <li data-zh='<b>测评体验与机制优化</b><span class="p1">P1</span>'><b>Assessment experience & mechanism tuning</b><span class="p1">P1</span></li>
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · 对话工程 · 平台工具'>Requirements · Dino agent & tooling</h4>
+        <h4 data-zh='需求 · 首页 · 游戏内容'>Requirements · home & game content</h4>
         <ul>
-          <li data-zh='<b>首页对话工程：引导体验课</b><span class="p0">P0</span>：首页对话新增引导进体验课'><b>Home-page agent: guide to trial lesson</b><span class="p0">P0</span>: the home chat now guides users into a trial lesson</li>
-          <li data-zh='<b>对话工程：三种定位 + Class 入口</b><span class="p0">P0</span>：新增三种定位与 Class 入口的新对话设计'><b>Agent: three roles + Class entry</b><span class="p0">P0</span>: new conversation design for three positions and the Class entry</li>
+          <li data-zh='<b>首页 Dino 引导去上体验课</b><span class="p1">P1</span>：引导未完成体验课的用户去上课'><b>Home Dino guides to trial lesson</b><span class="p1">P1</span>: nudges users who haven't finished the trial lesson</li>
+          <li data-zh='<b>商城手办增加人物 / 系列 Tab</b><span class="p1">P1</span>'><b>Shop figures gain character / series tabs</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Play 游戏模块题目资源变更</b><span class="p1">P1</span>'><b>Play game question-resource update</b><span class="p1">P1</span></li>
+          <li data-zh='<b>手办及剩余皮肤资源更新</b><span class="p2">P2</span>'><b>Figure & remaining skin resources refresh</b><span class="p2">P2</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · 管理后台 / 平台'>Requirements · admin console / platform</h4>
+        <ul>
+          <li data-zh='<b>Dino English 管台一期</b><span class="p0">P0</span>：查询用户与订单信息'><b>Dino English console phase 1</b><span class="p0">P0</span>: look up user & order info</li>
+          <li data-zh='<b>课程视频生产平台（CMS 管台）</b><span class="p0">P0</span>'><b>Lesson-video production platform (CMS)</b><span class="p0">P0</span></li>
           <li data-zh='<b>管台扫码进课</b><span class="p0">P0</span>：管台点某节课生成二维码，扫码直达课堂调试'><b>Console scan-to-enter-class</b><span class="p0">P0</span>: generate a QR from the console to jump straight into a lesson for debugging</li>
         </ul>
       </div>
     </div>
     <div class="minor-note">
-      <span class="minor-lab" data-zh='体验优化 · 随版修复'>UX fixes · shipped alongside</span>
-      <span data-zh='手机号登录去前导 0（韩国等本地号自动去首位 0）、学习路径级别卡信息显示、登录 / 计划页文案与展示等随版打磨。'>Phone login strips the leading 0 (auto-removes the first 0 for local numbers like Korea's), level-path card info display, and login / plan-page copy polish shipped alongside.</span>
+      <span class="minor-lab" data-zh='体验 / 研发优化 · 随版修复'>UX / dev fixes · shipped alongside</span>
+      <span data-zh='学习路径级别卡信息显示不全（L3 / L4）、登入 loading 页双 Dino 展示优化、登入价值宣传页对话文案更新、学习计划价值页展示优化（标题遮挡 / 伪交互）、多语言「Dino」不翻译、按钮方括号去除；研发侧 onboarding 提前加载选老师资源、选老师页对口型资源替换等随版处理。'>Level-path card info clipped (L3 / L4), login loading dual-Dino tweak, login value-page copy update, study-plan value-page display fix (title overlap / fake interaction), keeping "Dino" untranslated across languages, removing button brackets; plus dev-side onboarding teacher-asset preloading and teacher-picker lip-sync asset swap shipped alongside.</span>
     </div>
     <div class="demo-strip">
       <div class="demo-thumb" onclick="openDemo('V1.3.2-ui-demo.html','V1.3.2 · UI Demo')">
