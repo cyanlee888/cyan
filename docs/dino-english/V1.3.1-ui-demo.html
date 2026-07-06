@@ -8966,7 +8966,7 @@
         // a direct plan switch (no trial), symmetric with the downgrade switch.
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready to go back up?</b><span>Switch your plan to ${upLabel}.</span></div>
+              <div class="cm-stepper-copy"><b>Ready to switch?</b><span>Switch your plan to ${upLabel}.</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up-back="${level.id}">Switch to ${upLabel}</button>
             </div>`;
       } else if (isTrialConsumed(level.id)) {
@@ -9012,9 +9012,12 @@
         ? `Switch your plan to ${downLabel}.`
         : `Try the ${downLabel} lesson — see how it fits.`;
       const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
+      // Member direct-switch banners share one headline (up-back & down) for consistency;
+      // free users keep the empathetic "Feeling too hard?" on the easier-trial path.
+      const downTitle = profile.premiumUnlocked ? `Ready to switch?` : `Feeling too hard?`;
       return `<div class="cm-stepper" data-downgrade-banner>
             <div class="cm-stepper-row cm-stepper-row--down">
-              <div class="cm-stepper-copy"><b>Feeling too hard?</b><span>${sub}</span></div>
+              <div class="cm-stepper-copy"><b>${downTitle}</b><span>${sub}</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--down" data-step-down="${level.id}">${btnLabel}</button>
             </div></div>`;
     }
@@ -11705,6 +11708,9 @@
     });
     $("#btn-pwpt-purchase")?.addEventListener("click", () => {
       profile.premiumUnlocked = true;
+      // Free→member landing: current = maxReached = the pre-conversion current pointer
+      // (i.e. the last trial placement; onboarding fuzzy level if no trial was taken).
+      profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       closePaywallPortrait();
@@ -11713,6 +11719,8 @@
 
     function completePurchase() {
       profile.premiumUnlocked = true;
+      // Free→member landing: current = maxReached = the pre-conversion current pointer.
+      profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showLandScreen(paywallReturnScreen);
