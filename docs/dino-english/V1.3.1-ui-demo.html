@@ -6192,8 +6192,8 @@
             <p class="tr-disclaimer">Some of the content above is AI-generated.</p>
           </div>
           <div class="foot-actions tr-foot">
-            <button type="button" class="btn btn-primary" id="btn-trial-start">Get my study plan →</button>
-            <button type="button" class="btn btn-ghost tr-foot-keep" id="btn-trial-keep">Keep my current plan</button>
+            <button type="button" class="btn btn-primary" id="btn-trial-start">Get your study plan →</button>
+            <button type="button" class="btn btn-ghost tr-foot-keep" id="btn-trial-keep">Keep your current plan</button>
             <p class="tr-foot-note" id="tr-foot-note">See your weekly plan, then unlock to keep learning</p>
           </div>
         </div>
@@ -8578,7 +8578,10 @@
             <div class="course-card-scroll-inner">${renderCourseObjectivesBlock(trial)}</div>
           </div>
           <div class="course-card-actions class-home-actions">
-            <div class="course-card-cta-wrap"><button type="button" class="course-cta-secondary" data-action="trial-report">View report</button></div>
+            <div class="course-card-cta-wrap">
+              <button type="button" class="course-cta-secondary" data-action="trial-report">View report</button>
+              <button type="button" class="course-cta-chat" data-action="chat-dino" data-chat-level="${trial.levelId}" data-chat-unit="${trial.unitId}" data-chat-lesson="${trial.lessonId}">Chat with Dino</button>
+            </div>
           </div>
         </article>`;
     }
@@ -8656,6 +8659,14 @@
             event.stopPropagation();
             trialReportMode = "trial";
             showTrialReport();
+          });
+          // V1.3.1 (Req7): the completed trial card also offers "Chat with Dino"
+          // (all completed lesson cards do), handing the same class_card entry + context.
+          card.querySelector("[data-action='chat-dino']")?.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const b = event.currentTarget;
+            const ctx = { levelId: b.dataset.chatLevel, unitId: b.dataset.chatUnit, lessonId: b.dataset.chatLesson };
+            if (window.GAME && window.GAME.openDinoChat) window.GAME.openDinoChat("class_card", ctx);
           });
           return;
         }
@@ -9381,14 +9392,17 @@
         ? `Up next: move the plan up to ${assessedLabel}`
         : `Up next: keep building at ${curLabel}`;
       if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} trial went:`;
-      // #1: single primary button. Pass → "Update my plan" (switch now, or just exit —
+      // #1: single primary button. Pass → "Update your plan" (switch now, or just exit —
       // the level stays reached & directly switchable); not yet → "Keep my current plan".
-      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = passed ? "Update my plan" : "Keep my current plan";
+      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = passed ? "Update your plan" : "Keep your current plan";
       const keepBtn = $("#btn-trial-keep");
       if (keepBtn) keepBtn.style.display = "none";
-      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = passed
-        ? (profile.premiumUnlocked ? `Move your plan up to ${assessedLabel}, or come back to it anytime` : `Unlock to start your ${assessedLabel} plan`)
+      // Passed members: the "Update your plan" button is self-explanatory, no foot note.
+      const footNote = passed
+        ? (profile.premiumUnlocked ? "" : `Unlock to start your ${assessedLabel} plan`)
         : `Back to your ${curLabel} plan — keep it up`;
+      const fn = $("#tr-foot-note");
+      if (fn) { fn.textContent = footNote; fn.style.display = footNote ? "" : "none"; }
     }
     function showTrialReport() {
       renderTrialReport();
