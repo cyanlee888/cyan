@@ -10275,9 +10275,13 @@
         const go = e.target.closest("[data-go-game]");
         if (go) {
           e.preventDefault();
-          // Generic entries (Play-hub mic, Explore › Speaking) are a plain "play_hub"
-          // chat; the class-card entry goes through openDinoChat("class_card").
-          if (go.dataset.goGame === "screen-dino-chat") { dinoChatEntry = "play_hub"; dinoChatCtx = null; }
+          // V1.3.2 (Req7): tag the entry source for the dialogue engine.
+          // Home Dino mic → dino_tab; Explore › Speaking → explore_speaking;
+          // the completed course card goes through openDinoChat("class_card").
+          if (go.dataset.goGame === "screen-dino-chat") {
+            dinoChatEntry = go.id === "explore-open-speaking" ? "explore_speaking" : "dino_tab";
+            dinoChatCtx = null;
+          }
           goGame(go.dataset.goGame);
           return;
         }
@@ -10313,9 +10317,9 @@
       }
       // V1.3.2 (Req7): where the immersive chat was opened from. Handed to the dialogue
       // engine (reflected on the screen as data-chat-source) so it can ground the chat.
-      let dinoChatEntry = "play_hub", dinoChatCtx = null;
+      let dinoChatEntry = "dino_tab", dinoChatCtx = null;
       function openDinoChat(src, ctx) {
-        dinoChatEntry = src || "play_hub";
+        dinoChatEntry = src || "dino_tab";
         dinoChatCtx = ctx || null;
         // Chat lives in the landscape game area; ensure we're there (the trial report
         // that can launch this is a portrait takeover).
@@ -11007,13 +11011,11 @@
               // collection goal + per-series progress (owned / total) are always visible.
               const ips = PET_IP_ORDER.filter((ip) => SHOP_ITEMS.pet.some((p) => p.ip === ip));
               if (!ips.includes(bagPetIp)) bagPetIp = ips[0];
+              // IP tabs show name only — collection progress lives on each series below.
               const ipTabs = ips.map((ip) => {
-                const total = SHOP_ITEMS.pet.filter((p) => p.ip === ip).length;
-                const cnt = SHOP_ITEMS.pet.filter((p) => p.ip === ip && state.owned.has(p.id)).length;
                 return `<button type="button" class="bag-ip-tab ${ip === bagPetIp ? "on" : ""}" data-ip="${ip}">
                   <span class="bag-ip-emoji">${PET_IP_EMOJI[ip] || "🦖"}</span>
                   <span class="bag-ip-name">${PET_IP_LABEL[ip] || ip}</span>
-                  <span class="bag-ip-count">${cnt}/${total}</span>
                 </button>`;
               }).join("");
               // Under the selected IP, group by series (all series defined for this IP).
@@ -11623,14 +11625,16 @@
     // perDay = 折算到「天」的价格（真实价 ÷ 周期天数），仅作小字辅助参考；
     // 主视觉是真实价格 + 计费周期（与 App Store 实际扣费口径一致，避免审核风险）。
     const ORIG_PRICE_MULTIPLIER = 1.4; // X：划线原价相对真实价格的倍数（后台可配）
-    // 由真实价格按倍数算出划线原价，保留原字符串的货币符号与小数位（跨币种通用）。
+    // 由真实价格按倍数算出划线原价，保留原字符串的货币符号（跨币种通用）；
+    // 带小数的币种（如 $）尾数统一向上美化到 .99，整数币种（如 ￥）取整。
     function strikePrice(priceStr) {
       const m = String(priceStr).match(/([^\d.,]*)([\d.,]+)([^\d.,]*)/);
       if (!m) return "";
       const num = parseFloat(m[2].replace(/,/g, ""));
       if (!isFinite(num)) return "";
       const orig = num * ORIG_PRICE_MULTIPLIER;
-      const val = /[.,]\d/.test(m[2]) ? orig.toFixed(2) : String(Math.round(orig));
+      // 尾数美化：取不低于计算值的最小 N.99（向上取到最近的 .99 结尾）。
+      const val = /[.,]\d/.test(m[2]) ? (Math.ceil(orig - 0.99) + 0.99).toFixed(2) : String(Math.round(orig));
       return `${m[1]}${val}${m[3]}`;
     }
     const PLANS = [
