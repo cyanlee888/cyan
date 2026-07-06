@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>产品需求协作 SOP · Dino English</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#f6f1e7; --paper-deep:#efe7d6; --card:#fffdf8;
+    --ink:#1f2a24; --ink-soft:#4c5a52; --ink-faint:#8a958d;
+    --green:#1d5c3f; --green-bright:#2e8b57;
+    --orange:#d9641e; --orange-soft:#f3e0cf;
+    --red:#b3402a; --yellow:#c98a12; --line:#d8cfba;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Noto Sans SC',sans-serif; font-size:15px; line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* grain + corner glow */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.35;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60vw 40vh at 8% 0%, rgba(46,139,87,.10), transparent 60%),
+      radial-gradient(50vw 40vh at 100% 100%, rgba(217,100,30,.08), transparent 60%);
+  }
+  .wrap{position:relative; z-index:1; max-width:980px; margin:0 auto; padding:64px 28px 96px;}
+
+  .kicker{
+    font-family:'Fraunces',serif; text-transform:uppercase; letter-spacing:.3em;
+    font-size:12px; color:var(--green); font-weight:600; display:flex; align-items:center; gap:12px;
+  }
+  .kicker::before{content:""; width:26px; height:2px; background:var(--green);}
+
+  h1{
+    font-family:'Noto Serif SC','Fraunces',serif; font-weight:900;
+    font-size:clamp(34px,6vw,56px); line-height:1.12; margin:18px 0 14px; letter-spacing:-.01em;
+  }
+  h1 em{font-style:normal; color:var(--orange);}
+  .lede{font-size:16px; color:var(--ink-soft); max-width:760px; margin:0 0 18px;}
+  mark{
+    background:linear-gradient(transparent 62%, var(--orange-soft) 62%);
+    color:var(--ink); padding:0 2px; font-weight:500;
+  }
+
+  /* sticky section nav */
+  nav.toc{
+    position:sticky; top:0; z-index:5; margin:26px -28px 0; padding:12px 28px;
+    background:rgba(246,241,231,.82); backdrop-filter:blur(8px);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    display:flex; flex-wrap:wrap; gap:6px 18px; font-size:12.5px;
+  }
+  nav.toc a{
+    color:var(--ink-soft); text-decoration:none; font-family:'Fraunces',serif; letter-spacing:.04em;
+    white-space:nowrap; padding:2px 0; border-bottom:2px solid transparent;
+  }
+  nav.toc a:hover{color:var(--green); border-color:var(--orange);}
+
+  section{margin-top:52px;}
+  h2{
+    font-family:'Noto Serif SC',serif; font-weight:700; font-size:25px; margin:0 0 6px;
+    display:flex; align-items:baseline; gap:12px;
+  }
+  h2 .num{font-family:'Fraunces',serif; color:var(--orange); font-size:20px; font-weight:600;}
+  .sec-note{color:var(--ink-faint); font-size:13.5px; margin:0 0 20px;}
+
+  h3{font-family:'Noto Serif SC',serif; font-weight:700; font-size:18px; margin:26px 0 8px; color:var(--green);}
+
+  /* cards */
+  .cards{display:grid; gap:14px;}
+  @media(min-width:720px){.cards.c3{grid-template-columns:repeat(3,1fr);}}
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px 18px; box-shadow:0 1px 0 rgba(31,42,36,.04), 0 6px 18px rgba(31,42,36,.05);
+    border-left:5px solid var(--green);
+  }
+  .card.accent{border-left-color:var(--orange);}
+  .card.gray{border-left-color:var(--ink-faint);}
+  a.card{display:block; text-decoration:none; color:inherit; position:relative; transition:transform .16s ease, box-shadow .16s ease;}
+  a.card:hover{transform:translateY(-3px); box-shadow:0 2px 0 rgba(31,42,36,.05), 0 12px 26px rgba(31,42,36,.10);}
+  a.card .open-hint{
+    display:inline-flex; align-items:center; gap:4px; margin-top:12px;
+    font-family:'Fraunces',serif; font-size:12px; letter-spacing:.04em; color:var(--green-bright); font-weight:600;
+  }
+  a.card:hover .open-hint{color:var(--orange);}
+  .card h4{margin:0 0 8px; font-family:'Noto Serif SC',serif; font-size:16px;}
+  .card .role{font-size:11.5px; color:var(--ink-faint); font-weight:500; letter-spacing:.02em;}
+  .card p{margin:6px 0 0; font-size:13.5px; color:var(--ink-soft);}
+  .card .no{color:var(--red); font-size:12.5px; margin-top:8px;}
+
+  ul.dia{list-style:none; padding:0; margin:8px 0 0;}
+  ul.dia li{position:relative; padding-left:22px; margin:7px 0; font-size:14px; color:var(--ink-soft);}
+  ul.dia li::before{content:"◆"; position:absolute; left:0; top:0; color:var(--green-bright); font-size:11px;}
+  ul.dia li b{color:var(--ink); font-weight:700;}
+
+  /* flow diagram */
+  .flow{margin-top:8px; display:flex; flex-direction:column; gap:0; align-items:center;}
+  .flow .row{display:flex; gap:12px; flex-wrap:wrap; justify-content:center;}
+  .node{
+    background:var(--card); border:1px solid var(--line); border-radius:10px;
+    padding:9px 14px; font-size:13.5px; font-weight:500; text-align:center; min-width:96px;
+    box-shadow:0 3px 10px rgba(31,42,36,.05);
+  }
+  .node.src{background:var(--paper-deep); color:var(--ink-soft); font-weight:400;}
+  .node.key{border-color:var(--orange); border-width:1.5px; color:var(--green); font-weight:700;}
+  .node.gate{background:var(--green); color:#fdf8ee; border-color:var(--green); font-weight:700;}
+  .node.end{background:var(--orange); color:#fff8f0; border-color:var(--orange); font-weight:700;}
+  .arrow{color:var(--ink-faint); font-size:18px; line-height:1; padding:6px 0; text-align:center;}
+  .arrow .meet{font-size:12.5px; font-family:'Fraunces',serif; letter-spacing:.04em; color:var(--orange); font-weight:600;}
+  .branchlabel{font-size:11.5px; color:var(--orange); font-family:'Fraunces',serif; letter-spacing:.04em;}
+
+  /* tables */
+  .tbl-wrap{overflow-x:auto; margin-top:6px; border:1px solid var(--line); border-radius:12px;}
+  table{border-collapse:collapse; width:100%; background:var(--card); font-size:13.5px; min-width:520px;}
+  thead th{
+    background:var(--green); color:#fdf8ee; font-family:'Noto Serif SC',serif; font-weight:700;
+    text-align:left; padding:10px 14px; font-size:13px; white-space:nowrap;
+  }
+  tbody td{padding:10px 14px; border-top:1px solid var(--line); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:nth-child(even) td{background:rgba(239,231,214,.4);}
+  tbody td:first-child{color:var(--ink); font-weight:600; white-space:nowrap;}
+  .p0{color:var(--red); font-weight:700;} .p1{color:var(--orange); font-weight:700;}
+  .p2{color:var(--yellow); font-weight:700;} .p3{color:var(--ink-faint); font-weight:700;}
+  .raci td{text-align:center; white-space:nowrap;}
+  .raci td:first-child{text-align:left;}
+  .ra{color:var(--green);font-weight:700;} .cc{color:var(--orange);} .ii{color:var(--ink-faint);}
+
+  /* status chain */
+  .chain{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:10px 0 0;}
+  .chain .st{background:var(--paper-deep); border:1px solid var(--line); border-radius:20px; padding:4px 12px; font-size:12.5px; color:var(--ink-soft);}
+  .chain .st.hot{background:var(--orange-soft); border-color:var(--orange); color:var(--ink);}
+  .chain .sep{color:var(--ink-faint);}
+
+  .links a{color:var(--green-bright); text-decoration:none; border-bottom:1px solid var(--line); word-break:break-all;}
+  .links a:hover{border-color:var(--orange);}
+
+  /* warning */
+  .warn{background:#fbeee8; border:1.5px dashed var(--red); border-radius:12px; padding:16px 18px; margin-top:6px;}
+  .warn h4{margin:0 0 8px; color:var(--red); font-family:'Noto Serif SC',serif; font-size:15px;}
+
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  footer{margin-top:64px; padding-top:18px; border-top:1px solid var(--line); color:var(--ink-faint); font-size:12.5px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Product Workflow · Dino English</div>
+    <h1>产品需求<em>协作 SOP</em></h1>
+    <p class="lede"><mark>统一“反馈 → 需求 → 版本”的流转规则</mark>：让每条反馈都有去向、每个需求都有评估、每个版本都有清晰的上线清单。适用于产品部及协作方（业务、运营、研发、测试）。</p>
+  </header>
+
+  <nav class="toc">
+    <a href="#tables">三表定位</a>
+    <a href="#flow">整体流程</a>
+    <a href="#stages">分阶段规范</a>
+    <a href="#map">字段映射</a>
+    <a href="#multi">多端与版本</a>
+    <a href="#handoff">状态交接</a>
+    <a href="#raci">角色职责</a>
+    <a href="#opt">优化建议</a>
+  </nav>
+
+  <section id="tables" class="reveal">
+    <h2><span class="num">01</span>三张表定位</h2>
+    <p class="sec-note">先分清边界，才不会乱填：入口、蓄水池、执行视图各司其职。</p>
+    <div class="cards c3">
+      <a class="card gray" href="https://qjphu5vphyf4.jp.larksuite.com/base/QRcVb8YSaailnusFa78jnkEwpz5?table=tblV4wzIp9UUft6v&view=vewjfmlIPO" target="_blank" rel="noopener">
+        <h4>反馈收集表 <span class="role">· 入口</span></h4>
+        <p>所有反馈的统一入口，轻量、人人可提。</p>
+        <p class="no">✕ 不做评估 · 不排优先级 · 不排期</p>
+        <span class="open-hint">打开表格 ↗</span>
+      </a>
+      <a class="card" href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">
+        <h4>产品需求池 <span class="role">· 蓄水池</span></h4>
+        <p>经 PM 初筛、确需产品方案的需求蓄水池，承载价值评估 / 优先级 / 版本归属 / 资源工期。</p>
+        <p class="no">✕ 不等于已排期，也不等于一定会做</p>
+        <span class="open-hint">打开表格 ↗</span>
+      </a>
+      <a class="card accent" href="https://qjphu5vphyf4.jp.larksuite.com/wiki/NPHJwkAImieS64klj9Ujj2z5pGf?table=tblGWYbJMmLWdi86&view=vewr5VAfjp" target="_blank" rel="noopener">
+        <h4>版本迭代表 <span class="role">· 执行视图</span></h4>
+        <p>某版本“确定要做”的执行视图，承载排期 / 负责人 / 提测上线 / PRD-UI-技术文档。</p>
+        <p class="no">✕ 不做需求取舍（取舍在需求池完成）</p>
+        <span class="open-hint">打开表格 ↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="flow" class="reveal">
+    <h2><span class="num">02</span>整体流程</h2>
+    <p class="sec-note">反馈统一入口 → PM 初筛三分流 → 需求池评估、每周三产品周会定版 → 版本迭代表汇集四类来源 → 看清当前版本上线内容。</p>
+    <div class="flow">
+      <div class="row">
+        <div class="node src">用户反馈</div>
+        <div class="node src">业务反馈</div>
+        <div class="node src">线上问题反馈</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="node key">反馈收集表</div>
+      <div class="arrow">↓</div>
+      <div class="node gate">产品经理初筛判断</div>
+      <div class="arrow">↓</div>
+      <div class="row">
+        <div style="text-align:center;">
+          <div class="branchlabel">需产品方案</div>
+          <div class="node">产品需求池</div>
+        </div>
+        <div style="text-align:center;">
+          <div class="branchlabel">紧急 Bug / 故障</div>
+          <div class="node">转测试复测</div>
+        </div>
+        <div style="text-align:center;">
+          <div class="branchlabel">答疑 / 个案 / 非产品</div>
+          <div class="node">直接处理（暂不处理）</div>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="node">PM 初判：版本定位 + 优先级 + 资源评估</div>
+      <div class="arrow">↓　<span class="meet">每周三 · 产品周会</span></div>
+      <div class="node gate">辰光老师 + 产品团队 共同确定版本</div>
+      <div class="arrow">↓</div>
+      <div class="row">
+        <div class="node key">版本迭代表</div>
+      </div>
+      <div class="row" style="margin-top:8px;">
+        <div class="node src">产品需求</div>
+        <div class="node src">紧急 Bug</div>
+        <div class="node src">技术自研优化</div>
+        <div class="node src">线上体验问题</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="node end">当前版本要上线的具体内容</div>
+    </div>
+  </section>
+
+  <section id="stages" class="reveal">
+    <h2><span class="num">03</span>分阶段操作规范</h2>
+    <p class="sec-note">三个阶段，对应三张表的录入与流转动作。</p>
+
+    <h3>阶段 1 · 反馈收集与初筛</h3>
+    <p style="color:var(--ink-soft);font-size:14px;margin:0 0 6px;">入口规则：所有反馈一律先进「反馈收集表」，填清反馈内容、提交人、来源页面 / 版本，必要时附图；不在群聊口头流转。</p>
+    <div class="cards c3" style="margin-top:10px;">
+      <div class="card"><h4>转产品需求池</h4><p>需通过产品方案（页面 / 流程 / 能力 / 机制 / 配置后台）解决的真实、重复出现的问题。</p></div>
+      <div class="card accent"><h4>转测试复测</h4><p>紧急 Bug、线上故障，交测试复测并安排迭代节奏，直接进版本迭代表（类型＝紧急 Bug）。</p></div>
+      <div class="card gray"><h4>直接处理 / 不处理</h4><p>答疑、个案、对功能的误解、商务 / 法务 / 财务等非产品职责、方向不清的伪需求；在“备注”写明结论。</p></div>
+    </div>
+    <ul class="dia">
+      <li><b>入池口径</b>：满足“对产品做改动以解决真实且会反复出现的用户 / 业务问题”才转需求池；纯数据 / 运营任务、Bug、个案、使用疑问、非产品职责、情绪化表达均不入池。</li>
+      <li><b>可回溯</b>：完成分流后标注去向，转入需求池 / 版本迭代表的反馈在“备注”回填关联需求名称。</li>
+    </ul>
+
+    <h3>阶段 2 · 需求池评估与排期</h3>
+    <ul class="dia">
+      <li><b>需求描述</b>：交付物式的一句话标题，不写症状。</li>
+      <li><b>需求背景 / 原话</b>：需求方原话 + 来源，不掺分析。</li>
+      <li><b>需求评估备注</b>：真实问题 / 价值与契合 / 优先级理由 / 风险与开放问题。</li>
+      <li><b>其余字段</b>：产品、所属功能、需求方、前后端工期 PD、前置依赖据实填写；进展状态新需求默认“未启动”。</li>
+    </ul>
+    <p style="color:var(--ink-soft);font-size:13.5px;margin:14px 0 6px;font-weight:500;">优先级判定（P0–P3）</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>级别</th><th>含义</th><th>典型场景</th></tr></thead>
+        <tbody>
+          <tr><td class="p0">P0</td><td>上线阻断 / 核心链路 / 合规 / 过审 / 付费履约</td><td>登录注册、Onboarding 断链、支付、崩溃级体验、过审与合规、已付费权益</td></tr>
+          <tr><td class="p1">P1</td><td>显著拉动核心指标但不阻断上线</td><td>明显提升激活 / 留存 / 转化 / 核心学习体验</td></tr>
+          <tr><td class="p2">P2</td><td>收益明确但不紧急的体验优化 / 增值</td><td>中长期价值、非核心路径优化、细分增值</td></tr>
+          <tr><td class="p3">P3</td><td>探索 / 锦上添花 / 成本高收益不确定 / 远期</td><td>重养成、复杂建模、与当前定位偏离</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--ink-soft);font-size:13.5px;margin:16px 0 6px;font-weight:500;">版本确定机制（两步）</p>
+    <div class="cards" style="grid-template-columns:1fr 1fr;">
+      <div class="card"><h4>① 产品经理初判</h4><p>综合版本定位 + 需求优先级 + 资源评估，给出建议上线版本。</p></div>
+      <div class="card accent"><h4>② 每周三 · 产品周会拍板</h4><p>与辰光老师及产品团队共同评审，确定最终上线版本，回填需求池「上线版本」，随后流转到版本迭代表。</p></div>
+    </div>
+    <p style="color:var(--ink-soft);font-size:13.5px;margin:16px 0 4px;">需求池进展状态流转：</p>
+    <div class="chain">
+      <span class="st">未启动</span><span class="sep">→</span>
+      <span class="st">产品设计中</span><span class="sep">→</span>
+      <span class="st">待评审</span><span class="sep">→</span>
+      <span class="st">UI设计中</span><span class="sep">→</span>
+      <span class="st hot">排期中</span><span class="sep">→</span>
+      <span class="st">（建记录到版本迭代表）</span><span class="sep">→</span>
+      <span class="st">开发中</span><span class="sep">→</span>
+      <span class="st">已完成</span>
+    </div>
+
+    <h3>阶段 3 · 版本迭代执行</h3>
+    <p style="color:var(--ink-soft);font-size:14px;margin:0 0 6px;">四类信息来源对应「类型」字段：</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>来源</th><th>类型字段取值</th><th>进入方式</th></tr></thead>
+        <tbody>
+          <tr><td>产品需求</td><td>产品需求</td><td>由需求池“排期中”确定版本后流转</td></tr>
+          <tr><td>紧急 Bug</td><td>紧急Bug</td><td>由反馈收集表经测试复测后流转</td></tr>
+          <tr><td>技术自研优化</td><td>研发优化</td><td>研发直接提报</td></tr>
+          <tr><td>线上体验问题</td><td>体验优化</td><td>线上发现 / 反馈收集表流转</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="dia">
+      <li><b>录入</b>：需求名称、所属产品板块、类型、优先级、负责人 / 研发 / 测试、提测时间、预计上线、PRD / UI / 技术文档、App版本、需求简介。</li>
+      <li><b>用法</b>：按“App版本”筛选，即可看到当前版本要上线的全部内容（产品需求 + 紧急 Bug + 研发优化 + 体验优化）。</li>
+    </ul>
+    <p style="color:var(--ink-soft);font-size:13.5px;margin:14px 0 4px;">项目状态流转：</p>
+    <div class="chain">
+      <span class="st">需求沟通中</span><span class="sep">→</span>
+      <span class="st">PRD编写中</span><span class="sep">→</span>
+      <span class="st">PRD已评审</span><span class="sep">→</span>
+      <span class="st">UI设计中</span><span class="sep">→</span>
+      <span class="st">开发中</span><span class="sep">→</span>
+      <span class="st hot">测试中</span><span class="sep">→</span>
+      <span class="st">已上线</span><span class="sep">·</span>
+      <span class="st">挂起（异常）</span>
+    </div>
+  </section>
+
+  <section id="map" class="reveal">
+    <h2><span class="num">04</span>需求池 → 版本迭代表 字段映射</h2>
+    <p class="sec-note">交接时按此对应填写，避免两表口径漂移。</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>产品需求池</th><th>版本迭代表</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>需求描述</td><td>需求名称</td><td>直接沿用</td></tr>
+          <tr><td>所属功能</td><td>所属产品板块</td><td>语义对应，按版本迭代表选项取值</td></tr>
+          <tr><td>优先级（P0–P3）</td><td>优先级（P0–P2）</td><td>P3 一般不进版本；若进版本按 P2 或重估</td></tr>
+          <tr><td>上线版本（V1.3.0）</td><td>App版本（1.3.0…）</td><td>命名保持一一对应</td></tr>
+          <tr><td>需求方</td><td>需求方</td><td>直接沿用</td></tr>
+          <tr><td>后台版本</td><td>后台版本</td><td>非 App 端用；命名“系统-批次”，App 需求留空</td></tr>
+          <tr><td>需求评估备注 / 背景</td><td>需求简介 / 需求BRD</td><td>提炼为执行视角简介</td></tr>
+          <tr><td>前 / 后端工期 PD、前置依赖</td><td>提测时间 / 预计上线 / 研发 / 测试</td><td>执行阶段补全排期信息</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="multi" class="reveal">
+    <h2><span class="num">05</span>多产品线与版本号</h2>
+    <p class="sec-note">App 端之外还有管理后台 / 业务后台等需求——统一一个池、一张迭代表容纳，用「产品」区分端，版本号按端分轨。</p>
+    <div class="cards c3">
+      <div class="card">
+        <h4>一个需求池</h4>
+        <p>所有端的需求都进同一个池，用已有的「产品」字段（用户端 / 官网 / 配套后台 / 单词管台）区分，跨端依赖一眼可见。</p>
+      </div>
+      <div class="card">
+        <h4>一张迭代表</h4>
+        <p>所有端的执行也在同一张迭代表，用「产品板块 / 端」过滤；版本维度按端拆字段，互不打架。</p>
+      </div>
+      <div class="card accent">
+        <h4>版本号分轨</h4>
+        <p>App 端走离散版本号 + 商店审核；后台持续部署，按“系统-批次”走，不套 App 版本号。</p>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin-top:16px;">
+      <table>
+        <thead><tr><th>端</th><th>版本字段</th><th>口径与命名</th></tr></thead>
+        <tbody>
+          <tr><td>App 用户端</td><td>上线版本 / App版本</td><td>离散版本号 1.3.0 / 1.3.2，绑应用商店审核发版</td></tr>
+          <tr><td>配套后台 / 业务后台 / 单词管台 / 官网</td><td>后台版本</td><td>持续部署，按“系统-批次”命名：如 <b>配套后台-0703</b>、<b>单词管台-2026W28</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="dia">
+      <li><b>填写规则</b>：App 需求填 App版本、后台版本留空；后台需求填后台版本、App版本留空——用哪个端就填哪个版本字段。</li>
+      <li><b>命名规则</b>：后台版本统一“系统-批次”，一个字段即可区分是哪个后台的哪一批，不为每个后台单独建字段。</li>
+      <li><b>跨端联动</b>：App 版本依赖后台改造时（如会员功能需后台先支持），用「前置依赖 / 父记录」关联两条记录，保证一起上线，<b>版本号各记各的</b>。</li>
+    </ul>
+    <div class="card gray" style="margin-top:14px;">
+      <p style="margin:0;font-size:13.5px;">已落地：需求池与迭代表均已新增「<b>后台版本</b>」单选字段；后续如需把版本当实体管理（记发布日期 / 负责人 / 含哪些需求），可再升级为独立「版本登记表」+ 关联字段。</p>
+    </div>
+  </section>
+
+  <section id="handoff" class="reveal">
+    <h2><span class="num">06</span>状态与交接对齐</h2>
+    <div class="card accent">
+      <p style="margin:0;color:var(--ink-soft);font-size:14px;"><b style="color:var(--ink);">交接触发点</b>：需求池状态到「排期中」且已确定 App 版本时，在版本迭代表创建对应记录（类型＝产品需求），并回填需求池「上线版本」；此后执行进度以版本迭代表「项目状态」为准，需求池在上线后置「已完成」。</p>
+    </div>
+    <ul class="dia">
+      <li><b>优先级口径</b>：需求池 P0–P3、版本迭代表 P0–P2；P3 需求若进入版本须重新定级。</li>
+      <li><b>版本号口径</b>：需求池「上线版本」与版本迭代表「App版本」保持对应，避免一个需求两处版本号不一致。</li>
+    </ul>
+  </section>
+
+  <section id="raci" class="reveal">
+    <h2><span class="num">07</span>角色职责（RACI）</h2>
+    <p class="sec-note">R＝负责执行 · A＝最终担责 · C＝被咨询 · I＝被知会</p>
+    <div class="tbl-wrap">
+      <table class="raci">
+        <thead><tr><th>活动</th><th>业务 / 用户</th><th>产品经理</th><th>研发</th><th>测试</th><th>设计</th></tr></thead>
+        <tbody>
+          <tr><td>提交反馈</td><td class="ra">R/A</td><td class="ii">I</td><td class="ii">I</td><td class="ii">I</td><td class="ii">I</td></tr>
+          <tr><td>初筛与分流</td><td class="ii">I</td><td class="ra">R/A</td><td class="cc">C</td><td class="cc">C</td><td class="ii">I</td></tr>
+          <tr><td>需求评估与定级</td><td class="cc">C</td><td class="ra">R/A</td><td class="cc">C</td><td class="ii">I</td><td class="cc">C</td></tr>
+          <tr><td>版本归属与排期</td><td class="ii">I</td><td class="ra">R/A</td><td class="cc">C</td><td class="cc">C</td><td class="ii">I</td></tr>
+          <tr><td>PRD / 设计产出</td><td class="ii">I</td><td class="ra">R/A</td><td class="cc">C</td><td class="ii">I</td><td class="ra">R</td></tr>
+          <tr><td>开发与提测</td><td class="ii">I</td><td class="cc">C</td><td class="ra">R/A</td><td class="cc">C</td><td class="ii">I</td></tr>
+          <tr><td>测试与上线</td><td class="ii">I</td><td class="cc">C</td><td class="cc">C</td><td class="ra">R/A</td><td class="ii">I</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="opt" class="reveal">
+    <h2><span class="num">08</span>字段优化建议（反馈收集表）</h2>
+    <div class="warn">
+      <h4>⚠ 当前「处理状态」仅“已完成 / 暂不处理”，体现不了分流去向</h4>
+      <ul class="dia" style="margin-top:4px;">
+        <li><b>方案 A</b>：扩充「处理状态」选项 —— 新增“转需求池”“转测试”“处理中”“不处理”。</li>
+        <li><b>方案 B</b>：新增「流转去向」单选（需求池 / 测试 / 直接处理 / 不处理）+「关联需求」文本，记录对应需求名称，打通三表回溯。</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>产品需求协作 SOP · Dino English　|　反馈收集表 → 产品需求池 → 版本迭代表</footer>
+
+</div>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
