@@ -7296,7 +7296,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
@@ -7798,6 +7798,9 @@
       const u0 = nextLevel.units[0];
       setCurrentCourse(nextLevel.id, u0.id, u0.lessons[0].id);
       profile.level = levelCefrLabel(nextLevel.id);
+      if (levelOrderOf(nextLevel.id) > levelOrderOf(profile.maxReachedLevelId || profile.currentLevelId)) {
+        profile.maxReachedLevelId = nextLevel.id; // natural progression lifts the ceiling
+      }
       if (typeof courseMapLevelId !== "undefined") courseMapLevelId = nextLevel.id;
       showPayToast(`🎉 ${fromLabel} complete — you're now on ${nextLevel.label}!`);
     }
@@ -8779,8 +8782,8 @@
         // the learner genuinely finished & progressed past → "Completed"; everything
         // else (higher/not-yet-unlocked, or a skipped lower level never studied) →
         // "Locked". No "Recommended" — up/down guidance stays on the current±1 banners.
-        // "Completed" tags the CARD only; drilling into that lower level still shows the
-        // minimal locked-unit list below (content ships weekly, past isn't re-browsed).
+        // "Completed" lower levels are reviewable — drilling in shows their units as
+        // "View lessons" (#6, progress is stored). Skipped-lower / higher levels stay Locked.
         const stateLabel = status === "current" ? "You are here" : status === "done" ? "Completed" : "Locked";
         const stateCls = status === "current" ? "current" : status === "done" ? "done" : "notstarted";
         return `
@@ -8831,13 +8834,19 @@
         // active plan). Every other level is a plain locked list — no progress bar, no
         // Completed / Skipped tags — so a level left mid-way (e.g. leveled up out of L3)
         // never mis-reports "100% Completed", and no partial-progress snapshot is needed.
-        const showProgress = lvStatus === "current";
+        const showProgress = lvStatus === "current" || lvStatus === "done";
         let cta, tag;
-        if (lvStatus !== "current") {
-          // V1.3.1: any level OTHER than the current one — higher OR lower — is not
+        if (lvStatus === "done") {
+          // #6: a genuinely completed lower level. Progress is stored, so its units are
+          // reviewable — "View lessons" reopens the lesson list for review (doesn't change
+          // the current plan). Tagged Completed with a full progress bar.
+          cta = `<button type="button" class="cm-unit-cta" data-unit-id="${unit.id}">View lessons</button>`;
+          tag = `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>`;
+        } else if (lvStatus !== "current") {
+          // Higher not-yet-unlocked level, or a skipped lower level never studied — not
           // directly enterable from the map. Free → payment gate (Go Premium → Paywall);
-          // member → Locked (study stays anchored at the current level; cross-level moves
-          // go through the adjacent-level up / down banners, not the unit CTAs).
+          // member → Locked (cross-level moves go through the adjacent-level up / down
+          // banners, not the unit CTAs).
           cta = profile.premiumUnlocked
             ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit data-lock-msg="This level isn't in your current plan">Locked</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
@@ -8944,36 +8953,37 @@
     function renderUpgradeBanner(level) {
       const curOrder = levelOrderOf(profile.currentLevelId);
       const selOrder = levelOrderOf(level.id);
-      const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
+      // maxReached = highest level ever reached (placement, level-up pass, or natural
+      // progression); it's the ceiling for direct switch-back (≤ maxReached = no re-trial).
+      const maxOrder = levelOrderOf(profile.maxReachedLevelId || profile.placementLevelId || profile.currentLevelId);
       if (selOrder !== curOrder + 1) return ""; // only the adjacent higher level
       const upLabel = level.label;
       let row;
-      if (profile.premiumUnlocked && selOrder <= placeOrder) {
-        // The learner voluntarily switched DOWN below their validated level; the level
-        // just above is one they already validated → switching back up is a direct plan
-        // re-anchor (no trial), symmetric with the downgrade switch.
+      if (profile.premiumUnlocked && selOrder <= maxOrder) {
+        // Member returning to a level they've ALREADY reached — either one they left
+        // voluntarily, or a brand-new higher level they just PASSED the check for
+        // (passing lifts the reached ceiling, see renderLevelUpReport). Either way it's
+        // a direct plan switch (no trial), symmetric with the downgrade switch.
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready to go back up?</b><span>Switch your study plan back to ${upLabel}.</span></div>
+              <div class="cm-stepper-copy"><b>Ready to go back up?</b><span>Switch your plan to ${upLabel}.</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up-back="${level.id}">Switch to ${upLabel}</button>
             </div>`;
-      } else if (profile.premiumUnlocked && levelUpPassedUnconfirmed.has(level.id)) {
-        // Passed the level-up check but hasn't confirmed yet → still one tap away.
-        row = `
-            <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>You're ready for ${upLabel}!</b><span>Your trial passed — view the report to move your plan up.</span></div>
-              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-report="${level.id}">View report</button>
-            </div>`;
       } else if (isTrialConsumed(level.id)) {
+        // New higher level whose check was already taken but NOT passed → review only.
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
               <div class="cm-stepper-copy"><b>You've already tried ${upLabel}</b><span>That trial is folded into your current plan — take a look back.</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-report="${level.id}">View report</button>
             </div>`;
       } else {
+        // New higher level, not yet tried. Member = level-up check; free = placement trial.
+        const upSub = profile.premiumUnlocked
+          ? `Try a trial lesson — we'll set your plan based on how you do.`
+          : `Try the ${upLabel} lesson — see how it fits.`;
         row = `
             <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>Try a trial lesson — we'll set your study plan based on how you do.</span></div>
+              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>${upSub}</span></div>
               <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up="${level.id}">Try ${upLabel}</button>
             </div>`;
       }
@@ -8999,8 +9009,8 @@
       // have no running plan, so their downgrade reads as "try the easier lesson"
       // (→ right-fit report → Paywall), not "switch your study plan".
       const sub = profile.premiumUnlocked
-        ? `Switch your study plan to ${downLabel}.`
-        : `Try the ${downLabel} lesson — see if it fits better.`;
+        ? `Switch your plan to ${downLabel}.`
+        : `Try the ${downLabel} lesson — see how it fits.`;
       const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
       return `<div class="cm-stepper" data-downgrade-banner>
             <div class="cm-stepper-row cm-stepper-row--down">
@@ -9065,6 +9075,7 @@
       const trialLevelId = profile.placementLevelId || profile.currentLevelId || "level-2";
       const assessedId = firstTrialAssessedLevelId(trialLevelId);
       profile.trialTakenLevelId = trialLevelId;
+      profile.maxReachedLevelId = assessedId; // real placement initializes the reached ceiling
       markTrialConsumed(trialLevelId); // one-time trial: this level can't be sampled again
       profile.weekDoneCount = 0; // first placement starts a fresh 7-day cycle
       if (assessedId === trialLevelId) return; // best-fit == trial level → no plan move
@@ -9137,6 +9148,9 @@
       // Going down moves the placement start down too (the lower level reads as "current",
       // not "completed"); going up keeps placement so skipped middle levels read completed.
       if (goingDown) profile.placementLevelId = targetId;
+      if (!goingDown && levelOrderOf(targetId) > levelOrderOf(profile.maxReachedLevelId || profile.currentLevelId)) {
+        profile.maxReachedLevelId = targetId; // reaching a higher level lifts the ceiling
+      }
       levelUpPassedUnconfirmed.delete(targetId); // confirmed → no longer pending
       levelUpInProgress = false;
       levelUpTargetLevelId = null;
@@ -9342,6 +9356,13 @@
       // V1.3.1 口径：升级尝试只有两种结果——达标(升 current+1) / 未达标(保持 current)。
       // 体验课永不降级，故没有 down 分支、没有方向歧义。
       const passed = levelOrderOf(assessedId) > levelOrderOf(curId); // 升一档
+      // #1: passing lifts the reached ceiling (maxReached) to this level IMMEDIATELY,
+      // so it's directly switchable afterwards even if the user exits without confirming —
+      // no need to re-open the report. (Member-only; free users convert via Paywall.)
+      if (passed && profile.premiumUnlocked &&
+          levelOrderOf(assessedId) > levelOrderOf(profile.maxReachedLevelId || profile.currentLevelId)) {
+        profile.maxReachedLevelId = assessedId;
+      }
       if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level check · ${targetLabel}`;
       if ($("#tr-hero-h")) $("#tr-hero-h").textContent = passed ? `${name} is ready to level up!` : `Not quite ready for ${targetLabel} yet`;
       if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = `${targetLabel} trial lesson`;
@@ -9357,15 +9378,13 @@
         ? `Up next: move the plan up to ${assessedLabel}`
         : `Up next: keep building at ${curLabel}`;
       if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} trial went:`;
-      // Manual confirm: pass → "Level up my plan" (+ keep option); not yet → only "Keep my current plan".
-      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = passed ? "Level up my plan" : "Keep my current plan";
+      // #1: single primary button. Pass → "Update my plan" (switch now, or just exit —
+      // the level stays reached & directly switchable); not yet → "Keep my current plan".
+      if ($("#btn-trial-start")) $("#btn-trial-start").textContent = passed ? "Update my plan" : "Keep my current plan";
       const keepBtn = $("#btn-trial-keep");
-      if (keepBtn) {
-        keepBtn.style.display = passed ? "" : "none";
-        keepBtn.textContent = "Keep my current plan";
-      }
+      if (keepBtn) keepBtn.style.display = "none";
       if ($("#tr-foot-note")) $("#tr-foot-note").textContent = passed
-        ? (profile.premiumUnlocked ? `We'll move your plan up to ${assessedLabel}` : `Unlock to start your ${assessedLabel} plan`)
+        ? (profile.premiumUnlocked ? `Move your plan up to ${assessedLabel}, or come back to it anytime` : `Unlock to start your ${assessedLabel} plan`)
         : `Back to your ${curLabel} plan — keep it up`;
     }
     function showTrialReport() {
@@ -11497,6 +11516,7 @@
       // Record the placement level so the Learning Path can show levels BELOW it as
       // "not started" (skipped at placement), not auto-completed.
       profile.placementLevelId = result.levelId;
+      profile.maxReachedLevelId = result.levelId;
       if (postLoginInfo) { finishPostLoginInfo(); return; }
       fillGoalValuePage();
       showPortraitScreen("screen-goal-value");
@@ -12124,6 +12144,7 @@
         options: [["level-1", "L1"], ["level-2", "L2"], ["level-3", "L3"]],
         apply: function (v) {
           profile.placementLevelId = v;
+          profile.maxReachedLevelId = v;
           profile.currentLevelId = v;
           profile.currentUnitId = "unit-1";
           profile.currentLessonId = "lesson-1";
@@ -12197,7 +12218,7 @@
           profile.premiumUnlocked = true;
           if (!profile.nextBillingDate) profile.nextBillingDate = "Jul 8, 2026";
           profile.trialReportShown = true;
-          profile.placementLevelId = "level-2"; profile.currentLevelId = "level-2";
+          profile.placementLevelId = "level-2"; profile.maxReachedLevelId = "level-2"; profile.currentLevelId = "level-2";
           profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-4";
           profile.level = levelCefrLabel("level-2");
           profile.weekDoneCount = WEEK_LESSONS; // this cycle's 3 lessons all done
@@ -12209,7 +12230,7 @@
           // placement level. Use the top controls (会员状态 / 定级起始 Level) + tap the
           // level chips to view the DOWN banner on current-1 or the UP banner on current+1
           // (free vs member, consumed vs not, all reachable from here).
-          profile.placementLevelId = "level-2"; profile.currentLevelId = "level-2";
+          profile.placementLevelId = "level-2"; profile.maxReachedLevelId = "level-2"; profile.currentLevelId = "level-2";
           profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-1";
           profile.level = levelCefrLabel("level-2");
           refreshUnlockState(); enterLandscape(); showCourseMap();
