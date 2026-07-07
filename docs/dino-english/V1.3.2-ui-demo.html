@@ -10987,8 +10987,8 @@
           bagSel = null;
           if (equipBtn) equipBtn.hidden = true;
           // Collection album grouped as IP → series: owned figures show their art,
-          // un-obtained ones show the same figure GRAYED OUT + name ("Not yet") as a
-          // collection target (per-series progress + a "Series complete" achievement).
+          // un-obtained ones show the same figure GRAYED OUT + name as a collection
+          // target (no status label / count; a "Series complete" chip on full sets).
           const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
           if (grid) {
             if (!owned.length) {
@@ -11006,10 +11006,10 @@
               // Collection album: show ALL IPs (fixed family order) that have catalog
               // figures. Under the selected IP show ALL its series with EVERY figure —
               // owned ones in full colour, un-obtained ones grayed out (+ name) — so the
-              // collection goal + per-series progress (owned / total) are always visible.
+              // collection goal is always visible (no numeric progress shown).
               const ips = PET_IP_ORDER.filter((ip) => SHOP_ITEMS.pet.some((p) => p.ip === ip));
               if (!ips.includes(bagPetIp)) bagPetIp = ips[0];
-              // IP tabs show name only — collection progress lives on each series below.
+              // IP tabs show name only — no counts; each series shows its figures.
               const ipTabs = ips.map((ip) => {
                 return `<button type="button" class="bag-ip-tab ${ip === bagPetIp ? "on" : ""}" data-ip="${ip}">
                   <span class="bag-ip-emoji">${PET_IP_EMOJI[ip] || "🦖"}</span>
@@ -11026,14 +11026,13 @@
                 const cards = figs.map((p) => {
                   if (!state.owned.has(p.id)) {
                     // Un-obtained: show the figure GRAYED OUT + its real name, as a clear
-                    // collection target ("Not yet"). Revealing (not hiding) drives collection.
+                    // collection target (no status label). Revealing (not hiding) drives collection.
                     const gart = p.img
                       ? `<img class="sc-img" src="${p.img}" alt="${p.name}" decoding="async" />`
                       : `<span class="sc-emoji">${p.emoji}</span>`;
                     return `<div class="shop-card pet-collect pet-locked">
                       <span class="shop-card-art">${gart}</span>
                       <span class="shop-card-name">${p.name}</span>
-                      <span class="shop-card-price">Not yet</span>
                     </div>`;
                   }
                   const n = state.petCounts[p.id] || 1;
@@ -11043,13 +11042,12 @@
                   return `<div class="shop-card pet-collect">
                     <span class="shop-card-art">${art}${n > 1 ? `<span class="sc-count">×${n}</span>` : ""}</span>
                     <span class="shop-card-name">${p.name}</span>
-                    <span class="shop-card-price">Collected</span>
                   </div>`;
                 }).join("");
                 return `<div class="bag-series ${complete ? "is-complete" : ""}">
                   <div class="bag-series-head">
                     <span class="bag-series-name">${PET_SERIES_LABEL[s] || s}</span>
-                    <span class="bag-series-count">${complete ? "✨ Series complete" : `${ownedN}/${figs.length}`}</span>
+                    ${complete ? `<span class="bag-series-count">✨ Series complete</span>` : ""}
                   </div>
                   <div class="bag-series-grid">${cards}</div>
                 </div>`;
