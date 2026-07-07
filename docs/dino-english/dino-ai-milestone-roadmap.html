@@ -709,7 +709,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.4.0</div>
-    <div class="node-sub" data-zh='功能扩展<br>7 月下'>Feature expansion<br>Late Jul</div>
+    <div class="node-sub" data-zh='功能扩展<br>07/15 上线'>Feature expansion<br>Ships 07/15</div>
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='功能扩展 · 对话 / 课程 / 支付 / 平台<span class="tag">迭代版</span>'>Feature expansion · chat / class / payment / platform<span class="tag">Iteration</span></div>
@@ -794,11 +794,13 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   if(!links.length)return;
   var today=new Date();today.setHours(0,0,0,0);
   var current=null;
+  // 当前迭代 = 今天当天或之后最近一个上线的版本（即正在进行/即将上线的版本）
   links.forEach(function(a){
     var d=new Date(a.getAttribute('data-date')+'T00:00:00');
-    if(d<=today&&(!current||d>new Date(current.getAttribute('data-date')+'T00:00:00')))current=a;
+    if(d>=today&&(!current||d<new Date(current.getAttribute('data-date')+'T00:00:00')))current=a;
   });
-  if(!current)current=links[0];
+  // 若所有版本都已上线，则落到最后一个版本
+  if(!current)current=links[links.length-1];
   current.classList.add('current');
   // 让当前版本在横向导航中可见
   try{current.scrollIntoView({inline:'center',block:'nearest'});}catch(e){}
