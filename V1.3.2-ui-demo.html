@@ -10988,7 +10988,7 @@
           if (equipBtn) equipBtn.hidden = true;
           // Collection album grouped as IP → series: owned figures show their art,
           // un-obtained ones show the same figure GRAYED OUT + name as a collection
-          // target (no status label / count; a "Series complete" chip on full sets).
+          // target (no per-card status label; per-series progress + "Series complete").
           const owned = SHOP_ITEMS.pet.filter((p) => state.owned.has(p.id));
           if (grid) {
             if (!owned.length) {
@@ -11006,10 +11006,10 @@
               // Collection album: show ALL IPs (fixed family order) that have catalog
               // figures. Under the selected IP show ALL its series with EVERY figure —
               // owned ones in full colour, un-obtained ones grayed out (+ name) — so the
-              // collection goal is always visible (no numeric progress shown).
+              // collection goal + per-series progress (owned / total) are always visible.
               const ips = PET_IP_ORDER.filter((ip) => SHOP_ITEMS.pet.some((p) => p.ip === ip));
               if (!ips.includes(bagPetIp)) bagPetIp = ips[0];
-              // IP tabs show name only — no counts; each series shows its figures.
+              // IP tabs show name only — per-series collection progress lives below.
               const ipTabs = ips.map((ip) => {
                 return `<button type="button" class="bag-ip-tab ${ip === bagPetIp ? "on" : ""}" data-ip="${ip}">
                   <span class="bag-ip-emoji">${PET_IP_EMOJI[ip] || "🦖"}</span>
@@ -11047,7 +11047,7 @@
                 return `<div class="bag-series ${complete ? "is-complete" : ""}">
                   <div class="bag-series-head">
                     <span class="bag-series-name">${PET_SERIES_LABEL[s] || s}</span>
-                    ${complete ? `<span class="bag-series-count">✨ Series complete</span>` : ""}
+                    <span class="bag-series-count">${complete ? "✨ Series complete" : `${ownedN}/${figs.length}`}</span>
                   </div>
                   <div class="bag-series-grid">${cards}</div>
                 </div>`;
