@@ -6282,7 +6282,7 @@
           <button type="button" class="wb-close" id="btn-wb-close" aria-label="Close">✕</button>
           <div class="wb-card">
             <div class="wb-badge">One-time offer</div>
-            <h2 class="wb-title">Wait! Dino saved something special for you</h2>
+            <h2 class="wb-title">Dino saved something special for you</h2>
             <p class="wb-sub">A weekly plan at a special price — only while the timer runs.</p>
             <div class="wb-timer" id="wb-timer">
               <span class="wb-timer-label">Offer ends in</span>
@@ -11876,12 +11876,6 @@
       winbackReturnScreen = returnScreen || paywallReturnScreen || "screen-class";
       // Count this impression against its own touchpoint quota (≤1/day each).
       promoState[winbackEntry === "daily_offer" ? "lastDailyDay" : "lastWinbackDay"] = promoTodayKey();
-      // Scenario-specific headline: the "Wait!" hook only fits the save moment;
-      // the launch pop opens with a welcome-back frame instead.
-      const wbTitle = document.querySelector("#screen-winback .wb-title");
-      if (wbTitle) wbTitle.textContent = winbackEntry === "daily_offer"
-        ? "Welcome back! Dino saved a special price for you"
-        : "Wait! Dino saved something special for you";
       // Client-side countdown: starts at 15:00 on each pop (each touchpoint shows at
       // most once per day, so there is no re-enter case).
       winbackDeadline = Date.now() + 15 * 60 * 1000;
@@ -12459,7 +12453,7 @@
           demoState.promoGovernorOff = true;
           openWinback("cancel", "lock_lesson", "screen-class");
         } },
-      { label: "★ 每日启动折扣弹窗（同一张折扣页·Welcome back 场景文案）", run: function () {
+      { label: "★ 每日启动折扣弹窗（同一张折扣页·启动触发）", run: function () {
           profile.premiumUnlocked = false;
           promoState.lastWinbackDay = null; promoState.lastDailyDay = null; winbackDeadline = null;
           demoState.promoGovernorOff = true;
