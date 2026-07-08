@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Dino English — V1.4.0 UI Demo</title>
-  <!-- DESIGN.md · PRD V1.4.0 · builds on V1.3.2 (course up/down leveling — moved here from V1.3.2); baseline keeps portrait paywall · explore nudge · backpack figure IP/series · Kakao phone binding -->
+  <!-- DESIGN.md · PRD V1.4.0 · builds on V1.3.2 (win-back discount · year+month paywall · dino home guidance); baseline keeps portrait paywall · explore nudge · backpack figure IP/series · Kakao phone binding -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -5705,7 +5705,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.4.0 · 课程升降级（会员升要证明 · 降直切 / 免费试更简单 level）+ 转化链路优化（取消/返回 → 周卡限时折扣页 · 常规 Paywall 收敛年+月 · 每日启动折扣弹窗）— 详见右上 ⚙︎ States 的「1.4.0 变更」</p>
+  <p class="demo-bar">V1.4.0 · 转化链路优化（取消/返回 → 周卡限时折扣页 · 常规 Paywall 收敛年+月 · 每日启动折扣弹窗）+ Push 系统授权弹窗（启动进首页）+ 首页 Dino 任务引导 — 详见右上 ⚙︎ States 的「1.4.0 变更」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -6274,9 +6274,9 @@
 
       <!-- V1.4.0 转化链路优化: win-back 周卡限时折扣页. Shown when the user cancels the
            system pay sheet or backs out of the Paywall — governed by a promo frequency
-           cap (≤1/day · lifetime fatigue cap · never for paid users). Reuses pro_weekly
-           ($10.99) FRAMED with a strikethrough original ($15.99) + a REAL, non-resetting
-           15-min countdown that stops at 00:00. It is NOT a new SKU. -->
+           cap (≤1/day · never for paid users). Reuses pro_weekly ($10.99) FRAMED with a
+           strikethrough original + a client-side 15-min countdown that stops at 00:00
+           (page stays open; ✕ to leave). It is NOT a new SKU. -->
       <section class="screen wb" id="screen-winback">
         <div class="wb-scroll">
           <button type="button" class="wb-close" id="btn-wb-close" aria-label="Close">✕</button>
@@ -6363,6 +6363,15 @@
     .dl-box .dl-actions{display:flex;gap:10px}
     .dl-box .dl-actions button{width:auto;flex:1}
     .dl-box .dl-cancel{background:#eef2ef;color:#38463d}
+    /* V1.4.0: push permission — iOS system dialog mock (app launch → home) */
+    .pa-overlay{position:fixed;inset:0;z-index:99998;display:none;align-items:center;justify-content:center;background:rgba(20,30,26,.35)}
+    .pa-overlay.show{display:flex}
+    .pa-box{width:270px;background:rgba(250,250,250,.97);border-radius:14px;overflow:hidden;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3);font-family:-apple-system,"SF Pro Text","Helvetica Neue",Arial,sans-serif}
+    .pa-box h3{margin:18px 16px 6px;font-size:.95rem;font-weight:700;color:#111;line-height:1.35}
+    .pa-box p{margin:0 16px 16px;font-size:.78rem;line-height:1.45;color:#444}
+    .pa-actions{display:flex;border-top:1px solid #d4d4d6}
+    .pa-actions button{flex:1;border:none;background:transparent;padding:11px 0;font-size:.9rem;color:#0a7cff;cursor:pointer}
+    .pa-actions button + button{border-left:1px solid #d4d4d6;font-weight:700}
     /* Req1: portrait paywall */
     .pwpt{background:linear-gradient(180deg,#fef6ec 0%,#f4fbf6 38%,#ffffff 100%)}
     .pwpt-scroll{position:absolute;inset:0;overflow-y:auto;padding:0 20px}
@@ -7780,7 +7789,7 @@
           if (action === "use-stepper") {
             // Cross-level moves live on the adjacent-level banner (upgrade on current+1,
             // downgrade on current-1), not on individual lesson cards.
-            showPayToast("Use the banner at the top of this level to change level");
+            showPayToast("This level isn't in your current plan");
             return;
           }
           if (action === "try-level") {
@@ -8815,6 +8824,7 @@
       fillClassTab();
       setHubTab("class");
       showLandScreen("screen-class");
+      maybeAskPushAuth(); // V1.4.0: first arrival at home = launch → system push permission
     }
     // 方案二: All Courses is now reached from the Learning Path (map → "View lessons")
     // and shows ONE unit's lessons as the horizontal carousel — the weekly plan moved
@@ -8911,11 +8921,7 @@
       // Index of the unit the learner is currently on (only meaningful on the
       // current level; used to gate later units by the weekly schedule pace).
       const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
-      // V1.3.2: 升 / 降 banners sit on the ADJACENT level views — upgrade banner on
-      // current+1, downgrade banner on current-1 (both banner-style, kept separate).
-      // At most one applies to any given level, so we concatenate both.
-      const bannerHtml = renderUpgradeBanner(level) + renderDowngradeBanner(level);
-      unitsBox.innerHTML = bannerHtml + level.units.map((unit, ui) => {
+      unitsBox.innerHTML = level.units.map((unit, ui) => {
         const total = unit.lessons.length;
         const done = getUnitDoneCount(level.id, unit);
         const pct = Math.round((done / total) * 100);
@@ -9007,127 +9013,6 @@
       unitsBox.querySelectorAll("[data-premium-unit]").forEach((btn) => {
         btn.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "lock_lesson"));
       });
-      // V1.3.2: dual-direction level stepper (top of current level).
-      // ↑ Level up: free → placement trial (re-定级 → 学习计划 → Paywall); member →
-      //   level-up check (升要证明：达标才升、永不降).
-      unitsBox.querySelector("[data-step-up]")?.addEventListener("click", (e) => {
-        const lvl = e.currentTarget.dataset.stepUp;
-        if (!profile.premiumUnlocked) { startPlacementTrial(lvl); return; }
-        startLevelUpTrial(lvl);
-      });
-      // ↓ Too hard: member → direct switch (no trial); free → easier placement trial.
-      unitsBox.querySelector("[data-step-down]")?.addEventListener("click", (e) => {
-        startDowngrade(e.currentTarget.dataset.stepDown);
-      });
-      // ↑ Back up: member returning to a validated level they voluntarily left → direct
-      //   switch (no trial), with the same scheduling-timing confirm as any plan switch.
-      unitsBox.querySelector("[data-step-up-back]")?.addEventListener("click", (e) => {
-        const lvl = e.currentTarget.dataset.stepUpBack;
-        confirmPlanSwitch(lvl, function () { applyMemberDowngrade(lvl); });
-      });
-      // ↑ that level's trial is already consumed → View report.
-      //   • Member who PASSED but didn't confirm → reopen the level-up report so
-      //     "Level up my plan" is still available (confirm the upgrade later).
-      //   • Otherwise → reopen the placement report (reflects current best-fit).
-      unitsBox.querySelector("[data-step-report]")?.addEventListener("click", (e) => {
-        const lvl = e.currentTarget.dataset.stepReport;
-        if (profile.premiumUnlocked && levelUpPassedUnconfirmed.has(lvl)) {
-          levelUpSavedState = {
-            levelId: profile.currentLevelId,
-            unitId: profile.currentUnitId,
-            lessonId: profile.currentLessonId,
-            hasStartedClass: profile.hasStartedClass,
-            trialReportShown: profile.trialReportShown,
-          };
-          levelUpTargetLevelId = lvl;
-          levelUpInProgress = true;
-          demoState.levelUpResult = "up"; // reflect the remembered pass
-          trialReportMode = "levelup";
-          showTrialReport();
-          return;
-        }
-        trialReportMode = "trial"; showTrialReport();
-      });
-    }
-    // V1.3.2: 升 / 降 are two SEPARATE banners living on the ADJACENT level views —
-    // both banner-style (consistent), but NOT merged into one level:
-    //   • Upgrade banner   → shown when browsing current+1 (the next level up).
-    //   • Downgrade banner → shown when browsing current-1 (the next level down).
-    // Only one can ever apply to a given level, so renderCourseMap concatenates both.
-
-    // ↑ Upgrade banner — top of the current+1 level's Learning Path.
-    //   free = placement trial · member = level-up check (升要证明：达标才升、永不降)。
-    //   Already consumed → View report (reflects the current best-fit level).
-    function renderUpgradeBanner(level) {
-      const curOrder = levelOrderOf(profile.currentLevelId);
-      const selOrder = levelOrderOf(level.id);
-      // maxReached = highest level ever reached (placement, level-up pass, or natural
-      // progression); it's the ceiling for direct switch-back (≤ maxReached = no re-trial).
-      const maxOrder = levelOrderOf(profile.maxReachedLevelId || profile.placementLevelId || profile.currentLevelId);
-      if (selOrder !== curOrder + 1) return ""; // only the adjacent higher level
-      const upLabel = level.label;
-      let row;
-      if (profile.premiumUnlocked && selOrder <= maxOrder) {
-        // Member returning to a level they've ALREADY reached — either one they left
-        // voluntarily, or a brand-new higher level they just PASSED the check for
-        // (passing lifts the reached ceiling, see renderLevelUpReport). Either way it's
-        // a direct plan switch (no trial), symmetric with the downgrade switch.
-        row = `
-            <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready to switch?</b><span>Switch your plan to ${upLabel}.</span></div>
-              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up-back="${level.id}">Switch to ${upLabel}</button>
-            </div>`;
-      } else if (isTrialConsumed(level.id)) {
-        // New higher level whose check was already taken but NOT passed → review only.
-        row = `
-            <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>You've already tried ${upLabel}</b><span>That trial is folded into your current plan — take a look back.</span></div>
-              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-report="${level.id}">View report</button>
-            </div>`;
-      } else {
-        // New higher level, not yet tried. Member = level-up check; free = placement trial.
-        const upSub = profile.premiumUnlocked
-          ? `Try a trial lesson — we'll set your plan based on how you do.`
-          : `Try the ${upLabel} lesson — see how it fits.`;
-        row = `
-            <div class="cm-stepper-row cm-stepper-row--up">
-              <div class="cm-stepper-copy"><b>Ready for the next level?</b><span>${upSub}</span></div>
-              <button type="button" class="cm-stepper-cta cm-stepper-cta--up" data-step-up="${level.id}">Try ${upLabel}</button>
-            </div>`;
-      }
-      return `<div class="cm-stepper" data-upgrade-banner>${row}</div>`;
-    }
-
-    // ↓ Downgrade banner — top of the current-1 level's Learning Path.
-    //   Shown while at or below the validated placement level (current ≤ placement, i.e.
-    //   the learner hasn't naturally progressed ABOVE placement — where current-1 would
-    //   be a Completed/review level). This keeps the downgrade path available even after
-    //   a voluntary switch-down (so a learner can keep going lower).
-    //   member = direct switch (no trial) · free = easier placement trial
-    //   (free also needs that easier trial unconsumed — can't re-take).
-    function renderDowngradeBanner(level) {
-      const curOrder = levelOrderOf(profile.currentLevelId);
-      const selOrder = levelOrderOf(level.id);
-      const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
-      if (selOrder !== curOrder - 1) return ""; // only the adjacent lower level
-      if (curOrder > placeOrder) return ""; // progressed above placement → lower is review
-      if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
-      const downLabel = level.label;
-      // Identity-aware sub-copy: members have a running plan to switch DOWN; free users
-      // have no running plan, so their downgrade reads as "try the easier lesson"
-      // (→ right-fit report → Paywall), not "switch your study plan".
-      const sub = profile.premiumUnlocked
-        ? `Switch your plan to ${downLabel}.`
-        : `Try the ${downLabel} lesson — see how it fits.`;
-      const btnLabel = profile.premiumUnlocked ? `Switch to ${downLabel}` : `Try ${downLabel}`;
-      // Member direct-switch banners share one headline (up-back & down) for consistency;
-      // free users keep the empathetic "Feeling too hard?" on the easier-trial path.
-      const downTitle = profile.premiumUnlocked ? `Ready to switch?` : `Feeling too hard?`;
-      return `<div class="cm-stepper" data-downgrade-banner>
-            <div class="cm-stepper-row cm-stepper-row--down">
-              <div class="cm-stepper-copy"><b>${downTitle}</b><span>${sub}</span></div>
-              <button type="button" class="cm-stepper-cta cm-stepper-cta--down" data-step-down="${level.id}">${btnLabel}</button>
-            </div></div>`;
     }
     function showCourseMap() {
       // Open the switcher on the level currently being browsed (falls back to current).
@@ -11554,6 +11439,34 @@
       $("#login-chips").innerHTML = chips.map((c) => `<span>${c}</span>`).join("");
     }
 
+    // V1.4.0 Push 授权：App 启动进入首页后直接触发系统授权弹窗（demo 用 iOS 样式 mock）。
+    // Allow = 上报 token、可接收推送；Don't Allow = 记为不可触达（demo 中两者均只关闭弹窗）。
+    let pushAuthAsked = false;
+    function maybeAskPushAuth(force) {
+      if (pushAuthAsked && !force) return;
+      pushAuthAsked = true;
+      let ov = document.getElementById("pa-overlay");
+      if (!ov) {
+        ov = document.createElement("div");
+        ov.className = "pa-overlay";
+        ov.id = "pa-overlay";
+        ov.innerHTML = `
+          <div class="pa-box">
+            <h3>“Dino English” Would Like to Send You Notifications</h3>
+            <p>Notifications may include alerts, sounds, and icon badges. These can be configured in Settings.</p>
+            <div class="pa-actions">
+              <button type="button" id="pa-deny">Don&rsquo;t Allow</button>
+              <button type="button" id="pa-allow">Allow</button>
+            </div>
+          </div>`;
+        document.body.appendChild(ov);
+        ov.addEventListener("click", (e) => {
+          if (e.target.id === "pa-deny" || e.target.id === "pa-allow") ov.classList.remove("show");
+        });
+      }
+      ov.classList.add("show");
+    }
+
     let loadingTimer = null;
     function startLoadingSequence(options = {}) {
       const afterComplete = options.afterComplete || "login";
@@ -11925,15 +11838,14 @@
     }
 
     // ===== V1.4.0 转化链路优化: promo frequency governor + win-back discount page =====
-    // The governor caps promo interruptions: ≤1 win-back per day, a lifetime fatigue
-    // cap, and never for paid users. Demo-only in-memory state (a real build reads the
-    // server fields last_promo_ts / promo_lifetime_count / is_paid).
-    const WINBACK_LIFETIME_CAP = 3;
-    const promoState = { lastShownDay: null, lifetimeCount: 0 };
+    // The governor caps promo interruptions: ≤1 win-back per day, never for paid
+    // users. Demo-only in-memory state (a real build reads the server fields
+    // last_promo_ts / is_paid).
+    const promoState = { lastShownDay: null };
     let winbackReturnScreen = "screen-class";
     let winbackEntry = "cancel";   // cancel · paywall_close · daily_offer
-    let winbackOrigin = "course";  // the original trigger_source that opened the Paywall
-    let winbackDeadline = null;    // real, non-resetting expiry timestamp
+    let winbackOrigin = "course";  // the paywall entry that opened the Paywall
+    let winbackDeadline = null;    // countdown deadline, set on each pop
     let winbackTimer = null;
 
     function promoTodayKey() { return new Date().toISOString().slice(0, 10); }
@@ -11942,7 +11854,6 @@
       if (profile.premiumUnlocked) return false;                        // paid: never
       if (demoState.promoGovernorOff) return true;                      // ⚙︎ States override
       if (promoState.lastShownDay === promoTodayKey()) return false;    // ≤1/day
-      if (promoState.lifetimeCount >= WINBACK_LIFETIME_CAP) return false; // fatigue cap
       return true;
     }
 
@@ -11958,14 +11869,11 @@
       winbackEntry = entry || "cancel";
       winbackOrigin = origin || "course";
       winbackReturnScreen = returnScreen || paywallReturnScreen || "screen-class";
-      // Count this impression against the governor (1/day + lifetime fatigue).
+      // Count this impression against the governor (≤1/day).
       promoState.lastShownDay = promoTodayKey();
-      promoState.lifetimeCount += 1;
-      // Real, non-resetting 15-min countdown: set the deadline ONCE; reopening keeps
-      // counting down against the same timestamp (no fake reset).
-      if (!winbackDeadline || winbackDeadline < Date.now()) {
-        winbackDeadline = Date.now() + 15 * 60 * 1000;
-      }
+      // Client-side countdown: starts at 15:00 on each pop (the page shows at most
+      // once per day, so there is no re-enter case).
+      winbackDeadline = Date.now() + 15 * 60 * 1000;
       profile.selectedPlan = "weekly"; // the win-back sells the weekly plan
       $("#wb-timer")?.classList.remove("is-ended");
       enterPortrait();
@@ -11985,11 +11893,8 @@
         if (ms <= 0) {
           stopWinbackCountdown();
           timerBox?.classList.add("is-ended");
-          // Auto-close at 00:00 — stop the offer and return to the trigger page
-          // (stays at 00:00 briefly, then dismisses; no fake reset, no re-show today).
-          setTimeout(() => {
-            if ($("#screen-winback")?.classList.contains("active")) dismissWinback("countdown_end");
-          }, 900);
+          // Stays at 00:00 — the page does not auto-close; subscribe / restore stay
+          // available, and the user leaves via ✕ (back to the trigger page).
         }
       };
       if (winbackTimer) clearInterval(winbackTimer);
@@ -12001,7 +11906,7 @@
       if (winbackTimer) { clearInterval(winbackTimer); winbackTimer = null; }
     }
 
-    function dismissWinback() { // reason: close · countdown_end (attribution only)
+    function dismissWinback() { // close via ✕ → back to the trigger page
       stopWinbackCountdown();
       enterLandscape();
       showLandScreen(winbackReturnScreen || "screen-class");
@@ -12027,8 +11932,8 @@
     }
 
     // Daily soft offer: on each app launch, pop the SAME weekly-discount page once
-    // (post-trial free users only, governed ≤1/day + lifetime cap; paid = never).
-    // No persistent banner — the countdown is real and only starts on the launch pop.
+    // (free users who finished ≥1 trial lesson, governed ≤1/day; paid = never).
+    // No persistent banner — the countdown only starts on the launch pop.
     function maybeShowDailyOfferOnLaunch() {
       const eligible = !profile.premiumUnlocked && profile.trialReportShown && canShowWinback();
       if (!eligible) return false;
@@ -12528,24 +12433,17 @@
       { label: "Paywall",    run: function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
       { label: "会员中心",    run: function () { enterLandscape(); showLandScreen("screen-membership"); } },
     ],
-    // V1.4.0 变更专用快捷入口：只放本期改动（课程升降级 + 转化链路优化），直达关键状态方便评审。
+    // V1.4.0 变更专用快捷入口：只放本期改动（转化链路优化 + 首页 Dino 任务引导），直达关键状态方便评审。
     jumps131Label: "1.4.0 变更",
     jumps131: [
-      { label: "★ 升 / 降级横幅（本期新增·上方切会员·等级查看）", run: function () {
-          // V1.4.0 新增：整个升/降级状态的入口。落到 placement level 的 Level·Unit map，
-          // 用顶部控制（会员状态 / 定级起始 Level）+ 点 level chip 查看 current-1 的降级横幅
-          // 或 current+1 的升级横幅（会员 / 免费、已上过 / 未上过均可从这里到达）。
-          profile.placementLevelId = "level-2"; profile.maxReachedLevelId = "level-2"; profile.currentLevelId = "level-2";
-          profile.currentUnitId = "unit-1"; profile.currentLessonId = "lesson-1";
-          profile.level = levelCefrLabel("level-2");
-          refreshUnlockState(); enterLandscape(); showCourseMap();
-          courseMapLevelId = "level-1"; renderCourseMap(); // 选相邻低档→降级横幅；点 L3 看升级横幅
+      { label: "★ Push 系统授权弹窗（本期新增·启动进首页后）", run: function () {
+          enterLandscape(); showClassHome(); maybeAskPushAuth(true);
         } },
       { label: "★ 周卡限时折扣页 win-back（本期新增·取消/返回挽留 / 每日启动弹出，同一张折扣页）", run: function () {
           // V1.4.0 转化链路优化：取消支付 / 返回 Paywall 挽留、以及每日启动弹出，都拉起同一张
-          // 周卡折扣页。评审入口放开频控，可反复打开（真实链路受「每日 1 次 + 疲劳上限 + 付费不出」约束）。
+          // 周卡折扣页。评审入口放开频控，可反复打开（真实链路受「每日 1 次 + 付费不出」约束）。
           profile.premiumUnlocked = false;
-          promoState.lastShownDay = null; promoState.lifetimeCount = 0; winbackDeadline = null;
+          promoState.lastShownDay = null; winbackDeadline = null;
           demoState.promoGovernorOff = true;
           openWinback("cancel", "lock_lesson", "screen-class");
         } },
