@@ -1397,7 +1397,7 @@
   <div class="demo-layout">
     <div class="demo-primary">
   <p class="demo-badge">
-    <strong>Build 2026-05-14-c</strong> — FM / 播放器已换成与登录页一致的 <strong>Dino 薄荷绿主题</strong>（稿面为解释性还原）。要与 Stitch 像素一致，请从画布导出 PNG 发我或标间距/字号。
+    <strong>Build 2026-05-14-c</strong> — Radio / 播放器已换成与登录页一致的 <strong>Dino 薄荷绿主题</strong>（稿面为解释性还原）。要与 Stitch 像素一致，请从画布导出 PNG 发我或标间距/字号。
     <label class="stitch-ref-toggle"><input type="checkbox" id="toggle-stitch-ref" /> Stitch ref</label>
   </p>
 
@@ -1454,11 +1454,11 @@
         <nav class="rail-nav" aria-label="Primary">
           <button type="button" class="rail-tab active" data-tab="fm" aria-current="page">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10v4a2 2 0 002 2h2M4 10V8a2 2 0 012-2h12a2 2 0 012 2v2M4 10h16M20 10v4a2 2 0 01-2 2h-2"/><circle cx="12" cy="14" r="2"/></svg>
-            FM
+            Radio
           </button>
           <button type="button" class="rail-tab" data-tab="words">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>
-            Words
+            Practice
           </button>
           <button type="button" class="rail-tab" data-tab="mine">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-1a4 4 0 014-4h4a4 4 0 014 4v1"/></svg>
@@ -1472,12 +1472,12 @@
               <div class="fm-hero-row" aria-hidden="false">
                 <div class="fm-hero-mascot">🦕</div>
                 <div>
-                  <p class="fm-hero-kicker">Dino FM</p>
+                  <p class="fm-hero-kicker">Dino Radio</p>
                   <p class="fm-hero-line">Listen forward — little stories, big English.</p>
                 </div>
               </div>
               <div class="fm-toolbar">
-                <h2>FM</h2>
+                <h2>Radio</h2>
                 <div class="search-m3" role="search">
                   <span aria-hidden="true" style="opacity:.55">🔍</span>
                   <input type="search" placeholder="Search titles…" autocomplete="off" />
@@ -1515,7 +1515,7 @@
 
             <div class="main-panel" id="panel-words">
               <div class="fm-toolbar">
-                <h2 id="words-toolbar-title">Words</h2>
+                <h2 id="words-toolbar-title">Practice</h2>
                 <div style="flex:1"></div>
               </div>
               <p class="fm-sub" id="words-panel-desc">Switch level, pick a lesson, then listen and tap the matching picture.</p>
@@ -1642,7 +1642,7 @@
     <div class="modal-backdrop" id="modal-logout" aria-hidden="true">
       <div class="modal-sheet" role="dialog" aria-labelledby="logout-title">
         <h3 id="logout-title">Log out?</h3>
-        <p>You’ll need to sign in again to access FM, Words, and your profile.</p>
+        <p>You’ll need to sign in again to access Radio, Practice, and your profile.</p>
         <div class="modal-actions">
           <button type="button" id="modal-cancel">Cancel</button>
           <button type="button" class="danger" id="modal-confirm">Log out</button>
@@ -2164,7 +2164,7 @@
     function showWordsListView() {
       wordsGame = null;
       wordsSelectedLevelIdx = 0;
-      $("#words-toolbar-title").textContent = "Words";
+      $("#words-toolbar-title").textContent = "Practice";
       $("#words-panel-desc").textContent =
         "Switch level, pick a lesson, then listen and tap the matching picture.";
       renderWordsLevelTabs();

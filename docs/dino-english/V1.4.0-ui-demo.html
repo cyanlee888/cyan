@@ -6301,6 +6301,7 @@
             </div>
             <button type="button" class="btn btn-primary wb-cta" id="btn-wb-subscribe">Claim my discount</button>
             <p class="wb-legal">
+              <button type="button" class="wb-restore" id="btn-wb-restore">Restore</button> ·
               <span>Cancel anytime</span> ·
               <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms</a> ·
               <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy</a>
@@ -6426,7 +6427,8 @@
     .wb-plan-orig{font-size:.85rem;color:#9aa5a0;text-decoration:line-through;font-weight:600}
     .wb-plan-now{font-size:1.35rem;font-weight:900;color:#16241c;line-height:1.1;font-family:var(--display,"Sora");white-space:nowrap}
     .wb-plan-now small{font-size:.7rem;font-weight:600;color:#8a958d;margin-left:2px}
-    .wb-cta{width:100%;max-width:320px;font-size:1rem;padding:15px;margin:14px auto 10px;white-space:nowrap}
+    .wb-cta{width:100%;max-width:320px;font-size:1rem;padding:15px;margin:14px auto 4px;white-space:nowrap}
+    .wb-restore{border:none;background:transparent;color:#8a958d;font-size:.7rem;font-weight:600;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline}
     .wb-legal{margin:6px 0 0;font-size:.7rem;color:#a7b0aa}
     .wb-legal a{color:#8a958d}
   </style>
@@ -12017,6 +12019,13 @@
       showPayToast("Premium unlocked 🎉");
     }
 
+    function winbackRestore() { // restore an existing purchase from the discount page
+      stopWinbackCountdown();
+      restorePurchase();
+      enterLandscape();
+      showLandScreen(winbackReturnScreen || "screen-class");
+    }
+
     // Daily soft offer: on each app launch, pop the SAME weekly-discount page once
     // (post-trial free users only, governed ≤1/day + lifetime cap; paid = never).
     // No persistent banner — the countdown is real and only starts on the launch pop.
@@ -12029,6 +12038,7 @@
 
     $("#btn-wb-close")?.addEventListener("click", () => dismissWinback("close"));
     $("#btn-wb-subscribe")?.addEventListener("click", winbackSubscribe);
+    $("#btn-wb-restore")?.addEventListener("click", winbackRestore);
 
     function restorePurchase() {
       profile.premiumUnlocked = true;

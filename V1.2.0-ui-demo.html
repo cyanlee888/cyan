@@ -205,6 +205,7 @@
       color: var(--forest-mid);
       min-height: 46px;
     }
+    .btn-text-link { color: var(--forest-mid); font-weight: 700; }
     .btn-oauth {
       background: var(--surface-elevated);
       border: 1.5px solid var(--border);
@@ -3940,6 +3941,32 @@
     /* ---------- Purchase toast (V1.2.0) ---------- */
     .pay-toast { position: absolute; left: 50%; bottom: 30px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #143a5e; color: #fff; font-size: 0.86rem; font-weight: 700; padding: 12px 20px; border-radius: 999px; box-shadow: 0 14px 30px rgba(20,58,94,.4); transition: .3s ease; z-index: 50; }
     .pay-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ---------- Demo state panel (V1.2.0 review tool) ---------- */
+    .statepanel { position: fixed; right: 14px; top: 14px; z-index: 9999; font-family: inherit; text-align: right; }
+    .statepanel-toggle { background: #143a5e; color: #fff; border: none; border-radius: 999px; padding: 9px 14px; font-size: .8rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 24px rgba(20,58,94,.35); }
+    .statepanel-body { display: none; margin-top: 8px; width: 248px; max-height: 80vh; overflow-y: auto; text-align: left; background: #fff; border: 1px solid #d9e6ef; border-radius: 14px; padding: 12px 12px 14px; box-shadow: 0 18px 40px rgba(20,58,94,.22); }
+    .statepanel.open .statepanel-body { display: block; }
+    .statepanel.open .statepanel-toggle { background: #0e2c47; }
+    .sp-ctx { margin: 0 0 7px; padding-bottom: 7px; border-bottom: 1px solid #eef3f7; font-size: .74rem; color: #143a5e; }
+    .sp-ctx b { font-weight: 800; }
+    .sp-empty { margin: 6px 0 10px; font-size: .72rem; line-height: 1.5; color: #6b8197; }
+    .sp-note { margin: 0 0 10px; font-size: .68rem; line-height: 1.45; color: #6b8197; }
+    .sp-group { margin-bottom: 11px; }
+    .sp-group > p { margin: 0 0 5px; font-size: .72rem; font-weight: 700; color: #143a5e; }
+    .sp-seg { display: flex; flex-wrap: wrap; gap: 5px; }
+    .sp-seg button { flex: 1 1 auto; min-width: 58px; border: 1px solid #cdddea; background: #f3f8fc; color: #355; border-radius: 8px; padding: 6px 8px; font-size: .7rem; font-weight: 600; cursor: pointer; }
+    .sp-seg button.on { background: #2D6B45; border-color: #2D6B45; color: #fff; }
+    .sp-jumps-wrap { margin-top: 4px; padding-top: 10px; border-top: 1px solid #eef3f7; }
+    .sp-jumps-label { margin: 0 0 6px; font-size: .72rem; font-weight: 700; color: #143a5e; }
+    .sp-jumps { display: flex; flex-wrap: wrap; gap: 6px; }
+    .sp-jump { flex: 1 1 auto; min-width: 64px; border: 1px dashed #cdddea; background: #fff; color: #143a5e; border-radius: 8px; padding: 7px 8px; font-size: .72rem; font-weight: 700; cursor: pointer; }
+    .sp-jump:hover { background: #f3f8fc; }
+    /* Paywall inline notice + load error (V1.2.0) */
+    .pw-notice { margin: 8px 0 0; font-size: .8rem; font-weight: 600; color: #c0392b; }
+    .pw-load-error { background: #fff; border: 1px solid #f1d3cf; border-radius: 14px; padding: 18px 16px; text-align: center; }
+    .pw-load-error p { margin: 0 0 12px; font-size: .86rem; color: #c0392b; font-weight: 600; }
+    .pw-try-again { border: none; background: #143a5e; color: #fff; border-radius: 10px; padding: 9px 18px; font-size: .82rem; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -3954,12 +3981,12 @@
         </div>
         <div class="welcome-copy">
           <div class="logo">Dino English</div>
-          <h1 class="title" style="font-size:1.12rem">Meet Your Exclusive AI English Teacher</h1>
-          <p class="sub">Boost your child's English skills anytime, anywhere.</p>
+          <h1 class="title" style="font-size:1.12rem">Meet Your Personal AI English Teacher</h1>
+          <p class="sub">Learn English anytime, anywhere.</p>
         </div>
         <div class="foot-actions welcome-foot">
           <button type="button" class="btn btn-primary" id="btn-get-started">Get Started</button>
-          <button type="button" class="btn btn-text" id="btn-has-account-welcome">I have an account</button>
+          <button type="button" class="btn btn-text" id="btn-has-account-welcome">Already have an account? <span class="btn-text-link">Log in</span></button>
         </div>
       </section>
 
@@ -3971,7 +3998,7 @@
         <div class="scroll-body dino-guide">
           <div class="dino-wrap" id="dino-purpose"></div>
           <div class="speech-bubble">
-            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to understand your <strong>goals and preferences</strong>.</p>
+            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong> for your learning.</p>
           </div>
         </div>
         <div class="foot-actions">
@@ -3987,7 +4014,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
           <h1 class="title">Who's learning?</h1>
-          <p class="hint">We'll personalize lessons based on who's learning.</p>
+          <p class="hint">We'll personalize the learning plan for the learner.</p>
           <div class="option-list" id="who-options"></div>
         </div>
         <div class="foot-actions">
@@ -4002,13 +4029,17 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your child's name?</h1>
-          <p class="hint">We will call you by this name.</p>
-          <input type="text" class="name-field" id="input-name" placeholder="Your child's name" autocomplete="name" maxlength="32" />
+          <h1 class="title">What should we call your child?</h1>
+          <p class="hint">We'll use this name in lessons.</p>
+          <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="32" />
           <div class="name-suggest-row" id="name-suggest-row">
             <span class="name-suggest-label">Try one:</span>
             <button type="button" class="name-suggest" data-name="Ethan">Ethan</button>
+            <button type="button" class="name-suggest" data-name="Liam">Liam</button>
+            <button type="button" class="name-suggest" data-name="Noah">Noah</button>
             <button type="button" class="name-suggest" data-name="Emma">Emma</button>
+            <button type="button" class="name-suggest" data-name="Olivia">Olivia</button>
+            <button type="button" class="name-suggest" data-name="Mia">Mia</button>
           </div>
         </div>
         <div class="foot-actions">
@@ -4024,7 +4055,7 @@
         <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
-          <p class="hint">This helps us create a proper account for you and your child.</p>
+          <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
           <div class="option-list" id="age-options"></div>
         </div>
       </section>
@@ -4054,8 +4085,8 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your child's current level?</h1>
-          <p class="hint">We'll pick a comfortable starting point.</p>
+          <h1 class="title">How would you describe your child's current English level?</h1>
+          <p class="hint">We'll recommend the starting point that best fits your child.</p>
           <div class="option-list" id="level-options"></div>
         </div>
       </section>
@@ -4067,8 +4098,8 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
-          <h1 class="title">What's your child's main goal right now?</h1>
-          <p class="hint">We'll recommend the first lesson based on this.</p>
+          <h1 class="title">What's your child's main learning goal right now?</h1>
+          <p class="hint">We'll use this to recommend the best first lesson for your child.</p>
           <div class="option-list" id="goal-options"></div>
         </div>
         <div class="foot-actions">
@@ -4118,7 +4149,7 @@
           <div class="illo-slot" id="illo-login"></div>
           <div class="logo">Dino English</div>
           <div class="chip-row" id="login-chips"></div>
-          <p class="login-dynamic" id="login-dynamic">Save your plan and continue</p>
+          <p class="login-dynamic" id="login-dynamic">Log in to continue</p>
           <div class="login-oauth-stack">
             <button type="button" class="btn btn-oauth" id="btn-login-apple">
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path fill="currentColor" d="M14.94 9.54c-.02-2.13 1.74-3.15 1.82-3.2-1-.46-2.03-.78-2.92-.8-1.24-.13-2.42.73-3.05.73-.64 0-1.62-.71-2.66-.69-1.37.02-2.63.8-3.33 2.03-1.42 2.47-.36 6.12 1.02 8.13.68.98 1.48 2.08 2.54 2.04 1.02-.04 1.4-.66 2.63-.66 1.23 0 1.57.66 2.65.64 1.09-.02 1.78-.99 2.44-1.97.77-1.12 1.09-2.2 1.11-2.26-.02-.01-2.13-.82-2.15-3.24zM12.5 2.89c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-1 1.59-.88 2.53.93.07 1.88-.47 2.43-1.16z"/></svg>
@@ -4133,7 +4164,7 @@
         <div class="foot-actions">
           <p class="login-portrait-legal">
             You agree to our
-            <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Use</a>
+            <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
             and
             <a href="docs/legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
           </p>
@@ -4158,6 +4189,15 @@
           </div>
         </div>
       </div>
+      <div class="pd-confirm-overlay" id="multi-acct-overlay" hidden>
+        <div class="pd-confirm-box">
+          <p class="pd-confirm-title">Subscription already in use</p>
+          <p class="pd-confirm-desc">This account already has an active subscription. Please log in with the account that owns it.</p>
+          <div class="pd-confirm-actions">
+            <button type="button" class="btn btn-primary" id="multi-acct-ok">OK</button>
+          </div>
+        </div>
+      </div>
       <section class="screen active" id="screen-login-landscape">
         <div class="login-land-scene">
           <div class="login-land-bg" aria-hidden="true">
@@ -4172,11 +4212,11 @@
             <div class="login-land-actions">
               <button type="button" class="btn btn-oauth" id="btn-login-apple-land">
                 <img src="assets/login/icon-apple.svg" alt="" width="24" height="24" decoding="async" />
-                Sign in with Apple
+                Continue with Apple
               </button>
               <button type="button" class="btn btn-oauth" id="btn-login-google-land">
                 <img src="assets/login/icon-google.svg" alt="" width="24" height="24" decoding="async" />
-                Sign in with Google
+                Continue with Google
               </button>
             </div>
             <p class="login-land-legal">
@@ -4191,7 +4231,7 @@
       <section class="screen" id="screen-teacher">
         <div class="land-body teacher-pick">
           <div class="teacher-intro">
-            <h2 id="teacher-guide-h1">Your first class is ready</h2>
+            <h2 id="teacher-guide-h1">Your first lesson is ready</h2>
             <p id="teacher-guide-h2">Choose a teacher and start learning now.</p>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
@@ -4465,7 +4505,7 @@
               <span class="pw-kicker">Dino Premium</span>
               <h2 class="pw-title" id="pw-title">Unlock the FULL learning experience!</h2>
               <ul class="pw-benefits">
-                <li>Unlimited AI speaking lessons</li>
+                <li>All AI speaking lessons</li>
                 <li>Full vocabulary practice</li>
                 <li>All FM stories &amp; songs</li>
                 <li>Progress report after every lesson</li>
@@ -4473,8 +4513,9 @@
             </div>
             <div class="pw-right">
               <div class="pw-plans" id="pw-plans"></div>
-              <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
-              <p class="pw-legal">
+            <button type="button" class="btn btn-primary pw-cta" id="btn-paywall-purchase">Subscribe now</button>
+            <p class="pw-notice" id="pw-notice" hidden></p>
+            <p class="pw-legal">
                 <span class="pw-renewal">Auto-renews · cancel anytime</span> ·
                 <a href="docs/legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a>
                 ·
@@ -4496,7 +4537,7 @@
             <div class="ms-benefits">
               <p class="ms-benefits-title">Premium includes</p>
               <ul class="ms-benefits-list">
-                <li>Unlimited AI speaking lessons</li>
+                <li>All AI speaking lessons</li>
                 <li>Full vocabulary practice</li>
                 <li>All FM stories &amp; songs</li>
                 <li>Progress report after every lesson</li>
@@ -4540,6 +4581,8 @@
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
     let teacherFlowMode = "onboarding";
+    // Demo-only mock switches driven by the state panel (review tool). Not shipped.
+    const mock = { account: "new", payResult: "success", payLoad: "normal", restoreResult: "success" };
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
     // (simulates a new account / register). Show Dino's purpose page first,
@@ -5044,7 +5087,7 @@
       const isAppMode = teacherFlowMode === "app";
       $("#teacher-guide-h1").textContent = isAppMode
         ? "Switch teacher"
-        : (name ? `${name}, your first class is ready` : "Your first class is ready");
+        : (name ? `${name}, your first lesson is ready` : "Your first lesson is ready");
       $("#teacher-guide-h2").textContent = isAppMode
         ? "Pick the teacher you'd like to keep learning with."
         : "Choose a teacher and start learning now.";
@@ -5062,6 +5105,17 @@
       startLoadingSequence({ afterComplete: "teacher", clearPostLoginInfo: true });
     }
     function onLoginSuccess() {
+      // Existing account (state panel = "老账号"): ignore local temp profile,
+      // show "Welcome back!" then land on Class home — no merge / no collection.
+      if (mock.account === "existing") {
+        profile.profileComplete = true;
+        profile.hasStartedClass = true;
+        enterLandscape();
+        showClassHome();
+        const wb = $("#wb-overlay");
+        if (wb) wb.hidden = false;
+        return;
+      }
       // New account with no profile yet (entered via "I already have an account"
       // but never went through Onboarding) → force questions-only info collection
       // after Dino's purpose page, then show a personalized Loading before teacher pick.
@@ -5525,32 +5579,40 @@
     ];
     // Level labels are neutral noun-phrases so they read naturally in both the
     // parent ("your child's level") and self ("your level") voice.
-    const LEVELS = ["Beginner (just starting)", "Basic (know few words)", "Intermediate (say simple sentences)", "Advanced (speaks with confidence)"];
+    const LEVELS = ["Beginner — Just starting out", "Basic — Know a few words and phrases", "Intermediate — Can say simple sentences", "Advanced — Can communicate with confidence"];
     // Goal labels stay neutral and cover both kids (speak confidently / school
     // English / make learning fun) and self-learners (daily conversation / travel
     // / exam). Same ids/data structure as before.
     const GOALS = [
       { id: "speak_confidence", label: "Speak with confidence" },
-      { id: "school_exam", label: "Do better in school" },
+      { id: "school_exam", label: "Improve English for school" },
       { id: "structured_progress", label: "Follow a clear learning path" },
-      { id: "daily_communication", label: "Daily conversation & travel" },
-      { id: "listening_habit", label: "Build an easy daily habit" },
+      { id: "daily_communication", label: "Use English in daily life and travel" },
+      { id: "listening_habit", label: "Build a consistent learning habit" },
     ];
     // Question titles fork by the "Who's learning?" choice, not by age.
     const VOICE_WORDING = {
       child: {
-        nameTitle: "What's your child's name?",
-        namePlaceholder: "Your child's name",
+        nameTitle: "What should we call your child?",
+        nameHint: "We'll use this name in lessons.",
+        namePlaceholder: "Your child's name or nickname",
         ageTitle: "How old is your child?",
-        levelTitle: "What's your child's current level?",
-        goalTitle: "What's your child's main goal right now?",
+        ageHint: "This helps us recommend the right starting level and lessons for your child.",
+        levelTitle: "How would you describe your child's current English level?",
+        levelHint: "We'll recommend the starting point that best fits your child.",
+        goalTitle: "What's your child's main learning goal right now?",
+        goalHint: "We'll use this to recommend the best first lesson for your child.",
       },
       self: {
-        nameTitle: "What's your name?",
+        nameTitle: "What should we call you?",
+        nameHint: "We'll use this name in your lessons.",
         namePlaceholder: "Your name",
         ageTitle: "How old are you?",
-        levelTitle: "What's your current level?",
-        goalTitle: "What's your main goal right now?",
+        ageHint: "This helps us recommend the right starting level and lessons for you.",
+        levelTitle: "How would you describe your current English level?",
+        levelHint: "We'll recommend the starting point that best fits you.",
+        goalTitle: "What's your main learning goal right now?",
+        goalHint: "We'll use this to recommend the best first lesson for you.",
       },
     };
     // Age is collected for tone/analytics and future grading only. This version
@@ -5580,16 +5642,16 @@
         self: { h1: "Help you speak—not just listen", h2: "In every lesson, the AI teacher asks questions and waits for your answer.", bullets: ["Speaking practice in every lesson", "Instant, encouraging feedback", "Confidence that builds lesson by lesson"] },
       },
       structured_progress: {
-        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every class"] },
-        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after class"] },
+        child: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "A report after every lesson"] },
+        self: { h1: "A clear path from Lesson 1 onward", h2: "Step-by-step levels, with progress you can track.", bullets: ["A structured curriculum", "A recommended next lesson", "Reports after lessons"] },
       },
       school_exam: {
         child: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Aligned with school goals", "Track lessons completed", "Review anytime"] },
         self: { h1: "Stronger English for school", h2: "Every unit builds speaking and the skills that matter in class.", bullets: ["Align with learning goals", "Track completion", "Review anytime"] },
       },
       daily_communication: {
-        child: { h1: "English they'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak up in all class", "Quick practice after class"] },
-        self: { h1: "English you'll actually use", h2: "Role-play and real conversations in every class.", bullets: ["Everyday life topics", "Speak in class", "Quick practice after class"] },
+        child: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak up in every lesson", "Quick practice after lessons"] },
+        self: { h1: "English for everyday life", h2: "Role-play and real conversations in every lesson.", bullets: ["Everyday life topics", "Speak in every lesson", "Quick practice after lessons"] },
       },
       listening_habit: {
         child: { h1: "Easy to start, easy to stick with", h2: "Begin with a bite-sized interactive lesson, enjoy on-demand listening practice anytime.", bullets: ["Bite-sized daily lessons", "Fun enough to come back tomorrow", "Progress that keeps them going"] },
@@ -5603,14 +5665,17 @@
       () => "Choosing the AI teacher…",
       (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
     ];
-    const LOGIN_COPY = {
-      speak_confidence: "Save your plan and start speaking in class",
-      structured_progress: "Save your learning path and start Lesson 1",
-      school_exam: "Save your plan and start your first lesson",
-      daily_communication: "Save your plan and start your first lesson",
-      listening_habit: "Save your plan and start your first class",
-      default: "Save your plan and continue",
-    };
+    // Login-screen lead line. Returning users (entered via "Log in") see a sign-in
+    // prompt; users who just finished Onboarding see a voice-based "save your plan"
+    // CTA — self keeps "your plan", parent path uses the child's name.
+    function loginLeadCopy() {
+      if (profile.skipOnboarding) return "Log in to continue";
+      if (isParentVoice()) {
+        const name = getDisplayName ? getDisplayName() : (profile.name || "");
+        return `Save ${name || "your child"}'s plan and start the first lesson`;
+      }
+      return "Save your plan and start your first lesson";
+    }
 
     function renderOptions(containerId, items, key, onPick) {
       const box = $("#" + containerId);
@@ -5650,9 +5715,7 @@
 
     function fillLogin() {
       $("#illo-login").innerHTML = ILLUSTRATIONS.login || "";
-      const name = getDisplayName ? getDisplayName() : (profile.name || "");
-      const base = LOGIN_COPY[profile.goal] || LOGIN_COPY.default;
-      $("#login-dynamic").textContent = name ? base.replace("your plan", `${name}'s plan`) : base;
+      $("#login-dynamic").textContent = loginLeadCopy();
       // Profile tags filled in Onboarding, shown as a "you've already told us" anchor.
       // Show name → age_band → goal (drop level); name truncated ≤16, goal shown in full.
       const cut = (s) => { s = String(s).trim(); return s.length > 16 ? s.slice(0, 15) + "…" : s; };
@@ -5772,14 +5835,22 @@
       const v = VOICE_WORDING[profile.learner] || VOICE_WORDING.child;
       const nameTitle = document.querySelector("#screen-name .title");
       if (nameTitle) nameTitle.textContent = v.nameTitle;
+      const nameHint = document.querySelector("#screen-name .hint");
+      if (nameHint) nameHint.textContent = v.nameHint;
       const nameInput = $("#input-name");
       if (nameInput) nameInput.setAttribute("placeholder", v.namePlaceholder);
       const ageTitle = document.querySelector("#screen-age .title");
       if (ageTitle) ageTitle.textContent = v.ageTitle;
+      const ageHint = document.querySelector("#screen-age .hint");
+      if (ageHint) ageHint.textContent = v.ageHint;
       const levelTitle = document.querySelector("#screen-level .title");
       if (levelTitle) levelTitle.textContent = v.levelTitle;
+      const levelHint = document.querySelector("#screen-level .hint");
+      if (levelHint) levelHint.textContent = v.levelHint;
       const goalTitle = document.querySelector("#screen-goal .title");
       if (goalTitle) goalTitle.textContent = v.goalTitle;
+      const goalHint = document.querySelector("#screen-goal .hint");
+      if (goalHint) goalHint.textContent = v.goalHint;
     }
 
     function initOnboarding() {
@@ -5874,7 +5945,20 @@
 
     function renderPaywallPlans() {
       const box = $("#pw-plans");
+      const cta = $("#btn-paywall-purchase");
+      const notice = $("#pw-notice");
+      if (notice) { notice.textContent = ""; notice.hidden = true; }
       if (!box) return;
+      // Load-state branches driven by the demo state panel: no network / price load fail.
+      if (mock.payLoad === "no_network" || mock.payLoad === "price_fail") {
+        const msg = mock.payLoad === "no_network"
+          ? "Check your connection and try again"
+          : "Unable to load price. Try again";
+        box.innerHTML = `<div class="pw-load-error"><p>${msg}</p><button type="button" class="pw-try-again" id="pw-try-again">Try again</button></div>`;
+        if (cta) cta.style.display = "none";
+        $("#pw-try-again")?.addEventListener("click", () => { mock.payLoad = "normal"; syncStatePanel(); renderPaywallPlans(); });
+        return;
+      }
       // Single-plan paywall: weekly is the only exposed tier (no compare/select).
       profile.selectedPlan = "weekly";
       const plan = getSelectedPlan();
@@ -5890,8 +5974,7 @@
           </div>
         </div>`;
       // Button stays price-free; the amount appears once in the price card above.
-      const cta = $("#btn-paywall-purchase");
-      if (cta) cta.textContent = "Subscribe now";
+      if (cta) { cta.style.display = ""; cta.disabled = false; cta.textContent = "Subscribe now"; }
     }
 
     function openPaywall(returnScreen, triggerSource) {
@@ -5916,6 +5999,41 @@
       showPayToast("Purchase restored ✓");
     }
 
+    function showPaywallNotice(msg) {
+      const notice = $("#pw-notice");
+      if (notice) { notice.textContent = msg; notice.hidden = false; }
+    }
+
+    // Subscribe tap → show Processing… then branch by the panel's "支付结果".
+    function handlePurchaseTap() {
+      const cta = $("#btn-paywall-purchase");
+      if (cta) { cta.disabled = true; cta.textContent = "Processing..."; }
+      setTimeout(() => {
+        if (cta) { cta.disabled = false; cta.textContent = "Subscribe now"; }
+        switch (mock.payResult) {
+          case "cancel":
+            // Cancel is non-error: silently return to the trigger page.
+            showLandScreen(paywallReturnScreen);
+            showPayToast("Payment canceled — no charge");
+            break;
+          case "verify_fail":
+            showPaywallNotice("We couldn't verify your purchase. Please try again.");
+            break;
+          case "multi_account":
+            { const o = $("#multi-acct-overlay"); if (o) o.hidden = false; }
+            break;
+          default:
+            completePurchase();
+        }
+      }, 700);
+    }
+
+    function handleRestoreFromPaywall() {
+      if (mock.restoreResult === "none") { showPayToast("No active subscription found"); return; }
+      restorePurchase();
+      showLandScreen(paywallReturnScreen);
+    }
+
     function refreshUnlockState() {
       const mv = $("#profile-membership-value");
       if (mv) mv.textContent = profile.premiumUnlocked ? "Premium" : "Free";
@@ -5933,20 +6051,17 @@
       if (card) {
         if (profile.premiumUnlocked) {
           card.classList.remove("is-free");
-          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews automatically · next billing date: ${profile.nextBillingDate} · all lessons unlocked.</p>`;
+          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Next billing date: ${profile.nextBillingDate}</p>`;
         } else {
           card.classList.add("is-free");
           card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Free</p><p class="ms-status-desc">First class & samples unlocked. Go Premium for the full path.</p>`;
         }
       }
       if (actions) {
-        // App does NOT manage subscriptions in-app. Subscribed users only see
-        // Restore; Free users only see Subscribe now.
-        actions.innerHTML = profile.premiumUnlocked
-          ? `<button type="button" class="btn btn-text" id="btn-ms-restore">Restore</button>`
-          : `<button type="button" class="btn btn-primary" id="btn-ms-upgrade">Subscribe now</button>`;
-        $("#btn-ms-upgrade")?.addEventListener("click", () => openPaywall("screen-membership", "membership_entry"));
-        $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
+        // Membership center is display-only. Subscribed users see no action
+        // buttons; Free users never reach here (openMembership redirects to Paywall).
+        // Restore lives only on the Paywall; cancel/manage happens in the store.
+        actions.innerHTML = "";
       }
     }
 
@@ -5981,18 +6096,14 @@
       const view = $("#pd-view");
       const edit = $("#pd-edit");
       const actions = $("#pd-actions");
-      pdDraft = { name: profile.name, age: profile.age, level: profile.level, goal: profile.goal, goalLabel: profile.goalLabel };
+      pdDraft = { name: profile.name, age: profile.age };
       if (view) view.hidden = true;
       if (edit) {
         edit.hidden = false;
         edit.innerHTML = `
           <div class="pd-edit-group"><p class="pd-edit-label">Nickname</p><input type="text" class="pd-input" id="pd-name" maxlength="32" placeholder="Nickname" /></div>
-          <div class="pd-edit-group"><p class="pd-edit-label">Age</p><div class="pd-pills" id="pd-age"></div></div>
-          <div class="pd-edit-group"><p class="pd-edit-label">Current level</p><div class="pd-stack" id="pd-level"></div></div>
-          <div class="pd-edit-group"><p class="pd-edit-label">Learning purpose</p><div class="pd-stack" id="pd-goal"></div></div>`;
+          <div class="pd-edit-group"><p class="pd-edit-label">Age</p><div class="pd-pills" id="pd-age"></div></div>`;
         pdPills("pd-age", AGES.map((a) => ({ id: a, label: a })), pdDraft.age, (id) => { pdDraft.age = id; });
-        pdPills("pd-level", LEVELS.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
-        pdPills("pd-goal", GOALS, pdDraft.goal, (id, label) => { pdDraft.goal = id; pdDraft.goalLabel = label; });
         const nameInput = $("#pd-name");
         if (nameInput) nameInput.value = pdDraft.name || "";
       }
@@ -6013,8 +6124,9 @@
     }
 
     $("#btn-paywall-back")?.addEventListener("click", () => showLandScreen(paywallReturnScreen));
-    $("#btn-paywall-purchase")?.addEventListener("click", completePurchase);
-    $("#btn-paywall-restore")?.addEventListener("click", () => { restorePurchase(); showLandScreen(paywallReturnScreen); });
+    $("#btn-paywall-purchase")?.addEventListener("click", handlePurchaseTap);
+    $("#btn-paywall-restore")?.addEventListener("click", handleRestoreFromPaywall);
+    $("#multi-acct-ok")?.addEventListener("click", () => { const o = $("#multi-acct-overlay"); if (o) o.hidden = true; showLandScreen(paywallReturnScreen); });
     $("#btn-membership-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
     $("#btn-profile-membership")?.addEventListener("click", openMembership);
     $("#btn-profile-detail")?.addEventListener("click", openProfileDetail);
@@ -6024,9 +6136,6 @@
       if (pdDraft) {
         profile.name = pdDraft.name;
         profile.age = pdDraft.age;
-        profile.level = pdDraft.level;
-        profile.goal = pdDraft.goal;
-        profile.goalLabel = pdDraft.goalLabel;
         const hn = $("#hub-profile-name");
         if (hn && profile.name) hn.textContent = profile.name;
       }
@@ -6035,6 +6144,117 @@
       renderProfileDetailEdit();
       showPayToast("Profile updated ✓");
     });
+    /* ---------- Demo state panel (review tool, demo-only) ---------- */
+    function setMembership(state) {
+      profile.premiumUnlocked = state === "premium";
+      if (profile.premiumUnlocked && !profile.nextBillingDate) profile.nextBillingDate = "Jul 8, 2026";
+      refreshUnlockState();
+      syncStatePanel();
+    }
+    const STATE_PANEL_GROUPS = [
+      { key: "account", label: "登录账号类型", options: [["new", "新账号"], ["existing", "老账号"]] },
+      { key: "membership", label: "会员状态", options: [["free", "Free"], ["premium", "Premium"]] },
+      { key: "payResult", label: "下次「Subscribe」结果", options: [["success", "成功"], ["cancel", "取消"], ["verify_fail", "校验失败"], ["multi_account", "多账号占用"]] },
+      { key: "payLoad", label: "Paywall 加载态", options: [["normal", "正常"], ["no_network", "无网络"], ["price_fail", "价格失败"]] },
+      { key: "restoreResult", label: "下次「Restore」结果", options: [["success", "有订阅"], ["none", "无订阅"]] },
+    ];
+    function currentStateValue(key) {
+      if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
+      return mock[key];
+    }
+    // Which state branches are relevant to the page the reviewer is currently on.
+    function currentStateContext() {
+      const lw = $("#wrap-landscape");
+      const landscapeOn = lw && getComputedStyle(lw).display !== "none";
+      if (landscapeOn) {
+        const id = activeLandScreen();
+        if (id === "screen-paywall") return { label: "Paywall", keys: ["payLoad", "payResult", "restoreResult"] };
+        if (id === "screen-membership") return { label: "会员中心", keys: ["membership", "restoreResult"] };
+        if (id === "screen-login-landscape") return { label: "登录", keys: ["account"] };
+        return { label: "App 内", keys: ["membership"] };
+      }
+      if ($("#screen-login")?.classList.contains("active")) return { label: "登录", keys: ["account"] };
+      return { label: "Onboarding", keys: [] };
+    }
+    function syncStatePanel() {
+      $$(".sp-seg button").forEach((btn) => {
+        btn.classList.toggle("on", currentStateValue(btn.dataset.spGroup) === btn.dataset.spVal);
+      });
+    }
+    // Quick jumps to key pages (always shown), so reviewers can land on any page directly.
+    const STATE_PANEL_JUMPS = [
+      { label: "首页", run: () => { enterLandscape(); showClassHome(); } },
+      { label: "全部课程", run: () => { enterLandscape(); showAllCourses(); } },
+      { label: "Paywall", run: () => { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
+      { label: "会员中心", run: () => { enterLandscape(); showLandScreen("screen-membership"); } },
+    ];
+    // Rebuild the panel body to show only the current page's relevant state groups.
+    function renderStatePanel() {
+      const body = $(".statepanel-body");
+      if (!body) return;
+      const ctx = currentStateContext();
+      const groups = (ctx.keys || []).map((k) => STATE_PANEL_GROUPS.find((g) => g.key === k)).filter(Boolean);
+      const toggle = $("#sp-toggle");
+      if (toggle) toggle.textContent = ctx.keys.length ? `⚙︎ States · ${ctx.label}` : "⚙︎ States";
+      body.innerHTML = `
+        <p class="sp-ctx">当前页面：<b>${ctx.label}</b></p>
+        ${groups.length
+          ? `<p class="sp-note">仅展示与当前页面相关的状态分支；切换后停留在本页查看效果。仅 demo 生效。</p>` +
+            groups.map((g) => `
+            <div class="sp-group">
+              <p>${g.label}</p>
+              <div class="sp-seg">
+                ${g.options.map(([v, lbl]) => `<button type="button" data-sp-group="${g.key}" data-sp-val="${v}">${lbl}</button>`).join("")}
+              </div>
+            </div>`).join("")
+          : `<p class="sp-empty">本页面没有可切换的状态分支，可用下方快捷跳转到其他页面。</p>`}
+        <div class="sp-jumps-wrap">
+          <p class="sp-jumps-label">快捷跳转</p>
+          <div class="sp-jumps">
+            ${STATE_PANEL_JUMPS.map((j, i) => `<button type="button" class="sp-jump" data-sp-jump="${i}">${j.label}</button>`).join("")}
+          </div>
+        </div>`;
+      syncStatePanel();
+    }
+    function buildStatePanel() {
+      const panel = document.createElement("div");
+      panel.className = "statepanel";
+      panel.innerHTML = `
+        <button type="button" class="statepanel-toggle" id="sp-toggle">⚙︎ States</button>
+        <div class="statepanel-body"></div>`;
+      document.body.appendChild(panel);
+      $("#sp-toggle").addEventListener("click", () => panel.classList.toggle("open"));
+      // Event delegation: the body is rebuilt on every navigation.
+      panel.querySelector(".statepanel-body").addEventListener("click", (e) => {
+        const seg = e.target.closest("[data-sp-group]");
+        if (seg) {
+          const g = seg.dataset.spGroup;
+          if (g === "membership") { setMembership(seg.dataset.spVal); return; }
+          mock[g] = seg.dataset.spVal;
+          // Page-state changes (e.g. Paywall load state) should reflect immediately on the current page.
+          if (g === "payLoad" && activeLandScreen() === "screen-paywall") renderPaywallPlans();
+          syncStatePanel();
+          return;
+        }
+        const jump = e.target.closest("[data-sp-jump]");
+        if (jump) {
+          const j = STATE_PANEL_JUMPS[+jump.dataset.spJump];
+          if (j) j.run();
+        }
+      });
+      // Re-evaluate context whenever the active screen or device wrapper changes.
+      let t;
+      const reRender = () => { clearTimeout(t); t = setTimeout(renderStatePanel, 30); };
+      const mo = new MutationObserver(reRender);
+      ["#device-landscape", "#device-portrait"].forEach((sel) => {
+        const el = $(sel); if (el) mo.observe(el, { subtree: true, attributes: true, attributeFilter: ["class"] });
+      });
+      ["#wrap-landscape", "#wrap-portrait"].forEach((sel) => {
+        const el = $(sel); if (el) mo.observe(el, { attributes: true, attributeFilter: ["style"] });
+      });
+      renderStatePanel();
+    }
+    buildStatePanel();
     refreshUnlockState();
   </script>
 </body>

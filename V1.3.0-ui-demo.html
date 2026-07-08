@@ -1187,6 +1187,19 @@
       color: #fff;
       max-width: 12ch;
     }
+    .is-program-complete .course-card-title { max-width: none; }
+    .is-program-complete .course-card-top { margin-bottom: 0; }
+    .is-program-complete .course-card-thumb { display: none; }
+    .is-program-complete .course-card-topcopy { gap: 8px; }
+    .course-card-grad-body {
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 0;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.92);
+      max-width: none;
+    }
     .course-card-thumb {
       position: relative;
       z-index: 1;
@@ -1245,6 +1258,19 @@
       object-fit: contain;
       filter: drop-shadow(0 8px 10px rgba(72, 86, 154, 0.24));
     }
+    /* ---- real Figma lesson-scene thumbnails (replace blue+hill+Dino placeholder) ---- */
+    .course-card-thumb{
+      background: #bfe0ff url("assets/v13fx/lesson-thumb-1.png") center/cover no-repeat !important;
+    }
+    .course-card-thumb::before, .course-card-thumb::after{ display:none !important; }
+    .course-card-thumb img{ display:none !important; }
+    .all-courses-course-card:nth-of-type(even) .course-card-thumb{
+      background-image: url("assets/v13fx/lesson-thumb-2.png") !important;
+    }
+    .class-lesson-thumb{
+      background: #bfe0ff url("assets/v13fx/lesson-thumb-1.png") center/cover no-repeat !important;
+    }
+    .class-lesson-thumb svg{ display:none !important; }
     .course-card-lines {
       position: relative;
       z-index: 1;
@@ -4132,9 +4158,9 @@
     .pw-head, .ms-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
     .ms-head-title { font-weight: 800; color: #143a5e; font-size: 1rem; }
     .pw-restore { background: none; border: none; color: #2a6db0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
-    .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 22px; overflow-y: auto; align-items: stretch; }
+    .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 12px; overflow-y: auto; align-items: stretch; }
     .pw-left { flex: 1.1; min-width: 0; padding: 18px 20px; border-radius: 22px; background: linear-gradient(155deg,rgba(255,255,255,.72),rgba(232,248,244,.82)); border: 1px solid rgba(255,255,255,.72); }
-    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: flex-start; min-height: 0; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
+    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; min-height: 0; padding: 13px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
     .pw-kicker { display: inline-block; background: #fff0d4; color: #c47f1d; border-radius: 999px; padding: 4px 12px; font-size: 0.74rem; font-weight: 800; }
     .pw-title { font-size: 1.3rem; font-weight: 800; color: #143a5e; margin: 10px 0 6px; line-height: 1.25; }
     .pw-sub { font-size: 0.88rem; color: #5a7a98; margin: 0 0 12px; line-height: 1.45; }
@@ -4151,31 +4177,31 @@
     .pw-price-row { display: flex; align-items: baseline; justify-content: flex-start; gap: 5px; }
     .pw-price-amt { font-size: 1.5rem; font-weight: 800; color: #143a5e; }
     .pw-price-period { font-size: 0.82rem; color: #5a7a98; font-weight: 700; }
-    .pw-plans { display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 6px 4px; }
-    .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 14px 16px; cursor: pointer; background: #fff; transition: .15s; }
+    .pw-plans { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 6px 6px 2px; }
+    .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 6px 14px; cursor: pointer; background: #fff; transition: .15s; }
     .pw-plan.is-selected { border-color: #19c3b2; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); }
     .pw-plan-top { display: flex; align-items: center; justify-content: space-between; }
     .pw-plan-name { font-weight: 800; color: #143a5e; font-size: 0.96rem; }
     .pw-plan-price { font-weight: 800; color: #143a5e; font-size: 0.96rem; }
-    .pw-plan-note { font-size: 0.78rem; color: #5a7a98; margin-top: 4px; }
+    .pw-plan-note { font-size: 0.78rem; color: #5a7a98; margin-top: 2px; }
     .pw-badge { position: absolute; top: -10px; right: 14px; background: #19c3b2; color: #fff; font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; }
-    .pw-plan--hero { border-color: #19c3b2; padding-top: 20px; }
+    .pw-plan--hero { border-color: #19c3b2; padding-top: 10px; }
     .pw-plan--hero .pw-plan-name, .pw-plan--hero .pw-plan-price { font-size: 1.08rem; }
     .pw-hero-tag { position: absolute; top: -10px; left: 14px; background: #ea6c25; color: #fff; font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; }
     .pw-plan--minor { opacity: 0.82; }
     .pw-plan--minor.is-selected { opacity: 1; }
     .pw-region-note { margin: 8px 2px 0; font-size: 0.72rem; color: #7a93ad; }
-    .pw-cta { margin-top: 8px; }
+    .pw-cta { margin-top: 4px; }
     .pw-legal { font-size: 0.68rem; color: #8aa; text-align: center; line-height: 1.4; margin: 0; }
     .pw-legal a { color: #2a6db0; }
     .pw-renewal { color: #6f889f; }
 
     /* ---------- Membership center (V1.2.0) ---------- */
-    .ms-body { flex: 1; padding: 4px 26px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-    .ms-status-card { border-radius: 18px; padding: 18px 20px; color: #fff; background: linear-gradient(135deg,#19c3b2,#1f7fd0); box-shadow: 0 14px 30px rgba(25,127,208,.3); }
+    .ms-body { flex: 1; padding: 4px 26px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .ms-status-card { border-radius: 18px; padding: 11px 18px; color: #fff; background: linear-gradient(135deg,#19c3b2,#1f7fd0); box-shadow: 0 14px 30px rgba(25,127,208,.3); }
     .ms-status-card.is-free { background: linear-gradient(135deg,#8aa4be,#5a7a98); }
     .ms-status-kicker { font-size: 0.74rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; opacity: .85; }
-    .ms-status-title { font-size: 1.3rem; font-weight: 800; margin: 6px 0 4px; }
+    .ms-status-title { font-size: 1.3rem; font-weight: 800; margin: 4px 0 3px; }
     .ms-status-desc { font-size: 0.84rem; opacity: .92; margin: 0; }
     .ms-benefits-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; color: #5a7a98; margin: 0 0 8px; }
     .ms-benefits-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -4644,7 +4670,7 @@
     .spk-rec-btn { border: none; cursor: pointer; border-radius: 999px; padding: 13px 30px;
       font-family: var(--font); font-weight: 800; font-size: 0.92rem; color: #fff;
       background: linear-gradient(135deg, #ff8a4d, #ea5c25); box-shadow: 0 12px 26px rgba(234,92,37,0.36);
-      transition: transform 0.13s var(--ease); }
+      transition: transform 0.13s var(--ease); touch-action: none; user-select: none; -webkit-user-select: none; }
     .spk-rec-btn:active { transform: scale(0.95); }
     .spk-rec-btn.listening { animation: micpulse 1s ease-in-out infinite; background: linear-gradient(135deg, #ff5d7a, #e23b67); }
     .spk-feedback { min-height: 22px; font-size: 0.82rem; font-weight: 800; color: var(--forest-deep); }
@@ -4671,6 +4697,9 @@
     /* ---- Settle / PK result ---- */
     .settle-card { width: min(70%, 460px); background: #fff; border-radius: 22px; padding: 18px 22px; text-align: center;
       box-shadow: 0 18px 40px rgba(20,61,42,0.18); border: 1px solid var(--border); }
+    /* PK result: real 3D Dino figure (win trophy / lose) instead of emoji burst */
+    #screen-pkresult .settle-burst.pkr-burst--fig{ width:auto; height:138px; background:none !important; box-shadow:none !important; border-radius:0; margin:0 auto 4px; }
+    #screen-pkresult .settle-burst.pkr-burst--fig img{ height:138px; width:auto; display:block; filter:drop-shadow(0 12px 22px rgba(20,30,80,.32)); }
     .settle-burst { width: 60px; height: 60px; margin: 0 auto 8px; border-radius: 50%; display: grid; place-items: center; font-size: 1.9rem;
       background: radial-gradient(circle at 40% 30%, #fff2b0, #ffd84d 70%, #ffc01f); box-shadow: 0 0 26px rgba(255,200,40,0.5); animation: gpop 0.5s var(--ease); }
     .settle-card h2 { font-family: var(--display); font-size: 1.1rem; margin-bottom: 3px; color: var(--ink); }
@@ -4990,13 +5019,14 @@
     .ic-progress { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 7; width: min(46%, 340px); height: 26px; background: rgba(20,30,60,0.45); border-radius: 999px; display: flex; align-items: center; padding: 0 12px; gap: 0; }
     .ic-progress-track { position: relative; flex: 1; height: 7px; background: rgba(255,255,255,0.28); border-radius: 999px; }
     .ic-progress-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 999px; background: linear-gradient(90deg,#7bf08a,#39c46a); transition: width 0.4s ease; }
-    .ic-reward { position: absolute; font-size: 0.92rem; top: 50%; transform: translateY(-50%); filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
-    .ic-reward.r1 { left: 36%; } .ic-reward.r2 { left: 64%; } .ic-reward.r3 { right: 8px; }
+    .ic-reward { position: absolute; font-size: 0.92rem; top: 50%; transform: translateY(-50%); filter: drop-shadow(0 2px 3px rgba(0,0,0,0.28)); }
+    .ic-reward img { height: 26px; width: auto; display: block; }
+    .ic-reward.r1 { left: 36%; } .ic-reward.r2 { left: 64%; } .ic-reward.r3 { right: 4px; }
     /* coins (top right) */
     .ic-coins { position: absolute; top: 12px; right: 14px; z-index: 7; display: inline-flex; align-items: center; gap: 5px; background: rgba(20,30,60,0.42); color: #fff; font-weight: 800; font-size: 0.86rem; padding: 5px 12px 5px 9px; border-radius: 999px; }
     .ic-coins .ic-coin-ico { width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe48f, #f0871d); display: inline-block; box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4); }
     /* AI teacher (left) */
-    .ic-teacher { position: absolute; left: 4px; bottom: 0; height: 94%; z-index: 4; pointer-events: none; }
+    .ic-teacher { position: absolute; left: 4px; bottom: 0; height: 78%; z-index: 4; pointer-events: none; }
     .ic-teacher img { height: 100%; width: auto; object-fit: contain; object-position: bottom; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.22)); }
     /* child camera feed (bottom right) */
     .ic-feed { position: absolute; right: 14px; bottom: 14px; z-index: 6; width: 150px; height: 94px; border-radius: 14px; overflow: hidden; background: linear-gradient(160deg,#dfeafc,#bcd2f0); box-shadow: 0 6px 14px rgba(0,0,0,0.22); border: 2px solid rgba(255,255,255,0.7); display: grid; place-items: center; }
@@ -5330,6 +5360,715 @@
     .tp-report .tp-tile.tp-sky { background: #eaf3fe; }
     .tp-report .tp-tag.tp-b { color: #3f8df4; }
     .tp-report .tp-b-sky { background: #eaf3fe; }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ① hub (visual only, flow/copy unchanged)
+       Assets: assets/v13fx/*  ·  Aesthetic: 3D + glassmorphism, blue/purple sky
+       ============================================================ */
+    #screen-class .hub-app{
+      background: radial-gradient(125% 90% at 50% 2%, #cde6ff 0%, #7ec0ff 34%, #4794f2 72%, #2f7fe6 100%) !important;
+      position: relative; overflow: hidden;
+    }
+    /* real Figma scene plates per active tab (home / explore / play) */
+    #screen-class .hub-app[data-scene="dino"]{ background:#bfe0ff url(assets/v13fx/home-scene.png) center/cover no-repeat !important; }
+    #screen-class .hub-app[data-scene="practice"]{ background:#d7efcf url(assets/v13fx/explore-scene.png) center/cover no-repeat !important; }
+    #screen-class .hub-app[data-scene="play"]{ background:#bfe0ff url(assets/v13fx/play-scene.png) center/cover no-repeat !important; }
+    #screen-class .hub-app::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background:
+        linear-gradient(180deg, rgba(20,40,90,.16) 0%, transparent 22%),
+        linear-gradient(0deg, rgba(20,40,90,.20) 0%, transparent 26%);
+    }
+    #screen-class .hub-panel{ background:transparent !important; }
+    #screen-class .hub-panels{ position:relative; z-index:1; }
+
+    /* avatar (top-left) */
+    #screen-class .hub-avatar-entry{
+      width:46px; height:46px; border-radius:50%; padding:0; overflow:hidden;
+      border:2.5px solid rgba(255,255,255,.92); box-shadow:0 6px 16px rgba(20,50,110,.28);
+      background:#dfeeff; z-index:25;
+    }
+    #screen-class .hub-avatar-entry img{ width:100%; height:100%; object-fit:cover; }
+
+    /* coin pill + coin icon */
+    #screen-class .dn-pill--coin{
+      background:rgba(255,255,255,.92) !important; color:#2a3550 !important; font-weight:800;
+      border:1px solid rgba(255,255,255,.7); box-shadow:0 6px 16px rgba(20,50,110,.22);
+    }
+    #screen-class .coin-ico{
+      width:22px; height:22px; background:url(assets/v13fx/coin.png) center/contain no-repeat !important;
+      border-radius:0 !important;
+    }
+    #screen-class .dn-pill--shop{
+      background:rgba(255,255,255,.9) !important; border:1px solid rgba(255,255,255,.7);
+      box-shadow:0 6px 16px rgba(20,50,110,.22);
+    }
+
+    /* ---------- floating glass bottom nav ---------- */
+    #screen-class .hub-app > .class-bottom-nav,
+    #screen-class .class-bottom-nav--four{
+      position:absolute !important; left:50% !important; bottom:14px !important; top:auto !important;
+      transform:translateX(-50%) !important; width:auto !important; max-width:none !important;
+      display:flex !important; grid-template-columns:none !important; gap:2px !important;
+      background:rgba(255,255,255,.32) !important; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+      border:1px solid rgba(255,255,255,.55) !important; border-radius:999px !important;
+      padding:7px 9px !important; box-shadow:0 16px 36px rgba(18,42,92,.30) !important; z-index:40 !important;
+    }
+    #screen-class .class-bottom-item{
+      display:flex !important; flex-direction:column; align-items:center; gap:2px;
+      border:none; background:transparent; color:#274a86 !important; font-weight:700;
+      font-size:.6rem; letter-spacing:.01em; padding:6px 13px !important; border-radius:999px; cursor:pointer; min-width:60px;
+    }
+    #screen-class .class-bottom-item.is-active{
+      background:#fff !important; color:#2563eb !important; box-shadow:0 6px 14px rgba(30,90,210,.22);
+    }
+    #screen-class .class-bottom-icon{
+      width:34px; height:30px; background-size:contain; background-repeat:no-repeat; background-position:center; border-radius:0;
+    }
+    #screen-class .class-bottom-icon > *{ display:none !important; }
+    #screen-class [data-hub-tab="dino"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-chat.png); }
+    #screen-class [data-hub-tab="class"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-class.png); }
+    #screen-class [data-hub-tab="practice"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-explore.png); }
+    #screen-class [data-hub-tab="play"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-play.png); }
+
+    /* ---------- DINO home panel — precise Figma layout (812×375 proportional) ---------- */
+    #screen-class #hub-panel-dino{ padding:0 !important; position:absolute !important; inset:0 !important; }
+    #screen-class #hub-panel-dino .dino-night-bg{ display:none !important; }
+    /* glowing platform under Dino */
+    #screen-class #hub-panel-dino::after{
+      content:""; position:absolute; left:6%; bottom:7%; width:24%; height:46px; z-index:1; pointer-events:none;
+      background:radial-gradient(50% 50% at 50% 50%, rgba(130,225,255,.75), rgba(130,225,255,0) 72%); filter:blur(2px);
+    }
+    /* top HUD: name (left, by avatar) + coin (right) */
+    #screen-class .dino-hud--night{
+      position:absolute !important; top:18px; left:92px; right:16px; z-index:6;
+      display:flex; align-items:center; justify-content:space-between; padding:0 !important; margin:0 !important;
+    }
+    #screen-class .dino-id-name{ color:#fff !important; font-weight:800; text-shadow:0 2px 6px rgba(20,40,90,.35); }
+    #screen-class .dino-mini-entries{ display:flex; gap:8px; }
+
+    /* Dino character — left, large */
+    #screen-class .dino-night-stage{ position:absolute !important; inset:0 !important; padding:0 !important; display:block !important; }
+    #screen-class .dino-night-char{
+      position:absolute !important; left:7%; bottom:5%; width:16%; align-items:center; gap:6px; z-index:3;
+    }
+    #screen-class .dino-night-char img{
+      width:100% !important; height:auto !important; max-height:none !important;
+      filter:drop-shadow(0 16px 22px rgba(20,40,90,.34));
+    }
+    /* level badge bottom-left (Figma: hex + title + bar) */
+    #screen-class .dino-night-char .dino-name-tag,
+    #screen-class .dino-night-char .dino-id-level--char{ position:relative; z-index:4; }
+    #screen-class .dino-name-tag{ background:rgba(255,255,255,.9) !important; color:#2a3550 !important; font-weight:800; }
+    #screen-class .dino-lv-badge{
+      background:linear-gradient(135deg,#a07bff,#7c4dff) !important; color:#fff !important;
+      width:26px !important; height:26px !important; clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+      border-radius:0 !important; box-shadow:none !important;
+    }
+    #screen-class .dino-lv-bar{ width:80px !important; }
+
+    /* greeting bubble — center-upper */
+    #screen-class .dino-night-right{
+      position:absolute !important; left:32%; top:24%; width:42%; max-width:none !important;
+      align-items:center !important; justify-content:flex-start !important; gap:20px !important; z-index:5;
+    }
+    #screen-class .dino-greet-bubble{
+      background:rgba(255,255,255,.95) !important; color:#2a3550 !important; width:100%;
+      border:1px solid rgba(255,255,255,.85); border-radius:22px !important;
+      box-shadow:0 14px 30px rgba(20,50,110,.2) !important; font-weight:600;
+    }
+    #screen-class .dino-greet-bubble.dino-greet-bubble--night::after{ background:rgba(255,255,255,.95) !important; }
+
+    /* main CTA — wide orange "Chat with Dino" pill (label via CSS, copy unchanged) */
+    #screen-class .dino-mic-round{
+      width:auto !important; height:56px !important; border-radius:999px !important;
+      padding:0 26px !important; display:inline-flex !important; align-items:center; gap:12px;
+      background:linear-gradient(135deg,#ffb049,#ff7a1a) !important; color:#fff !important;
+      box-shadow:0 14px 28px rgba(255,130,30,.5) !important; border:3px solid rgba(255,255,255,.85) !important;
+    }
+    #screen-class .dino-mic-round svg{ width:24px; height:24px; }
+    #screen-class .dino-mic-round::after{ content:"Chat with Dino"; font-weight:800; font-size:1rem; white-space:nowrap; }
+
+    /* right-side stack — Store (top) + Backpack (bottom), no DOM change.
+       Shop pill positions inside .dino-hud--night (its positioned ancestor):
+       top is offset from HUD top (18px), right:0 aligns to HUD right edge (panel-16px). */
+    #screen-class .dino-mini-entries .dn-pill--shop{
+      position:absolute !important; right:0 !important; top:56px !important; left:auto !important;
+      width:120px; height:84px;
+      flex-direction:column; gap:6px; border-radius:20px !important; font-size:1.9rem !important; padding:0 !important;
+      background:rgba(255,255,255,.42) !important; border:1px solid rgba(255,255,255,.6) !important;
+      backdrop-filter:blur(10px); box-shadow:0 12px 26px rgba(20,50,110,.24) !important; color:#23406f !important; z-index:6;
+    }
+    #screen-class .dino-mini-entries .dn-pill--shop::after{ content:"Store"; font-size:.74rem; font-weight:800; }
+    #screen-class .dino-mini-entries .dn-pill--shop .dn-pill-ico{ width:46px; height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 8px rgba(20,50,110,.22)); }
+    #screen-class .dino-backpack-card{
+      position:absolute !important; left:auto !important; right:16px !important; top:166px !important; bottom:auto !important;
+      width:120px; height:84px; justify-content:center; border-radius:20px !important;
+      background:rgba(255,255,255,.42) !important; border:1px solid rgba(255,255,255,.6) !important;
+      backdrop-filter:blur(10px); box-shadow:0 12px 26px rgba(20,50,110,.24) !important; color:#23406f !important; z-index:6;
+    }
+    #screen-class .dino-backpack-card .dbc-ico{ font-size:1.9rem; line-height:0; }
+    #screen-class .dino-backpack-card .dbc-ico img{ width:46px; height:46px; object-fit:contain; display:block; filter:drop-shadow(0 4px 8px rgba(20,50,110,.22)); }
+    #screen-class .dino-backpack-card .dbc-label{ font-size:.74rem; }
+
+    /* ---------- generic glass card + orange CTA inside hub ---------- */
+    #screen-class .class-week-card{
+      background:linear-gradient(160deg, rgba(120,180,255,.42), rgba(80,140,240,.30)) !important;
+      border:1px solid rgba(255,255,255,.5) !important; border-radius:24px !important;
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      box-shadow:0 18px 40px rgba(18,46,100,.26) !important; color:#fff !important;
+    }
+    #screen-class .class-week-card .course-card-title,
+    #screen-class .class-week-card .course-card-stage,
+    #screen-class .class-week-card .course-card-lines,
+    #screen-class .class-week-card .course-card-scroll-inner{ color:#fff !important; }
+    #screen-class .course-card-cta-wrap button,
+    #screen-class .class-week-card [data-action]{
+      background:linear-gradient(135deg,#ffb049,#ff7a1a) !important; color:#fff !important;
+      border:none !important; box-shadow:0 10px 22px rgba(255,130,30,.42) !important; border-radius:999px !important;
+    }
+    #screen-class .class-teacher-visual{
+      background:url(assets/v13fx/teacher.png) bottom center/contain no-repeat !important;
+    }
+    #screen-class .teacher-switch-pill,
+    #screen-class .class-allcourses-link{
+      background:rgba(255,255,255,.4) !important; border:1px solid rgba(255,255,255,.6) !important;
+      color:#23406f !important; backdrop-filter:blur(10px); border-radius:999px !important;
+    }
+    #screen-class .class-home-lead-title,
+    #screen-class .class-hero-kicker{ color:#fff !important; text-shadow:0 2px 6px rgba(20,40,90,.3); }
+
+    /* ---------- EXPLORE panel — full-bleed illustrated cards ---------- */
+    #screen-class #hub-panel-practice .explore-head,
+    #screen-class #hub-panel-play .explore-head{ text-align:center; padding-bottom:10px; }
+    #screen-class #hub-panel-practice .explore-title,
+    #screen-class #hub-panel-play .explore-title{ color:#fff !important; text-shadow:0 2px 6px rgba(20,40,90,.3); }
+    #screen-class #hub-panel-practice .explore-lead,
+    #screen-class #hub-panel-play .explore-lead{ display:none !important; }
+    #screen-class .explore-entries{
+      display:flex !important; flex-direction:row !important; gap:16px !important;
+      overflow-x:auto; padding:4px 4px 8px; align-items:stretch; justify-content:center;
+    }
+    #screen-class .explore-entry{
+      flex:0 0 200px; width:200px; height:238px; flex-direction:column !important; align-items:flex-start !important;
+      border-radius:26px !important; padding:18px 18px 16px !important; position:relative; overflow:hidden;
+      box-shadow:0 18px 38px rgba(18,46,100,.28) !important; color:#fff !important;
+    }
+    #screen-class .explore-entry .ee-emoji,
+    #screen-class .explore-entry .ee-thumbs,
+    #screen-class .explore-entry .ee-arrow{ display:none !important; }
+    #screen-class .explore-entry .ee-info{ display:flex; flex-direction:column; gap:3px; z-index:2; }
+    #screen-class .explore-entry .ee-info b{ font-size:1.16rem; font-weight:800; line-height:1.12; }
+    #screen-class .explore-entry .ee-info span{ font-size:.72rem; opacity:.92; }
+    /* clean transparent 3D props (no baked backgrounds / arrows), scaled with
+       `contain` so nothing stretches or distorts (Figma) */
+    #screen-class .explore-entry::after{
+      content:""; position:absolute; left:8px; right:8px; bottom:8px; height:60%;
+      background-size:contain; background-repeat:no-repeat; background-position:bottom center; z-index:1;
+      filter:drop-shadow(0 8px 16px rgba(10,30,80,.28));
+    }
+    /* single glass "enter" chevron — bottom-right so it never collides with the art */
+    #screen-class .explore-entry::before{
+      content:"›"; position:absolute; right:14px; bottom:14px; z-index:3;
+      width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.94); color:#2563eb;
+      display:flex; align-items:center; justify-content:center; font-size:1.15rem; font-weight:800;
+      box-shadow:0 6px 14px rgba(20,50,110,.25);
+    }
+    #screen-class .ee-story{ background:linear-gradient(160deg,#36c98f,#1f9e74) !important; }
+    #screen-class .ee-radio{ background:linear-gradient(160deg,#54a8ff,#3f7ef0) !important; }
+    #screen-class .ee-speak{ background:linear-gradient(160deg,#ffb14d,#ff7a1a) !important; }
+    #screen-class .ee-story::after{ background-image:url(assets/v13fx/ex-words.png); height:44%; background-position:bottom center; }
+    #screen-class .ee-radio::after{ background-image:url(assets/v13fx/ex-listening.png); height:60%; }
+    #screen-class .ee-speak::after{ background-image:url(assets/v13fx/ex-speaking.png); height:74%; background-position:bottom right; right:2px; }
+
+    /* ---------- PLAY panel — full-bleed battle cards ---------- */
+    #screen-class .play-grid{
+      display:flex !important; flex-direction:row !important; gap:16px !important;
+      grid-template-columns:none !important; overflow-x:auto; padding:4px 4px 8px; align-items:stretch; justify-content:center;
+    }
+    #screen-class .play-card{
+      flex:0 0 224px; width:224px; height:204px; position:relative; overflow:hidden;
+      border-radius:26px !important; padding:0 !important; border:1px solid rgba(255,255,255,.32) !important;
+      box-shadow:0 18px 38px rgba(18,46,100,.30) !important; color:#fff !important;
+      display:flex !important; flex-direction:column; justify-content:flex-end;
+      background-size:cover, cover !important; background-position:center, center !important; background-repeat:no-repeat !important;
+    }
+    #screen-class .play-card .pc-emoji{ display:none !important; }
+    #screen-class .pc-word{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-word.png) !important; }
+    #screen-class .pc-capsule{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-blind.png) !important; }
+    #screen-class .pc-speak{ background-image:linear-gradient(180deg,rgba(28,18,64,0) 40%,rgba(24,15,58,.9) 100%),url(assets/v13fx/pk-speak.png) !important; }
+    #screen-class .play-card .pc-title{ position:relative; z-index:2; font-size:1.18rem; font-weight:800; padding:0 16px; }
+    #screen-class .play-card .pc-desc{ position:relative; z-index:2; font-size:.74rem; opacity:.92; padding:2px 56px 16px 16px; }
+    #screen-class .play-card::after{
+      content:"›"; position:absolute; right:14px; bottom:14px; z-index:3;
+      width:36px; height:36px; border-radius:50%; background:#fff; color:#5b53ff;
+      display:flex; align-items:center; justify-content:center; font-size:1.2rem; font-weight:800;
+      box-shadow:0 6px 14px rgba(20,30,90,.3);
+    }
+    #screen-class .play-card .pc-limit{
+      position:absolute; top:12px; right:12px; left:auto; z-index:3; display:inline-block !important;
+      background:rgba(20,24,60,.62); color:#fff; border:1px solid rgba(255,255,255,.35);
+      padding:3px 10px; border-radius:999px; font-size:.6rem; font-weight:700;
+    }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ② Class (Learning Path / Course list)
+       visual only · flow & copy unchanged
+       ============================================================ */
+    /* real Figma scene plates (course map = space learning scene, course list = dreamy platform) */
+    #screen-course-map .course-map-shell{
+      background:#2f7fe6 url(assets/v13fx/coursemap-scene.png) center/cover no-repeat !important;
+      position:relative; overflow:hidden;
+    }
+    #screen-all-courses .all-courses-shell{
+      background:#2f7fe6 url(assets/v13fx/courselist-scene.png) center/cover no-repeat !important;
+      position:relative; overflow:hidden;
+    }
+    #screen-course-map .course-map-shell::before,
+    #screen-all-courses .all-courses-shell::before{
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:linear-gradient(180deg, rgba(20,40,90,.16) 0%, transparent 24%, transparent 76%, rgba(20,40,90,.18) 100%);
+    }
+    #screen-course-map .course-map-head,
+    #screen-course-map .course-map-body,
+    #screen-all-courses .all-courses-head,
+    #screen-all-courses .all-courses-list{ position:relative; z-index:1; }
+
+    /* ---- Learning Path (course map) ---- */
+    #screen-course-map .course-map-title{ flex:1; text-align:center; font-weight:800; }
+    #screen-course-map .cm-level{
+      border-radius:18px; border:1px solid rgba(255,255,255,.45);
+      background:rgba(255,255,255,.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      position:relative; padding-right:46px;
+    }
+    /* Figma 3D level medal in the card corner */
+    #screen-course-map .cm-level .cm-medal{
+      position:absolute; top:8px; right:8px; width:38px; height:auto;
+      filter:drop-shadow(0 4px 8px rgba(20,50,110,.28)); pointer-events:none;
+    }
+    #screen-course-map .cm-unit{
+      border-radius:24px; box-shadow:0 16px 32px rgba(18,46,100,.22);
+    }
+    /* primary "View lessons" → Figma orange (premium/locked/levelup keep their own) */
+    #screen-course-map .cm-unit-cta:not(.cm-unit-cta--premium):not(.cm-unit-cta--locked):not(.cm-unit-cta--levelup):not(.cm-unit-cta--ghost){
+      background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important;
+      box-shadow:0 10px 20px rgba(255,122,60,.36) !important;
+    }
+    #screen-course-map .course-map-here{
+      background:rgba(255,255,255,.2); border:1px solid rgba(255,255,255,.4);
+      border-radius:999px; padding:6px 14px; color:#fff; font-weight:700;
+    }
+
+    /* ---- Course / lesson list ---- */
+    #screen-all-courses .all-courses-title{ flex:1; text-align:center; }
+    #screen-all-courses .all-courses-course-card{ border-radius:30px !important; }
+    #screen-all-courses .course-card-cta-wrap .btn-primary{
+      background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important;
+      box-shadow:0 12px 24px rgba(255,122,60,.4) !important;
+    }
+    #screen-all-courses .all-courses-level{
+      background:rgba(255,255,255,.92); color:#2a3550; border:1px solid rgba(255,255,255,.7);
+      box-shadow:0 6px 16px rgba(20,50,110,.22);
+    }
+
+    /* ============================================================
+       Study plan → Figma LIGHT theme (white cards · dark text · blue hero)
+       ============================================================ */
+    #screen-study-plan .study-plan-shell{
+      background:linear-gradient(180deg,#3f86dd 0%, #5fa0ec 12%, #9fccff 26%, #dcecff 40%, #eef5ff 60%, #f3f8ff 100%) !important;
+    }
+    #screen-study-plan .study-plan-shell::before{
+      content:""; position:absolute; top:-6px; right:-18px; width:228px; height:178px; z-index:0; pointer-events:none;
+      background:url(assets/v13fx/sp-dino.png) right top/contain no-repeat;
+      filter:drop-shadow(0 10px 20px rgba(20,50,110,.3));
+    }
+    /* real Figma 3D icons in the personalized-plan cards */
+    #screen-study-plan .sp-value-ico img{ width:100%; height:100%; object-fit:contain; display:block; }
+    #screen-study-plan .sp-value-ico{ background:transparent !important; width:42px; height:42px; padding:2px; }
+    #screen-study-plan .study-plan-head,
+    #screen-study-plan .sp-page-title,
+    #screen-study-plan .sp-hero,
+    #screen-study-plan .sp-block,
+    #screen-study-plan .sp-foot{ position:relative; z-index:1; }
+    #screen-study-plan .sp-page-title{ color:#fff !important; text-shadow:0 2px 8px rgba(20,50,110,.35); max-width:62%; }
+    /* hero CEFR card */
+    #screen-study-plan .sp-hero{ background:#fff !important; border:1px solid rgba(20,50,110,.06) !important; box-shadow:0 14px 30px rgba(20,50,110,.16) !important; }
+    #screen-study-plan .sp-cefr-title{ color:#7488a6 !important; }
+    #screen-study-plan .sp-jnode{ background:#eef4ff !important; border:1px solid #dbe7fb !important; }
+    #screen-study-plan .sp-jnode-tag{ color:#3f7fd6 !important; }
+    #screen-study-plan .sp-jnode-lvl{ color:#2563eb !important; }
+    #screen-study-plan .sp-jnode-cefr{ color:#6b7e9e !important; }
+    #screen-study-plan .sp-jnode--goal{ background:#f3edff !important; border-color:#e3d7fb !important; }
+    #screen-study-plan .sp-jnode--goal .sp-jnode-tag{ color:#7c5cff !important; }
+    #screen-study-plan .sp-jnode--goal .sp-jnode-goal{ color:#3a2a66 !important; }
+    #screen-study-plan .sp-jlink-line{ background:linear-gradient(90deg,#9cc2f5,#c3b0fb) !important; }
+    #screen-study-plan .sp-jlink-line::after{ color:#a78bfa !important; }
+    /* personalized plan value cards */
+    #screen-study-plan .sp-block-title{ color:#1f3358 !important; }
+    #screen-study-plan .sp-value-card{ background:#fff !important; border:1px solid rgba(20,50,110,.06) !important; box-shadow:0 10px 22px rgba(20,50,110,.12) !important; }
+    #screen-study-plan .sp-value-ico{ background:#eef4ff !important; }
+    #screen-study-plan .sp-value-title{ color:#1f3358 !important; }
+    #screen-study-plan .sp-value-sub{ color:#7488a6 !important; }
+    #screen-study-plan .sp-value-card.is-goal{ background:#fff !important; border-color:rgba(20,50,110,.06) !important; }
+    #screen-study-plan .sp-value-card.is-goal .sp-value-ico{ background:#eafaf0 !important; }
+    #screen-study-plan .sp-value-card.is-goal .sp-value-title{ color:#1f3358 !important; }
+    /* 6-level ladder */
+    #screen-study-plan .sp-ladder::before{ background:rgba(20,50,110,.12) !important; }
+    #screen-study-plan .sp-rung{ background:#fff !important; border:1px solid rgba(20,50,110,.08) !important; box-shadow:0 6px 14px rgba(20,50,110,.1); }
+    #screen-study-plan .sp-rung b{ color:#1f3358 !important; }
+    #screen-study-plan .sp-rung span{ color:#8b9bb4 !important; }
+    #screen-study-plan .sp-rung.is-done{ background:#eafaf0 !important; border-color:#bfe9cf !important; }
+    #screen-study-plan .sp-rung.is-done span{ color:#3aa46a !important; }
+    #screen-study-plan .sp-rung.is-current{ background:linear-gradient(180deg,#4a90e2,#2f7fe6) !important; border-color:#2f7fe6 !important; box-shadow:0 8px 18px rgba(47,127,230,.4) !important; transform:translateY(-2px); }
+    #screen-study-plan .sp-rung.is-current b,
+    #screen-study-plan .sp-rung.is-current span{ color:#fff !important; }
+    /* unit timeline */
+    #screen-study-plan .sp-utl::before{ background:rgba(20,50,110,.14) !important; }
+    #screen-study-plan .sp-utl-dot{ background:#fff !important; border:2px solid #cdd9ea !important; color:#8b9bb4 !important; }
+    #screen-study-plan .sp-utl-theme{ color:#1f3358 !important; }
+    #screen-study-plan .sp-utl.is-done .sp-utl-dot{ background:#7bd6a0 !important; border-color:#7bd6a0 !important; color:#0c3a22 !important; }
+    #screen-study-plan .sp-utl.is-done .sp-utl-theme{ color:#7488a6 !important; }
+    #screen-study-plan .sp-utl.is-current{ background:linear-gradient(90deg, rgba(74,144,226,.12), transparent 82%) !important; }
+    #screen-study-plan .sp-utl.is-current .sp-utl-dot{ background:#2f7fe6 !important; border-color:#2f7fe6 !important; color:#fff !important; box-shadow:0 0 0 4px rgba(47,127,230,.16) !important; }
+    #screen-study-plan .sp-utl.is-current .sp-utl-theme{ color:#1f3358 !important; }
+    /* sticky foot + CTA */
+    #screen-study-plan .sp-foot{ background:linear-gradient(180deg, rgba(243,248,255,0) 0%, rgba(243,248,255,.92) 42%, #f3f8ff 100%) !important; }
+    #screen-study-plan .sp-foot-note{ color:#7488a6 !important; }
+    #screen-study-plan .sp-foot .btn-primary,
+    #screen-study-plan .btn-primary#btn-study-plan-start{
+      background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important;
+      box-shadow:0 12px 24px rgba(255,122,60,.4) !important;
+    }
+
+    /* ============================================================
+       Trial report → Figma hero (3D TV + Dino scene), scoped to trial only
+       ============================================================ */
+    /* show the full 375×593 hero illustration at true proportions (no cover
+       crop); the card stack then overlaps its base, matching Figma */
+    #screen-trial-report .tp-hero{
+      background:url(assets/v13fx/trial-hero.png) top center/100% auto no-repeat !important;
+      min-height:448px; padding:14px 18px 0 !important;
+      text-align:left !important; display:flex; flex-direction:column; align-items:flex-start;
+    }
+    #screen-trial-report .tp-hero-emoji{ display:none !important; }
+    #screen-trial-report .tp-hero-badge{ background:rgba(255,255,255,.3) !important; margin-top:36px; }
+    #screen-trial-report .tp-hero-title{ font-size:1.7rem !important; margin-top:6px !important; text-shadow:0 3px 12px rgba(40,20,90,.5); }
+    #screen-trial-report .tp-hero-sub{ text-shadow:0 2px 8px rgba(40,20,90,.5); }
+    #screen-trial-report .tp-back{ align-self:flex-start; }
+    /* lift the card stack so it overlaps the illustration base, like Figma */
+    #screen-trial-report .tp-stack{ position:relative; z-index:2; margin-top:-40px; }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ③ Dino Blind Box (capsule)
+       visual only · flow & copy unchanged · scoped to capsule screens
+       ============================================================ */
+    /* magical arcade scene backdrop on all four capsule sub-screens */
+    #screen-capsule-intro, #screen-capsule, #screen-capsule-result, #screen-capsule-draw{
+      background:url(assets/v13fx/capsule-scene.png) center/cover no-repeat !important;
+      position:relative;
+    }
+    #screen-capsule-intro::before, #screen-capsule::before,
+    #screen-capsule-result::before, #screen-capsule-draw::before{
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:linear-gradient(180deg, rgba(86,104,224,.16), rgba(96,80,210,.26));
+    }
+    #screen-capsule-intro .game-top, #screen-capsule .game-top,
+    #screen-capsule-result .game-top, #screen-capsule-draw .game-top,
+    #screen-capsule-intro .game-body, #screen-capsule .game-body,
+    #screen-capsule-result .game-body, #screen-capsule-draw .game-body{ position:relative; z-index:1; }
+    /* white title + glassy back on the scene */
+    #screen-capsule-intro .game-top h2, #screen-capsule .game-top h2,
+    #screen-capsule-result .game-top h2, #screen-capsule-draw .game-top h2{
+      color:#fff !important; text-shadow:0 2px 8px rgba(30,20,80,.5);
+    }
+    #screen-capsule-intro .game-back, #screen-capsule .game-back,
+    #screen-capsule-result .game-back, #screen-capsule-draw .game-back{
+      background:rgba(255,255,255,.92) !important; color:#3a2a66 !important; box-shadow:0 6px 16px rgba(30,20,80,.25);
+    }
+    /* shared orange CTA (Figma) for the gold buttons in this group */
+    #screen-capsule-intro .gbtn-gold, #screen-capsule-draw .gbtn-gold{
+      background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important;
+      box-shadow:0 12px 24px rgba(255,122,60,.42) !important;
+    }
+    /* ---- Intro: frosted glass card + orange progress ---- */
+    #screen-capsule-intro .cap-intro-card{
+      background:rgba(255,255,255,.84) !important; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.7); box-shadow:0 22px 46px rgba(40,30,90,.3) !important;
+    }
+    #screen-capsule-intro .cap-intro-bar{ background:rgba(120,110,180,.18) !important; }
+    #screen-capsule-intro .cap-intro-bar i{ background:linear-gradient(90deg,#ffb43b,#ff7a3c) !important; }
+    /* ---- Quiz: glass card · purple "Question" pill · pure-white answer pills ---- */
+    #screen-capsule .cap-quiz-card{
+      background:rgba(255,255,255,.86) !important; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.7); box-shadow:0 22px 46px rgba(40,30,90,.3) !important; text-align:center;
+    }
+    #screen-capsule .cap-quiz-meta{
+      display:inline-block; background:linear-gradient(135deg,#8b7bf0,#6a5cf0); color:#fff !important;
+      padding:5px 18px; border-radius:999px; font-weight:700; box-shadow:0 6px 14px rgba(106,92,240,.35);
+    }
+    #screen-capsule .cap-quiz-meta b{ color:#fff !important; }
+    #screen-capsule .pk-opt{
+      background:#fff !important; border:1.5px solid #e7e9f5 !important; box-shadow:0 6px 14px rgba(40,30,90,.1);
+    }
+    /* ---- Round result: glass settle card ---- */
+    #screen-capsule-result .settle-card{
+      background:rgba(255,255,255,.92) !important; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.7); box-shadow:0 22px 46px rgba(40,30,90,.3) !important;
+    }
+    /* ---- Machine / draw: swap orange arcade box for the 3D "?" capsule on a silver pedestal ---- */
+    #screen-capsule-draw .capsule-machine{ background:transparent !important; box-shadow:none !important; }
+    #screen-capsule-draw .machine{
+      width:172px; height:206px; border-radius:0 !important; box-shadow:none !important; overflow:visible;
+      background:url(assets/v13fx/capsule-base.png) bottom center/132px auto no-repeat !important;
+    }
+    #screen-capsule-draw .machine::before{
+      content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
+      width:152px; height:160px; background:url(assets/v13fx/capsule-box.png) center/contain no-repeat;
+      filter:drop-shadow(0 14px 18px rgba(40,30,90,.38));
+    }
+    #screen-capsule-draw .machine.shake{ animation:gshake 0.5s var(--ease); }
+    #screen-capsule-draw .machine .glass, #screen-capsule-draw .machine .slot{ display:none !important; }
+    #screen-capsule-draw .cap-machine-meta .cap-count{ color:#fff !important; text-shadow:0 2px 6px rgba(30,20,80,.5); }
+    #screen-capsule-draw .cap-machine-meta .capd-hint{ color:#eef0ff !important; text-shadow:0 2px 6px rgba(30,20,80,.5); }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ④⑤ Word PK + Speaking PK (+ shared PK result)
+       visual only · flow & copy unchanged · same arcade world as the blind box
+       ============================================================ */
+    #screen-pk-match, #screen-wordpk, #screen-speakpk, #screen-pkresult{
+      background:url(assets/v13fx/capsule-scene.png) center/cover no-repeat !important; position:relative;
+    }
+    #screen-pk-match::before, #screen-wordpk::before, #screen-speakpk::before, #screen-pkresult::before{
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(120% 70% at 50% -10%, rgba(255,170,60,.34), transparent 60%),
+        linear-gradient(180deg, rgba(86,104,224,.14), rgba(96,80,210,.26));
+    }
+    #screen-pk-match .game-top, #screen-wordpk .game-top, #screen-speakpk .game-top,
+    #screen-pk-match .game-body, #screen-wordpk .game-body, #screen-speakpk .game-body,
+    #screen-pkresult .game-body{ position:relative; z-index:1; }
+    /* white titles + glassy back on the scene */
+    #screen-pk-match .game-top h2, #screen-wordpk .game-top h2, #screen-speakpk .game-top h2{
+      color:#fff !important; text-shadow:0 2px 8px rgba(30,20,80,.5);
+    }
+    #screen-pk-match .game-back, #screen-wordpk .game-back, #screen-speakpk .game-back{
+      background:rgba(255,255,255,.92) !important; color:#3a2a66 !important; box-shadow:0 6px 16px rgba(30,20,80,.25);
+    }
+    /* frosted-glass panels (matchmaking card · quiz card · result card) */
+    #screen-pk-match .pkm-card,
+    #screen-wordpk .pk-q, #screen-speakpk .pk-q,
+    #screen-pkresult .settle-card{
+      background:rgba(255,255,255,.88) !important; backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border:1px solid rgba(255,255,255,.7) !important; box-shadow:0 22px 46px rgba(40,30,90,.3) !important;
+    }
+    /* score row sits on the scene → light text */
+    #screen-wordpk .pk-score .pk-nm, #screen-speakpk .pk-score .pk-nm{ color:#eef0ff !important; text-shadow:0 1px 4px rgba(30,20,80,.5); }
+    #screen-wordpk .pk-score .pk-pts, #screen-speakpk .pk-score .pk-pts{ color:#fff !important; text-shadow:0 2px 6px rgba(30,20,80,.5); }
+    #screen-wordpk .pk-score .pk-vs, #screen-speakpk .pk-score .pk-vs{ color:#ffd27a !important; }
+    /* round counter → gold pill */
+    #screen-wordpk .pk-round, #screen-speakpk .pk-round{
+      align-self:center; display:inline-block; background:linear-gradient(135deg,#ffb43b,#ff7a3c);
+      color:#fff !important; padding:4px 16px; border-radius:999px; box-shadow:0 6px 14px rgba(255,122,60,.4);
+    }
+    /* pure-white answer pills (scoped so Word PK / Speaking PK only) */
+    #screen-wordpk .pk-opt, #screen-speakpk .pk-opt{
+      background:#fff !important; border:1.5px solid #e7e9f5 !important; box-shadow:0 6px 14px rgba(40,30,90,.1);
+    }
+    /* orange Continue + glass play button */
+    #screen-pkresult .gbtn-gold{ background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important; box-shadow:0 12px 24px rgba(255,122,60,.42) !important; }
+    #screen-speakpk .spk-play-btn{ background:rgba(255,255,255,.92) !important; border:1px solid rgba(255,255,255,.7) !important; color:#3a2a66 !important; }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ⑥ Explore sub-pages
+       (Words & Sentences · Listening) · align purple→blue with the hub
+       visual only · flow & copy unchanged
+       ============================================================ */
+    /* real Figma blurred scene plates (words = purple, listening = blue) */
+    #device-landscape #screen-explore-story{
+      background:#5a6fe0 url(assets/v13fx/words-scene.png) center/cover no-repeat !important;
+    }
+    #device-landscape #screen-explore-radio{
+      background:#3a9cdf url(assets/v13fx/listening-scene.png) center/cover no-repeat !important;
+    }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ⑦ Dino chat (immersive speaking)
+       green scene → blue/lavender dreamy world · visual only
+       ============================================================ */
+    #screen-dino-chat .dino-chat-immersive{
+      background:#8fb6ee url(assets/v13fx/home-scene.png) center/cover no-repeat !important;
+    }
+    #screen-dino-chat .dchat-bg{ display:none !important; }
+    #screen-dino-chat .dchat-close{ background:rgba(255,255,255,.92) !important; color:#3a2a66 !important; box-shadow:0 6px 16px rgba(30,20,80,.25); }
+    #screen-dino-chat .dchat-dino-tag{ background:rgba(40,30,90,.78) !important; }
+    #screen-dino-chat .dchat-hint{ color:#fff !important; text-shadow:0 2px 6px rgba(30,20,80,.5); }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ⑧ Paywall · Membership · Profile detail
+       light shell → blue/purple dreamy bg · green CTA → orange · visual only
+       ============================================================ */
+    /* real Figma space scenes (paywall/membership = Saturn sky, profile = observatory) */
+    #screen-paywall .pw-shell, #screen-membership .ms-shell{
+      background:#3a52d8 url(assets/v13fx/paywall-scene.png) center/cover no-repeat !important;
+    }
+    #screen-profile-detail .ms-shell{
+      background:#2f6fe0 url(assets/v13fx/profile-scene.png) center/cover no-repeat !important;
+    }
+    /* header controls readable on the richer bg */
+    #screen-paywall .pw-restore{ color:#fff !important; }
+    #screen-paywall .btn-back-land, #screen-membership .btn-back-land, #screen-profile-detail .btn-back-land{ color:#fff !important; }
+    #screen-membership .ms-head-title, #screen-profile-detail .ms-head-title{ color:#fff !important; }
+    /* solidify white panels for contrast */
+    #screen-paywall .pw-left{ background:rgba(255,255,255,.94) !important; border-color:rgba(255,255,255,.8) !important; box-shadow:0 18px 40px rgba(40,30,90,.22) !important; }
+    #screen-membership .ms-benefits{ background:rgba(255,255,255,.94); border-radius:18px; padding:16px 18px; box-shadow:0 14px 30px rgba(40,30,90,.18); }
+    /* orange Subscribe CTA (Figma) */
+    #screen-paywall .pw-cta.btn-primary{ background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important; box-shadow:0 12px 26px rgba(255,122,60,.45) !important; }
+
+    /* ============================================================
+       V1.3.0 Figma reskin — GROUP ⑩ Onboarding · Value · Login · Loading
+       old green/grey theme → bright dreamy bg + orange CTA + blue accents
+       (matches the rest of the reskin) · flow & copy & Dino unchanged
+       ============================================================ */
+    /* immersive deep-blue → sky backdrop on every onboarding / login portrait screen (Figma) */
+    #screen-welcome, #screen-who, #screen-name, #screen-age, #screen-placement,
+    #screen-goal-value, #screen-loading, #screen-login{
+      background:
+        radial-gradient(130% 50% at 50% 116%, rgba(176,212,255,.55), transparent 62%),
+        linear-gradient(180deg,#0a2cc9 0%, #0a5ee8 38%, #2d8ef1 74%, #7aaff2 100%) !important;
+    }
+    /* a big standing Dino on a dreamy path anchors the question screens (Figma) */
+    #screen-who .scroll-body, #screen-name .scroll-body,
+    #screen-age .scroll-body, #screen-placement .scroll-body{
+      position:relative; z-index:1;
+    }
+    /* Figma: the standing Dino mascot only anchors the FIRST question screen
+       (Who's learning). Name / Age / Placement screens have no bottom Dino. */
+    #screen-who, #screen-name, #screen-age, #screen-placement{ position:relative; }
+    /* greeting row sits in normal flow ABOVE the Continue button (Dino + bubble
+       together) so nothing is clipped by the orange button */
+    #screen-who .who-greeting{
+      position:relative; z-index:3; margin:6px 0 2px; padding:0;
+      display:flex; align-items:flex-end; gap:8px;
+    }
+    #screen-who .who-greeting::before{
+      content:""; flex:0 0 96px; width:96px; height:132px; align-self:flex-end;
+      background:url(assets/dino-mascot.png) center bottom/contain no-repeat;
+      filter:drop-shadow(0 14px 20px rgba(4,18,80,.4));
+    }
+    #screen-who .who-greeting .speech-bubble{
+      flex:1 1 auto; margin:0 0 14px; max-width:none;
+      background:rgba(255,255,255,.96) !important; box-shadow:0 12px 26px rgba(6,24,90,.24);
+    }
+    /* keep the orange Continue button above the standing Dino */
+    #screen-who .foot-actions, #screen-name .foot-actions,
+    #screen-placement .foot-actions, #screen-goal-value .foot-actions{ position:relative; z-index:3; }
+    /* white/lavender text + light hints on the blue */
+    #screen-who .title, #screen-name .title, #screen-age .title, #screen-placement .title,
+    #screen-goal-value .title, #screen-loading .loading-status,
+    #screen-who .step-label, #screen-name .step-label, #screen-age .step-label, #screen-placement .step-label,
+    #screen-name .name-suggest-label{ color:#ffffff !important; }
+    #screen-who .hint, #screen-name .hint, #screen-age .hint, #screen-placement .hint,
+    #screen-loading .loading-sub{ color:#d7e6ff !important; }
+    #screen-who .btn-back, #screen-name .btn-back, #screen-age .btn-back, #screen-placement .btn-back,
+    #screen-goal-value .btn-back, #screen-loading .btn-back, #screen-login .btn-back,
+    #screen-name .name-required-hint{ color:#eaf2ff !important; }
+    /* progress: white track + gold fill (Figma) */
+    #screen-who .progress-bar, #screen-name .progress-bar,
+    #screen-age .progress-bar, #screen-placement .progress-bar{
+      background:rgba(255,255,255,.28) !important;
+    }
+    #screen-who .progress-fill, #screen-name .progress-fill,
+    #screen-age .progress-fill, #screen-placement .progress-fill{
+      background:linear-gradient(90deg,#ffd45a,#ffb43b) !important;
+    }
+    /* option cards stay crisp white glass on the blue */
+    #screen-who .option-item, #screen-age .option-item, #screen-placement .option-item,
+    #screen-who .option-btn, #screen-age .option-btn, #screen-placement .option-btn{
+      background:rgba(255,255,255,.96) !important; border:1.5px solid rgba(255,255,255,.6) !important;
+      box-shadow:0 10px 22px rgba(6,24,90,.22) !important; color:#1f2d57 !important;
+    }
+    #screen-who .option-item.is-selected, #screen-age .option-item.is-selected,
+    #screen-placement .option-item.is-selected{
+      border-color:#ffc24d !important; box-shadow:0 12px 26px rgba(255,170,60,.4) !important;
+    }
+    #screen-name .name-field{
+      background:rgba(255,255,255,.96) !important; border:1.5px solid rgba(255,255,255,.6) !important; color:#1f2d57 !important;
+    }
+    #screen-name .name-suggest{ background:rgba(255,255,255,.9) !important; color:#274690 !important; border-color:transparent !important; }
+    /* who speech bubble stays white card, sits above the Dino */
+    #screen-who .who-intro{ position:relative; z-index:2; }
+    #screen-who .speech-bubble{ background:rgba(255,255,255,.96) !important; box-shadow:0 12px 26px rgba(6,24,90,.24); }
+    /* ---- Value page: blue hero collage + white bullet card (Figma) ---- */
+    #screen-goal-value .value-illo-slot{
+      background:transparent !important; min-height:0 !important; height:auto !important; overflow:visible !important;
+    }
+    #screen-goal-value .value-illo-slot .ob-illo{
+      width:100%; height:auto; display:block; filter:drop-shadow(0 18px 28px rgba(4,18,80,.36));
+    }
+    #screen-goal-value .ob-value-card{
+      margin-top:-6px; background:rgba(255,255,255,.96); border-radius:22px; padding:20px 18px;
+      box-shadow:0 20px 44px rgba(6,24,90,.26); border:1px solid rgba(255,255,255,.7);
+    }
+    #screen-goal-value .ob-value-card .title{ color:#16235a !important; }
+    #screen-goal-value .ob-value-card .sub{
+      display:inline-block; background:linear-gradient(90deg,#9ef0c4,#6fd6c9); color:#155e4a !important;
+      padding:7px 16px; border-radius:999px; font-weight:800; margin:6px 0 12px;
+    }
+    /* ---- Login: immersive blue + spaceship Dino + mint wordmark ---- */
+    #screen-login .illo-slot{ background:transparent !important; min-height:0 !important; height:auto !important; overflow:visible !important; }
+    #screen-login .illo-slot .ob-illo{ width:auto !important; height:210px !important; max-width:96% !important; max-height:none !important; margin:0 auto 6px; display:block; object-fit:contain; filter:drop-shadow(0 16px 26px rgba(4,18,80,.4)); }
+    #screen-login .logo{ color:#74ECC2 !important; text-shadow:0 2px 10px rgba(20,120,90,.35); }
+    #screen-login .login-dynamic{ color:#ffffff !important; }
+    #screen-login .login-divider, #screen-login .login-more-label{ color:#cfe0ff !important; }
+    #screen-login .terms, #screen-login .login-terms{ color:#cfe0ff !important; }
+    /* primary CTA: forest green → Figma orange */
+    #screen-welcome .btn-primary, #screen-who .btn-primary, #screen-name .btn-primary,
+    #screen-age .btn-primary, #screen-placement .btn-primary, #screen-goal-value .btn-primary,
+    #screen-loading .btn-primary, #screen-login .btn-primary{
+      background:linear-gradient(135deg,#ffb43b,#ff7a3c) !important; color:#fff !important;
+      box-shadow:0 12px 24px rgba(255,122,60,.4) !important;
+    }
+    #screen-welcome .btn-primary:hover, #screen-who .btn-primary:hover, #screen-name .btn-primary:hover,
+    #screen-age .btn-primary:hover, #screen-placement .btn-primary:hover, #screen-goal-value .btn-primary:hover,
+    #screen-login .btn-primary:hover{ filter:brightness(1.03); }
+    /* leftover forest-green accents → brand blue (text links, bubble emphasis) */
+    #screen-welcome .btn-text, #screen-welcome .btn-text-link, #screen-login .btn-text,
+    #screen-who .speech-bubble strong, #screen-name .btn-text-link{ color:#2f7fe6 !important; }
+    /* onboarding progress bar → blue gradient */
+    #screen-who .progress-fill, #screen-name .progress-fill,
+    #screen-age .progress-fill, #screen-placement .progress-fill{
+      background:linear-gradient(90deg,#4a90e2,#2f7fe6) !important;
+    }
+    /* selected option + focus accents teal/green → blue */
+    #screen-who .option-item.is-selected, #screen-age .option-item.is-selected,
+    #screen-placement .option-item.is-selected, #screen-who .option-btn.selected,
+    #screen-age .option-btn.selected, #screen-placement .option-btn.selected{
+      border-color:#2f7fe6 !important; background:#eef4ff !important;
+    }
+    #screen-who .option-btn.selected::before, #screen-age .option-btn.selected::before,
+    #screen-placement .option-btn.selected::before{ background:#2f7fe6 !important; }
+    #screen-name .name-field:focus{ border-color:#2f7fe6 !important; }
+    /* loading ring → orange to echo the CTA */
+    #screen-loading .progress-ring .fill{ stroke:#ff7a3c !important; }
+    /* ---- Welcome: full immersive blue hero with real Figma 3D illustrations ---- */
+    #screen-welcome{
+      background:
+        radial-gradient(130% 56% at 50% 116%, rgba(170,210,255,.55), transparent 62%),
+        linear-gradient(180deg,#0a2cc9 0%, #0a5ee8 36%, #2d8ef1 72%, #7aaff2 100%) !important;
+    }
+    #screen-welcome .welcome-hero{
+      background:transparent !important; border-radius:0 !important; box-shadow:none !important;
+      min-height:46% !important; max-height:54% !important; padding:6px 8px 0 !important; overflow:visible !important;
+    }
+    #screen-welcome .welcome-hero::after{ display:none !important; }
+    #screen-welcome .ob-illo{ width:100% !important; height:100% !important; object-fit:contain !important; object-position:center top; filter:drop-shadow(0 18px 30px rgba(4,18,80,.4)); }
+    #screen-welcome .welcome-copy .logo{ color:#74ECC2 !important; text-shadow:0 2px 10px rgba(20,120,90,.35); }
+    #screen-welcome .welcome-copy .title{ color:#ffffff !important; }
+    #screen-welcome .welcome-copy .sub{ color:#dceaff !important; }
+    #screen-welcome .carousel-dots span{ background:rgba(255,255,255,.45) !important; }
+    #screen-welcome .carousel-dots span.active{ background:#ffffff !important; }
+    #screen-welcome .btn-text{ color:#eaf2ff !important; }
+    #screen-welcome .btn-text .btn-text-link{ color:#ffd45a !important; }
   </style>
 </head>
 <body>
@@ -5361,15 +6100,14 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
-          <div class="who-intro">
-            <div class="dino-wrap" id="dino-who"></div>
-            <div class="speech-bubble">
-              <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong>.</p>
-            </div>
-          </div>
           <h1 class="title">Who's learning?</h1>
           <p class="hint">We'll personalize the learning plan for the learner.</p>
           <div class="option-list" id="who-options"></div>
+        </div>
+        <div class="who-greeting">
+          <div class="speech-bubble">
+            <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong>.</p>
+          </div>
         </div>
         <div class="foot-actions">
           <button type="button" class="btn btn-primary" id="btn-who-continue">Continue</button>
@@ -5436,9 +6174,11 @@
         </div>
         <div class="scroll-body">
           <div class="illo-slot value-illo-slot" id="illo-goal-value"></div>
-          <h1 class="title" id="goal-value-h1"></h1>
-          <p class="sub" id="goal-value-h2"></p>
-          <ul class="bullets" id="goal-value-bullets"></ul>
+          <div class="ob-value-card">
+            <h1 class="title" id="goal-value-h1"></h1>
+            <p class="sub" id="goal-value-h2"></p>
+            <ul class="bullets" id="goal-value-bullets"></ul>
+          </div>
         </div>
         <div class="foot-actions">
           <button type="button" class="btn btn-primary" id="btn-goal-value-continue">Continue</button>
@@ -5909,7 +6649,7 @@
                   <span class="ee-emoji">📖</span>
                   <span class="ee-info">
                     <b>Words &amp; Sentences</b>
-                    <span>Practice words &amp; sentences · Levels 1–6</span>
+                    <span>Learn by doing</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-story" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -5919,7 +6659,7 @@
                   <span class="ee-emoji">🎧</span>
                   <span class="ee-info">
                     <b>Listening</b>
-                    <span>Radio stories · Goodnight / Morning</span>
+                    <span>Radio stories</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-radio" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -5929,7 +6669,7 @@
                   <span class="ee-emoji">🗣️</span>
                   <span class="ee-info">
                     <b>Speaking</b>
-                    <span>Talk with Dino · Free speaking practice</span>
+                    <span>Talk with Dino</span>
                   </span>
                   <span class="ee-thumbs ee-thumbs--dino" aria-hidden="true"><img src="assets/dino-mascot.png" alt="" decoding="async" /></span>
                   <span class="ee-arrow">›</span>
@@ -5966,18 +6706,18 @@
                   <span class="dn-pill dn-pill--coin" aria-label="Dino Coin balance" role="status">
                     <span class="coin-ico"></span><span class="js-coin">888</span>
                   </span>
-                  <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop">🛍️</button>
+                  <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop"><img class="dn-pill-ico" src="assets/v13fx/home-store.png" alt="" decoding="async" /></button>
                 </div>
               </div>
               <!-- Backpack entry card (left edge, Figma) -->
               <button type="button" class="dino-backpack-card" data-go-game="screen-backpack">
-                <span class="dbc-ico" aria-hidden="true">🎒</span>
+                <span class="dbc-ico" aria-hidden="true"><img src="assets/v13fx/home-backpack.png" alt="" decoding="async" /></span>
                 <span class="dbc-label">Backpack</span>
               </button>
               <!-- Stage: Dino on the grass + greeting bubble + central voice button -->
               <div class="dino-night-stage">
                 <div class="dino-night-char">
-                  <img src="assets/dino-mascot.png" alt="Dino" id="dino-tab-img" decoding="async" />
+                  <img src="assets/v13fx/dino.png" alt="Dino" id="dino-tab-img" decoding="async" />
                   <div class="dino-name-tag dino-name-tag--night" id="dino-tab-tag">Dino · Hatchling</div>
                   <!-- Dino level + XP progress, shown together under the Dino character -->
                   <span class="dino-id-level dino-id-level--char">
@@ -6170,7 +6910,7 @@
         </button>
         <div class="ic-progress">
           <div class="ic-progress-track"><div class="ic-progress-fill" style="width:22%"></div></div>
-          <span class="ic-reward r1">🎁</span><span class="ic-reward r2">🎒</span><span class="ic-reward r3">💎</span>
+          <span class="ic-reward r1"><img src="assets/v13fx/ic-reward-chest.png" alt="" decoding="async" /></span><span class="ic-reward r2"><img src="assets/v13fx/ic-reward-gift.png" alt="" decoding="async" /></span><span class="ic-reward r3"><img src="assets/v13fx/ic-reward-egg.png" alt="" decoding="async" /></span>
         </div>
         <span class="ic-coins"><span class="ic-coin-ico"></span><b class="js-coin">888</b></span>
         <div class="ic-teacher"><img class="ic-teacher-img" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" /></div>
@@ -6203,7 +6943,7 @@
         </button>
         <div class="ic-progress">
           <div class="ic-progress-track"><div class="ic-progress-fill" style="width:62%"></div></div>
-          <span class="ic-reward r1">🎁</span><span class="ic-reward r2">🎒</span><span class="ic-reward r3">💎</span>
+          <span class="ic-reward r1"><img src="assets/v13fx/ic-reward-chest.png" alt="" decoding="async" /></span><span class="ic-reward r2"><img src="assets/v13fx/ic-reward-gift.png" alt="" decoding="async" /></span><span class="ic-reward r3"><img src="assets/v13fx/ic-reward-egg.png" alt="" decoding="async" /></span>
         </div>
         <span class="ic-coins"><span class="ic-coin-ico"></span><b class="js-coin">888</b></span>
         <div class="ic-teacher"><img class="ic-teacher-img" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" /></div>
@@ -6227,7 +6967,7 @@
         </button>
         <div class="ic-progress">
           <div class="ic-progress-track"><div class="ic-progress-fill" style="width:88%"></div></div>
-          <span class="ic-reward r1">🎁</span><span class="ic-reward r2">🎒</span><span class="ic-reward r3">💎</span>
+          <span class="ic-reward r1"><img src="assets/v13fx/ic-reward-chest.png" alt="" decoding="async" /></span><span class="ic-reward r2"><img src="assets/v13fx/ic-reward-gift.png" alt="" decoding="async" /></span><span class="ic-reward r3"><img src="assets/v13fx/ic-reward-egg.png" alt="" decoding="async" /></span>
         </div>
         <span class="ic-coins"><span class="ic-coin-ico"></span><b class="js-coin">888</b></span>
         <button type="button" class="ic-speaker" aria-label="Replay audio">
@@ -6883,9 +7623,11 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", programComplete: false };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
-    const demoState = { levelUpResult: "pass", capsuleOutcome: "random" };
+    // levelChange = the Level up trial placement outcome (V1.3.0: assessed within
+    // current±1, applied directly): up (+1) / same / down (-1).
+    const demoState = { levelChange: "up", capsuleOutcome: "random" };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -6905,43 +7647,34 @@
 
     const ILLUSTRATIONS = {
       welcome: [
-        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EAF7EC"/><stop offset="100%" stop-color="#D4F8EC"/></linearGradient></defs><rect width="280" height="240" fill="url(#wg1)"/><circle cx="40" cy="40" r="16" fill="#FFE082" opacity="0.85"/><path d="M0 188 Q70 156 140 182 Q210 156 280 186 V240 H0 Z" fill="#A8E6CF" opacity="0.5"/><ellipse cx="210" cy="216" rx="72" ry="13" fill="#7DCE9A" opacity="0.4"/><rect x="20" y="48" width="150" height="96" rx="16" fill="#fff" stroke="#2D6B45" stroke-width="2.5"/><circle cx="54" cy="88" r="17" fill="#FFE082"/><circle cx="49" cy="85" r="2.2" fill="#143D2A"/><circle cx="59" cy="85" r="2.2" fill="#143D2A"/><path d="M48 93 Q54 99 60 93" stroke="#143D2A" stroke-width="2" fill="none" stroke-linecap="round"/><rect x="82" y="74" width="72" height="8" rx="4" fill="#A8E6CF"/><rect x="82" y="90" width="54" height="8" rx="4" fill="#D4F8EC"/><rect x="82" y="106" width="64" height="8" rx="4" fill="#E8F5E9"/><rect x="20" y="38" width="48" height="20" rx="10" fill="#EA6C25"/><circle cx="33" cy="48" r="3.4" fill="#fff"/><text x="50" y="52" text-anchor="middle" fill="#fff" font-size="10" font-weight="700" font-family="Arial,sans-serif">LIVE</text><image href="assets/dino-mascot.png" x="162" y="80" width="114" height="148" preserveAspectRatio="xMidYMax meet"/></svg>`, title: "Your AI teacher, always ready", desc: "A real-time teacher—not pre-recorded lessons." },
-        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EAF7EC"/><stop offset="100%" stop-color="#D4F8EC"/></linearGradient></defs><rect width="280" height="240" fill="url(#wg2)"/><path d="M0 188 Q70 156 140 182 Q210 156 280 186 V240 H0 Z" fill="#A8E6CF" opacity="0.5"/><ellipse cx="84" cy="216" rx="70" ry="13" fill="#7DCE9A" opacity="0.4"/><image href="assets/dino-mascot.png" x="16" y="74" width="116" height="154" preserveAspectRatio="xMidYMax meet"/><path d="M140 122 q12 14 0 30" stroke="#EA6C25" stroke-width="3.6" fill="none" stroke-linecap="round"/><path d="M150 113 q18 20 0 48" stroke="#EA6C25" stroke-width="3.6" fill="none" stroke-linecap="round" opacity="0.55"/><rect x="166" y="50" width="100" height="76" rx="18" fill="#fff" stroke="#2D6B45" stroke-width="2.5"/><path d="M184 88 l11 12 l22 -28" stroke="#2E9E5B" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(224,62) scale(1.15)"><path d="M12 2 l2.9 6.3 l6.9 .6 l-5.2 4.6 l1.6 6.8 l-6.2 -3.6 l-6.2 3.6 l1.6 -6.8 l-5.2 -4.6 l6.9 -.6 Z" fill="#FFB300"/></g></svg>`, title: "Speak in class—not just watch", desc: "Answer questions, use your mic, get feedback." },
-        { visual: `<svg viewBox="0 0 280 240" preserveAspectRatio="xMidYMid slice" width="100%" height="100%"><defs><linearGradient id="wg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#EAF7EC"/><stop offset="100%" stop-color="#D4F8EC"/></linearGradient></defs><rect width="280" height="240" fill="url(#wg3)"/><path d="M0 188 Q70 156 140 182 Q210 156 280 186 V240 H0 Z" fill="#A8E6CF" opacity="0.5"/><ellipse cx="74" cy="216" rx="62" ry="12" fill="#7DCE9A" opacity="0.4"/><rect x="20" y="34" width="64" height="44" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="2.5"/><path d="M30 50 h30 M30 62 h20" stroke="#A8E6CF" stroke-width="4" stroke-linecap="round"/><path d="M52 66 l5 5 l12 -14" stroke="#EA6C25" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><image href="assets/dino-mascot.png" x="12" y="80" width="108" height="148" preserveAspectRatio="xMidYMax meet"/><rect x="150" y="138" width="28" height="50" rx="6" fill="#A8E6CF"/><rect x="186" y="112" width="28" height="76" rx="6" fill="#7DCE9A"/><rect x="222" y="84" width="28" height="104" rx="6" fill="#2D6B45"/><path d="M164 138 L200 112 L236 84" stroke="#EA6C25" stroke-width="3.2" fill="none" stroke-dasharray="7 6"/><circle cx="164" cy="138" r="4" fill="#EA6C25"/><circle cx="200" cy="112" r="4" fill="#EA6C25"/><g transform="translate(225,52) scale(1.3)"><path d="M12 2 l2.9 6.3 l6.9 .6 l-5.2 4.6 l1.6 6.8 l-6.2 -3.6 l-6.2 3.6 l1.6 -6.8 l-5.2 -4.6 l6.9 -.6 Z" fill="#FFB300"/></g></svg>`, title: "See progress after every lesson", desc: "Clear Level–Unit–Lesson path and reports." },
+        { visual: `<img class="ob-illo" src="assets/v13fx/ob-welcome-2.png" alt="" loading="eager" decoding="async" />`, title: "Your AI teacher, always ready", desc: "A real-time teacher—not pre-recorded lessons." },
+        { visual: `<img class="ob-illo" src="assets/v13fx/ob-welcome-1.png" alt="" loading="eager" decoding="async" />`, title: "Speak in class—not just watch", desc: "Answer questions, use your mic, get feedback." },
+        { visual: `<img class="ob-illo" src="assets/v13fx/ob-welcome-3.png" alt="" loading="eager" decoding="async" />`, title: "See progress after every lesson", desc: "Clear Level–Unit–Lesson path and reports." },
       ],
       ageValue: {
-        "3–5": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><ellipse cx="160" cy="128" rx="120" ry="14" fill="#A8E6CF" opacity="0.5"/><circle cx="110" cy="72" r="28" fill="#FFE082"/><circle cx="105" cy="68" r="3" fill="#143D2A"/><circle cx="115" cy="68" r="3" fill="#143D2A"/><path d="M102 78 Q110 84 118 78" stroke="#143D2A" stroke-width="2" fill="none"/><rect x="145" y="88" width="22" height="22" rx="4" fill="#EA6C25"/><rect x="172" y="78" width="22" height="22" rx="4" fill="#2D6B45" opacity="0.35"/><rect x="199" y="68" width="22" height="22" rx="4" fill="#A8E6CF"/><path d="M230 55 L250 40 L270 55" stroke="#5CB87A" stroke-width="3" fill="none"/></svg>`,
-        "6–8": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="48" y="42" width="120" height="88" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="62" y="58" width="50" height="8" rx="4" fill="#A8E6CF"/><rect x="62" y="74" width="80" height="8" rx="4" fill="#E8F5E9"/><circle cx="220" cy="78" r="36" fill="#FFE082"/><ellipse cx="220" cy="118" rx="28" ry="10" fill="#7DCE9A" opacity="0.6"/></svg>`,
-        "9–12": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="40" y="36" width="140" height="90" rx="14" fill="#fff" stroke="#C5DDD2"/><rect x="55" y="52" width="110" height="60" rx="6" fill="#D4F8EC"/><circle cx="115" cy="78" r="14" fill="#2D6B45" opacity="0.2"/><circle cx="230" cy="70" r="32" fill="#FFE082"/><rect x="200" y="95" width="60" height="36" rx="8" fill="#2D6B45" opacity="0.12"/></svg>`,
-        "13–17": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="50" y="40" width="100" height="70" rx="10" fill="#fff" stroke="#2D6B45"/><path d="M65 55 h70 M65 70 h50 M65 85 h60" stroke="#A8E6CF" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="68" r="30" fill="#FFE082"/><rect x="248" y="48" width="36" height="48" rx="6" fill="#fff" stroke="#2D6B45"/><path d="M256 62 h20 M256 76 h16" stroke="#2D6B45" stroke-width="2"/></svg>`,
-        "18+": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="44" y="38" width="132" height="78" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="58" y="52" width="48" height="10" rx="5" fill="#A8E6CF"/><rect x="58" y="70" width="96" height="10" rx="5" fill="#D4F8EC"/><circle cx="228" cy="62" r="26" fill="#FFE082"/><ellipse cx="228" cy="100" rx="34" ry="14" fill="#2D6B45" opacity="0.15"/><rect x="268" y="55" width="28" height="40" rx="4" fill="#EA6C25" opacity="0.85"/></svg>`,
+        "3–5": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#EAF1FF"/><ellipse cx="160" cy="128" rx="120" ry="14" fill="#AFCDFF" opacity="0.5"/><circle cx="110" cy="72" r="28" fill="#FFE082"/><circle cx="105" cy="68" r="3" fill="#1B2A5C"/><circle cx="115" cy="68" r="3" fill="#1B2A5C"/><path d="M102 78 Q110 84 118 78" stroke="#1B2A5C" stroke-width="2" fill="none"/><rect x="145" y="88" width="22" height="22" rx="4" fill="#EA6C25"/><rect x="172" y="78" width="22" height="22" rx="4" fill="#2F4B8F" opacity="0.35"/><rect x="199" y="68" width="22" height="22" rx="4" fill="#AFCDFF"/><path d="M230 55 L250 40 L270 55" stroke="#5A8FE6" stroke-width="3" fill="none"/></svg>`,
+        "6–8": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#DCEBFF"/><rect x="48" y="42" width="120" height="88" rx="12" fill="#fff" stroke="#2F4B8F"/><rect x="62" y="58" width="50" height="8" rx="4" fill="#AFCDFF"/><rect x="62" y="74" width="80" height="8" rx="4" fill="#EAF1FF"/><circle cx="220" cy="78" r="36" fill="#FFE082"/><ellipse cx="220" cy="118" rx="28" ry="10" fill="#7FAAF0" opacity="0.6"/></svg>`,
+        "9–12": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#EAF1FF"/><rect x="40" y="36" width="140" height="90" rx="14" fill="#fff" stroke="#C7D7F2"/><rect x="55" y="52" width="110" height="60" rx="6" fill="#DCEBFF"/><circle cx="115" cy="78" r="14" fill="#2F4B8F" opacity="0.2"/><circle cx="230" cy="70" r="32" fill="#FFE082"/><rect x="200" y="95" width="60" height="36" rx="8" fill="#2F4B8F" opacity="0.12"/></svg>`,
+        "13–17": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#DCEBFF"/><rect x="50" y="40" width="100" height="70" rx="10" fill="#fff" stroke="#2F4B8F"/><path d="M65 55 h70 M65 70 h50 M65 85 h60" stroke="#AFCDFF" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="68" r="30" fill="#FFE082"/><rect x="248" y="48" width="36" height="48" rx="6" fill="#fff" stroke="#2F4B8F"/><path d="M256 62 h20 M256 76 h16" stroke="#2F4B8F" stroke-width="2"/></svg>`,
+        "18+": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#EAF1FF"/><rect x="44" y="38" width="132" height="78" rx="12" fill="#fff" stroke="#2F4B8F"/><rect x="58" y="52" width="48" height="10" rx="5" fill="#AFCDFF"/><rect x="58" y="70" width="96" height="10" rx="5" fill="#DCEBFF"/><circle cx="228" cy="62" r="26" fill="#FFE082"/><ellipse cx="228" cy="100" rx="34" ry="14" fill="#2F4B8F" opacity="0.15"/><rect x="268" y="55" width="28" height="40" rx="4" fill="#EA6C25" opacity="0.85"/></svg>`,
       },
       goalValue: {
-        speak_confidence: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="28" y="32" width="168" height="88" rx="14" fill="#fff" stroke="#2D6B45"/><ellipse cx="248" cy="76" rx="44" ry="44" fill="#EA6C25"/><rect x="236" y="58" width="24" height="36" rx="8" fill="#fff" opacity="0.35"/><path d="M52 72 Q88 52 128 72 T168 72" stroke="#2D6B45" stroke-width="3" fill="none"/><circle cx="200" cy="52" r="16" fill="#A8E6CF"/><path d="M196 52 h8 M200 48 v8" stroke="#2D6B45" stroke-width="2"/></svg>`,
-        structured_progress: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="36" y="100" width="48" height="28" rx="6" fill="#A8E6CF"/><rect x="96" y="72" width="48" height="56" rx="6" fill="#7DCE9A"/><rect x="156" y="48" width="48" height="80" rx="6" fill="#2D6B45" opacity="0.35"/><rect x="216" y="24" width="48" height="104" rx="6" fill="#2D6B45"/><path d="M60 88 L120 60 L180 40 L240 20" stroke="#EA6C25" stroke-width="3" fill="none" stroke-dasharray="6 4"/><circle cx="240" cy="20" r="10" fill="#EA6C25"/></svg>`,
-        school_exam: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="40" y="30" width="110" height="96" rx="12" fill="#fff" stroke="#2D6B45"/><path d="M58 52 h74 M58 68 h54 M58 84 h64" stroke="#E8F5E9" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="78" r="40" fill="#fff" stroke="#2D6B45" stroke-width="2"/><path d="M182 78 L194 92 L220 64" stroke="#2D6B45" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
-        daily_communication: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="32" y="44" width="120" height="56" rx="16" fill="#fff" stroke="#2D6B45"/><rect x="168" y="28" width="120" height="56" rx="16" fill="#D4F8EC" stroke="#2D6B45"/><path d="M48 72 h40 M48 82 h28" stroke="#A8E6CF" stroke-width="4" stroke-linecap="round"/><path d="M184 56 h50 M184 66 h36" stroke="#2D6B45" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="148" cy="88" r="22" fill="#FFE082"/><ellipse cx="148" cy="118" rx="18" ry="8" fill="#7DCE9A" opacity="0.5"/></svg>`,
-        listening_habit: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><path d="M88 74 Q88 40 120 40 Q152 40 152 74 V90 Q152 110 120 110 Q88 110 88 90 Z" fill="#2D6B45" opacity="0.2"/><path d="M168 74 Q168 36 208 36 Q248 36 248 74 V92 Q248 114 208 114 Q168 114 168 92 Z" fill="#2D6B45"/><rect x="200" y="48" width="72" height="64" rx="12" fill="#fff" stroke="#EA6C25" stroke-width="2"/><text x="236" y="86" text-anchor="middle" fill="#EA6C25" font-size="11" font-weight="700">LIVE</text></svg>`,
+        speak_confidence: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#DCEBFF"/><rect x="28" y="32" width="168" height="88" rx="14" fill="#fff" stroke="#2F4B8F"/><ellipse cx="248" cy="76" rx="44" ry="44" fill="#EA6C25"/><rect x="236" y="58" width="24" height="36" rx="8" fill="#fff" opacity="0.35"/><path d="M52 72 Q88 52 128 72 T168 72" stroke="#2F4B8F" stroke-width="3" fill="none"/><circle cx="200" cy="52" r="16" fill="#AFCDFF"/><path d="M196 52 h8 M200 48 v8" stroke="#2F4B8F" stroke-width="2"/></svg>`,
+        structured_progress: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#EAF1FF"/><rect x="36" y="100" width="48" height="28" rx="6" fill="#AFCDFF"/><rect x="96" y="72" width="48" height="56" rx="6" fill="#7FAAF0"/><rect x="156" y="48" width="48" height="80" rx="6" fill="#2F4B8F" opacity="0.35"/><rect x="216" y="24" width="48" height="104" rx="6" fill="#2F4B8F"/><path d="M60 88 L120 60 L180 40 L240 20" stroke="#EA6C25" stroke-width="3" fill="none" stroke-dasharray="6 4"/><circle cx="240" cy="20" r="10" fill="#EA6C25"/></svg>`,
+        school_exam: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#DCEBFF"/><rect x="40" y="30" width="110" height="96" rx="12" fill="#fff" stroke="#2F4B8F"/><path d="M58 52 h74 M58 68 h54 M58 84 h64" stroke="#EAF1FF" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="78" r="40" fill="#fff" stroke="#2F4B8F" stroke-width="2"/><path d="M182 78 L194 92 L220 64" stroke="#2F4B8F" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
+        daily_communication: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#EAF1FF"/><rect x="32" y="44" width="120" height="56" rx="16" fill="#fff" stroke="#2F4B8F"/><rect x="168" y="28" width="120" height="56" rx="16" fill="#DCEBFF" stroke="#2F4B8F"/><path d="M48 72 h40 M48 82 h28" stroke="#AFCDFF" stroke-width="4" stroke-linecap="round"/><path d="M184 56 h50 M184 66 h36" stroke="#2F4B8F" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="148" cy="88" r="22" fill="#FFE082"/><ellipse cx="148" cy="118" rx="18" ry="8" fill="#7FAAF0" opacity="0.5"/></svg>`,
+        listening_habit: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#DCEBFF"/><path d="M88 74 Q88 40 120 40 Q152 40 152 74 V90 Q152 110 120 110 Q88 110 88 90 Z" fill="#2F4B8F" opacity="0.2"/><path d="M168 74 Q168 36 208 36 Q248 36 248 74 V92 Q248 114 208 114 Q168 114 168 92 Z" fill="#2F4B8F"/><rect x="200" y="48" width="72" height="64" rx="12" fill="#fff" stroke="#EA6C25" stroke-width="2"/><text x="236" y="86" text-anchor="middle" fill="#EA6C25" font-size="11" font-weight="700">LIVE</text></svg>`,
       },
       value: `<svg width="100%" height="120" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="320" height="120" rx="14" fill="#D4F8EC"/>
-        <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="1.5"/>
+        <rect width="320" height="120" rx="14" fill="#DCEBFF"/>
+        <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2F4B8F" stroke-width="1.5"/>
         <ellipse cx="260" cy="75" rx="28" ry="28" fill="#EA6C25"/>
         <rect x="248" y="62" width="24" height="26" rx="6" fill="#fff" opacity="0.3"/>
-        <rect x="50" y="45" width="60" height="10" rx="5" fill="#A8E6CF"/>
-        <rect x="50" y="65" width="90" height="10" rx="5" fill="#E8F5E9"/>
+        <rect x="50" y="45" width="60" height="10" rx="5" fill="#AFCDFF"/>
+        <rect x="50" y="65" width="90" height="10" rx="5" fill="#EAF1FF"/>
       </svg>`,
-      login: `<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="200" height="120" rx="20" fill="#D4F8EC"/>
-        <ellipse cx="100" cy="98" rx="70" ry="12" fill="#A8E6CF" opacity="0.6"/>
-        <circle cx="78" cy="52" r="22" fill="#FFE082"/>
-        <circle cx="128" cy="48" r="26" fill="#2D6B45" opacity="0.15"/>
-        <path d="M115 55 Q128 38 142 55" stroke="#2D6B45" stroke-width="2.5" fill="none"/>
-        <rect x="88" y="72" width="24" height="20" rx="4" fill="#2D6B45"/>
-        <path d="M92 78 L100 86 L108 78" stroke="#fff" stroke-width="2" fill="none"/>
-        <text x="100" y="32" text-anchor="middle" fill="#2D6B45" font-size="11" font-weight="600">Save your plan</text>
-      </svg>`,
-      teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
+      login: `<img class="ob-illo" src="assets/v13fx/ob-login-hero.png" alt="" decoding="async" />`,
+      teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#AFCDFF"/></svg>`,
     };
 
     const TEACHERS = [
@@ -7292,7 +8025,14 @@
       // Last lesson of the level done → advance 定级 to the next Level.
       const lvOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const nextLevel = COURSE_LIBRARY[lvOrder + 1];
-      if (!nextLevel) return; // already at the top Level (L6) — stay put.
+      if (!nextLevel) {
+        // Finished the last lesson of the top Level (L6 · Unit 12 · Lesson 12) — the
+        // whole 6-level program is complete. Flip the terminal "结业 / Program complete"
+        // state: Class home swaps the weekly cards for the completion card. (Members
+        // only — free users are Paywall-gated long before the finish line.)
+        profile.programComplete = true;
+        return;
+      }
       const fromLabel = getCurrentLevel().label;
       const u0 = nextLevel.units[0];
       setCurrentCourse(nextLevel.id, u0.id, u0.lessons[0].id);
@@ -7825,6 +8565,7 @@
       });
       const isProfile = tab === "profile";
       $("#hub-app")?.classList.toggle("hub-app--profile", isProfile);
+      $("#hub-app")?.setAttribute("data-scene", tab);
       $("#screen-class")?.classList.toggle("app-shell--profile", isProfile);
       if ((tab === "play" || tab === "dino") && window.GAME) window.GAME.syncHud();
       if (tab === "play") window.GAME?.renderPlayLimits?.();
@@ -7960,9 +8701,42 @@
           </div>
         </article>`;
     }
+    // Terminal "结业 / Program complete" state: the learner finished L6 · Unit 12 ·
+    // Lesson 12 (the last formal lesson) — no higher level, nothing more to schedule.
+    function isProgramComplete() { return !!profile.programComplete; }
+    // V1.2.0-style "title + body + single button" completion card (no week cards).
+    // Single CTA → Explore (carries the old Practice "keep building vocabulary" intent);
+    // no level/continue copy since L6 is the cap.
+    function renderProgramCompleteCard() {
+      return `
+        <article class="course-bridge-card class-home-course-card class-week-card is-program-complete" data-program-complete="1">
+          <div class="class-home-course-scroll">
+            <div class="course-card-top">
+              <div class="course-card-topcopy">
+                <span class="course-card-stage">Program complete</span>
+                <h3 class="course-card-title">You've completed the entire program!</h3>
+                <p class="course-card-grad-body">You've finished all 6 levels and every lesson. Head to Explore to keep building vocabulary, listening, and speaking.</p>
+              </div>
+              <div class="course-card-thumb" aria-hidden="true">
+                <span class="course-card-thumb-badge">🎓</span>
+                <img src="assets/dino-mascot.png" alt="" decoding="async" />
+              </div>
+            </div>
+          </div>
+          <div class="course-card-actions class-home-actions">
+            <div class="course-card-cta-wrap"><button type="button" class="btn btn-primary" data-action="program-explore">Go to Explore</button></div>
+          </div>
+        </article>`;
+    }
     function renderClassWeek() {
       const list = $("#class-week-list");
       if (!list) return;
+      if (isProgramComplete()) {
+        // Hide the weekly cards; show only the milestone completion card.
+        list.innerHTML = renderProgramCompleteCard();
+        list.querySelector("[data-action='program-explore']")?.addEventListener("click", () => { setHubTab("practice"); });
+        return;
+      }
       const sequence = getCurrentLevelCourseSequence();
       const batchStart = currentBatchStartIndex();
       const curKey = makeCourseKey(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
@@ -8033,7 +8807,12 @@
       // (the swiper). Per-lesson lock/unlock still lives on each week card.
       const kickerEl = $("#class-hero-kicker");
       if (kickerEl) kickerEl.hidden = true;
-      const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
+      // At program completion there's nothing more to browse — hide the "More lessons" link.
+      const moreLessonsBtn = $("#btn-open-all-courses");
+      if (moreLessonsBtn) moreLessonsBtn.style.display = isProgramComplete() ? "none" : "";
+      const leadTitle = isProgramComplete()
+        ? (name ? `Congratulations, ${name}!` : "Congratulations!")
+        : (name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week");
       $("#class-home-lead-title").textContent = leadTitle;
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
       // renderClassWeek also prepends the completed trial lesson as a "Trial lesson"
@@ -8124,6 +8903,7 @@
         const stateLabel = status === "done" ? "Completed" : status === "current" ? "You are here" : status === "notstarted" ? "Not started" : "Up next";
         return `
           <button type="button" class="cm-level ${level.id === courseMapLevelId ? "is-selected" : ""} ${status === "current" ? "is-current" : ""}" data-level-id="${level.id}" role="tab" aria-selected="${level.id === courseMapLevelId}">
+            <img class="cm-medal" src="assets/v13fx/medal-lv${li + 1}.png" alt="" decoding="async" />
             <b>${level.label}</b>
             <span>${LEVEL_ABILITIES[li] || ""}</span>
             <span class="cm-level-state cm-level-state--${status}">${stateLabel}</span>
@@ -8139,6 +8919,7 @@
       // Index of the unit the learner is currently on (only meaningful on the
       // current level; used to gate later units by the weekly schedule pace).
       const curUnitIdx = level.units.findIndex((u) => u.id === profile.currentUnitId);
+      const curLevelOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       unitsBox.innerHTML = level.units.map((unit, ui) => {
         const total = unit.lessons.length;
         const done = getUnitDoneCount(level.id, unit);
@@ -8147,8 +8928,8 @@
         const isCurrentUnit = level.id === profile.currentLevelId && unit.id === profile.currentUnitId;
         // Current level + lower levels are browsable — open the unit to view its
         // lessons. Higher levels stay locked until reached, EXCEPT the first unit of
-        // every higher level shows a "Level up" entry (free + member): take that
-        // level's trial lesson and, if assessed at/above it, skip ahead.
+        // the ADJACENT next level (current+1) shows a "Level up" entry (free + member):
+        // take that trial lesson and the placement (current±1) is applied directly.
         // Within the CURRENT level, units past the one the learner has reached are
         // gated: free users can enter only Unit 1 (every later unit is a membership
         // lock → Paywall); members unlock units at the weekly schedule pace, so
@@ -8157,10 +8938,11 @@
         const unitNotReached = lvStatus === "current" && ui > curUnitIdx;
         const premiumUnitLock = unitNotReached && !profile.premiumUnlocked;
         const scheduleUnitLock = unitNotReached && profile.premiumUnlocked;
-        // Level up entry sits on the FIRST unit of every higher level (not just the
-        // adjacent one), and is offered to free users too — they can take the higher
-        // trial, but adopting the new plan converts via Paywall in the report.
-        const isLevelUpEntry = lvStatus === "next" && ui === 0;
+        // Level up entry sits ONLY on the FIRST unit of the adjacent next level
+        // (current+1) — placement is bounded to current±1, so jumping ≥2 levels can
+        // never qualify. current+2 and above fall back to a plain lock (member Locked
+        // / free Go Premium). Offered to free users too (they convert via Paywall).
+        const isLevelUpEntry = lvStatus === "next" && levelIdx === curLevelOrder + 1 && ui === 0;
         let cta, tag;
         if (isLevelUpEntry) {
           cta = `<button type="button" class="cm-unit-cta cm-unit-cta--levelup" data-levelup-level="${level.id}">Level up</button>`;
@@ -8189,7 +8971,7 @@
         }
         // Level-up hint under the first unit of a higher level (free + member).
         const levelupHint = isLevelUpEntry
-          ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — pass it and Dino moves you up.</span>`
+          ? `<span class="cm-unit-levelup-hint">Try the ${level.label} trial — your result sets your level.</span>`
           : "";
         return `
           <div class="cm-unit${isLevelUpEntry ? " cm-unit--levelup" : ""}">
@@ -8231,16 +9013,33 @@
     // to All Courses (the unit lesson list), not straight to Class home.
     $("#btn-course-map-back")?.addEventListener("click", () => showAllCourses(selectedAllCourseKey, "class"));
 
-    // ----- Member level-up (向上跳级) -----
-    // From the Level·Unit map a member can take a higher level's trial lesson. The
-    // trial report then shows a placement verdict: pass (assessed ≥ target) → re-plan
-    // the study plan and jump to that level; fail (assessed < target) → keep the
-    // current level. The pass/fail outcome is demo-driven via demoState.levelUpResult.
+    // ----- Level up (向上跳级) -----
+    // From the Level·Unit map the learner can take the ADJACENT next level's
+    // (current+1) trial lesson. The trial produces a real placement within current±1
+    // (max ±1) that is applied DIRECTLY — no pass/fail gate, no "keep my plan" branch:
+    //   up   → re-plan at current+1
+    //   same → plan unchanged (current)
+    //   down → re-plan at current-1 (downgrade allowed, floored at L1)
+    // Members re-plan in place (single CTA "Update my plan" → Class); free users get
+    // the same data-layer placement but convert via Paywall (trigger_source=level_up).
+    // The outcome is demo-driven via demoState.levelChange.
     let levelUpInProgress = false;
     let levelUpTargetLevelId = null;
     let levelUpSavedState = null;
     let trialReportMode = "trial"; // "trial" | "levelup"
-    function getLevelUpVerdict() { return demoState.levelUpResult === "fail" ? "fail" : "pass"; }
+    function getLevelChange() {
+      const v = demoState.levelChange;
+      return (v === "same" || v === "down") ? v : "up";
+    }
+    // Resolve the placement outcome to a concrete level id, bounded to current±1 and
+    // clamped to the L1–L6 range (so "down" at L1 or "up" at L6 collapses to "same").
+    function levelUpResolvedId(change) {
+      const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
+      const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === curId);
+      if (change === "up")   return COURSE_LIBRARY[Math.min(curOrder + 1, COURSE_LIBRARY.length - 1)].id;
+      if (change === "down") return COURSE_LIBRARY[Math.max(curOrder - 1, 0)].id;
+      return curId;
+    }
     function startLevelUpTrial(targetLevelId) {
       // Both members and free users can take a higher level's trial (free = one extra
       // trial lesson). Free users can sample it, but adopting the new plan converts
@@ -8273,32 +9072,43 @@
       levelUpSavedState = null;
       trialReportMode = "trial";
     }
-    function finishLevelUp(verdict) {
-      if (verdict === "pass") {
-        const targetId = levelUpTargetLevelId;
-        const targetLabel = levelLabelOf(targetId);
-        // Promote: the target level becomes the current level (start at Unit 1 · Lesson 1).
+    function finishLevelUp(change) {
+      const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
+      const newId = levelUpResolvedId(change);
+      const newLabel = levelLabelOf(newId);
+      const wasFree = !profile.premiumUnlocked;
+      if (newId !== curId) {
+        // Re-plan: the assessed level becomes the current level (start at Unit 1 · Lesson 1).
         // placementLevelId stays put, so levels below the original placement remain
-        // "not started" while the skipped-over middle levels read as completed.
-        profile.currentLevelId = targetId;
+        // "not started" while skipped middle levels read as completed.
+        profile.currentLevelId = newId;
         profile.currentUnitId = "unit-1";
         profile.currentLessonId = "lesson-1";
-        profile.level = levelCefrLabel(targetId);
+        profile.level = levelCefrLabel(newId);
         profile.hasStartedClass = false;
-        levelUpInProgress = false;
-        levelUpTargetLevelId = null;
-        levelUpSavedState = null;
-        trialReportMode = "trial";
-        refreshUnlockState();
-        enterLandscape();
-        showClassHome();
-        showPayToast(`Levelled up to ${targetLabel} — plan updated`);
-      } else {
-        restoreLevelUpState();
-        enterLandscape();
-        showClassHome();
-        showPayToast("Staying at your current level — keep it up");
+        if (typeof courseMapLevelId !== "undefined") courseMapLevelId = newId;
+      } else if (levelUpSavedState) {
+        // Same level: plan unchanged — restore the saved position.
+        profile.currentLevelId = levelUpSavedState.levelId;
+        profile.currentUnitId = levelUpSavedState.unitId;
+        profile.currentLessonId = levelUpSavedState.lessonId;
+        profile.hasStartedClass = levelUpSavedState.hasStartedClass;
+        profile.trialReportShown = levelUpSavedState.trialReportShown;
       }
+      levelUpInProgress = false;
+      levelUpTargetLevelId = null;
+      levelUpSavedState = null;
+      trialReportMode = "trial";
+      refreshUnlockState();
+      enterLandscape();
+      // Free users: the placement/re-plan happens at the data layer, but accessing
+      // the plan still converts via Paywall (trigger_source=level_up).
+      if (wasFree) { openPaywall("screen-class", "level_up"); return; }
+      showClassHome();
+      const toast = change === "up"   ? `Levelled up to ${newLabel} — plan updated`
+                  : change === "down" ? `Placed at ${newLabel} — plan updated`
+                  :                      `Staying at ${newLabel} — keep it up`;
+      showPayToast(toast);
     }
     // ----- In-class lesson flow (teach → feedback → Practice Time → quiz) -----
     let inclassIsFirst = false;
@@ -8477,45 +9287,46 @@
         if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
       }
     }
-    // Level-up trial report: same layout, but the level recommendation reflects the
-    // pass/fail verdict and the CTA either re-plans (jump ahead) or keeps the level.
+    // Level-up trial report: same layout, but the recommendation reflects the placement
+    // outcome (up / same / down) and a SINGLE CTA applies it directly (no keep-plan branch).
     function renderLevelUpReport(name) {
-      const verdict = getLevelUpVerdict();
-      const targetId = levelUpTargetLevelId;
+      const change = getLevelChange();
+      const targetId = levelUpTargetLevelId; // the trial level taken (= current+1)
       const targetLabel = levelLabelOf(targetId);
       const curId = (levelUpSavedState && levelUpSavedState.levelId) || profile.currentLevelId;
-      const curLabel = levelLabelOf(curId);
-      const assessedBadge = verdict === "pass" ? levelCefrLabel(targetId) : levelCefrLabel(curId);
-      const pass = verdict === "pass";
-      if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level-Up Check · ${targetLabel}`;
-      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = pass ? "Ready to level up!" : "Great effort!";
+      const newId = levelUpResolvedId(change);
+      const newLabel = levelLabelOf(newId);
+      const assessedBadge = levelCefrLabel(newId);
+      const up = change === "up", down = change === "down";
+      if ($("#tr-hero-badge")) $("#tr-hero-badge").textContent = `Level Check · ${targetLabel}`;
+      if ($("#tr-hero-h")) $("#tr-hero-h").textContent = up ? "Ready to level up!" : down ? "Here's your best fit" : "Great effort!";
       if ($("#tr-hero-sub")) $("#tr-hero-sub").textContent = `${targetLabel} trial lesson`;
       if ($("#tr-perf-title")) $("#tr-perf-title").textContent = `How ${name} did`;
-      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = pass
+      if ($("#tr-encourage")) $("#tr-encourage").innerHTML = up
         ? `“${name} handled ${targetLabel} with real confidence — ready to jump ahead!”`
-        : `“${name} gave ${targetLabel} a brave go! A little more practice and it'll be within reach.”`;
+        : down
+          ? `“${name} gave it a brave go! Starting at ${newLabel} keeps every class feeling just right.”`
+          : `“${name} is right on track — ${newLabel} is the perfect fit to keep building.”`;
       if ($("#tr-level")) $("#tr-level").textContent = assessedBadge;
-      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = pass
-        ? `${name}'s trial scored at <strong>${targetLabel} (${assessedBadge})</strong> — at or above the level you wanted to skip to, so the jump is on!`
-        : `${name}'s trial scored below <strong>${targetLabel}</strong> — staying at <strong>${curLabel}</strong> keeps progress solid and confident.`;
-      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = pass
-        ? `Up next: start ${targetLabel} — we'll update your study plan`
-        : `Up next: keep building at ${curLabel} — try again any time`;
-      if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} level-up trial went:`;
-      // CTA branches by membership: a passing FREE user can't adopt the new plan
-      // without subscribing → "Get study plan" → Paywall (trigger_source=level_up);
-      // members re-plan in place ("Update my plan") or keep their level.
-      const poss = (name === "you") ? "your" : `${name}'s`;
+      if ($("#tr-level-reason")) $("#tr-level-reason").innerHTML = up
+        ? `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — the jump is on, and the plan updates to match.`
+        : down
+          ? `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — we'll re-plan there so progress stays solid and confident.`
+          : `${name}'s trial placed at <strong>${newLabel} (${assessedBadge})</strong> — your current plan already fits.`;
+      if ($("#tr-level-dir")) $("#tr-level-dir").textContent = up
+        ? `Up next: start ${newLabel} — we'll update your study plan`
+        : down
+          ? `Up next: start ${newLabel} — your plan is updated to match`
+          : `Up next: keep building at ${newLabel}`;
+      if ($("#tr-rev-line")) $("#tr-rev-line").innerHTML = `Here's how the ${targetLabel} trial went:`;
+      // Single CTA — the assessed level is applied directly. Members re-plan in place
+      // ("Update my plan"); free users convert via Paywall (trigger_source=level_up).
       if ($("#btn-trial-start")) {
-        $("#btn-trial-start").textContent = pass
-          ? (profile.premiumUnlocked ? "Update my plan" : `Get ${poss} study plan`)
-          : "Keep my current plan";
+        $("#btn-trial-start").textContent = profile.premiumUnlocked ? "Update my plan" : "Get my study plan";
       }
-      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = pass
-        ? (profile.premiumUnlocked
-            ? `Update your plan around ${targetLabel} and jump to your class`
-            : `Unlock the full ${targetLabel} plan to jump ahead`)
-        : `Back to your ${curLabel} plan — your streak stays safe`;
+      if ($("#tr-foot-note")) $("#tr-foot-note").textContent = profile.premiumUnlocked
+        ? `Update your plan around ${newLabel} and jump to your class`
+        : `Unlock your ${newLabel} plan to keep learning`;
     }
     function showTrialReport() {
       renderTrialReport();
@@ -8552,17 +9363,11 @@
       const sh = $("#lr-scroll");
       if (sh) sh.scrollTop = 0;
     }
-    // Level-up report actions (landscape #screen-levelup-report only).
+    // Level-up report action (landscape #screen-levelup-report only). The assessed
+    // placement (up / same / down) is applied directly; finishLevelUp routes members
+    // to Class and free users to Paywall (trigger_source=level_up).
     $("#btn-trial-start")?.addEventListener("click", () => {
-      const verdict = getLevelUpVerdict();
-      // Free user who passed: can't adopt the higher plan without subscribing — keep
-      // current level and route to Paywall (trigger_source=level_up).
-      if (verdict === "pass" && !profile.premiumUnlocked) {
-        restoreLevelUpState();
-        openPaywall("screen-class", "level_up");
-        return;
-      }
-      finishLevelUp(verdict);
+      finishLevelUp(getLevelChange());
     });
     $("#btn-trial-back")?.addEventListener("click", () => {
       // Backing out of a level-up check cancels it (keeps the current level) and
@@ -8665,9 +9470,9 @@
       const valueBox = $("#sp-value");
       if (valueBox) {
         const cards = [
-          { ico: "📚", title: `${unitsPerLevel} units · ${lessonsThisLevel} lessons`, sub: `Multiple lesson types tailored to each level: Vocabulary · Sentences · Reading · Phonics · Writing · Grammar · Review` },
-          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Short lessons weekly. Steady progress ahead.` },
-          { ico: "🎯", title: `Level ${targetLevelNum} in 12 months`, sub: `A clear goal. Easy to track.`, goal: true },
+          { ico: `<img src="assets/v13fx/sp-ic-units.png" alt="" />`, title: `${unitsPerLevel} units · ${lessonsThisLevel} lessons`, sub: `Multiple lesson types tailored to each level: Vocabulary · Sentences · Reading · Phonics · Writing · Grammar · Review` },
+          { ico: `<img src="assets/v13fx/sp-ic-week.png" alt="" />`, title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Short lessons weekly. Steady progress ahead.` },
+          { ico: `<img src="assets/v13fx/sp-ic-goal.png" alt="" />`, title: `Level ${targetLevelNum} in 12 months`, sub: `A clear goal. Easy to track.`, goal: true },
         ];
         valueBox.innerHTML = cards.map((v) => `
           <div class="sp-value-card${v.goal ? " is-goal" : ""}">
@@ -9786,7 +10591,10 @@
         "The brave dino jumps over the river.",
         "Let's read a story together tonight.",
       ];
-      let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false;
+      let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false, spkHolding = false, spkHoldStart = 0, spkMaxTimer = null;
+      const SPK_PASS = 75; // 发音分 ≥75 判答对 (复用课中发音评测口径)
+      const SPK_MIN_HOLD = 500; // 长按 <500ms 视为无内容 (端上时长兜底)
+      const SPK_MAX_HOLD = 30000; // 录音最长 30s (speakMaxSec 可配), 到时自动结束并提交
       // Each turn plays the model audio FIRST so the child listens, then repeats (PRD:
       // 口语 PK 先播放跟读句子/单词音频). The 🔊 button replays it; here playback is simulated.
       function playSpkAudio() {
@@ -9810,22 +10618,46 @@
         if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s}”`;
         if ($("#spk-feedback")) $("#spk-feedback").textContent = "";
         $("#spk-rec")?.classList.remove("listening");
+        if ($("#spk-rec")) $("#spk-rec").textContent = "🎤 Hold to record";
         if (s) playSpkAudio(); // auto-play the model audio for this turn
       }
-      function resetSpeakPk() { spkIdx = 0; spkMe = 0; spkOp = 0; spkBusy = false; renderSpeakPk(); }
+      function resetSpeakPk() { spkIdx = 0; spkMe = 0; spkOp = 0; spkBusy = false; spkHolding = false; renderSpeakPk(); }
       $("#spk-play")?.addEventListener("click", playSpkAudio);
-      $("#spk-rec")?.addEventListener("click", () => {
-        if (spkBusy || spkIdx >= SPK_SENTENCES.length) return;
-        spkBusy = true;
+      // ---- 长按式录音 (Hold to record): 按住开始 → 松手提交评分 ----
+      function spkStartRec(e) {
+        if (spkBusy || spkHolding || spkIdx >= SPK_SENTENCES.length) return;
+        if (e) e.preventDefault();
+        spkHolding = true;
+        spkHoldStart = Date.now();
         const rec = $("#spk-rec");
         const fb = $("#spk-feedback");
         rec?.classList.add("listening");
+        if (rec) rec.textContent = "● Release to finish";
         if (fb) fb.textContent = "Listening…";
+        clearTimeout(spkMaxTimer); // 录音最长 30s 自动结束 (防止一直按住)
+        spkMaxTimer = setTimeout(() => spkStopRec(), SPK_MAX_HOLD);
+      }
+      function spkStopRec(e) {
+        if (!spkHolding) return;
+        if (e) e.preventDefault();
+        clearTimeout(spkMaxTimer);
+        spkHolding = false;
+        const rec = $("#spk-rec");
+        const fb = $("#spk-feedback");
+        rec?.classList.remove("listening");
+        if (rec) rec.textContent = "🎤 Hold to record";
+        // 无内容兜底①: 长按过短 → 判无内容, 提示重录, 停本句, 不计分
+        if (Date.now() - spkHoldStart < SPK_MIN_HOLD) { if (fb) fb.textContent = "Try again"; return; }
+        spkBusy = true;
+        if (fb) fb.textContent = "Scoring…";
         setTimeout(() => {
-          rec?.classList.remove("listening");
-          const good = Math.random() > 0.25;
-          if (good) { spkMe += 1; if (fb) fb.textContent = "⭐ Great pronunciation! +1"; }
-          else if (fb) fb.textContent = "💪 Good try — keep going!";
+          // 复用发音评测能力: 无内容(未识别到语音) / 发音分
+          const empty = Math.random() < 0.08; // 评测引擎未识别到有效语音
+          if (empty) { if (fb) fb.textContent = "Try again"; spkBusy = false; return; } // 停本句, 重录
+          const score = 67 + Math.floor(Math.random() * 33); // 0-100 发音分 (模拟)
+          const pass = score >= SPK_PASS; // ≥75 判答对
+          if (pass) { spkMe += 1; if (fb) fb.textContent = "Great!"; }
+          else if (fb) fb.textContent = "Good try!";
           spkOp = rivalStep(spkOp, spkMe, SPK_SENTENCES.length, pkPlan); // 方案A live tracking
           if ($("#spk-me")) $("#spk-me").textContent = spkMe;
           if ($("#spk-op")) $("#spk-op").textContent = spkOp;
@@ -9836,7 +10668,16 @@
             else renderSpeakPk();
           }, 1100);
         }, 1000);
-      });
+      }
+      (function bindSpkRec() {
+        const rec = $("#spk-rec");
+        if (!rec) return;
+        rec.addEventListener("pointerdown", spkStartRec);
+        rec.addEventListener("pointerup", spkStopRec);
+        rec.addEventListener("pointerleave", spkStopRec);
+        rec.addEventListener("pointercancel", spkStopRec);
+        rec.addEventListener("contextmenu", (e) => e.preventDefault());
+      })();
 
       // ---- PK finish: the rival's live score already reflects the planned
       // outcome (方案A tracking), then unified settlement, then battle result ----
@@ -9861,7 +10702,12 @@
       // (Rank/段位 is no longer surfaced — only the cumulative win rate.)
       function showPkResult(kind, me, op, win, xp, coins) {
         const tie = me === op;
-        if ($("#pkr-burst")) $("#pkr-burst").textContent = win ? "🏆" : tie ? "🤝" : "💪";
+        const pkrBurst = $("#pkr-burst");
+        if (pkrBurst) {
+          const fig = win ? "pk-win-dino" : "pk-lose-dino";
+          pkrBurst.classList.add("pkr-burst--fig");
+          pkrBurst.innerHTML = `<img src="assets/v13fx/${fig}.png" alt="" decoding="async" />`;
+        }
         if ($("#pkr-h")) $("#pkr-h").textContent = win ? "You win!" : tie ? "It's a tie!" : "So close! Try again!";
         if ($("#pkr-sub")) $("#pkr-sub").textContent = `${kind === "word" ? "Word PK" : "Speaking PK"} · Final score ${me} : ${op} vs ${pkPlan.rival.name}`;
         if ($("#pkr-xp")) $("#pkr-xp").textContent = xp;
@@ -10343,7 +11189,7 @@
     // the subject pronoun (13–17 and 18+ share the teen/adult variant).
     function fillGoalValuePage() {
       const data = valuePageForAge(profile.age);
-      $("#illo-goal-value").innerHTML = (ILLUSTRATIONS.goalValue && ILLUSTRATIONS.goalValue.speak_confidence) || DINO_CHAR || "";
+      $("#illo-goal-value").innerHTML = `<img class="ob-illo" src="assets/v13fx/ob-value-hero.png" alt="" decoding="async" />`;
       // Title: "English that grows with {name}" — name if known, else voice/age pronoun.
       $("#goal-value-h1").textContent = `English that grows with ${valueSubject()}`;
       // Sub: age-band tagline (Language Awakening / Literacy Launch / …).
@@ -10529,7 +11375,6 @@
     }
 
     function initOnboarding() {
-      $("#dino-who").innerHTML = DINO_CHAR;
       renderWhoOptions();
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
@@ -10750,7 +11595,7 @@
           <div class="pd-edit-group"><p class="pd-edit-label">Current level</p><div class="pd-stack" id="pd-level"></div></div>
           <div class="pd-edit-group"><p class="pd-edit-label">Learning purpose</p><div class="pd-stack" id="pd-goal"></div></div>`;
         pdPills("pd-age", AGES.map((a) => ({ id: a, label: a })), pdDraft.age, (id) => { pdDraft.age = id; });
-        pdPills("pd-level", LEVELS.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
+        pdPills("pd-level", LEVEL_CEFR.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
         pdPills("pd-goal", GOALS, pdDraft.goal, (id, label) => { pdDraft.goal = id; pdDraft.goalLabel = label; });
         const nameInput = $("#pd-name");
         if (nameInput) nameInput.value = pdDraft.name || "";
@@ -10915,8 +11760,9 @@
     getValue: function (key) {
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
-      if (key === "levelUpResult") return demoState.levelUpResult;
+      if (key === "levelChange") return demoState.levelChange;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
+      if (key === "programComplete") return profile.programComplete ? "on" : "off";
       return null;
     },
     context: function () {
@@ -10924,13 +11770,13 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id === "screen-levelup-report") return { label: "跳级定级报告", keys: ["levelUpResult"] };
+        if (id === "screen-levelup-report") return { label: "跳级定级报告", keys: ["levelChange"] };
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
-        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelUpResult"] };
+        if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel", "levelChange"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-paywall")     return { label: "Paywall",         keys: ["membership"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
-        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
+        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel", "programComplete"] };
         return { label: "App 内", keys: ["membership"] };
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -10963,11 +11809,17 @@
           if (activeLandScreen() === "screen-course-map") renderCourseMap();
           if (document.querySelector("#screen-study-plan")?.classList.contains("active")) renderStudyPlanScreen();
         } },
-      { key: "levelUpResult", label: "跳级体验课定级结果",
-        options: [["pass", "达标·可跳级"], ["fail", "未达标·留级"]],
+      { key: "levelChange", label: "Level up 定级结果（按结果落位）",
+        options: [["up", "升一级 current+1"], ["same", "持平 current"], ["down", "降一级 current-1"]],
         apply: function (v) {
-          demoState.levelUpResult = v;
+          demoState.levelChange = v;
           if (document.querySelector("#screen-levelup-report")?.classList.contains("active") && trialReportMode === "levelup") renderTrialReport();
+        } },
+      { key: "programComplete", label: "全部课程学完态（结业 / 仅会员）",
+        options: [["off", "学习中"], ["on", "结业完成"]],
+        apply: function (v) {
+          profile.programComplete = (v === "on");
+          if (activeLandScreen() === "screen-class") fillClassTab();
         } },
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],

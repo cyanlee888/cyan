@@ -439,7 +439,7 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n630" class="core" data-date="2026-06-30" data-zh="<b>6/30</b>MVP 上线 · V1.3.0"><b>6/30</b>MVP launch · V1.3.0</a>
     <a href="#n131" data-date="2026-07-06" data-zh="<b>V1.3.1</b>投放归因"><b>V1.3.1</b>Attribution</a>
     <a href="#n132" data-date="2026-07-09" data-zh="<b>V1.3.2</b>功能性迭代"><b>V1.3.2</b>Iteration</a>
-    <a href="#n140" data-date="2026-07-15" data-zh="<b>V1.4.0</b>功能扩展"><b>V1.4.0</b>Expansion</a>
+    <a href="#n140" data-date="2026-07-15" data-zh="<b>V1.4.0</b>体验换代"><b>V1.4.0</b>Upgrade</a>
   </div>
 </nav>
 
@@ -641,13 +641,14 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='功能性迭代 · 多线补齐<span class="tag">迭代版</span>'>Functional iteration · multi-track<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>在 V1.3.0 之上做一次多线功能迭代：会员支付上竖屏 Paywall，Class 侧优化完课引导（一周完课去 Practice、每课完课去 Dino）；账号侧补齐 Kakao / Facebook 登录与 Kakao 手机号绑定、手机号登录新增马来西亚 / 印尼，并完成 Dino AI → Dino Daily 改名；课中教学打磨数字人口型（张嘴与声音同步）、Filler words 与测评机制；首页 Dino 引导未上体验课用户去上课、商城手办按人物 / 系列分层；管理后台上线管台一期、课程视频生产 CMS 与扫码进课。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 需求文档 ↗</a>。'><span class="lab">User story</span>A multi-track functional iteration on top of V1.3.0. Membership & Class: a vertical Paywall and end-of-lesson nudges (weekly completion → Practice, per-lesson completion → Dino). Account: Kakao / Facebook login with Kakao phone binding, phone login for Malaysia / Indonesia, plus the Dino AI → Dino Daily rename. In-class teaching gets a polish — digital-human lip sync (mouth-and-sound sync), filler words and the assessment mechanism. The home Dino guides users who haven't taken the trial lesson, and backpack figures are tiered by character / series; the admin side ships console phase 1, the lesson-video CMS, and scan-to-enter-class. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 PRD ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>在 V1.3.0 之上做一次多线功能迭代：会员支付上竖屏 Paywall，Class 侧优化课程升降级与完课引导；账号侧补齐 Kakao / Facebook 登录与 Kakao 手机号绑定、手机号登录新增马来西亚 / 印尼，并完成 Dino AI → Dino Daily 改名；课中教学打磨全流程监课、数字人口型（张嘴与声音同步）、Filler words 与测评机制；首页 Dino 引导未上体验课用户去上课、商城手办按人物 / 系列分层；管理后台上线管台一期、课程视频生产 CMS 与扫码进课。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 需求文档 ↗</a>。'><span class="lab">User story</span>A multi-track functional iteration on top of V1.3.0. Membership & Class: a vertical Paywall, refined level up/down, and end-of-lesson nudges. Account: Kakao / Facebook login with Kakao phone binding, phone login for Malaysia / Indonesia, plus the Dino AI → Dino Daily rename. In-class teaching gets a polish — full-flow monitoring, digital-human lip sync (mouth-and-sound sync), filler words and the assessment mechanism. The home Dino guides users who haven't taken the trial lesson, and backpack figures are tiered by character / series; the admin side ships console phase 1, the lesson-video CMS, and scan-to-enter-class. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/J3rfw9GA9iFSS2k7glojflQ8pPg" target="_blank" rel="noopener">V1.3.2 PRD ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · 会员支付 · 转化'>Requirements · membership & conversion</h4>
         <ul>
           <li data-zh='<b>支付页竖屏改版</b><span class="p0">P0</span>：Paywall 改竖屏单栏，承接 onboarding / 报告竖屏链路'><b>Vertical paywall redesign</b><span class="p0">P0</span>: single-column vertical Paywall matching the onboarding / report flow</li>
-          <li data-zh='<b>Class 完课引导</b><span class="p2">P2</span>：一周完课去 Practice、每课完课去 Dino'><b>Class end-of-lesson nudges</b><span class="p2">P2</span>: weekly completion → Practice, per-lesson completion → Dino</li>
+          <li data-zh='<b>课程升降级逻辑优化</b><span class="p1">P1</span>：定级安全阀纠偏——免费偏高可下探、会员升要证明 · 降可直切'><b>Refined course level up/down</b><span class="p1">P1</span>: a placement safety valve — free users can step down, members prove up / switch down directly</li>
+          <li data-zh='<b>Class 完课引导</b><span class="p2">P2</span>：一周完课去 Explore、每课完课去 Dino'><b>Class end-of-lesson nudges</b><span class="p2">P2</span>: weekly completion → Explore, per-lesson completion → Dino</li>
         </ul>
       </div>
       <div class="block">
@@ -661,6 +662,7 @@ section[id],.node[id]{scroll-margin-top:64px}
       <div class="block">
         <h4 data-zh='需求 · 课中教学体验'>Requirements · in-class teaching</h4>
         <ul>
+          <li data-zh='<b>上课全流程监课功能</b><span class="p0">P0</span>：进出教室全流程录制，配合埋点排查流失'><b>Full-flow lesson monitoring</b><span class="p0">P0</span>: record the whole classroom flow to trace drop-off with analytics</li>
           <li data-zh='<b>数字人口型优化</b><span class="p0">P0</span>：张嘴与声音同步'><b>Digital-human lip-sync</b><span class="p0">P0</span>: mouth movements synced with sound</li>
           <li data-zh='<b>Filler words 机制优化</b><span class="p0">P0</span>'><b>Filler-words mechanism tuning</b><span class="p0">P0</span></li>
           <li data-zh='<b>测评体验与机制优化</b><span class="p1">P1</span>'><b>Assessment experience & mechanism tuning</b><span class="p1">P1</span></li>
@@ -709,51 +711,30 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.4.0</div>
-    <div class="node-sub" data-zh='功能扩展<br>07/15 上线'>Feature expansion<br>Ships 07/15</div>
+    <div class="node-sub" data-zh='体验换代<br>7 月中'>Experience upgrade<br>Mid-Jul</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='功能扩展 · 对话 / 课程 / 支付 / 平台<span class="tag">迭代版</span>'>Feature expansion · chat / class / payment / platform<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">用户故事</span>按需求池 V1.4.0 做一次功能扩展：首页 Dino Agent 对话上线三种定位与 Class 入口的新对话设计、麦克风由长按改为点两次（一点开始 / 二点结束），接入付费机制与付费引导，并强化首页任务引导（体验课 / Explore / Play）；会员支付侧做转化链路优化（更多支付触点 + 取消挽留）；Class 课程侧上线全流程监课、增加课程升降级逻辑，并打磨教学模版（songtime 舞动 / trace 字母 / 语法课）与配套平台（世界杯足球课 PRD、Prompt Forge 两项调试增强、CMS 支持 lesson plan 与 prompt 配置）；整体 App 接入基础 Push 通知，管理后台上线管台一期。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewokd3LaN" target="_blank" rel="noopener">V1.4.0 需求表 ↗</a>。'><span class="lab">User story</span>A V1.4.0 feature expansion drawn from the requirement pool. The home Dino Agent chat ships a new three-intent, Class-entry conversation design, switches the mic from long-press to double-tap (first tap starts, second stops), adds a paywall with upsell, and strengthens home task guidance (trial lesson / Explore / Play). Membership & payment: conversion-path optimization (more payment touchpoints + cancel-flow retention). Class: full-flow lesson monitoring, course level up/down, and polished teaching templates (songtime dance / letter tracing / grammar) with supporting platform work (World Cup football-course PRD, two Prompt Forge debugging upgrades, and a CMS that configures lesson plans and prompts). The app gains basic push notifications, and the admin side ships console phase 1. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewokd3LaN" target="_blank" rel="noopener">V1.4.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='体验换代 + 内容与后台补齐'>Experience upgrade + content & back-office</div>
+    <div class="story" data-zh='<span class="lab">用户故事</span>声音换代（定制 TTS 替换 Minimax），课后能读按定级推荐的分级绘本，开始收到课程提醒 Push；Dino 有了人设和老友感记忆——记得孩子、孩子也记得它；物料图片跟随系统语言本地化；教研用 CMS 快速出课、销售用管台查用户与订单。'><span class="lab">User story</span>The voice gets a generational upgrade (custom TTS replaces Minimax); after class kids read leveled readers recommended by placement and start receiving lesson-reminder push; Dino now has a persona and old-friend memory — it remembers the child, and the child remembers it; marketing images localize to the system language; the teaching team ships lessons fast via the CMS, and sales look up users and orders in the admin console.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='需求 · Dino Agent · 首页对话'>Requirements · Dino Agent & home chat</h4>
+        <h4 data-zh='产品侧交付（需求池 1.4.0）'>Product deliverables (pool · 1.4.0)</h4>
         <ul>
-          <li data-zh='<b>对话工程新增：三种定位 + Class 入口新对话设计</b><span class="p0">P0</span><span class="who">李淑怡</span>'><b>Conversation engineering: three intents + a new Class-entry dialogue</b><span class="p0">P0</span><span class="who">Shuyi</span></li>
-          <li data-zh='<b>首页交互：麦克风由长按改为点两次</b><span class="p0">P0</span>：一点开始录音、二点结束<span class="who">李淑怡</span>'><b>Home interaction: mic long-press → double-tap</b><span class="p0">P0</span>: first tap starts recording, second stops<span class="who">Shuyi</span></li>
-          <li data-zh='<b>首页 Dino 对话付费机制与付费引导</b><span class="p1">P1</span><span class="who">李淑怡</span>'><b>Home Dino chat paywall & upsell</b><span class="p1">P1</span><span class="who">Shuyi</span></li>
-          <li data-zh='<b>首页更多任务引导</b><span class="p0">P0</span>：体验课 / Explore / Play 等，Dino 主页以课程与内容为主、承担更多引导<span class="who">李双</span>'><b>More home task guidance</b><span class="p0">P0</span>: trial lesson / Explore / Play — the Dino home leans into courses & content and takes on more guidance<span class="who">Shuang</span></li>
-        </ul>
-      </div>
-      <div class="block">
-        <h4 data-zh='需求 · 会员支付 · 转化'>Requirements · membership & conversion</h4>
-        <ul>
-          <li data-zh='<b>转化链路优化</b><span class="p0">P0</span>：更多支付触点 + 取消支付挽留<span class="who">李双</span>'><b>Conversion-path optimization</b><span class="p0">P0</span>: more payment touchpoints + cancel-flow retention<span class="who">Shuang</span></li>
-        </ul>
-      </div>
-      <div class="block">
-        <h4 data-zh='需求 · Class 课程 · 课中教学'>Requirements · Class & in-class teaching</h4>
-        <ul>
-          <li data-zh='<b>上课全流程监课功能</b><span class="p0">P0</span>：进出教室全流程录制，配合埋点排查流失<span class="who">Coco</span>'><b>Full-flow lesson monitoring</b><span class="p0">P0</span>: record the whole classroom flow to trace drop-off<span class="who">Coco</span></li>
-          <li data-zh='<b>增加课程升降级逻辑</b><span class="p1">P1</span><span class="who">李双</span>'><b>Add course level up/down</b><span class="p1">P1</span><span class="who">Shuang</span></li>
-          <li data-zh='<b>体验课 songtime 老师增加舞动动作</b><span class="p1">P1</span><span class="who">陈庆顺</span>'><b>Trial-lesson songtime: teacher gains dance motions</b><span class="p1">P1</span><span class="who">Qingshun</span></li>
-          <li data-zh='<b>新增 trace 字母教学模版</b><span class="p1">P1</span>：练习字母写法<span class="who">申璐迪</span>'><b>New letter-tracing template</b><span class="p1">P1</span>: practice letter forms<span class="who">Ludi</span></li>
-          <li data-zh='<b>语法课教学模版优化</b><span class="p1">P1</span><span class="who">赵琬雪</span>'><b>Grammar-lesson template tuning</b><span class="p1">P1</span><span class="who">Wanxue</span></li>
+          <li data-zh='<b>Dino persona 设计 + 老友感记忆</b><span class="p1">P1</span>：能引用上次学习信息，形成用户与 Dino 双向记忆'><b>Dino persona design + old-friend memory</b><span class="p1">P1</span>: references last session's info, forming two-way memory between the child and Dino</li>
+          <li data-zh='<b>分级绘本 / 故事阅读</b><span class="p1">P1</span>：按精准定级推荐难度（Explore 补充能力）'><b>Leveled readers / story reading</b><span class="p1">P1</span>: difficulty recommended by precise placement (an Explore add-on)</li>
+          <li data-zh='<b>Push 通知系统接入</b><span class="p1">P1</span>：基础课程提醒 push，送达率 &gt;90%'><b>Push notification system</b><span class="p1">P1</span>: basic lesson-reminder push, delivery rate &gt;90%</li>
+          <li data-zh='<b>图片资源本地化配置</b><span class="p1">P1</span>：跟随系统语言取不同物料（含产品宣传物料）'><b>Localized image assets</b><span class="p1">P1</span>: images follow the system language, including in-product marketing assets</li>
+          <li data-zh='<b>品牌改名 Dino English → Dino AI</b><span class="p0">P0</span>（需求池待评审）'><b>Rebrand Dino English → Dino AI</b><span class="p0">P0</span> (pool · pending review)</li>
         </ul>
       </div>
       <div class="block dep">
-        <h4 data-zh='需求 · 平台 · 内容工具'>Requirements · platform & content tools</h4>
+        <h4 data-zh='平台 / 后台 · 跨团队'>Platform / back-office · cross-team</h4>
         <ul>
-          <li data-zh='<b>世界杯足球课客户端 PRD</b><span class="p0">P0</span>：客户端配合世界杯足球课<span class="who">Coco</span>'><b>World Cup football-course client PRD</b><span class="p0">P0</span>: client-side support for the World Cup course<span class="who">Coco</span></li>
-          <li data-zh='<b>Prompt Forge 优化</b><span class="p1">P1</span>：支持 between-the-template 的对话调试<span class="who">Coco</span>'><b>Prompt Forge upgrade</b><span class="p1">P1</span>: between-template conversation debugging<span class="who">Coco</span></li>
-          <li data-zh='<b>Prompt Forge 优化</b><span class="p1">P1</span>：三层 prompt 旁挂 eval agent 评估基础问题<span class="who">Coco</span>'><b>Prompt Forge upgrade</b><span class="p1">P1</span>: an eval agent beside the three-layer prompt to assess base issues<span class="who">Coco</span></li>
-          <li data-zh='<b>CMS 课程生产平台</b><span class="p2">P2</span>：支持 lesson plan 配置与 prompt 配置<span class="who">Coco</span>'><b>CMS lesson-production platform</b><span class="p2">P2</span>: lesson-plan & prompt configuration<span class="who">Coco</span></li>
-        </ul>
-      </div>
-      <div class="block">
-        <h4 data-zh='需求 · 整体 App · 管台'>Requirements · app-wide & admin console</h4>
-        <ul>
-          <li data-zh='<b>Push 通知系统接入</b><span class="p1">P1</span>：基础 push 通知<span class="who">李双</span>'><b>Push notification system</b><span class="p1">P1</span>: basic push notifications<span class="who">Shuang</span></li>
-          <li data-zh='<b>Dino English 管台一期</b><span class="p1">P1</span>：查询用户与订单信息<span class="who">姜双</span>'><b>Dino English console phase 1</b><span class="p1">P1</span>: look up user & order info<span class="who">Jiang</span></li>
+          <li data-zh='<b>CMS 课程生产平台</b><span class="p1">P1</span>：教研灵活编排 Blocks、一键 AIGC 生图、预览发布<span class="who">Rudy &amp; Coco</span>'><b>CMS lesson-production platform</b><span class="p1">P1</span>: flexible block editing, one-click AIGC images, preview & publish<span class="who">Rudy & Coco</span></li>
+          <li data-zh='<b>Dino English 管台一期（CRM 初版）</b><span class="p1">P1</span>：支持查询用户信息与订单信息<span class="who">晓宇团队</span>'><b>Admin console phase 1 (first CRM)</b><span class="p1">P1</span>: look up user and order information<span class="who">Xiaoyu's team</span></li>
+          <li data-zh='<b>定制 TTS 云端部署并正式替换 Minimax</b>：自然度 / 情感表达 ≥4.5、异常 &lt;1%、全课覆盖<span class="who">Jenny &amp; 夏老师团队</span>'><b>Custom TTS deployed to cloud, officially replacing Minimax</b>: naturalness / emotion ≥4.5, error rate &lt;1%, full-lesson coverage<span class="who">Jenny & Teacher Xia's team</span></li>
+          <li data-zh='<b>精准定级测评上线</b>，与人工差异 &lt;1 等级<span class="who">Liz</span>'><b>Precise placement assessment</b>, within &lt;1 level of human grading<span class="who">Liz</span></li>
+          <li data-zh='<b>分级绘本内容产能</b>（需与教研对齐）<span class="who">Heidi &amp; Liz</span>'><b>Leveled-reader content capacity</b> (align with teaching team)<span class="who">Heidi & Liz</span></li>
         </ul>
       </div>
     </div>
@@ -794,13 +775,11 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   if(!links.length)return;
   var today=new Date();today.setHours(0,0,0,0);
   var current=null;
-  // 当前迭代 = 今天当天或之后最近一个上线的版本（即正在进行/即将上线的版本）
   links.forEach(function(a){
     var d=new Date(a.getAttribute('data-date')+'T00:00:00');
-    if(d>=today&&(!current||d<new Date(current.getAttribute('data-date')+'T00:00:00')))current=a;
+    if(d<=today&&(!current||d>new Date(current.getAttribute('data-date')+'T00:00:00')))current=a;
   });
-  // 若所有版本都已上线，则落到最后一个版本
-  if(!current)current=links[links.length-1];
+  if(!current)current=links[0];
   current.classList.add('current');
   // 让当前版本在横向导航中可见
   try{current.scrollIntoView({inline:'center',block:'nearest'});}catch(e){}

@@ -4145,9 +4145,9 @@
     .pw-head, .ms-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
     .ms-head-title { font-weight: 800; color: #143a5e; font-size: 1rem; }
     .pw-restore { background: none; border: none; color: #2a6db0; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
-    .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 22px; overflow-y: auto; align-items: stretch; }
+    .pw-body { flex: 1; display: flex; gap: 18px; padding: 4px 26px 12px; overflow-y: auto; align-items: stretch; }
     .pw-left { flex: 1.1; min-width: 0; padding: 18px 20px; border-radius: 22px; background: linear-gradient(155deg,rgba(255,255,255,.72),rgba(232,248,244,.82)); border: 1px solid rgba(255,255,255,.72); }
-    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 12px; justify-content: flex-start; min-height: 0; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
+    .pw-right { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: flex-start; min-height: 0; padding: 13px; border-radius: 22px; background: rgba(255,255,255,.96); border: 1px solid rgba(214,228,240,.85); box-shadow: 0 18px 44px rgba(20,58,94,.14); }
     .pw-kicker { display: inline-block; background: #fff0d4; color: #c47f1d; border-radius: 999px; padding: 4px 12px; font-size: 0.74rem; font-weight: 800; }
     .pw-title { font-size: 1.3rem; font-weight: 800; color: #143a5e; margin: 10px 0 6px; line-height: 1.25; }
     .pw-sub { font-size: 0.88rem; color: #5a7a98; margin: 0 0 12px; line-height: 1.45; }
@@ -4164,31 +4164,31 @@
     .pw-price-row { display: flex; align-items: baseline; justify-content: flex-start; gap: 5px; }
     .pw-price-amt { font-size: 1.5rem; font-weight: 800; color: #143a5e; }
     .pw-price-period { font-size: 0.82rem; color: #5a7a98; font-weight: 700; }
-    .pw-plans { display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 12px 6px 4px; }
-    .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 14px 16px; cursor: pointer; background: #fff; transition: .15s; }
+    .pw-plans { display: flex; flex-direction: column; gap: 6px; flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; padding: 6px 6px 2px; }
+    .pw-plan { position: relative; border: 2px solid #d6e4f0; border-radius: 16px; padding: 6px 14px; cursor: pointer; background: #fff; transition: .15s; }
     .pw-plan.is-selected { border-color: #19c3b2; background: #f3fdfb; box-shadow: 0 10px 22px rgba(25,195,178,.18); }
     .pw-plan-top { display: flex; align-items: center; justify-content: space-between; }
     .pw-plan-name { font-weight: 800; color: #143a5e; font-size: 0.96rem; }
     .pw-plan-price { font-weight: 800; color: #143a5e; font-size: 0.96rem; }
-    .pw-plan-note { font-size: 0.78rem; color: #5a7a98; margin-top: 4px; }
+    .pw-plan-note { font-size: 0.78rem; color: #5a7a98; margin-top: 2px; }
     .pw-badge { position: absolute; top: -10px; right: 14px; background: #19c3b2; color: #fff; font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; }
-    .pw-plan--hero { border-color: #19c3b2; padding-top: 20px; }
+    .pw-plan--hero { border-color: #19c3b2; padding-top: 10px; }
     .pw-plan--hero .pw-plan-name, .pw-plan--hero .pw-plan-price { font-size: 1.08rem; }
     .pw-hero-tag { position: absolute; top: -10px; left: 14px; background: #ea6c25; color: #fff; font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 3px 10px; }
     .pw-plan--minor { opacity: 0.82; }
     .pw-plan--minor.is-selected { opacity: 1; }
     .pw-region-note { margin: 8px 2px 0; font-size: 0.72rem; color: #7a93ad; }
-    .pw-cta { margin-top: 8px; }
+    .pw-cta { margin-top: 4px; }
     .pw-legal { font-size: 0.68rem; color: #8aa; text-align: center; line-height: 1.4; margin: 0; }
     .pw-legal a { color: #2a6db0; }
     .pw-renewal { color: #6f889f; }
 
     /* ---------- Membership center (V1.2.0) ---------- */
-    .ms-body { flex: 1; padding: 4px 26px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-    .ms-status-card { border-radius: 18px; padding: 18px 20px; color: #fff; background: linear-gradient(135deg,#19c3b2,#1f7fd0); box-shadow: 0 14px 30px rgba(25,127,208,.3); }
+    .ms-body { flex: 1; padding: 4px 26px 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .ms-status-card { border-radius: 18px; padding: 11px 18px; color: #fff; background: linear-gradient(135deg,#19c3b2,#1f7fd0); box-shadow: 0 14px 30px rgba(25,127,208,.3); }
     .ms-status-card.is-free { background: linear-gradient(135deg,#8aa4be,#5a7a98); }
     .ms-status-kicker { font-size: 0.74rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; opacity: .85; }
-    .ms-status-title { font-size: 1.3rem; font-weight: 800; margin: 6px 0 4px; }
+    .ms-status-title { font-size: 1.3rem; font-weight: 800; margin: 4px 0 3px; }
     .ms-status-desc { font-size: 0.84rem; opacity: .92; margin: 0; }
     .ms-benefits-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; color: #5a7a98; margin: 0 0 8px; }
     .ms-benefits-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -4657,7 +4657,7 @@
     .spk-rec-btn { border: none; cursor: pointer; border-radius: 999px; padding: 13px 30px;
       font-family: var(--font); font-weight: 800; font-size: 0.92rem; color: #fff;
       background: linear-gradient(135deg, #ff8a4d, #ea5c25); box-shadow: 0 12px 26px rgba(234,92,37,0.36);
-      transition: transform 0.13s var(--ease); }
+      transition: transform 0.13s var(--ease); touch-action: none; user-select: none; -webkit-user-select: none; }
     .spk-rec-btn:active { transform: scale(0.95); }
     .spk-rec-btn.listening { animation: micpulse 1s ease-in-out infinite; background: linear-gradient(135deg, #ff5d7a, #e23b67); }
     .spk-feedback { min-height: 22px; font-size: 0.82rem; font-weight: 800; color: var(--forest-deep); }
@@ -6163,7 +6163,7 @@
                   <span class="ee-emoji">📖</span>
                   <span class="ee-info">
                     <b>Words &amp; Sentences</b>
-                    <span>Practice words &amp; sentences · Levels 1–6</span>
+                    <span>Learn by doing</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-story" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -6173,7 +6173,7 @@
                   <span class="ee-emoji">🎧</span>
                   <span class="ee-info">
                     <b>Listening</b>
-                    <span>Radio stories · Goodnight / Morning</span>
+                    <span>Radio stories</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-radio" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -6183,7 +6183,7 @@
                   <span class="ee-emoji">🗣️</span>
                   <span class="ee-info">
                     <b>Speaking</b>
-                    <span>Talk with Dino · Free speaking practice</span>
+                    <span>Talk with Dino</span>
                   </span>
                   <span class="ee-thumbs ee-thumbs--dino" aria-hidden="true"><img src="assets/dino-mascot.png" alt="" decoding="async" /></span>
                   <span class="ee-arrow">›</span>
@@ -10112,7 +10112,10 @@
         "The brave dino jumps over the river.",
         "Let's read a story together tonight.",
       ];
-      let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false;
+      let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false, spkHolding = false, spkHoldStart = 0, spkMaxTimer = null;
+      const SPK_PASS = 75; // 发音分 ≥75 判答对 (复用课中发音评测口径)
+      const SPK_MIN_HOLD = 500; // 长按 <500ms 视为无内容 (端上时长兜底)
+      const SPK_MAX_HOLD = 30000; // 录音最长 30s (speakMaxSec 可配), 到时自动结束并提交
       // Each turn plays the model audio FIRST so the child listens, then repeats (PRD:
       // 口语 PK 先播放跟读句子/单词音频). The 🔊 button replays it; here playback is simulated.
       function playSpkAudio() {
@@ -10136,22 +10139,46 @@
         if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s}”`;
         if ($("#spk-feedback")) $("#spk-feedback").textContent = "";
         $("#spk-rec")?.classList.remove("listening");
+        if ($("#spk-rec")) $("#spk-rec").textContent = "🎤 Hold to record";
         if (s) playSpkAudio(); // auto-play the model audio for this turn
       }
-      function resetSpeakPk() { spkIdx = 0; spkMe = 0; spkOp = 0; spkBusy = false; renderSpeakPk(); }
+      function resetSpeakPk() { spkIdx = 0; spkMe = 0; spkOp = 0; spkBusy = false; spkHolding = false; renderSpeakPk(); }
       $("#spk-play")?.addEventListener("click", playSpkAudio);
-      $("#spk-rec")?.addEventListener("click", () => {
-        if (spkBusy || spkIdx >= SPK_SENTENCES.length) return;
-        spkBusy = true;
+      // ---- 长按式录音 (Hold to record): 按住开始 → 松手提交评分 ----
+      function spkStartRec(e) {
+        if (spkBusy || spkHolding || spkIdx >= SPK_SENTENCES.length) return;
+        if (e) e.preventDefault();
+        spkHolding = true;
+        spkHoldStart = Date.now();
         const rec = $("#spk-rec");
         const fb = $("#spk-feedback");
         rec?.classList.add("listening");
+        if (rec) rec.textContent = "● Release to finish";
         if (fb) fb.textContent = "Listening…";
+        clearTimeout(spkMaxTimer); // 录音最长 30s 自动结束 (防止一直按住)
+        spkMaxTimer = setTimeout(() => spkStopRec(), SPK_MAX_HOLD);
+      }
+      function spkStopRec(e) {
+        if (!spkHolding) return;
+        if (e) e.preventDefault();
+        clearTimeout(spkMaxTimer);
+        spkHolding = false;
+        const rec = $("#spk-rec");
+        const fb = $("#spk-feedback");
+        rec?.classList.remove("listening");
+        if (rec) rec.textContent = "🎤 Hold to record";
+        // 无内容兜底①: 长按过短 → 判无内容, 提示重录, 停本句, 不计分
+        if (Date.now() - spkHoldStart < SPK_MIN_HOLD) { if (fb) fb.textContent = "Try again"; return; }
+        spkBusy = true;
+        if (fb) fb.textContent = "Scoring…";
         setTimeout(() => {
-          rec?.classList.remove("listening");
-          const good = Math.random() > 0.25;
-          if (good) { spkMe += 1; if (fb) fb.textContent = "⭐ Great pronunciation! +1"; }
-          else if (fb) fb.textContent = "💪 Good try — keep going!";
+          // 复用发音评测能力: 无内容(未识别到语音) / 发音分
+          const empty = Math.random() < 0.08; // 评测引擎未识别到有效语音
+          if (empty) { if (fb) fb.textContent = "Try again"; spkBusy = false; return; } // 停本句, 重录
+          const score = 67 + Math.floor(Math.random() * 33); // 0-100 发音分 (模拟)
+          const pass = score >= SPK_PASS; // ≥75 判答对
+          if (pass) { spkMe += 1; if (fb) fb.textContent = "Great!"; }
+          else if (fb) fb.textContent = "Good try!";
           spkOp = rivalStep(spkOp, spkMe, SPK_SENTENCES.length, pkPlan); // 方案A live tracking
           if ($("#spk-me")) $("#spk-me").textContent = spkMe;
           if ($("#spk-op")) $("#spk-op").textContent = spkOp;
@@ -10162,7 +10189,16 @@
             else renderSpeakPk();
           }, 1100);
         }, 1000);
-      });
+      }
+      (function bindSpkRec() {
+        const rec = $("#spk-rec");
+        if (!rec) return;
+        rec.addEventListener("pointerdown", spkStartRec);
+        rec.addEventListener("pointerup", spkStopRec);
+        rec.addEventListener("pointerleave", spkStopRec);
+        rec.addEventListener("pointercancel", spkStopRec);
+        rec.addEventListener("contextmenu", (e) => e.preventDefault());
+      })();
 
       // ---- PK finish: the rival's live score already reflects the planned
       // outcome (方案A tracking), then unified settlement, then battle result ----
@@ -11076,7 +11112,7 @@
           <div class="pd-edit-group"><p class="pd-edit-label">Current level</p><div class="pd-stack" id="pd-level"></div></div>
           <div class="pd-edit-group"><p class="pd-edit-label">Learning purpose</p><div class="pd-stack" id="pd-goal"></div></div>`;
         pdPills("pd-age", AGES.map((a) => ({ id: a, label: a })), pdDraft.age, (id) => { pdDraft.age = id; });
-        pdPills("pd-level", LEVELS.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
+        pdPills("pd-level", LEVEL_CEFR.map((l) => ({ id: l, label: l })), pdDraft.level, (id) => { pdDraft.level = id; });
         pdPills("pd-goal", GOALS, pdDraft.goal, (id, label) => { pdDraft.goal = id; pdDraft.goalLabel = label; });
         const nameInput = $("#pd-name");
         if (nameInput) nameInput.value = pdDraft.name || "";

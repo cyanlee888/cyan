@@ -58,7 +58,7 @@ Dino English V1.1.0 presents a **forest classroom**: trustworthy, warm, slightly
 ## Tone
 
 - **Live class first** — orange accent only for “live / speak / CTA” moments.
-- **No emoji UI** — use SVG illustration slots instead.
+- **No emoji UI** — use illustration slots (SVG scenes + **Dino mascot** PNG `assets/dino-mascot.png` on purpose/loading).
 - **Generous whitespace** on question screens; progress always visible.
 
 ## Colors
