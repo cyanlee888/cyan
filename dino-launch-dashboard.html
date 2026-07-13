@@ -199,10 +199,11 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   <!-- 主漏斗 -->
   <section class="sec reveal">
     <div class="sec-h">用户旅程漏斗 <span class="en">In-App Journey · 去重用户</span></div>
-    <p class="sec-desc">从打开到完成首课的逐步收敛,分「激活 / 首课体验」两段(订阅不是这条漏斗的下一步——它有多个入口,单列在下方「变现」一节)。右侧为环比上一步转化率,<b>红色标注主要流失</b>。</p>
+    <p class="sec-desc">从打开到完成首课的逐步收敛,分「激活 / 首课体验」两段(订阅不是这条漏斗的下一步——它有多个入口,单列在下方「变现」一节)。激活段以<b>占打开 App</b> 为口径,首课段以环比为口径,<b>红色标注主要流失</b>。</p>
 
     <div class="stage-lab">① 激活 Activation</div>
     <div class="funnel" id="fun1"></div>
+    <p class="sec-desc" style="margin-top:12px;font-size:12.5px">onboarding(填孩子资料+分级测试→生成学习计划,生产库 <span class="src">onboarding_submission</span> 2,558 人)与注册开户(2,673 人)是同一道「建号+建计划」门槛,约 2,600 人,数量接近(少数用户跳过完整 onboarding)。<b>打开→这道门流失 57%,是激活第一大流失</b>;门后的选老师、进首课都很顺(相互间仅小幅递减)。</p>
     <div class="stage-lab">② 首课体验(核心 aha)Core Trial Experience</div>
     <div class="funnel" id="fun2"></div>
 
@@ -344,7 +345,12 @@ function renderFunnel(el,steps){
   el.innerHTML=steps.map((s,i)=>{
     const w=Math.max(5,Math.round(s.v/OPEN*100));
     let rate='';
-    if(s.prev){
+    if(s.cum){
+      const r=(s.v/OPEN*100);
+      const cls=s.drop?'frate drop':'frate';
+      const lossLine=s.drop?`<span class="dropflag">主要流失 ↓${(100-r).toFixed(0)}%</span>`:'';
+      rate=`<div class="${cls}"><b>${r.toFixed(0)}%</b> <span class="of">占打开 App</span>${lossLine}</div>`;
+    }else if(s.prev){
       const r=(s.v/s.prev*100);
       const cls=s.drop?'frate drop':'frate';
       const baseLine=s.base?`<div class="of" style="margin-top:2px">占首课开始 <b style="font-size:12px;color:${s.drop?'var(--red)':'var(--ink-soft)'}">${(s.v/2074*100).toFixed(0)}%</b></div>`:'';
@@ -359,9 +365,10 @@ function renderFunnel(el,steps){
 }
 renderFunnel(document.getElementById('fun1'),[
  {l:'打开 App',s:'first_open',v:5960,c:'#1d5c3f'},
- {l:'注册',s:'signup_result',v:2673,c:'#2e8b57',prev:5960,drop:true},
- {l:'选老师',s:'teacher_selected',v:2459,c:'#2e8b57',prev:2673},
- {l:'首课开始',s:'class_lesson_start',v:2074,c:'#2e8b57',prev:2459},
+ {l:'完成 onboarding',s:'onboarding_submission·建计划',v:2558,c:'#2e8b57',cum:true,drop:true},
+ {l:'注册开户',s:'signup_result',v:2673,c:'#2e8b57',cum:true},
+ {l:'选老师',s:'teacher_selected',v:2459,c:'#2e8b57',cum:true},
+ {l:'首课开始',s:'class_lesson_start',v:2074,c:'#2e8b57',cum:true},
 ]);
 renderFunnel(document.getElementById('fun2'),[
  {l:'进入首课',s:'class_lesson_start',v:2074,c:'#c98a12'},
