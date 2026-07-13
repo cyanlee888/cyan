@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dino English · 产品核心链路看板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7; --paper-deep:#efe7d6; --card:#fffdf8;
+  --ink:#1f2a24; --ink-soft:#4c5a52; --ink-faint:#8a958d;
+  --green:#1d5c3f; --green-bright:#2e8b57;
+  --orange:#d9641e; --orange-soft:#f3e0cf;
+  --red:#b3402a; --yellow:#c98a12; --line:#d8cfba;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans SC',sans-serif;font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 500px at 100% -5%,rgba(217,100,30,.06),transparent 60%),radial-gradient(900px 500px at -10% 110%,rgba(29,92,63,.06),transparent 55%);}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:54px 26px 90px}
+
+.kicker{font-family:'Fraunces',serif;text-transform:uppercase;letter-spacing:.3em;font-size:12px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.kicker::before{content:"";width:34px;height:2px;background:var(--green)}
+h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:38px;line-height:1.2;letter-spacing:-.5px;margin-bottom:14px}
+h1 em{font-style:normal;color:var(--orange)}
+.sub{color:var(--ink-soft);font-size:15px;max-width:780px}
+.sub b{color:var(--ink);font-weight:700}
+.sub mark{background:linear-gradient(180deg,transparent 62%,rgba(217,100,30,.38) 62%);padding:0 2px}
+
+.ctx{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:20px;padding:12px 18px;background:#f0eadb;border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--ink-soft)}
+.ctx b{color:var(--green);font-weight:700}
+.ctx .tag{font-family:'Fraunces',serif;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:20px;padding:2px 9px}
+
+.sec{margin-top:50px}
+.sec-h{font-family:'Noto Serif SC',serif;font-weight:700;font-size:22px;display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.sec-h .en{font-family:'Fraunces',serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+.sec-desc{color:var(--ink-soft);font-size:13.5px;margin-bottom:20px;max-width:840px}
+.sec-desc b{color:var(--ink)}
+
+/* diagnostic KPI */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kpi{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:16px 18px;box-shadow:0 1px 2px rgba(31,42,36,.04)}
+.kpi.warn{border-left-color:var(--red)}
+.kpi.mid{border-left-color:var(--yellow)}
+.kpi .lab{font-size:12px;color:var(--ink-faint);margin-bottom:7px}
+.kpi .val{font-family:'Fraunces',serif;font-weight:900;font-size:32px;line-height:1;color:var(--ink)}
+.kpi.warn .val{color:var(--red)}
+.kpi .val small{font-size:16px;font-weight:600;color:var(--ink-soft)}
+.kpi .note{font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
+.kpi .note .flag{color:var(--red);font-weight:700}
+.kpi .note .ok{color:var(--green-bright);font-weight:700}
+
+/* funnel */
+.stage-lab{font-family:'Fraunces',serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:600;margin:22px 0 10px}
+.funnel{display:flex;flex-direction:column;gap:7px}
+.frow{display:grid;grid-template-columns:132px 1fr 148px;align-items:center;gap:14px}
+.frow .fl{font-size:13.5px;font-weight:500;text-align:right;color:var(--ink)}
+.frow .fl small{display:block;font-family:'Fraunces',serif;color:var(--ink-faint);font-size:10px;letter-spacing:.02em;font-weight:400}
+.fbar-wrap{position:relative;height:40px;background:var(--paper-deep);border-radius:6px;overflow:hidden}
+.fbar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:13px;color:#fff;font-family:'Fraunces',serif;font-weight:600;font-size:15px;transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.frate{font-size:12px;color:var(--ink-soft)}
+.frate b{font-family:'Fraunces',serif;font-size:15px;color:var(--ink)}
+.frate.drop b{color:var(--red)}
+.frate .of{color:var(--ink-faint);font-size:11px}
+.dropflag{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;color:#fff;background:var(--red);border-radius:4px;padding:1px 6px;vertical-align:middle}
+
+.split{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
+.panel-t{font-size:14px;font-weight:700;margin-bottom:3px}
+.panel-s{font-size:11.5px;color:var(--ink-faint);margin-bottom:16px}
+.minirow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed #e6ddc8;font-size:13px}
+.minirow:last-child{border-bottom:none}
+.minirow .mv{font-family:'Fraunces',serif;font-weight:600}
+.minirow .mv .sub2{color:var(--ink-faint);font-size:11px;font-weight:400;margin-left:5px}
+
+.insight{background:#fbeee8;border:1px dashed var(--red);border-radius:10px;padding:16px 18px;margin-top:16px}
+.insight.pos{background:#e9f1eb;border-color:var(--green-bright)}
+.insight .it{font-weight:700;color:var(--red);font-size:13.5px;margin-bottom:6px}
+.insight.pos .it{color:var(--green)}
+.insight p{font-size:12.5px;line-height:1.7;color:var(--ink)}
+.insight b{color:var(--red)}
+.insight.pos b{color:var(--green)}
+
+/* tables */
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+thead th{background:var(--paper-deep);text-align:left;padding:10px 14px;font-size:11.5px;letter-spacing:.03em;color:var(--ink-soft);font-weight:700;text-transform:uppercase;border-bottom:1px solid var(--line)}
+thead th.num{text-align:right}
+tbody td{padding:10px 14px;border-bottom:1px solid #ece3d0}
+tbody tr:last-child td{border-bottom:none}
+td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
+.watch td:first-child{font-weight:700;color:var(--ink);width:120px}
+.watch .cad{font-family:'Fraunces',serif;font-weight:600;color:var(--green);white-space:nowrap}
+.watch tr.up td:first-child{color:var(--ink-faint);font-weight:500}
+
+.upstream{background:#f0eadb;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.upstream .ut{font-size:12px;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:'Fraunces',serif;margin-bottom:12px}
+.up-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.up-grid .u{border-left:3px solid var(--line);padding-left:12px}
+.up-grid .u .uv{font-family:'Fraunces',serif;font-weight:700;font-size:22px}
+.up-grid .u .ul{font-size:11px;color:var(--ink-soft);margin-top:2px}
+.upstream .un{font-size:11.5px;color:var(--ink-faint);margin-top:14px}
+
+.foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-faint);line-height:1.8}
+.foot b{color:var(--ink-soft)}
+.src{font-family:'Fraunces',serif;font-size:11px}
+
+/* 课内环节 横向条 */
+.lbars{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
+.lrow{display:grid;grid-template-columns:150px 1fr 60px;align-items:center;gap:14px;padding:5px 0}
+.lrow .ll{font-size:13px;text-align:right;color:var(--ink)}
+.lrow .ll small{display:block;font-family:'Fraunces',serif;font-size:9.5px;letter-spacing:.02em;color:var(--ink-faint)}
+.lbar-track{height:26px;background:var(--paper-deep);border-radius:5px;overflow:hidden}
+.lbar-fill{height:100%;border-radius:5px;transition:width 1s cubic-bezier(.2,.7,.3,1)}
+.lrow .lv{font-family:'Fraunces',serif;font-weight:600;font-size:13.5px;text-align:right}
+.lrow.cliff .ll{color:var(--red);font-weight:700}
+.lrow .cliffmark{font-size:10px;color:var(--red);font-weight:700}
+
+/* 课外模块卡片 */
+.mods{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.mod{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;border-top:4px solid var(--green-bright)}
+.mod.dino{border-top-color:var(--green)}
+.mod.play{border-top-color:var(--orange)}
+.mod.weak{border-top-color:var(--red)}
+.mod .mh{font-size:14px;font-weight:700;margin-bottom:2px}
+.mod .msub{font-size:11px;color:var(--ink-faint);margin-bottom:14px}
+.mod .mbig{font-family:'Fraunces',serif;font-weight:900;font-size:30px;line-height:1}
+.mod .mbig small{font-size:14px;color:var(--ink-soft);font-weight:600}
+.mod .mlist{margin-top:12px;border-top:1px dashed #e6ddc8;padding-top:10px}
+.mod .mi{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--ink-soft)}
+.mod .mi b{font-family:'Fraunces',serif;color:var(--ink);font-weight:600}
+.mod .mi .lo{color:var(--red);font-weight:700}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media(max-width:820px){
+  .kpis{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}.up-grid{grid-template-columns:1fr 1fr}
+  .mods{grid-template-columns:1fr}
+  h1{font-size:29px}.frow{grid-template-columns:96px 1fr;grid-template-rows:auto auto}
+  .frow .frate{grid-column:2;text-align:right}
+  .lrow{grid-template-columns:104px 1fr 48px}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+
+  <div class="kicker">Dino English · Product Core Funnel</div>
+  <h1>产品核心链路看板 · <em>投放首轮</em>观测</h1>
+  <p class="sub">投放把用户送到门口,产品经理真正要盯的是<mark>进门之后的这条链路</mark>:注册 → 选老师 → <b>首课试听(核心体验/aha)</b> → 试听报告 → 学习计划 → 订阅。本看板追踪 7/10 投放放量后,新用户在<b>产品内部每一步的到达与流失</b>,定位阻碍价值兑现的瓶颈。</p>
+
+  <div class="ctx">
+    <span class="tag">上游背景</span>
+    <span>投放 7/10 起 · 3 日带来 <b>5,960</b> 新用户 · 花费 $4,614 · CPI $0.82 · 主投 ID/VN/SA/MY/TH</span>
+    <span style="color:var(--ink-faint)">（投放效率由增长同学主盯,详见文末上游小节）</span>
+  </div>
+
+  <!-- 产品诊断 KPI -->
+  <section class="sec reveal">
+    <div class="sec-h">核心链路诊断 <span class="en">Diagnostics · 07-10~07-13 全量新用户</span></div>
+    <p class="sec-desc">下列为产品内部口径(GA4 埋点,去重用户)。红色为需优先干预的瓶颈指标。</p>
+    <div class="kpis">
+      <div class="kpi warn">
+        <div class="lab">首课完成率(完整试听 / 首课开始)</div>
+        <div class="val">11.0<small>%</small></div>
+        <div class="note"><span class="flag">最大瓶颈</span> 2,074 开始首课,仅 228 走完整个试听解锁报告</div>
+      </div>
+      <div class="kpi mid">
+        <div class="lab">注册转化(注册 / 打开)</div>
+        <div class="val">44.8<small>%</small></div>
+        <div class="note">55% 用户打开后未完成注册即流失</div>
+      </div>
+      <div class="kpi warn">
+        <div class="lab">课内最大断点(热身 → 正课导入)</div>
+        <div class="val">44<small>%</small></div>
+        <div class="note"><span class="flag">课内悬崖</span> 热身 2,127 人 → 导入仅 926,56% 在正课前离开</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">课外模块触达(注册用户中)</div>
+        <div class="val">22<small>%</small></div>
+        <div class="note">588 人用过游戏/单词/听力模块;AI 助教渗透 61%</div>
+      </div>
+      <div class="kpi">
+        <div class="lab">D1 次日留存</div>
+        <div class="val">12.1<small>%</small></div>
+        <div class="note">07-10 cohort · 偏低,受买量低意向用户拉低</div>
+      </div>
+      <div class="kpi warn">
+        <div class="lab">早期卸载率(卸载 / 打开)</div>
+        <div class="val">54.3<small>%</small></div>
+        <div class="note"><span class="flag">留存漏水</span> 3,238 人首几日内卸载</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主漏斗 -->
+  <section class="sec reveal">
+    <div class="sec-h">用户旅程漏斗 <span class="en">In-App Journey · 去重用户</span></div>
+    <p class="sec-desc">从打开到完成首课的逐步收敛,分「激活 / 首课体验」两段(订阅不是这条漏斗的下一步——它有多个入口,单列在下方「变现」一节)。右侧为环比上一步转化率,<b>红色标注主要流失</b>。</p>
+
+    <div class="stage-lab">① 激活 Activation</div>
+    <div class="funnel" id="fun1"></div>
+    <div class="stage-lab">② 首课体验(核心 aha)Core Trial Experience</div>
+    <div class="funnel" id="fun2"></div>
+
+    <div class="insight">
+      <div class="it">⚠ 瓶颈:进入首课的人里只有 11% 走完整个试听、拿到报告,转化盘子从源头被卡小</div>
+      <p>进入首课 2,074 人 → <b>完整试听完成仅 228(11%)</b> → 看报告 223。试听课为多环节结构(人均 10.8 次关卡进度),用户在课程中途大量流失(详见下方「试听课内环节流失」)。由于订阅高度依赖「完整试听 → 报告 → 学习计划」这条兑现路径,<b>首课完成率是当前转化天花板的第一决定因素</b>——优先优化课内节奏与中途激励,收益高于继续加大投放。</p>
+    </div>
+  </section>
+
+  <!-- 试听课内环节流失 -->
+  <section class="sec reveal">
+    <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off</span></div>
+    <p class="sec-desc">拆解首课内部各教学环节的<b>到达用户数</b>(GA4 关卡进度 block_template_id 归组,去重用户),定位「进入首课 → 完成」之间用户具体在哪一环节离开。教学主线依次为:热身 → 导入 → 视频 → 单词 → 句子 → 听力 → 收尾。</p>
+    <div class="lbars" id="lessonStages"></div>
+    <div class="insight">
+      <div class="it">⚠ 课内悬崖:56% 用户在「热身」后、真正进入正课(导入/单词/句子)前就离开</div>
+      <p>热身环节几乎人人到达(2,127),但下一步「导入」骤降至 926——<b>一半以上用户还没接触到核心教学内容就流失了</b>。此后单词(教学 670 / 练习 468)、句子(338 / 281)、听力(351)逐级递减,到收尾/完成仅 264。<b>热身→正课的衔接是首课完成率的头号杀手</b>:排查热身时长是否过长、导入是否有硬门槛(如强制录音/登录墙)、低龄用户在此处的操作卡点。奖励宝箱(reward)贯穿全程触达 997 人,是留住用户的有效钩子,可考虑前置。</p>
+    </div>
+  </section>
+
+  <!-- 课外核心模块使用 -->
+  <section class="sec reveal">
+    <div class="sec-h">核心模块使用 <span class="en">Core Modules · GA4 + 生产库</span></div>
+    <p class="sec-desc">试听课之外(及课堂核心)的模块在投放期的真实使用(生产库 <span class="src">student_class / play_* / vocab_* / fm_*</span>,去重用户,7/10–7/13)。<b>Dino AI 对话是课堂引擎、参与最深;Play 游戏是最强自选抓手;听力电台几乎无人用</b>。自选课外模块(游戏/单词/听力)合计触达 588 人 = 注册用户的 22%。</p>
+    <div class="mods">
+      <div class="mod dino">
+        <div class="mh">🦕 Dino AI 对话</div>
+        <div class="msub">AI 课堂对话引擎 · 去重用户</div>
+        <div class="mbig">2,403 <small>人</small></div>
+        <div class="mlist">
+          <div class="mi"><span>对话场次</span><b>2,704 场</b></div>
+          <div class="mi"><span>对话消息总量</span><b>73,059 条</b></div>
+          <div class="mi"><span>人均对话</span><b>约 30 条/场</b></div>
+        </div>
+      </div>
+      <div class="mod play">
+        <div class="mh">🎮 Play 游戏</div>
+        <div class="msub">游戏中心 · 去重用户</div>
+        <div class="mbig">516 <small>人</small></div>
+        <div class="mlist">
+          <div class="mi"><span>Word PK 单词对战</span><b>348 · 完成 74%</b></div>
+          <div class="mi"><span>Dino 盲盒</span><b>355 · 完成 76%</b></div>
+          <div class="mi"><span>Speaking PK 口语对战</span><b>290 · 完成 <span class="lo">48%</span></b></div>
+        </div>
+      </div>
+      <div class="mod">
+        <div class="mh">📖 单词 / 句子学习</div>
+        <div class="msub">vocab 模块 · 去重用户</div>
+        <div class="mbig">225 <small>人</small></div>
+        <div class="mlist">
+          <div class="mi"><span>学习记录</span><b>610 条</b></div>
+          <div class="mi"><span>课程完成次数</span><b>900 次</b></div>
+          <div class="mi"><span>人均完成</span><b>4.0 次</b></div>
+        </div>
+      </div>
+      <div class="mod weak">
+        <div class="mh">🎧 听力电台</div>
+        <div class="msub">FM 模块 · 去重用户</div>
+        <div class="mbig">37 <small>人</small></div>
+        <div class="mlist">
+          <div class="mi"><span>收听记录</span><b>45 条</b></div>
+          <div class="mi"><span>累计收听</span><b>66 次</b></div>
+          <div class="mi"><span>触达率</span><b class="lo">极低,需排查入口</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="insight pos" style="margin-top:16px">
+      <div class="it">✓ 亮点 &amp; 待办</div>
+      <p><b>Dino AI 对话是最核心的差异化能力</b>:2,403 人产生 7.3 万条对话(人均约 30 条/场),是驱动首课的引擎——把首课体验做好本质就是把对话体验做好。<b>Play 游戏渗透(516)甚至超过完成试听的人数(228)</b>,是独立于试听的强留存抓手,值得对首课流失用户加大曝光。两个待办:① <b>Speaking PK 完成率仅 48%</b>(其余两款 74–76%),口语识别体验或有摩擦;② <b>听力电台仅 37 人触达</b>,几乎废用,先查入口还是内容。</p>
+    </div>
+  </section>
+
+  <!-- 变现:发起 ≠ 成功 -->
+  <section class="sec reveal">
+    <div class="sec-h">变现:发起订阅 ≠ 成功付费 <span class="en">Monetization Reality</span></div>
+    <p class="sec-desc">订阅<b>不是一条从试听报告下来的漏斗</b>——它由多个入口触发(会员入口、听力/练习/课程/游戏各功能付费墙、试听报告)。更关键的是:<b>「发起订阅」的埋点量 ≠ 真实成功付费</b>。以生产库支付订单为准,投放期发起了大量购买,但几乎没有走完商店支付。</p>
+    <div class="split">
+      <div class="panel">
+        <div class="panel-t">发起 → 成功 的断层(投放期 7/10–7/13)</div>
+        <div class="panel-s">GA4 埋点为「发起/意向」口径;生产库 payment_* 为「成功付费」权威口径</div>
+        <div id="paygap"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-t">订阅发起入口分布</div>
+        <div class="panel-s">GA4 subscription_source · 说明订阅为多入口、非线性漏斗</div>
+        <div id="paysrc"></div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="it">⚠ 严重断层:263 笔购买发起中,生产库仅约 1–2 笔成功付费(需与支付/数据同学核实)</div>
+      <p>GA4 的「订阅事件 175 人 / 结算 157 人」、运营宽表的「付费 252」都是<b>发起/进入支付口径</b>,对应生产库 <span class="src">payment_order</span> 里 263 笔 <b>PENDING(未完成)</b>订单;而 <span class="src">payment_order</span> 成功付费仅 2 笔、<span class="src">payment_subscription</span> 生产环境仅 1 笔。若为真实免费试用,商店会创建订阅记录——但生产订阅记录几乎为零,说明用户大多<b>在商店支付环节流失(或回执/数据管道有延迟)</b>。这是当前最高优先级待查项:<b>先确认是支付通道/商店流程断裂,还是数据回传延迟</b>,再谈 ROAS 与回本。之前看板里的「单订阅成本 $18.3」是按发起口径算的,会严重高估真实获客付费效率。</p>
+    </div>
+  </section>
+
+  <!-- PM 指标体系 -->
+  <section class="sec reveal">
+    <div class="sec-h">产品经理应盯的指标体系 <span class="en">PM Metric Framework</span></div>
+    <p class="sec-desc">以产品内部链路为主轴建立观测口径;投放效率仅作上游背景,由增长同学主盯。</p>
+    <table class="watch">
+      <thead><tr><th>层级</th><th>核心指标</th><th>口径 / 目标参考</th><th class="cad">频率</th></tr></thead>
+      <tbody>
+        <tr><td>激活</td><td>打开→注册→选老师→首课开始</td><td>注册率 &gt;50%;定位注册页流失点</td><td class="cad">每日</td></tr>
+        <tr><td>核心体验</td><td><b>首课完成率</b> · 关卡逐步流失 · 单次学习时长 · AI 助教渗透</td><td><b>首课完成 &gt;30%</b>(当前 11%);逐关卡定位断点</td><td class="cad">每日</td></tr>
+        <tr><td>价值兑现</td><td>报告到达率 · <b>发起订阅 vs 成功付费(生产库口径)</b> · 支付成功率</td><td>严格区分发起/成功;当前发起 263、成功≈2,先查支付断层</td><td class="cad">每日</td></tr>
+        <tr><td>留存</td><td>D1/D3/D7 · 按「是否完成首课」分层留存</td><td>完成首课用户 vs 未完成的留存差,验证 aha 假设</td><td class="cad">D1 每日/D7 周</td></tr>
+        <tr><td>流失</td><td>卸载率 · 卸载前最后一步</td><td>定位在哪一步卸载(注册前/首课中)</td><td class="cad">每日</td></tr>
+        <tr class="up"><td>上游(参考)</td><td>CPI · 分渠道分国家质量</td><td>增长同学主盯;PM 关注不同来源的链路质量差异</td><td class="cad">每周</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 上游背景 -->
+  <section class="sec reveal">
+    <div class="sec-h">上游:投放背景 <span class="en">Acquisition Context · 次要</span></div>
+    <p class="sec-desc">仅作产品链路的输入背景。<b>PM 视角关注点:不同渠道/国家送进来的用户,首课完成率与留存是否有系统性差异</b>——若某渠道量大但链路质量差,应反馈增长侧调整,而非在产品内硬转。</p>
+    <div class="upstream">
+      <div class="ut">投放首轮 07-10~07-12(完整 3 日)</div>
+      <div class="up-grid">
+        <div class="u"><div class="uv">$4,614</div><div class="ul">广告花费</div></div>
+        <div class="u"><div class="uv">5,596</div><div class="ul">广告安装</div></div>
+        <div class="u"><div class="uv">$0.82</div><div class="ul">平均 CPI</div></div>
+        <div class="u"><div class="uv">≈2 单</div><div class="ul">成功付费(生产库)</div></div>
+      </div>
+      <div class="un">渠道:Google($0.64 CPI,主力) · Facebook($1.52) · 自然量质量最优。市场:印尼量最大但发起付费占比偏低,马来/越南量质更均衡。<b>成功付费口径请以生产库为准</b>:投放期发起多、成功极少,ROAS/单订阅成本在支付断层查清前不具参考意义。</div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>数据源:</b>GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span>(产品内链路,去重用户,含 intraday 补当天)· AppsFlyer 日报(上游花费/安装)· 运营宽表 <span class="src">de_dwd.dashboard_operating_analysis</span>。<br>
+    <b>口径:</b>链路各步为去重用户(COUNT DISTINCT user_pseudo_id,7/10–7/13);首课完成=trial_lesson_complete(走完整个试听),区别于 class_lesson_end(完成单节)。订阅事件含免费试用启动,收入存在归因延迟。转化段(报告→订阅)为多入口,非严格线性漏斗。<br>
+    <b>生成:</b>Dino English 产品 · 2026-07-13
+  </div>
+
+</div>
+
+<script>
+const OPEN=5960;
+function renderFunnel(el,steps){
+  el.innerHTML=steps.map((s,i)=>{
+    const w=Math.max(5,Math.round(s.v/OPEN*100));
+    let rate='';
+    if(s.prev){
+      const r=(s.v/s.prev*100);
+      const cls=s.drop?'frate drop':'frate';
+      const baseLine=s.base?`<div class="of" style="margin-top:2px">占首课开始 <b style="font-size:12px;color:${s.drop?'var(--red)':'var(--ink-soft)'}">${(s.v/2074*100).toFixed(0)}%</b></div>`:'';
+      rate=`<div class="${cls}"><b>${r.toFixed(0)}%</b> <span class="of">环比上步</span>${s.drop?'<span class="dropflag">主要流失</span>':''}${baseLine}</div>`;
+    }else{
+      rate=`<div class="frate"><span class="of">基准 100%</span></div>`;
+    }
+    return `<div class="frow"><div class="fl">${s.l}<small>${s.s}</small></div>`+
+      `<div class="fbar-wrap"><div class="fbar" style="width:0;background:${s.c}" data-w="${w}">${s.v.toLocaleString()}</div></div>`+
+      rate+`</div>`;
+  }).join('');
+}
+renderFunnel(document.getElementById('fun1'),[
+ {l:'打开 App',s:'first_open',v:5960,c:'#1d5c3f'},
+ {l:'注册',s:'signup_result',v:2673,c:'#2e8b57',prev:5960,drop:true},
+ {l:'选老师',s:'teacher_selected',v:2459,c:'#2e8b57',prev:2673},
+ {l:'首课开始',s:'class_lesson_start',v:2074,c:'#2e8b57',prev:2459},
+]);
+renderFunnel(document.getElementById('fun2'),[
+ {l:'进入首课',s:'class_lesson_start',v:2074,c:'#c98a12'},
+ {l:'完整试听完成',s:'trial_lesson_complete',v:228,c:'#d9641e',prev:2074,drop:true},
+ {l:'看试听报告',s:'trial_report',v:223,c:'#d9641e',prev:228},
+]);
+// 变现:发起 vs 成功 断层条
+const pay=[
+ {l:'发起支付订单',s:'payment_order 全部',v:263,c:'#c98a12',note:'PENDING 未完成'},
+ {l:'GA4 订阅事件(人)',s:'subscription_purchase_result',v:175,c:'#c98a12',note:'发起口径'},
+ {l:'进入结算(人)',s:'subscription_checkout_start',v:157,c:'#c98a12',note:'发起口径'},
+ {l:'成功付费订单',s:'payment_order SUCCESS',v:2,c:'#b3402a',note:'生产环境·权威',hl:true},
+ {l:'生产订阅记录',s:'payment_subscription PROD',v:1,c:'#b3402a',note:'生产环境·权威',hl:true},
+];
+const pmax=263;
+document.getElementById('paygap').innerHTML=pay.map(p=>{
+ const w=Math.max(2,Math.round(p.v/pmax*100));
+ return `<div class="lrow${p.hl?' cliff':''}"><div class="ll">${p.l}<small>${p.s}</small></div>`+
+  `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${p.c}" data-w="${w}"></div></div>`+
+  `<div class="lv">${p.v}<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${p.note}</div></div></div>`;
+}).join('');
+
+const psrc=[
+ {l:'会员入口 membership',v:9},
+ {l:'听力付费墙 lock_radio',v:7},
+ {l:'练习付费墙 lock_practice',v:3},
+ {l:'课程付费墙 lock_lesson',v:3},
+ {l:'试听报告 trial_report',v:2},
+ {l:'游戏付费墙 lock_play',v:2},
+];
+document.getElementById('paysrc').innerHTML=psrc.map(p=>
+ `<div class="minirow"><span>${p.l}</span><span class="mv">${p.v}</span></div>`).join('')+
+ `<div class="minirow" style="border-top:1px solid var(--line);margin-top:4px;padding-top:8px"><span style="color:var(--ink-faint);font-size:11.5px">样本为 7/10–7/11 有来源标记的发起事件,示意「多入口」结构</span><span></span></div>`;
+
+const stages=[
+ {l:'热身 Warm-up',s:'warm-up',v:2127,c:'#2e8b57'},
+ {l:'导入 Lead-in',s:'lead-in',v:926,c:'#d9641e',cliff:true},
+ {l:'视频 Video',s:'play-video',v:758,c:'#c98a12'},
+ {l:'单词教学 Word',s:'word_teach',v:670,c:'#c98a12'},
+ {l:'单词练习 Word',s:'word_practice',v:468,c:'#c98a12'},
+ {l:'句子教学 Sentence',s:'sentence_teach',v:338,c:'#c98a12'},
+ {l:'句子练习 Sentence',s:'sentence_practice',v:281,c:'#c98a12'},
+ {l:'听力练习 Listening',s:'practice_listen',v:351,c:'#c98a12'},
+ {l:'收尾/完成 Wrap-up',s:'wrapup',v:264,c:'#1d5c3f'},
+];
+const smax=2127;
+document.getElementById('lessonStages').innerHTML=stages.map(s=>{
+  const w=Math.max(3,Math.round(s.v/smax*100));
+  return `<div class="lrow${s.cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
+   `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${s.c}" data-w="${w}"></div></div>`+
+   `<div class="lv">${s.v.toLocaleString()}${s.cliff?'<div class="cliffmark">↓56%</div>':''}</div></div>`;
+}).join('');
+
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
+setTimeout(()=>document.querySelectorAll('.fbar,.lbar-fill').forEach(b=>b.style.width=b.dataset.w+'%'),250);
+</script>
+</body>
+</html>
