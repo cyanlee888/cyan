@@ -352,7 +352,7 @@ renderFunnel(document.getElementById('fun2'),[
 ]);
 // 变现:发起 vs 成功 断层条
 const pay=[
- {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:278,c:'#c98a12',note:'其中 275 笔 PENDING 未完成'},
+ {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:278,c:'#c98a12',note:'275 PENDING + 3 成功(仅 1 生产,2 沙盒)'},
  {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:1,c:'#b3402a',note:'生产环境 · 权威口径',hl:true},
  {l:'生产订阅记录',s:'payment_subscription env=PRODUCTION',v:1,c:'#b3402a',note:'生产环境 · 权威口径',hl:true},
 ];
