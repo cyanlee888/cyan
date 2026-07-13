@@ -203,7 +203,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
     <div class="stage-lab">① 激活 Activation</div>
     <div class="funnel" id="fun1"></div>
-    <p class="sec-desc" style="margin-top:12px;font-size:12.5px"><b>激活第一大流失是「打开 → 注册」(55%)</b>。注册之后 onboarding(填孩子资料+分级测试→生成学习计划,生产库 <span class="src">onboarding_submission</span>)发生在注册之后——数据实证:2,566 名用户 onboarding 时间 100% 晚于注册(平均晚约 52 分钟,source=LOGIN),完成率高(约 96%,DB 同口径 88%),选老师、进首课也顺畅。<span style="color:var(--ink-faint)">注:注册数为 GA4 去重设备口径(2,673),onboarding 为生产库账号口径(2,558),存在小幅跨系统差异。</span></p>
+    <p class="sec-desc" style="margin-top:12px;font-size:12.5px"><b>激活第一大流失是「打开 → 注册」(55%)</b>;注册后选老师、进首课都很顺(96% / 84%)。<span style="color:var(--ink-faint)">注:入口分「已有账号(直接登录)」与「立即开始(先 onboarding 再登录)」两条路,onboarding 仅覆盖后者、口径纠缠,暂不并入本漏斗。</span></p>
     <div class="stage-lab">② 首课体验(核心 aha)Core Trial Experience</div>
     <div class="funnel" id="fun2"></div>
 
@@ -366,8 +366,7 @@ function renderFunnel(el,steps){
 renderFunnel(document.getElementById('fun1'),[
  {l:'打开 App',s:'first_open',v:5960,c:'#1d5c3f'},
  {l:'注册开户',s:'signup_result',v:2673,c:'#2e8b57',prev:5960,drop:true},
- {l:'完成 onboarding',s:'onboarding_submission·建计划',v:2558,c:'#2e8b57',prev:2673},
- {l:'选老师',s:'teacher_selected',v:2459,c:'#2e8b57',prev:2558},
+ {l:'选老师',s:'teacher_selected',v:2459,c:'#2e8b57',prev:2673},
  {l:'首课开始',s:'class_lesson_start',v:2074,c:'#2e8b57',prev:2459},
 ]);
 renderFunnel(document.getElementById('fun2'),[
