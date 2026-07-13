@@ -397,7 +397,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="meta-row">
     <span data-zh="来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b>">Source <b>AI Milestones v2.0 · Li Shuang</b></span>
     <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
-    <span data-zh="更新 <b>2026.07.10</b>">Updated <b>2026.07.10</b></span>
+    <span data-zh="更新 <b>2026.07.13</b>">Updated <b>2026.07.13</b></span>
   </div>
 </header>
 
@@ -444,7 +444,7 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n140" data-date="2026-07-16" data-zh="<b>V1.4.0</b>功能扩展"><b>V1.4.0</b>Expansion</a>
     <a href="#n141" data-zh="<b>V1.4.1</b>对话升级"><b>V1.4.1</b>Chat upgrade</a>
     <a href="#n150" data-zh="<b>V1.5.0</b>品牌切换"><b>V1.5.0</b>Rebrand</a>
-    <a href="#n160" data-zh="<b>V1.6.0</b>激励体系"><b>V1.6.0</b>Motivation</a>
+    <a href="#n160" data-zh="<b>V1.6.0</b>每日学习"><b>V1.6.0</b>Daily learning</a>
   </div>
 </nav>
 
@@ -735,13 +735,10 @@ section[id],.node[id]{scroll-margin-top:64px}
       <div class="block">
         <h4 data-zh='需求 · Class 课程 · 课中体验打磨'>Requirements · Class & in-class polish</h4>
         <ul>
-          <li data-zh='<b>作答等待时间加长</b><span class="p0">P0</span>：长句跟读 / 开放问题不再被过早打断'><b>Longer answer windows</b><span class="p0">P0</span>: long-sentence repeats / open questions no longer cut off early</li>
-          <li data-zh='<b>Filler words 机制优化（二期）</b><span class="p0">P0</span>：测试替换意图识别小模型'><b>Filler-words mechanism phase 2</b><span class="p0">P0</span>: testing a replacement intent-recognition model</li>
+          <li data-zh='<b>课中去掉 Filler words</b><span class="p0">P0</span>：测试替换意图识别小模型'><b>Remove in-class filler words</b><span class="p0">P0</span>: testing a replacement intent-recognition model</li>
           <li data-zh='<b>音量统一（二期）</b><span class="p0">P0</span>：课中视频播放等全场景音量统一'><b>Unified volume phase 2</b><span class="p0">P0</span>: consistent volume across in-class video and all scenes</li>
-          <li data-zh='<b>金币激励声音优化</b><span class="p0">P0</span>：缩短动效过渡，不打断心流'><b>Coin-reward sound polish</b><span class="p0">P0</span>: shorter transitions between effects, no flow-breaking</li>
           <li data-zh='<b>金币奖励出现 UI 效果</b><span class="p0">P0</span>（设计已出）'><b>Coin-reward appearance effect</b><span class="p0">P0</span> (design ready)</li>
           <li data-zh='<b>开宝箱反馈页优化</b><span class="p0">P0</span>：黑屏改紫屏'><b>Chest-opening feedback page</b><span class="p0">P0</span>: black screen turns purple</li>
-          <li data-zh='<b>UI 按键大小调整</b><span class="p0">P0</span>：微小按钮（发音喇叭等）三端适配'><b>Button sizing adjustments</b><span class="p0">P0</span>: tiny buttons (pronunciation speaker etc.) adapted across three platforms</li>
           <li data-zh='<b>头像框设计优化</b><span class="p0">P0</span>（已出 UI）'><b>Avatar-frame redesign</b><span class="p0">P0</span> (UI ready)</li>
           <li data-zh='<b>数字人口型增至 5 种</b><span class="p1">P1</span>：提升口型匹配程度'><b>Avatar mouth shapes expanded to 5</b><span class="p1">P1</span>: better lip-sync matching</li>
           <li data-zh='<b>数字人肤色变化修复</b><span class="p1">P1</span>：数字人动作优化'><b>Avatar skin-tone fix</b><span class="p1">P1</span>: avatar motion optimization</li>
@@ -750,10 +747,11 @@ section[id],.node[id]{scroll-margin-top:64px}
       <div class="block">
         <h4 data-zh='需求 · Class 课程 · 内容与模版'>Requirements · Class content & templates</h4>
         <ul>
-          <li data-zh='<b>体验课 & 世界杯课 prompt 优化</b><span class="p0">P0</span>：分支优化，明确正向 / 负向定义'><b>Trial & World Cup lesson prompt tuning</b><span class="p0">P0</span>: branch optimization with explicit positive / negative definitions</li>
           <li data-zh='<b>更新选图听音模版</b><span class="p0">P0</span>：练习音素发音的教学模版'><b>Updated pick-the-picture listening template</b><span class="p0">P0</span>: the phoneme-pronunciation teaching template</li>
           <li data-zh='<b>songtime 老师增加舞动动作</b><span class="p0">P0</span>：体验课教学环节'><b>Songtime teacher gains dance motions</b><span class="p0">P0</span>: in the trial-lesson teaching segment</li>
           <li data-zh='<b>世界杯主题课（足球课）</b><span class="p0">P0</span>：客户端侧 UI 等配合'><b>World Cup theme course (football)</b><span class="p0">P0</span>: client-side UI support</li>
+          <li data-zh='<b>课中老师教 CMS image description 取数</b><span class="p0">P0</span>'><b>In-class teacher pulls CMS image-description data</b><span class="p0">P0</span></li>
+          <li data-zh='<b>体验课 & 世界杯课 prompt 优化</b><span class="p1">P1</span>：做 prompt eval 平台，分支优化、明确正向 / 负向定义'><b>Trial & World Cup lesson prompt tuning</b><span class="p1">P1</span>: a prompt-eval platform, branch optimization with explicit positive / negative definitions</li>
         </ul>
       </div>
       <div class="block dep">
@@ -793,7 +791,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='Dino 对话升级 · 数据与内容工具<span class="tag">迭代版</span>'>Dino chat upgrade · data & content tools<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心。<br/><b>核心内容</b>：Dino memory 与新对话设计、麦克风点两次、多语言输出修复；课程升降级与 CMS 课程生产平台；Play / FM 体验优化；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，补齐用户行为洞察。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: centered on the Dino chat upgrade.<br/><b>Core</b>: Dino memory and the new dialogue design, double-tap mic, the multilingual output fix; course level up/down and the CMS lesson-production platform; Play / FM tweaks; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, and closes the user-insight gap. Date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心。<br/><b>核心内容</b>：Dino memory 与新对话设计、麦克风点两次、多语言输出修复；课中作答等待 / 静默冲突 / 金币声音等体验打磨；课程升降级与 CMS 课程生产平台；Play / FM 体验优化；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，补齐用户行为洞察。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: centered on the Dino chat upgrade.<br/><b>Core</b>: Dino memory and the new dialogue design, double-tap mic, the multilingual output fix; in-class polish on answer-wait windows / silence conflicts / coin sounds; course level up/down and the CMS lesson-production platform; Play / FM tweaks; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, and closes the user-insight gap. Date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · Dino Agent · 对话升级'>Requirements · Dino Agent & chat upgrade</h4>
@@ -803,6 +801,15 @@ section[id],.node[id]{scroll-margin-top:64px}
           <li data-zh='<b>对话工程新增：三种定位 + Class 入口新对话设计</b><span class="p1">P1</span>'><b>Conversation engineering: three intents + a new Class-entry dialogue</b><span class="p1">P1</span></li>
           <li data-zh='<b>麦克风由长按改为点两次</b><span class="p1">P1</span>：一点开始录音、二点结束'><b>Mic long-press → double-tap</b><span class="p1">P1</span>: first tap starts recording, second stops</li>
           <li data-zh='<b>首页 Dino 对话付费机制与付费引导</b><span class="p2">P2</span>'><b>Home Dino chat paywall & upsell</b><span class="p2">P2</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · Class 课程 · 课中体验打磨'>Requirements · Class & in-class polish</h4>
+        <ul>
+          <li data-zh='<b>作答等待时间加长</b><span class="p0">P0</span>：长句跟读 / 开放问题不再被过早打断'><b>Longer answer windows</b><span class="p0">P0</span>: long-sentence repeats / open questions no longer cut off early</li>
+          <li data-zh='<b>静默与打断冲突处理</b><span class="p0">P0</span>：静默触发与用户说话时序冲突导致回复错乱'><b>Silence / interruption conflict handling</b><span class="p0">P0</span>: fixing garbled replies when a silence trigger races with the user speaking</li>
+          <li data-zh='<b>金币激励声音优化</b><span class="p0">P0</span>：缩短动效过渡，不打断心流'><b>Coin-reward sound polish</b><span class="p0">P0</span>: shorter transitions between effects, no flow-breaking</li>
+          <li data-zh='<b>UI 按键大小调整</b><span class="p0">P0</span>：微小按钮（发音喇叭等）三端适配'><b>Button sizing adjustments</b><span class="p0">P0</span>: tiny buttons (pronunciation speaker etc.) adapted across three platforms</li>
         </ul>
       </div>
       <div class="block">
@@ -852,21 +859,19 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='品牌切换 · 对话进化 · 教学模版体系化<span class="tag">迭代版</span>'>Rebrand · chat evolution · template library<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移方案、对话流式输出与 persona 记忆、分 level 模版整理、BYOM 课堂、CMS 配置、课外核心埋点。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，升级长期学习体验。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration plan, streaming chat with persona memory, level-based template reorganization, the BYOM classroom, CMS configuration, out-of-class analytics.<br/><b>Value</b>: a unified brand, smooth migration of paying users, a stronger long-term learning experience. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移方案、对话流式输出、分 level 模版整理与 trace 字母、Prompt Forge eval agent、恢复课程内 Dino 求助键。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，升级长期学习体验。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration plan, streaming chat output, level-based template reorganization plus letter-tracing, a Prompt Forge eval agent, and restoring the in-lesson Dino help button.<br/><b>Value</b>: a unified brand, smooth migration of paying users, a stronger long-term learning experience. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · 整体 App · 品牌与迁移'>Requirements · app-wide, brand & migration</h4>
         <ul>
           <li data-zh='<b>品牌改名 Dino English → Dino AI</b><span class="p0">P0</span>'><b>Rebrand Dino English → Dino AI</b><span class="p0">P0</span></li>
           <li data-zh='<b>新旧 App 迁移策略</b><span class="p0">P0</span>：Dino AI 付费用户权益延续方案'><b>Old→new app migration strategy</b><span class="p0">P0</span>: benefit-continuity plan for Dino AI paying users</li>
-          <li data-zh='<b>课外核心功能埋点</b><span class="p1">P1</span>'><b>Analytics for core out-of-class features</b><span class="p1">P1</span></li>
         </ul>
       </div>
       <div class="block">
         <h4 data-zh='需求 · Dino Agent · 首页对话'>Requirements · Dino Agent & home chat</h4>
         <ul>
-          <li data-zh='<b>Dino 对话改造：流式输出</b><span class="p0">P0</span>'><b>Dino chat revamp: streaming output</b><span class="p0">P0</span></li>
-          <li data-zh='<b>Dino persona 设计 + 老友感记忆</b><span class="p1">P1</span>'><b>Dino persona design + "old-friend" memory</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Dino 对话改造：流式输出</b><span class="p2">P2</span>'><b>Dino chat revamp: streaming output</b><span class="p2">P2</span></li>
         </ul>
       </div>
       <div class="block">
@@ -874,9 +879,9 @@ section[id],.node[id]{scroll-margin-top:64px}
         <ul>
           <li data-zh='<b>正课教学模版分 level 整理</b><span class="p1">P1</span>：分 level 整理全部模版 prompt、优化教学规则与动作'><b>Reorganize lesson templates by level</b><span class="p1">P1</span>: sort all template prompts by level, refine teaching rules & motions</li>
           <li data-zh='<b>新增 trace 字母教学模版</b><span class="p1">P1</span>：练习字母写法'><b>New letter-tracing template</b><span class="p1">P1</span>: practice letter forms</li>
-          <li data-zh='<b>单独的 BYOM 课堂</b><span class="p1">P1</span>'><b>Standalone BYOM classroom</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Prompt Forge 管台优化：eval agent</b><span class="p1">P1</span>：评估三层 prompt 的基础冲突问题'><b>Prompt Forge console: eval agent</b><span class="p1">P1</span>: catch base conflicts across the three prompt layers</li>
+          <li data-zh='<b>恢复课程中 Dino 求助按键</b><span class="p1">P1</span>'><b>Restore the in-lesson Dino help button</b><span class="p1">P1</span></li>
           <li data-zh='<b>写作课教学模版优化</b><span class="p2">P2</span>'><b>Writing-lesson template tuning</b><span class="p2">P2</span></li>
-          <li data-zh='<b>CMS 课程生产平台</b><span class="p2">P2</span>：支持 lesson plan 配置与 prompt 配置'><b>CMS lesson-production platform</b><span class="p2">P2</span>: lesson-plan & prompt configuration</li>
         </ul>
       </div>
     </div>
@@ -888,15 +893,16 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.6.0</div>
-    <div class="node-sub" data-zh='激励体系 · 教学打磨'>Motivation · teaching polish</div>
+    <div class="node-sub" data-zh='每日学习 · 激励体系'>Daily learning · motivation</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='激励体系 · 教学打磨<span class="tag">迭代版</span>'>Motivation system · teaching polish<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：补齐激励体系。<br/><b>核心内容</b>：排行榜、每日连胜、语法课模版优化。<br/><b>价值</b>：强化学习动机、提升留存。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: fill in the motivation system.<br/><b>Core</b>: leaderboard, daily streaks, grammar-template tuning.<br/><b>Value</b>: stronger learning motivation and retention. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='每日学习驱动 · 激励体系<span class="tag">迭代版</span>'>Daily-learning driver · motivation system<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以每日学习驱动 + 激励体系为核心。<br/><b>核心内容</b>：首页每日学习任务列表与 Dino 气泡承接、排行榜与每日连胜、单独 BYOM 课堂、语法课模版优化。<br/><b>价值</b>：养成每日学习习惯、强化动机与留存。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: built around a daily-learning driver plus the motivation system.<br/><b>Core</b>: a home daily learning-task list surfaced through the Dino bubble, leaderboard and daily streaks, a standalone BYOM classroom, grammar-template tuning.<br/><b>Value</b>: builds a daily learning habit, strengthening motivation and retention. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
-        <h4 data-zh='需求 · Dino Agent · 激励体系'>Requirements · Dino Agent & motivation</h4>
+        <h4 data-zh='需求 · Dino Agent · 每日学习与激励'>Requirements · Dino Agent, daily learning & motivation</h4>
         <ul>
+          <li data-zh='<b>首页每日学习任务列表</b><span class="p0">P0</span>：推荐今日学习任务，最关键任务进 Dino 气泡承接'><b>Home daily learning-task list</b><span class="p0">P0</span>: recommends today&#39;s tasks, with the top task surfaced in the Dino bubble</li>
           <li data-zh='<b>排行榜</b><span class="p1">P1</span>'><b>Leaderboard</b><span class="p1">P1</span></li>
           <li data-zh='<b>每日连胜</b><span class="p1">P1</span>'><b>Daily streaks</b><span class="p1">P1</span></li>
         </ul>
@@ -904,6 +910,7 @@ section[id],.node[id]{scroll-margin-top:64px}
       <div class="block">
         <h4 data-zh='需求 · Class 课程 · 教学模版'>Requirements · Class & teaching templates</h4>
         <ul>
+          <li data-zh='<b>单独的 BYOM 课堂</b><span class="p1">P1</span>：基于用户上传照片快速生成个性化课，MVP 验证'><b>Standalone BYOM classroom</b><span class="p1">P1</span>: quickly generate a personalized lesson from user photos, as an MVP validation</li>
           <li data-zh='<b>语法课教学模版优化</b><span class="p1">P1</span>'><b>Grammar-lesson template tuning</b><span class="p1">P1</span></li>
         </ul>
       </div>
