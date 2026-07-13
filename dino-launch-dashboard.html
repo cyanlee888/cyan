@@ -109,7 +109,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
 /* 课内环节 横向条 */
 .lbars{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
-.lrow{display:grid;grid-template-columns:150px 1fr 60px;align-items:center;gap:14px;padding:5px 0}
+.lrow{display:grid;grid-template-columns:150px 1fr 82px;align-items:center;gap:14px;padding:5px 0}
 .lrow .ll{font-size:13px;text-align:right;color:var(--ink)}
 .lrow .ll small{display:block;font-family:'Fraunces',serif;font-size:9.5px;letter-spacing:.02em;color:var(--ink-faint)}
 .lbar-track{height:26px;background:var(--paper-deep);border-radius:5px;overflow:hidden}
@@ -140,7 +140,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   .mods{grid-template-columns:1fr}
   h1{font-size:29px}.frow{grid-template-columns:96px 1fr;grid-template-rows:auto auto}
   .frow .frate{grid-column:2;text-align:right}
-  .lrow{grid-template-columns:104px 1fr 48px}
+  .lrow{grid-template-columns:92px 1fr 70px}
 }
 </style>
 </head>
@@ -216,11 +216,11 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   <!-- 试听课内环节流失 -->
   <section class="sec reveal">
     <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off</span></div>
-    <p class="sec-desc">拆解首课内部各教学环节的<b>到达用户数</b>(GA4 关卡进度 block_template_id 归组,去重用户),定位「进入首课 → 完成」之间用户具体在哪一环节离开。教学主线依次为:热身 → 导入 → 视频 → 单词 → 句子 → 听力 → 收尾。</p>
+    <p class="sec-desc">拆解首课内部各教学环节的<b>到达用户数与环比转化率</b>(GA4 关卡进度 block_template_id 归组,去重用户;环节顺序按用户内实际触发时序还原),定位用户具体在哪一环节离开。右侧标注每一步相对上一环节的转化率,<b>红色为骤降环节</b>。奖励宝箱贯穿全程(919 人),不计入教学主线。</p>
     <div class="lbars" id="lessonStages"></div>
     <div class="insight">
-      <div class="it">⚠ 课内悬崖:56% 用户在「热身」后、真正进入正课(导入/单词/句子)前就离开</div>
-      <p>热身环节几乎人人到达(2,127),但下一步「导入」骤降至 926——<b>一半以上用户还没接触到核心教学内容就流失了</b>。此后单词(教学 670 / 练习 468)、句子(338 / 281)、听力(351)逐级递减,到收尾/完成仅 264。<b>热身→正课的衔接是首课完成率的头号杀手</b>:排查热身时长是否过长、导入是否有硬门槛(如强制录音/登录墙)、低龄用户在此处的操作卡点。奖励宝箱(reward)贯穿全程触达 997 人,是留住用户的有效钩子,可考虑前置。</p>
+      <div class="it">⚠ 课内悬崖:热身→导入环比仅 44%,过半用户在真正进入正课前就离开</div>
+      <p>热身几乎人人到达(2,127),但下一步「导入」骤降至 926(<b>环比仅 44%</b>)——<b>一半以上用户还没接触到核心教学内容就流失了</b>,这是课内唯一的骤降环节。此后各步环比都较健康(视频 82% → 单词教学 88% → 单词练习 70% → 听力 75% → 句子教学 96% → 句子练习 83% → 收尾 94%),说明<b>只要迈过「热身→导入」这道坎,用户基本能走完</b>。优先排查:热身时长是否过长、导入是否有硬门槛(强制录音/登录墙)、低龄用户操作卡点。奖励宝箱贯穿全程触达 919 人,是有效留存钩子,可考虑前置到导入前。</p>
     </div>
   </section>
 
@@ -279,22 +279,15 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   <!-- 变现:发起 ≠ 成功 -->
   <section class="sec reveal">
     <div class="sec-h">变现:发起订阅 ≠ 成功付费 <span class="en">Monetization Reality</span></div>
-    <p class="sec-desc">订阅<b>不是一条从试听报告下来的漏斗</b>——它由多个入口触发(会员入口、听力/练习/课程/游戏各功能付费墙、试听报告)。更关键的是:<b>「发起订阅」的埋点量 ≠ 真实成功付费</b>。以生产库支付订单为准,投放期发起了大量购买,但几乎没有走完商店支付。</p>
-    <div class="split">
-      <div class="panel">
-        <div class="panel-t">发起 → 成功 的断层(投放期 7/10–7/13)</div>
-        <div class="panel-s">GA4 埋点为「发起/意向」口径;生产库 payment_* 为「成功付费」权威口径</div>
-        <div id="paygap"></div>
-      </div>
-      <div class="panel">
-        <div class="panel-t">订阅发起入口分布</div>
-        <div class="panel-s">GA4 subscription_source · 说明订阅为多入口、非线性漏斗</div>
-        <div id="paysrc"></div>
-      </div>
+    <p class="sec-desc"><b>「发起订单」的埋点量 ≠ 真实成功付费</b>。发起订单对应事件是 <span class="src">subscription_checkout_start</span>(带 order_id,进结算即建一张 payment_order);<span class="src">subscription_purchase_result</span> 无成功标识、且混入续订/恢复购买,不能当成功口径,已不采用。以生产库支付订单为准,投放期发起了大量购买,但几乎没有走完商店支付。</p>
+    <div class="panel">
+      <div class="panel-t">发起订单 → 成功付费 的断层(投放期 7/10–7/13)</div>
+      <div class="panel-s">发起=payment_order 创建(GA4 checkout_start 埋点);成功=生产库 payment_* 权威口径</div>
+      <div id="paygap"></div>
     </div>
     <div class="insight">
-      <div class="it">⚠ 严重断层:263 笔购买发起中,生产库仅约 1–2 笔成功付费(需与支付/数据同学核实)</div>
-      <p>GA4 的「订阅事件 175 人 / 结算 157 人」、运营宽表的「付费 252」都是<b>发起/进入支付口径</b>,对应生产库 <span class="src">payment_order</span> 里 263 笔 <b>PENDING(未完成)</b>订单;而 <span class="src">payment_order</span> 成功付费仅 2 笔、<span class="src">payment_subscription</span> 生产环境仅 1 笔。若为真实免费试用,商店会创建订阅记录——但生产订阅记录几乎为零,说明用户大多<b>在商店支付环节流失(或回执/数据管道有延迟)</b>。这是当前最高优先级待查项:<b>先确认是支付通道/商店流程断裂,还是数据回传延迟</b>,再谈 ROAS 与回本。之前看板里的「单订阅成本 $18.3」是按发起口径算的,会严重高估真实获客付费效率。</p>
+      <div class="it">⚠ 严重断层:278 笔购买发起中,生产库仅 1 笔成功付费(需与支付/数据同学核实)</div>
+      <p>投放期 <span class="src">payment_order</span> 创建 278 笔,其中 <b>275 笔停留在 PENDING(未完成)</b>;成功付费(status=SUCCESS·生产环境)仅 <b>1 笔</b>,<span class="src">payment_subscription</span> 生产环境也仅 <b>1 条</b>。若为真实免费试用,商店会创建订阅记录——但生产订阅记录几乎为零,说明用户大多<b>在商店支付环节流失(或回执/数据管道有延迟)</b>。这是最高优先级待查项:<b>先确认是支付通道/商店流程断裂,还是数据回传延迟</b>,再谈 ROAS 与回本。注意:GA4 <span class="src">subscription_purchase_result</span>、运营宽表「付费」均为发起口径,会严重高估真实付费。</p>
     </div>
   </section>
 
@@ -376,13 +369,11 @@ renderFunnel(document.getElementById('fun2'),[
 ]);
 // 变现:发起 vs 成功 断层条
 const pay=[
- {l:'发起支付订单',s:'payment_order 全部',v:263,c:'#c98a12',note:'PENDING 未完成'},
- {l:'GA4 订阅事件(人)',s:'subscription_purchase_result',v:175,c:'#c98a12',note:'发起口径'},
- {l:'进入结算(人)',s:'subscription_checkout_start',v:157,c:'#c98a12',note:'发起口径'},
- {l:'成功付费订单',s:'payment_order SUCCESS',v:2,c:'#b3402a',note:'生产环境·权威',hl:true},
- {l:'生产订阅记录',s:'payment_subscription PROD',v:1,c:'#b3402a',note:'生产环境·权威',hl:true},
+ {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:278,c:'#c98a12',note:'其中 275 笔 PENDING 未完成'},
+ {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:1,c:'#b3402a',note:'生产环境 · 权威口径',hl:true},
+ {l:'生产订阅记录',s:'payment_subscription env=PRODUCTION',v:1,c:'#b3402a',note:'生产环境 · 权威口径',hl:true},
 ];
-const pmax=263;
+const pmax=278;
 document.getElementById('paygap').innerHTML=pay.map(p=>{
  const w=Math.max(2,Math.round(p.v/pmax*100));
  return `<div class="lrow${p.hl?' cliff':''}"><div class="ll">${p.l}<small>${p.s}</small></div>`+
@@ -390,35 +381,27 @@ document.getElementById('paygap').innerHTML=pay.map(p=>{
   `<div class="lv">${p.v}<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${p.note}</div></div></div>`;
 }).join('');
 
-const psrc=[
- {l:'会员入口 membership',v:9},
- {l:'听力付费墙 lock_radio',v:7},
- {l:'练习付费墙 lock_practice',v:3},
- {l:'课程付费墙 lock_lesson',v:3},
- {l:'试听报告 trial_report',v:2},
- {l:'游戏付费墙 lock_play',v:2},
-];
-document.getElementById('paysrc').innerHTML=psrc.map(p=>
- `<div class="minirow"><span>${p.l}</span><span class="mv">${p.v}</span></div>`).join('')+
- `<div class="minirow" style="border-top:1px solid var(--line);margin-top:4px;padding-top:8px"><span style="color:var(--ink-faint);font-size:11.5px">样本为 7/10–7/11 有来源标记的发起事件,示意「多入口」结构</span><span></span></div>`;
-
 const stages=[
  {l:'热身 Warm-up',s:'warm-up',v:2127,c:'#2e8b57'},
- {l:'导入 Lead-in',s:'lead-in',v:926,c:'#d9641e',cliff:true},
+ {l:'导入 Lead-in',s:'lead-in',v:926,c:'#d9641e'},
  {l:'视频 Video',s:'play-video',v:758,c:'#c98a12'},
- {l:'单词教学 Word',s:'word_teach',v:670,c:'#c98a12'},
- {l:'单词练习 Word',s:'word_practice',v:468,c:'#c98a12'},
- {l:'句子教学 Sentence',s:'sentence_teach',v:338,c:'#c98a12'},
- {l:'句子练习 Sentence',s:'sentence_practice',v:281,c:'#c98a12'},
+ {l:'单词教学 Word·Teach',s:'word_teach',v:670,c:'#c98a12'},
+ {l:'单词练习 Word·Practice',s:'word_practice',v:468,c:'#c98a12'},
  {l:'听力练习 Listening',s:'practice_listen',v:351,c:'#c98a12'},
+ {l:'句子教学 Sentence·Teach',s:'sentence_teach',v:338,c:'#c98a12'},
+ {l:'句子练习 Sentence·Practice',s:'sentence_practice',v:281,c:'#c98a12'},
  {l:'收尾/完成 Wrap-up',s:'wrapup',v:264,c:'#1d5c3f'},
 ];
 const smax=2127;
-document.getElementById('lessonStages').innerHTML=stages.map(s=>{
+document.getElementById('lessonStages').innerHTML=stages.map((s,i)=>{
   const w=Math.max(3,Math.round(s.v/smax*100));
-  return `<div class="lrow${s.cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
+  const r = i===0 ? null : Math.round(s.v/stages[i-1].v*100);
+  const cliff = r!==null && r<60;
+  const rateTxt = i===0 ? '起点' : `环比 ${r}%`;
+  const rcls = cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
+  return `<div class="lrow${cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
    `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${s.c}" data-w="${w}"></div></div>`+
-   `<div class="lv">${s.v.toLocaleString()}${s.cliff?'<div class="cliffmark">↓56%</div>':''}</div></div>`;
+   `<div class="lv">${s.v.toLocaleString()}<div class="cliffmark" style="${rcls}">${rateTxt}</div></div></div>`;
 }).join('');
 
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
