@@ -107,6 +107,15 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .foot b{color:var(--ink-soft)}
 .src{font-family:'Fraunces',serif;font-size:11px}
 
+/* level tabs */
+.lvltabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.lvltab{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 16px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;font-size:13px;color:var(--ink-soft);transition:all .15s}
+.lvltab .lvn{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--ink);margin-right:6px}
+.lvltab .lvu{font-size:11px;color:var(--ink-faint)}
+.lvltab:hover{border-color:var(--green-bright)}
+.lvltab.on{background:var(--green);border-color:var(--green)}
+.lvltab.on .lvn,.lvltab.on .lvu,.lvltab.on{color:#fff}
+
 /* 课内环节 横向条 */
 .lbars{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 22px}
 .lrow{display:grid;grid-template-columns:150px 1fr 82px;align-items:center;gap:14px;padding:5px 0}
@@ -215,12 +224,13 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 试听课内环节流失 -->
   <section class="sec reveal">
-    <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off</span></div>
-    <p class="sec-desc">拆解首课内部各教学环节的<b>到达用户数与环比转化率</b>(GA4 关卡进度 block_template_id 归组,去重用户;环节顺序按用户内实际触发时序还原),定位用户具体在哪一环节离开。右侧标注每一步相对上一环节的转化率,<b>红色为骤降环节</b>。奖励宝箱贯穿全程(919 人),不计入教学主线。</p>
+    <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off · 分 Level</span></div>
+    <p class="sec-desc">不同 Level 的试听课环节配置不同,按 Level 分档查看(以「热身」环节的 level 标识锚定用户所属档位,GA4 关卡进度 block_template_id 归组,去重用户,7/10–7/13)。右侧为<b>到达率(占该档起点「热身」)</b>,<b>红色为最大流失环节</b>。奖励宝箱贯穿全程、不计入教学主线。</p>
+    <div class="lvltabs" id="lvltabs"></div>
     <div class="lbars" id="lessonStages"></div>
     <div class="insight">
-      <div class="it">⚠ 课内悬崖:热身→导入环比仅 44%,过半用户在真正进入正课前就离开</div>
-      <p>热身几乎人人到达(2,127),但下一步「导入」骤降至 926(<b>环比仅 44%</b>)——<b>一半以上用户还没接触到核心教学内容就流失了</b>,这是课内唯一的骤降环节。此后各步环比都较健康(视频 82% → 单词教学 88% → 单词练习 70% → 听力 75% → 句子教学 96% → 句子练习 83% → 收尾 94%),说明<b>只要迈过「热身→导入」这道坎,用户基本能走完</b>。优先排查:热身时长是否过长、导入是否有硬门槛(强制录音/登录墙)、低龄用户操作卡点。奖励宝箱贯穿全程触达 919 人,是有效留存钩子,可考虑前置到导入前。</p>
+      <div class="it">⚠ 三档共性:热身→导入是唯一悬崖;且 Level 越高、流失越狠</div>
+      <p>无论哪个 Level,过半用户都卡在<b>「热身 → 导入」这一步</b>(到达率 L1–2 47% / L3–4 42% / <b>L5–6 仅 26%</b>),迈过这道坎后各环节都相对平稳。<b>高 Level 用户流失更重</b>:走完到收尾的比例 L1–2 14% → L3–4 11% → <b>L5–6 仅 5%</b>——可能是高龄/高水平孩子对热身环节(偏低幼)不买账,建议高 Level 试听精简热身、更快进正课。奖励宝箱贯穿全程(L1–2 触达 710 人),是有效留存钩子,可考虑前置到导入前。</p>
     </div>
   </section>
 
@@ -364,32 +374,49 @@ document.getElementById('paygap').innerHTML=pay.map(p=>{
   `<div class="lv">${p.v}<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${p.note}</div></div></div>`;
 }).join('');
 
-const stages=[
- {l:'热身 Warm-up',s:'warm-up',v:2127,c:'#2e8b57'},
- {l:'导入 Lead-in',s:'lead-in',v:926,c:'#d9641e'},
- {l:'视频 Video',s:'play-video',v:758,c:'#c98a12'},
- {l:'单词教学 Word·Teach',s:'word_teach',v:670,c:'#c98a12'},
- {l:'单词练习 Word·Practice',s:'word_practice',v:468,c:'#c98a12'},
- {l:'听力练习 Listening',s:'practice_listen',v:351,c:'#c98a12'},
- {l:'句子教学 Sentence·Teach',s:'sentence_teach',v:338,c:'#c98a12'},
- {l:'句子练习 Sentence·Practice',s:'sentence_practice',v:281,c:'#c98a12'},
- {l:'收尾/完成 Wrap-up',s:'wrapup',v:264,c:'#1d5c3f'},
+const stageDefs=[
+ {l:'热身 Warm-up',s:'warm-up',c:'#2e8b57'},
+ {l:'导入 Lead-in',s:'lead-in',c:'#d9641e'},
+ {l:'视频 Video',s:'play-video',c:'#c98a12'},
+ {l:'单词教学 Word·Teach',s:'word_teach',c:'#c98a12'},
+ {l:'单词练习 Word·Practice',s:'word_practice',c:'#c98a12'},
+ {l:'听力练习 Listening',s:'practice_listen',c:'#c98a12'},
+ {l:'句子教学 Sentence·Teach',s:'sentence_teach',c:'#c98a12'},
+ {l:'句子练习 Sentence·Practice',s:'sentence_practice',c:'#c98a12'},
+ {l:'收尾/完成 Wrap-up',s:'wrapup',c:'#1d5c3f'},
 ];
-const smax=2127;
-document.getElementById('lessonStages').innerHTML=stages.map((s,i)=>{
-  const w=Math.max(3,Math.round(s.v/smax*100));
-  const r = i===0 ? null : Math.round(s.v/stages[i-1].v*100);
-  const cliff = r!==null && r<60;
-  const rateTxt = i===0 ? '起点' : `环比 ${r}%`;
-  const rcls = cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
-  return `<div class="lrow${cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
-   `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${s.c}" data-w="${w}"></div></div>`+
-   `<div class="lv">${s.v.toLocaleString()}<div class="cliffmark" style="${rcls}">${rateTxt}</div></div></div>`;
-}).join('');
+// 每档:各环节到达用户数(顺序同 stageDefs);reward=奖励宝箱贯穿全程
+const levels=[
+ {key:'l1l2',name:'L1–L2',reward:710,v:[1443,674,549,508,361,276,255,219,205]},
+ {key:'l3l4',name:'L3–L4',reward:223,v:[489,206,170,135,100,62,79,56,53]},
+ {key:'l5l6',name:'L5–L6',reward:96, v:[286,73,65,45,21,21,16,13,13]},
+];
+function renderLevel(lv){
+  const base=lv.v[0];
+  document.getElementById('lessonStages').innerHTML=stageDefs.map((s,i)=>{
+    const val=lv.v[i];
+    const w=Math.max(3,Math.round(val/base*100));
+    const reach=Math.round(val/base*100);
+    const cliff = i===1; // 热身→导入 为最大流失环节
+    const rateTxt = i===0 ? '起点(100%)' : `到达 ${reach}%`;
+    const rcls = cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
+    return `<div class="lrow${cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
+     `<div class="lbar-track"><div class="lbar-fill" style="width:${w}%;background:${s.c}"></div></div>`+
+     `<div class="lv">${val.toLocaleString()}<div class="cliffmark" style="${rcls}">${rateTxt}</div></div></div>`;
+  }).join('');
+}
+document.getElementById('lvltabs').innerHTML=levels.map((lv,i)=>
+ `<div class="lvltab${i===0?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">起点 ${lv.v[0].toLocaleString()} 人</span></div>`).join('');
+document.querySelectorAll('.lvltab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.lvltab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  renderLevel(levels[+t.dataset.i]);
+}));
+renderLevel(levels[0]);
 
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
-setTimeout(()=>document.querySelectorAll('.fbar,.lbar-fill').forEach(b=>b.style.width=b.dataset.w+'%'),250);
+setTimeout(()=>document.querySelectorAll('.fbar,.lbar-fill').forEach(b=>{if(b.dataset.w!==undefined)b.style.width=b.dataset.w+'%';}),250);
 </script>
 </body>
 </html>
