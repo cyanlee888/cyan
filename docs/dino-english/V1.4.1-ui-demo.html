@@ -4029,20 +4029,10 @@
     .rp-ctrl svg { width: 22px; height: 22px; }
     .rp-play { width: 54px; height: 54px; border-radius: 50%; background: #19c3b2; color: #fff; display: grid; place-items: center; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(25, 195, 178, 0.5); }
     .rp-play svg { width: 24px; height: 24px; }
-    /* V1.4.1: free listener finished the free track → the player STAYS on it (Replay),
-       conversion moves to a locked Next button + an "Up next" teaser bar. */
+    /* V1.4.1: free listener finished the free track → PAUSE on it (Replay);
+       tapping the locked Next control opens the Paywall (PRD 4.5). */
     .rp-ctrl--locked { position: relative; }
     .rp-ctrl--locked::after { content: "🔒"; position: absolute; top: -3px; right: -5px; font-size: 10px; }
-    .rp-upnext { display: none; align-items: center; gap: 10px; margin-top: 12px; padding: 7px 9px; border-radius: 14px;
-      background: rgba(255, 255, 255, 0.14); }
-    .rp-shell.is-done .rp-upnext { display: flex; }
-    .rp-upnext-cover { width: 38px; height: 38px; border-radius: 10px; overflow: hidden; flex: none; }
-    .rp-upnext-cover svg { width: 100%; height: 100%; display: block; }
-    .rp-upnext-meta { flex: 1; min-width: 0; }
-    .rp-upnext-kicker { margin: 0; font-size: 0.54rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
-    .rp-upnext-title { margin: 2px 0 0; font-size: 0.72rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .rp-upnext-unlock { border: none; cursor: pointer; border-radius: 16px; padding: 8px 14px; background: #f2a007; color: #fff;
-      font-family: inherit; font-weight: 800; font-size: 0.68rem; box-shadow: 0 6px 14px rgba(242, 160, 7, 0.4); flex: none; }
     /* ---------- V1.4.1 FM mini player（播放悬浮窗） ---------- */
     .fm-mini { position: absolute; right: 10px; bottom: 64px; z-index: 60; display: none; align-items: center;
       touch-action: none; user-select: none; -webkit-user-select: none; }
@@ -4775,20 +4765,10 @@
     .pk-opts--rows { grid-template-columns: 1fr; }
     .pk-opts--rows .pk-opt { text-align: left; }
     .pk-opt--pic { font-size: 1.8rem; padding: 12px 10px; }
-    /* Audio option cards (看图选音): distinct pastel per card so pre-readers can tell them apart (PRD 3.3) */
-    .pk-opt--audio { font-size: 1.25rem; padding: 13px 10px; }
-    .pk-opt--audio:nth-child(1) { background: #fff4e8; }
-    .pk-opt--audio:nth-child(2) { background: #eafaf0; }
-    .pk-opt--audio:nth-child(3) { background: #eef2ff; }
-    .pk-opt--audio:nth-child(4) { background: #fdeef5; }
-    .pk-opt--audio.qz-playing { animation: micpulse 0.9s ease-in-out infinite; }
-    .pk-opt.qz-selected { border-color: var(--forest); box-shadow: 0 0 0 2px rgba(46, 139, 87, 0.22); }
-    .pk-opt--audio.right { background: #d6f5e2; border-color: #5cb87a; }
-    .pk-opt--audio.wrong { background: #ffe0e0; border-color: #e88; }
-    /* Two-step submit for audio options: Check appears under the 2×2 grid, enabled once a card is picked */
-    .qz-check { grid-column: 1 / -1; margin-top: 2px; border: none; border-radius: 999px; padding: 10px;
-      font-family: var(--font); font-weight: 800; font-size: 0.85rem; color: #fff; background: var(--forest); cursor: pointer; }
-    .qz-check:disabled { opacity: 0.4; cursor: default; }
+    /* Speaking PK: 跟读题干配图 (PRD 3.6) — shown above the repeat-after-me prompt */
+    .spk-pic { width: 68px; height: 52px; margin: 0 auto 6px; border-radius: 12px; background: #eaf3fb;
+      display: grid; place-items: center; font-size: 1.7rem; }
+    .spk-pic[hidden] { display: none; }
 
     /* ---- V1.4.1 answer-page restyle per Figma 答题页设计稿 (盲盒机 / 单词 PK) ---- */
     .quizfx {
@@ -4798,12 +4778,13 @@
         url("assets/quiz/quiz-bg.jpg") center / cover no-repeat;
     }
     .quizfx .game-top h2 { color: #fff; text-shadow: 0 1px 6px rgba(30, 40, 140, 0.45); }
-    .qz-body { position: relative; }
+    /* Keep tall question shapes fully visible: safe centering (no top clipping) + scroll fallback */
+    .qz-body { position: relative; align-items: safe center; }
     .qz-dino { position: absolute; left: 4px; bottom: 2px; width: 88px; pointer-events: none;
       filter: drop-shadow(0 8px 14px rgba(30, 40, 140, 0.3)); }
-    .qz-col { display: flex; flex-direction: column; align-items: center; gap: 10px; width: min(88%, 560px); }
+    .qz-col { display: flex; flex-direction: column; align-items: center; gap: 7px; width: min(88%, 560px); margin: auto 0; }
     /* Gradient "Question n/5" pill (per design: #89A1FF→#C89EFF, radius 12, /total dimmed) */
-    .qz-qpill { align-self: center; display: inline-flex; align-items: baseline; padding: 6px 26px;
+    .qz-qpill { align-self: center; display: inline-flex; align-items: baseline; padding: 4px 22px;
       border-radius: 12px; background: linear-gradient(90deg, #89a1ff, #c89eff); color: #fff;
       border: 1px solid rgba(255, 255, 255, 0.35); box-shadow: 0 6px 16px rgba(90, 80, 220, 0.28);
       font-family: var(--display); font-weight: 700; font-size: 0.92rem; margin-bottom: 0; }
@@ -4813,7 +4794,10 @@
     .quizfx .qz-card { width: 100%; background: rgba(255, 255, 255, 0.64); border: 3px solid rgba(229, 184, 255, 0.5);
       border-radius: 24px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
       box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.5), 0 14px 32px rgba(50, 55, 160, 0.2); }
-    .quizfx .cap-quiz-prompt, .quizfx .pk-prompt { color: #19225b; text-align: center; font-size: 1.02rem; }
+    .quizfx .qz-card { padding: 10px 14px; }
+    .quizfx .cap-quiz-prompt, .quizfx .pk-prompt { color: #19225b; text-align: center; font-size: 0.95rem; margin-bottom: 6px; }
+    .quizfx .qz-stem-pic { width: 66px; height: 54px; font-size: 1.7rem; }
+    .quizfx .qz-stem-audio { width: 44px; height: 44px; font-size: 1.15rem; }
     /* Options: white pills, ink #465198; feedback = colored ring + corner ✓/✕ badge (radius 16 0 16 0) */
     .quizfx .pk-opt { position: relative; overflow: hidden; background: #fff; border: none; border-radius: 16px;
       padding: 12px 10px; color: #465198; font-weight: 600; box-shadow: 0 3px 10px rgba(70, 81, 152, 0.12); }
@@ -4825,11 +4809,9 @@
       border-radius: 16px 0 16px 0; }
     .quizfx .pk-opt.right::after { content: "✓"; background: #4fc36b; }
     .quizfx .pk-opt.wrong::after { content: "✕"; background: #ef5350; }
-    .quizfx .pk-opt--audio.right, .quizfx .pk-opt--audio.wrong { background: #fff; }
-    .quizfx .pk-opt.qz-selected { box-shadow: 0 0 0 2.5px #89a1ff, 0 3px 12px rgba(70, 81, 152, 0.2); }
     /* Picture options: single row of 4 square white cards, radius 24 (per design) */
     .quizfx .pk-opts--picrow { grid-auto-flow: column; grid-auto-columns: 1fr; grid-template-columns: none; } /* 2–4 cards in ONE row, adapts to option count */
-    .quizfx .pk-opts--picrow .pk-opt--pic { aspect-ratio: 1 / 1; border-radius: 20px; font-size: 2.1rem;
+    .quizfx .pk-opts--picrow .pk-opt--pic { height: 82px; border-radius: 18px; font-size: 1.9rem;
       display: grid; place-items: center; padding: 6px; }
     /* Bottom progress: track #E2E7FF + orange gradient fill + blind-box icon + n/5 dark pill */
     .qz-progress { display: flex; align-items: center; gap: 8px; width: min(92%, 480px); }
@@ -4855,7 +4837,37 @@
     #screen-wordpk .pk-player:last-child .pk-pts { margin: 0 -10px 0 0; padding: 6px 18px 6px 16px;
       border-radius: 100px 0 0 100px; background: linear-gradient(249deg, #49c2f6, #1a89ff); }
     #screen-wordpk .pk-vs { color: #fff; font-size: 1.15rem; text-shadow: 0 2px 8px rgba(20, 30, 120, 0.55); }
-    #screen-wordpk .pk-q { flex: none; width: min(92%, 560px); padding: 14px 16px; }
+    #screen-wordpk .pk-q { flex: none; width: min(92%, 560px); padding: 10px 14px; }
+    #screen-wordpk .pk-wrap { gap: 7px; height: auto; margin: auto 0; }
+    #screen-wordpk .pk-ava { width: 38px; height: 38px; font-size: 1.15rem; }
+    #screen-wordpk .pk-pts { font-size: 0.9rem; padding: 5px 14px 5px 16px; min-width: 40px; }
+    #screen-wordpk .pk-player:last-child .pk-pts { padding: 5px 16px 5px 14px; }
+    /* Sentence options in quiz pages: keep the design's 2-column pills, wrap to 2 lines */
+    .quizfx .pk-opts { gap: 6px; }
+    .quizfx .pk-opts--rows { grid-template-columns: 1fr 1fr; }
+    .quizfx .pk-opts--rows .pk-opt { padding: 8px 12px; font-size: 0.72rem; line-height: 1.35; text-align: left; }
+    .quizfx .game-top { padding: 8px 18px 2px; }
+    /* Speaking PK: compact score ribbons (same as Word PK) + natural card height so nothing clips */
+    #screen-speakpk .pk-wrap { gap: 7px; height: auto; align-items: center; }
+    #screen-speakpk .pk-score { gap: 12px; }
+    #screen-speakpk .pk-player { display: flex; align-items: center; }
+    #screen-speakpk .pk-nm { display: none; }
+    #screen-speakpk .pk-ava { width: 38px; height: 38px; margin: 0; border: 2px solid #fff; z-index: 1;
+      box-shadow: 0 4px 10px rgba(30, 40, 140, 0.2); font-size: 1.15rem; }
+    #screen-speakpk .pk-pts { color: #fff; font-size: 0.9rem; line-height: 1; padding: 5px 14px 5px 16px; margin-left: -10px;
+      border-radius: 0 100px 100px 0; background: linear-gradient(61deg, #ffba3c, #ffb330); min-width: 40px; text-align: center; }
+    #screen-speakpk .pk-player:last-child { flex-direction: row-reverse; }
+    #screen-speakpk .pk-player:last-child .pk-pts { margin: 0 -10px 0 0; padding: 5px 16px 5px 14px;
+      border-radius: 100px 0 0 100px; background: linear-gradient(249deg, #49c2f6, #1a89ff); }
+    #screen-speakpk .pk-q { flex: none; width: min(92%, 560px); padding: 10px 14px; }
+    #screen-speakpk .pk-q .pk-round { margin-bottom: 4px; }
+    #screen-speakpk .pk-q .pk-prompt { font-size: 0.88rem; margin-bottom: 4px; }
+    /* Play-audio button + feedback share one row; the record button sits below */
+    #screen-speakpk .spk-rec-area { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px;
+      align-items: center; justify-items: start; width: 100%; }
+    #screen-speakpk .spk-play-btn { grid-column: 1; grid-row: 1; padding: 6px 14px; font-size: 0.76rem; }
+    #screen-speakpk .spk-feedback { grid-column: 2; grid-row: 1; min-height: 0; font-size: 0.76rem; text-align: left; }
+    #screen-speakpk .spk-rec-btn { grid-column: 1 / -1; grid-row: 2; justify-self: center; padding: 10px 24px; font-size: 0.85rem; }
     /* PK matchmaking page shares the quiz backdrop */
     #screen-pk-match .pkm-card { background: rgba(255, 255, 255, 0.72); border-radius: 24px;
       backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -5841,7 +5853,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.4.1 · 课程升降级（会员升要证明 · 降直切 / 免费试更简单 level · 相邻 level 升/降横幅 · 会员改级二次确认）+ 游戏题型扩展（盲盒机 / 单词 PK：看图选择 · 听音选择）+ FM 播放悬浮窗与后台播放（离开播放页续播 · 免费完播 Replay + Up next 承接）— 详见右上 ⚙︎ States 的「1.4.1 变更」</p>
+  <p class="demo-bar">V1.4.1 · 课程升降级（会员升要证明 · 降直切 / 免费试更简单 level · 相邻 level 升/降横幅 · 会员改级二次确认）+ 游戏题型扩展（盲盒机 / 单词 PK：题干朗读 · 看图选词 · 听音选图；口语 PK：跟读配图）+ FM 播放悬浮窗与后台播放（离开播放页续播 · 免费完播暂停 · 点下一曲跳 Paywall）— 详见右上 ⚙︎ States 的「1.4.1 变更」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -7081,14 +7093,6 @@
               <button type="button" class="rp-ctrl" aria-label="Next"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 6v12h2V6h-2zM5 6v12l9-6L5 6z"/></svg></button>
               <button type="button" class="rp-ctrl" aria-label="Playlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h11M4 12h11M4 17h7"/><path d="M18 9v8"/><circle cx="18" cy="18" r="2" fill="currentColor" stroke="none"/></svg></button>
             </div>
-            <div class="rp-upnext" id="rp-upnext">
-              <div class="rp-upnext-cover" id="rp-upnext-cover"></div>
-              <div class="rp-upnext-meta">
-                <p class="rp-upnext-kicker">Up next · 🔒 Premium</p>
-                <p class="rp-upnext-title" id="rp-upnext-title">Title</p>
-              </div>
-              <button type="button" class="rp-upnext-unlock" id="btn-rp-upnext-unlock">Unlock</button>
-            </div>
           </div>
         </div>
       </section>
@@ -7336,6 +7340,7 @@
             </div>
             <div class="pk-q">
               <div class="pk-round" id="spk-round">Sentence 1 / 3</div>
+              <div class="spk-pic" id="spk-pic" hidden>🖼️</div>
               <div class="pk-prompt" id="spk-prompt">🔊 Listen, then repeat:<br>“I can speak English with confidence!”</div>
               <div class="spk-rec-area">
                 <button type="button" class="spk-play-btn" id="spk-play">🔊 Play audio</button>
@@ -9951,7 +9956,7 @@
       if (window.GAME) { window.GAME.grantXp(FM_TRACK_XP); window.GAME.grantCoins(coins); }
       showFmReward(coins);
       // V1.4.1 续播：会员在可播队列内顺播（队列尾循环回首）；免费分类内仅首条可播，
-      // 完播即遇锁 → 停在刚听完的内容（↻ Replay），转化走带锁 Next / Up next 条。
+      // 完播即遇锁 → 暂停并停在刚听完的内容（↻ Replay），点带锁 Next 才拉 Paywall。
       if (!profile.premiumUnlocked) { enterFmDoneState(); return; }
       rpIndex = (rpIndex + 1) % rpPlaylist.length;
       loadTrack(rpPlaylist[rpIndex]);
@@ -10010,7 +10015,7 @@
       "screen-pk-match", "screen-wordpk", "screen-speakpk", "screen-dino-chat",
     ];
     let fmActive = false;      // a track is loaded and the player wasn't closed / auto-stopped
-    let fmDone = false;        // free listener finished the free track → Replay + Up next handoff
+    let fmDone = false;        // free listener finished the free track → paused on it (Replay)
     let fmMiniEl = null, fmCollapseTimer = null;
 
     function ensureFmMini() {
@@ -10101,13 +10106,7 @@
         ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
         : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
     }
-    // 免费完播遇锁：停在刚听完的内容（主按钮 ↻ Replay），转化承接 = 带锁 Next + Up next 预告条。
-    function nextLockedStationInCategory() {
-      const pool = radioFilter === "all"
-        ? RADIO_STATIONS
-        : RADIO_STATIONS.filter((s) => s.categories.includes(radioFilter));
-      return pool.find((s) => isRadioLocked(s)) || RADIO_STATIONS.find((s) => isRadioLocked(s)) || null;
-    }
+    // 免费完播遇锁：暂停并停在刚听完的内容（主按钮 ↻ Replay）；点带锁 Next 才拉 Paywall（PRD 4.5）。
     function enterFmDoneState() {
       setRadioPlaying(false);
       fmDone = true;
@@ -10115,24 +10114,16 @@
       const icon = $("#rp-play-icon");
       if (icon) icon.innerHTML = '<path d="M17.65 6.35A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.76-4.24L13 11h7V4l-2.35 2.35z"/>';
       $("#btn-rp-play")?.setAttribute("aria-label", "Replay");
-      const next = nextLockedStationInCategory();
-      if (next) {
-        $("#rp-upnext-title").textContent = next.title;
-        $("#rp-upnext-cover").innerHTML = uniqueSvgIds(next.art, "rp-upnext-" + next.id);
-        $("#rp-shell")?.classList.add("is-done");
-      }
       updateFmMini();
     }
     function clearFmDoneState() {
       fmDone = false;
-      $("#rp-shell")?.classList.remove("is-done");
     }
     function fmReplay() {
       clearFmDoneState();
       rpFrac = 0; paintRadioProgress();
       setRadioPlaying(true);
     }
-    $("#btn-rp-upnext-unlock")?.addEventListener("click", () => openPaywall(activeLandScreen() || "screen-class", "radio"));
     // Next：会员切队列下一条；免费下一条即锁定内容（按钮带 🔒 角标）→ 直接拉起 Paywall。
     document.querySelector('#rp-shell .rp-controls .rp-ctrl[aria-label="Next"]')?.addEventListener("click", () => {
       if (!profile.premiumUnlocked) { openPaywall(activeLandScreen() || "screen-class", "radio"); return; }
@@ -10872,11 +10863,10 @@
       // BEFORE the round (intro) and DURING answering, and lights up when a coin
       // is earned.
       // ---- V1.4.1 题型扩展 (PRD module 3): shared quiz-card renderer for Dino
-      // Blind Box & Word PK. 8 types = stem(text / pic / audio) × options(word |
-      // sentence text / pic / audio). Question fields: st/ot default "text";
-      // `stem` = stem emoji-image; `say` = stem audio text; audio options speak
-      // their opts[] text. Audio here is browser TTS (speechSynthesis) standing
-      // in for the pre-generated assets in production.
+      // Blind Box & Word PK. 6 types (PRD 3.1 Q1–Q6) = stem(text / text+read-aloud /
+      // pic / audio) × options(text / pic). Question fields: st/ot default "text";
+      // `stem` = stem emoji-image; `say` = stem audio text. Audio here is browser
+      // TTS (speechSynthesis) standing in for pre-generated mp3 in production.
       function qzSpeak(text, btn) {
         $$(".qz-playing").forEach((el) => el.classList.remove("qz-playing"));
         if (btn) btn.classList.add("qz-playing");
@@ -10892,68 +10882,45 @@
         } catch (e) { setTimeout(off, 900); }
       }
       // Question picker honoring the ⚙︎ States「游戏题型」filter (demo-only; prod
-      // mixes naturally — type share is tuned in authoring, not at draw time).
+      // mixes naturally — type share follows the question bank).
       function quizPick(bank, idx) {
         const f = demoState.quizTypes || "mixed";
         const pool = bank.filter((q) => {
-          const st = q.st || "text", ot = q.ot || "text";
-          return f === "pic" ? st === "pic" : f === "audio" ? st === "audio"
-            : f === "picaudio" ? (st === "pic" && ot === "audio") : true;
+          const st = q.st || "text";
+          return f === "pic" ? st === "pic" : f === "audiopic" ? st === "audio"
+            : f === "readaloud" ? (st === "text" && !!q.say) : true;
         });
         const list = pool.length ? pool : bank;
         return list[idx % list.length];
       }
       // Render stem + options into the given prompt/opts elements. submit(choice)
-      // is called with the picked option index. All types submit on tap, except
-      // audio options (看图选音): tap plays & selects (switch to compare), then
-      // Check submits — a wrong answer replays the correct card's audio once.
+      // is called with the picked option index; every type submits on tap (PRD 3.1).
+      // Stems: text / text+read-aloud speaker (tap only) / picture+instruction /
+      // audio+instruction (auto-plays once). Options: text cards or picture cards.
       function renderQuizCard(promptEl, box, item, submit) {
         const st = item.st || "text", ot = item.ot || "text";
         if (st === "pic") promptEl.innerHTML = `<span class="qz-stem"><span class="qz-stem-pic">${item.stem}</span><span class="qz-stem-instr">${item.q}</span></span>`;
         else if (st === "audio") promptEl.innerHTML = `<span class="qz-stem"><button type="button" class="qz-stem-audio" title="Play">🔊</button><span class="qz-stem-instr">${item.q}</span></span>`;
-        else if (item.say) promptEl.innerHTML = `${item.q}<button type="button" class="qz-stem-audio qz-stem-audio--sm" title="Read aloud">🔊</button>`; // text stem + read-aloud speaker (PRD 3.2: tap only, no autoplay)
+        else if (item.say) promptEl.innerHTML = `${item.q}<button type="button" class="qz-stem-audio qz-stem-audio--sm" title="Read aloud">🔊</button>`; // Q3/Q4: tap only, no autoplay
         else promptEl.textContent = item.q;
         const stemBtn = promptEl.querySelector(".qz-stem-audio");
         if (stemBtn) {
           stemBtn.addEventListener("click", () => qzSpeak(item.say, stemBtn));
           if (st === "audio") setTimeout(() => qzSpeak(item.say, stemBtn), 350); // audio stems auto-play once on entry; tap = unlimited replays
         }
-        const cls = ot === "pic" ? "pk-opt pk-opt--pic" : ot === "audio" ? "pk-opt pk-opt--audio" : "pk-opt";
+        const cls = ot === "pic" ? "pk-opt pk-opt--pic" : "pk-opt";
         box.classList.toggle("pk-opts--rows", ot === "text" && item.opts.some((o) => o.length > 24)); // sentence options → full-width rows
-        box.classList.toggle("pk-opts--picrow", ot === "pic"); // picture options → single row of 4 square cards (Figma)
-        box.innerHTML = item.opts.map((o, i) => `<button class="${cls}" data-i="${i}">${ot === "audio" ? "🔊" : o}</button>`).join("")
-          + (ot === "audio" ? '<button type="button" class="qz-check" disabled>Check</button>' : "");
-        const opts = [...box.querySelectorAll(".pk-opt")];
-        if (ot !== "audio") {
-          opts.forEach((b) => b.addEventListener("click", () => submit(+b.dataset.i)));
-          return;
-        }
-        const check = box.querySelector(".qz-check");
-        let sel = null;
-        opts.forEach((b) => b.addEventListener("click", () => {
-          if (b.disabled) return;
-          opts.forEach((x) => x.classList.toggle("qz-selected", x === b));
-          sel = +b.dataset.i;
-          qzSpeak(item.opts[sel], b);
-          check.disabled = false;
-        }));
-        check.addEventListener("click", () => {
-          if (sel == null || check.disabled) return;
-          check.disabled = true;
-          opts.forEach((x) => (x.disabled = true));
-          submit(sel);
-          if (sel !== item.a) setTimeout(() => qzSpeak(item.opts[item.a], opts[item.a]), 550);
-        });
+        box.classList.toggle("pk-opts--picrow", ot === "pic"); // picture options → single row of 2–4 square cards (Figma)
+        box.innerHTML = item.opts.map((o, i) => `<button class="${cls}" data-i="${i}">${o}</button>`).join("");
+        box.querySelectorAll(".pk-opt").forEach((b) => b.addEventListener("click", () => submit(+b.dataset.i)));
       }
       const CAP_QUESTIONS = [
-        { q: "Which word means “happy”?", say: "Which word means happy?", opts: ["glad", "sad", "mad", "bad"], a: 0 },     // 文本选词 + 题干朗读喇叭（题库 41% 带题干音频）
-        { q: "Which one can fly?", ot: "pic", opts: ["🐟", "🐦", "🐸"], a: 1 },                                              // 文本选图 · 3 选项（题库选项数 2–4）
-        { st: "pic", stem: "🐘", q: "Which one matches the picture?", opts: ["tiger", "elephant", "rabbit", "horse"], a: 1 }, // 看图选词
-        { st: "pic", stem: "📖", q: "Which one matches the picture?", opts: ["She is riding a bike.", "She is eating an apple.", "She is reading a book.", "She is singing a song."], a: 2 }, // 看图选句
-        { st: "pic", ot: "audio", stem: "🍎", q: "Tap to listen — which one matches the picture?", opts: ["banana", "apple", "orange", "grape"], a: 1 }, // 看图选音 (Check 提交)
-        { st: "audio", say: "tiger", q: "Listen — which one did you hear?", opts: ["tired", "tower", "tiger", "time"], a: 2 }, // 听音选词
-        { st: "audio", say: "I like to play football.", q: "Listen — which one did you hear?", opts: ["I like to play football.", "I like to play basketball.", "I want some water.", "I can ride a bike."], a: 0 }, // 听音选句
-        { st: "audio", ot: "pic", say: "bird", q: "Listen — which picture matches?", opts: ["🐟", "🐦", "🐶", "🐸"], a: 1 },   // 听音选图
+        { q: "Which word means “happy”?", opts: ["glad", "sad", "mad", "bad"], a: 0 },                                     // Q1 文本 × 文本
+        { q: "Which one can fly?", ot: "pic", opts: ["🐟", "🐦", "🐸"], a: 1 },                                              // Q2 文本 × 图片（3 选项 · 题库选项数 2–4）
+        { q: "The man waited ____ for the airplane.", say: "The man waited blank for the airplane.", opts: ["impatiently", "characteristic", "reflect", "Ramadan"], a: 0 }, // Q3 文本+朗读喇叭 × 文本
+        { q: "She eats breakfast.", say: "She eats breakfast.", ot: "pic", opts: ["🥣", "🛏️", "⚽", "📚"], a: 0 },            // Q4 文本+朗读喇叭 × 图片
+        { st: "pic", stem: "🐘", q: "Which one matches the picture?", opts: ["tiger", "elephant", "rabbit"], a: 1 },        // Q5 图片 × 词（固定 3 选项）
+        { st: "audio", ot: "pic", say: "bird", q: "Listen — which picture matches?", opts: ["🐟", "🐦", "🐶"], a: 1 },        // Q6 音频 × 图片（固定 3 选项）
       ];
       const CAP_ROUND_SIZE = 5;
       const CAP_ROUND_XP = 20;
@@ -11248,17 +11215,15 @@
       });
 
       // ---- Word PK: 5 questions vs a matched rival, no timer (PRD) ----
-      // V1.4.1: bank carries all 8 question types (same shared renderer as the
-      // Blind Box quiz); a 5-question round cycles through a mixed selection.
+      // V1.4.1: bank carries the 6 supported question types (PRD 3.1 Q1–Q6, same
+      // shared renderer as the Blind Box quiz); a 5-question round mixes them.
       const WPK_QUESTIONS = [
-        { q: "Which word means “courageous”?", opts: ["brave", "bright", "brown", "break"], a: 0 },                          // 文本选词 (V1.3.0)
-        { q: "Which one is a fruit?", ot: "pic", opts: ["🥕", "🥔", "🍌", "🧅"], a: 2 },                                       // 文本选图 (V1.3.0)
-        { st: "pic", stem: "🦁", q: "Which one matches the picture?", opts: ["bear", "lion", "wolf", "fox"], a: 1 },          // 看图选词
-        { st: "pic", stem: "⚽", q: "Which one matches the picture?", opts: ["They are swimming.", "They are playing football.", "They are drawing.", "They are sleeping."], a: 1 }, // 看图选句
-        { st: "pic", ot: "audio", stem: "🐶", q: "Tap to listen — which one matches the picture?", opts: ["duck", "dolphin", "dog", "deer"], a: 2 }, // 看图选音 (Check 提交)
-        { st: "audio", say: "water", q: "Listen — which one did you hear?", opts: ["winter", "water", "wonder", "waiter"], a: 1 }, // 听音选词
-        { st: "audio", say: "The cat is under the table.", q: "Listen — which one did you hear?", opts: ["The cat is on the table.", "The dog is under the chair.", "The cat is under the table.", "The cat is in the box."], a: 2 }, // 听音选句
-        { st: "audio", ot: "pic", say: "sun", q: "Listen — which picture matches?", opts: ["🌙", "⭐", "☀️", "☁️"], a: 2 },    // 听音选图
+        { q: "Which word means “courageous”?", opts: ["brave", "bright", "brown", "break"], a: 0 },                          // Q1 文本 × 文本
+        { q: "Which one is a fruit?", ot: "pic", opts: ["🥕", "🍌", "🧅"], a: 1 },                                             // Q2 文本 × 图片（3 选项）
+        { q: "ladybug", say: "ladybug", opts: ["a red or orange round insect with black spots", "meat from cows or bulls", "a number of things", "the most weird"], a: 0 }, // Q3 文本+朗读喇叭 × 文本（词义匹配）
+        { q: "Click on the “bus.”", say: "Click on the bus.", ot: "pic", opts: ["🚌", "🚕", "🚲", "✈️"], a: 0 },              // Q4 文本+朗读喇叭 × 图片
+        { st: "pic", stem: "🦁", q: "Which one matches the picture?", opts: ["bear", "lion", "wolf"], a: 1 },                 // Q5 图片 × 词（固定 3 选项）
+        { st: "audio", ot: "pic", say: "sun", q: "Listen — which picture matches?", opts: ["🌙", "☀️", "☁️"], a: 1 },          // Q6 音频 × 图片（固定 3 选项）
       ];
       const WPK_ROUND = 5;
       let wpkIdx = 0, wpkMe = 0, wpkOp = 0, wpkBusy = false, wpkCur = null;
@@ -11305,24 +11270,28 @@
       function resetWordPk() { wpkIdx = 0; wpkMe = 0; wpkOp = 0; wpkBusy = false; renderWordPk(); }
 
       // ---- Speaking PK: 3 sentences, hold-to-record (simulated scoring) ----
+      // V1.4.1 (PRD 3.6): 跟读题干配图 — bank items carry an optional `pic`
+      // (题库存量约 87% 带图); shown above the prompt, display-only. 无图题沿用原版式。
       const SPK_SENTENCES = [
-        "I can speak English with confidence!",
-        "The brave dino jumps over the river.",
-        "Let's read a story together tonight.",
+        { text: "I can speak English with confidence!", pic: "🗣️" },
+        { text: "The brave dino jumps over the river.", pic: "🦖" },
+        { text: "Let's read a story together tonight." }, // 无配图存量
       ];
       let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false;
       // Each turn plays the model audio FIRST so the child listens, then repeats (PRD:
-      // 口语 PK 先播放跟读句子/单词音频). The 🔊 button replays it; here playback is simulated.
+      // 口语 PK 先播放跟读句子/单词音频). The 🔊 button replays it.
       function playSpkAudio() {
         const fb = $("#spk-feedback");
         const btn = $("#spk-play");
+        const s = SPK_SENTENCES[spkIdx];
+        if (s) qzSpeak(s.text); // real TTS stands in for the pre-generated model mp3
         if (btn) btn.classList.add("playing");
         if (fb) fb.textContent = "🔊 Playing audio…";
         clearTimeout(playSpkAudio._tm);
         playSpkAudio._tm = setTimeout(() => {
           if (btn) btn.classList.remove("playing");
           if (fb && fb.textContent === "🔊 Playing audio…") fb.textContent = "Now repeat it out loud 🎤";
-        }, 900);
+        }, 1400);
       }
       function renderSpeakPk() {
         if ($("#spk-me")) $("#spk-me").textContent = spkMe;
@@ -11331,7 +11300,9 @@
         if ($("#spk-op-nm")) $("#spk-op-nm").textContent = pkPlan.rival.name;
         if ($("#spk-round")) $("#spk-round").textContent = `Sentence ${Math.min(spkIdx + 1, SPK_SENTENCES.length)} / ${SPK_SENTENCES.length}`;
         const s = SPK_SENTENCES[spkIdx];
-        if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s}”`;
+        const pic = $("#spk-pic");
+        if (pic) { pic.hidden = !(s && s.pic); if (s && s.pic) pic.textContent = s.pic; }
+        if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s.text}”`;
         if ($("#spk-feedback")) $("#spk-feedback").textContent = "";
         $("#spk-rec")?.classList.remove("listening");
         if (s) playSpkAudio(); // auto-play the model audio for this turn
@@ -11711,12 +11682,13 @@
       // ⚙︎ States「游戏题型」filter changes.
       function startCapsuleQuiz() { startCapsuleRound(); showLandScreen("screen-capsule"); }
       function startWordPk() { startPkMatch("screen-wordpk"); }
+      function startSpeakPk() { startPkMatch("screen-speakpk"); }
       function rerenderQuiz() {
         const id = activeLandScreen();
         if (id === "screen-capsule") { capBusy = false; renderCapsuleQuestion(); }
         else if (id === "screen-wordpk") { wpkBusy = false; renderWordPk(); }
       }
-      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, startCapsuleQuiz, startWordPk, rerenderQuiz, grantInclassBonus, openBackpackPets, openDinoChat, setDinoGuide };
+      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, startCapsuleQuiz, startWordPk, startSpeakPk, rerenderQuiz, grantInclassBonus, openBackpackPets, openDinoChat, setDinoGuide };
       syncHud();
       renderPkRanks();
     })();
@@ -12899,7 +12871,7 @@
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
       { key: "quizTypes", label: "游戏题型（V1.4.1 扩展 · 盲盒机 / 单词 PK 出题）",
-        options: [["mixed", "混合(8种)"], ["pic", "仅看图选择"], ["audio", "仅听音选择"], ["picaudio", "仅看图选音(Check)"]],
+        options: [["mixed", "混合(6种)"], ["readaloud", "仅题干朗读"], ["pic", "仅看图选词"], ["audiopic", "仅听音选图"]],
         apply: function (v) { demoState.quizTypes = v; window.GAME && window.GAME.rerenderQuiz && window.GAME.rerenderQuiz(); } },
     ],
     jumps: [
@@ -12963,15 +12935,19 @@
           refreshUnlockState(); enterLandscape(); showCourseMap();
           courseMapLevelId = "level-3"; renderCourseMap(); // current+1 视图 → 升级横幅
         } },
-      { label: "★ 题型扩展 · 盲盒机答题（看图 / 听音混合出题）", run: function () {
+      { label: "★ 题型扩展 · 盲盒机答题（6 种题型混合出题）", run: function () {
           // V1.4.1 新增：直接开一轮盲盒机答题（跳过免费每日限次），配合上方
-          // 「游戏题型」控制切混合 / 仅看图 / 仅听音 / 仅看图选音（两段式 Check）。
+          // 「游戏题型」控制切混合 / 仅题干朗读 / 仅看图选词 / 仅听音选图。
           enterLandscape();
           window.GAME && window.GAME.startCapsuleQuiz && window.GAME.startCapsuleQuiz();
         } },
       { label: "★ 题型扩展 · 单词 PK 答题（同一套题型渲染）", run: function () {
           enterLandscape();
           window.GAME && window.GAME.startWordPk && window.GAME.startWordPk();
+        } },
+      { label: "★ 题型扩展 · 口语 PK（跟读题干配图）", run: function () {
+          enterLandscape();
+          window.GAME && window.GAME.startSpeakPk && window.GAME.startSpeakPk();
         } },
       { label: "★ FM 悬浮窗（离开播放页续播 · 点唱片展开 ⏯/✕ · 可拖拽吸边）", run: function () {
           // V1.4.1 新增：开播一条免费 Radio → 直接回 Explore 首页，悬浮唱片承接续播。
@@ -12982,9 +12958,9 @@
           if (first) showRadioPlayer(first.id);
           showLandScreen("screen-class");
         } },
-      { label: "★ FM 免费完播承接（↻ Replay · 带锁 Next · Up next → Paywall）", run: function () {
-          // V1.4.1 新增：免费听完分类内唯一免费条 → 停在原内容（主按钮变 ↻ Replay），
-          // 带锁 Next / Up next 条 → Paywall。进度已拨到临近结尾，数秒后自动完播演示。
+      { label: "★ FM 免费完播（暂停 · ↻ Replay · 点带锁 Next → Paywall）", run: function () {
+          // V1.4.1 新增：免费听完分类内唯一免费条 → 暂停并停在原内容（主按钮变 ↻ Replay），
+          // 点带锁 Next 下一曲 → Paywall。进度已拨到临近结尾，数秒后自动完播演示。
           profile.premiumUnlocked = false; refreshUnlockState();
           enterLandscape(); setHubTab("practice");
           radioFilter = "goodnight";
