@@ -4765,8 +4765,12 @@
     .pk-opts--rows { grid-template-columns: 1fr; }
     .pk-opts--rows .pk-opt { text-align: left; }
     .pk-opt--pic { font-size: 1.8rem; padding: 12px 10px; }
-    /* Speaking PK: 跟读题干配图 (PRD 3.6) — shown above the repeat-after-me prompt */
-    .spk-pic { width: 68px; height: 52px; margin: 0 auto 6px; border-radius: 12px; background: #eaf3fb;
+    /* Speaking PK: 跟读题干配图 (PRD 3.2 Q7) — 题目配图展示在跟读句上方、同卡居中；
+       题库存量约 87% 带图，无图题隐藏此块、沿用纯文本版式。存量为预生成图片，端上按 URL 渲染 <img>。 */
+    .spk-pic { margin: 0 auto 6px; display: grid; place-items: center; }
+    .spk-pic img { display: block; width: auto; max-width: 120px; max-height: 78px; object-fit: contain;
+      border-radius: 12px; filter: drop-shadow(0 5px 12px rgba(25, 34, 91, 0.2)); }
+    .spk-pic .spk-pic-emoji { width: 68px; height: 52px; border-radius: 12px; background: #eaf3fb;
       display: grid; place-items: center; font-size: 1.7rem; }
     .spk-pic[hidden] { display: none; }
 
@@ -9110,7 +9114,7 @@
           // member → Locked (cross-level moves go through the adjacent-level up / down
           // banners, not the unit CTAs).
           cta = profile.premiumUnlocked
-            ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit data-lock-msg="This level isn't in your current plan">Locked</button>`
+            ? `<button type="button" class="cm-unit-cta cm-unit-cta--locked" data-locked-unit data-lock-msg="Switch level to unlock this unit">Locked</button>`
             : `<button type="button" class="cm-unit-cta cm-unit-cta--premium" data-premium-unit>Go Premium</button>`;
           tag = "";
         } else if (premiumUnitLock) {
@@ -11270,12 +11274,13 @@
       function resetWordPk() { wpkIdx = 0; wpkMe = 0; wpkOp = 0; wpkBusy = false; renderWordPk(); }
 
       // ---- Speaking PK: 3 sentences, hold-to-record (simulated scoring) ----
-      // V1.4.1 (PRD 3.6): 跟读题干配图 — bank items carry an optional `pic`
-      // (题库存量约 87% 带图); shown above the prompt, display-only. 无图题沿用原版式。
+      // V1.4.1 (PRD 3.2 Q7): 跟读题干配图 — bank items carry an optional `pic`
+      // (题库存量约 87% 带图); 图片 URL → 渲染 <img>，emoji 仍兼容；显示在句子上方、
+      // 与文本同卡居中，纯展示。无图题沿用原版式（隐藏配图块）。
       const SPK_SENTENCES = [
-        { text: "I can speak English with confidence!", pic: "🗣️" },
-        { text: "The brave dino jumps over the river.", pic: "🦖" },
-        { text: "Let's read a story together tonight." }, // 无配图存量
+        { text: "The brave dino jumps over the river.", pic: "assets/quiz/speak-pic-sample.png" },
+        { text: "I can speak English with confidence!" }, // 无配图存量
+        { text: "Let's read a story together tonight." },  // 无配图存量
       ];
       let spkIdx = 0, spkMe = 0, spkOp = 0, spkBusy = false;
       // Each turn plays the model audio FIRST so the child listens, then repeats (PRD:
@@ -11301,7 +11306,16 @@
         if ($("#spk-round")) $("#spk-round").textContent = `Sentence ${Math.min(spkIdx + 1, SPK_SENTENCES.length)} / ${SPK_SENTENCES.length}`;
         const s = SPK_SENTENCES[spkIdx];
         const pic = $("#spk-pic");
-        if (pic) { pic.hidden = !(s && s.pic); if (s && s.pic) pic.textContent = s.pic; }
+        if (pic) {
+          const hasPic = !!(s && s.pic);
+          pic.hidden = !hasPic;
+          if (hasPic) {
+            const isImg = /\.(png|jpe?g|webp|svg)$/i.test(s.pic) || s.pic.startsWith("assets/");
+            pic.innerHTML = isImg
+              ? `<img src="${s.pic}" alt="" decoding="async" />`
+              : `<span class="spk-pic-emoji">${s.pic}</span>`; // emoji 兼容
+          }
+        }
         if (s && $("#spk-prompt")) $("#spk-prompt").innerHTML = `🔊 Listen, then repeat:<br>“${s.text}”`;
         if ($("#spk-feedback")) $("#spk-feedback").textContent = "";
         $("#spk-rec")?.classList.remove("listening");
