@@ -790,40 +790,38 @@ section[id],.node[id]{scroll-margin-top:64px}
     <div class="node-sub" data-zh='功能迭代<br>上线时间待定'>Iteration<br>Date TBD</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='Dino 对话升级 · 数据与内容工具<span class="tag">迭代版</span>'>Dino chat upgrade · data & content tools<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心。<br/><b>核心内容</b>：Dino memory 与新对话设计、麦克风点两次、多语言输出修复；课中作答等待 / 静默冲突 / 金币声音等体验打磨；课程升降级与 CMS 课程生产平台；Play / FM 体验优化；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，补齐用户行为洞察。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: centered on the Dino chat upgrade.<br/><b>Core</b>: Dino memory and the new dialogue design, double-tap mic, the multilingual output fix; in-class polish on answer-wait windows / silence conflicts / coin sounds; course level up/down and the CMS lesson-production platform; Play / FM tweaks; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, and closes the user-insight gap. Date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='Dino 对话升级 · 转化重排 · 数据与内容工具<span class="tag">迭代版</span>'>Dino chat upgrade · funnel rework · data & content tools<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心，叠加转化链路重排与数据 / 内容工具补齐。<br/><b>核心内容</b>：Dino memory 与三入口对话设计、麦克风点两次、多语言输出修复；转化链路整体重排与带新手引导的体验课；选图听音模版、长句作答等待等课中打磨；课程升降级；盲盒 &amp; PK 新题型、FM 后台悬浮播放；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，重排核心付费转化漏斗，补齐用户行为洞察。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: the Dino chat upgrade at the center, plus a conversion-funnel rework and data / content tooling.<br/><b>Core</b>: Dino memory and the three-intent dialogue design, double-tap mic, the multilingual output fix; a full funnel rework with a guided trial lesson; picture-listening templates, longer answer windows and other in-class polish; course level up/down; new Gacha &amp; PK question types, FM background floating playback; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, reworks the core paid-conversion funnel, and closes the user-insight gap. Date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · Dino Agent · 对话升级'>Requirements · Dino Agent & chat upgrade</h4>
         <ul>
-          <li data-zh='<b>Dino memory 设计</b><span class="p0">P0</span>：引用上次学习信息，形成双向记忆、背景知识补充与个人偏好'><b>Dino memory design</b><span class="p0">P0</span>: recalls the last lesson, building two-way memory, background knowledge and personal preferences</li>
+          <li data-zh='<b>Dino Agent 多入口记忆机制 + 三入口设计</b><span class="p0">P0</span>：引用上次学习信息形成双向记忆，区分 Dino / Explore / Class 三入口定位与 prompt'><b>Dino multi-entry memory + three-intent design</b><span class="p0">P0</span>: recalls the last lesson into two-way memory; distinct positioning and prompts for the Dino / Explore / Class entries</li>
           <li data-zh='<b>Bugfix：Chat with Dino 多语言输出</b><span class="p0">P0</span>：按用户偏好语言对话、修复多语言混杂与语法问题'><b>Bugfix: Chat with Dino multilingual output</b><span class="p0">P0</span>: converse in the user&#39;s preferred language, fixing mixed-language and grammar issues</li>
-          <li data-zh='<b>对话工程新增：三种定位 + Class 入口新对话设计</b><span class="p1">P1</span>'><b>Conversation engineering: three intents + a new Class-entry dialogue</b><span class="p1">P1</span></li>
           <li data-zh='<b>麦克风由长按改为点两次</b><span class="p1">P1</span>：一点开始录音、二点结束'><b>Mic long-press → double-tap</b><span class="p1">P1</span>: first tap starts recording, second stops</li>
           <li data-zh='<b>首页 Dino 对话付费机制与付费引导</b><span class="p2">P2</span>'><b>Home Dino chat paywall & upsell</b><span class="p2">P2</span></li>
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · Class 课程 · 课中体验打磨'>Requirements · Class & in-class polish</h4>
+        <h4 data-zh='需求 · 转化 · Onboarding'>Requirements · conversion & onboarding</h4>
         <ul>
-          <li data-zh='<b>作答等待时间加长</b><span class="p0">P0</span>：长句跟读 / 开放问题不再被过早打断'><b>Longer answer windows</b><span class="p0">P0</span>: long-sentence repeats / open questions no longer cut off early</li>
-          <li data-zh='<b>静默与打断冲突处理</b><span class="p0">P0</span>：静默触发与用户说话时序冲突导致回复错乱'><b>Silence / interruption conflict handling</b><span class="p0">P0</span>: fixing garbled replies when a silence trigger races with the user speaking</li>
-          <li data-zh='<b>金币激励声音优化</b><span class="p0">P0</span>：缩短动效过渡，不打断心流'><b>Coin-reward sound polish</b><span class="p0">P0</span>: shorter transitions between effects, no flow-breaking</li>
-          <li data-zh='<b>UI 按键大小调整</b><span class="p0">P0</span>：微小按钮（发音喇叭等）三端适配'><b>Button sizing adjustments</b><span class="p0">P0</span>: tiny buttons (pronunciation speaker etc.) adapted across three platforms</li>
+          <li data-zh='<b>转化链路整体重排</b><span class="p0">P0</span>：首启价值页 → 登录前置 → 3 题 onboarding → 计划画饼 → 双轮 Paywall → 引导式体验课'><b>Full conversion-funnel rework</b><span class="p0">P0</span>: value pitch → login-first → 3-question onboarding → plan teaser → two-round paywall → guided trial lesson</li>
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · Class 课程 · 内容工具'>Requirements · Class & content tools</h4>
+        <h4 data-zh='需求 · Class 课程 · 课中与内容'>Requirements · Class, in-class & content</h4>
         <ul>
+          <li data-zh='<b>更新选图听音模版</b><span class="p0">P0</span>：练习音素发音的教学模版'><b>Updated picture-listening template</b><span class="p0">P0</span>: a teaching template for phoneme-pronunciation practice</li>
+          <li data-zh='<b>作答等待时间加长</b><span class="p0">P0</span>：长句跟读 / 开放问题不再被过早打断'><b>Longer answer windows</b><span class="p0">P0</span>: long-sentence repeats / open questions no longer cut off early</li>
+          <li data-zh='<b>新增带新手引导的体验课</b><span class="p0">P0</span>'><b>New guided trial lesson</b><span class="p0">P0</span></li>
           <li data-zh='<b>增加课程升降级逻辑</b><span class="p1">P1</span>：控制成本'><b>Course level up/down logic</b><span class="p1">P1</span>: cost control</li>
-          <li data-zh='<b>CMS 课程生产平台</b><span class="p1">P1</span>：导入大纲 / lesson plan 配置 / prompt 配置 / 资源配置，二期批量产课 + 个性化组课'><b>CMS lesson-production platform</b><span class="p1">P1</span>: outline import / lesson-plan / prompt / asset configuration; phase 2 adds batch production + personalized assembly</li>
         </ul>
       </div>
       <div class="block">
         <h4 data-zh='需求 · Play / Explore'>Requirements · Play / Explore</h4>
         <ul>
-          <li data-zh='<b>盲盒机 & 单词 PK 增加题型</b><span class="p1">P1</span>：听音选图 / 看图选词'><b>Gacha machine & word PK gain question types</b><span class="p1">P1</span>: listen-and-pick / see-the-picture-pick-the-word</li>
-          <li data-zh='<b>FM 播放逻辑调整</b><span class="p1">P1</span>：退出 FM 即停止音频，取消后台续播'><b>FM playback logic change</b><span class="p1">P1</span>: audio stops on exiting FM, no more background playback</li>
+          <li data-zh='<b>盲盒机 & 单词 / 口语 PK 增加题型</b><span class="p1">P1</span>：听音选图 / 看图选词，增加答题反馈'><b>Gacha & word / speaking PK gain question types</b><span class="p1">P1</span>: listen-and-pick / see-the-picture-pick-the-word, with answer feedback</li>
+          <li data-zh='<b>FM 播放逻辑调整</b><span class="p2">P2</span>：改为跨页面后台悬浮播放，切到其他页面继续播'><b>FM playback logic change</b><span class="p2">P2</span>: switch to cross-page background floating playback that continues on other pages</li>
         </ul>
       </div>
       <div class="block dep">
@@ -858,8 +856,8 @@ section[id],.node[id]{scroll-margin-top:64px}
     <div class="node-sub" data-zh='品牌切换 · 对话进化'>Rebrand · chat evolution</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='品牌切换 · 对话进化 · 教学模版体系化<span class="tag">迭代版</span>'>Rebrand · chat evolution · template library<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移方案、对话流式输出、分 level 模版整理与 trace 字母、Prompt Forge eval agent、恢复课程内 Dino 求助键。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，升级长期学习体验。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration plan, streaming chat output, level-based template reorganization plus letter-tracing, a Prompt Forge eval agent, and restoring the in-lesson Dino help button.<br/><b>Value</b>: a unified brand, smooth migration of paying users, a stronger long-term learning experience. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='品牌切换 · 对话进化 · 教学模版与课中打磨<span class="tag">迭代版</span>'>Rebrand · chat evolution · templates & in-class polish<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化 + 课中体验打磨。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移；对话流式输出；分 level 模版整理、trace 字母、Prompt Forge eval agent 与 CMS / prompt eval 平台；金币 / 开宝箱 / 头像框 / 按键等课中 UI 与静默冲突打磨；登录方式按地区排序、各 Tab 常驻会员入口。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，体系化教学内容并打磨课堂体验与转化触点。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library + in-class polish.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration; streaming chat output; level-based template reorganization, letter-tracing, a Prompt Forge eval agent and the CMS / prompt-eval platforms; in-class UI polish on coins / treasure box / avatar frame / buttons plus silence-conflict handling; region-ordered login methods and a persistent membership entry on each tab.<br/><b>Value</b>: a unified brand, smooth migration of paying users, systematized teaching content, and a more polished classroom experience with stronger conversion touchpoints. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · 整体 App · 品牌与迁移'>Requirements · app-wide, brand & migration</h4>
@@ -869,19 +867,39 @@ section[id],.node[id]{scroll-margin-top:64px}
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · Dino Agent · 首页对话'>Requirements · Dino Agent & home chat</h4>
+        <h4 data-zh='需求 · Class 课程 · 课中 UI 与体验'>Requirements · Class, in-class UI & experience</h4>
         <ul>
-          <li data-zh='<b>Dino 对话改造：流式输出</b><span class="p2">P2</span>'><b>Dino chat revamp: streaming output</b><span class="p2">P2</span></li>
+          <li data-zh='<b>金币激励声音优化</b><span class="p0">P0</span>：缩短动效过渡，不打断心流'><b>Coin-reward sound polish</b><span class="p0">P0</span>: shorter transitions between effects, no flow-breaking</li>
+          <li data-zh='<b>金币奖励出现 UI 效果</b><span class="p0">P0</span>'><b>Coin-reward reveal UI effect</b><span class="p0">P0</span></li>
+          <li data-zh='<b>开宝箱反馈页设计优化</b><span class="p0">P0</span>：黑屏变紫屏'><b>Treasure-box feedback page redesign</b><span class="p0">P0</span>: black screen → purple screen</li>
+          <li data-zh='<b>头像框设计优化</b><span class="p0">P0</span>'><b>Avatar-frame design polish</b><span class="p0">P0</span></li>
+          <li data-zh='<b>UI 按键大小调整</b><span class="p0">P0</span>：微小按钮（发音喇叭等）三端适配'><b>Button sizing adjustments</b><span class="p0">P0</span>: tiny buttons (pronunciation speaker etc.) adapted across three platforms</li>
+          <li data-zh='<b>静默与打断冲突处理</b><span class="p0">P0</span>：静默触发与用户说话时序冲突导致回复错乱'><b>Silence / interruption conflict handling</b><span class="p0">P0</span>: fixing garbled replies when a silence trigger races with the user speaking</li>
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · Class 课程 · 教学模版'>Requirements · Class & teaching templates</h4>
+        <h4 data-zh='需求 · Class 课程 · 教学模版与内容工具'>Requirements · Class, templates & content tools</h4>
         <ul>
+          <li data-zh='<b>CMS 课程生产平台</b><span class="p0">P0</span>：导入大纲 / lesson plan / prompt / 资源配置，二期批量产课 + 个性化组课'><b>CMS lesson-production platform</b><span class="p0">P0</span>: outline import / lesson-plan / prompt / asset configuration; phase 2 adds batch production + personalized assembly</li>
+          <li data-zh='<b>prompt eval 平台</b><span class="p0">P0</span>：6 节体验课与主题课 prompt 自动化优化'><b>Prompt-eval platform</b><span class="p0">P0</span>: automated prompt tuning for the 6 trial lessons and theme lessons</li>
           <li data-zh='<b>正课教学模版分 level 整理</b><span class="p1">P1</span>：分 level 整理全部模版 prompt、优化教学规则与动作'><b>Reorganize lesson templates by level</b><span class="p1">P1</span>: sort all template prompts by level, refine teaching rules & motions</li>
           <li data-zh='<b>新增 trace 字母教学模版</b><span class="p1">P1</span>：练习字母写法'><b>New letter-tracing template</b><span class="p1">P1</span>: practice letter forms</li>
           <li data-zh='<b>Prompt Forge 管台优化：eval agent</b><span class="p1">P1</span>：评估三层 prompt 的基础冲突问题'><b>Prompt Forge console: eval agent</b><span class="p1">P1</span>: catch base conflicts across the three prompt layers</li>
           <li data-zh='<b>恢复课程中 Dino 求助按键</b><span class="p1">P1</span>'><b>Restore the in-lesson Dino help button</b><span class="p1">P1</span></li>
           <li data-zh='<b>写作课教学模版优化</b><span class="p2">P2</span>'><b>Writing-lesson template tuning</b><span class="p2">P2</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · 会员 / 登录 · 转化'>Requirements · membership / login & conversion</h4>
+        <ul>
+          <li data-zh='<b>各 Tab 页常驻会员入口</b><span class="p1">P1</span>：面向非会员'><b>Persistent membership entry on each tab</b><span class="p1">P1</span>: for non-members</li>
+          <li data-zh='<b>按国家 / 地区自动排序登录方式</b><span class="p1">P1</span>：依手机系统地区'><b>Auto-order login methods by country / region</b><span class="p1">P1</span>: driven by the phone system region</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · Dino Agent · 首页对话'>Requirements · Dino Agent & home chat</h4>
+        <ul>
+          <li data-zh='<b>Dino 对话改造：流式输出</b><span class="p2">P2</span>'><b>Dino chat revamp: streaming output</b><span class="p2">P2</span></li>
         </ul>
       </div>
     </div>
