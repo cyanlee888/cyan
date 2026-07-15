@@ -7,21 +7,22 @@
   <!-- DESIGN.md · PRD V1.4.1 · builds on V1.4.0 (course up/down leveling — split out of V1.4.0); baseline keeps win-back discount · year+month paywall · dino home guidance · portrait paywall · explore nudge · backpack figure IP/series · Kakao phone binding -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --forest-deep: #143d2a;
-      --forest-mid: #2d6b45;
-      --forest-light: #a8e6cf;
-      --forest-mist: #d4f8ec;
+      --forest-deep: #8a3d0e;
+      --forest-mid: #fe8820;
+      --forest-light: #ffd7ad;
+      --forest-mist: #ffedd8;
       --surface: #fffbf8;
       --surface-elevated: #ffffff;
       --ink: #1a2420;
       --ink-muted: #4a5f54;
       --accent-live: #ea6c25;
-      --border: #c5ddd2;
-      --font: "DM Sans", system-ui, sans-serif;
-      --display: "Sora", system-ui, sans-serif;
+      --border: #f0dcc6;
+      --font: "Nunito", system-ui, sans-serif;
+      --display: "Fredoka", system-ui, sans-serif;
+      --cta-grad: linear-gradient(180deg, #fcb141, #fe8f26);
       --radius-md: 18px;
       --radius-pill: 9999px;
       --ease: cubic-bezier(0.22, 1, 0.36, 1);
@@ -133,7 +134,7 @@
     }
     .progress-bar {
       height: 3px;
-      background: #e8efe9;
+      background: #f4e7d6;
       margin: 10px 20px 0;
       border-radius: 3px;
       overflow: hidden;
@@ -196,10 +197,11 @@
       transform: none;
     }
     .btn-primary {
-      background: var(--forest-mid);
+      background: var(--cta-grad);
       color: #fff;
+      box-shadow: 0 6px 16px rgba(254,136,32,0.34);
     }
-    .btn-primary:hover { background: #255a38; }
+    .btn-primary:hover { background: linear-gradient(180deg, #ffbe5c, #ff9a34); }
     .btn-text {
       background: transparent;
       color: var(--forest-mid);
@@ -301,7 +303,7 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: rgba(20,61,42,0.2);
+      background: rgba(122,59,18,0.2);
       transition: width 0.25s, background 0.25s;
     }
     .carousel-dots span.on {
@@ -349,7 +351,7 @@
       border-radius: 20px;
       padding: 18px 20px;
       max-width: 320px;
-      box-shadow: 0 8px 24px rgba(20,61,42,0.08);
+      box-shadow: 0 8px 24px rgba(122,59,18,0.08);
     }
     .speech-bubble::before {
       content: "";
@@ -417,7 +419,7 @@
     .name-field:focus {
       outline: none;
       border-color: var(--forest-mid);
-      box-shadow: 0 0 0 3px rgba(45,107,69,0.12);
+      box-shadow: 0 0 0 3px rgba(254,136,32,0.12);
     }
     .name-field.is-error {
       border-color: #e5484d;
@@ -439,7 +441,7 @@
       height: 88px;
       margin-bottom: 28px;
     }
-    .progress-ring circle.track { stroke: #e8efe9; }
+    .progress-ring circle.track { stroke: #f4e7d6; }
     .progress-ring circle.fill {
       stroke: var(--forest-mid);
       stroke-linecap: round;
@@ -493,7 +495,7 @@
     .option-btn.selected {
       border-color: var(--forest-mid);
       background: #f4fbf7;
-      box-shadow: 0 4px 20px rgba(45,107,69,0.1);
+      box-shadow: 0 4px 20px rgba(254,136,32,0.1);
     }
     .option-btn.selected::before { background: var(--forest-mid); }
     .value-card {
@@ -1565,11 +1567,11 @@
       border-radius: 10px;
     }
     .lang-option:hover { background: #f1f6f2; }
-    .lang-option.is-selected { color: #2d6b45; font-weight: 600; }
+    .lang-option.is-selected { color: #17b1a1; font-weight: 600; }
     .lang-option .lang-check {
       width: 18px;
       height: 18px;
-      color: #2d6b45;
+      color: #17b1a1;
       opacity: 0;
       flex-shrink: 0;
     }
@@ -3736,7 +3738,7 @@
     .rotate-hint {
       position: absolute;
       inset: 0;
-      background: rgba(20,61,42,0.94);
+      background: rgba(122,59,18,0.94);
       color: #fff;
       display: none;
       flex-direction: column;
@@ -4390,7 +4392,7 @@
     }
     .play-card:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0,0,0,0.22); }
     .pc-capsule { background: linear-gradient(135deg, #ff9a4d, #ea6c25); }
-    .pc-word { background: linear-gradient(135deg, #5cb87a, #2d6b45); }
+    .pc-word { background: linear-gradient(135deg, #5cb87a, #17b1a1); }
     .pc-speak { background: linear-gradient(135deg, #8b7bff, #4a39c7); }
     .play-card .pc-emoji { font-size: 2.1rem; }
     .play-card .pc-title { font-family: var(--display); font-weight: 700; font-size: 1.05rem; }
@@ -4485,8 +4487,8 @@
     .scene-cloud.c1 { width: 52px; top: 24px; left: 28px; }
     .scene-cloud.c2 { width: 38px; top: 48px; left: 86px; }
     .dino-stage { position: relative; z-index: 2; text-align: center; padding-bottom: 14px; }
-    .dino-stage img { width: clamp(110px, 20vw, 160px); height: auto; filter: drop-shadow(0 14px 14px rgba(20,61,42,0.28)); }
-    .dino-name-tag { display: inline-block; margin-top: 2px; background: rgba(20,61,42,0.82); color: #fff;
+    .dino-stage img { width: clamp(110px, 20vw, 160px); height: auto; filter: drop-shadow(0 14px 14px rgba(122,59,18,0.28)); }
+    .dino-name-tag { display: inline-block; margin-top: 2px; background: rgba(122,59,18,0.82); color: #fff;
       font-weight: 700; font-size: 0.72rem; padding: 3px 12px; border-radius: 999px; }
     .dino-side { flex: 0.95; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
     .xp-card { background: linear-gradient(135deg, var(--xp-2), var(--xp-deep)); color: #fff; border-radius: 18px;
@@ -4500,7 +4502,7 @@
     .dino-entries { flex: 1; min-height: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-content: start; }
     .dino-entry { border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 9px 11px;
       cursor: pointer; display: flex; align-items: center; gap: 9px; transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease); }
-    .dino-entry:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(20,61,42,0.12); }
+    .dino-entry:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(122,59,18,0.12); }
     .de-ico { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; flex-shrink: 0; font-size: 1.1rem; }
     .de-shop { background: linear-gradient(135deg, var(--gold-1), var(--gold-2)); }
     .de-bag { background: linear-gradient(135deg, #c3b8ff, #8b7bff); }
@@ -4514,7 +4516,7 @@
     .dino-mini-entries { display: flex; align-items: center; gap: 8px; }
     .dino-greet-bubble { align-self: center; position: relative; z-index: 3;
       background: #fff; color: var(--ink); border-radius: 18px 18px 18px 4px; padding: 11px 16px; text-align: left;
-      font-weight: 700; font-size: 0.9rem; line-height: 1.45; box-shadow: 0 10px 22px rgba(20,61,42,0.18); max-width: 52%; }
+      font-weight: 700; font-size: 0.9rem; line-height: 1.45; box-shadow: 0 10px 22px rgba(122,59,18,0.18); max-width: 52%; }
     .dino-greet-bubble::after { content: ""; position: absolute; left: -6px; bottom: 14px; width: 14px; height: 14px;
       background: #fff; transform: rotate(45deg); border-radius: 0 0 0 4px; }
 
@@ -4525,30 +4527,30 @@
     .dchat-bg { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
     .dchat-ground { position: absolute; left: -10%; right: -10%; bottom: -40px; height: 120px; border-radius: 50% 50% 0 0; background: #7bc89b; opacity: 0.5; }
     .dchat-close { position: absolute; top: 12px; left: 14px; z-index: 6; width: 40px; height: 40px; border-radius: 50%;
-      border: none; background: rgba(255,255,255,0.92); color: var(--ink); cursor: pointer; box-shadow: 0 6px 14px rgba(20,61,42,0.18);
+      border: none; background: rgba(255,255,255,0.92); color: var(--ink); cursor: pointer; box-shadow: 0 6px 14px rgba(122,59,18,0.18);
       display: grid; place-items: center; }
     .dchat-close svg { width: 18px; height: 18px; }
     .dchat-stage { position: relative; z-index: 2; flex: 1; min-height: 0; display: flex; align-items: stretch; gap: 6px; padding: 10px 18px 0 12px; }
     .dchat-dino { flex: 0 0 32%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; padding-bottom: 4px; }
-    .dchat-dino img { width: auto; max-width: 100%; height: auto; max-height: 68%; filter: drop-shadow(0 14px 16px rgba(20,61,42,0.28)); animation: dchatbob 3.2s ease-in-out infinite; }
+    .dchat-dino img { width: auto; max-width: 100%; height: auto; max-height: 68%; filter: drop-shadow(0 14px 16px rgba(122,59,18,0.28)); animation: dchatbob 3.2s ease-in-out infinite; }
     @keyframes dchatbob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-    .dchat-dino-tag { background: rgba(20,61,42,0.82); color: #fff; border-radius: 999px; padding: 4px 14px; font-size: 0.72rem; font-weight: 800; }
+    .dchat-dino-tag { background: rgba(122,59,18,0.82); color: #fff; border-radius: 999px; padding: 4px 14px; font-size: 0.72rem; font-weight: 800; }
     .dchat-log { flex: 1; min-width: 0; overflow-y: auto; padding: 44px 4px 8px;
       display: flex; flex-direction: column; gap: 10px; scrollbar-width: none; }
     .dchat-log::-webkit-scrollbar { display: none; }
     .dmsg { display: flex; gap: 8px; max-width: 84%; align-items: flex-end; }
     .dmsg-dino { align-self: flex-start; }
     .dmsg-you { align-self: flex-end; flex-direction: row-reverse; }
-    .dmsg-ava { width: 30px; height: 30px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.05rem; flex-shrink: 0; box-shadow: 0 4px 8px rgba(20,61,42,0.15); }
-    .dmsg-bubble { border-radius: 18px; padding: 11px 15px; font-size: 0.92rem; line-height: 1.5; font-weight: 600; box-shadow: 0 6px 14px rgba(20,61,42,0.12); animation: gpop 0.25s var(--ease); }
+    .dmsg-ava { width: 30px; height: 30px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.05rem; flex-shrink: 0; box-shadow: 0 4px 8px rgba(122,59,18,0.15); }
+    .dmsg-bubble { border-radius: 18px; padding: 11px 15px; font-size: 0.92rem; line-height: 1.5; font-weight: 600; box-shadow: 0 6px 14px rgba(122,59,18,0.12); animation: gpop 0.25s var(--ease); }
     .dmsg-dino .dmsg-bubble { background: #fff; color: var(--ink); border-bottom-left-radius: 5px; }
     .dmsg-you .dmsg-bubble { background: linear-gradient(135deg, var(--forest-mid), var(--forest-deep)); color: #fff; border-bottom-right-radius: 5px; }
-    .dmsg-play { border: none; background: rgba(45,107,69,0.12); color: var(--forest-deep); border-radius: 999px; cursor: pointer; font-size: 0.78rem; padding: 2px 8px; margin-left: 6px; }
+    .dmsg-play { border: none; background: rgba(254,136,32,0.12); color: var(--forest-deep); border-radius: 999px; cursor: pointer; font-size: 0.78rem; padding: 2px 8px; margin-left: 6px; }
     .dchat-input { position: relative; z-index: 4; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 7px;
       padding: 8px 0 14px; background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,0.55)); }
     .dchat-suggest { display: flex; justify-content: center; min-height: 30px; }
     .dchat-chip { border: none; cursor: pointer; border-radius: 999px; padding: 7px 16px; font-family: var(--font); font-size: 0.8rem; font-weight: 700;
-      background: rgba(255,255,255,0.92); color: var(--forest-deep); box-shadow: 0 6px 14px rgba(20,61,42,0.14); transition: transform 0.14s var(--ease); }
+      background: rgba(255,255,255,0.92); color: var(--forest-deep); box-shadow: 0 6px 14px rgba(122,59,18,0.14); transition: transform 0.14s var(--ease); }
     .dchat-chip:hover { transform: translateY(-1px); }
     .dchat-mic { width: 76px; height: 76px; border-radius: 50%; border: none; cursor: pointer; font-size: 2rem; color: #fff;
       background: linear-gradient(135deg, #ff8a4d, #ea5c25); box-shadow: 0 14px 30px rgba(234,92,37,0.42), 0 0 0 8px rgba(255,255,255,0.35); transition: transform 0.14s var(--ease); }
@@ -4621,7 +4623,7 @@
     .coin-short-card .cs-sub { font-size: 0.85rem; opacity: 0.9; margin: 4px 0 16px; }
     .coin-short-card .gbtn { display: block; margin: 8px auto 0; min-width: 220px; }
     /* V1.3.0 capsule: quiz-only entry screen (5 questions per round) */
-    .cap-quiz-card--solo { flex: none; width: min(86%, 520px); margin: 0 auto; box-shadow: 0 14px 32px rgba(20,61,42,0.1); }
+    .cap-quiz-card--solo { flex: none; width: min(86%, 520px); margin: 0 auto; box-shadow: 0 14px 32px rgba(122,59,18,0.1); }
     .cap-round-progress { margin-top: 6px; display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; }
     /* Result page reuses the quiz progress bar; give it a little breathing room and a cap width. */
     .capr-progress { width: min(280px, 86%); margin: 2px auto 8px; }
@@ -4702,7 +4704,7 @@
     @keyframes cprFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-10px) rotate(3deg); } }
     /* V1.3.0 PK matchmaking screen (2s rival search) */
     .pkm-card { width: min(70%, 440px); background: #fff; border-radius: 22px; padding: 22px; text-align: center;
-      box-shadow: 0 18px 40px rgba(20,61,42,0.14); border: 1px solid var(--border); }
+      box-shadow: 0 18px 40px rgba(122,59,18,0.14); border: 1px solid var(--border); }
     .pkm-status { font-family: var(--display); font-weight: 800; font-size: 0.95rem; color: var(--ink); margin-bottom: 14px; }
     .pkm-row { display: flex; align-items: center; justify-content: center; gap: 22px; margin-bottom: 12px; }
     .pkm-row .pk-ava { width: 56px; height: 56px; font-size: 1.8rem; }
@@ -4738,7 +4740,7 @@
     .pk-score { display: flex; align-items: center; justify-content: center; gap: 16px; }
     .pk-player { text-align: center; }
     .pk-ava { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-size: 1.5rem; margin: 0 auto 4px; }
-    .pk-ava.me { background: linear-gradient(135deg, #a8e6cf, #5cb87a); }
+    .pk-ava.me { background: linear-gradient(135deg, #a6ebe3, #5cb87a); }
     .pk-ava.op { background: linear-gradient(135deg, #ffd0a8, #ff9a4d); }
     .pk-player .pk-pts { font-family: var(--display); font-weight: 800; font-size: 1.4rem; color: var(--ink); }
     .pk-player .pk-nm { font-size: 0.66rem; color: var(--ink-muted); }
@@ -4773,7 +4775,7 @@
     #screen-speakpk .game-top h2, #screen-speakpk .game-top-spacer { display: none; }
     #screen-speakpk .game-back { width: 38px; height: 38px; padding: 0; font-size: 0; border-radius: 999px;
       background: rgba(255, 255, 255, 0.92); display: grid; place-items: center; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18); }
-    #screen-speakpk .game-back::before { font-size: 1.1rem; color: #1d5c3f; }
+    #screen-speakpk .game-back::before { font-size: 1.1rem; color: #0f8f81; }
     #screen-speakpk .game-body { position: relative; overflow: hidden; display: flex; flex-direction: column;
       align-items: center; justify-content: flex-start; padding: 44px 18px 10px; }
     #screen-speakpk .pk-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100%; height: auto; margin: auto 0; }
@@ -4936,7 +4938,7 @@
 
     /* ---- Settle / PK result ---- */
     .settle-card { width: min(70%, 460px); background: #fff; border-radius: 22px; padding: 18px 22px; text-align: center;
-      box-shadow: 0 18px 40px rgba(20,61,42,0.18); border: 1px solid var(--border); }
+      box-shadow: 0 18px 40px rgba(122,59,18,0.18); border: 1px solid var(--border); }
     .settle-burst { width: 60px; height: 60px; margin: 0 auto 8px; border-radius: 50%; display: grid; place-items: center; font-size: 1.9rem;
       background: radial-gradient(circle at 40% 30%, #fff2b0, #ffd84d 70%, #ffc01f); box-shadow: 0 0 26px rgba(255,200,40,0.5); animation: gpop 0.5s var(--ease); }
     .settle-card h2 { font-family: var(--display); font-size: 1.1rem; margin-bottom: 3px; color: var(--ink); }
@@ -4984,7 +4986,7 @@
       background: radial-gradient(120% 90% at 50% 0%, #eafff5, #cdf3e3 70%, #a6e4c8);
       display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
     .preview-dino { text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .preview-dino img { width: clamp(80px, 13vw, 120px); filter: drop-shadow(0 10px 12px rgba(20,61,42,0.25)); }
+    .preview-dino img { width: clamp(80px, 13vw, 120px); filter: drop-shadow(0 10px 12px rgba(122,59,18,0.25)); }
     .preview-dino .pv-label { margin-top: 6px; font-size: 0.68rem; color: var(--forest-mid); font-weight: 600; }
     .seg-tabs { display: flex; gap: 6px; margin-bottom: 8px; flex-shrink: 0; }
     .seg-tab { border: 1px solid var(--border); background: #fff; color: var(--ink-muted); font-family: var(--font);
@@ -5005,7 +5007,7 @@
     .shop-item .si-price { display: inline-flex; align-items: center; gap: 3px; font-size: 0.66rem; font-weight: 700; color: #8a5a00; margin-top: 3px; }
     .shop-item .si-price .coin-ico { width: 12px; height: 12px; }
     .shop-item .si-tag { position: absolute; top: 5px; left: 5px; font-size: 0.52rem; font-weight: 700; color: #fff;
-      padding: 2px 6px; border-radius: 999px; background: rgba(20,61,42,0.55); }
+      padding: 2px 6px; border-radius: 999px; background: rgba(122,59,18,0.55); }
     .shop-item .si-own { position: absolute; top: 5px; right: 5px; font-size: 0.78rem; }
     .buy-row { margin-top: 10px; flex-shrink: 0; }
     .side-shop-link { width: 100%; }
@@ -5140,7 +5142,7 @@
 
     /* ---- Game toast + level-up overlay ---- */
     .g-toast { position: absolute; left: 50%; top: 14px; transform: translateX(-50%) translateY(-20px);
-      background: rgba(20,61,42,0.94); color: #fff; padding: 9px 18px; border-radius: 999px; font-size: 0.78rem;
+      background: rgba(122,59,18,0.94); color: #fff; padding: 9px 18px; border-radius: 999px; font-size: 0.78rem;
       font-weight: 600; z-index: 60; opacity: 0; pointer-events: none; transition: all 0.32s var(--ease); }
     .g-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .levelup { position: absolute; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center;
@@ -5372,7 +5374,7 @@
 
     /* ---------- Learning Path (Level → Unit map, V1.3.0) ---------- */
     #screen-course-map { padding: 0; }
-    .course-map-shell { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(160deg, #143a5e 0%, #1d5c8f 55%, #2d6b45 130%); padding: 16px 22px 18px; }
+    .course-map-shell { position: absolute; inset: 0; display: flex; flex-direction: column; background: linear-gradient(160deg, #143a5e 0%, #1d5c8f 55%, #17b1a1 130%); padding: 16px 22px 18px; }
     .course-map-head { display: flex; align-items: center; gap: 12px; flex-shrink: 0; margin-bottom: 12px; }
     .course-map-title { font-family: var(--display); font-size: 1.05rem; font-weight: 800; color: #fff; }
     .course-map-here { margin-left: auto; font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.14); border-radius: 999px; padding: 6px 12px; white-space: nowrap; }
@@ -5395,10 +5397,10 @@
     .cm-unit-info span { display: block; font-size: 0.72rem; color: var(--ink-muted); margin-top: 2px; }
     .cm-unit-info .cm-unit-goal { color: var(--forest-deep); font-weight: 700; }
     .cm-unit-progress { flex-shrink: 0; text-align: right; }
-    .cm-unit-progress .cm-bar { width: 96px; height: 7px; border-radius: 999px; background: rgba(20,61,42,0.12); overflow: hidden; margin-bottom: 4px; }
+    .cm-unit-progress .cm-bar { width: 96px; height: 7px; border-radius: 999px; background: rgba(122,59,18,0.12); overflow: hidden; margin-bottom: 4px; }
     .cm-unit-progress .cm-bar i { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #ffe48f, #ffb43b); }
     .cm-unit-progress em { font-style: normal; font-size: 0.66rem; font-weight: 700; color: var(--ink-muted); }
-    .cm-unit-cta { flex-shrink: 0; border: none; border-radius: 999px; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: var(--font); background: linear-gradient(135deg, var(--forest-mid), var(--forest-deep)); color: #fff; box-shadow: 0 8px 16px rgba(20,61,42,0.3); }
+    .cm-unit-cta { flex-shrink: 0; border: none; border-radius: 999px; padding: 9px 16px; font-size: 0.78rem; font-weight: 800; cursor: pointer; font-family: var(--font); background: linear-gradient(135deg, var(--forest-mid), var(--forest-deep)); color: #fff; box-shadow: 0 8px 16px rgba(122,59,18,0.3); }
     .cm-unit-cta--ghost { background: rgba(20,58,94,0.08); color: #57738f; box-shadow: none; }
     .cm-unit-cta--locked { background: rgba(20,58,94,0.06); color: #93a0ad; box-shadow: none; }
     /* Member: unit opens later on the weekly schedule (calendar tone, not a hard lock). */
@@ -5425,7 +5427,7 @@
 
     /* ---------- Study Plan (weekly plan preview from trial report → paywall) ---------- */
     #screen-study-plan { padding: 0; }
-    .study-plan-shell { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 11px; padding: 13px 18px 0; background: linear-gradient(165deg, #143a5e 0%, #1d5c8f 52%, #2d6b45 130%); overflow-y: auto; overflow-x: hidden; }
+    .study-plan-shell { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 11px; padding: 13px 18px 0; background: linear-gradient(165deg, #143a5e 0%, #1d5c8f 52%, #17b1a1 130%); overflow-y: auto; overflow-x: hidden; }
     .study-plan-head { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .study-plan-eyebrow { margin-left: auto; font-size: 0.72rem; font-weight: 800; color: #fff; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 13px; white-space: nowrap; }
     /* layered plan scaffold */
@@ -5441,7 +5443,7 @@
     .sp-endpoint { display: flex; align-items: flex-start; gap: 9px; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 12px; padding: 8px 11px; }
     .sp-endpoint .sp-ep-emoji { font-size: 1.05rem; line-height: 1.3; }
     .sp-endpoint p { font-size: 0.72rem; color: #eaf6ef; line-height: 1.4; }
-    .sp-endpoint b { color: #bff0d2; }
+    .sp-endpoint b { color: #bff0ea; }
     /* layer 2 · rhythm */
     .week-plan--plan { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; padding: 8px 12px 10px; }
     .week-plan--plan .week-plan-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
@@ -5488,7 +5490,7 @@
     .sp-unit-top { display: flex; align-items: center; gap: 8px; }
     .sp-unit-theme { font-size: 0.74rem; font-weight: 800; color: #fff; min-width: 0; }
     .sp-unit-status { margin-left: auto; font-size: 0.55rem; font-weight: 800; border-radius: 999px; padding: 2px 8px; white-space: nowrap; flex-shrink: 0; }
-    .st-done { background: rgba(123,214,160,0.22); color: #bff0d2; }
+    .st-done { background: rgba(123,214,160,0.22); color: #bff0ea; }
     .st-current { background: #ffe9bd; color: #8a5a12; }
     .st-soon { background: rgba(255,255,255,0.14); color: rgba(255,255,255,0.85); }
     .st-far { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); }
@@ -5500,7 +5502,7 @@
     .sp-unit-lesson { font-size: 0.62rem; color: rgba(255,255,255,0.82); display: flex; gap: 7px; align-items: center; }
     .sp-unit-lesson i { width: 15px; height: 15px; border-radius: 50%; background: rgba(255,255,255,0.14); display: grid; place-items: center; font-size: 0.5rem; font-style: normal; flex-shrink: 0; color: #fff; }
     .sp-milestone { display: flex; align-items: center; gap: 7px; margin: 0 0 8px 36px; font-size: 0.62rem; font-weight: 700; color: #ffe0a3; background: rgba(255,224,163,0.1); border: 1px dashed rgba(255,224,163,0.35); border-radius: 9px; padding: 5px 9px; }
-    .sp-endpoint-final { display: flex; align-items: center; gap: 8px; margin: 2px 0 0; font-size: 0.72rem; font-weight: 800; color: #bff0d2; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 12px; padding: 9px 12px; }
+    .sp-endpoint-final { display: flex; align-items: center; gap: 8px; margin: 2px 0 0; font-size: 0.72rem; font-weight: 800; color: #bff0ea; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 12px; padding: 9px 12px; }
     /* Sticky unlock bar (Req5): floats at the bottom of the scroll area so the CTA is
        always visible without scrolling to the very end. Negative side margins let the
        fade span the full width; the gradient fades content scrolling underneath. */
@@ -5512,7 +5514,7 @@
     .sp-hero-title { font-family: var(--display); font-size: 1.08rem; font-weight: 800; color: #fff; line-height: 1.15; }
     .sp-hero-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
     .sp-hero-goal { font-size: 0.72rem; color: #eaf6ef; line-height: 1.4; background: rgba(123,214,160,0.16); border: 1px solid rgba(123,214,160,0.4); border-radius: 11px; padding: 8px 11px; }
-    .sp-hero-goal b { color: #bff0d2; }
+    .sp-hero-goal b { color: #bff0ea; }
     /* Hero journey chart: current level → (months) → goal */
     .sp-hero-cap { font-family: var(--display); font-size: 1rem; font-weight: 800; color: #fff; line-height: 1.15; }
     /* Page main title ({name}'s English Journey) + CEFR-aligned current → goal cards */
@@ -5524,7 +5526,7 @@
     .sp-jnode { flex: 1; min-width: 0; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 14px; padding: 10px 8px; text-align: center; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
     .sp-jnode--goal { background: rgba(123,214,160,0.18); border-color: rgba(123,214,160,0.45); }
     .sp-jnode-tag { font-size: 0.56rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.66); }
-    .sp-jnode--goal .sp-jnode-tag { color: #bff0d2; }
+    .sp-jnode--goal .sp-jnode-tag { color: #bff0ea; }
     .sp-jnode-lvl { font-family: var(--display); font-size: 0.92rem; font-weight: 800; color: #fff; line-height: 1.12; }
     .sp-jnode-cefr { font-size: 0.6rem; color: rgba(255,255,255,0.82); }
     .sp-jlink { flex: 0 0 46px; display: flex; align-items: center; justify-content: center; }
@@ -5544,7 +5546,7 @@
     .sp-value-sub { font-size: 0.66rem; color: rgba(255,255,255,0.78); margin-top: 3px; line-height: 1.35; }
     .sp-value-card.is-goal { background: rgba(123,214,160,0.16); border-color: rgba(123,214,160,0.4); }
     .sp-value-card.is-goal .sp-value-ico { background: rgba(123,214,160,0.22); }
-    .sp-value-card.is-goal .sp-value-title { color: #bff0d2; }
+    .sp-value-card.is-goal .sp-value-title { color: #bff0ea; }
     .sp-week-lessons { display: flex; flex-direction: column; gap: 6px; }
     .sp-wl { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 8px 12px; }
     .sp-wl-day { font-size: 0.6rem; font-weight: 800; color: #ffe0a3; flex-shrink: 0; width: 26px; }
@@ -6546,12 +6548,12 @@
     }
     #screen-class .class-explore-card::before{display:none !important;}
     .class-explore-emoji{font-size:2.1rem;line-height:1}
-    #screen-class .class-explore-title{margin:0;font-size:1.04rem;font-weight:800;color:#1d5c3f !important;text-shadow:none !important}
+    #screen-class .class-explore-title{margin:0;font-size:1.04rem;font-weight:800;color:#0f8f81 !important;text-shadow:none !important}
     .class-explore-sub{margin:0;font-size:.84rem;line-height:1.5;color:#41584c;max-width:280px}
     .class-explore-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;margin-top:5px}
     .class-explore-btn{flex:1 1 auto;min-width:130px;border:none;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;cursor:pointer;font-family:var(--font)}
-    .class-explore-btn--primary{background:linear-gradient(135deg,#2f9e63,#1d5c3f);color:#fff;box-shadow:0 8px 18px rgba(29,92,63,.28)}
-    .class-explore-btn--ghost{background:#fff;color:#1d5c3f;border:1.5px solid #bfe0cc}
+    .class-explore-btn--primary{background:linear-gradient(135deg,#2f9e63,#0f8f81);color:#fff;box-shadow:0 8px 18px rgba(29,92,63,.28)}
+    .class-explore-btn--ghost{background:#fff;color:#0f8f81;border:1.5px solid #bfe0cc}
     /* Req4: downgrade banner on the Level·Unit map */
     .cm-downgrade{display:flex;align-items:center;gap:12px;justify-content:space-between;background:#fff6ee;border:1px dashed #e6b894;border-radius:12px;padding:11px 13px;margin-bottom:12px}
     .cm-downgrade-copy{display:flex;flex-direction:column;gap:2px}
@@ -6579,7 +6581,7 @@
     .dl-box{width:min(360px,86vw);background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 24px 60px rgba(0,0,0,.28);text-align:center}
     .dl-box h3{margin:0 0 8px;font-size:1.05rem;color:#1f2a24}
     .dl-box p{margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#4c5a52}
-    .dl-box button{border:none;background:#1d5c3f;color:#fff;border-radius:10px;padding:11px 18px;font-size:.86rem;font-weight:700;cursor:pointer;width:100%}
+    .dl-box button{border:none;background:#0f8f81;color:#fff;border-radius:10px;padding:11px 18px;font-size:.86rem;font-weight:700;cursor:pointer;width:100%}
     .dl-box .dl-actions{display:flex;gap:10px}
     .dl-box .dl-actions button{width:auto;flex:1}
     .dl-box .dl-cancel{background:#eef2ef;color:#38463d}
@@ -6588,10 +6590,10 @@
     .pwpt-scroll{position:absolute;inset:0;overflow-y:auto;padding:0 20px}
     .pwpt-head{display:flex;align-items:center;justify-content:space-between;padding:14px 0 4px;position:sticky;top:0;background:transparent}
     .pwpt-back{width:34px;height:34px;border-radius:50%;border:none;background:rgba(0,0,0,.06);color:#1f2a24;font-size:1.4rem;line-height:1;cursor:pointer}
-    .pwpt-restore{border:none;background:transparent;color:#1d5c3f;font-size:.82rem;font-weight:700;cursor:pointer}
+    .pwpt-restore{border:none;background:transparent;color:#0f8f81;font-size:.82rem;font-weight:700;cursor:pointer}
     /* V1.3.2: trust proof — sits to the right of the Dino mascot inside the hero card */
     .pwpt-trust{flex:1 1 auto;min-width:0;margin:0;padding:12px 14px;border-radius:16px;text-align:left;
-      background:linear-gradient(135deg,#1d5c3f 0%,#2f9e63 100%);box-shadow:0 10px 22px rgba(29,92,63,.2)}
+      background:linear-gradient(135deg,#0f8f81 0%,#2f9e63 100%);box-shadow:0 10px 22px rgba(29,92,63,.2)}
     .pwpt-trust-badge{display:block;font-size:.96rem;font-weight:900;letter-spacing:.01em;color:#fff}
     .pwpt-trust-sub{margin:5px 0 0;font-size:.76rem;line-height:1.5;color:#eafaf0}
     /* V1.3.2 (布局调整): hero card — mascot top-left + title/subtitle right, full-width benefits below */
@@ -6601,13 +6603,13 @@
     .pwpt-hero-top{display:flex;align-items:center;gap:14px}
     .pwpt-hero-figure{flex:0 0 auto;width:96px;object-fit:contain}
     .pwpt-hero-intro{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:4px;text-align:left}
-    .pwpt-kicker{align-self:flex-start;display:inline-flex;align-items:center;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#3fb27a,#1d5c3f);padding:4px 10px;border-radius:999px}
+    .pwpt-kicker{align-self:flex-start;display:inline-flex;align-items:center;font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#17b1a1,#0f8f81);padding:4px 10px;border-radius:999px}
     .pwpt-title{margin:6px 0 0;font-size:1.24rem;line-height:1.2;color:#16241c;font-weight:800}
     .pwpt-lead{margin:4px 0 0;font-size:.82rem;line-height:1.4;color:#4c5a52}
     /* benefits span full card width — single vertical column */
     .pwpt-benefits{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
     .pwpt-benefits li{position:relative;padding:0 0 0 25px;font-size:.82rem;color:#26342c}
-    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:#3fb27a;color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
+    .pwpt-benefits li::before{content:"✓";position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:#17b1a1;color:#fff;font-size:.68rem;font-weight:800;display:flex;align-items:center;justify-content:center}
     .pwpt-benefits li strong{display:block;font-weight:700;color:#1f3b2e;line-height:1.25}
     .pwpt-benefits li .pwpt-benefit-sub{display:block;margin-top:1px;font-size:.72rem;font-weight:600;color:#7a8c82;line-height:1.3}
     /* Plan cards stacked vertically; weekly-equivalent price is the emphasised figure */
@@ -6626,9 +6628,9 @@
     .pwpt-cta-bar{position:absolute;left:0;right:0;bottom:0;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 32%)}
     .pwpt-cta{width:100%;font-size:1rem;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px}
     /* V1.4.0 转化链路优化: win-back 周卡限时折扣页 */
-    .wb{background:linear-gradient(180deg,#143d2a 0%,#1d5c3f 48%,#2d6b45 100%)}
+    .wb{background:linear-gradient(180deg,#0c5f57 0%,#0f8f81 48%,#17b1a1 100%)}
     .wb-scroll{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column}
-    .wb-close{position:absolute;top:16px;right:18px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(20,61,42,.1);color:#16241c;font-size:.9rem;cursor:pointer;z-index:2}
+    .wb-close{position:absolute;top:16px;right:18px;width:34px;height:34px;border-radius:50%;border:none;background:rgba(122,59,18,.1);color:#16241c;font-size:.9rem;cursor:pointer;z-index:2}
     .wb-card{width:100%;min-height:100%;background:#fffbf8;padding:52px 26px 34px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
     .wb-badge{display:inline-flex;align-items:center;gap:5px;background:#fdecdf;color:#c2561a;border:1px solid #f0c39a;font-size:.64rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:999px}
     .wb-badge::before{content:"★";font-size:.7rem;line-height:1}
@@ -6857,7 +6859,7 @@
                     <button type="button" class="profile-menu-item" id="btn-profile-detail">
                       <span class="profile-menu-item-main">
                         <span class="profile-menu-icon" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#2D6B45" stroke-width="1.7"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6" stroke="#2D6B45" stroke-width="1.7" stroke-linecap="round"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="#17b1a1" stroke-width="1.7"/><path d="M4.5 20c0-3.6 3.4-6 7.5-6s7.5 2.4 7.5 6" stroke="#17b1a1" stroke-width="1.7" stroke-linecap="round"/></svg>
                         </span>
                         <span class="profile-menu-label">My profile</span>
                       </span>
@@ -6868,7 +6870,7 @@
                     <button type="button" class="profile-menu-item" id="btn-profile-language">
                       <span class="profile-menu-item-main">
                         <span class="profile-menu-icon" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#2D6B45" stroke-width="1.7"/><path d="M3 12h18" stroke="#2D6B45" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18" stroke="#2D6B45" stroke-width="1.3"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#17b1a1" stroke-width="1.7"/><path d="M3 12h18" stroke="#17b1a1" stroke-width="1.4" stroke-linecap="round"/><path d="M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18" stroke="#17b1a1" stroke-width="1.3"/></svg>
                         </span>
                         <span class="profile-menu-label">Language</span>
                       </span>
@@ -6880,7 +6882,7 @@
                     <button type="button" class="profile-menu-item" id="btn-profile-membership">
                       <span class="profile-menu-item-main">
                         <span class="profile-menu-icon" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L3.2 8.7l5.4-.8L12 3z" stroke="#2D6B45" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L3.2 8.7l5.4-.8L12 3z" stroke="#17b1a1" stroke-width="1.6" stroke-linejoin="round"/></svg>
                         </span>
                         <span class="profile-menu-label">Membership</span>
                       </span>
@@ -7652,38 +7654,38 @@
         { visual: `<img src="assets/login/nw-illo-3.png" alt="" decoding="async" style="width:100%;height:100%;object-fit:contain;object-position:center bottom;" onerror="this.style.display='none'"/>`, title: "13 Years of Proven Trust", desc: "Backed by over a decade of refinement and trusted by 1.8M families worldwide." },
       ],
       ageValue: {
-        "3–5": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><ellipse cx="160" cy="128" rx="120" ry="14" fill="#A8E6CF" opacity="0.5"/><circle cx="110" cy="72" r="28" fill="#FFE082"/><circle cx="105" cy="68" r="3" fill="#143D2A"/><circle cx="115" cy="68" r="3" fill="#143D2A"/><path d="M102 78 Q110 84 118 78" stroke="#143D2A" stroke-width="2" fill="none"/><rect x="145" y="88" width="22" height="22" rx="4" fill="#EA6C25"/><rect x="172" y="78" width="22" height="22" rx="4" fill="#2D6B45" opacity="0.35"/><rect x="199" y="68" width="22" height="22" rx="4" fill="#A8E6CF"/><path d="M230 55 L250 40 L270 55" stroke="#5CB87A" stroke-width="3" fill="none"/></svg>`,
-        "6–8": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="48" y="42" width="120" height="88" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="62" y="58" width="50" height="8" rx="4" fill="#A8E6CF"/><rect x="62" y="74" width="80" height="8" rx="4" fill="#E8F5E9"/><circle cx="220" cy="78" r="36" fill="#FFE082"/><ellipse cx="220" cy="118" rx="28" ry="10" fill="#7DCE9A" opacity="0.6"/></svg>`,
-        "9–12": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="40" y="36" width="140" height="90" rx="14" fill="#fff" stroke="#C5DDD2"/><rect x="55" y="52" width="110" height="60" rx="6" fill="#D4F8EC"/><circle cx="115" cy="78" r="14" fill="#2D6B45" opacity="0.2"/><circle cx="230" cy="70" r="32" fill="#FFE082"/><rect x="200" y="95" width="60" height="36" rx="8" fill="#2D6B45" opacity="0.12"/></svg>`,
-        "13–17": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="50" y="40" width="100" height="70" rx="10" fill="#fff" stroke="#2D6B45"/><path d="M65 55 h70 M65 70 h50 M65 85 h60" stroke="#A8E6CF" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="68" r="30" fill="#FFE082"/><rect x="248" y="48" width="36" height="48" rx="6" fill="#fff" stroke="#2D6B45"/><path d="M256 62 h20 M256 76 h16" stroke="#2D6B45" stroke-width="2"/></svg>`,
-        "18+": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="44" y="38" width="132" height="78" rx="12" fill="#fff" stroke="#2D6B45"/><rect x="58" y="52" width="48" height="10" rx="5" fill="#A8E6CF"/><rect x="58" y="70" width="96" height="10" rx="5" fill="#D4F8EC"/><circle cx="228" cy="62" r="26" fill="#FFE082"/><ellipse cx="228" cy="100" rx="34" ry="14" fill="#2D6B45" opacity="0.15"/><rect x="268" y="55" width="28" height="40" rx="4" fill="#EA6C25" opacity="0.85"/></svg>`,
+        "3–5": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><ellipse cx="160" cy="128" rx="120" ry="14" fill="#a6ebe3" opacity="0.5"/><circle cx="110" cy="72" r="28" fill="#FFE082"/><circle cx="105" cy="68" r="3" fill="#0c5f57"/><circle cx="115" cy="68" r="3" fill="#0c5f57"/><path d="M102 78 Q110 84 118 78" stroke="#0c5f57" stroke-width="2" fill="none"/><rect x="145" y="88" width="22" height="22" rx="4" fill="#EA6C25"/><rect x="172" y="78" width="22" height="22" rx="4" fill="#17b1a1" opacity="0.35"/><rect x="199" y="68" width="22" height="22" rx="4" fill="#a6ebe3"/><path d="M230 55 L250 40 L270 55" stroke="#5CB87A" stroke-width="3" fill="none"/></svg>`,
+        "6–8": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#d6f7f2"/><rect x="48" y="42" width="120" height="88" rx="12" fill="#fff" stroke="#17b1a1"/><rect x="62" y="58" width="50" height="8" rx="4" fill="#a6ebe3"/><rect x="62" y="74" width="80" height="8" rx="4" fill="#E8F5E9"/><circle cx="220" cy="78" r="36" fill="#FFE082"/><ellipse cx="220" cy="118" rx="28" ry="10" fill="#74d6c6" opacity="0.6"/></svg>`,
+        "9–12": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="40" y="36" width="140" height="90" rx="14" fill="#fff" stroke="#C5DDD2"/><rect x="55" y="52" width="110" height="60" rx="6" fill="#d6f7f2"/><circle cx="115" cy="78" r="14" fill="#17b1a1" opacity="0.2"/><circle cx="230" cy="70" r="32" fill="#FFE082"/><rect x="200" y="95" width="60" height="36" rx="8" fill="#17b1a1" opacity="0.12"/></svg>`,
+        "13–17": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#d6f7f2"/><rect x="50" y="40" width="100" height="70" rx="10" fill="#fff" stroke="#17b1a1"/><path d="M65 55 h70 M65 70 h50 M65 85 h60" stroke="#a6ebe3" stroke-width="5" stroke-linecap="round"/><circle cx="210" cy="68" r="30" fill="#FFE082"/><rect x="248" y="48" width="36" height="48" rx="6" fill="#fff" stroke="#17b1a1"/><path d="M256 62 h20 M256 76 h16" stroke="#17b1a1" stroke-width="2"/></svg>`,
+        "18+": `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="44" y="38" width="132" height="78" rx="12" fill="#fff" stroke="#17b1a1"/><rect x="58" y="52" width="48" height="10" rx="5" fill="#a6ebe3"/><rect x="58" y="70" width="96" height="10" rx="5" fill="#d6f7f2"/><circle cx="228" cy="62" r="26" fill="#FFE082"/><ellipse cx="228" cy="100" rx="34" ry="14" fill="#17b1a1" opacity="0.15"/><rect x="268" y="55" width="28" height="40" rx="4" fill="#EA6C25" opacity="0.85"/></svg>`,
       },
       goalValue: {
-        speak_confidence: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="28" y="32" width="168" height="88" rx="14" fill="#fff" stroke="#2D6B45"/><ellipse cx="248" cy="76" rx="44" ry="44" fill="#EA6C25"/><rect x="236" y="58" width="24" height="36" rx="8" fill="#fff" opacity="0.35"/><path d="M52 72 Q88 52 128 72 T168 72" stroke="#2D6B45" stroke-width="3" fill="none"/><circle cx="200" cy="52" r="16" fill="#A8E6CF"/><path d="M196 52 h8 M200 48 v8" stroke="#2D6B45" stroke-width="2"/></svg>`,
-        structured_progress: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="36" y="100" width="48" height="28" rx="6" fill="#A8E6CF"/><rect x="96" y="72" width="48" height="56" rx="6" fill="#7DCE9A"/><rect x="156" y="48" width="48" height="80" rx="6" fill="#2D6B45" opacity="0.35"/><rect x="216" y="24" width="48" height="104" rx="6" fill="#2D6B45"/><path d="M60 88 L120 60 L180 40 L240 20" stroke="#EA6C25" stroke-width="3" fill="none" stroke-dasharray="6 4"/><circle cx="240" cy="20" r="10" fill="#EA6C25"/></svg>`,
-        school_exam: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><rect x="40" y="30" width="110" height="96" rx="12" fill="#fff" stroke="#2D6B45"/><path d="M58 52 h74 M58 68 h54 M58 84 h64" stroke="#E8F5E9" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="78" r="40" fill="#fff" stroke="#2D6B45" stroke-width="2"/><path d="M182 78 L194 92 L220 64" stroke="#2D6B45" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
-        daily_communication: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="32" y="44" width="120" height="56" rx="16" fill="#fff" stroke="#2D6B45"/><rect x="168" y="28" width="120" height="56" rx="16" fill="#D4F8EC" stroke="#2D6B45"/><path d="M48 72 h40 M48 82 h28" stroke="#A8E6CF" stroke-width="4" stroke-linecap="round"/><path d="M184 56 h50 M184 66 h36" stroke="#2D6B45" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="148" cy="88" r="22" fill="#FFE082"/><ellipse cx="148" cy="118" rx="18" ry="8" fill="#7DCE9A" opacity="0.5"/></svg>`,
-        listening_habit: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#D4F8EC"/><path d="M88 74 Q88 40 120 40 Q152 40 152 74 V90 Q152 110 120 110 Q88 110 88 90 Z" fill="#2D6B45" opacity="0.2"/><path d="M168 74 Q168 36 208 36 Q248 36 248 74 V92 Q248 114 208 114 Q168 114 168 92 Z" fill="#2D6B45"/><rect x="200" y="48" width="72" height="64" rx="12" fill="#fff" stroke="#EA6C25" stroke-width="2"/><text x="236" y="86" text-anchor="middle" fill="#EA6C25" font-size="11" font-weight="700">LIVE</text></svg>`,
+        speak_confidence: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#d6f7f2"/><rect x="28" y="32" width="168" height="88" rx="14" fill="#fff" stroke="#17b1a1"/><ellipse cx="248" cy="76" rx="44" ry="44" fill="#EA6C25"/><rect x="236" y="58" width="24" height="36" rx="8" fill="#fff" opacity="0.35"/><path d="M52 72 Q88 52 128 72 T168 72" stroke="#17b1a1" stroke-width="3" fill="none"/><circle cx="200" cy="52" r="16" fill="#a6ebe3"/><path d="M196 52 h8 M200 48 v8" stroke="#17b1a1" stroke-width="2"/></svg>`,
+        structured_progress: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="36" y="100" width="48" height="28" rx="6" fill="#a6ebe3"/><rect x="96" y="72" width="48" height="56" rx="6" fill="#74d6c6"/><rect x="156" y="48" width="48" height="80" rx="6" fill="#17b1a1" opacity="0.35"/><rect x="216" y="24" width="48" height="104" rx="6" fill="#17b1a1"/><path d="M60 88 L120 60 L180 40 L240 20" stroke="#EA6C25" stroke-width="3" fill="none" stroke-dasharray="6 4"/><circle cx="240" cy="20" r="10" fill="#EA6C25"/></svg>`,
+        school_exam: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#d6f7f2"/><rect x="40" y="30" width="110" height="96" rx="12" fill="#fff" stroke="#17b1a1"/><path d="M58 52 h74 M58 68 h54 M58 84 h64" stroke="#E8F5E9" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="78" r="40" fill="#fff" stroke="#17b1a1" stroke-width="2"/><path d="M182 78 L194 92 L220 64" stroke="#17b1a1" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`,
+        daily_communication: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#E8F5E9"/><rect x="32" y="44" width="120" height="56" rx="16" fill="#fff" stroke="#17b1a1"/><rect x="168" y="28" width="120" height="56" rx="16" fill="#d6f7f2" stroke="#17b1a1"/><path d="M48 72 h40 M48 82 h28" stroke="#a6ebe3" stroke-width="4" stroke-linecap="round"/><path d="M184 56 h50 M184 66 h36" stroke="#17b1a1" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="148" cy="88" r="22" fill="#FFE082"/><ellipse cx="148" cy="118" rx="18" ry="8" fill="#74d6c6" opacity="0.5"/></svg>`,
+        listening_habit: `<svg viewBox="0 0 320 148" xmlns="http://www.w3.org/2000/svg"><rect width="320" height="148" fill="#d6f7f2"/><path d="M88 74 Q88 40 120 40 Q152 40 152 74 V90 Q152 110 120 110 Q88 110 88 90 Z" fill="#17b1a1" opacity="0.2"/><path d="M168 74 Q168 36 208 36 Q248 36 248 74 V92 Q248 114 208 114 Q168 114 168 92 Z" fill="#17b1a1"/><rect x="200" y="48" width="72" height="64" rx="12" fill="#fff" stroke="#EA6C25" stroke-width="2"/><text x="236" y="86" text-anchor="middle" fill="#EA6C25" font-size="11" font-weight="700">LIVE</text></svg>`,
       },
       value: `<svg width="100%" height="120" viewBox="0 0 320 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="320" height="120" rx="14" fill="#D4F8EC"/>
-        <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#2D6B45" stroke-width="1.5"/>
+        <rect width="320" height="120" rx="14" fill="#d6f7f2"/>
+        <rect x="24" y="20" width="200" height="80" rx="10" fill="#fff" stroke="#17b1a1" stroke-width="1.5"/>
         <ellipse cx="260" cy="75" rx="28" ry="28" fill="#EA6C25"/>
         <rect x="248" y="62" width="24" height="26" rx="6" fill="#fff" opacity="0.3"/>
-        <rect x="50" y="45" width="60" height="10" rx="5" fill="#A8E6CF"/>
+        <rect x="50" y="45" width="60" height="10" rx="5" fill="#a6ebe3"/>
         <rect x="50" y="65" width="90" height="10" rx="5" fill="#E8F5E9"/>
       </svg>`,
       login: `<svg width="200" height="120" viewBox="0 0 200 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="200" height="120" rx="20" fill="#D4F8EC"/>
-        <ellipse cx="100" cy="98" rx="70" ry="12" fill="#A8E6CF" opacity="0.6"/>
+        <rect width="200" height="120" rx="20" fill="#d6f7f2"/>
+        <ellipse cx="100" cy="98" rx="70" ry="12" fill="#a6ebe3" opacity="0.6"/>
         <circle cx="78" cy="52" r="22" fill="#FFE082"/>
-        <circle cx="128" cy="48" r="26" fill="#2D6B45" opacity="0.15"/>
-        <path d="M115 55 Q128 38 142 55" stroke="#2D6B45" stroke-width="2.5" fill="none"/>
-        <rect x="88" y="72" width="24" height="20" rx="4" fill="#2D6B45"/>
+        <circle cx="128" cy="48" r="26" fill="#17b1a1" opacity="0.15"/>
+        <path d="M115 55 Q128 38 142 55" stroke="#17b1a1" stroke-width="2.5" fill="none"/>
+        <rect x="88" y="72" width="24" height="20" rx="4" fill="#17b1a1"/>
         <path d="M92 78 L100 86 L108 78" stroke="#fff" stroke-width="2" fill="none"/>
-        <text x="100" y="32" text-anchor="middle" fill="#2D6B45" font-size="11" font-weight="600">Save your plan</text>
+        <text x="100" y="32" text-anchor="middle" fill="#17b1a1" font-size="11" font-weight="600">Save your plan</text>
       </svg>`,
-      teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#A8E6CF"/></svg>`,
+      teacher: `<svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="32" r="18" fill="#FFE082"/><ellipse cx="40" cy="58" rx="22" ry="14" fill="#a6ebe3"/></svg>`,
     };
 
     const TEACHERS = [
@@ -9526,9 +9528,13 @@
       fillClassTab();
       inclassResetVisuals();
       renderInclassTeacher();
+      // 上课页限时折扣入口：仅未付费显示；已付费（付费后的定级课）隐藏固定支付入口。
+      document.querySelectorAll(".cx-ic-vip").forEach(function (p) { p.style.display = profile.premiumUnlocked ? "none" : ""; });
       if (window.GAME) window.GAME.syncHud();
       enterLandscape();
       showLandScreen("screen-inclass-teach");
+      // 首课 → 触发课中新手引导（横屏 spotlight 逐段介绍课堂）
+      if (inclassIsFirst && window.IC_GUIDE) window.IC_GUIDE.startTeach();
     }
     // Lesson-complete result page: congratulates the learner and hands out the
     // in-class XP / coins, then Continue → trial report (first lesson) or Class home.
@@ -9607,8 +9613,9 @@
     $("#lc-continue")?.addEventListener("click", () => {
       // Locked until the report finishes generating.
       if (!lcReportReady) return;
-      // 转化链路优化：转化流程（如足球主题课）完课 → 走「课程报告」(cx-report)，
-      // 不是「体验课报告」(screen-trial-report)。会员=Back to class；非会员=只保留 Unlock more courses。
+      // 付费后的定级课（体验课）完课 → 体验课报告（带定级），报告内再按会员分底部按钮。
+      if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
+      // 免费转化流程（足球主题课）完课 → 课程报告 (cx-report)，非会员只保留 Unlock more courses。
       if (cxStage && cxStage !== "home" && window.cxShowReport) { window.cxShowReport(); return; }
       if (lessonCompleteIsTrial) {
         // First-trial report (portrait) or level-up check (landscape) per trialReportMode.
@@ -9628,7 +9635,7 @@
         showLandScreen("screen-inclass-pt");
         clearTimeout(icPtTimer);
         icPtTimer = setTimeout(() => {
-          if (activeLandScreen() === "screen-inclass-pt") showLandScreen("screen-inclass-quiz");
+          if (activeLandScreen() === "screen-inclass-pt") { showLandScreen("screen-inclass-quiz"); if (window.IC_GUIDE) window.IC_GUIDE.onQuiz(); }
         }, 2000);
       }, 1800);
     });
@@ -9637,6 +9644,7 @@
       if (e.target.closest("[data-ic-exit]")) return;
       clearTimeout(icPtTimer);
       showLandScreen("screen-inclass-quiz");
+      if (window.IC_GUIDE) window.IC_GUIDE.onQuiz();
     });
     // Quiz → pick the right bubble → "Great!" → finish (trial report or class home)
     $("#ic-bubbles")?.addEventListener("click", (e) => {
@@ -9657,7 +9665,8 @@
     });
     // Exit (back) from any in-class screen → return to Class home
     $$("[data-ic-exit]").forEach((btn) => btn.addEventListener("click", () => {
-      // 转化链路优化：转化流程中「中途退出/完课」→ 进新版 Lesson Report（会员回 Class / 非会员解锁跳支付）。
+      // 付费后的定级课退出 → 体验课报告（带定级）；免费足球课退出 → 课程报告 (cx-report)。
+      if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
       if (cxStage && cxStage !== "home") { if (window.cxShowReport) { window.cxShowReport(); return; } }
       showClassHome();
     }));
@@ -9686,12 +9695,13 @@
       // study-plan value page → Paywall; members are already entitled, so the button
       // is just Continue → Class (no plan page, no Paywall). The trial (lesson0) is
       // not re-takeable — re-opening this report later hits the same membership branch.
+      // 体验课(定级课)报告：会员=领取学习计划（定级后拿到完整计划）；非会员=回到 class。
       if (profile.premiumUnlocked) {
-        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Continue`;
-        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Back to your classes`;
-      } else {
         if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Get ${poss} study plan`;
-        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · start the full course`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Tailored to ${lvlLabel} · your full course plan`;
+      } else {
+        if ($("#trp-cta-main")) $("#trp-cta-main").textContent = `Back to class`;
+        if ($("#trp-cta-sub")) $("#trp-cta-sub").textContent = `Keep exploring your classes`;
       }
     }
     // Level-up trial report: same layout, but the level recommendation reflects the
@@ -9808,9 +9818,8 @@
       // Commit the performance-based best-fit level as the plan (first placement → no
       // keep/update choice; the assessed level IS the plan).
       applyFirstTrialPlacement();
-      // Members are already entitled → skip the study-plan value page + Paywall and
-      // go straight back to Class; only free users see the conversion funnel.
-      if (profile.premiumUnlocked) { showClassHome(); } else { showStudyPlan(); }
+      // 体验课(定级课)报告：会员=领取学习计划；非会员=回到 class。
+      if (profile.premiumUnlocked) { showStudyPlan(); } else { showClassHome(); }
     });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
@@ -12730,7 +12739,7 @@
           ".sp-group>p{margin:0 0 5px;font-size:.72rem;font-weight:700;color:#143a5e}",
           ".sp-seg{display:flex;flex-wrap:wrap;gap:5px}",
           ".sp-seg button{flex:1 1 auto;min-width:58px;border:1px solid #cdddea;background:#f3f8fc;color:#355;border-radius:8px;padding:6px 8px;font-size:.7rem;font-weight:600;cursor:pointer}",
-          ".sp-seg button.on{background:#2D6B45;border-color:#2D6B45;color:#fff}",
+          ".sp-seg button.on{background:#17b1a1;border-color:#17b1a1;color:#fff}",
           ".sp-jumps-wrap{margin-top:4px;padding-top:10px;border-top:1px solid #eef3f7}",
           ".sp-jumps-label{margin:0 0 6px;font-size:.72rem;font-weight:700;color:#143a5e}",
           ".sp-jumps{display:flex;flex-wrap:wrap;gap:6px}",
@@ -13180,8 +13189,8 @@
     .cx-card .nm{font-weight:700;color:var(--ink);} .cx-card .pr{font-family:var(--display,"Sora");font-weight:800;font-size:1.25rem;color:var(--ink);}
     .cx-card .was{font-size:.76rem;color:#8b9a90;text-decoration:line-through;margin-left:6px;}
     .cx-card .per{font-size:.72rem;color:var(--ink-muted);margin-top:4px;}
-    .cx-gstep{width:92px;height:92px;border-radius:24px;background:var(--forest-mist,#d4f8ec);display:grid;place-items:center;font-size:2.5rem;margin-bottom:18px;}
-    .cx-dots{display:flex;gap:6px;margin-top:16px;} .cx-dots i{width:8px;height:8px;border-radius:50%;background:#e0d7cc;} .cx-dots i.on{width:20px;border-radius:4px;background:var(--forest-mid,#2d6b45);}
+    .cx-gstep{width:92px;height:92px;border-radius:24px;background:var(--forest-mist,#d6f7f2);display:grid;place-items:center;font-size:2.5rem;margin-bottom:18px;}
+    .cx-dots{display:flex;gap:6px;margin-top:16px;} .cx-dots i{width:8px;height:8px;border-radius:50%;background:#e0d7cc;} .cx-dots i.on{width:20px;border-radius:4px;background:var(--forest-mid,#17b1a1);}
     .cx-fb{position:absolute;inset:0;background:#0f2a1c center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;}
     .cx-fb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,42,28,.12),rgba(15,42,28,.86));}
     .cx-fb-top{position:absolute;top:46px;left:16px;right:16px;z-index:3;display:flex;justify-content:space-between;align-items:center;font-size:.68rem;}
@@ -13560,27 +13569,18 @@
       document.getElementById("cx-w-kakao").onclick = function(){ go("kakao"); };
     })();
 
-    // ⑦ 上课页会员入口（强调限时折扣），点击进 Paywall。
+    // ⑦ 上课页会员入口（只说明限时折扣，不做倒计时），点击进 Paywall。
+    // 是否显示看是否已付费：已付费（如付费后的定级课）隐藏，未付费（免费足球课）显示——由 openClassroomDemo 同步。
     ["screen-inclass-teach","screen-inclass-pt","screen-inclass-quiz"].forEach(function(id){
       var scr = document.getElementById(id); if(!scr || scr.querySelector(".cx-ic-vip")) return;
       var pill = document.createElement("button"); pill.className = "cx-ic-vip";
-      pill.innerHTML = '⏳ Limited −60% · Unlock <span class="t" data-cx-timer="900">15:00</span>';
+      pill.innerHTML = '🔥 Limited −60% offer · Unlock';
       pill.onclick = function(){ cxStage = "pay-inclass"; if(typeof openPaywall==="function") openPaywall("screen-inclass-teach", "cx_inclass"); };
       scr.appendChild(pill);
     });
 
-    // ⑧/⑤ 课程报告底部「Unlock more courses」→ 跳支付。仅「非付费会员」显示；已是会员则隐藏（报告直接回 Class）。
-    (function(){
-      var foot = document.querySelector("#screen-trial-report .tp-cta-bar") || document.querySelector("#screen-trial-report .tr-foot") || document.querySelector("#screen-trial-report .foot-actions");
-      if(!foot || foot.querySelector(".cx-report-unlock")) return;
-      var b = document.createElement("button"); b.className = "cx-report-unlock"; b.textContent = "🔓 Unlock more courses";
-      b.onclick = function(){ cxStage = "pay-report"; if(typeof openWinback==="function") openWinback("cx_report", "cx_report", "screen-class"); else if(typeof openPaywall==="function") openPaywall("screen-class", "cx_report"); };
-      foot.appendChild(b);
-      var rep = document.getElementById("screen-trial-report");
-      function sync(){ b.style.display = (rep.classList.contains("active") && !profile.premiumUnlocked) ? "block" : "none"; }
-      sync();
-      setInterval(sync, 500);
-    })();
+    // 说明：体验课(定级课)报告已改为「会员=领取学习计划 / 非会员=回到 class」（见 renderTrialReport +
+    // btn-trip-start），不再在此注入「Unlock more courses」按钮；免费足球课报告(cx-report)有自己的解锁入口。
 
     // ④ Paywall「Subscribe now」→ 弹「系统订阅确认」抽屉（mock App Store 流程），确认后再完成购买。
     function cxDoPurchase(){
@@ -13613,6 +13613,100 @@
       var btn = document.getElementById("btn-pwpt-purchase");
       if(btn) btn.addEventListener("click", function(e){ e.stopImmediatePropagation(); e.preventDefault(); cxSubSheet(); }, true);
     })();
+  })();
+  </script>
+  <!-- ===== 课中首课新手引导（spotlight coach-marks，横屏课堂，仅首课触发）=====
+       方案蓝本：Dino-AI课堂交互原型.html。逐段高亮 AI 老师 / 黑板词卡 / 开口按钮 /
+       进度奖励 / 答题泡泡，双语引导卡，教孩子"怎么上这堂课"。 -->
+  <script>
+  (function(){
+    var CSS =
+      '#ic-coach{position:fixed;inset:0;z-index:9600;pointer-events:none;font-family:"Nunito",system-ui,sans-serif;}'
+     +'#ic-coach.on{pointer-events:auto;}'
+     +'#ic-spot{position:fixed;border-radius:18px;border:3px solid #FE8820;box-shadow:0 0 0 9999px rgba(9,18,30,.6);transition:left .28s ease,top .28s ease,width .28s ease,height .28s ease;pointer-events:none;}'
+     +'#ic-tip{position:fixed;width:250px;max-width:calc(100vw - 20px);background:#fffbf8;border-radius:18px;padding:15px 16px 14px;box-shadow:0 20px 50px rgba(0,0,0,.42);pointer-events:auto;}'
+     +'#ic-tip .k{font-size:.58rem;font-weight:800;letter-spacing:.12em;color:#e07a12;text-transform:uppercase;}'
+     +'#ic-tip .zh{font-family:"Fredoka",system-ui,sans-serif;font-weight:700;font-size:1.06rem;color:#14233a;line-height:1.25;margin-top:5px;}'
+     +'#ic-tip .en{font-size:.76rem;color:#5a6f7a;line-height:1.45;margin-top:6px;}'
+     +'#ic-tip .dots{display:flex;gap:5px;margin:12px 0 11px;min-height:7px;}#ic-tip .dots i{width:7px;height:7px;border-radius:50%;background:#e6ddd2;}#ic-tip .dots i.on{width:17px;border-radius:4px;background:#FE8820;}'
+     +'#ic-tip .row{display:flex;gap:6px;align-items:center;}'
+     +'#ic-tip .skip{background:transparent;border:0;color:#9aa7ae;font-weight:700;font-size:.76rem;cursor:pointer;padding:8px 6px;white-space:nowrap;}'
+     +'#ic-tip .next{flex:1;background:#14233a;color:#fff;border:0;font-family:"Fredoka",system-ui,sans-serif;font-weight:600;font-size:.9rem;border-radius:12px;padding:9px 10px;cursor:pointer;line-height:1.05;}'
+     +'#ic-tip .next .en2{display:block;font-family:"Nunito",system-ui,sans-serif;font-weight:700;font-size:.6rem;opacity:.72;margin-top:1px;}';
+    var st=document.createElement("style"); st.textContent=CSS; document.head.appendChild(st);
+
+    var TEACH=[
+      {k:"Welcome to Dino AI", zh:"这是你的 AI 老师", en:"She talks, listens and learns with you through the whole class.", sel:"#screen-inclass-teach .ic-teacher"},
+      {k:"Look here", zh:"图片和单词在这里出现", en:"Pictures and the new word show on the card — follow the teacher and watch.", sel:"#screen-inclass-teach .ic-card"},
+      {k:"Your turn", zh:"轮到你，点这里开口说", en:"When the mic lights up, tap it and say the word to the teacher.", sel:"#ic-answer-btn"},
+      {k:"Earn as you learn", zh:"开口答对赢金币和奖励", en:"Speaking and answering fills the bar and unlocks the rewards up here.", sel:"#screen-inclass-teach .ic-progress"}
+    ];
+    var QUIZ={k:"Tap to answer", zh:"听一听，点正确的泡泡", en:"Listen, then tap the bubble that matches the word.", sel:"#ic-bubbles", place:"below"};
+
+    var el=null, spot=null, tip=null, seq=[], idx=0, running=false;
+    function build(){
+      if(el) return;
+      el=document.createElement("div"); el.id="ic-coach";
+      el.innerHTML='<div id="ic-spot"></div>'
+        +'<div id="ic-tip"><div class="k"></div><div class="zh"></div><div class="en"></div>'
+        +'<div class="dots"></div><div class="row"><button class="skip" type="button">跳过 Skip</button>'
+        +'<button class="next" type="button"></button></div></div>';
+      document.body.appendChild(el);
+      spot=el.querySelector("#ic-spot"); tip=el.querySelector("#ic-tip");
+      el.querySelector(".skip").onclick=close;
+      el.querySelector(".next").onclick=next;
+    }
+    function bounds(){
+      var d=document.getElementById("device-landscape"), r=d&&d.getBoundingClientRect();
+      if(r && r.width>160 && r.height>120) return r;
+      return {left:0,top:0,right:innerWidth,bottom:innerHeight,width:innerWidth,height:innerHeight};
+    }
+    function render(){
+      var s=seq[idx]; if(!s){ close(); return; }
+      tip.querySelector(".k").textContent=s.k;
+      tip.querySelector(".zh").textContent=s.zh;
+      tip.querySelector(".en").textContent=s.en;
+      tip.querySelector(".dots").innerHTML = seq.length>1 ? seq.map(function(_,i){return '<i class="'+(i===idx?"on":"")+'"></i>';}).join("") : "";
+      tip.querySelector(".next").innerHTML = (idx>=seq.length-1) ? '知道了<span class="en2">Got it</span>' : '下一步<span class="en2">Next</span>';
+      var tgt=document.querySelector(s.sel), B=bounds();
+      var tw=Math.min(250, B.width-20); tip.style.width=tw+"px";
+      var th=tip.offsetHeight||174;
+      if(tgt && tgt.getBoundingClientRect().width>0){
+        var r=tgt.getBoundingClientRect(), pad=8;
+        spot.style.display="block";
+        spot.style.left=(r.left-pad)+"px"; spot.style.top=(r.top-pad)+"px";
+        spot.style.width=(r.width+pad*2)+"px"; spot.style.height=(r.height+pad*2)+"px";
+        var cx=r.left+r.width/2, left, top;
+        // 下边界：below 放置允许溢出到课堂下方的黑色留白（避免遮挡满宽的答题泡泡）
+        var topBound = B.top+10, botBound = B.bottom-th-10;
+        if(s.place==="below"){
+          top = r.bottom + 16; left = cx - tw/2; botBound = window.innerHeight - th - 10;
+        } else if(s.place==="above"){
+          top = r.top - th - 16; left = cx - tw/2; topBound = 10;
+        } else {
+          left = (cx < B.left+B.width*0.5) ? Math.min(r.right+16, B.right-tw-10) : Math.max(r.left-tw-16, B.left+10);
+          top = r.top+r.height/2-th/2;
+        }
+        left=Math.min(Math.max(left,B.left+10),B.right-tw-10);
+        top=Math.min(Math.max(top,topBound),botBound);
+        tip.style.left=left+"px"; tip.style.top=top+"px";
+      } else {
+        spot.style.display="none";
+        tip.style.left=(B.left+(B.width-tw)/2)+"px"; tip.style.top=(B.top+B.height*0.3)+"px";
+      }
+    }
+    function next(){ if(idx<seq.length-1){ idx++; render(); } else { close(); } }
+    function close(){ running=false; if(el){ el.classList.remove("on"); el.style.display="none"; } }
+    function start(steps){ build(); seq=steps; idx=0; running=true; el.style.display="block"; el.classList.add("on");
+      requestAnimationFrame(function(){ requestAnimationFrame(render); }); setTimeout(render,300); }
+
+    window.IC_GUIDE={
+      startTeach:function(){ window.__icFirstRun=true; window.__icQuizShown=false; setTimeout(function(){ start(TEACH); },500); },
+      onQuiz:function(){ if(window.__icFirstRun && !window.__icQuizShown){ window.__icQuizShown=true; setTimeout(function(){ start([QUIZ]); },450); } },
+      close:close
+    };
+    // 横屏尺寸变化时重定位当前气泡
+    window.addEventListener("resize", function(){ if(running) render(); });
   })();
   </script>
 </body>
