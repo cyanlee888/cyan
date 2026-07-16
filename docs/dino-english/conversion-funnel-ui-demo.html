@@ -1420,6 +1420,15 @@
     .hub-avatar-entry:hover { transform: scale(1.06); }
     .hub-avatar-entry img { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 4px 10px rgba(0,0,0,0.22); }
     .hub-app--profile .hub-avatar-entry { display: none; }
+    /* 转化链路优化：非会员在 hub 所有 tab 常驻的会员入口（右上角，点击进 Paywall）。 */
+    .hub-cx-vip { position: absolute; top: 10px; right: 14px; z-index: 31; display: flex; align-items: center; gap: 6px; border: 0; cursor: pointer; background: linear-gradient(180deg, #ffb45c, #ea6c25); color: #fff; font-family: var(--display); font-weight: 800; font-size: 0.74rem; padding: 8px 13px; border-radius: 999px; box-shadow: 0 8px 20px rgba(234,108,37,0.45); white-space: nowrap; transition: transform 0.14s ease; }
+    .hub-cx-vip:hover { transform: translateY(-1px); }
+    .hub-cx-vip .hcv-crown { font-size: 0.9rem; line-height: 1; }
+    /* Profile takeover hides it (Profile has its own Membership row) */
+    .hub-app--profile .hub-cx-vip { display: none !important; }
+    /* On the Dino tab the coin pill sits in the top-right corner — keep it there and move the
+       membership entry to its LEFT instead (per design). Other tabs keep the pill at the corner. */
+    .hub-app--tab-dino .hub-cx-vip { right: 132px; }
     /* Profile is a standalone page (back button at top-left) — hide the bottom nav */
     .hub-app--profile > .class-bottom-nav { display: none; }
     /* Keep each panel's top-left corner clear of the avatar entry */
@@ -2259,11 +2268,24 @@
       min-height: 0;
       max-height: 100%;
       display: grid;
-      grid-template-rows: auto auto minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
       gap: 10px;
       align-content: start;
       overflow: hidden;
     }
+    /* Title (left) + "More lessons" entry (right) share one horizontal row. */
+    .class-lead-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .class-lead-row .class-home-lead { padding-top: 0; min-width: 0; flex: 1; }
+    .class-lead-row .class-home-lead-title { overflow: hidden; text-overflow: ellipsis; }
+    .class-lead-row .class-week-head { flex-shrink: 0; }
+    /* Non-member: reserve the top-right corner for the "Unlock all" membership pill so
+       "More lessons" sits just to its left instead of underneath it. */
+    .hub-app--cxvip .hub-panel--class .class-lead-row { padding-right: 112px; }
     /* 方案二: "This Week" inline swiper on Class home (replaces the single hero card).
        The lead copy + a header row (title + single Learning Path entry) sit above a
        horizontal, scroll-snapped row of this week's 3 lesson cards. */
@@ -3813,7 +3835,7 @@
     }
     #device-landscape .class-teacher-copy h4 { font-size: 0.98rem; }
     #device-landscape .class-home-lead { padding-top: 2px; gap: 4px; }
-    #device-landscape .class-home-lead-title { font-size: 1.08rem; }
+    #device-landscape .class-home-lead-title { font-size: 0.94rem; }
     #device-landscape .class-hero-kicker { font-size: 0.68rem; }
     #device-landscape .course-bridge-card.class-home-course-card {
       padding: 12px 14px 10px;
@@ -5427,7 +5449,7 @@
 
     /* ---------- Study Plan (weekly plan preview from trial report → paywall) ---------- */
     #screen-study-plan { padding: 0; }
-    .study-plan-shell { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 11px; padding: 13px 18px 0; background: linear-gradient(165deg, #143a5e 0%, #1d5c8f 52%, #17b1a1 130%); overflow-y: auto; overflow-x: hidden; }
+    .study-plan-shell { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 0; padding: 30px 18px 0; background: radial-gradient(125% 82% at 100% 0%, #fdecda 0%, rgba(253,236,218,0) 46%), linear-gradient(180deg, #fdfbf6 0%, #eef4ee 100%); overflow-y: auto; overflow-x: hidden; }
     .study-plan-head { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
     .study-plan-eyebrow { margin-left: auto; font-size: 0.72rem; font-weight: 800; color: #fff; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; padding: 6px 13px; white-space: nowrap; }
     /* layered plan scaffold */
@@ -5509,6 +5531,93 @@
     .sp-foot { position: sticky; bottom: 0; z-index: 6; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 4px -18px 0; padding: 12px 18px 16px; background: linear-gradient(180deg, rgba(20,58,94,0) 0%, rgba(23,72,79,0.92) 42%, rgba(31,86,66,0.98) 100%); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
     .sp-foot .btn-primary { width: 100%; max-width: 360px; }
     .sp-foot-note { font-size: 0.68rem; color: rgba(255,255,255,0.72); }
+    /* ============================================================
+       Study-plan v2 · parent-facing plan reveal (light / premium).
+       Three messages: level-up milestone · trust numbers · AI-teacher class.
+       ============================================================ */
+    .sp2-back { position: absolute; top: 12px; left: 12px; z-index: 8; width: 30px; height: 30px; border: none; border-radius: 50%; background: rgba(26,36,32,0.06); color: #1a2420; font-size: 1.25rem; font-weight: 700; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+    .sp2-eyebrow { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #1a7a52; margin: 0 2px; }
+    .sp2-title { font-family: var(--display); font-size: 2rem; font-weight: 700; color: #16201c; line-height: 1.05; margin: 5px 2px 0; letter-spacing: -0.01em; }
+    .sp2-sub { font-size: 0.9rem; color: #5c6b62; line-height: 1.42; margin: 9px 2px 0; }
+    .sp2-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 2px 0; }
+    .sp2-chip { font-size: 0.74rem; font-weight: 700; color: #2a3b33; background: #fff; border: 1px solid #e4e9e2; border-radius: 999px; padding: 7px 14px; box-shadow: 0 1px 2px rgba(26,36,32,0.04); }
+    /* Level-up milestone card */
+    .sp2-levelcard { display: flex; align-items: stretch; gap: 4px; background: #fff; border-radius: 20px; padding: 16px; margin: 16px 0 0; box-shadow: 0 12px 30px rgba(26,36,32,0.07); }
+    .sp2-lc-col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; padding: 6px 8px; border-radius: 14px; }
+    .sp2-lc-col--goal { background: #fdf1dd; }
+    .sp2-lc-tag { font-size: 0.6rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #9aa69d; }
+    .sp2-lc-col--goal .sp2-lc-tag { color: #c58a3a; }
+    .sp2-lc-lvl { font-family: var(--display); font-size: 1.6rem; font-weight: 700; color: #16201c; line-height: 1; }
+    .sp2-lc-cefr { font-size: 0.72rem; font-weight: 700; color: #8a978d; }
+    .sp2-lc-arrow { display: flex; align-items: center; color: #2e8b57; font-size: 1.3rem; font-weight: 700; padding: 0 2px; }
+    /* Trust stats strip */
+    .sp2-stats { display: flex; align-items: center; background: #e9f2ea; border-radius: 18px; padding: 16px 6px; margin: 14px 0 0; }
+    .sp2-stat { flex: 1; text-align: center; display: flex; flex-direction: column; gap: 5px; position: relative; }
+    .sp2-stat + .sp2-stat::before { content: ""; position: absolute; left: 0; top: 12%; height: 76%; width: 1px; background: rgba(46,139,87,0.22); }
+    .sp2-stat b { font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: #1a7a52; line-height: 1; }
+    .sp2-stat span { font-size: 0.66rem; color: #5c6b62; }
+    /* See-the-product · AI teacher */
+    .sp2-product { background: #fff; border-radius: 22px; padding: 18px; margin: 16px 0 0; box-shadow: 0 12px 30px rgba(26,36,32,0.07); }
+    .sp2-product-head { display: flex; align-items: flex-start; gap: 10px; }
+    .sp2-eyebrow--card { margin: 0; }
+    .sp2-product-title { font-family: var(--display); font-size: 1.3rem; font-weight: 700; color: #16201c; line-height: 1.12; margin: 6px 0 0; flex: 1; }
+    .sp2-preview { flex-shrink: 0; align-self: flex-start; margin-top: 2px; font-family: var(--font); font-size: 0.8rem; font-weight: 800; color: #1a7a52; background: #e5f3ea; border: none; border-radius: 999px; padding: 8px 14px; cursor: pointer; white-space: nowrap; }
+    .sp2-preview:active { transform: scale(0.96); }
+    /* Mini in-class showcase · auto-cycles the real lesson flow (landscape screen) */
+    .sp2-class { margin: 14px 0 0; }
+    .sp2-cls-screen { position: relative; width: 100%; aspect-ratio: 852 / 393; border-radius: 16px; overflow: hidden; background: radial-gradient(125% 150% at 50% -10%, #3360e0 0%, #1a45b4 55%, #0e2a72 100%); box-shadow: inset 0 0 0 3px rgba(255,255,255,0.08), 0 12px 26px rgba(14,42,114,0.3); }
+    .sp2-cls-hud { position: absolute; top: 8px; left: 10px; right: 10px; display: flex; align-items: center; gap: 8px; z-index: 4; }
+    .sp2-cls-bar { flex: 1; height: 7px; border-radius: 999px; background: rgba(255,255,255,0.22); overflow: hidden; }
+    .sp2-cls-fill { display: block; height: 100%; width: 28%; border-radius: 999px; background: linear-gradient(90deg, #ffd94a, #ff9f1c); animation: sp2ClsFill 12s infinite; }
+    .sp2-cls-coin { font-size: 0.6rem; font-weight: 800; color: #fff; background: rgba(0,0,0,0.24); border-radius: 999px; padding: 3px 8px; white-space: nowrap; }
+    .sp2-cls-teacher { position: absolute; left: 4px; bottom: 0; width: 31%; max-width: 116px; z-index: 3; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.28)); animation: sp2ClsBob 2.6s ease-in-out infinite; }
+    .sp2-cls-scene { position: absolute; inset: 24px 12px 9px 33%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; opacity: 0; animation: sp2ClsScene 12s infinite; }
+    .sp2-cls-scene.s1 { animation-delay: 0s; }
+    .sp2-cls-scene.s2 { animation-delay: 3s; }
+    .sp2-cls-scene.s3 { animation-delay: 6s; }
+    .sp2-cls-scene.s4 { animation-delay: 9s; }
+    .sp2-cls-card { display: flex; flex-direction: column; align-items: center; gap: 1px; background: #fff; border-radius: 12px; padding: 5px 18px; box-shadow: 0 6px 14px rgba(0,0,0,0.22); }
+    .sp2-cls-emoji { font-size: 1.55rem; line-height: 1.1; }
+    .sp2-cls-word { font-family: var(--display); font-weight: 700; font-size: 0.86rem; color: #16201c; }
+    .sp2-cls-say { font-size: 0.64rem; font-weight: 700; color: #fff; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,0.35); line-height: 1.25; }
+    .sp2-cls-say b { color: #ffe07a; }
+    .sp2-cls-mic { font-size: 0.58rem; font-weight: 800; color: #16201c; background: linear-gradient(180deg, #fcb141, #fe8f26); border-radius: 999px; padding: 4px 12px; box-shadow: 0 3px 8px rgba(254,143,38,0.4); }
+    .sp2-cls-wave { display: flex; align-items: center; gap: 3px; height: 22px; }
+    .sp2-cls-wave i { width: 3px; height: 6px; border-radius: 2px; background: #8fe9ff; animation: sp2ClsWave 0.9s ease-in-out infinite; }
+    .sp2-cls-wave i:nth-child(2) { animation-delay: 0.12s; }
+    .sp2-cls-wave i:nth-child(3) { animation-delay: 0.24s; }
+    .sp2-cls-wave i:nth-child(4) { animation-delay: 0.36s; }
+    .sp2-cls-wave i:nth-child(5) { animation-delay: 0.24s; }
+    .sp2-cls-wave i:nth-child(6) { animation-delay: 0.12s; }
+    .sp2-cls-praise { font-family: var(--display); font-weight: 700; font-size: 0.8rem; color: #fff; background: rgba(46,139,87,0.92); border: 1px solid rgba(255,255,255,0.32); border-radius: 999px; padding: 4px 13px; }
+    .sp2-cls-dino { width: 46px; height: 46px; object-fit: contain; animation: sp2ClsBob 1.4s ease-in-out infinite; }
+    .sp2-cls-pt { font-family: var(--display); font-weight: 700; font-size: 1rem; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.32); }
+    .sp2-cls-bubbles { display: flex; gap: 8px; }
+    .sp2-cls-bubbles span { width: 33px; height: 33px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.02rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .sp2-cls-bubbles span.ok { animation: sp2ClsPick 1.1s ease-in-out infinite; box-shadow: 0 0 0 3px #7bd67a, 0 4px 10px rgba(0,0,0,0.2); }
+    .sp2-cls-great { font-family: var(--display); font-weight: 700; font-size: 0.76rem; color: #16201c; background: #ffe07a; border-radius: 999px; padding: 3px 12px; }
+    @keyframes sp2ClsScene { 0% { opacity: 0; transform: translateY(6px); } 4% { opacity: 1; transform: none; } 21% { opacity: 1; transform: none; } 25% { opacity: 0; transform: translateY(-5px); } 100% { opacity: 0; } }
+    @keyframes sp2ClsFill { 0%,24% { width: 28%; } 25%,49% { width: 50%; } 50%,74% { width: 70%; } 75%,99% { width: 92%; } 100% { width: 28%; } }
+    @keyframes sp2ClsWave { 0%,100% { height: 6px; } 50% { height: 20px; } }
+    @keyframes sp2ClsBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+    @keyframes sp2ClsPick { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+    @media (prefers-reduced-motion: reduce) {
+      .sp2-cls-scene, .sp2-cls-fill, .sp2-cls-teacher, .sp2-cls-dino, .sp2-cls-wave i, .sp2-cls-bubbles span.ok { animation: none; }
+      .sp2-cls-scene.s1 { opacity: 1; }
+    }
+    .sp2-feats { display: flex; gap: 6px; margin: 16px 0 2px; }
+    .sp2-feat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+    .sp2-feat-ico { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 1.05rem; font-weight: 700; color: var(--fi); }
+    .sp2-feat-lbl { font-size: 0.7rem; font-weight: 700; color: #2a3b33; line-height: 1.2; }
+    /* Trust band */
+    .sp2-trust { display: flex; align-items: center; background: linear-gradient(120deg, #1c5a41, #17553c); border-radius: 20px; padding: 18px 6px; margin: 16px 0 0; }
+    .sp2-trust-item { flex: 1; text-align: center; display: flex; flex-direction: column; gap: 4px; position: relative; }
+    .sp2-trust-item + .sp2-trust-item::before { content: ""; position: absolute; left: 0; top: 14%; height: 72%; width: 1px; background: rgba(255,255,255,0.16); }
+    .sp2-trust-item b { font-family: var(--display); font-size: 1.25rem; font-weight: 700; color: #f2c674; line-height: 1; }
+    .sp2-trust-item span { font-size: 0.62rem; color: rgba(255,255,255,0.82); line-height: 1.25; }
+    /* Sticky CTA re-skinned for the light plan page */
+    #screen-study-plan .sp-foot { background: linear-gradient(180deg, rgba(238,244,238,0) 0%, #eef4ee 45%, #eef4ee 100%); }
+    #screen-study-plan .sp-foot-note { color: #7c8a80; }
     /* ---- Simplified study plan (hero + this-week list + compact path) ---- */
     .sp-hero { flex-shrink: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.16); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
     .sp-hero-title { font-family: var(--display); font-size: 1.08rem; font-weight: 800; color: #fff; line-height: 1.15; }
@@ -5818,6 +5927,122 @@
     #screen-class .dino-backpack-card .dbc-ico{ font-size:1.9rem; }
     #screen-class .dino-backpack-card .dbc-label{ font-size:.74rem; }
 
+    /* ⚽ 世界杯主题课首页入口（E1）— 绿茵条纹卡；进行中呼吸动效；无活动 hidden 不占位 */
+    #screen-class .dino-event-card{
+      position:absolute; right:16px; top:74px; z-index:7; width:120px; height:84px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+      border:1px solid rgba(255,255,255,.65); border-radius:20px; cursor:pointer; font-family:var(--font);
+      background:
+        radial-gradient(circle at 80% 12%, rgba(255,255,255,.28), transparent 45%),
+        repeating-linear-gradient(90deg,#3E9B4F 0 14px,#2E7A3C 14px 28px);
+      box-shadow:0 12px 26px rgba(20,80,40,.35); color:#fff;
+    }
+    /* 上面的 display:flex 会盖过 UA 的 [hidden]{display:none}，按本文件惯例显式补一条，
+       保证 ended 态卡片真正隐藏不占位（否则会盖住复位后的 Store 按钮） */
+    #screen-class .dino-event-card[hidden]{ display:none; }
+    #screen-class .dino-event-card.is-live{ animation:decBreathe 2.6s ease-in-out infinite; }
+    @keyframes decBreathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    @media (prefers-reduced-motion:reduce){ #screen-class .dino-event-card.is-live{ animation:none; } }
+    #screen-class .dino-event-card .dec-badge{
+      position:absolute; top:-9px; left:50%; transform:translateX(-50%); white-space:nowrap;
+      background:#E8524B; color:#fff; font-size:.56rem; font-weight:800; letter-spacing:.05em;
+      border-radius:999px; padding:2px 9px; box-shadow:0 3px 8px rgba(180,40,30,.45);
+    }
+    #screen-class .dino-event-card .dec-badge.is-soon{ background:#3D8BF0; box-shadow:0 3px 8px rgba(30,90,180,.45); }
+    #screen-class .dino-event-card .dec-badge.is-done{ background:#2FA05A; box-shadow:0 3px 8px rgba(20,110,60,.45); }
+    #screen-class .dino-event-card .dec-medal{ position:absolute; top:-10px; right:-8px; font-size:1.1rem; transform:rotate(12deg); filter:drop-shadow(0 2px 4px rgba(0,0,0,.35)); }
+    #screen-class .dino-event-card .dec-ico{ font-size:1.55rem; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+    #screen-class .dino-event-card .dec-label{ font-size:.7rem; font-weight:800; text-shadow:0 1px 3px rgba(0,60,20,.5); }
+    #screen-class .dino-event-card .dec-cd{ font-size:.56rem; font-weight:800; color:#FFC333; background:rgba(0,0,0,.32); border-radius:999px; padding:1px 7px; }
+    /* 有活动时 Store / Backpack 下移让位；无活动（卡 hidden + 无此 class）自动复位 = PRD「Store 直接上移」 */
+    #screen-class .hub-app.has-theme-event .dino-mini-entries .dn-pill--shop{ top:148px !important; }
+    #screen-class .hub-app.has-theme-event .dino-backpack-card{ top:258px !important; }
+
+    /* ⚽ 主题课落地页（E2）— 深蓝宇宙底（demo 视觉方向），左绿茵 Hero + 右玻璃往期卡 */
+    #screen-theme-course{
+      background:linear-gradient(180deg,#0A2CC6 0%,#0A54E1 40%,#74ACF2 100%);
+      position:relative; overflow:hidden;
+    }
+    #screen-theme-course .tc-back{
+      position:absolute; left:18px; top:16px; z-index:5; width:40px; height:40px; border-radius:50%;
+      border:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.28); color:#fff;
+      font-size:1.25rem; font-weight:800; cursor:pointer; backdrop-filter:blur(8px);
+    }
+    #screen-theme-course .tc-cols{
+      display:flex; gap:18px; height:100%; padding:56px 26px 22px; align-items:stretch;
+    }
+    #screen-theme-course .tc-hero-slot{ flex:1.15; min-width:0; display:flex; }
+    #screen-theme-course .tc-past{
+      flex:1; min-width:0; border-radius:24px; padding:18px 18px 12px; overflow-y:auto;
+      background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4);
+      backdrop-filter:blur(12px); color:#fff;
+    }
+    #screen-theme-course .tc-hero{
+      flex:1; border-radius:24px; padding:20px 22px 18px; color:#fff; display:flex; flex-direction:column;
+      background:
+        radial-gradient(circle at 18% 15%, rgba(255,255,255,.3), transparent 45%),
+        linear-gradient(165deg,#57B45E,#2E7A3C 70%,#1F5C2B);
+      box-shadow:0 16px 36px rgba(20,80,40,.4), inset 0 0 0 2px rgba(255,255,255,.35);
+    }
+    #screen-theme-course .tc-hero.is-empty{
+      background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4);
+      box-shadow:none; align-items:center; justify-content:center; text-align:center;
+    }
+    #screen-theme-course .tc-tags{ display:flex; gap:8px; margin-bottom:8px; }
+    #screen-theme-course .tc-tag{ font-size:.62rem; font-weight:800; letter-spacing:.06em; border-radius:8px; padding:4px 9px; }
+    #screen-theme-course .tc-tag.is-live{ background:#E8524B; color:#fff; }
+    #screen-theme-course .tc-tag.is-soon{ background:#3D8BF0; color:#fff; }
+    #screen-theme-course .tc-tag.is-done{ background:#2FA05A; color:#fff; }
+    #screen-theme-course .tc-tag.is-timer{ background:rgba(0,0,0,.35); color:#FFC333; }
+    #screen-theme-course .tc-hero h2{ font-size:1.5rem; font-weight:900; line-height:1.25; margin:0; text-shadow:0 2px 6px rgba(0,0,0,.3); }
+    #screen-theme-course .tc-scene{ font-size:1.6rem; letter-spacing:.12em; margin:6px 0; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+    #screen-theme-course .tc-story{ font-size:.8rem; line-height:1.55; color:#E8FBE9; margin:0 0 10px; }
+    #screen-theme-course .tc-chips{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:auto; }
+    #screen-theme-course .tc-chip{ background:rgba(255,255,255,.94); color:#1F5C2B; font-weight:900; font-size:.72rem; border-radius:999px; padding:5px 12px; box-shadow:0 2px 5px rgba(0,0,0,.2); }
+    #screen-theme-course .tc-cta{
+      display:block; width:100%; margin-top:12px; border:none; cursor:pointer; text-align:center;
+      background:linear-gradient(180deg,#FCB141,#FE8F26); color:#fff; font-family:var(--font);
+      font-size:1rem; font-weight:900; border-radius:999px; padding:13px;
+      box-shadow:0 10px 22px rgba(255,130,30,.42), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    #screen-theme-course .tc-cta.is-disabled{ background:rgba(255,255,255,.35); color:rgba(255,255,255,.8); box-shadow:none; cursor:default; }
+    #screen-theme-course .tc-cta.is-replay{ background:linear-gradient(180deg,#FFFFFF,#EAF6EC); color:#1F5C2B; box-shadow:0 4px 0 #B8D8BE; }
+    #screen-theme-course .tc-lvl{ font-size:.68rem; text-align:center; margin-top:8px; color:#D7F3D8; }
+    #screen-theme-course .tc-past > b{ display:block; font-size:1rem; font-weight:900; margin-bottom:6px; text-shadow:0 1px 3px rgba(0,40,90,.35); }
+    #screen-theme-course .tc-pi{ display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid rgba(255,255,255,.35); }
+    #screen-theme-course .tc-pi .th{ width:44px; height:44px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.4rem; box-shadow:0 2px 6px rgba(0,30,70,.12); }
+    #screen-theme-course .tc-pi .m{ flex:1; min-width:0; }
+    #screen-theme-course .tc-pi .m b{ display:block; font-size:.8rem; font-weight:800; }
+    #screen-theme-course .tc-pi .m span{ font-size:.64rem; opacity:.85; }
+    #screen-theme-course .tc-pill{ font-size:.64rem; font-weight:900; border-radius:999px; padding:5px 12px; flex-shrink:0; border:none; }
+    #screen-theme-course .tc-pill.is-replay{ background:#fff; color:#1E7A42; cursor:pointer; }
+    #screen-theme-course .tc-pill.is-ended{ background:rgba(255,255,255,.35); color:#fff; opacity:.75; cursor:default; }
+    #screen-theme-course .tc-empty{ text-align:center; padding:36px 8px; }
+    #screen-theme-course .tc-empty .ei{ font-size:2.4rem; display:block; margin-bottom:6px; filter:drop-shadow(0 2px 4px rgba(0,30,70,.2)); }
+    #screen-theme-course .tc-empty b{ display:block; font-size:.9rem; font-weight:900; margin-bottom:4px; }
+    #screen-theme-course .tc-empty span{ font-size:.7rem; opacity:.85; line-height:1.5; }
+
+    /* ⚽ 世界杯主题课挽留弹窗（E3 学习计划页 / E4 Paywall 返回）— 白圆角卡 + 绿茵头图条 + 橙色 CTA */
+    .tc-retain{ position:fixed; inset:0; z-index:99998; display:none; align-items:center; justify-content:center; background:rgba(10,25,60,.55); }
+    .tc-retain.show{ display:flex; }
+    .tc-retain-card{ width:min(320px,86vw); background:#fff; border-radius:24px; overflow:hidden; text-align:center; box-shadow:0 24px 60px rgba(10,30,80,.4); font-family:var(--font); }
+    .tc-retain-turf{
+      height:64px; display:flex; align-items:center; justify-content:center; font-size:2rem;
+      background:
+        radial-gradient(circle at 80% 12%, rgba(255,255,255,.28), transparent 45%),
+        repeating-linear-gradient(90deg,#3E9B4F 0 14px,#2E7A3C 14px 28px);
+    }
+    .tc-retain-body{ padding:16px 20px 20px; }
+    .tc-retain-body h3{ margin:0 0 6px; font-size:1.05rem; font-weight:900; color:#1f2a44; }
+    .tc-retain-body p{ margin:0 0 14px; font-size:.78rem; font-weight:700; color:#6b7690; }
+    .tc-retain-cta{
+      display:block; width:100%; border:none; cursor:pointer;
+      background:linear-gradient(180deg,#FCB141,#FE8F26); color:#fff; font-family:var(--font);
+      font-size:.92rem; font-weight:900; border-radius:999px; padding:12px;
+      box-shadow:0 10px 22px rgba(255,130,30,.42), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    .tc-retain-ghost{ display:block; width:100%; margin-top:8px; border:none; background:none; cursor:pointer; color:#8a93a8; font-family:var(--font); font-size:.78rem; font-weight:800; padding:8px; }
+
     /* ---------- generic glass card + orange CTA inside hub ---------- */
     #screen-class .class-week-card{
       background:linear-gradient(160deg, rgba(120,180,255,.42), rgba(80,140,240,.30)) !important;
@@ -5916,7 +6141,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(框选核心功能) → Paywall② → Dino 引导选老师 → 足球主题体验课 → 课程报告 → 限时折扣解锁 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」</p>
+  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(框选核心功能) → Paywall② → Dino 引导选老师 → 足球主题体验课 → 课程报告 → 限时折扣解锁 + ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）+ E3/E4 主题课挽留弹窗 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」与「世界杯主题课」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -6146,36 +6371,95 @@
       <!-- Study plan (V1.3.0: portrait/vertical takeover, moved out of the landscape frame) -->
       <section class="screen app-shell" id="screen-study-plan">
         <div class="study-plan-shell" id="study-plan-scroll">
-          <div class="study-plan-head">
-            <button type="button" class="btn-back-land" id="btn-study-plan-back">Back</button>
-          </div>
-          <!-- Page main title · {name}'s English Journey -->
-          <h1 class="sp-page-title" id="sp-page-title"></h1>
-          <!-- Current → Next goal cards, aligned with CEFR -->
-          <div class="sp-hero" id="sp-hero"></div>
-          <!-- Personalized learning plan · 3 value points -->
-          <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">Personalized learning plan</span></div>
-            <div class="sp-value" id="sp-value" aria-label="Personalized learning plan"></div>
-          </div>
-          <!-- 转化链路优化：底部改为「学完能获得什么」数据化成果网格（参考 Figma 16903-2917），
-               强调可量化收获而非枯燥的 level/unit 列表。旧 ladder/units 保留但隐藏，避免破坏渲染逻辑。 -->
-          <div class="sp-block">
-            <div class="sp-block-head"><span class="sp-block-title">What Leo will gain</span><span class="sp-block-note">Work toward A1→A2 (CEFR) confidence</span></div>
-            <div class="sp-outcomes">
-              <div class="sp-oc" style="--oc:#6E57E0;background:linear-gradient(-11deg,#E2E2FF,#fff);"><div class="sp-oc-n">477</div><div class="sp-oc-l">Vocabulary words</div></div>
-              <div class="sp-oc" style="--oc:#C46521;background:linear-gradient(-11deg,#FFF7E2,#fff);"><div class="sp-oc-n">32</div><div class="sp-oc-l">Phonics rules</div></div>
-              <div class="sp-oc" style="--oc:#249ECC;background:linear-gradient(-11deg,#CDEFFB,#fff);"><div class="sp-oc-n">83</div><div class="sp-oc-l">Sentence patterns</div></div>
-              <div class="sp-oc" style="--oc:#DD5798;background:linear-gradient(-11deg,#FFE2F8,#fff);"><div class="sp-oc-n">10</div><div class="sp-oc-l">Reading genres</div></div>
-              <div class="sp-oc" style="--oc:#41AE72;background:linear-gradient(-11deg,#E2FFE6,#fff);"><div class="sp-oc-n">12</div><div class="sp-oc-l">Grammar points</div></div>
-              <div class="sp-oc" style="--oc:#E0871F;background:linear-gradient(-11deg,#FCEEDA,#fff);"><div class="sp-oc-n">40</div><div class="sp-oc-l">Songs &amp; rhymes</div></div>
+          <button type="button" class="sp2-back" id="btn-study-plan-back" aria-label="Back">‹</button>
+
+          <!-- 1 · Personalized headline -->
+          <p class="sp2-eyebrow" id="sp2-eyebrow">Personalized for Leo</p>
+          <h1 class="sp2-title" id="sp2-title">Leo's plan is ready</h1>
+          <p class="sp2-sub" id="sp2-sub">A clear path from where Leo is today to more confident English.</p>
+          <div class="sp2-chips" id="sp2-chips"></div>
+
+          <!-- 2 · Level-up: recommended start → 12-month milestone -->
+          <div class="sp2-levelcard">
+            <div class="sp2-lc-col">
+              <span class="sp2-lc-tag">Recommended start</span>
+              <span class="sp2-lc-lvl" id="sp2-start-lvl">Level 2</span>
+              <span class="sp2-lc-cefr" id="sp2-start-cefr">CEFR A1</span>
             </div>
-            <div id="sp-ladder" style="display:none"></div>
-            <div id="sp-units" style="display:none"></div>
+            <span class="sp2-lc-arrow" aria-hidden="true">&rarr;</span>
+            <div class="sp2-lc-col sp2-lc-col--goal">
+              <span class="sp2-lc-tag">12-month milestone</span>
+              <span class="sp2-lc-lvl" id="sp2-goal-lvl">Level 3</span>
+              <span class="sp2-lc-cefr" id="sp2-goal-cefr">CEFR A1+</span>
+            </div>
           </div>
+
+          <!-- 3 · Trust stats -->
+          <div class="sp2-stats">
+            <div class="sp2-stat"><b id="sp2-stat-week">3&times;</b><span>lessons a week</span></div>
+            <div class="sp2-stat"><b id="sp2-stat-units">12</b><span>structured units</span></div>
+            <div class="sp2-stat"><b id="sp2-stat-lessons">144</b><span>AI lessons</span></div>
+          </div>
+
+          <!-- 4 · See the product · AI teacher classroom -->
+          <div class="sp2-product">
+            <div class="sp2-product-head">
+              <div>
+                <p class="sp2-eyebrow sp2-eyebrow--card">See the product</p>
+                <h2 class="sp2-product-title">A personal AI teacher in every lesson</h2>
+              </div>
+            </div>
+            <!-- Auto-playing glimpse of a real lesson: teach → speak → practice → quiz -->
+            <div class="sp2-class" aria-label="A glimpse of a live AI lesson">
+              <div class="sp2-cls-screen">
+                <!-- persistent classroom HUD -->
+                <div class="sp2-cls-hud">
+                  <div class="sp2-cls-bar"><i class="sp2-cls-fill"></i></div>
+                  <span class="sp2-cls-coin">&#129689; 888</span>
+                </div>
+                <img class="sp2-cls-teacher" src="assets/teacher-kim.png" alt="AI teacher" decoding="async" onerror="this.style.display='none'" />
+                <!-- 1 · Teach the word -->
+                <div class="sp2-cls-scene s1">
+                  <div class="sp2-cls-card"><span class="sp2-cls-emoji">&#128052;</span><span class="sp2-cls-word">horse</span></div>
+                  <p class="sp2-cls-say">&ldquo;Look! This is a <b>horse</b>.&rdquo;</p>
+                  <span class="sp2-cls-mic">&#127908; Tap to answer</span>
+                </div>
+                <!-- 2 · Kid speaks → instant praise -->
+                <div class="sp2-cls-scene s2">
+                  <div class="sp2-cls-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                  <div class="sp2-cls-praise">&#11088; Excellent! &#128077;</div>
+                  <p class="sp2-cls-say">&ldquo;I see a <b>horse</b>!&rdquo;</p>
+                </div>
+                <!-- 3 · Practice Time interstitial -->
+                <div class="sp2-cls-scene s3">
+                  <img class="sp2-cls-dino" src="assets/dino-mascot.png" alt="" decoding="async" onerror="this.style.display='none'" />
+                  <div class="sp2-cls-pt">Practice Time &#128640;</div>
+                </div>
+                <!-- 4 · Listen-and-tap quiz -->
+                <div class="sp2-cls-scene s4">
+                  <div class="sp2-cls-bubbles"><span>&#127822;</span><span class="ok">&#127815;</span><span>&#127820;</span></div>
+                  <p class="sp2-cls-say">Where are the <b>grapes</b>? &#127815;</p>
+                  <div class="sp2-cls-great">Great! &#127881;</div>
+                </div>
+              </div>
+            </div>
+            <div class="sp2-feats">
+              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#2e8b57;background:#e5f3ea;">&#9673;</span><span class="sp2-feat-lbl">Speaks every lesson</span></div>
+              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#e67722;background:#fbe9d8;">&#8599;</span><span class="sp2-feat-lbl">Instant feedback</span></div>
+              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#6E57E0;background:#ece8fb;">&#10022;</span><span class="sp2-feat-lbl" id="sp2-feat-adapts">Adapts to Leo</span></div>
+            </div>
+          </div>
+
+          <!-- 5 · Endorsement band -->
+          <div class="sp2-trust">
+            <div class="sp2-trust-item"><b>13 years</b><span>curriculum expertise</span></div>
+            <div class="sp2-trust-item"><b>1.8M+</b><span>families worldwide</span></div>
+            <div class="sp2-trust-item"><b>CEFR</b><span>aligned pathway</span></div>
+          </div>
+
           <div class="sp-foot">
-            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Start your Journey</button>
-            <p class="sp-foot-note">Personalized plan · see real progress</p>
+            <button type="button" class="btn btn-primary" id="btn-study-plan-start">Claim my learning plan</button>
+            <p class="sp-foot-note">Personalized plan &middot; cancel anytime</p>
           </div>
         </div>
       </section>
@@ -6696,15 +6980,18 @@
                     </button>
                   </aside>
                   <section class="class-home-main">
-                    <div class="class-home-lead">
-                      <p class="class-hero-kicker" id="class-hero-kicker">Start here first</p>
-                      <h3 class="class-home-lead-title" id="class-home-lead-title">Your current class is ready</h3>
-                    </div>
-                    <!-- 方案二: this week's 3 lessons live ON Class home as a horizontal
-                         swiper (zero clicks). Browsing the full catalog moves to the single
-                         Learning Path entry on the right. -->
-                    <div class="class-week-head">
-                      <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
+                    <!-- 标题与「More lessons」水平对齐（同一行：标题左、入口右）。 -->
+                    <div class="class-lead-row">
+                      <div class="class-home-lead">
+                        <p class="class-hero-kicker" id="class-hero-kicker">Start here first</p>
+                        <h3 class="class-home-lead-title" id="class-home-lead-title">Your current class is ready</h3>
+                      </div>
+                      <!-- 方案二: this week's 3 lessons live ON Class home as a horizontal
+                           swiper (zero clicks). Browsing the full catalog moves to the single
+                           Learning Path entry on the right. -->
+                      <div class="class-week-head">
+                        <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
+                      </div>
                     </div>
                     <!-- V1.3.0: the trial lesson (lesson0) is removed from the
                          All-lessons / Level·Unit lists, but on Class home it shows as a
@@ -6787,6 +7074,14 @@
                   <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop">🛍️</button>
                 </div>
               </div>
+              <!-- ⚽ 世界杯主题课运营入口（E1）：Store 上方；无活动时隐藏不占位，Store/Backpack 自动上移复位 -->
+              <button type="button" class="dino-event-card" id="dino-event-card" hidden onclick="openThemeLanding()">
+                <span class="dec-badge" id="dec-badge">LIMITED</span>
+                <span class="dec-medal" id="dec-medal" hidden>🏅</span>
+                <span class="dec-ico" aria-hidden="true">⚽</span>
+                <span class="dec-label">World Cup</span>
+                <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
+              </button>
               <!-- Backpack entry card (left edge, Figma) -->
               <button type="button" class="dino-backpack-card" data-go-game="screen-backpack">
                 <span class="dbc-ico" aria-hidden="true">🎒</span>
@@ -7562,6 +7857,15 @@
               <button type="button" class="shop-buy-btn" id="bag-equip" disabled>Wear</button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ⚽ 主题课落地页（E2）：左当期 Hero + 右往期列表；五态由 renderThemeLanding() 按 themeEvent 渲染 -->
+      <section class="screen" id="screen-theme-course">
+        <button type="button" class="tc-back" id="tc-back" aria-label="Back">‹</button>
+        <div class="tc-cols">
+          <div class="tc-hero-slot" id="tc-hero"></div>
+          <div class="tc-past" id="tc-past"></div>
         </div>
       </section>
 
@@ -8778,6 +9082,10 @@
       const isProfile = tab === "profile";
       $("#hub-app")?.classList.toggle("hub-app--profile", isProfile);
       $("#screen-class")?.classList.toggle("app-shell--profile", isProfile);
+      // Dino tab 右上角有金币 pill → 会员入口移到金币左边（其余 tab 贴右上角）。
+      $("#hub-app")?.classList.toggle("hub-app--tab-dino", tab === "dino");
+      // 会员入口跟随 tab 显示（非会员常驻，已付费隐藏）。
+      window.syncHubVip?.();
       if ((tab === "play" || tab === "dino") && window.GAME) window.GAME.syncHud();
       if (tab === "play") window.GAME?.renderPlayLimits?.();
       // The weekly swiper can only be centered once its panel has width (visible).
@@ -9546,6 +9854,16 @@
     let lcReportReady = false;
     let lcReportTimer = null;
     function finishInclass() {
+      // ⚽ 世界杯主题课完课：独立记账（不推进主课进度），结算页照常发 XP/金币。
+      if (themeCourseRun) {
+        themeCourseRun = false;
+        themeSettleRun = true;
+        themeEvent.user = "completed";
+        renderThemeEventCard();
+        lessonCompleteIsTrial = false;
+        showLessonComplete(false);
+        return;
+      }
       // A level-up trial always routes to the (level-up) trial report on Continue.
       if (levelUpInProgress) {
         trialReportMode = "levelup";
@@ -9613,6 +9931,8 @@
     $("#lc-continue")?.addEventListener("click", () => {
       // Locked until the report finishes generating.
       if (!lcReportReady) return;
+      // ⚽ 世界杯主题课结算页 Continue → 回主题课来源页（不进报告、不走 cx 分支）。
+      if (themeSettleRun) { themeSettleRun = false; themeExitTarget(); return; }
       // 付费后的定级课（体验课）完课 → 体验课报告（带定级），报告内再按会员分底部按钮。
       if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
       // 免费转化流程（足球主题课）完课 → 课程报告 (cx-report)，非会员只保留 Unlock more courses。
@@ -9665,6 +9985,14 @@
     });
     // Exit (back) from any in-class screen → return to Class home
     $$("[data-ic-exit]").forEach((btn) => btn.addEventListener("click", () => {
+      // ⚽ 世界杯主题课退出：记断点、回主题课来源页；放在 cx 分支之前，仅 themeCourseRun 时接管。
+      if (themeCourseRun) {
+        themeCourseRun = false;
+        if (themeEvent.user !== "completed") themeEvent.user = "inprogress";
+        renderThemeEventCard();
+        themeExitTarget();
+        return;
+      }
       // 付费后的定级课退出 → 体验课报告（带定级）；免费足球课退出 → 课程报告 (cx-report)。
       if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
       if (cxStage && cxStage !== "home") { if (window.cxShowReport) { window.cxShowReport(); return; } }
@@ -9827,8 +10155,9 @@
     // level / 定级 forward once the level's last lesson is done) — V1.3.0 natural
     // progression. Advancing on BOTH buttons keeps the finished lesson reading as
     // Completed (no accidental re-entry).
-    $("#btn-lr-back")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
-    $("#btn-lr-continue")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
+    // ⚽ 世界杯主题课报告：返回落地页且绝不推进主课进度（themeReportOpen 前置拦截）。
+    $("#btn-lr-back")?.addEventListener("click", () => { if (themeReportOpen) { themeReportOpen = false; themeReportTitleSwap(false); openThemeLanding(); return; } advanceAfterFormalLesson(); showClassHome(); });
+    $("#btn-lr-continue")?.addEventListener("click", () => { if (themeReportOpen) { themeReportOpen = false; themeReportTitleSwap(false); openThemeLanding(); return; } advanceAfterFormalLesson(); showClassHome(); });
     // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
     // Scope toggling to each card's own segtab so the two report screens don't interfere.
     document.querySelectorAll(".tp-report .tp-segtab").forEach((tabwrap) => {
@@ -9869,64 +10198,60 @@
       "Reads extensively and develops writing skills",
       "Develops academic English skills",
     ];
+    // Short goal label for the plan chip. Conversion-flow goals (CX_GOALS ids) first,
+    // then the onboarding GOAL_SHORT keys, then a safe default.
+    const CX_GOAL_SHORT = {
+      confidence: "Speak confidently",
+      school: "Better school English",
+      path: "A clear path",
+      daily: "Everyday & travel",
+      habit: "A steady habit",
+    };
     function renderStudyPlanScreen() {
+      const set = (sel, txt) => { const el = $(sel); if (el) el.textContent = txt; };
       const dn = getDisplayName();
-      const subjectPoss = dn ? `${dn}'s` : (isParentVoice() ? (profile.age === "13–17" ? "your teen's" : "your child's") : "your");
+      const poss = dn ? `${dn}'s` : "Your";
       const level = getCurrentLevel();
       const curLi = Math.max(0, COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId));
-      // CURRENT level's CEFR + the ability goal it sets (the next milestone).
-      const cefr = SP_LEVEL_CEFR[curLi] || "A2";
-      const goalText = SP_LEVEL_GOAL[curLi] || SP_LEVEL_GOAL[1];
+      // CURRENT level's CEFR band = the recommended start; +1 level in ~12 months.
+      const cefr = SP_LEVEL_CEFR[curLi] || "A1";
+      const targetLevelNum = Math.min(curLi + 2, COURSE_LIBRARY.length);
+      const targetCefr = SP_LEVEL_CEFR[targetLevelNum - 1] || "A2";
       // Curriculum counts (CURRENT level): 12 units · 144 lessons.
       const unitsPerLevel = level.units.length;
       const lessonsThisLevel = unitsPerLevel * level.units[0].lessons.length;
-      // Level reached in ~12 months = the next level (capped at the top L6).
-      const targetLevelNum = Math.min(curLi + 2, COURSE_LIBRARY.length);
-      // ---- Page main title ----
-      const pageTitle = $("#sp-page-title");
-      if (pageTitle) pageTitle.textContent = `${subjectPoss} English Journey`;
-      // ---- Current → Next goal cards (aligned with CEFR) ----
-      const hero = $("#sp-hero");
-      if (hero) {
-        hero.innerHTML =
-          `<div class="sp-cefr-title">Aligned with CEFR international standards</div>` +
-          `<div class="sp-journey">` +
-            `<div class="sp-jnode sp-jnode--now">` +
-              `<div class="sp-jnode-tag">Current</div>` +
-              `<div class="sp-jnode-lvl">${level.label}</div>` +
-              `<div class="sp-jnode-cefr">CEFR ${cefr}</div>` +
-            `</div>` +
-            `<div class="sp-jlink" aria-hidden="true">` +
-              `<div class="sp-jlink-line"><span class="sp-jlink-dino">🦕</span></div>` +
-            `</div>` +
-            `<div class="sp-jnode sp-jnode--goal">` +
-              `<div class="sp-jnode-tag">Next goal</div>` +
-              `<div class="sp-jnode-goal">${goalText}</div>` +
-            `</div>` +
-          `</div>`;
-      }
-      // ---- Personalized learning plan · 3 value points ----
-      const valueBox = $("#sp-value");
-      if (valueBox) {
-        const cards = [
-          { ico: "📚", title: `${unitsPerLevel} units · ${lessonsThisLevel} lessons`, sub: `Multiple lesson types tailored to each level: Vocabulary · Sentences · Reading · Phonics · Writing · Grammar · Review` },
-          { ico: "🦕", title: `${STUDY_LESSONS_PER_WEEK} lessons a week`, sub: `Short lessons weekly. Steady progress ahead.` },
-          { ico: "🎯", title: `Level ${targetLevelNum} in 12 months`, sub: `A clear goal. Easy to track.`, goal: true },
-        ];
-        valueBox.innerHTML = cards.map((v) => `
-          <div class="sp-value-card${v.goal ? " is-goal" : ""}">
-            <span class="sp-value-ico">${v.ico}</span>
-            <div class="sp-value-main">
-              <div class="sp-value-title">${v.title}</div>
-              <div class="sp-value-sub">${v.sub}</div>
-            </div>
-          </div>`).join("");
-      }
-      // ---- Bottom CTA personalized with the learner's name ----
-      const startBtn = $("#btn-study-plan-start");
-      if (startBtn) startBtn.textContent = "Claim my learning plan";
-      // ---- The full 6-level system · level ladder + compact unit timeline ----
-      renderStudyPlanJourney();
+      const goalShort = CX_GOAL_SHORT[profile.goal] || GOAL_SHORT[profile.goal] || "Speak confidently";
+
+      // 1 · Personalized headline
+      set("#sp2-eyebrow", `Personalized for ${dn || "your learner"}`);
+      set("#sp2-title", `${poss} plan is ready`);
+      set("#sp2-sub", dn
+        ? `A clear path from where ${dn} is today to more confident English.`
+        : `A clear path from today to more confident English.`);
+      const chips = [
+        profile.age ? `Ages ${profile.age}` : "",
+        `${level.label} · ${cefr}`,
+        `Goal · ${goalShort}`,
+      ].filter(Boolean);
+      const chipBox = $("#sp2-chips");
+      if (chipBox) chipBox.innerHTML = chips.map((c) => `<span class="sp2-chip">${c}</span>`).join("");
+
+      // 2 · Level-up milestone card
+      set("#sp2-start-lvl", level.label);
+      set("#sp2-start-cefr", `CEFR ${cefr}`);
+      set("#sp2-goal-lvl", `Level ${targetLevelNum}`);
+      set("#sp2-goal-cefr", `CEFR ${targetCefr}`);
+
+      // 3 · Trust stats
+      set("#sp2-stat-week", `${STUDY_LESSONS_PER_WEEK}×`);
+      set("#sp2-stat-units", `${unitsPerLevel}`);
+      set("#sp2-stat-lessons", `${lessonsThisLevel}`);
+
+      // 4 · AI-teacher classroom — personalize the "adapts to" tile
+      set("#sp2-feat-adapts", `Adapts to ${dn || "your learner"}`);
+
+      // 5 · CTA
+      set("#btn-study-plan-start", "Claim my learning plan");
     }
     // Path ahead: panorama 6-Level ladder + the current Level's units as compact,
     // single-line chips (theme + status only — no nested lessons / expand / milestones),
@@ -12428,6 +12753,8 @@
       profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
+      // Tab 会员入口购买 → 直接解锁并回 hub（不进定级测试）。
+      if (cxStage === "pay-tab") { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
       // 转化链路优化：付费成功 → 付费后交付段（定级体验课 → 报告 → 排课解锁）。
       if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
       closePaywallPortrait();
@@ -12541,6 +12868,8 @@
       refreshUnlockState();
       // 从课程报告「解锁更多」进限时折扣页并订阅 → 直接进已解锁的 Class 首页。
       if (cxStage === "pay-report") { cxStage = "paid"; enterLandscape(); if (typeof showClassHome === "function") showClassHome(); showPayToast("Premium unlocked 🎉"); return; }
+      // Tab 会员入口购买（经挽留后成交）→ 直接解锁并回 hub。
+      if (cxStage === "pay-tab") { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
       // 转化链路优化：周卡挽留订阅成功 → 付费后交付段。
       if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
       enterLandscape();
@@ -12706,6 +13035,174 @@
     refreshUnlockState();
   </script>
 
+  <!-- ⚽ 世界杯主题课（运营位）——同事 PRD：主题课入口 UI -->
+  <script>
+    // ⚽ 世界杯主题课（运营位）demo 状态 — 同事 PRD：首页 Banner 三态 + 落地页五态。
+    // activity/user 两级判定均模拟“服务端下发”，demo 里由 ⚙︎ States 面板切换。
+    var themeEvent = {
+      activity: "active",   // preview 预告 | active 进行中 | ended 已结束/无活动
+      user: "none",         // none 未开始 | inprogress 断点 | completed 已完成
+      pastEmpty: false,     // true = 首期活动（无往期列表）
+    };
+    var themeCourseRun = false;      // 当前课堂会话是否为主题课（拦截退出/完课用）
+    var themeSettleRun = false;      // 结算页 Continue 是否应回主题课落地页
+    var themeReportOpen = false;     // 正价课报告是否由主题课打开（拦截返回+不推进度）
+    var themeReturnTo = "landing";   // 课堂退出/完课返回目标：landing | studyplan | paywall（后两者仅转化链路 demo 用）
+
+    // E1 首页入口卡三态渲染：preview 蓝「SOON」/ active 红「LIMITED」+呼吸 / completed 绿「DONE ✓」+🏅；
+    // ended 隐藏不占位（去掉 has-theme-event 后 Store/Backpack 回到原位）。
+    function renderThemeEventCard(){
+      var card = document.getElementById("dino-event-card");
+      var hub = document.getElementById("hub-app");
+      if (!card || !hub) return;
+      var badge = document.getElementById("dec-badge");
+      var medal = document.getElementById("dec-medal");
+      var cd = document.getElementById("dec-cd");
+      var on = themeEvent.activity !== "ended";
+      card.hidden = !on;
+      hub.classList.toggle("has-theme-event", on);
+      if (!on) return;
+      card.classList.remove("is-live");
+      badge.classList.remove("is-soon","is-done");
+      medal.hidden = true;
+      if (themeEvent.activity === "preview") {
+        badge.textContent = "SOON"; badge.classList.add("is-soon");
+        cd.textContent = "⏱ in 3 days";
+      } else if (themeEvent.user === "completed") {
+        badge.textContent = "DONE ✓"; badge.classList.add("is-done");
+        medal.hidden = false; cd.textContent = "⏱ 5d left";
+      } else {
+        badge.textContent = "LIMITED"; card.classList.add("is-live");
+        cd.textContent = "⏱ 5d left";
+      }
+    }
+
+    // E2 落地页：Hero 按（活动状态 × 用户进度）渲染，右侧往期列表含首期空态。
+    // PRD 口径：主题课为限时内容不支持重上/补上；已完课 →「View report」；未完成/未参与 → 置灰 Ended。
+    function openThemeLanding(){
+      renderThemeLanding();
+      enterLandscape();
+      showLandScreen("screen-theme-course");
+    }
+    function renderThemeLanding(){
+      var hero = document.getElementById("tc-hero");
+      var past = document.getElementById("tc-past");
+      if (!hero || !past) return;
+      if (themeEvent.activity === "ended") {
+        hero.innerHTML = '<div class="tc-hero is-empty"><div class="tc-empty"><span class="ei">🔭</span>'
+          + '<b>No live event right now</b><span>New theme classes are on the way!<br>Check your finished ones on the right ~</span></div></div>';
+      } else {
+        var tags, cta;
+        if (themeEvent.activity === "preview") {
+          tags = '<span class="tc-tag is-soon">COMING SOON</span><span class="tc-tag is-timer">⏱ Starts in 3 days</span>';
+          cta = '<button type="button" class="tc-cta is-disabled">Coming soon</button>';
+        } else if (themeEvent.user === "completed") {
+          tags = '<span class="tc-tag is-done">COMPLETED 🏅</span><span class="tc-tag is-timer">⏱ 5 days 12 h left</span>';
+          cta = '<button type="button" class="tc-cta is-replay" onclick="openThemeReport()">View report 📊</button>';
+        } else {
+          tags = '<span class="tc-tag is-live">LIMITED EVENT</span><span class="tc-tag is-timer">⏱ 5 days 12 h left</span>';
+          cta = '<button type="button" class="tc-cta" onclick="startThemeCourse()">'
+            + (themeEvent.user === "inprogress" ? "Continue ▶" : "Start the lesson ▶") + '</button>';
+        }
+        hero.innerHTML = '<div class="tc-hero"><div class="tc-tags">' + tags + '</div>'
+          + '<h2>The Tiny Team<br>World Cup Final 🏆</h2>'
+          + '<div class="tc-scene">🐜 🐌 ⚽ 🥅 🪲</div>'
+          + '<p class="tc-story">The ant and the snail lead the Tiny Team against the big beetle squad. Small, fast and together — can they win the World Cup?</p>'
+          + '<div class="tc-chips"><span class="tc-chip">Come on!</span><span class="tc-chip">So close!</span><span class="tc-chip">Goal!</span></div>'
+          + cta + '<div class="tc-lvl">Level 1–2 · Ages 4–7 · ~5 min</div></div>';
+      }
+      var items = [];
+      if (themeEvent.activity === "ended") {
+        items.push({ e:"⚽", bg:"#E8F6EC", t:"World Cup · The Tiny Team", s:"2026.07 · Completed", pill:"report" });
+      }
+      if (themeEvent.pastEmpty) {
+        past.innerHTML = "<b>Past events</b>"
+          + (items.length ? themePastItemsHtml(items) : "")
+          + (!items.length ? '<div class="tc-empty"><span class="ei">🎈</span><b>Our first event ever!</b><span>New theme classes are on the way ~</span></div>' : "");
+      } else {
+        items.push({ e:"🧧", bg:"#FFE9EC", t:"Lunar New Year Party", s:"2026.02 · Completed", pill:"report" });
+        items.push({ e:"🎄", bg:"#EAF1FF", t:"Dino's Christmas Gift", s:"2025.12 · Not finished", pill:"ended" });
+        items.push({ e:"🎃", bg:"#FFF3DE", t:"Halloween Trick or Treat", s:"2025.10 · Missed", pill:"ended" });
+        past.innerHTML = "<b>Past events</b>" + themePastItemsHtml(items);
+      }
+    }
+    function themePastItemsHtml(items){
+      return items.map(function(it){
+        var pill = it.pill === "report"
+          ? '<button type="button" class="tc-pill is-replay" onclick="openThemeReport()">View report</button>'
+          : '<span class="tc-pill is-ended">Ended</span>';
+        return '<div class="tc-pi"><div class="th" style="background:' + it.bg + '"><span>' + it.e + '</span></div>'
+          + '<div class="m"><b>' + it.t + '</b><span>' + it.s + '</span></div>' + pill + '</div>';
+      }).join("");
+    }
+    // 落地页返回 → 首页 Dino tab。
+    document.getElementById("tc-back")?.addEventListener("click", function () {
+      setHubTab("dino");
+      showLandScreen("screen-class");
+    });
+
+    // 进课：复用现有 Dino-AI 数字人课堂；主题课不写入主课进度（PRD：完课独立记账）。
+    function startThemeCourse(){
+      themeCourseRun = true;
+      openClassroomDemo("theme-course");
+      showPayToast("World Cup class ⚽");
+    }
+    // 报告：复用现有正价课报告组件；用 themeReportOpen 拦截返回并跳过 advanceAfterFormalLesson。
+    function openThemeReport(){
+      themeReportOpen = true;
+      showLessonReport();
+      themeReportTitleSwap(true);
+    }
+    // 渲染后轻量覆写报告标题为主题课（仅动 DOM 文案，不动渲染函数）；关闭时还原静态标题。
+    function themeReportTitleSwap(on){
+      var t = document.querySelector("#screen-lesson-report .tp-hero-title");
+      var b = document.querySelector("#screen-lesson-report .tp-hero-badge");
+      if (t) t.textContent = on ? "World Cup Class Report" : "Lesson Report";
+      if (b) b.textContent = on ? "Theme Class Report" : "Lesson Report";
+      var pill = document.getElementById("lr-unit-pill");
+      if (on && pill) pill.textContent = "World Cup 2026 · The Tiny Team";
+    }
+    function themeExitTarget(){
+      var t = themeReturnTo; themeReturnTo = "landing";
+      if (t === "studyplan") { enterPortrait(); showPortraitScreen("screen-study-plan"); }
+      else if (t === "paywall") { enterPortrait(); showPortraitScreen("screen-paywall-pt"); }
+      else { openThemeLanding(); }
+    }
+
+    // E3/E4 挽留弹窗：学习计划页退出 / Paywall 返回时的主题课挽留（demo 由 States 面板直达，不改真实触发链路）。
+    function openThemeRetainOffer(kind){
+      var ov = document.getElementById("tc-retain-overlay");
+      if (!ov) {
+        ov = document.createElement("div");
+        ov.className = "tc-retain";
+        ov.id = "tc-retain-overlay";
+        ov.innerHTML = '<div class="tc-retain-card"><div class="tc-retain-turf">⚽</div>'
+          + '<div class="tc-retain-body"><h3 id="tc-retain-h"></h3><p id="tc-retain-sub"></p>'
+          + '<button type="button" class="tc-retain-cta" id="tc-retain-go"></button>'
+          + '<button type="button" class="tc-retain-ghost" id="tc-retain-close"></button></div></div>';
+        document.body.appendChild(ov);
+        ov.addEventListener("click", function (e) {
+          if (e.target === ov || e.target.id === "tc-retain-close") { ov.classList.remove("show"); return; }
+          if (e.target.id === "tc-retain-go") {
+            ov.classList.remove("show");
+            themeReturnTo = ov.dataset.kind === "paywall" ? "paywall" : "studyplan";
+            startThemeCourse();
+          }
+        });
+      }
+      ov.dataset.kind = kind;
+      var isPw = kind === "paywall";
+      document.getElementById("tc-retain-h").textContent = isPw ? "Try a free class first?" : "One more game before you go?";
+      document.getElementById("tc-retain-sub").textContent = isPw ? "World Cup class · free · 5 min" : "Free World Cup class · 5 min";
+      document.getElementById("tc-retain-go").textContent = isPw ? "Play free class ▶" : "Play the World Cup class ▶";
+      document.getElementById("tc-retain-close").textContent = isPw ? "Back to plans" : "Maybe later";
+      ov.classList.add("show");
+    }
+
+    // 首页入口卡初始渲染（默认：活动进行中 · 未开始）。
+    renderThemeEventCard();
+  </script>
+
   <!-- ⚙︎ States review panel (demo-only): switch membership / placement level /
        level-up verdict per page and quick-jump between key pages. Never gates real
        logic; lets reviewers see non-happy-path states a single click path can't reach. -->
@@ -12718,6 +13215,10 @@
       var jumps = config.jumps || [];
       var jumps131 = config.jumps131 || [];
       var jumps131Label = config.jumps131Label || "1.3.2 变更";
+      // ⚽ 世界杯主题课快捷跳转组（绿色高亮，与 jumps131 橙色区分）
+      var jumpsWC = config.jumpsWC || [];
+      var jumpsWCLabel = config.jumpsWCLabel || "世界杯主题课";
+      var beforeJump = config.beforeJump || function () {};
       var title = config.title || "States";
       var getValue = config.getValue || function () { return null; };
       var getContext = config.context || function () { return { label: "", keys: groups.map(function (g) { return g.key; }) }; };
@@ -12749,7 +13250,12 @@
           ".sp-jumps131-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#a8521b;display:flex;align-items:center;gap:6px}",
           ".sp-jumps131-label::before{content:'NEW';font-size:.58rem;font-weight:800;letter-spacing:.06em;background:#d9641e;color:#fff;border-radius:4px;padding:1px 5px}",
           ".sp-jump131{flex:1 1 auto;min-width:64px;border:1px solid #e6b894;background:#fff;color:#a8521b;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
-          ".sp-jump131:hover{background:#fdeede}"
+          ".sp-jump131:hover{background:#fdeede}",
+          ".sp-jumpswc-wrap{margin-top:10px;padding:10px;border-radius:10px;background:#eefaf0;border:1px solid #9ecdaa}",
+          ".sp-jumpswc-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#1E7A42;display:flex;align-items:center;gap:6px}",
+          ".sp-jumpswc-label::before{content:'⚽ NEW';font-size:.58rem;font-weight:800;letter-spacing:.04em;background:#2FA05A;color:#fff;border-radius:4px;padding:1px 5px}",
+          ".sp-jumpwc{flex:1 1 auto;min-width:64px;border:1px solid #9ecdaa;background:#fff;color:#1E7A42;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
+          ".sp-jumpwc:hover{background:#e3f5e8}"
         ].join("");
         document.head.appendChild(css);
       }
@@ -12796,6 +13302,11 @@
             jumps131.map(function (j, i) { return '<button type="button" class="sp-jump131" data-sp-jump131="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
         }
+        if (jumpsWC.length) {
+          html += '<div class="sp-jumpswc-wrap"><p class="sp-jumpswc-label">' + esc(jumpsWCLabel) + '</p><div class="sp-jumps">' +
+            jumpsWC.map(function (j, i) { return '<button type="button" class="sp-jumpwc" data-sp-jumpwc="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
+            "</div></div>";
+        }
         body.innerHTML = html;
         sync();
       }
@@ -12810,9 +13321,11 @@
           return;
         }
         var jump = e.target.closest("[data-sp-jump]");
-        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) j.run(); return; }
+        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) { beforeJump(); j.run(); } return; }
         var jump131 = e.target.closest("[data-sp-jump131]");
-        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) j2.run(); }
+        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) { beforeJump(); j2.run(); } return; }
+        var jumpwc = e.target.closest("[data-sp-jumpwc]");
+        if (jumpwc) { var j3 = jumpsWC[+jumpwc.dataset.spJumpwc]; if (j3 && j3.run) { beforeJump(); j3.run(); } }
       });
 
       var watch = config.watch || ["body"];
@@ -12859,14 +13372,18 @@
   // V1.3.2: confirm dialog for a plan switch (member downgrade + member level-up adopt).
   // States clearly WHEN the new level gets scheduled, per the weekly budget: budget left
   // → this week right away; budget spent → next week. Member-only (free switches go
-  // through the trial → Paywall path, which has no scheduling promise).
+  // through the trial → Paywall path, which has no scheduling promise). An untouched
+  // week (done = 0) gets its own wording so it never says "You've done 0 of...".
+  // Copy style: short plain sentences, no em dashes (kids-edu product tone).
   function confirmPlanSwitch(targetLevelId, onConfirm) {
     const label = levelLabelOf(targetLevelId);
     const budget = weekBudgetRemaining();
     const done = profile.weekDoneCount || 0;
     const timing = budget > 0
-      ? `You've done ${done} of this week's ${WEEK_LESSONS} lessons — we'll schedule your ${label} ${budget === 1 ? "lesson" : "lessons"} right away (${budget} left this week).`
-      : `You've finished this week's ${WEEK_LESSONS} lessons — your ${label} plan starts next week.`;
+      ? (done === 0
+          ? `All ${WEEK_LESSONS} of this week's lessons are still ahead. We'll schedule your ${label} lessons right away.`
+          : `You've done ${done} of this week's ${WEEK_LESSONS} lessons. We'll schedule your remaining ${budget} ${budget === 1 ? "lesson" : "lessons"} at ${label} right away.`)
+      : `You've finished this week's ${WEEK_LESSONS} lessons. Your ${label} plan starts next week.`;
     let ov = document.getElementById("switch-confirm-overlay");
     if (!ov) {
       ov = document.createElement("div");
@@ -12952,6 +13469,9 @@
   mountStatePanel({
     title: "States",
     watch: ["#device-landscape", "#device-portrait", "#wrap-landscape", "#wrap-portrait"],
+    // 任意快捷跳转前重置主题课标志位：经「⚽ 主题课课堂（进课）」进课后若用通用跳转中途离开，
+    // themeCourseRun 残留会误劫持下一节普通课/漏斗课的完课分支（themeReportOpen 同理）。
+    beforeJump: function () { themeCourseRun = false; themeSettleRun = false; themeReportOpen = false; },
     getValue: function (key) {
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
@@ -12960,6 +13480,9 @@
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
       if (key === "quizTypes") return demoState.quizTypes;
       if (key === "kakaoPhoneBound") return demoState.kakaoPhoneBound ? "true" : "false";
+      if (key === "themeActivity") return themeEvent.activity;
+      if (key === "themeUser") return themeEvent.user;
+      if (key === "themePast") return themeEvent.pastEmpty ? "empty" : "has";
       return null;
     },
     context: function () {
@@ -12968,12 +13491,13 @@
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome", "quizTypes"] };
+        if (id === "screen-theme-course") return { label: "主题课落地页", keys: ["themeActivity", "themeUser", "themePast"] };
         if (id === "screen-wordpk")      return { label: "单词 PK",         keys: ["quizTypes"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
         if (id === "screen-radio-player") return { label: "Radio 播放页",   keys: ["membership"] };
-        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
+        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel", "themeActivity", "themeUser"] };
         return { label: "App 内", keys: ["membership"] };
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -13032,6 +13556,27 @@
       { key: "quizTypes", label: "游戏题型（V1.4.1 扩展 · 盲盒机 / 单词 PK 出题）",
         options: [["mixed", "混合(6种)"], ["readaloud", "仅题干朗读"], ["pic", "仅看图选词"], ["audiopic", "仅听音选图"]],
         apply: function (v) { demoState.quizTypes = v; window.GAME && window.GAME.rerenderQuiz && window.GAME.rerenderQuiz(); } },
+      // ⚽ 世界杯主题课（运营位）状态组
+      { key: "themeActivity", label: "世界杯主题课·活动状态（服务端下发）",
+        options: [["preview", "预告中"], ["active", "进行中"], ["ended", "已结束/无活动"]],
+        apply: function (v) {
+          themeEvent.activity = v;
+          renderThemeEventCard();
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
+      { key: "themeUser", label: "世界杯主题课·当期课进度",
+        options: [["none", "未开始"], ["inprogress", "断点"], ["completed", "已完成"]],
+        apply: function (v) {
+          themeEvent.user = v;
+          renderThemeEventCard();
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
+      { key: "themePast", label: "世界杯主题课·往期列表",
+        options: [["has", "有往期"], ["empty", "首期空态"]],
+        apply: function (v) {
+          themeEvent.pastEmpty = (v === "empty");
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
     ],
     jumps: [
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
@@ -13118,6 +13663,67 @@
         } },
       { label: "⑪ 付费后 · 定级体验课 intro", run: function () {
           if (window.cxToLeveltest) window.cxToLeveltest();
+        } },
+    ],
+    // ⚽ 世界杯主题课（运营位）专用快捷入口：入口卡三态 / 落地页五态 / 进课 / E3·E4 挽留弹窗。
+    // 每条先清 cxStage，防止残留转化链路状态劫持课堂退出/完课分支。
+    jumpsWCLabel: "世界杯主题课（运营位）",
+    jumpsWC: [
+      { label: "⚽ 首页入口·预告态", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "preview"; themeEvent.user = "none";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 首页入口·进行中", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "none";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 首页入口·已完成 🏅", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "completed";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 落地页·进行中（有往期）", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "none"; themeEvent.pastEmpty = false;
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·首期空态（无往期）", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "none"; themeEvent.pastEmpty = true;
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·断点续上", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "inprogress";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·已完成（查看报告）", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; themeEvent.user = "completed";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·无当期活动", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "ended";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 主题课课堂（进课）", run: function () {
+          try { cxStage = null; } catch (e) {}
+          themeEvent.activity = "active"; if (themeEvent.user === "completed") themeEvent.user = "none";
+          renderThemeEventCard(); startThemeCourse();
+        } },
+      { label: "⚽ E3 学习计划页挽留弹窗", run: function () {
+          try { cxStage = null; } catch (e) {}
+          if (typeof showStudyPlan === "function") showStudyPlan();
+          else { enterPortrait(); showPortraitScreen("screen-study-plan"); }
+          openThemeRetainOffer("studyplan");
+        } },
+      { label: "⚽ E4 Paywall 返回挽留弹窗", run: function () {
+          try { cxStage = null; } catch (e) {}
+          openPaywall("screen-class", "membership_entry");
+          openThemeRetainOffer("paywall");
         } },
     ],
   });
@@ -13579,6 +14185,29 @@
       scr.appendChild(pill);
     });
 
+    // ⑦b Hub 会员入口：非会员在所有 tab（Class/Explore/Play/Dino）右上角常驻一个会员入口，点击进 Paywall。
+    //     已付费自动隐藏；跟随 setHubTab / 购买状态同步（syncHubVip）。
+    (function(){
+      var hub = document.getElementById("hub-app");
+      if (hub && !document.getElementById("hub-cx-vip")) {
+        var vip = document.createElement("button");
+        vip.type = "button";
+        vip.id = "hub-cx-vip";
+        vip.className = "hub-cx-vip";
+        vip.innerHTML = '<span class="hcv-crown">👑</span> Unlock all';
+        vip.onclick = function(){ cxStage = "pay-tab"; if(typeof openPaywall==="function") openPaywall("screen-class", "cx_tab"); };
+        hub.appendChild(vip);
+      }
+      window.syncHubVip = function(){
+        var v = document.getElementById("hub-cx-vip"), h = document.getElementById("hub-app");
+        if (!v || !h) return;
+        var show = !profile.premiumUnlocked;
+        v.style.display = show ? "" : "none";
+        h.classList.toggle("hub-app--cxvip", show);
+      };
+      window.syncHubVip();
+    })();
+
     // 说明：体验课(定级课)报告已改为「会员=领取学习计划 / 非会员=回到 class」（见 renderTrialReport +
     // btn-trip-start），不再在此注入「Unlock more courses」按钮；免费足球课报告(cx-report)有自己的解锁入口。
 
@@ -13587,6 +14216,7 @@
       try{ profile.premiumUnlocked = true; profile.maxReachedLevelId = profile.currentLevelId; profile.nextBillingDate = "Jul 8, 2026"; }catch(e){}
       if(typeof refreshUnlockState==="function") refreshUnlockState();
       if(cxStage === "pay-report"){ cxStage = "paid"; enterLandscape(); if(typeof showClassHome==="function") showClassHome(); }
+      else if(cxStage === "pay-tab"){ cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); }
       else if(cxStage){ cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); }
       else if(typeof closePaywallPortrait==="function"){ closePaywallPortrait(); }
       if(typeof showPayToast==="function") showPayToast("Premium unlocked 🎉");
