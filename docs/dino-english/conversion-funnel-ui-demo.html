@@ -6187,10 +6187,10 @@
 
       <section class="screen" id="screen-name">
         <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-who">Back</button>
-          <span class="step-label">Step 2 of 4</span>
+          <button type="button" class="btn-back is-hidden" data-back="screen-who">Back</button>
+          <span class="step-label">Step 1 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
           <h1 class="title">What should we call your child?</h1>
           <p class="hint">We'll use this name in lessons.</p>
@@ -6213,10 +6213,10 @@
 
       <section class="screen" id="screen-age">
         <div class="top-bar">
-          <button type="button" class="btn-back is-hidden" data-back="screen-login">Back</button>
-          <span class="step-label">Step 1 of 3</span>
+          <button type="button" class="btn-back" data-back="screen-name">Back</button>
+          <span class="step-label">Step 2 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
         <div class="scroll-body">
           <h1 class="title">How old is your child?</h1>
           <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
@@ -6228,9 +6228,9 @@
       <section class="screen" id="screen-placement">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-pt-back">Back</button>
-          <span class="step-label">Step 2 of 3</span>
+          <span class="step-label">Step 3 of 4</span>
         </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:66%"></div></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="pt-question">Quick question</h1>
           <p class="hint" id="pt-hint">Pick the one that fits best</p>
@@ -6241,7 +6241,7 @@
       <section class="screen" id="screen-goal-value">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-placement">Back</button>
-          <span class="step-label">Step 3 of 3</span>
+          <span class="step-label">Step 4 of 4</span>
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="scroll-body">
@@ -6790,7 +6790,7 @@
           <div class="wb-card">
             <div class="wb-badge">One-time offer</div>
             <h2 class="wb-title">Wait! Dino saved something special for you</h2>
-            <p class="wb-sub">A weekly plan at a special price — only while the timer runs.</p>
+            <p class="wb-sub">A weekly plan at a special price, only while the timer runs.</p>
             <div class="wb-timer" id="wb-timer">
               <span class="wb-timer-label">Offer ends in</span>
               <span class="wb-timer-clock" id="wb-timer-clock">15:00</span>
@@ -8738,8 +8738,8 @@
         if (landscape) landscape.style.display = "none";
         if (portrait) portrait.style.display = "";
         applyVoiceWording();
-        // 转化链路优化：登录前置后，onboarding 只保留三题，第一题=年龄（删掉选身份/姓名）。
-        showPortraitScreen("screen-age");
+        // 转化链路优化：登录前置后，onboarding 四题，第一题=昵称（仅删掉选身份步）。
+        showPortraitScreen("screen-name");
         return;
       }
       profile.profileComplete = true;
@@ -12148,7 +12148,7 @@
     // is a sensible default and can be re-tuned by 教研 without touching the flow.
     const PLACEMENT_PROMPT = {
       prompt: "Which best describes {name}'s English right now?",
-      hint: "Pick the one that fits best \u2014 Dino adjusts the level as {name} learns.",
+      hint: "Pick the one that fits best. Dino adjusts the level as {name} learns.",
     };
     // Keys MUST match AGES exactly (en-dash U+2013). result = index into PT_RESULTS.
     const PLACEMENT_BY_AGE = {
@@ -12293,7 +12293,7 @@
     }
     // Loading copy forks by voice (parent vs self) via isParentVoice().
     const LOADING_LINES = [
-      (p) => `Hi ${p.name || "there"}—setting up your first lessons…`,
+      (p) => `Hi ${p.name || "there"}, setting up your first lessons…`,
       (p) => `Finding the right starting point for ${p.name || (isParentVoice() ? "your child" : "you")}…`,
       () => "Choosing the AI teacher…",
       (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
@@ -12340,23 +12340,25 @@
     ];
     function fillGoalValuePage() {
       $("#goal-value-h1").textContent = `What's ${valueSubject()}'s goal?`;
-      $("#goal-value-h2").textContent = "This tailors the plan — pick the one that fits best.";
-      // 直接选择选项即进入下一步，无需 Continue（与年龄/水平两题交互一致）。
+      $("#goal-value-h2").textContent = "Pick all that apply. This tailors the plan.";
+      // 多选：至少选 1 项，点 Continue 确认后进入生成计划（PRD 口径）。
       const foot = document.querySelector("#screen-goal-value .foot-actions");
-      if (foot) foot.style.display = "none";
+      if (foot) foot.style.display = "";
+      const cont = $("#btn-goal-value-continue");
       const box = $("#goal-options");
       if (!box) return;
+      const sync = () => {
+        const picked = [...box.querySelectorAll(".cx-goal.is-selected")];
+        profile.goals = picked.map((b) => b.dataset.val);
+        profile.goal = profile.goals[0] || "";
+        profile.goalLabel = picked[0] ? picked[0].textContent.trim() : "";
+        if (cont) cont.disabled = picked.length === 0;
+      };
       box.innerHTML = CX_GOALS.map((g) => `<button type="button" class="option-item cx-goal" data-val="${g[0]}">${g[1]}</button>`).join("");
       box.querySelectorAll(".cx-goal").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          box.querySelectorAll(".cx-goal").forEach((b) => b.classList.remove("is-selected"));
-          btn.classList.add("is-selected");
-          profile.goal = btn.dataset.val;
-          profile.goalLabel = btn.textContent.trim();
-          // 选完直接 → 生成计划 → 家长决策页画饼。
-          setTimeout(() => startLoadingSequence({ afterComplete: "study-plan" }), 220);
-        });
+        btn.addEventListener("click", () => { btn.classList.toggle("is-selected"); sync(); });
       });
+      sync();
     }
 
     function fillLogin() {
@@ -12560,7 +12562,7 @@
       renderOptions("age-options", AGES, "age", () => { startPlacementTest(); });
 
       // 转化链路优化：登录注册「前置」到 onboarding 之前（删掉「选身份」步）。
-      // skipOnboarding=true → 登录成功后进入 postLogin 信息采集（年龄→水平→目标）。
+      // skipOnboarding=true → 登录成功后进入 postLogin 信息采集（昵称→年龄→水平→目标）。
       $("#btn-get-started")?.addEventListener("click", () => { profile.skipOnboarding = true; fillLogin(); showPortraitScreen("screen-login"); });
       $("#btn-has-account-welcome")?.addEventListener("click", () => { profile.skipOnboarding = true; fillLogin(); showPortraitScreen("screen-login"); });
       $("#btn-who-continue")?.addEventListener("click", () => { applyVoiceWording(); showPortraitScreen("screen-name"); });
@@ -12817,10 +12819,11 @@
       }
       profile.selectedPlan = "weekly"; // the win-back sells the weekly plan
       // 文案按入口切换：从课程报告「解锁更多」进来时，用「限时折扣解锁」正向话术；其余保持挽留话术。
-      const WB_COPY = { cx_report: { title: "Unlock more courses — limited price", sub: "A special weekly price to keep Leo learning — only while the timer runs." } };
+      const wbName = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
+      const WB_COPY = { cx_report: { title: "Unlock more courses, limited price", sub: `A special weekly price to keep ${wbName} learning, only while the timer runs.` } };
       const wt = $("#screen-winback .wb-title"), ws = $("#screen-winback .wb-sub"), wc = WB_COPY[winbackEntry];
       if (wt) wt.textContent = wc ? wc.title : "Wait! Dino saved something special for you";
-      if (ws) ws.textContent = wc ? wc.sub : "A weekly plan at a special price — only while the timer runs.";
+      if (ws) ws.textContent = wc ? wc.sub : "A weekly plan at a special price, only while the timer runs.";
       $("#wb-timer")?.classList.remove("is-ended");
       enterPortrait();
       showPortraitScreen("screen-winback");
@@ -13631,46 +13634,50 @@
           showPortraitScreen("screen-welcome");
           if (typeof initCarousel === "function") initCarousel();
         } },
-      { label: "② Onboarding · 学习目标（新 5 项）", run: function () {
-          // 年龄 → 水平 → 目标，这里直达目标问题页（本期改成的 5 个目标选项）。
+      { label: "② Onboarding · 昵称题（Step 1 of 4，推荐名按国家配置）", run: function () {
+          enterPortrait();
+          showPortraitScreen("screen-name");
+        } },
+      { label: "③ Onboarding · 学习目标（新 5 项，Step 4 of 4）", run: function () {
+          // 昵称 → 年龄 → 水平 → 目标，这里直达目标问题页（本期改成的 5 个目标选项）。
           if (typeof fillGoalValuePage === "function") fillGoalValuePage();
           enterPortrait();
           showPortraitScreen("screen-goal-value");
         } },
-      { label: "③ 学习计划 · 画饼（个性化收获）", run: function () {
+      { label: "④ 学习计划 · 画饼（个性化收获）", run: function () {
           if (typeof showStudyPlan === "function") showStudyPlan();
         } },
-      { label: "④ Paywall① · 计划后（年 / 月可切换）", run: function () {
+      { label: "⑤ Paywall① · 计划后（年 / 月可切换）", run: function () {
           // 默认高亮年卡，可点击切到月卡。
           cxStage = "pay1"; enterLandscape();
           openPaywall("screen-class", "cx_plan1");
         } },
-      { label: "⑤ 新手引导 · 框选核心功能（Class/Explore/Play/Dino）", run: function () {
+      { label: "⑥ 新手引导 · 框选核心功能（Class/Explore/Play/Dino）", run: function () {
           // coach-mark 逐个框选真实页面内容（老师卡 / 本周课 / Explore 入口 / Play 卡 / Dino 对话气泡）。
           if (window.cxStartCoach) window.cxStartCoach();
         } },
-      { label: "⑥ Paywall② · 新手引导后", run: function () {
+      { label: "⑦ Paywall② · 新手引导后", run: function () {
           cxStage = "pay2"; enterLandscape();
           openPaywall("screen-class", "cx_guide");
         } },
-      { label: "⑦ Dino 引导选老师 · 快速开始体验课", run: function () {
+      { label: "⑧ Dino 引导选老师 · 快速开始体验课", run: function () {
           // Dino 继续引导：选老师即开始第一节免费体验课，选完直接进上课。
           if (window.cxToTeacher) window.cxToTeacher();
         } },
-      { label: "⑧ 足球主题体验课 · 上课页", run: function () {
+      { label: "⑨ 足球主题体验课 · 上课页（课程与课中引导方案由 Rosa 输出）", run: function () {
           if (window.cxToFootball) window.cxToFootball();
         } },
-      { label: "⑨ 课程报告 · 非会员（只留 Unlock more courses）", run: function () {
+      { label: "⑩ 课程报告 · 非会员（只留 Unlock more courses）", run: function () {
           try { cxStage = "football"; profile.premiumUnlocked = false; } catch (e) {}
           if (typeof refreshUnlockState === "function") refreshUnlockState();
           if (window.cxShowReport) window.cxShowReport();
         } },
-      { label: "⑩ 限时折扣页 · 报告解锁（非常规 Paywall）", run: function () {
+      { label: "⑪ 限时折扣页 · 报告解锁（非常规 Paywall）", run: function () {
           cxStage = "pay-report";
           if (typeof openWinback === "function") openWinback("cx_report", "cx_report", "screen-class");
           else if (typeof openPaywall === "function") openPaywall("screen-class", "cx_report");
         } },
-      { label: "⑪ 付费后 · 定级体验课 intro", run: function () {
+      { label: "⑫ 付费后 · 定级体验课 intro", run: function () {
           if (window.cxToLeveltest) window.cxToLeveltest();
         } },
     ],
@@ -13753,7 +13760,7 @@
   </script>
   <!-- ============================================================= -->
   <!-- 转化链路优化 · 引导浮层（追加层，不改动 V1.4.1 任何现有页面/逻辑） -->
-  <!-- 复用真实页面：welcome/login/age/placement/goal-value/study-plan/paywall/teacher/winback/trial-report/class -->
+  <!-- 复用真实页面：welcome/login/name/age/placement/goal-value/study-plan/paywall/teacher/winback/trial-report/class -->
   <!-- 新增页面(cx-*)：新手村 · 足球课免费预览 · 每日折扣 · 定级体验课 intro -->
   <!-- ============================================================= -->
   <style>
@@ -13855,11 +13862,11 @@
 
     // 细化到核心功能，站在「帮家长看懂产品价值」的角度写文案（不只是介绍 Tab）。
     var COACH = [
-      { tab:"class",    sel:".class-teacher-card",                       t:"A teacher Leo looks forward to", c:"Every teacher has their own lively style — tap to switch anytime, so Leo stays excited to show up." },
-      { tab:"class",    sel:".class-week-card.is-current",               t:"3 short lessons a week, planned for you", c:"We auto-schedule a steady weekly rhythm — enough to build a real habit, without overwhelming your child." },
+      { tab:"class",    sel:".class-teacher-card",                       t:"A teacher Leo looks forward to", c:"Every teacher has their own lively style. Tap to switch anytime, so Leo stays excited to show up." },
+      { tab:"class",    sel:".class-week-card.is-current",               t:"3 short lessons a week, planned for you", c:"We auto-schedule a steady weekly rhythm, enough to build a real habit without overwhelming your child." },
       { tab:"practice", sel:'#hub-panel-practice .explore-entries',      t:"English that continues after class", c:"Bedtime stories, kid-safe radio and free chat keep Leo hearing English every day, not just in lessons." },
-      { tab:"play",     sel:'#hub-panel-play .play-grid',                t:"Practice that feels like play",  c:"Blind-box, Word PK and Speaking PK turn review into something Leo actually asks to do — so progress sticks." },
-      { tab:"dino",     sel:'#hub-panel-dino .dino-greet-bubble',        t:"A friend to speak English with",  c:"Leo can chat and talk with Dino anytime — real speaking practice, with zero fear of getting it wrong." },
+      { tab:"play",     sel:'#hub-panel-play .play-grid',                t:"Practice that feels like play",  c:"Blind-box, Word PK and Speaking PK turn review into something Leo actually asks to do, so progress sticks." },
+      { tab:"dino",     sel:'#hub-panel-dino .dino-greet-bubble',        t:"A friend to speak English with",  c:"Leo can chat and talk with Dino anytime. Real speaking practice, with zero fear of getting it wrong." },
     ];
     var coachStep = 0, coachEl = null;
     function buildCoach(){
@@ -13876,8 +13883,9 @@
     function renderCoach(){
       var s = COACH[coachStep];
       if(typeof setHubTab === "function"){ try{ setHubTab(s.tab); }catch(e){} }   // 切到对应 Tab 面板
-      document.getElementById("cx-tip-title").textContent = s.t;
-      document.getElementById("cx-tip-copy").textContent = s.c;
+      var cnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
+      document.getElementById("cx-tip-title").textContent = s.t.replace(/\bLeo\b/g, cnm);
+      document.getElementById("cx-tip-copy").textContent = s.c.replace(/\bLeo\b/g, cnm);
       document.getElementById("cx-tip-dots").innerHTML = COACH.map(function(_,i){ return '<i class="'+(i===coachStep?"on":"")+'"></i>'; }).join("");
       document.getElementById("cx-tip-next").textContent = (coachStep >= COACH.length-1) ? "Continue →" : "Next →";
       var tgt = document.querySelector(s.sel), spot = document.getElementById("cx-spot"), tip = document.getElementById("cx-tip");
@@ -13916,7 +13924,7 @@
       +'<span style="background:rgba(255,255,255,.16);padding:5px 10px;border-radius:999px;">drag to explore</span></div>'
       +'<div class="cx-fb-sub" onclick="cxPaywall(\'pay3\')">⚡ Subscribe</div>'
       +'<img src="assets/quiz/quiz-dino.png" style="position:absolute;right:14px;bottom:150px;width:92px;z-index:3;" onerror="this.style.display=\'none\'"/>'
-      +'<div class="cx-fb-body"><span class="cx-newbadge">③ 足球课免费预览（新增，≠付费后定级体验课）</span>'
+      +'<div class="cx-fb-body"><span class="cx-newbadge">③ 足球课免费预览（新增，≠付费后定级体验课 · 课程与课中引导方案由 Rosa 输出）</span>'
       +'<div style="font-family:var(--display,Sora);font-weight:800;font-size:1.2rem;">World Cup Class · with Max</div>'
       +'<div style="font-size:.8rem;color:rgba(255,255,255,.75);margin:5px 0;">Part 2 of 5 · learning the word “goal!”</div>'
       +'<div class="cx-scrub"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>'
@@ -13927,7 +13935,7 @@
       '<div class="cx-sheet"><div class="in"><div class="grab"></div>'
       +'<span class="cx-newbadge">Welcome back · limited price</span>'
       +'<div class="cx-h1" style="font-size:1.25rem;">Your low-price week is still here</div>'
-      +'<div class="cx-sub" style="font-size:.84rem;">Start small — one week, full access, cancel anytime.</div>'
+      +'<div class="cx-sub" style="font-size:.84rem;">Start small: one week, full access, cancel anytime.</div>'
       +'<div class="cx-card sel" style="margin-top:18px;"><span class="tag">TODAY</span>'
       +'<div class="row"><span class="nm">1-week pass</span><span><span class="was">$12.99</span><span class="pr">$8.99</span></span></div>'
       +'<div class="per">full access · cancel anytime</div></div>'
@@ -13938,8 +13946,8 @@
       '<div class="cx-pad" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;">'
       +'<span class="cx-newbadge" style="color:#0f6e56;background:#e1f5ee;">Placement class</span>'
       +'<div class="cx-gstep" style="background:#e1f5ee;">🎯</div>'
-      +'<div class="cx-h1">Time for Leo\'s<br/>placement class</div>'
-      +'<div class="cx-sub" style="max-width:280px;">A short real class that measures Leo\'s exact level and produces a personalised report — this sets his real course plan.</div></div>'
+      +'<div class="cx-h1" id="cx-lt-h1">Time for Leo\'s<br/>placement class</div>'
+      +'<div class="cx-sub" id="cx-lt-sub" style="max-width:280px;">A short real class that measures Leo\'s exact level and produces a personalised report. This sets the real course plan.</div></div>'
       +'<div class="cx-cta"><button class="cx-btn teal" onclick="cxEnterPlacement()">Enter placement class →</button></div>');
 
     // ⑧ Lesson Report 课程报告（还原 Figma 13352-4932）：头图 + Performance Overview + What You've Learned + Pronunciation + AI Teacher Comments
@@ -13996,8 +14004,9 @@
           intro.insertBefore(d, intro.firstChild);
         }
         var h1 = document.getElementById("teacher-guide-h1"), h2 = document.getElementById("teacher-guide-h2"), btn = document.getElementById("btn-confirm-teacher");
-        if(h1) h1.textContent = "Let's start Leo's first free lesson!";
-        if(h2) h2.textContent = "Dino here 👋 — just pick a teacher and we'll jump straight into class. You can switch anytime.";
+        var tnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
+        if(h1) h1.textContent = "Let's start " + tnm + "'s first free lesson!";
+        if(h2) h2.textContent = "Dino here 👋! Just pick a teacher and we'll jump straight into class. You can switch anytime.";
         if(btn) btn.textContent = "Pick & start free class →";
       }, 30);
     };
@@ -14005,7 +14014,7 @@
     window.cxToFootball = function(){ cxStage = "football"; if(typeof openClassroomDemo==="function"){ openClassroomDemo("cx-football"); } else { enterPortrait(); showPortraitScreen("cx-football"); } };
     window.cxPaywall = function(stage){ cxStage = stage; openPaywall("screen-class", "cx"); };
     window.cxExitFootball = function(){ cxStage = "winback"; if(typeof openWinback==="function"){ openWinback("cx_football_exit", "cx", "screen-class"); } else { enterPortrait(); showPortraitScreen("screen-winback"); } };
-    window.cxToLeveltest = function(){ cxStage = "paid"; try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterPortrait(); showPortraitScreen("cx-leveltest"); };
+    window.cxToLeveltest = function(){ cxStage = "paid"; try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterPortrait(); showPortraitScreen("cx-leveltest"); var lnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child"; var lt = document.getElementById("cx-lt-h1"); if(lt) lt.innerHTML = "Time for " + lnm + "'s<br/>placement class"; var ls = document.getElementById("cx-lt-sub"); if(ls) ls.textContent = "A short real class that measures " + lnm + "'s exact level and produces a personalised report. This sets the real course plan."; };
     window.cxToReport = function(){ try{ trialReportMode = "trial"; profile.trialTakenLevelId = null; }catch(e){} if(typeof showTrialReport==="function") showTrialReport(); };
     // ⑤ 付费后：定级测试 → 先真实上课（openClassroomDemo），上完/退出再出体验课报告（不是直接跳报告）。
     window.cxEnterPlacement = function(){ cxStage = "paid"; if(typeof openClassroomDemo==="function"){ openClassroomDemo("cx-placement"); } else { window.cxShowReport(); } };
