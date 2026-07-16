@@ -6660,6 +6660,7 @@
     /* Req3: device-limit modal */
     .dl-overlay{position:fixed;inset:0;z-index:99998;display:none;align-items:center;justify-content:center;background:rgba(20,30,26,.5)}
     .dl-overlay.show{display:flex}
+    .device .dl-overlay{position:absolute}
     .dl-box{width:min(360px,86vw);background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 24px 60px rgba(0,0,0,.28);text-align:center}
     .dl-box h3{margin:0 0 8px;font-size:1.05rem;color:#1f2a24}
     .dl-box p{margin:0 0 16px;font-size:.85rem;line-height:1.5;color:#4c5a52}
@@ -13038,6 +13039,13 @@
     openClassroomDemo("placement-trial");
   }
 
+  // App-style dialogs mount INSIDE the visible device frame: a window-centered fixed
+  // overlay can land outside the phone on the wide landscape screens (Level·Unit map).
+  function dialogHost() {
+    const scr = [...document.querySelectorAll(".screen.active")].find((el) => el.offsetParent !== null);
+    return (scr && scr.closest(".device")) || document.body;
+  }
+
   // V1.3.2: confirm dialog for a plan switch (member downgrade + member level-up adopt).
   // States clearly WHEN the new level gets scheduled, per the weekly budget: budget left
   // → this week right away; budget spent → next week. Member-only (free switches go
@@ -13067,7 +13075,6 @@
             <button type="button" id="swc-ok">Confirm</button>
           </div>
         </div>`;
-      document.body.appendChild(ov);
       ov.addEventListener("click", (e) => { if (e.target === ov || e.target.id === "swc-cancel") ov.classList.remove("show"); });
     }
     ov.querySelector("#swc-title").textContent = `Switch your plan to ${label}?`;
@@ -13077,6 +13084,7 @@
     const fresh = okBtn.cloneNode(true);
     okBtn.parentNode.replaceChild(fresh, okBtn);
     fresh.addEventListener("click", () => { ov.classList.remove("show"); if (typeof onConfirm === "function") onConfirm(); });
+    dialogHost().appendChild(ov);
     ov.classList.add("show");
   }
 
@@ -13128,9 +13136,9 @@
           <p>Your account has reached its device limit. Please sign out of another device, then sign in again.</p>
           <button type="button" id="dl-ok">Got it</button>
         </div>`;
-      document.body.appendChild(ov);
       ov.addEventListener("click", (e) => { if (e.target === ov || e.target.id === "dl-ok") ov.classList.remove("show"); });
     }
+    dialogHost().appendChild(ov);
     ov.classList.add("show");
   }
 
