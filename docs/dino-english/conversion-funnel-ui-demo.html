@@ -5551,9 +5551,9 @@
     .sp2-lc-cefr { font-size: 0.72rem; font-weight: 700; color: #8a978d; }
     .sp2-lc-arrow { display: flex; align-items: center; color: #2e8b57; font-size: 1.3rem; font-weight: 700; padding: 0 2px; }
     /* Trust stats strip */
-    .sp2-stats { display: flex; align-items: center; background: #e9f2ea; border-radius: 18px; padding: 16px 6px; margin: 14px 0 0; }
-    .sp2-stat { flex: 1; text-align: center; display: flex; flex-direction: column; gap: 5px; position: relative; }
-    .sp2-stat + .sp2-stat::before { content: ""; position: absolute; left: 0; top: 12%; height: 76%; width: 1px; background: rgba(46,139,87,0.22); }
+    .sp2-stats { display: grid; grid-template-columns: 1fr 1fr; row-gap: 14px; align-items: center; background: #e9f2ea; border-radius: 18px; padding: 16px 6px; margin: 14px 0 0; }
+    .sp2-stat { text-align: center; display: flex; flex-direction: column; gap: 5px; position: relative; padding: 0 8px; }
+    .sp2-stat:nth-child(even)::before { content: ""; position: absolute; left: 0; top: 12%; height: 76%; width: 1px; background: rgba(46,139,87,0.22); }
     .sp2-stat b { font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: #1a7a52; line-height: 1; }
     .sp2-stat span { font-size: 0.66rem; color: #5c6b62; }
     /* See-the-product · AI teacher */
@@ -6222,6 +6222,9 @@
           <p class="hint">This helps us recommend the right starting level and lessons for your child.</p>
           <div class="option-list" id="age-options"></div>
         </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-age-continue" disabled>Continue</button>
+        </div>
       </section>
 
       <!-- Placement test blends into onboarding as a normal question step (single onboarding progress bar) -->
@@ -6235,6 +6238,9 @@
           <h1 class="title" id="pt-question">Quick question</h1>
           <p class="hint" id="pt-hint">Pick the one that fits best</p>
           <div class="option-list" id="pt-options"></div>
+        </div>
+        <div class="foot-actions">
+          <button type="button" class="btn btn-primary" id="btn-pt-continue" disabled>Continue</button>
         </div>
       </section>
 
@@ -6383,13 +6389,13 @@
           <!-- 2 · Level-up: recommended start → 12-month milestone -->
           <div class="sp2-levelcard">
             <div class="sp2-lc-col">
-              <span class="sp2-lc-tag">Recommended start</span>
+              <span class="sp2-lc-tag" id="sp2-start-tag">Recommended start</span>
               <span class="sp2-lc-lvl" id="sp2-start-lvl">Level 2</span>
               <span class="sp2-lc-cefr" id="sp2-start-cefr">CEFR A1</span>
             </div>
             <span class="sp2-lc-arrow" aria-hidden="true">&rarr;</span>
             <div class="sp2-lc-col sp2-lc-col--goal">
-              <span class="sp2-lc-tag">12-month milestone</span>
+              <span class="sp2-lc-tag" id="sp2-goal-tag">12-month milestone</span>
               <span class="sp2-lc-lvl" id="sp2-goal-lvl">Level 3</span>
               <span class="sp2-lc-cefr" id="sp2-goal-cefr">CEFR A1+</span>
             </div>
@@ -6397,17 +6403,18 @@
 
           <!-- 3 · Trust stats -->
           <div class="sp2-stats">
-            <div class="sp2-stat"><b id="sp2-stat-week">3&times;</b><span>lessons a week</span></div>
-            <div class="sp2-stat"><b id="sp2-stat-units">12</b><span>structured units</span></div>
-            <div class="sp2-stat"><b id="sp2-stat-lessons">144</b><span>AI lessons</span></div>
+            <div class="sp2-stat"><b id="sp2-stat-week">3&times;</b><span>guided lessons a week</span></div>
+            <div class="sp2-stat"><b id="sp2-stat-units">12</b><span>step-by-step units</span></div>
+            <div class="sp2-stat"><b id="sp2-stat-lessons">144</b><span>personalized AI lessons</span></div>
+            <div class="sp2-stat"><b>365</b><span>days of practice, anytime</span></div>
           </div>
 
           <!-- 4 · See the product · AI teacher classroom -->
           <div class="sp2-product">
             <div class="sp2-product-head">
               <div>
-                <p class="sp2-eyebrow sp2-eyebrow--card">See the product</p>
-                <h2 class="sp2-product-title">A personal AI teacher in every lesson</h2>
+                <p class="sp2-eyebrow sp2-eyebrow--card">See how it works</p>
+                <h2 class="sp2-product-title" id="sp2-product-title">Meet Leo's personal AI teacher</h2>
               </div>
             </div>
             <!-- Auto-playing glimpse of a real lesson: teach → speak → practice → quiz -->
@@ -6445,8 +6452,8 @@
               </div>
             </div>
             <div class="sp2-feats">
-              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#2e8b57;background:#e5f3ea;">&#9673;</span><span class="sp2-feat-lbl">Speaks every lesson</span></div>
-              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#e67722;background:#fbe9d8;">&#8599;</span><span class="sp2-feat-lbl">Instant feedback</span></div>
+              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#2e8b57;background:#e5f3ea;">&#9673;</span><span class="sp2-feat-lbl" id="sp2-feat-speak">Gets Leo speaking</span></div>
+              <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#e67722;background:#fbe9d8;">&#8599;</span><span class="sp2-feat-lbl">Progress you can see</span></div>
               <div class="sp2-feat"><span class="sp2-feat-ico" style="--fi:#6E57E0;background:#ece8fb;">&#10022;</span><span class="sp2-feat-lbl" id="sp2-feat-adapts">Adapts to Leo</span></div>
             </div>
           </div>
@@ -7931,7 +7938,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = { levelUpResult: "up", trialResult: "same", capsuleOutcome: "random", quizTypes: "mixed", deviceCount: 3, weekCaughtUp: false, kakaoPhoneBound: false, promoGovernorOff: false };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
@@ -10239,6 +10246,8 @@
       if (chipBox) chipBox.innerHTML = chips.map((c) => `<span class="sp2-chip">${c}</span>`).join("");
 
       // 2 · Level-up milestone card
+      set("#sp2-start-tag", `${poss} starting point`);
+      set("#sp2-goal-tag", `${poss} 12-month goal`);
       set("#sp2-start-lvl", level.label);
       set("#sp2-start-cefr", `CEFR ${cefr}`);
       set("#sp2-goal-lvl", `Level ${targetLevelNum}`);
@@ -10249,11 +10258,13 @@
       set("#sp2-stat-units", `${unitsPerLevel}`);
       set("#sp2-stat-lessons", `${lessonsThisLevel}`);
 
-      // 4 · AI-teacher classroom — personalize the "adapts to" tile
-      set("#sp2-feat-adapts", `Adapts to ${dn || "your learner"}`);
+      // 4 · AI-teacher classroom — personalize title + feature tiles
+      set("#sp2-product-title", `Meet ${dn || "your learner"}'s personal AI teacher`);
+      set("#sp2-feat-speak", `Gets ${dn || "your learner"} speaking`);
+      set("#sp2-feat-adapts", `Adapts to ${dn || "your learner"}'s pace`);
 
       // 5 · CTA
-      set("#btn-study-plan-start", "Claim my learning plan");
+      set("#btn-study-plan-start", dn ? `Get ${dn}'s learning plan` : "Get your learning plan");
     }
     // Path ahead: panorama 6-Level ladder + the current Level's units as compact,
     // single-line chips (theme + status only — no nested lessons / expand / milestones),
@@ -10297,6 +10308,9 @@
     // 转化链路优化：领取学习计划 → ① 限时折扣支付页（标记 pay1，返回不进挽留而进 ② 新手引导）。
     $("#btn-study-plan-start")?.addEventListener("click", () => { cxStage = "pay1"; openPaywall("screen-class", "cx_plan1"); });
     $("#btn-confirm-teacher").addEventListener("click", () => {
+      // 确认即视为「已选过老师」：新手引导 Class 步与独立选老师页共用此标记，
+      // Paywall② 关闭时据此决定直接进足球课还是先选老师。
+      profile.teacherChosen = true;
       // 转化链路优化：选老师完成 → ③ 足球课免费预览（而非直接进真实课堂）。
       if (cxStage === "teacher") { window.cxToFootball && window.cxToFootball(); return; }
       if (teacherFlowMode === "app") {
@@ -12330,7 +12344,7 @@
 
     // Age-banded value page: content varies by the onboarding age, voice only swaps
     // the subject pronoun (13–17 and 18+ share the teen/adult variant).
-    // 转化链路优化：第 3 题「目标」——可多选。目标决定后续家长决策页画饼话术的精准度。
+    // 转化链路优化：第 4 题「目标」——单选。目标决定后续家长决策页话术的精准度。
     const CX_GOALS = [
       ["confidence", "🗣️ Speak with confidence"],
       ["school",     "🏫 Improve English for school"],
@@ -12340,23 +12354,26 @@
     ];
     function fillGoalValuePage() {
       $("#goal-value-h1").textContent = `What's ${valueSubject()}'s goal?`;
-      $("#goal-value-h2").textContent = "Pick all that apply. This tailors the plan.";
-      // 多选：至少选 1 项，点 Continue 确认后进入生成计划（PRD 口径）。
+      $("#goal-value-h2").textContent = "This tailors the plan. Pick the one that fits best.";
+      // 单选，选中后点 Continue 进入生成计划（与其余各题交互一致）。
       const foot = document.querySelector("#screen-goal-value .foot-actions");
       if (foot) foot.style.display = "";
       const cont = $("#btn-goal-value-continue");
       const box = $("#goal-options");
       if (!box) return;
       const sync = () => {
-        const picked = [...box.querySelectorAll(".cx-goal.is-selected")];
-        profile.goals = picked.map((b) => b.dataset.val);
-        profile.goal = profile.goals[0] || "";
-        profile.goalLabel = picked[0] ? picked[0].textContent.trim() : "";
-        if (cont) cont.disabled = picked.length === 0;
+        const picked = box.querySelector(".cx-goal.is-selected");
+        profile.goal = picked ? picked.dataset.val : "";
+        profile.goalLabel = picked ? picked.textContent.trim() : "";
+        if (cont) cont.disabled = !picked;
       };
       box.innerHTML = CX_GOALS.map((g) => `<button type="button" class="option-item cx-goal" data-val="${g[0]}">${g[1]}</button>`).join("");
       box.querySelectorAll(".cx-goal").forEach((btn) => {
-        btn.addEventListener("click", () => { btn.classList.toggle("is-selected"); sync(); });
+        btn.addEventListener("click", () => {
+          box.querySelectorAll(".cx-goal").forEach((b) => b.classList.remove("is-selected"));
+          btn.classList.add("is-selected");
+          sync();
+        });
       });
       sync();
     }
@@ -12514,17 +12531,12 @@
           box.querySelectorAll(".option-item").forEach((b) => b.classList.remove("is-selected"));
           btn.classList.add("is-selected");
           ptAnswers[idx] = ci;
-          setTimeout(() => {
-            if (idx + 1 < total) {
-              ptCurrentIdx = idx + 1;
-              renderPlacementQuestion(ptCurrentIdx);
-            } else {
-              applyPlacementResult();
-            }
-          }, 280);
+          const c = $("#btn-pt-continue"); if (c) c.disabled = false;
         });
         box.appendChild(btn);
       });
+      const cont = $("#btn-pt-continue");
+      if (cont) cont.disabled = (ptAnswers[idx] == null);
     }
 
     // V1.3.0: the placement result page AND the goal-selection page are removed.
@@ -12559,7 +12571,10 @@
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
       // post-age "value page" has been removed).
-      renderOptions("age-options", AGES, "age", () => { startPlacementTest(); });
+      // 统一交互：选中选项后点 Continue 进下一题（不自动推进）。
+      renderOptions("age-options", AGES, "age", () => { const c = $("#btn-age-continue"); if (c) c.disabled = false; });
+      $("#btn-age-continue")?.addEventListener("click", () => { if (profile.age) startPlacementTest(); });
+      $("#btn-pt-continue")?.addEventListener("click", () => { if (ptAnswers[0] != null) applyPlacementResult(); });
 
       // 转化链路优化：登录注册「前置」到 onboarding 之前（删掉「选身份」步）。
       // skipOnboarding=true → 登录成功后进入 postLogin 信息采集（昵称→年龄→水平→目标）。
@@ -12735,7 +12750,10 @@
     $("#btn-pwpt-back")?.addEventListener("click", () => {
       // 转化链路优化：三轮付费推送的“返回”不进挽留，按会议顺序推进下一环节。
       if (cxStage === "pay1") { window.cxToGuide && window.cxToGuide(); return; }      // ① 关闭 → ② 新手引导
-      if (cxStage === "pay2") { window.cxToTeacher && window.cxToTeacher(); return; }  // ② 关闭 → Dino 继续引导：选老师页（快速开始第一节体验课）→ 选完进上课
+      if (cxStage === "pay2") { // ② 关闭：新手引导里已选过老师 → 直接进足球课；没选过 → 先选老师（选完进上课）
+        if (profile.teacherChosen) { window.cxToFootball && window.cxToFootball(); }
+        else { window.cxToTeacher && window.cxToTeacher(); }
+        return; }
       if (cxStage === "pay3") { window.cxToFootball && window.cxToFootball(); return; }// ③ 关闭 → 回足球课
       if (cxStage === "pay-inclass") { cxStage = "football"; enterLandscape(); showLandScreen("screen-inclass-teach"); return; } // 上课页会员入口关闭 → 回上课
       if (cxStage === "pay-report") { cxStage = "paid"; enterLandscape(); showClassHome(); return; } // 报告解锁更多关闭 → 回 Class
@@ -13652,8 +13670,8 @@
           cxStage = "pay1"; enterLandscape();
           openPaywall("screen-class", "cx_plan1");
         } },
-      { label: "⑥ 新手引导 · 框选核心功能（Class/Explore/Play/Dino）", run: function () {
-          // coach-mark 逐个框选真实页面内容（老师卡 / 本周课 / Explore 入口 / Play 卡 / Dino 对话气泡）。
+      { label: "⑥ 新手引导 · 四步引导（介绍+动手：Dino→Play→Explore→Class 选老师）", run: function () {
+          // 每步先出模块介绍气泡再动手：Dino 打招呼 / 答一题 / 听一段 / 真实选老师 + 看首课，点目标即推进。
           if (window.cxStartCoach) window.cxStartCoach();
         } },
       { label: "⑦ Paywall② · 新手引导后", run: function () {
@@ -13835,22 +13853,23 @@
       sec.className = "screen cx-screen"; sec.id = id; sec.innerHTML = html;
       dp && dp.appendChild(sec);
     }
-    // ② 新手引导 = 真实界面上的浮层 coach-mark 引导（把用户放进 App 真实主页，
-    // 在老师/第一节课/学习路径/功能区逐个弹气泡介绍），而非单独页面。对应会议：
-    // 「回到 APP 主页面，每个环节给他弹点新手指南」。
+    // ② 新手引导 v3 = 四步真实界面引导（Dino 对话 → Play 游戏 → Explore 电台 → Class 选老师+首课卡），
+    // 每步先出模块介绍气泡（点 spot 只推进，不转发），再引导用户在真实功能页完成真实操作
+    // （spot 转发真实 click，进功能页的步骤做完自动返回主页推进下一步）；
+    // Skip 常驻右上；走完 / Skip → Paywall②。对应 PRD 模块 8。
     var COACH_CSS =
       '#cx-coach{position:fixed;inset:0;z-index:9500;pointer-events:none;}'
       +'#cx-spot{position:fixed;border-radius:14px;border:3px solid #ea6c25;box-shadow:0 0 0 9999px rgba(10,18,13,.66);transition:left .28s ease,top .28s ease,width .28s ease,height .28s ease;pointer-events:none;}'
-      +'#cx-tip{position:fixed;width:300px;max-width:calc(100vw - 24px);background:#fffbf8;border-radius:16px;padding:15px 16px;box-shadow:0 18px 46px rgba(0,0,0,.35);pointer-events:auto;font-family:"DM Sans",system-ui,sans-serif;}'
-      +'#cx-tip-badge{font-size:.6rem;font-weight:800;color:#b4640f;background:#fdefdc;border-radius:999px;padding:3px 9px;display:inline-block;margin-bottom:8px;}'
-      +'#cx-tip-title{font-family:"Sora",system-ui,sans-serif;font-weight:800;font-size:1.04rem;color:#1a2420;letter-spacing:-.01em;}'
-      +'#cx-tip-copy{font-size:.82rem;color:#5a6f64;line-height:1.5;margin-top:5px;}'
-      +'#cx-tip-dots{display:flex;gap:5px;margin:12px 0;}#cx-tip-dots i{width:7px;height:7px;border-radius:50%;background:#e0d7cc;}#cx-tip-dots i.on{width:18px;border-radius:4px;background:#ea6c25;}'
-      +'#cx-tip-row{display:flex;gap:8px;align-items:center;}'
-      +'#cx-tip-sub{background:#fff;border:1.5px solid #ea6c25;color:#ea6c25;font-weight:700;font-size:.78rem;border-radius:10px;padding:8px 12px;cursor:pointer;white-space:nowrap;}'
-      +'#cx-tip-next{flex:1;background:#ea6c25;color:#fff;border:0;font-weight:700;font-size:.84rem;border-radius:10px;padding:9px;cursor:pointer;}'
-      +'#cx-tip{overflow:visible;}#cx-tip-dino{position:absolute;width:52px;top:-42px;right:12px;left:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.28));pointer-events:none;}'
-      +'#cx-tip-title{padding-right:44px;}'
+      +'#cx-spot.clickable{pointer-events:auto;cursor:pointer;}'
+      +'#cx-tip{position:fixed;width:268px;max-width:calc(100vw - 24px);background:#fffbf8;border-radius:16px;padding:15px 16px;box-shadow:0 18px 46px rgba(0,0,0,.35);pointer-events:auto;font-family:"DM Sans",system-ui,sans-serif;overflow:visible;transition:left .28s ease,top .28s ease;}'
+      +'#cx-tip-dino{position:absolute;width:52px;top:-42px;right:12px;left:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.28));pointer-events:none;}'
+      +'#cx-tip-copy{font-size:.92rem;font-weight:700;color:#1a2420;line-height:1.45;padding-right:44px;}'
+      +'#cx-tip-dots{display:flex;gap:5px;margin-top:12px;}#cx-tip-dots i{width:7px;height:7px;border-radius:50%;background:#e0d7cc;}#cx-tip-dots i.on{width:18px;border-radius:4px;background:#ea6c25;}'
+      +'#cx-finger{position:fixed;z-index:9550;font-size:30px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35));animation:cxFingerBob 1s ease-in-out infinite;}'
+      +'@keyframes cxFingerBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}'
+      +'#cx-skip{position:fixed;z-index:9600;background:rgba(10,18,13,.55);color:#fff;border:1.5px solid rgba(255,255,255,.5);font-weight:700;font-size:.74rem;border-radius:999px;padding:6px 12px;cursor:pointer;pointer-events:auto;}'
+      // 注意：以下不是引导样式 —— 学习计划页 outcome 卡片与真实 Paywall 计时条的
+      // 基础规则只在这里定义，其它模块依赖，必须保留。
       +'.sp-outcomes{display:grid;grid-template-columns:1fr 1fr;gap:10px;}'
       +'.sp-oc{border-radius:14px;padding:12px 14px;min-height:76px;display:flex;flex-direction:column;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.07);}'
       +'.sp-oc-n{font-family:"Sora","Poppins",system-ui,sans-serif;font-weight:800;font-size:1.9rem;line-height:1;color:var(--oc);}'
@@ -13860,63 +13879,320 @@
       +'.pwpt-timer #pwpt-timer-clock{font-variant-numeric:tabular-nums;background:#b4640f;color:#fff;border-radius:7px;padding:2px 8px;}';
     (function(){ var st=document.createElement("style"); st.textContent=COACH_CSS; document.head.appendChild(st); })();
 
-    // 细化到核心功能，站在「帮家长看懂产品价值」的角度写文案（不只是介绍 Tab）。
-    var COACH = [
-      { tab:"class",    sel:".class-teacher-card",                       t:"A teacher Leo looks forward to", c:"Every teacher has their own lively style. Tap to switch anytime, so Leo stays excited to show up." },
-      { tab:"class",    sel:".class-week-card.is-current",               t:"3 short lessons a week, planned for you", c:"We auto-schedule a steady weekly rhythm, enough to build a real habit without overwhelming your child." },
-      { tab:"practice", sel:'#hub-panel-practice .explore-entries',      t:"English that continues after class", c:"Bedtime stories, kid-safe radio and free chat keep Leo hearing English every day, not just in lessons." },
-      { tab:"play",     sel:'#hub-panel-play .play-grid',                t:"Practice that feels like play",  c:"Blind-box, Word PK and Speaking PK turn review into something Leo actually asks to do, so progress sticks." },
-      { tab:"dino",     sel:'#hub-panel-dino .dino-greet-bubble',        t:"A friend to speak English with",  c:"Leo can chat and talk with Dino anytime. Real speaking practice, with zero fear of getting it wrong." },
+    // ---- 引导状态机 v3：每个 dot 先出「模块介绍」气泡（只推进、不转发点击），再引导真实操作。
+    //  dot0 Dino  : p0 介绍（圈 Dino 角色区）→ p1 点 Chat with Dino 胶囊（真实进对话页 + 重写开场白）→ p2 点麦克风（脚本化一轮对话）→ 真实返回
+    //  dot1 Play  : p3 介绍（圈 play-grid）→ p4 点盲盒卡 → p5 点 Start（限额时走 GAME.startCapsuleQuiz 兜底）→ p6 点正确选项（真实判题+发币）→ 真实返回
+    //  dot2 Explore: p7 介绍（圈 explore-entries）→ p8 点 Listening 入口 → p9 点首个未锁电台（真实播放器）→ p10 被动欣赏 ~3.2s（真实时钟）→ 真实暂停 + 返回
+    //  dot3 Class : p11 介绍（圈 Class 内容区）→ p12 点老师卡（真实打开选老师页，自由点选任意老师 + Save 回 Class；已选过则自动跳过）→ p13 点本周课卡（不转发、不进课堂）→ 庆祝 + Paywall②
+    var coachEl = null, coachPhase = 0, coachBusy = false, coachTimers = [], coachPoll = null;
+    function coachName(){ return (typeof getDisplayName === "function" && getDisplayName()) || "your child"; }
+    function coachFill(str){ return String(str).replace(/\{name\}/g, coachName()); }
+    function coachDing(hi){ try{ var AC = window.AudioContext || window.webkitAudioContext; var ac = window.__cxAC || (window.__cxAC = new AC()); var o = ac.createOscillator(), g = ac.createGain(); o.connect(g); g.connect(ac.destination); o.frequency.value = hi ? 1175 : 880; g.gain.setValueAtTime(0.06, ac.currentTime); g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.22); o.start(); o.stop(ac.currentTime + 0.24); }catch(e){} }
+    function coachWait(ms, fn){ coachTimers.push(setTimeout(fn, ms)); }
+    function coachClearTimers(){ coachTimers.forEach(function(t){ clearTimeout(t); }); coachTimers = []; if(coachPoll){ clearInterval(coachPoll); coachPoll = null; } }
+    function coachHubTab(tab){ if(typeof setHubTab === "function"){ try{ setHubTab(tab); }catch(e){} } }
+    function coachSetCopy(str){ var el = document.getElementById("cx-tip-copy"); if(el) el.textContent = coachFill(str); }
+
+    var COACH_PHASES = [
+      // ---- dot0 · Dino 对话 ----
+      { dot:0, enter:function(){ coachHubTab("dino"); },   // p0 模块介绍：只推进，不转发点击
+        target:function(){ return document.querySelector("#hub-panel-dino .dino-night-char"); },
+        copy:"Hi {name}! I'm Dino, your English buddy. We can chat anytime, and I'm always right here. Tap me!",
+        tap:coachIntroTap(1) },
+      { dot:0,   // p1 点胶囊 → 真实进对话页
+        target:function(){ return document.querySelector("#hub-panel-dino .dino-chat-pill"); },
+        copy:'Let\'s say hi! Tap "Chat with Dino".',
+        tap:function(tgt){
+          coachBusy = true;
+          tgt.click();   // 真实 [data-go-game] 委托 → goGame("screen-dino-chat") → resetDinoChat 自动开场白
+          coachWait(120, function(){ coachRewriteGreet(); coachGoto(2); });
+        } },
+      { dot:0,   // p2 麦克风脚本化一轮对话
+        target:function(){ return document.querySelector("#dchat-mic"); },
+        copy:"Tap the mic and say hi!",
+        tap:coachMicTurn },
+      // ---- dot1 · Play 盲盒 ----
+      { dot:1, enter:function(){ coachHubTab("play"); },   // p3 模块介绍
+        target:function(){ return document.querySelector("#hub-panel-play .play-grid"); },
+        copy:"This is Play! {name} learns English by playing games. Tap to try one!",
+        tap:coachIntroTap(4) },
+      { dot:1,   // p4 点盲盒卡
+        target:function(){ return document.querySelector("#hub-panel-play .pc-capsule"); },
+        copy:"Try the Dino Blind Box!",
+        tap:function(tgt){ coachBusy = true; tgt.click(); coachWait(60, function(){ coachGoto(5); }); } },
+      { dot:1,   // p5 点 Start
+        target:function(){ return document.querySelector("#capi-start"); },
+        copy:"Tap Start!",
+        tap:coachStartQuiz },
+      { dot:1,   // p6 点正确选项（真实判题+发币）
+        target:coachCorrectOpt,
+        copy:"Tap this one!",
+        tap:coachAnswerQuiz },
+      // ---- dot2 · Explore 电台 ----
+      { dot:2, enter:function(){ coachHubTab("practice"); },   // p7 模块介绍
+        target:function(){ return document.querySelector("#hub-panel-practice .explore-entries"); },
+        copy:"This is Explore! {name} can read stories, listen to radio and practice speaking here. Tap to look!",
+        tap:coachIntroTap(8) },
+      { dot:2,   // p8 点 Listening 入口
+        target:function(){ return document.querySelector("#explore-open-radio"); },
+        copy:"Let's listen! Tap Listening.",
+        tap:function(tgt){ coachBusy = true; tgt.click(); coachWait(60, function(){ coachGoto(9); }); } },
+      { dot:2,   // p9 点首个未锁电台
+        target:function(){ return document.querySelector("#radio-carousel .hub-radio-card:not(.is-locked)"); },
+        copy:"Tap this one!",
+        tap:coachPlayRadio },
+      { dot:2, passive:true, enter:coachEnjoyRadio,   // p10 被动欣赏 ~3.2s（真实时钟）
+        target:function(){ return null; },
+        copy:"Enjoy! {name} can switch songs and stories anytime here." },
+      // ---- dot3 · Class 选老师 + 首课卡（终点，不进课堂）----
+      { dot:3, enter:function(){ coachHubTab("class"); },   // p11 模块介绍
+        target:function(){ return document.querySelector("#hub-panel-class .class-hub-main"); },
+        copy:"This is Class! All of {name}'s lessons live here. Tap to get ready!",
+        tap:coachIntroTap(12) },
+      { dot:3, skip:coachTeacherDone,   // p12 点 Class Tab 老师卡 → 真实打开选老师页（app 模式：Save 后回 Class）
+        target:function(){ return document.querySelector("#hub-panel-class .class-teacher-card"); },
+        copy:"First, pick a teacher {name} likes!",
+        tap:function(){
+          coachBusy = true;
+          var btn = document.getElementById("btn-change-teacher");
+          if(btn) btn.click();   // 真实 openTeacherPicker("app")：确认走 showClassHome() 回 Class tab
+          coachWait(80, function(){ coachGoto(13); });
+        } },
+      { dot:3, free:true, skip:coachTeacherDone,   // p12b 自由点选：圈整个选老师区，点哪转发哪（任意老师可选）
+        target:function(){ return document.querySelector("#screen-teacher .land-body.teacher-pick"); },
+        copy:"First, pick a teacher {name} likes!",
+        tap:coachPickTeacher },
+      { dot:3,   // p13 点本周课卡（不转发、不进课堂）→ 庆祝 + Paywall②
+        target:function(){ return document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
+        copy:"Now tap the first lesson. Time to learn!",
+        tap:coachFinishClass },
     ];
-    var coachStep = 0, coachEl = null;
+    // p12/p12b 跳过条件：曾在任一入口确认过老师（引导重入时不再逼选）。
+    function coachTeacherDone(){ try{ return !!profile.teacherChosen; }catch(e){ return false; } }
+    // 模块介绍气泡：点 spot 只推进（ding + 下一 phase），不转发真实点击。
+    function coachIntroTap(next){ return function(){ coachDing(true); coachGoto(next); }; }
+
+    // Step1b：进入对话页后，把真实自动开场白改写为引导语（保留 .dmsg 结构），
+    // 并清掉 "Try saying" 提示 chip（蒙层本就拦截它，清掉避免视觉干扰）。
+    function coachRewriteGreet(){
+      var log = document.getElementById("dchat-log");
+      var b = log && log.querySelector(".dmsg-dino .dmsg-bubble");
+      if(b) b.textContent = "Yay, you're here! Can you say hi to me?";
+      var sg = document.getElementById("dchat-suggest"); if(sg) sg.innerHTML = "";
+    }
+    // 复刻真实 dchatBubble 的 DOM（.dmsg / .dmsg-ava / .dmsg-bubble）
+    function coachChatBubble(role, html){
+      var log = document.getElementById("dchat-log"); if(!log) return;
+      var ava = role === "dino" ? '<span class="dmsg-ava">🦕</span>' : "";
+      log.insertAdjacentHTML("beforeend", '<div class="dmsg dmsg-' + role + '">' + ava + '<div class="dmsg-bubble">' + html + '</div></div>');
+      log.scrollTop = log.scrollHeight;
+    }
+    // Step1c：点麦克风 → 脚本化一轮对话（不转发真实 click，真实 dinoChatTurn 的
+    // 台词不适配引导），完成后走真实返回键（data-game-back）回主页。
+    function coachMicTurn(){
+      coachBusy = true; positionCoach();
+      var mic = document.getElementById("dchat-mic"), hint = document.getElementById("dchat-hint");
+      if(mic) mic.classList.add("listening");
+      if(hint) hint.textContent = "Listening…";
+      coachWait(900, function(){
+        if(mic) mic.classList.remove("listening");
+        coachChatBubble("you", "Hi Dino! 👋");
+        coachWait(650, function(){
+          coachChatBubble("dino", "You did it! We can talk anytime.");
+          coachDing(true);
+          if(hint) hint.textContent = "Hold the big button and talk to Dino";
+          coachWait(1600, function(){
+            var back = document.querySelector("#screen-dino-chat .dchat-close");
+            if(back) back.click();   // 真实返回 → gameBack() 回 hub
+            coachGoto(3);
+          });
+        });
+      });
+    }
+    // Step2b：点 Start。免费限额已用完时真实入口会拉 Paywall，此时改走
+    // GAME.startCapsuleQuiz()（demo 直达桥，跳过限额门）兜底；否则走真实点击。
+    function coachStartQuiz(tgt){
+      coachBusy = true;
+      var limit = document.getElementById("pc-limit-capsule");
+      var gated = !!(limit && limit.classList.contains("is-used"));
+      if(gated && window.GAME && window.GAME.startCapsuleQuiz){ try{ window.GAME.startCapsuleQuiz(); }catch(e){} }
+      else tgt.click();
+      coachWait(120, function(){
+        var scr = document.getElementById("screen-capsule");
+        if(!(scr && scr.classList.contains("active")) && window.GAME && window.GAME.startCapsuleQuiz){
+          try{ window.GAME.startCapsuleQuiz(); }catch(e){}
+        }
+        coachGoto(6);
+      });
+    }
+    // Step2c：从真实题库定位正确选项 —— 用 #cap-q-prompt 文案匹配 GAME.CAP_QUESTIONS
+    // 的 q 字段，正确项 = .pk-opt[data-i == item.a]（renderQuizCard 给每个选项写 data-i）。
+    function coachCorrectOpt(){
+      var prompt = document.getElementById("cap-q-prompt"), box = document.getElementById("cap-q-opts");
+      if(!prompt || !box) return null;
+      var bank = (window.GAME && window.GAME.CAP_QUESTIONS) || [];
+      var text = prompt.textContent || "", item = null;
+      for(var i = 0; i < bank.length; i++){ if(bank[i].q && text.indexOf(bank[i].q) !== -1){ item = bank[i]; break; } }
+      if(item){ var b = box.querySelector('.pk-opt[data-i="' + item.a + '"]'); if(b) return b; }
+      return box.querySelector(".pk-opt");
+    }
+    function coachAnswerQuiz(tgt){
+      coachBusy = true; positionCoach();
+      tgt.click();   // 真实判题：.right 反馈、累计计数、可能的 🎟️ 点亮全走真实逻辑
+      coachWait(1200, function(){
+        coachSetCopy("+5 🪙 Great job!"); coachDing(true);
+        if(window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(5);
+        coachWait(1200, function(){
+          var back = document.querySelector("#screen-capsule [data-game-back]");
+          if(back) back.click();   // 真实返回 → gameBack() 回 hub
+          coachGoto(7);
+        });
+      });
+    }
+    // Step3b：点首个未锁电台 → 真实 showRadioPlayer（进页即自动播放；保险起见
+    // 300ms 后未在播则点真实播放键）。
+    function coachPlayRadio(tgt){
+      coachBusy = true; tgt.click();
+      coachWait(300, function(){
+        var shell = document.getElementById("rp-shell");
+        if(shell && !shell.classList.contains("is-playing")){
+          var pb = document.getElementById("btn-rp-play"); if(pb) pb.click();
+        }
+        coachGoto(10);
+      });
+    }
+    // p10（被动）：进播放器欣赏 ~3.2s —— 用 Date.now 真实时钟判满（interval 只做轮询，
+    // 计数不受浏览器节流影响），到点先真实暂停（若在播），再走真实返回键回 Explore。
+    function coachEnjoyRadio(){
+      var t0 = Date.now();
+      if(coachPoll) clearInterval(coachPoll);
+      coachPoll = setInterval(function(){
+        if(Date.now() - t0 < 3200) return;
+        clearInterval(coachPoll); coachPoll = null;
+        var shell = document.getElementById("rp-shell");
+        if(shell && shell.classList.contains("is-playing")){
+          var pb = document.getElementById("btn-rp-play"); if(pb) pb.click();   // 真实暂停
+        }
+        var back = document.getElementById("btn-rp-back");
+        if(back) back.click();   // 真实返回 → Explore tab 主页
+        coachGoto(11);
+      }, 200);
+    }
+    // p12b：选老师页自由点选 —— 蒙层瞬时穿透取落点下的真实元素：
+    // 点任意老师卡 → 转发真实选中（profile.teacherId + 重渲染高亮）；
+    // 点确认键 → 转发真实确认（app 模式 → showClassHome() 回 Class tab），推进 p13。
+    function coachPickTeacher(ev){
+      var el = null, spot = document.getElementById("cx-spot");
+      var prevSpot = spot ? spot.style.pointerEvents : "";
+      coachEl.style.pointerEvents = "none"; if(spot) spot.style.pointerEvents = "none";
+      try{ el = document.elementFromPoint(ev.clientX, ev.clientY); }catch(e){}
+      coachEl.style.pointerEvents = "auto"; if(spot) spot.style.pointerEvents = prevSpot;
+      if(!el || !el.closest) return;
+      var conf = el.closest("#btn-confirm-teacher");
+      if(conf){
+        coachBusy = true;
+        try{ profile.teacherChosen = true; }catch(e){}   // 与独立选老师页 confirm 同一标记（handler 也会写）
+        conf.click();
+        coachWait(80, function(){ coachGoto(14); });
+        return;
+      }
+      var card = el.closest(".teacher-card");
+      if(card){ card.click(); requestAnimationFrame(positionCoach); coachWait(120, positionCoach); }
+    }
+    // Step4：点课卡不转发真实点击（不进课堂），庆祝 + 发币后收尾 → Paywall②。
+    function coachFinishClass(){
+      coachBusy = true; positionCoach();
+      coachSetCopy("+10 🪙 {name} is ready!"); coachDing(true);
+      if(window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(10);
+      coachWait(1400, coachFinish);
+    }
+    function coachFinish(){ closeCoach(); if(window.cxPaywall) window.cxPaywall("pay2"); }
+
     function buildCoach(){
       if(coachEl) return;
       coachEl = document.createElement("div"); coachEl.id = "cx-coach";
+      coachEl.style.pointerEvents = "auto";   // 引导期间蒙层拦截页面其余交互
       coachEl.innerHTML =
         '<div id="cx-spot"></div>'
+        +'<span id="cx-finger">👆</span>'
+        +'<button id="cx-skip" type="button">Skip ✕</button>'
         +'<div id="cx-tip"><img id="cx-tip-dino" src="assets/dino-mascot.png" alt="" onerror="this.style.display=\'none\'"/>'
-        +'<div id="cx-tip-title"></div><div id="cx-tip-copy"></div><div id="cx-tip-dots"></div>'
-        +'<div id="cx-tip-row"><button id="cx-tip-next"></button></div></div>';
+        +'<div id="cx-tip-copy"></div>'
+        +'<div id="cx-tip-dots"></div></div>';
       document.body.appendChild(coachEl);
-      document.getElementById("cx-tip-next").onclick = coachNext;
+      document.getElementById("cx-skip").onclick = coachFinish;
+      document.getElementById("cx-spot").onclick = coachSpotTap;
     }
-    function renderCoach(){
-      var s = COACH[coachStep];
-      if(typeof setHubTab === "function"){ try{ setHubTab(s.tab); }catch(e){} }   // 切到对应 Tab 面板
-      var cnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
-      document.getElementById("cx-tip-title").textContent = s.t.replace(/\bLeo\b/g, cnm);
-      document.getElementById("cx-tip-copy").textContent = s.c.replace(/\bLeo\b/g, cnm);
-      document.getElementById("cx-tip-dots").innerHTML = COACH.map(function(_,i){ return '<i class="'+(i===coachStep?"on":"")+'"></i>'; }).join("");
-      document.getElementById("cx-tip-next").textContent = (coachStep >= COACH.length-1) ? "Continue →" : "Next →";
-      var tgt = document.querySelector(s.sel), spot = document.getElementById("cx-spot"), tip = document.getElementById("cx-tip");
+    // spot 是唯一可点面（覆盖真实目标控件）：点它 = 执行本 phase 的 tap
+    // （介绍 phase 只推进；free phase 按落点转发；其余转发真实 click 或脚本化处理）。
+    function coachSpotTap(ev){
+      var p = COACH_PHASES[coachPhase];
+      if(coachBusy || !p || p.passive || !p.tap) return;
+      if(p.free){ p.tap(ev); return; }
+      var tgt = null; try{ tgt = p.target ? p.target() : null; }catch(e){}
+      if(!tgt) return;
+      p.tap(tgt);
+    }
+    function coachGoto(i){
+      coachBusy = false; coachPhase = i;
+      var p = COACH_PHASES[i];
+      if(!p){ coachFinish(); return; }
+      if(p.skip){ var sk = false; try{ sk = p.skip(); }catch(e){} if(sk){ coachGoto(i + 1); return; } }
+      if(p.enter){ try{ p.enter(); }catch(e){} }
+      coachSetCopy(p.copy);
+      document.getElementById("cx-tip-dots").innerHTML = [0,1,2,3].map(function(d){ return '<i class="' + (d === p.dot ? "on" : "") + '"></i>'; }).join("");
+      // 目标常在切页/切 tab 后异步就位：rAF ×2 + 280ms 双保险重定位。
+      requestAnimationFrame(function(){ requestAnimationFrame(positionCoach); });
+      coachWait(280, positionCoach);
+      positionCoach();
+    }
+    function positionCoach(){
+      if(!coachEl || coachEl.style.display === "none") return;
+      var p = COACH_PHASES[coachPhase]; if(!p) return;
+      var spot = document.getElementById("cx-spot"), tip = document.getElementById("cx-tip"),
+          fin = document.getElementById("cx-finger"), sk = document.getElementById("cx-skip");
       // 手机边界：优先横屏设备容器，异常时退回视口，保证气泡始终夹在手机屏内。
       var devEl = document.getElementById("device-landscape"), dr = devEl ? devEl.getBoundingClientRect() : null;
       var B = (dr && dr.width > 160 && dr.height > 120) ? dr : { left:0, top:0, right:window.innerWidth, bottom:window.innerHeight, width:window.innerWidth, height:window.innerHeight };
-      tip.style.transform = "none";
+      sk.style.left = (B.right - 86) + "px"; sk.style.top = (B.top + 12) + "px";
       var tw = 268; tip.style.width = tw + "px";
-      var th = tip.offsetHeight || 170, dinoPad = 42;
+      var th = tip.offsetHeight || 150, dinoPad = 42;
+      var tgt = null;
+      if(!coachBusy && !p.passive){ try{ tgt = p.target ? p.target() : null; }catch(e){} }
       if(tgt && tgt.getBoundingClientRect().width > 0){
         var r = tgt.getBoundingClientRect(), pad = 8;
-        spot.style.display = "block";
+        spot.style.display = "block"; spot.classList.add("clickable");
         spot.style.left = (r.left - pad) + "px"; spot.style.top = (r.top - pad) + "px";
         spot.style.width = (r.width + pad*2) + "px"; spot.style.height = (r.height + pad*2) + "px";
-        // Tab 在底部 → 气泡放目标上方；水平自适应：目标偏左则向右展开、偏右则向左展开，再夹进手机边界。
-        var top = r.top - th - 22;
-        if(top < B.top + dinoPad) top = r.bottom + 22;
+        // 气泡默认放目标上方，放不下则放下方；水平自适应后夹进手机边界。
+        var top = r.top - th - 22, below = false;
+        if(top < B.top + dinoPad){ top = r.bottom + 22; below = true; }
         var centerX = r.left + r.width/2;
         var lx = (centerX < B.left + B.width*0.5) ? (r.left - 12) : (r.right - tw + 12);
         lx = Math.min(Math.max(lx, B.left + 12 + dinoPad), B.right - tw - 12);
         top = Math.min(Math.max(top, B.top + dinoPad), B.bottom - th - 12);
         tip.style.left = lx + "px"; tip.style.top = top + "px";
+        // 指引手：与气泡异侧贴目标边缘。气泡在上 → 手在目标下缘向上指 👆；气泡在下 → 手在目标上缘向下指 👇。
+        fin.style.display = "block";
+        fin.textContent = below ? "👇" : "👆";
+        var fx = centerX - 15, fy = below ? (r.top - pad - 36) : (r.bottom + pad + 4);
+        fx = Math.min(Math.max(fx, B.left + 4), B.right - 34);
+        fy = Math.min(Math.max(fy, B.top + 4), B.bottom - 36);
+        fin.style.left = fx + "px"; fin.style.top = fy + "px";
       } else {
-        spot.style.display = "none";
+        spot.style.display = "none"; spot.classList.remove("clickable");
+        fin.style.display = "none";
         tip.style.left = (B.left + (B.width - tw)/2) + "px"; tip.style.top = (B.top + B.height*0.34) + "px";
       }
     }
-    // 转化链路优化：新手引导走查完成 → 直接进第 2 轮支付推送（paywall），符合会议「新手村里再 push 一次支付」。
-    function coachNext(){ if(coachStep < COACH.length-1){ coachStep++; renderCoach(); } else { closeCoach(); if(window.cxPaywall) window.cxPaywall("pay2"); } }
-    function closeCoach(){ if(coachEl) coachEl.style.display = "none"; }
-    window.cxStartCoach = function(){ cxStage = "guide"; enterLandscape(); showClassHome(); buildCoach(); coachStep = 0; coachEl.style.display = "block"; renderCoach(); requestAnimationFrame(function(){ requestAnimationFrame(renderCoach); }); setTimeout(renderCoach, 280); };
+    // 走完 / Skip → 第 2 轮支付推送（Paywall②），链路不变。
+    function closeCoach(){ coachClearTimers(); coachBusy = false; if(coachEl) coachEl.style.display = "none"; }
+    window.cxStartCoach = function(){
+      cxStage = "guide"; enterLandscape(); showClassHome();
+      buildCoach(); coachClearTimers(); coachBusy = false;
+      coachEl.style.display = "block";
+      coachGoto(0);   // 自带 rAF×2 + 280ms 重定位；可从 ⚙︎ States 反复重入
+    };
 
     addScreen("cx-football",
       '<div class="cx-fb" style="background-image:url(assets/quiz/quiz-bg.jpg)">'

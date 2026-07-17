@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino English — V1.4.1 UI Demo</title>
-  <!-- DESIGN.md · PRD V1.4.1 · builds on V1.4.0 (course up/down leveling — split out of V1.4.0); baseline keeps win-back discount · year+month paywall · dino home guidance · portrait paywall · explore nudge · backpack figure IP/series · Kakao phone binding -->
+  <title>Dino English — V1.4.2 UI Demo</title>
+  <!-- DESIGN.md · PRD V1.4.2 · builds on V1.4.0 (course up/down leveling — split out of V1.4.0); baseline keeps win-back discount · year+month paywall · dino home guidance · portrait paywall · explore nudge · backpack figure IP/series · Kakao phone binding -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -4029,11 +4029,11 @@
     .rp-ctrl svg { width: 22px; height: 22px; }
     .rp-play { width: 54px; height: 54px; border-radius: 50%; background: #19c3b2; color: #fff; display: grid; place-items: center; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(25, 195, 178, 0.5); }
     .rp-play svg { width: 24px; height: 24px; }
-    /* V1.4.1: free listener finished the free track → PAUSE on it (Replay);
+    /* V1.4.2: free listener finished the free track → PAUSE on it (Replay);
        tapping the locked Next control opens the Paywall (PRD 4.5). */
     .rp-ctrl--locked { position: relative; }
     .rp-ctrl--locked::after { content: "🔒"; position: absolute; top: -3px; right: -5px; font-size: 10px; }
-    /* ---------- V1.4.1 FM mini player（播放悬浮窗） ---------- */
+    /* ---------- V1.4.2 FM mini player（播放悬浮窗） ---------- */
     .fm-mini { position: absolute; right: 10px; bottom: 64px; z-index: 60; display: none; align-items: center;
       touch-action: none; user-select: none; -webkit-user-select: none; }
     .fm-mini.show { display: flex; }
@@ -4752,7 +4752,7 @@
     .pk-opt.right { background: #d6f5e2; border-color: #5cb87a; }
     .pk-opt.wrong { background: #ffe0e0; border-color: #e88; }
 
-    /* ---- V1.4.1 题型扩展: 看图选择 / 听音选择 (Blind Box & Word PK shared quiz card) ---- */
+    /* ---- V1.4.2 题型扩展: 看图选择 / 听音选择 (Blind Box & Word PK shared quiz card) ---- */
     .qz-stem { display: flex; align-items: center; justify-content: center; gap: 10px; }
     .qz-stem-pic { width: 78px; height: 62px; border-radius: 14px; background: #eaf3fb; display: grid; place-items: center; font-size: 2rem; flex: 0 0 auto; }
     .qz-stem-instr { font-size: 0.8rem; font-weight: 700; color: var(--ink); text-align: left; max-width: 240px; }
@@ -4765,7 +4765,7 @@
     .pk-opts--rows { grid-template-columns: 1fr; }
     .pk-opts--rows .pk-opt { text-align: left; }
     .pk-opt--pic { font-size: 1.8rem; padding: 12px 10px; }
-    /* ---- V1.4.1 口语 PK 答题页 restyle per Figma 设计稿（竞技场 / Arena）---- */
+    /* ---- V1.4.2 口语 PK 答题页 restyle per Figma 设计稿（竞技场 / Arena）---- */
     #screen-speakpk { padding: 0;
       background: linear-gradient(180deg, rgba(120, 200, 255, 0.22), rgba(150, 230, 150, 0.12)),
         url("assets/quiz/speakpk-arena.png") center / cover no-repeat; }
@@ -4831,7 +4831,7 @@
     #screen-speakpk .spk-mascot { position: absolute; left: 6px; bottom: 0; width: auto; height: 178px; pointer-events: none; z-index: 3;
       filter: drop-shadow(0 8px 12px rgba(30, 40, 140, 0.25)); }
 
-    /* ---- V1.4.1 answer-page restyle per Figma 答题页设计稿 (盲盒机 / 单词 PK) ---- */
+    /* ---- V1.4.2 answer-page restyle per Figma 答题页设计稿 (盲盒机 / 单词 PK) ---- */
     .quizfx {
       background:
         linear-gradient(179deg, rgba(73, 76, 253, 0.72) 0%, rgba(8, 159, 253, 0) 52%),
@@ -6009,7 +6009,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.4.1 · 课程升降级（会员升要证明 · 降直切 / 免费试更简单 level · 相邻 level 升/降横幅 · 会员改级二次确认）+ 游戏题型扩展（盲盒机 / 单词 PK：题干朗读 · 看图选词 · 听音选图；口语 PK：跟读配图）+ FM 播放悬浮窗与后台播放（离开播放页续播 · 免费完播暂停 · 点下一曲跳 Paywall）+ ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）— 详见右上 ⚙︎ States 的「1.4.1 变更」与「世界杯主题课」</p>
+  <p class="demo-bar">V1.4.2 · 课程升降级（会员升要证明 · 降直切 / 免费试更简单 level · 相邻 level 升/降横幅 · 会员改级二次确认）+ 游戏题型扩展（盲盒机 / 单词 PK：题干朗读 · 看图选词 · 听音选图；口语 PK：跟读配图）+ FM 播放悬浮窗与后台播放（离开播放页续播 · 免费完播暂停 · 点下一曲跳 Paywall）+ ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）— 详见右上 ⚙︎ States 的「1.4.1 变更」与「世界杯主题课」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -6542,6 +6542,8 @@
             <button type="button" class="pwpt-back" id="btn-pwpt-back" aria-label="Close">‹</button>
             <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore</button>
           </div>
+          <!-- 转化链路优化 PRD 2.3: Paywall 限时折扣倒计时条 — A/B 通用、首曝光起算、跨入口共享不重置，到 00:00 停表 -->
+          <div class="pwpt-timer pwpt-timer--sticky">🔥 Limited offer ends in <span id="pwpt-timer-clock">15:00</span></div>
           <!-- V1.3.2 (布局调整): title block on top; then Dino left + trust proof right;
                then a full-width benefits list. -->
           <div class="pwpt-hero-card">
@@ -6710,6 +6712,12 @@
     .pwpt-cta-spacer{height:124px}
     .pwpt-cta-bar{position:absolute;left:0;right:0;bottom:0;padding:12px 20px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,255,255,0),#fff 32%)}
     .pwpt-cta{width:100%;font-size:1rem;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px}
+    /* 转化链路优化 PRD 2.3: Paywall 限时折扣倒计时条（吸顶，视觉对齐转化链路 demo） */
+    .pwpt-timer{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 18px 6px;background:#fdefdc;color:#b4640f;font-weight:700;font-size:.86rem;border-radius:12px;padding:9px}
+    .pwpt-timer #pwpt-timer-clock{font-variant-numeric:tabular-nums;background:#b4640f;color:#fff;border-radius:7px;padding:2px 8px}
+    .pwpt-timer--sticky{position:sticky;top:50px;z-index:8;margin:0 0 8px;border-radius:0 0 12px 12px}
+    /* 倒计时吸顶后 head 不能再透底，取 .pwpt 渐变顶端色做不透明背景 */
+    #screen-paywall-pt .pwpt-head{position:sticky;top:0;z-index:9;margin:0;padding:8px 4px;background:#fef6ec}
     /* V1.4.0 转化链路优化: win-back 周卡限时折扣页 */
     .wb{background:linear-gradient(180deg,#143d2a 0%,#1d5c3f 48%,#2d6b45 100%)}
     .wb-scroll{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column}
@@ -7347,7 +7355,7 @@
       </section>
 
       <!-- ============ CAPSULE (Dino Blind Box · quiz round, 5 questions) ============
-           V1.4.1 restyle per Figma 答题页设计稿: sky-gradient bg + Dino IP at left,
+           V1.4.2 restyle per Figma 答题页设计稿: sky-gradient bg + Dino IP at left,
            gradient "Question n/5" pill, glass question card, bottom progress bar
            (track + orange fill + blind-box icon + n/5 pill) instead of pips. -->
       <section class="screen quizfx" id="screen-capsule">
@@ -7465,7 +7473,7 @@
       </section>
 
       <!-- ============ WORD PK ============
-           V1.4.1 restyle per Figma: same quiz visual language as the Blind Box page;
+           V1.4.2 restyle per Figma: same quiz visual language as the Blind Box page;
            score header = avatars + orange (you) / blue (rival) score ribbons + VS. -->
       <section class="screen quizfx" id="screen-wordpk">
         <div class="game-top">
@@ -7735,6 +7743,9 @@
     function levelLabelOf(levelId) { const lv = COURSE_LIBRARY.find((l) => l.id === levelId); return lv ? lv.label : "Level"; }
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
+    // 转化链路优化 PRD 2.3: Paywall 限时折扣倒计时 — 首次曝光起算，所有入口共享同一 deadline，永不重置
+    let paywallOfferDeadline = null;
+    let paywallOfferTimer = null;
     let teacherFlowMode = "onboarding";
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
@@ -8861,7 +8872,7 @@
     function setHubTab(tab) {
       if (tab !== "profile") lastHubTab = tab;
       activeHubTab = tab;
-      // V1.4.1 全局播放器：切 Tab 不再断音 —— 播放由悬浮窗承接；只有进入自带音频的
+      // V1.4.2 全局播放器：切 Tab 不再断音 —— 播放由悬浮窗承接；只有进入自带音频的
       // 场景（课堂 / Play 答题 / Dino 对话，见 FM_STOP_SCREENS）才自动停止。
       $$("[data-hub-panel]").forEach((panel) => {
         panel.classList.toggle("is-active", panel.dataset.hubPanel === tab);
@@ -10126,7 +10137,7 @@
       if ($("#rp-time-cur")) $("#rp-time-cur").textContent = fmtTime(rpFrac * rpDurSec);
     }
     function tickRadio() {
-      // V1.4.1: playback is app-level — keep ticking off the player page (mini player /
+      // V1.4.2: playback is app-level — keep ticking off the player page (mini player /
       // simulated background) instead of stopping when the screen changes.
       if (!rpPlaying) { clearInterval(rpClock); return; }
       rpFrac += FM_TICK_MS / FM_DEMO_MS;
@@ -10142,7 +10153,7 @@
         : FM_TRACK_COINS;
       if (window.GAME) { window.GAME.grantXp(FM_TRACK_XP); window.GAME.grantCoins(coins); }
       showFmReward(coins);
-      // V1.4.1 续播：会员在可播队列内顺播（队列尾循环回首）；免费分类内仅首条可播，
+      // V1.4.2 续播：会员在可播队列内顺播（队列尾循环回首）；免费分类内仅首条可播，
       // 完播即遇锁 → 暂停并停在刚听完的内容（↻ Replay），点带锁 Next 才拉 Paywall。
       if (!profile.premiumUnlocked) { enterFmDoneState(); return; }
       rpIndex = (rpIndex + 1) % rpPlaylist.length;
@@ -10186,13 +10197,13 @@
       setRadioPlaying(!rpPlaying);
     });
     $("#btn-rp-back").addEventListener("click", () => {
-      // V1.4.1 全局播放器：返回只收起播放页，播放继续、悬浮窗承接。
+      // V1.4.2 全局播放器：返回只收起播放页，播放继续、悬浮窗承接。
       // （奖励口径不变：只有整条自然听完才发放。）
       setHubTab("practice");
       showLandScreen("screen-class");
     });
 
-    // ----- V1.4.1: FM 播放悬浮窗（mini player）+ 免费完播承接 -----
+    // ----- V1.4.2: FM 播放悬浮窗（mini player）+ 免费完播承接 -----
     // 悬浮窗承载 App 级播放状态：收起态 = 吸边圆形唱片（播放中旋转 / 暂停 ▶），
     // 点击展开「⏯ / ✕」胶囊面板，点封面回全屏播放页；可拖拽、松手吸附左右边缘。
     // 进入自带音频的场景（课堂 / Play 答题 / Dino 对话）自动停止并移除，退出后不自动恢复。
@@ -11049,7 +11060,7 @@
       // round-result page with ONLY this round's XP & coins. The bar is shown both
       // BEFORE the round (intro) and DURING answering, and lights up when a coin
       // is earned.
-      // ---- V1.4.1 题型扩展 (PRD module 3): shared quiz-card renderer for Dino
+      // ---- V1.4.2 题型扩展 (PRD module 3): shared quiz-card renderer for Dino
       // Blind Box & Word PK. 6 types (PRD 3.1 Q1–Q6) = stem(text / text+read-aloud /
       // pic / audio) × options(text / pic). Question fields: st/ot default "text";
       // `stem` = stem emoji-image; `say` = stem audio text. Audio here is browser
@@ -11165,7 +11176,7 @@
       // coin briefly fills the whole row (gold) before it rolls over to a new cycle.
       // The coupon (🎟️) icon stays GREY until a coin is earned this cycle, then
       // lights up — that is the only feedback (no toast).
-      // V1.4.1 restyle: the quiz page shows a fill bar + blind-box icon + n/5 pill
+      // V1.4.2 restyle: the quiz page shows a fill bar + blind-box icon + n/5 pill
       // (per Figma) instead of pips. Meaning is unchanged: fill = cumulative
       // correct mod 5; the box icon stays grey until a ticket is earned, then
       // lights up + pops — still the only earn feedback (no toast).
@@ -11205,7 +11216,7 @@
       });
       function renderCapsuleQuestion() {
         capJustEarned = false; // clear the celebrate frame whenever a new question loads
-        const item = quizPick(CAP_QUESTIONS, capQIdx); // V1.4.1: mixed question types (see renderQuizCard)
+        const item = quizPick(CAP_QUESTIONS, capQIdx); // V1.4.2: mixed question types (see renderQuizCard)
         if ($("#cap-q-num")) $("#cap-q-num").textContent = capRoundIdx + 1;
         renderCapsuleProgress();
         const box = $("#cap-q-opts");
@@ -11402,7 +11413,7 @@
       });
 
       // ---- Word PK: 5 questions vs a matched rival, no timer (PRD) ----
-      // V1.4.1: bank carries the 6 supported question types (PRD 3.1 Q1–Q6, same
+      // V1.4.2: bank carries the 6 supported question types (PRD 3.1 Q1–Q6, same
       // shared renderer as the Blind Box quiz); a 5-question round mixes them.
       const WPK_QUESTIONS = [
         { q: "Which word means “courageous”?", opts: ["brave", "bright", "brown", "break"], a: 0 },                          // Q1 文本 × 文本
@@ -11457,7 +11468,7 @@
       function resetWordPk() { wpkIdx = 0; wpkMe = 0; wpkOp = 0; wpkBusy = false; renderWordPk(); }
 
       // ---- Speaking PK: 3 sentences, hold-to-record (simulated scoring) ----
-      // V1.4.1: Speaking PK 跟读句（3 句），hold-to-record 模拟评分。答题页按 Figma
+      // V1.4.2: Speaking PK 跟读句（3 句），hold-to-record 模拟评分。答题页按 Figma
       // 竞技场设计稿：绿茵背景 + 玻璃卡 + 比分绶带 + 喇叭胶囊跟读句 + 大 mic + Dino 吉祥物。
       const SPK_SENTENCES = [
         { text: "The brave dino jumps over the river." },
@@ -11865,7 +11876,7 @@
         renderBackpack();
         showLandScreen("screen-backpack");
       }
-      // V1.4.1 题型扩展 bridges: jump straight into a quiz round (demo jumps skip
+      // V1.4.2 题型扩展 bridges: jump straight into a quiz round (demo jumps skip
       // the free-tier daily-limit gate), and re-render the live question when the
       // ⚙︎ States「游戏题型」filter changes.
       function startCapsuleQuiz() { startCapsuleRound(); showLandScreen("screen-capsule"); }
@@ -12424,6 +12435,27 @@
       enterPortrait();
       showPortraitScreen("screen-paywall-pt");
       const sh = $("#pwpt-scroll"); if (sh) sh.scrollTop = 0;
+      // PRD 2.3: 倒计时从 Paywall 首次曝光起算；之后任何入口重开都沿用同一 deadline（不重置）。
+      if (!paywallOfferDeadline) paywallOfferDeadline = Date.now() + 15 * 60 * 1000;
+      startPaywallOfferCountdown();
+    }
+    // PRD 2.3: Paywall 限时折扣倒计时 — 到 00:00 只停表并保持 00:00 展示，不自动关闭（区别于 win-back）。
+    function startPaywallOfferCountdown() {
+      const clock = $("#pwpt-timer-clock");
+      if (!clock) return;
+      const tick = () => {
+        const ms = Math.max(0, (paywallOfferDeadline || 0) - Date.now());
+        const m = Math.floor(ms / 60000);
+        const s = Math.floor((ms % 60000) / 1000);
+        clock.textContent = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        if (ms <= 0) stopPaywallOfferCountdown();
+      };
+      if (paywallOfferTimer) clearInterval(paywallOfferTimer);
+      tick();
+      paywallOfferTimer = setInterval(tick, 1000);
+    }
+    function stopPaywallOfferCountdown() {
+      if (paywallOfferTimer) { clearInterval(paywallOfferTimer); paywallOfferTimer = null; }
     }
     // V1.4.0 转化链路优化: the regular Paywall converges to year + month only
     // (commitment / high-LTV). The weekly plan is downgraded to a win-back-only
@@ -12448,10 +12480,12 @@
       });
     }
     function closePaywallPortrait() {
+      stopPaywallOfferCountdown(); // deadline 保留，重开继续按同一时间点走
       enterLandscape();
       showLandScreen(paywallReturnScreen || "screen-class");
     }
     $("#btn-pwpt-back")?.addEventListener("click", () => {
+      stopPaywallOfferCountdown(); // win-back 分支不走 closePaywallPortrait，这里先停表
       // V1.4.0: backing out of the Paywall = a cancel/return event → try the win-back
       // offer (governed by the promo frequency cap). Only fall back to the trigger
       // page when the governor suppresses it.
@@ -13231,7 +13265,7 @@
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
-      { key: "quizTypes", label: "游戏题型（V1.4.1 扩展 · 盲盒机 / 单词 PK 出题）",
+      { key: "quizTypes", label: "游戏题型（V1.4.2 扩展 · 盲盒机 / 单词 PK 出题）",
         options: [["mixed", "混合(6种)"], ["readaloud", "仅题干朗读"], ["pic", "仅看图选词"], ["audiopic", "仅听音选图"]],
         apply: function (v) { demoState.quizTypes = v; window.GAME && window.GAME.rerenderQuiz && window.GAME.rerenderQuiz(); } },
       // ⚽ 世界杯主题课（运营位）
@@ -13290,11 +13324,11 @@
       { label: "Paywall",    run: function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); } },
       { label: "会员中心",    run: function () { enterLandscape(); showLandScreen("screen-membership"); } },
     ],
-    // V1.4.1 变更专用快捷入口：只放本期改动（课程升降级），直达关键状态方便评审。
-    jumps131Label: "1.4.1 变更",
+    // V1.4.2 变更专用快捷入口：只放本期改动（课程升降级），直达关键状态方便评审。
+    jumps131Label: "1.4.2 变更",
     jumps131: [
       { label: "★ 升 / 降级横幅（本期新增·上方切会员·等级查看）", run: function () {
-          // V1.4.1 新增：整个升/降级状态的入口。落到 placement level 的 Level·Unit map，
+          // V1.4.2 新增：整个升/降级状态的入口。落到 placement level 的 Level·Unit map，
           // 用顶部控制（会员状态 / 定级起始 Level）+ 点 level chip 查看 current-1 的降级横幅
           // 或 current+1 的升级横幅（会员 / 免费、已上过 / 未上过均可从这里到达）。
           profile.placementLevelId = "level-2"; profile.maxReachedLevelId = "level-2"; profile.currentLevelId = "level-2";
@@ -13318,7 +13352,7 @@
           courseMapLevelId = "level-3"; renderCourseMap(); // current+1 视图 → 升级横幅
         } },
       { label: "★ 题型扩展 · 盲盒机答题（6 种题型混合出题）", run: function () {
-          // V1.4.1 新增：直接开一轮盲盒机答题（跳过免费每日限次），配合上方
+          // V1.4.2 新增：直接开一轮盲盒机答题（跳过免费每日限次），配合上方
           // 「游戏题型」控制切混合 / 仅题干朗读 / 仅看图选词 / 仅听音选图。
           enterLandscape();
           window.GAME && window.GAME.startCapsuleQuiz && window.GAME.startCapsuleQuiz();
@@ -13332,7 +13366,7 @@
           window.GAME && window.GAME.startSpeakPk && window.GAME.startSpeakPk();
         } },
       { label: "★ FM 悬浮窗（离开播放页续播 · 点唱片展开 ⏯/✕ · 可拖拽吸边）", run: function () {
-          // V1.4.1 新增：开播一条免费 Radio → 直接回 Explore 首页，悬浮唱片承接续播。
+          // V1.4.2 新增：开播一条免费 Radio → 直接回 Explore 首页，悬浮唱片承接续播。
           // 点唱片展开胶囊（⏯ / ✕），拖动可换边；进课堂 / Play 答题 / Dino 对话会自动停止。
           enterLandscape(); setHubTab("practice");
           radioFilter = "goodnight";
@@ -13341,7 +13375,7 @@
           showLandScreen("screen-class");
         } },
       { label: "★ FM 免费完播（暂停 · ↻ Replay · 点带锁 Next → Paywall）", run: function () {
-          // V1.4.1 新增：免费听完分类内唯一免费条 → 暂停并停在原内容（主按钮变 ↻ Replay），
+          // V1.4.2 新增：免费听完分类内唯一免费条 → 暂停并停在原内容（主按钮变 ↻ Replay），
           // 点带锁 Next 下一曲 → Paywall。进度已拨到临近结尾，数秒后自动完播演示。
           profile.premiumUnlocked = false; refreshUnlockState();
           enterLandscape(); setHubTab("practice");
@@ -13397,7 +13431,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V1.4.1",
+      demo: "V1.4.2",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";

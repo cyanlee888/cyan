@@ -442,7 +442,8 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n131" data-date="2026-07-06" data-zh="<b>V1.3.1</b>投放归因"><b>V1.3.1</b>Attribution</a>
     <a href="#n132" data-date="2026-07-09" data-zh="<b>V1.3.2</b>功能性迭代"><b>V1.3.2</b>Iteration</a>
     <a href="#n140" data-date="2026-07-16" data-zh="<b>V1.4.0</b>功能扩展"><b>V1.4.0</b>Expansion</a>
-    <a href="#n141" data-zh="<b>V1.4.1</b>对话升级"><b>V1.4.1</b>Chat upgrade</a>
+    <a href="#n141" data-zh="<b>V1.4.1</b>登录方式配置"><b>V1.4.1</b>Login config</a>
+    <a href="#n142" data-zh="<b>V1.4.2</b>对话升级"><b>V1.4.2</b>Chat upgrade</a>
     <a href="#n150" data-zh="<b>V1.5.0</b>品牌切换"><b>V1.5.0</b>Rebrand</a>
     <a href="#n160" data-zh="<b>V1.6.0</b>每日学习"><b>V1.6.0</b>Daily learning</a>
   </div>
@@ -787,11 +788,32 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.4.1</div>
-    <div class="node-sub" data-zh='功能迭代<br>上线时间待定'>Iteration<br>Date TBD</div>
+    <div class="node-sub" data-zh='功能迭代<br>计划 07/17'>Iteration<br>Planned 07/17</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title" data-zh='登录方式按国家/地区配置<span class="tag">迭代版</span>'>Login methods per country/region<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：登录本地化，各市场露出最合适的登录入口。<br/><b>核心内容</b>：登录方式的露出与排序按手机系统国家/地区配置，服务端下发、运营可调、无需发版；首发默认 / 韩国 / 沙特·阿联酋 / 越南 / 马来·印尼五档配置，iOS 保 Sign in with Apple 合规。<br/><b>价值</b>：用户首屏即见当地主流登录方式，降低登录门槛、提升注册转化。计划 07/17 上线 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: login localization — each market leads with its own mainstream entry.<br/><b>Core</b>: login-method visibility and ordering configured per phone-system country/region, server-delivered and ops-adjustable without a release; five launch configs (default / Korea / Saudi·UAE / Vietnam / Malaysia·Indonesia), keeping Sign in with Apple compliance on iOS.<br/><b>Value</b>: users see their local mainstream login first — a lower entry barrier and better sign-up conversion. Planned for 07/17 · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
+    <div class="cols">
+      <div class="block">
+        <h4 data-zh='需求 · 登录注册及 Onboarding'>Requirements · login & onboarding</h4>
+        <ul>
+          <li data-zh='<b>按国家/地区配置登录方式与排序</b><span class="p1">P1</span>：取手机系统地区，露出与排序服务端可配，端内置本地兜底'><b>Login methods & order per country/region</b><span class="p1">P1</span>: driven by the phone-system region, config-delivered visibility and ordering with a built-in local fallback</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ V1.4.2 ============ -->
+<section class="node reveal" id="n142">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">1.4.2</div>
+    <div class="node-sub" data-zh='功能迭代<br>计划 07/23'>Iteration<br>Planned 07/23</div>
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='Dino 对话升级 · 转化重排 · 数据与内容工具<span class="tag">迭代版</span>'>Dino chat upgrade · funnel rework · data & content tools<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心，叠加转化链路重排与数据 / 内容工具补齐。<br/><b>核心内容</b>：Dino memory 与三入口对话设计、麦克风点两次、多语言输出修复；转化链路整体重排与带新手引导的体验课；选图听音模版、长句作答等待等课中打磨；课程升降级；盲盒 &amp; PK 新题型、FM 后台悬浮播放；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，重排核心付费转化漏斗，补齐用户行为洞察。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: the Dino chat upgrade at the center, plus a conversion-funnel rework and data / content tooling.<br/><b>Core</b>: Dino memory and the three-intent dialogue design, double-tap mic, the multilingual output fix; a full funnel rework with a guided trial lesson; picture-listening templates, longer answer windows and other in-class polish; course level up/down; new Gacha &amp; PK question types, FM background floating playback; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, reworks the core paid-conversion funnel, and closes the user-insight gap. Date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.1 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以 Dino 对话升级为核心，叠加转化链路重排与数据 / 内容工具补齐。<br/><b>核心内容</b>：Dino memory 与三入口对话设计、麦克风点两次、多语言输出修复；转化链路整体重排与带新手引导的体验课；选图听音模版、长句作答等待等课中打磨；课程升降级；盲盒 &amp; PK 新题型、FM 后台悬浮播放；posthog 与课外埋点。<br/><b>价值</b>：让首页 Dino 成为有记忆、能引导的学习伙伴，重排核心付费转化漏斗，补齐用户行为洞察。计划 07/23 上线 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: the Dino chat upgrade at the center, plus a conversion-funnel rework and data / content tooling.<br/><b>Core</b>: Dino memory and the three-intent dialogue design, double-tap mic, the multilingual output fix; a full funnel rework with a guided trial lesson; picture-listening templates, longer answer windows and other in-class polish; course level up/down; new Gacha &amp; PK question types, FM background floating playback; PostHog and out-of-class analytics.<br/><b>Value</b>: makes the home Dino a learning companion with memory that guides, reworks the core paid-conversion funnel, and closes the user-insight gap. Planned for 07/23 · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · Dino Agent · 对话升级'>Requirements · Dino Agent & chat upgrade</h4>
@@ -833,16 +855,16 @@ section[id],.node[id]{scroll-margin-top:64px}
       </div>
     </div>
     <div class="demo-strip">
-      <div class="demo-thumb" onclick="openDemo('V1.4.1-ui-demo.html','V1.4.1 · UI Demo')">
-        <iframe data-src="V1.4.1-ui-demo.html" loading="lazy" title="V1.4.1 UI Demo"></iframe>
+      <div class="demo-thumb" onclick="openDemo('V1.4.2-ui-demo.html','V1.4.2 · UI Demo')">
+        <iframe data-src="V1.4.2-ui-demo.html" loading="lazy" title="V1.4.2 UI Demo"></iframe>
       </div>
       <div class="demo-info">
-        <span class="demo-name">V1.4.1 · UI Demo</span>
+        <span class="demo-name">V1.4.2 · UI Demo</span>
         <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
       </div>
       <div class="demo-actions">
-        <button onclick="openDemo('V1.4.1-ui-demo.html','V1.4.1 · UI Demo')" data-zh='放大查看'>Enlarge</button>
-        <a class="btn" href="V1.4.1-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
+        <button onclick="openDemo('V1.4.2-ui-demo.html','V1.4.2 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.4.2-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -857,7 +879,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='品牌切换 · 对话进化 · 教学模版与课中打磨<span class="tag">迭代版</span>'>Rebrand · chat evolution · templates & in-class polish<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化 + 课中体验打磨。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移；对话流式输出；分 level 模版整理、trace 字母、Prompt Forge eval agent 与 CMS / prompt eval 平台；金币 / 开宝箱 / 头像框 / 按键等课中 UI 与静默冲突打磨；登录方式按地区排序、各 Tab 常驻会员入口。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，体系化教学内容并打磨课堂体验与转化触点。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library + in-class polish.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration; streaming chat output; level-based template reorganization, letter-tracing, a Prompt Forge eval agent and the CMS / prompt-eval platforms; in-class UI polish on coins / treasure box / avatar frame / buttons plus silence-conflict handling; region-ordered login methods and a persistent membership entry on each tab.<br/><b>Value</b>: a unified brand, smooth migration of paying users, systematized teaching content, and a more polished classroom experience with stronger conversion touchpoints. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化 + 课中体验打磨。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移；对话流式输出；分 level 模版整理、trace 字母、Prompt Forge eval agent 与 CMS / prompt eval 平台；金币 / 开宝箱 / 头像框 / 按键等课中 UI 与静默冲突打磨；各 Tab 常驻会员入口。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，体系化教学内容并打磨课堂体验与转化触点。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library + in-class polish.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration; streaming chat output; level-based template reorganization, letter-tracing, a Prompt Forge eval agent and the CMS / prompt-eval platforms; in-class UI polish on coins / treasure box / avatar frame / buttons plus silence-conflict handling; a persistent membership entry on each tab.<br/><b>Value</b>: a unified brand, smooth migration of paying users, systematized teaching content, and a more polished classroom experience with stronger conversion touchpoints. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · 整体 App · 品牌与迁移'>Requirements · app-wide, brand & migration</h4>
@@ -893,7 +915,6 @@ section[id],.node[id]{scroll-margin-top:64px}
         <h4 data-zh='需求 · 会员 / 登录 · 转化'>Requirements · membership / login & conversion</h4>
         <ul>
           <li data-zh='<b>各 Tab 页常驻会员入口</b><span class="p1">P1</span>：面向非会员'><b>Persistent membership entry on each tab</b><span class="p1">P1</span>: for non-members</li>
-          <li data-zh='<b>按国家 / 地区自动排序登录方式</b><span class="p1">P1</span>：依手机系统地区'><b>Auto-order login methods by country / region</b><span class="p1">P1</span>: driven by the phone system region</li>
         </ul>
       </div>
       <div class="block">

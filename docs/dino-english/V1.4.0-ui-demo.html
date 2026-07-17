@@ -5607,6 +5607,101 @@
     #screen-class .dino-backpack-card .dbc-ico{ font-size:1.9rem; }
     #screen-class .dino-backpack-card .dbc-label{ font-size:.74rem; }
 
+    /* ⚽ 世界杯主题课首页入口（E1）— 绿茵条纹卡；进行中呼吸动效；无活动 hidden 不占位 */
+    #screen-class .dino-event-card{
+      position:absolute; right:16px; top:74px; z-index:7; width:120px; height:84px;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+      border:1px solid rgba(255,255,255,.65); border-radius:20px; cursor:pointer; font-family:var(--font);
+      background:
+        radial-gradient(circle at 80% 12%, rgba(255,255,255,.28), transparent 45%),
+        repeating-linear-gradient(90deg,#3E9B4F 0 14px,#2E7A3C 14px 28px);
+      box-shadow:0 12px 26px rgba(20,80,40,.35); color:#fff;
+    }
+    /* 上面的 display:flex 是 author 样式，会压过 UA 的 [hidden]{display:none}：
+       ended 态 renderThemeEventCard 置 hidden 后须显式不渲染，否则死卡盖住上移回位的 Store。 */
+    #screen-class .dino-event-card[hidden]{ display:none; }
+    #screen-class .dino-event-card.is-live{ animation:decBreathe 2.6s ease-in-out infinite; }
+    @keyframes decBreathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    @media (prefers-reduced-motion:reduce){ #screen-class .dino-event-card.is-live{ animation:none; } }
+    #screen-class .dino-event-card .dec-badge{
+      position:absolute; top:-9px; left:50%; transform:translateX(-50%); white-space:nowrap;
+      background:#E8524B; color:#fff; font-size:.56rem; font-weight:800; letter-spacing:.05em;
+      border-radius:999px; padding:2px 9px; box-shadow:0 3px 8px rgba(180,40,30,.45);
+    }
+    #screen-class .dino-event-card .dec-badge.is-soon{ background:#3D8BF0; box-shadow:0 3px 8px rgba(30,90,180,.45); }
+    #screen-class .dino-event-card .dec-badge.is-done{ background:#2FA05A; box-shadow:0 3px 8px rgba(20,110,60,.45); }
+    #screen-class .dino-event-card .dec-medal{ position:absolute; top:-10px; right:-8px; font-size:1.1rem; transform:rotate(12deg); filter:drop-shadow(0 2px 4px rgba(0,0,0,.35)); }
+    #screen-class .dino-event-card .dec-ico{ font-size:1.55rem; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+    #screen-class .dino-event-card .dec-label{ font-size:.7rem; font-weight:800; text-shadow:0 1px 3px rgba(0,60,20,.5); }
+    #screen-class .dino-event-card .dec-cd{ font-size:.56rem; font-weight:800; color:#FFC333; background:rgba(0,0,0,.32); border-radius:999px; padding:1px 7px; }
+    /* 有活动时 Store / Backpack 下移让位；无活动（卡 hidden + 无此 class）自动复位 = PRD「Store 直接上移」 */
+    #screen-class .hub-app.has-theme-event .dino-mini-entries .dn-pill--shop{ top:148px !important; }
+    #screen-class .hub-app.has-theme-event .dino-backpack-card{ top:258px !important; }
+
+    /* ⚽ 主题课落地页（E2）— 深蓝宇宙底（demo 视觉方向），左绿茵 Hero + 右玻璃往期卡 */
+    #screen-theme-course{
+      background:linear-gradient(180deg,#0A2CC6 0%,#0A54E1 40%,#74ACF2 100%);
+      position:relative; overflow:hidden;
+    }
+    #screen-theme-course .tc-back{
+      position:absolute; left:18px; top:16px; z-index:5; width:40px; height:40px; border-radius:50%;
+      border:1px solid rgba(255,255,255,.5); background:rgba(255,255,255,.28); color:#fff;
+      font-size:1.25rem; font-weight:800; cursor:pointer; backdrop-filter:blur(8px);
+    }
+    #screen-theme-course .tc-cols{
+      display:flex; gap:18px; height:100%; padding:56px 26px 22px; align-items:stretch;
+    }
+    #screen-theme-course .tc-hero-slot{ flex:1.15; min-width:0; display:flex; }
+    #screen-theme-course .tc-past{
+      flex:1; min-width:0; border-radius:24px; padding:18px 18px 12px; overflow-y:auto;
+      background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4);
+      backdrop-filter:blur(12px); color:#fff;
+    }
+    #screen-theme-course .tc-hero{
+      flex:1; border-radius:24px; padding:20px 22px 18px; color:#fff; display:flex; flex-direction:column;
+      background:
+        radial-gradient(circle at 18% 15%, rgba(255,255,255,.3), transparent 45%),
+        linear-gradient(165deg,#57B45E,#2E7A3C 70%,#1F5C2B);
+      box-shadow:0 16px 36px rgba(20,80,40,.4), inset 0 0 0 2px rgba(255,255,255,.35);
+    }
+    #screen-theme-course .tc-hero.is-empty{
+      background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.4);
+      box-shadow:none; align-items:center; justify-content:center; text-align:center;
+    }
+    #screen-theme-course .tc-tags{ display:flex; gap:8px; margin-bottom:8px; }
+    #screen-theme-course .tc-tag{ font-size:.62rem; font-weight:800; letter-spacing:.06em; border-radius:8px; padding:4px 9px; }
+    #screen-theme-course .tc-tag.is-live{ background:#E8524B; color:#fff; }
+    #screen-theme-course .tc-tag.is-soon{ background:#3D8BF0; color:#fff; }
+    #screen-theme-course .tc-tag.is-done{ background:#2FA05A; color:#fff; }
+    #screen-theme-course .tc-tag.is-timer{ background:rgba(0,0,0,.35); color:#FFC333; }
+    #screen-theme-course .tc-hero h2{ font-size:1.5rem; font-weight:900; line-height:1.25; margin:0; text-shadow:0 2px 6px rgba(0,0,0,.3); }
+    #screen-theme-course .tc-scene{ font-size:1.6rem; letter-spacing:.12em; margin:6px 0; filter:drop-shadow(0 2px 3px rgba(0,0,0,.3)); }
+    #screen-theme-course .tc-story{ font-size:.8rem; line-height:1.55; color:#E8FBE9; margin:0 0 10px; }
+    #screen-theme-course .tc-chips{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:auto; }
+    #screen-theme-course .tc-chip{ background:rgba(255,255,255,.94); color:#1F5C2B; font-weight:900; font-size:.72rem; border-radius:999px; padding:5px 12px; box-shadow:0 2px 5px rgba(0,0,0,.2); }
+    #screen-theme-course .tc-cta{
+      display:block; width:100%; margin-top:12px; border:none; cursor:pointer; text-align:center;
+      background:linear-gradient(180deg,#FCB141,#FE8F26); color:#fff; font-family:var(--font);
+      font-size:1rem; font-weight:900; border-radius:999px; padding:13px;
+      box-shadow:0 10px 22px rgba(255,130,30,.42), inset 0 1px 0 rgba(255,255,255,.5);
+    }
+    #screen-theme-course .tc-cta.is-disabled{ background:rgba(255,255,255,.35); color:rgba(255,255,255,.8); box-shadow:none; cursor:default; }
+    #screen-theme-course .tc-cta.is-replay{ background:linear-gradient(180deg,#FFFFFF,#EAF6EC); color:#1F5C2B; box-shadow:0 4px 0 #B8D8BE; }
+    #screen-theme-course .tc-lvl{ font-size:.68rem; text-align:center; margin-top:8px; color:#D7F3D8; }
+    #screen-theme-course .tc-past > b{ display:block; font-size:1rem; font-weight:900; margin-bottom:6px; text-shadow:0 1px 3px rgba(0,40,90,.35); }
+    #screen-theme-course .tc-pi{ display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid rgba(255,255,255,.35); }
+    #screen-theme-course .tc-pi .th{ width:44px; height:44px; border-radius:12px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.4rem; box-shadow:0 2px 6px rgba(0,30,70,.12); }
+    #screen-theme-course .tc-pi .m{ flex:1; min-width:0; }
+    #screen-theme-course .tc-pi .m b{ display:block; font-size:.8rem; font-weight:800; }
+    #screen-theme-course .tc-pi .m span{ font-size:.64rem; opacity:.85; }
+    #screen-theme-course .tc-pill{ font-size:.64rem; font-weight:900; border-radius:999px; padding:5px 12px; flex-shrink:0; border:none; }
+    #screen-theme-course .tc-pill.is-replay{ background:#fff; color:#1E7A42; cursor:pointer; }
+    #screen-theme-course .tc-pill.is-ended{ background:rgba(255,255,255,.35); color:#fff; opacity:.75; cursor:default; }
+    #screen-theme-course .tc-empty{ text-align:center; padding:36px 8px; }
+    #screen-theme-course .tc-empty .ei{ font-size:2.4rem; display:block; margin-bottom:6px; filter:drop-shadow(0 2px 4px rgba(0,30,70,.2)); }
+    #screen-theme-course .tc-empty b{ display:block; font-size:.9rem; font-weight:900; margin-bottom:4px; }
+    #screen-theme-course .tc-empty span{ font-size:.7rem; opacity:.85; line-height:1.5; }
+
     /* ---------- generic glass card + orange CTA inside hub ---------- */
     #screen-class .class-week-card{
       background:linear-gradient(160deg, rgba(120,180,255,.42), rgba(80,140,240,.30)) !important;
@@ -5705,7 +5800,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">V1.4.0 · 转化链路优化（取消/返回 → 周卡限时折扣页 · 常规 Paywall 收敛年+月 · 每日启动折扣弹窗）+ Push 系统授权弹窗（启动进首页）+ 首页 Dino 任务引导 — 详见右上 ⚙︎ States 的「1.4.0 变更」</p>
+  <p class="demo-bar">V1.4.0 · 转化链路优化（取消/返回 → 周卡限时折扣页 · 常规 Paywall 收敛年+月 · 每日启动折扣弹窗）+ Push 系统授权弹窗（启动进首页）+ 首页 Dino 任务引导 + ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）— 详见右上 ⚙︎ States 的「1.4.0 变更」与「世界杯主题课」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -6574,6 +6669,14 @@
                   <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop">🛍️</button>
                 </div>
               </div>
+              <!-- ⚽ 世界杯主题课运营入口（E1）：Store 上方；无活动时隐藏不占位，Store/Backpack 自动上移复位 -->
+              <button type="button" class="dino-event-card" id="dino-event-card" hidden onclick="openThemeLanding()">
+                <span class="dec-badge" id="dec-badge">LIMITED</span>
+                <span class="dec-medal" id="dec-medal" hidden>🏅</span>
+                <span class="dec-ico" aria-hidden="true">⚽</span>
+                <span class="dec-label">World Cup</span>
+                <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
+              </button>
               <!-- Backpack entry card (left edge, Figma) -->
               <button type="button" class="dino-backpack-card" data-go-game="screen-backpack">
                 <span class="dbc-ico" aria-hidden="true">🎒</span>
@@ -7338,6 +7441,15 @@
               <button type="button" class="shop-buy-btn" id="bag-equip" disabled>Wear</button>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ⚽ 主题课落地页（E2）：左当期 Hero + 右往期列表；五态由 renderThemeLanding() 按 themeEvent 渲染 -->
+      <section class="screen" id="screen-theme-course">
+        <button type="button" class="tc-back" id="tc-back" aria-label="Back">‹</button>
+        <div class="tc-cols">
+          <div class="tc-hero-slot" id="tc-hero"></div>
+          <div class="tc-past" id="tc-past"></div>
         </div>
       </section>
 
@@ -9192,6 +9304,8 @@
     let lcReportReady = false;
     let lcReportTimer = null;
     function finishInclass() {
+      // ⚽ 世界杯主题课：完课独立记账（结算页照常发 XP/金币），不推进主课进度。
+      if (themeCourseRun) { themeCourseRun = false; themeSettleRun = true; themeEvent.user = "completed"; renderThemeEventCard(); lessonCompleteIsTrial = false; showLessonComplete(false); return; }
       // A level-up trial always routes to the (level-up) trial report on Continue.
       if (levelUpInProgress) {
         trialReportMode = "levelup";
@@ -9259,6 +9373,8 @@
     $("#lc-continue")?.addEventListener("click", () => {
       // Locked until the report finishes generating.
       if (!lcReportReady) return;
+      // ⚽ 世界杯主题课：结算页 Continue 回主题课落地页，不进正价课报告链路。
+      if (themeSettleRun) { themeSettleRun = false; themeExitTarget(); return; }
       if (lessonCompleteIsTrial) {
         // First-trial report (portrait) or level-up check (landscape) per trialReportMode.
         showTrialReport();
@@ -9305,7 +9421,11 @@
       }
     });
     // Exit (back) from any in-class screen → return to Class home
-    $$("[data-ic-exit]").forEach((btn) => btn.addEventListener("click", () => showClassHome()));
+    $$("[data-ic-exit]").forEach((btn) => btn.addEventListener("click", () => {
+      // ⚽ 世界杯主题课：中途退出记断点，返回主题课落地页；普通课堂照旧回 Class 首页。
+      if (themeCourseRun) { themeCourseRun = false; if (themeEvent.user !== "completed") themeEvent.user = "inprogress"; renderThemeEventCard(); themeExitTarget(); return; }
+      showClassHome();
+    }));
     // Avatar frames were removed in V1.3.0 — the top-left avatar is now a plain
     // profile entry (no frame ring/badge, no frame picker, no in-class video frame).
     // ----- Trial Lesson Report (after first trial lesson) -----
@@ -9463,8 +9583,9 @@
     // level / 定级 forward once the level's last lesson is done) — V1.3.0 natural
     // progression. Advancing on BOTH buttons keeps the finished lesson reading as
     // Completed (no accidental re-entry).
-    $("#btn-lr-back")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
-    $("#btn-lr-continue")?.addEventListener("click", () => { advanceAfterFormalLesson(); showClassHome(); });
+    // ⚽ 世界杯主题课打开的报告：返回主题课落地页，绝不 advanceAfterFormalLesson（不推进主课进度）。
+    $("#btn-lr-back")?.addEventListener("click", () => { if (themeReportOpen) { themeReportOpen = false; themeReportTitleSwap(false); openThemeLanding(); return; } advanceAfterFormalLesson(); showClassHome(); });
+    $("#btn-lr-continue")?.addEventListener("click", () => { if (themeReportOpen) { themeReportOpen = false; themeReportTitleSwap(false); openThemeLanding(); return; } advanceAfterFormalLesson(); showClassHome(); });
     // Pronunciation card: segmented bands (show a tip on the weakest band) + tap-to-play.
     // Scope toggling to each card's own segtab so the two report screens don't interfere.
     document.querySelectorAll(".tp-report .tp-segtab").forEach((tabwrap) => {
@@ -12087,6 +12208,141 @@
        level-up verdict per page and quick-jump between key pages. Never gates real
        logic; lets reviewers see non-happy-path states a single click path can't reach. -->
   <script>
+  // ⚽ 世界杯主题课（运营位）——同事 PRD：主题课入口 UI
+  // ⚽ 世界杯主题课（运营位）demo 状态 — 同事 PRD：首页 Banner 三态 + 落地页五态。
+  // activity/user 两级判定均模拟“服务端下发”，demo 里由 ⚙︎ States 面板切换。
+  var themeEvent = {
+    activity: "active",   // preview 预告 | active 进行中 | ended 已结束/无活动
+    user: "none",         // none 未开始 | inprogress 断点 | completed 已完成
+    pastEmpty: false,     // true = 首期活动（无往期列表）
+  };
+  var themeCourseRun = false;      // 当前课堂会话是否为主题课（拦截退出/完课用）
+  var themeSettleRun = false;      // 结算页 Continue 是否应回主题课落地页
+  var themeReportOpen = false;     // 正价课报告是否由主题课打开（拦截返回+不推进度）
+  var themeReturnTo = "landing";   // 课堂退出/完课返回目标：landing | studyplan | paywall（后两者仅转化链路 demo 用）
+
+  // E1 首页入口卡三态渲染：preview 蓝「SOON」/ active 红「LIMITED」+呼吸 / completed 绿「DONE ✓」+🏅；
+  // ended 隐藏不占位（去掉 has-theme-event 后 Store/Backpack 回到原位）。
+  function renderThemeEventCard(){
+    var card = document.getElementById("dino-event-card");
+    var hub = document.getElementById("hub-app");
+    if (!card || !hub) return;
+    var badge = document.getElementById("dec-badge");
+    var medal = document.getElementById("dec-medal");
+    var cd = document.getElementById("dec-cd");
+    var on = themeEvent.activity !== "ended";
+    card.hidden = !on;
+    hub.classList.toggle("has-theme-event", on);
+    if (!on) return;
+    card.classList.remove("is-live");
+    badge.classList.remove("is-soon","is-done");
+    medal.hidden = true;
+    if (themeEvent.activity === "preview") {
+      badge.textContent = "SOON"; badge.classList.add("is-soon");
+      cd.textContent = "⏱ in 3 days";
+    } else if (themeEvent.user === "completed") {
+      badge.textContent = "DONE ✓"; badge.classList.add("is-done");
+      medal.hidden = false; cd.textContent = "⏱ 5d left";
+    } else {
+      badge.textContent = "LIMITED"; card.classList.add("is-live");
+      cd.textContent = "⏱ 5d left";
+    }
+  }
+
+  // E2 落地页：Hero 按（活动状态 × 用户进度）渲染，右侧往期列表含首期空态。
+  // PRD 口径：主题课为限时内容不支持重上/补上；已完课 →「View report」；未完成/未参与 → 置灰 Ended。
+  function openThemeLanding(){
+    renderThemeLanding();
+    enterLandscape();
+    showLandScreen("screen-theme-course");
+  }
+  function renderThemeLanding(){
+    var hero = document.getElementById("tc-hero");
+    var past = document.getElementById("tc-past");
+    if (!hero || !past) return;
+    if (themeEvent.activity === "ended") {
+      hero.innerHTML = '<div class="tc-hero is-empty"><div class="tc-empty"><span class="ei">🔭</span>'
+        + '<b>No live event right now</b><span>New theme classes are on the way!<br>Check your finished ones on the right ~</span></div></div>';
+    } else {
+      var tags, cta;
+      if (themeEvent.activity === "preview") {
+        tags = '<span class="tc-tag is-soon">COMING SOON</span><span class="tc-tag is-timer">⏱ Starts in 3 days</span>';
+        cta = '<button type="button" class="tc-cta is-disabled">Coming soon</button>';
+      } else if (themeEvent.user === "completed") {
+        tags = '<span class="tc-tag is-done">COMPLETED 🏅</span><span class="tc-tag is-timer">⏱ 5 days 12 h left</span>';
+        cta = '<button type="button" class="tc-cta is-replay" onclick="openThemeReport()">View report 📊</button>';
+      } else {
+        tags = '<span class="tc-tag is-live">LIMITED EVENT</span><span class="tc-tag is-timer">⏱ 5 days 12 h left</span>';
+        cta = '<button type="button" class="tc-cta" onclick="startThemeCourse()">'
+          + (themeEvent.user === "inprogress" ? "Continue ▶" : "Start the lesson ▶") + '</button>';
+      }
+      hero.innerHTML = '<div class="tc-hero"><div class="tc-tags">' + tags + '</div>'
+        + '<h2>The Tiny Team<br>World Cup Final 🏆</h2>'
+        + '<div class="tc-scene">🐜 🐌 ⚽ 🥅 🪲</div>'
+        + '<p class="tc-story">The ant and the snail lead the Tiny Team against the big beetle squad. Small, fast and together — can they win the World Cup?</p>'
+        + '<div class="tc-chips"><span class="tc-chip">Come on!</span><span class="tc-chip">So close!</span><span class="tc-chip">Goal!</span></div>'
+        + cta + '<div class="tc-lvl">Level 1–2 · Ages 4–7 · ~5 min</div></div>';
+    }
+    var items = [];
+    if (themeEvent.activity === "ended") {
+      items.push({ e:"⚽", bg:"#E8F6EC", t:"World Cup · The Tiny Team", s:"2026.07 · Completed", pill:"report" });
+    }
+    if (themeEvent.pastEmpty) {
+      past.innerHTML = "<b>Past events</b>"
+        + (items.length ? themePastItemsHtml(items) : "")
+        + (!items.length ? '<div class="tc-empty"><span class="ei">🎈</span><b>Our first event ever!</b><span>New theme classes are on the way ~</span></div>' : "");
+    } else {
+      items.push({ e:"🧧", bg:"#FFE9EC", t:"Lunar New Year Party", s:"2026.02 · Completed", pill:"report" });
+      items.push({ e:"🎄", bg:"#EAF1FF", t:"Dino's Christmas Gift", s:"2025.12 · Not finished", pill:"ended" });
+      items.push({ e:"🎃", bg:"#FFF3DE", t:"Halloween Trick or Treat", s:"2025.10 · Missed", pill:"ended" });
+      past.innerHTML = "<b>Past events</b>" + themePastItemsHtml(items);
+    }
+  }
+  function themePastItemsHtml(items){
+    return items.map(function(it){
+      var pill = it.pill === "report"
+        ? '<button type="button" class="tc-pill is-replay" onclick="openThemeReport()">View report</button>'
+        : '<span class="tc-pill is-ended">Ended</span>';
+      return '<div class="tc-pi"><div class="th" style="background:' + it.bg + '"><span>' + it.e + '</span></div>'
+        + '<div class="m"><b>' + it.t + '</b><span>' + it.s + '</span></div>' + pill + '</div>';
+    }).join("");
+  }
+  // 落地页返回：回首页 Dino tab。
+  document.getElementById("tc-back")?.addEventListener("click", function () { setHubTab("dino"); showLandScreen("screen-class"); });
+
+  // 进课：复用现有 Dino-AI 数字人课堂；主题课不写入主课进度（PRD：完课独立记账）。
+  function startThemeCourse(){
+    themeCourseRun = true;
+    openClassroomDemo("theme-course");
+    showPayToast("World Cup class ⚽");
+  }
+  // 报告：PRD 口径复用现有正价课报告组件；用 themeReportOpen 拦截返回并跳过 advanceAfterFormalLesson。
+  function openThemeReport(){
+    themeReportOpen = true;
+    showLessonReport();
+    themeReportTitleSwap(true);
+  }
+  // 渲染后轻量覆写报告标题为主题课（仅动 DOM 文案，不动渲染函数）；关闭时还原静态标题。
+  function themeReportTitleSwap(on){
+    var t = document.querySelector("#screen-lesson-report .tp-hero-title");
+    var b = document.querySelector("#screen-lesson-report .tp-hero-badge");
+    if (t) t.textContent = on ? "World Cup Class Report" : "Lesson Report";
+    if (b) b.textContent = on ? "Theme Class Report" : "Lesson Report";
+    var pill = document.getElementById("lr-unit-pill");
+    if (on && pill) pill.textContent = "World Cup 2026 · The Tiny Team";
+  }
+  function themeExitTarget(){
+    var t = themeReturnTo; themeReturnTo = "landing";
+    if (t === "studyplan") { /* 仅转化链路 demo：返回学习计划页 */ }
+    else if (t === "paywall") { /* 仅转化链路 demo：返回 Paywall */ }
+    else { openThemeLanding(); }
+  }
+
+  // 初始渲染：默认「进行中 · 未开始」，首页入口卡可见（Store/Backpack 下移让位）。
+  renderThemeEventCard();
+  </script>
+
+  <script>
   /* Demo State Panel — drop-in, dependency-free state-machine overlay. */
   (function (global) {
     function mountStatePanel(config) {
@@ -12095,6 +12351,9 @@
       var jumps = config.jumps || [];
       var jumps131 = config.jumps131 || [];
       var jumps131Label = config.jumps131Label || "1.3.2 变更";
+      var jumpsWC = config.jumpsWC || [];
+      var jumpsWCLabel = config.jumpsWCLabel || "世界杯主题课";
+      var beforeJump = config.beforeJump || function () {};
       var title = config.title || "States";
       var getValue = config.getValue || function () { return null; };
       var getContext = config.context || function () { return { label: "", keys: groups.map(function (g) { return g.key; }) }; };
@@ -12126,7 +12385,12 @@
           ".sp-jumps131-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#a8521b;display:flex;align-items:center;gap:6px}",
           ".sp-jumps131-label::before{content:'NEW';font-size:.58rem;font-weight:800;letter-spacing:.06em;background:#d9641e;color:#fff;border-radius:4px;padding:1px 5px}",
           ".sp-jump131{flex:1 1 auto;min-width:64px;border:1px solid #e6b894;background:#fff;color:#a8521b;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
-          ".sp-jump131:hover{background:#fdeede}"
+          ".sp-jump131:hover{background:#fdeede}",
+          ".sp-jumpswc-wrap{margin-top:10px;padding:10px;border-radius:10px;background:#eefaf0;border:1px solid #9ecdaa}",
+          ".sp-jumpswc-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#1E7A42;display:flex;align-items:center;gap:6px}",
+          ".sp-jumpswc-label::before{content:'⚽ NEW';font-size:.58rem;font-weight:800;letter-spacing:.04em;background:#2FA05A;color:#fff;border-radius:4px;padding:1px 5px}",
+          ".sp-jumpwc{flex:1 1 auto;min-width:64px;border:1px solid #9ecdaa;background:#fff;color:#1E7A42;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
+          ".sp-jumpwc:hover{background:#e3f5e8}"
         ].join("");
         document.head.appendChild(css);
       }
@@ -12173,6 +12437,11 @@
             jumps131.map(function (j, i) { return '<button type="button" class="sp-jump131" data-sp-jump131="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
         }
+        if (jumpsWC.length) {
+          html += '<div class="sp-jumpswc-wrap"><p class="sp-jumpswc-label">' + esc(jumpsWCLabel) + '</p><div class="sp-jumps">' +
+            jumpsWC.map(function (j, i) { return '<button type="button" class="sp-jumpwc" data-sp-jumpwc="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
+            "</div></div>";
+        }
         body.innerHTML = html;
         sync();
       }
@@ -12187,9 +12456,11 @@
           return;
         }
         var jump = e.target.closest("[data-sp-jump]");
-        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) j.run(); return; }
+        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) { beforeJump(); j.run(); } return; }
         var jump131 = e.target.closest("[data-sp-jump131]");
-        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) j2.run(); }
+        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) { beforeJump(); j2.run(); } return; }
+        var jumpwc = e.target.closest("[data-sp-jumpwc]");
+        if (jumpwc) { var j3 = jumpsWC[+jumpwc.dataset.spJumpwc]; if (j3 && j3.run) { beforeJump(); j3.run(); } }
       });
 
       var watch = config.watch || ["body"];
@@ -12329,6 +12600,9 @@
   mountStatePanel({
     title: "States",
     watch: ["#device-landscape", "#device-portrait", "#wrap-landscape", "#wrap-portrait"],
+    // 任意快捷跳转前重置主题课标志位：经「⚽ 主题课课堂（进课）」进课后若用通用跳转中途离开，
+    // themeCourseRun 残留会误劫持下一节普通课的完课分支（themeReportOpen 同理）。
+    beforeJump: function () { themeCourseRun = false; themeSettleRun = false; themeReportOpen = false; },
     getValue: function (key) {
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
@@ -12336,6 +12610,9 @@
       if (key === "trialResult") return demoState.trialResult;
       if (key === "capsuleOutcome") return demoState.capsuleOutcome;
       if (key === "kakaoPhoneBound") return demoState.kakaoPhoneBound ? "true" : "false";
+      if (key === "themeActivity") return themeEvent.activity;
+      if (key === "themeUser") return themeEvent.user;
+      if (key === "themePast") return themeEvent.pastEmpty ? "empty" : "has";
       return null;
     },
     context: function () {
@@ -12344,10 +12621,11 @@
       if (landscapeOn) {
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
         if (id && id.indexOf("screen-capsule") === 0) return { label: "盲盒机", keys: ["capsuleOutcome"] };
+        if (id === "screen-theme-course") return { label: "主题课落地页", keys: ["themeActivity", "themeUser", "themePast"] };
         if (id === "screen-course-map")  return { label: "Level·Unit 列表", keys: ["membership", "startLevel"] };
         if (id === "screen-all-courses") return { label: "课程列表",        keys: ["membership", "startLevel"] };
         if (id === "screen-membership")  return { label: "会员中心",        keys: ["membership"] };
-        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel"] };
+        if (id === "screen-class")       return { label: "Class 首页",      keys: ["membership", "startLevel", "themeActivity", "themeUser"] };
         return { label: "App 内", keys: ["membership"] };
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -12403,6 +12681,26 @@
       { key: "capsuleOutcome", label: "盲盒抽取结果（概率）",
         options: [["random", "随机概率"], ["new", "新 Dino 盲盒"], ["dup", "已有 Dino 盲盒"], ["miss", "未抽中"]],
         apply: function (v) { demoState.capsuleOutcome = v; } },
+      { key: "themeActivity", label: "世界杯主题课·活动状态（服务端下发）",
+        options: [["preview", "预告中"], ["active", "进行中"], ["ended", "已结束/无活动"]],
+        apply: function (v) {
+          themeEvent.activity = v;
+          renderThemeEventCard();
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
+      { key: "themeUser", label: "世界杯主题课·当期课进度",
+        options: [["none", "未开始"], ["inprogress", "断点"], ["completed", "已完成"]],
+        apply: function (v) {
+          themeEvent.user = v;
+          renderThemeEventCard();
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
+      { key: "themePast", label: "世界杯主题课·往期列表",
+        options: [["has", "有往期"], ["empty", "首期空态"]],
+        apply: function (v) {
+          themeEvent.pastEmpty = (v === "empty");
+          if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
+        } },
     ],
     jumps: [
       { label: "Class 首页",  run: function () { enterLandscape(); showClassHome(); } },
@@ -12477,6 +12775,46 @@
         } },
       { label: "★ 首页 Dino 引导·无任务（默认问候+陪聊）", run: function () {
           enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.setDinoGuide && window.GAME.setDinoGuide("none");
+        } },
+    ],
+    // ⚽ 世界杯主题课（运营位）专用快捷入口：首页 Banner 三态 + 落地页五态 + 进课直达。
+    jumpsWCLabel: "世界杯主题课（运营位）",
+    jumpsWC: [
+      { label: "⚽ 首页入口·预告态", run: function () {
+          themeEvent.activity = "preview"; themeEvent.user = "none";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 首页入口·进行中", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "none";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 首页入口·已完成 🏅", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "completed";
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+        } },
+      { label: "⚽ 落地页·进行中（有往期）", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "none"; themeEvent.pastEmpty = false;
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·首期空态（无往期）", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "none"; themeEvent.pastEmpty = true;
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·断点续上", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "inprogress";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·已完成（查看报告）", run: function () {
+          themeEvent.activity = "active"; themeEvent.user = "completed";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 落地页·无当期活动", run: function () {
+          themeEvent.activity = "ended";
+          renderThemeEventCard(); openThemeLanding();
+        } },
+      { label: "⚽ 主题课课堂（进课）", run: function () {
+          themeEvent.activity = "active"; if (themeEvent.user === "completed") themeEvent.user = "none";
+          renderThemeEventCard(); startThemeCourse();
         } },
     ],
   });
