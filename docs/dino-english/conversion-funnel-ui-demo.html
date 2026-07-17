@@ -5815,10 +5815,10 @@
       width:34px; height:30px; background-size:contain; background-repeat:no-repeat; background-position:center; border-radius:0;
     }
     #screen-class .class-bottom-icon > *{ display:none !important; }
-    #screen-class [data-hub-tab="dino"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-chat.png); }
-    #screen-class [data-hub-tab="class"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-class.png); }
-    #screen-class [data-hub-tab="practice"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-explore.png); }
-    #screen-class [data-hub-tab="play"] .class-bottom-icon{ background-image:url(assets/v13fx/nav-play.png); }
+    #screen-class [data-hub-tab="dino"] .class-bottom-icon{ background-image:url(assets/v13fx/nav3d-dino.png); }
+    #screen-class [data-hub-tab="class"] .class-bottom-icon{ background-image:url(assets/v13fx/nav3d-class.png); }
+    #screen-class [data-hub-tab="practice"] .class-bottom-icon{ background-image:url(assets/v13fx/nav3d-explore.png); }
+    #screen-class [data-hub-tab="play"] .class-bottom-icon{ background-image:url(assets/v13fx/nav3d-play.png); }
 
     /* ---------- DINO home panel — precise Figma layout (812×375 proportional) ---------- */
     #screen-class #hub-panel-dino{ padding:0 !important; position:absolute !important; inset:0 !important; }
@@ -6193,6 +6193,12 @@
         </div>
         <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
+          <div class="who-intro">
+            <div class="dino-wrap" id="dino-name"></div>
+            <div class="speech-bubble">
+              <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong>.</p>
+            </div>
+          </div>
           <h1 class="title">What should we call your child?</h1>
           <p class="hint">We'll use this name in lessons.</p>
           <input type="text" class="name-field" id="input-name" placeholder="Your child's name or nickname" autocomplete="name" maxlength="20" />
@@ -6390,7 +6396,7 @@
           <!-- 2 · Level-up: recommended start → 12-month milestone -->
           <div class="sp2-levelcard">
             <div class="sp2-lc-col">
-              <span class="sp2-lc-tag" id="sp2-start-tag">Recommended start</span>
+              <span class="sp2-lc-tag" id="sp2-start-tag">Recommended starting point</span>
               <span class="sp2-lc-lvl" id="sp2-start-lvl">Level 2</span>
               <span class="sp2-lc-cefr" id="sp2-start-cefr">CEFR A1</span>
             </div>
@@ -10247,7 +10253,7 @@
       if (chipBox) chipBox.innerHTML = chips.map((c) => `<span class="sp2-chip">${c}</span>`).join("");
 
       // 2 · Level-up milestone card
-      set("#sp2-start-tag", `${poss} starting point`);
+      set("#sp2-start-tag", "Recommended starting point");
       set("#sp2-goal-tag", `${poss} 12-month goal`);
       set("#sp2-start-lvl", level.label);
       set("#sp2-start-cefr", `CEFR ${cefr}`);
@@ -12093,6 +12099,23 @@
         showLevelUp(lv); // title-only celebration, no coin/XP reward
       }
       function openCapsuleDraw() { capDrawPending = true; showCapsuleMachine(); }
+      // 转化链路新手引导 · 赠抽（Play 步）：定向抽出一只未拥有的 Dino Figure 入收藏；
+      // 不发金币 / XP（引导不发奖励口径），不消耗资源；全收集时退化为重复款展示。
+      function guideGiftDraw() {
+        capDrawPending = false;
+        const unowned = CAP_POOL.filter((p) => !state.owned.has(p.item));
+        const pet = unowned.length ? unowned[0] : CAP_POOL[0];
+        const isNew = !state.owned.has(pet.item);
+        if (isNew) { state.owned.add(pet.item); state.petCounts[pet.item] = 1; }
+        else { state.petCounts[pet.item] = (state.petCounts[pet.item] || 1) + 1; }
+        const g = $("#machine-glass");
+        if (g) setCapsuleVisual(g, pet, "machine-capsule-img");
+        const m = $("#machine");
+        if (m) { m.classList.add("shake"); setTimeout(() => m.classList.remove("shake"), 500); }
+        if ($("#btn-draw")) $("#btn-draw").hidden = true;
+        if ($("#capd-prehint")) $("#capd-prehint").hidden = true;
+        showCapsuleReveal(isNew ? { kind: "new", pet } : { kind: "dup", pet });
+      }
       // In-class reward drops: a lesson may also hand out skins / Dino Figures on top
       // of XP + coins. Record them (so the Backpack ×N reflects repeats) and return the
       // resolved list for the lesson-complete page to celebrate.
@@ -12130,7 +12153,7 @@
         if (id === "screen-capsule") { capBusy = false; renderCapsuleQuestion(); }
         else if (id === "screen-wordpk") { wpkBusy = false; renderWordPk(); }
       }
-      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, startCapsuleQuiz, startWordPk, startSpeakPk, rerenderQuiz, grantInclassBonus, openBackpackPets, openDinoChat, setDinoGuide };
+      window.GAME = { syncHud, grantXp, grantCoins, decayedCoins, renderPlayLimits, CAP_QUESTIONS, WPK_QUESTIONS, demoLevelUp, openCapsuleDraw, guideGiftDraw, startCapsuleQuiz, startWordPk, startSpeakPk, rerenderQuiz, grantInclassBonus, openBackpackPets, openDinoChat, setDinoGuide };
       syncHud();
       renderPkRanks();
     })();
@@ -12568,6 +12591,7 @@
 
     function initOnboarding() {
       $("#dino-who").innerHTML = DINO_CHAR;
+      if ($("#dino-name")) $("#dino-name").innerHTML = DINO_CHAR;
       renderWhoOptions();
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
@@ -13502,7 +13526,8 @@
     watch: ["#device-landscape", "#device-portrait", "#wrap-landscape", "#wrap-portrait"],
     // 任意快捷跳转前重置主题课标志位：经「⚽ 主题课课堂（进课）」进课后若用通用跳转中途离开，
     // themeCourseRun 残留会误劫持下一节普通课/漏斗课的完课分支（themeReportOpen 同理）。
-    beforeJump: function () { themeCourseRun = false; themeSettleRun = false; themeReportOpen = false; },
+    // 切走任意 States 即模拟「引导中途退出」：收起引导蒙层但保留 __cxCoachDot 续接进度（⑥b 演示用）。
+    beforeJump: function () { themeCourseRun = false; themeSettleRun = false; themeReportOpen = false; if (window.cxCoachHide) window.cxCoachHide(); },
     getValue: function (key) {
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
@@ -13672,8 +13697,15 @@
           openPaywall("screen-class", "cx_plan1");
         } },
       { label: "⑥ 新手引导 · 四步引导（介绍+动手：Dino→Play→Explore→Class 选老师）", run: function () {
-          // 每步先出模块介绍气泡再动手：Dino 打招呼 / 答一题 / 听一段 / 真实选老师 + 看首课，点目标即推进。
+          // 每步先出模块介绍气泡（同时框选 Tab 标签，带 Next）再动手：Dino 打招呼 / 答一题+赠抽盒 /
+          // 听一段 / 真实选老师 + 足球课首课卡；点目标即推进，引导不发金币/XP。
           if (window.cxStartCoach) window.cxStartCoach();
+        } },
+      { label: "⑥b 新手引导 · 中途退出重进（从首个未完成步续起）", run: function () {
+          // PRD 模块 14：引导进度本地持久化，重进回主页自动续起。引导中途切走任意 States
+          // 即模拟退出，此入口按记录的步续起；无进度（没退出过 / 已走完）时等同 ⑥ 从头开始。
+          var d = (window.__cxCoachDot != null) ? window.__cxCoachDot : 0;
+          if (window.cxStartCoach) window.cxStartCoach(d);
         } },
       { label: "⑦ Paywall② · 新手引导后", run: function () {
           cxStage = "pay2"; enterLandscape();
@@ -13865,7 +13897,11 @@
       +'#cx-tip{position:fixed;width:268px;max-width:calc(100vw - 24px);background:#fffbf8;border-radius:16px;padding:15px 16px;box-shadow:0 18px 46px rgba(0,0,0,.35);pointer-events:auto;font-family:"DM Sans",system-ui,sans-serif;overflow:visible;transition:left .28s ease,top .28s ease;}'
       +'#cx-tip-dino{position:absolute;width:52px;top:-42px;right:12px;left:auto;filter:drop-shadow(0 6px 12px rgba(0,0,0,.28));pointer-events:none;}'
       +'#cx-tip-copy{font-size:.92rem;font-weight:700;color:#1a2420;line-height:1.45;padding-right:44px;}'
-      +'#cx-tip-dots{display:flex;gap:5px;margin-top:12px;}#cx-tip-dots i{width:7px;height:7px;border-radius:50%;background:#e0d7cc;}#cx-tip-dots i.on{width:18px;border-radius:4px;background:#ea6c25;}'
+      +'#cx-tip-dots{display:flex;gap:5px;}#cx-tip-dots i{width:7px;height:7px;border-radius:50%;background:#e0d7cc;}#cx-tip-dots i.on{width:18px;border-radius:4px;background:#ea6c25;}'
+      +'#cx-tip-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;}'
+      +'#cx-tip-next{background:linear-gradient(135deg,#FCB141,#FE8F26);color:#fff;border:none;border-radius:999px;font-weight:800;font-size:.8rem;padding:7px 16px;cursor:pointer;box-shadow:0 4px 10px rgba(254,143,38,.4);}'
+      +'#cx-tip-next[hidden]{display:none;}'
+      +'#cx-spot2{position:fixed;border-radius:12px;border:3px solid #ea6c25;box-shadow:0 0 0 3px rgba(255,255,255,.35);pointer-events:none;display:none;transition:left .28s ease,top .28s ease,width .28s ease,height .28s ease;}'
       +'#cx-finger{position:fixed;z-index:9550;font-size:30px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35));animation:cxFingerBob 1s ease-in-out infinite;}'
       +'@keyframes cxFingerBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}'
       +'#cx-skip{position:fixed;z-index:9600;background:rgba(10,18,13,.55);color:#fff;border:1.5px solid rgba(255,255,255,.5);font-weight:700;font-size:.74rem;border-radius:999px;padding:6px 12px;cursor:pointer;pointer-events:auto;}'
@@ -13882,9 +13918,9 @@
 
     // ---- 引导状态机 v3：每个 dot 先出「模块介绍」气泡（只推进、不转发点击），再引导真实操作。
     //  dot0 Dino  : p0 介绍（圈 Dino 角色区）→ p1 点 Chat with Dino 胶囊（真实进对话页 + 重写开场白）→ p2 点麦克风（脚本化一轮对话）→ 真实返回
-    //  dot1 Play  : p3 介绍（圈 play-grid）→ p4 点盲盒卡 → p5 点 Start（限额时走 GAME.startCapsuleQuiz 兜底）→ p6 点正确选项（真实判题+发币）→ 真实返回
+    //  dot1 Play  : p3 介绍（圈 play-grid）→ p4 点盲盒卡 → p5 点 Start（限额时走 GAME.startCapsuleQuiz 兜底）→ p6 点正确选项（真实判题，不发金币/XP）→ p6b 赠抽 Open（必得新 Dino Figure）→ p6c 收下 → 真实返回
     //  dot2 Explore: p7 介绍（圈 explore-entries）→ p8 点 Listening 入口 → p9 点首个未锁电台（真实播放器）→ p10 被动欣赏 ~3.2s（真实时钟）→ 真实暂停 + 返回
-    //  dot3 Class : p11 介绍（圈 Class 内容区）→ p12 点老师卡（真实打开选老师页，自由点选任意老师 + Save 回 Class；已选过则自动跳过）→ p13 点本周课卡（不转发、不进课堂）→ 庆祝 + Paywall②
+    //  dot3 Class : p11 介绍（圈 Class 内容区）→ p12 点老师卡（真实打开选老师页，自由点选任意老师 + Save 回 Class；已选过则自动跳过）→ p13 点足球预览课首课卡（Start Class；不转发、不进课堂）→ 庆祝 + Paywall②
     var coachEl = null, coachPhase = 0, coachBusy = false, coachTimers = [], coachPoll = null;
     function coachName(){ return (typeof getDisplayName === "function" && getDisplayName()) || "your child"; }
     function coachFill(str){ return String(str).replace(/\{name\}/g, coachName()); }
@@ -13896,7 +13932,9 @@
 
     var COACH_PHASES = [
       // ---- dot0 · Dino 对话 ----
-      { dot:0, enter:function(){ coachHubTab("dino"); },   // p0 模块介绍：只推进，不转发点击
+      // p0 自我介绍直接复用 Dino 首页原生气泡（nativeBubble）：把引导语写进 #dino-greet-bubble，
+      // 代表 Dino 本人说话，不再浮一个引导气泡；聚光罩住 Dino 形象+气泡，点任意处进下一步。
+      { dot:0, next:true, nativeBubble:true, enter:function(){ coachHubTab("dino"); },
         target:function(){ return document.querySelector("#hub-panel-dino .dino-night-char"); },
         copy:"Hi {name}! I'm Dino, your English buddy. We can chat anytime, and I'm always right here. Tap me!",
         tap:coachIntroTap(1) },
@@ -13912,44 +13950,55 @@
         target:function(){ return document.querySelector("#dchat-mic"); },
         copy:"Tap the mic and say hi!",
         tap:coachMicTurn },
-      // ---- dot1 · Play 盲盒 ----
-      { dot:1, enter:function(){ coachHubTab("play"); },   // p3 模块介绍
+      // ---- dot1 · Play 盲盒：介绍 → 答一题 → 赠一次抽盒（不发金币/XP）----
+      { dot:1, next:true, enter:function(){ coachHubTab("play"); },   // p3 模块介绍（不提 try one，动手对象下一步才指定）
         target:function(){ return document.querySelector("#hub-panel-play .play-grid"); },
-        copy:"This is Play! {name} learns English by playing games. Tap to try one!",
+        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="play"]'); },
+        copy:"This is Play! {name} learns English by playing games. Tap to take a look!",
         tap:coachIntroTap(4) },
-      { dot:1,   // p4 点盲盒卡
+      { dot:1,   // p4 点盲盒卡（先讲清玩法：答题赢 Dino Figure）
         target:function(){ return document.querySelector("#hub-panel-play .pc-capsule"); },
-        copy:"Try the Dino Blind Box!",
+        copy:"Try the Dino Blind Box! Answer questions, win Dino Figures!",
         tap:function(tgt){ coachBusy = true; tgt.click(); coachWait(60, function(){ coachGoto(5); }); } },
       { dot:1,   // p5 点 Start
         target:function(){ return document.querySelector("#capi-start"); },
-        copy:"Tap Start!",
+        copy:"Tap Start to answer a question!",
         tap:coachStartQuiz },
-      { dot:1,   // p6 点正确选项（真实判题+发币）
+      { dot:1,   // p6 点正确选项（真实判题）→ 庆祝后赠一次抽盒
         target:coachCorrectOpt,
-        copy:"Tap this one!",
+        copy:"Tap the right answer!",
         tap:coachAnswerQuiz },
+      { dot:1,   // p6b 赠抽：真实抽取页点 Open（定向必得新 Dino Figure，不发金币/XP）
+        target:function(){ return document.getElementById("btn-draw"); },
+        copy:"A gift for {name}! Tap to open it!",
+        tap:coachGiftDraw },
+      { dot:1,   // p6c 收下 Dino Figure → 真实返回主页进下一步
+        target:function(){ return document.getElementById("cpr-ok"); },
+        copy:"It goes to {name}'s backpack!",
+        tap:coachGiftDone },
       // ---- dot2 · Explore 电台 ----
-      { dot:2, enter:function(){ coachHubTab("practice"); },   // p7 模块介绍
+      { dot:2, next:true, enter:function(){ coachHubTab("practice"); },   // p7 模块介绍
         target:function(){ return document.querySelector("#hub-panel-practice .explore-entries"); },
+        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="practice"]'); },
         copy:"This is Explore! {name} can read stories, listen to radio and practice speaking here. Tap to look!",
-        tap:coachIntroTap(8) },
+        tap:coachIntroTap(10) },
       { dot:2,   // p8 点 Listening 入口
         target:function(){ return document.querySelector("#explore-open-radio"); },
         copy:"Let's listen! Tap Listening.",
-        tap:function(tgt){ coachBusy = true; tgt.click(); coachWait(60, function(){ coachGoto(9); }); } },
+        tap:function(tgt){ coachBusy = true; tgt.click(); coachWait(60, function(){ coachGoto(11); }); } },
       { dot:2,   // p9 点首个未锁电台
         target:function(){ return document.querySelector("#radio-carousel .hub-radio-card:not(.is-locked)"); },
         copy:"Tap this one!",
         tap:coachPlayRadio },
-      { dot:2, passive:true, enter:coachEnjoyRadio,   // p10 被动欣赏 ~3.2s（真实时钟）
+      { dot:2, passive:true, next:true, enter:coachEnjoyRadio,   // p10 被动欣赏 ~3.2s（真实时钟），Next 可提前结束
         target:function(){ return null; },
         copy:"Enjoy! {name} can switch songs and stories anytime here." },
-      // ---- dot3 · Class 选老师 + 首课卡（终点，不进课堂）----
-      { dot:3, enter:function(){ coachHubTab("class"); },   // p11 模块介绍
+      // ---- dot3 · Class 选老师 + 足球预览课首课卡（终点，不进课堂）----
+      { dot:3, next:true, enter:function(){ coachHubTab("class"); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },   // p11 模块介绍
         target:function(){ return document.querySelector("#hub-panel-class .class-hub-main"); },
+        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="class"]'); },
         copy:"This is Class! All of {name}'s lessons live here. Tap to get ready!",
-        tap:coachIntroTap(12) },
+        tap:coachIntroTap(14) },
       { dot:3, skip:coachTeacherDone,   // p12 点 Class Tab 老师卡 → 真实打开选老师页（app 模式：Save 后回 Class）
         target:function(){ return document.querySelector("#hub-panel-class .class-teacher-card"); },
         copy:"First, pick a teacher {name} likes!",
@@ -13957,14 +14006,14 @@
           coachBusy = true;
           var btn = document.getElementById("btn-change-teacher");
           if(btn) btn.click();   // 真实 openTeacherPicker("app")：确认走 showClassHome() 回 Class tab
-          coachWait(80, function(){ coachGoto(13); });
+          coachWait(80, function(){ coachGoto(15); });
         } },
       { dot:3, free:true, skip:coachTeacherDone,   // p12b 自由点选：圈整个选老师区，点哪转发哪（任意老师可选）
         target:function(){ return document.querySelector("#screen-teacher .land-body.teacher-pick"); },
         copy:"First, pick a teacher {name} likes!",
         tap:coachPickTeacher },
-      { dot:3,   // p13 点本周课卡（不转发、不进课堂）→ 庆祝 + Paywall②
-        target:function(){ return document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
+      { dot:3,   // p13 点足球预览课首课卡（Start Class 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
+        target:function(){ return document.getElementById("cx-fb-card") || document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
         copy:"Now tap the first lesson. Time to learn!",
         tap:coachFinishClass },
     ];
@@ -14041,14 +14090,29 @@
       coachBusy = true; positionCoach();
       tgt.click();   // 真实判题：.right 反馈、累计计数、可能的 🎟️ 点亮全走真实逻辑
       coachWait(1200, function(){
-        coachSetCopy("+5 🪙 Great job!"); coachDing(true);
-        if(window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(5);
-        coachWait(1200, function(){
-          var back = document.querySelector("#screen-capsule [data-game-back]");
-          if(back) back.click();   // 真实返回 → gameBack() 回 hub
+        // 引导不发金币/XP：答对只庆祝，随后赠一次盲盒抽取体验完整玩法（coachGiftDraw）。
+        coachSetCopy("Great job! You won a Dino capsule! 🎁"); coachDing(true);
+        coachWait(1500, function(){
+          if(window.GAME && window.GAME.openCapsuleDraw) window.GAME.openCapsuleDraw();
           coachGoto(7);
         });
       });
+    }
+    // p6b 赠抽：不转发真实 Open（随机结果+发币），改走 GAME.guideGiftDraw ——
+    // 定向抽出一只新 Dino Figure 入收藏，不发金币/XP（引导不发奖励口径）。
+    function coachGiftDraw(){
+      coachBusy = true;
+      if(window.GAME && window.GAME.guideGiftDraw) window.GAME.guideGiftDraw();
+      coachWait(600, function(){ coachGoto(8); });   // 等扭蛋机 shake 后 reveal 弹层就位
+    }
+    // p6c 收下：不转发 cpr-ok（真实句柄会进奖励结算页），直接收起 reveal → 真实返回主页。
+    function coachGiftDone(){
+      coachBusy = true;
+      var rv = document.getElementById("cap-pet-reveal");
+      if(rv) rv.setAttribute("hidden", "");
+      var back = document.querySelector("#screen-capsule-draw [data-game-back]");
+      if(back) back.click();   // 真实返回 → gameBack() 回 hub
+      coachGoto(9);
     }
     // Step3b：点首个未锁电台 → 真实 showRadioPlayer（进页即自动播放；保险起见
     // 300ms 后未在播则点真实播放键）。
@@ -14059,25 +14123,29 @@
         if(shell && !shell.classList.contains("is-playing")){
           var pb = document.getElementById("btn-rp-play"); if(pb) pb.click();
         }
-        coachGoto(10);
+        coachGoto(12);
       });
     }
     // p10（被动）：进播放器欣赏 ~3.2s —— 用 Date.now 真实时钟判满（interval 只做轮询，
-    // 计数不受浏览器节流影响），到点先真实暂停（若在播），再走真实返回键回 Explore。
+    // 计数不受浏览器节流影响），到点先真实暂停（若在播），再走真实返回键回 Explore；
+    // 气泡上的 Next 可提前结束欣赏（coachPassiveNext 挂同一收尾）。
+    var coachPassiveNext = null;
     function coachEnjoyRadio(){
       var t0 = Date.now();
-      if(coachPoll) clearInterval(coachPoll);
-      coachPoll = setInterval(function(){
-        if(Date.now() - t0 < 3200) return;
-        clearInterval(coachPoll); coachPoll = null;
+      function finishEnjoy(){
+        if(coachPoll){ clearInterval(coachPoll); coachPoll = null; }
+        coachPassiveNext = null;
         var shell = document.getElementById("rp-shell");
         if(shell && shell.classList.contains("is-playing")){
           var pb = document.getElementById("btn-rp-play"); if(pb) pb.click();   // 真实暂停
         }
         var back = document.getElementById("btn-rp-back");
         if(back) back.click();   // 真实返回 → Explore tab 主页
-        coachGoto(11);
-      }, 200);
+        coachGoto(13);
+      }
+      coachPassiveNext = finishEnjoy;
+      if(coachPoll) clearInterval(coachPoll);
+      coachPoll = setInterval(function(){ if(Date.now() - t0 >= 3200) finishEnjoy(); }, 200);
     }
     // p12b：选老师页自由点选 —— 蒙层瞬时穿透取落点下的真实元素：
     // 点任意老师卡 → 转发真实选中（profile.teacherId + 重渲染高亮）；
@@ -14094,20 +14162,20 @@
         coachBusy = true;
         try{ profile.teacherChosen = true; }catch(e){}   // 与独立选老师页 confirm 同一标记（handler 也会写）
         conf.click();
-        coachWait(80, function(){ coachGoto(14); });
+        coachWait(80, function(){ coachGoto(16); });
         return;
       }
       var card = el.closest(".teacher-card");
       if(card){ card.click(); requestAnimationFrame(positionCoach); coachWait(120, positionCoach); }
     }
-    // Step4：点课卡不转发真实点击（不进课堂），庆祝 + 发币后收尾 → Paywall②。
+    // Step4：点课卡不转发真实点击（不进课堂），庆祝后收尾 → Paywall②（引导不发奖励）。
     function coachFinishClass(){
       coachBusy = true; positionCoach();
-      coachSetCopy("+10 🪙 {name} is ready!"); coachDing(true);
-      if(window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(10);
+      coachSetCopy("{name} is ready! 🎉"); coachDing(true);
       coachWait(1400, coachFinish);
     }
-    function coachFinish(){ closeCoach(); if(window.cxPaywall) window.cxPaywall("pay2"); }
+    // 走完 / Skip 均视为引导完成（含跳过），清掉续接进度（PRD 模块 14）。
+    function coachFinish(){ window.__cxCoachDot = null; closeCoach(); if(window.cxPaywall) window.cxPaywall("pay2"); }
 
     function buildCoach(){
       if(coachEl) return;
@@ -14115,20 +14183,36 @@
       coachEl.style.pointerEvents = "auto";   // 引导期间蒙层拦截页面其余交互
       coachEl.innerHTML =
         '<div id="cx-spot"></div>'
+        +'<div id="cx-spot2"></div>'
         +'<span id="cx-finger">👆</span>'
         +'<button id="cx-skip" type="button">Skip ✕</button>'
         +'<div id="cx-tip"><img id="cx-tip-dino" src="assets/dino-mascot.png" alt="" onerror="this.style.display=\'none\'"/>'
         +'<div id="cx-tip-copy"></div>'
-        +'<div id="cx-tip-dots"></div></div>';
+        +'<div id="cx-tip-foot"><div id="cx-tip-dots"></div><button id="cx-tip-next" type="button" hidden>Next →</button></div></div>';
       document.body.appendChild(coachEl);
-      document.getElementById("cx-skip").onclick = coachFinish;
+      document.getElementById("cx-skip").onclick = function(ev){ ev.stopPropagation(); coachFinish(); };
       document.getElementById("cx-spot").onclick = coachSpotTap;
+      // 无真实操作的步骤（介绍/欣赏，phase.next=true）额外给 Next 按钮。
+      document.getElementById("cx-tip-next").onclick = function(ev){ ev.stopPropagation(); coachAdvanceNoInteract(); };
+      // 非真实交互步骤（介绍/欣赏）：点蒙层任意处即进下一步（Skip / Next 已 stopPropagation 不触发）。
+      coachEl.onclick = function(){
+        var p = COACH_PHASES[coachPhase];
+        if(coachBusy || !p || !p.next) return;   // 真实交互步只认 spot 上的转发，不整屏推进
+        coachAdvanceNoInteract();
+      };
     }
-    // spot 是唯一可点面（覆盖真实目标控件）：点它 = 执行本 phase 的 tap
-    // （介绍 phase 只推进；free phase 按落点转发；其余转发真实 click 或脚本化处理）。
+    // 非交互步推进：欣赏步走 coachPassiveNext，介绍步走其 tap（不依赖目标参数）。
+    function coachAdvanceNoInteract(){
+      var p = COACH_PHASES[coachPhase];
+      if(coachBusy || !p || !p.next) return;
+      if(p.passive){ if(typeof coachPassiveNext === "function" && coachPassiveNext) coachPassiveNext(); return; }
+      if(p.tap) p.tap();
+    }
+    // spot 覆盖真实目标控件：仅真实交互步用它转发（介绍/欣赏步走整屏推进，此处直接跳过）。
     function coachSpotTap(ev){
       var p = COACH_PHASES[coachPhase];
-      if(coachBusy || !p || p.passive || !p.tap) return;
+      if(coachBusy || !p || p.next || p.passive || !p.tap) return;
+      ev.stopPropagation();
       if(p.free){ p.tap(ev); return; }
       var tgt = null; try{ tgt = p.target ? p.target() : null; }catch(e){}
       if(!tgt) return;
@@ -14138,10 +14222,25 @@
       coachBusy = false; coachPhase = i;
       var p = COACH_PHASES[i];
       if(!p){ coachFinish(); return; }
+      window.__cxCoachDot = p.dot;   // 记录进行中的步：中途退出重进从该步续起（PRD 模块 14）
       if(p.skip){ var sk = false; try{ sk = p.skip(); }catch(e){} if(sk){ coachGoto(i + 1); return; } }
       if(p.enter){ try{ p.enter(); }catch(e){} }
-      coachSetCopy(p.copy);
-      document.getElementById("cx-tip-dots").innerHTML = [0,1,2,3].map(function(d){ return '<i class="' + (d === p.dot ? "on" : "") + '"></i>'; }).join("");
+      var tipEl = document.getElementById("cx-tip");
+      if(p.nativeBubble){
+        // 复用 Dino 首页原生气泡：不浮引导气泡，直接把台词写进 #dino-greet-bubble。
+        if(tipEl) tipEl.style.display = "none";
+        var gb = document.getElementById("dino-greet-bubble");
+        if(gb){ gb.classList.remove("is-invite"); gb.textContent = coachFill(p.copy); }
+      } else {
+        if(tipEl) tipEl.style.display = "";
+        coachSetCopy(p.copy);
+        document.getElementById("cx-tip-dots").innerHTML = [0,1,2,3].map(function(d){ return '<i class="' + (d === p.dot ? "on" : "") + '"></i>'; }).join("");
+        // Dino Tab 页面自带 Dino 形象：dot0 气泡不重复挂头像，其余步骤展示。
+        var td = document.getElementById("cx-tip-dino");
+        if(td) td.style.display = (p.dot === 0 ? "none" : "");
+        var nx = document.getElementById("cx-tip-next");
+        if(nx) nx.hidden = !p.next;
+      }
       // 目标常在切页/切 tab 后异步就位：rAF ×2 + 280ms 双保险重定位。
       requestAnimationFrame(function(){ requestAnimationFrame(positionCoach); });
       coachWait(280, positionCoach);
@@ -14156,30 +14255,54 @@
       var devEl = document.getElementById("device-landscape"), dr = devEl ? devEl.getBoundingClientRect() : null;
       var B = (dr && dr.width > 160 && dr.height > 120) ? dr : { left:0, top:0, right:window.innerWidth, bottom:window.innerHeight, width:window.innerWidth, height:window.innerHeight };
       sk.style.left = (B.right - 86) + "px"; sk.style.top = (B.top + 12) + "px";
+      var spot2 = document.getElementById("cx-spot2"); if(spot2) spot2.style.display = "none";   // Tab 已并入主聚光罩
       var tw = 268; tip.style.width = tw + "px";
       var th = tip.offsetHeight || 150, dinoPad = 42;
-      var tgt = null;
-      if(!coachBusy && !p.passive){ try{ tgt = p.target ? p.target() : null; }catch(e){} }
-      if(tgt && tgt.getBoundingClientRect().width > 0){
-        var r = tgt.getBoundingClientRect(), pad = 8;
-        spot.style.display = "block"; spot.classList.add("clickable");
-        spot.style.left = (r.left - pad) + "px"; spot.style.top = (r.top - pad) + "px";
-        spot.style.width = (r.width + pad*2) + "px"; spot.style.height = (r.height + pad*2) + "px";
-        // 气泡默认放目标上方，放不下则放下方；水平自适应后夹进手机边界。
-        var top = r.top - th - 22, below = false;
-        if(top < B.top + dinoPad){ top = r.bottom + 22; below = true; }
-        var centerX = r.left + r.width/2;
-        var lx = (centerX < B.left + B.width*0.5) ? (r.left - 12) : (r.right - tw + 12);
-        lx = Math.min(Math.max(lx, B.left + 12 + dinoPad), B.right - tw - 12);
-        top = Math.min(Math.max(top, B.top + dinoPad), B.bottom - th - 12);
-        tip.style.left = lx + "px"; tip.style.top = top + "px";
-        // 指引手：与气泡异侧贴目标边缘。气泡在上 → 手在目标下缘向上指 👆；气泡在下 → 手在目标上缘向下指 👇。
-        fin.style.display = "block";
-        fin.textContent = below ? "👇" : "👆";
-        var fx = centerX - 15, fy = below ? (r.top - pad - 36) : (r.bottom + pad + 4);
-        fx = Math.min(Math.max(fx, B.left + 4), B.right - 34);
-        fy = Math.min(Math.max(fy, B.top + 4), B.bottom - 36);
-        fin.style.left = fx + "px"; fin.style.top = fy + "px";
+      // 聚光罩矩形：介绍步把「内容区 + 对应 Tab 标签」并成一个框（Tab 落进亮区即点亮，不再单独描边）；
+      // nativeBubble(p0) 罩住 Dino 形象 + 原生气泡；真实交互步仅目标控件。
+      function nrect(el){ if(!el) return null; var r = el.getBoundingClientRect(); return (r.width > 0 && r.height > 0) ? r : null; }
+      function unionRect(els, pad){
+        var L = Infinity, T = Infinity, R = -Infinity, Bt = -Infinity, any = false;
+        for(var i = 0; i < els.length; i++){ var r = nrect(els[i]); if(r){ any = true; if(r.left < L) L = r.left; if(r.top < T) T = r.top; if(r.right > R) R = r.right; if(r.bottom > Bt) Bt = r.bottom; } }
+        if(!any) return null;
+        return { left:L - pad, top:T - pad, right:R + pad, bottom:Bt + pad, width:(R - L) + pad*2, height:(Bt - T) + pad*2 };
+      }
+      var rect = null;
+      if(p.nativeBubble){
+        rect = unionRect([document.querySelector("#hub-panel-dino .dino-night-char"), document.getElementById("dino-greet-bubble")], 10);
+      } else if(!coachBusy && !p.passive){
+        var tgt = null; try{ tgt = p.target ? p.target() : null; }catch(e){}
+        var tt = null; if(p.tabTarget){ try{ tt = p.tabTarget(); }catch(e){} }
+        rect = unionRect([tgt, tt], 8);
+      }
+      if(rect){
+        spot.style.display = "block";
+        spot.classList.toggle("clickable", !p.next);   // 介绍/欣赏步整屏推进，spot 不承接转发
+        spot.style.left = rect.left + "px"; spot.style.top = rect.top + "px";
+        spot.style.width = rect.width + "px"; spot.style.height = rect.height + "px";
+        if(p.nativeBubble){
+          fin.style.display = "none";   // p0 用原生气泡，无浮层、无手指
+        } else {
+          // 气泡默认放框上方，放不下则放下方；水平自适应后夹进手机边界。
+          var top = rect.top - th - 22, below = false;
+          if(top < B.top + dinoPad){ top = rect.bottom + 22; below = true; }
+          var centerX = (rect.left + rect.right)/2;
+          var lx = (centerX < B.left + B.width*0.5) ? (rect.left - 12) : (rect.right - tw + 12);
+          lx = Math.min(Math.max(lx, B.left + 12 + dinoPad), B.right - tw - 12);
+          top = Math.min(Math.max(top, B.top + dinoPad), B.bottom - th - 12);
+          tip.style.left = lx + "px"; tip.style.top = top + "px";
+          // 指引手仅真实交互步显示；非交互步（介绍/欣赏）不出手指。
+          if(p.next){
+            fin.style.display = "none";
+          } else {
+            fin.style.display = "block";
+            fin.textContent = below ? "👇" : "👆";
+            var fx = centerX - 15, fy = below ? (rect.top - 36) : (rect.bottom + 4);
+            fx = Math.min(Math.max(fx, B.left + 4), B.right - 34);
+            fy = Math.min(Math.max(fy, B.top + 4), B.bottom - 36);
+            fin.style.left = fx + "px"; fin.style.top = fy + "px";
+          }
+        }
       } else {
         spot.style.display = "none"; spot.classList.remove("clickable");
         fin.style.display = "none";
@@ -14188,11 +14311,47 @@
     }
     // 走完 / Skip → 第 2 轮支付推送（Paywall②），链路不变。
     function closeCoach(){ coachClearTimers(); coachBusy = false; if(coachEl) coachEl.style.display = "none"; }
-    window.cxStartCoach = function(){
+    window.cxCoachHide = closeCoach;   // 供 States beforeJump 收起蒙层（保留 __cxCoachDot，模拟中途退出）
+    // fromDot 可选：中途退出重进续接（PRD 模块 14）从该步的模块介绍气泡重开；
+    // 步内子阶段不持久化，已完成的真实操作靠 phase 级 skip 条件跳过（如老师已选）。
+    var COACH_DOT_START = [0, 3, 9, 13];
+    window.cxStartCoach = function(fromDot){
       cxStage = "guide"; enterLandscape(); showClassHome();
+      if(window.cxEnsureFootballCard) window.cxEnsureFootballCard();   // B 组首课卡=足球预览课
       buildCoach(); coachClearTimers(); coachBusy = false;
       coachEl.style.display = "block";
-      coachGoto(0);   // 自带 rAF×2 + 280ms 重定位；可从 ⚙︎ States 反复重入
+      coachGoto(COACH_DOT_START[fromDot] || 0);   // 自带 rAF×2 + 280ms 重定位；可从 ⚙︎ States 反复重入
+    };
+    // B 组付费前 Class 首页的本周首课卡 = 免费足球预览课（PRD 模块 10.1/14）：
+    // Free 标记 + Start Class 按钮；引导 p13 圈选它，非引导态点按钮直接进足球课。
+    // renderClassWeek 重渲染会清掉本卡并恢复原 is-current，属预期（各 States 互不残留）。
+    window.cxEnsureFootballCard = function(){
+      var list = document.getElementById("class-week-list");
+      if(!list || document.getElementById("cx-fb-card")) return;
+      list.querySelectorAll(".class-week-card.is-current").forEach(function(c){ c.classList.remove("is-current"); });
+      var card = document.createElement("article");
+      card.className = "course-bridge-card class-home-course-card class-week-card is-current";
+      card.id = "cx-fb-card";
+      card.innerHTML =
+        '<div class="class-home-course-scroll">'
+        +'<div class="course-card-top"><div class="course-card-topcopy">'
+        +'<span class="course-card-stage">Free preview · World Cup</span>'
+        +'<h3 class="course-card-title">World Cup Class</h3>'
+        +'<div class="course-card-meta-row"><span class="all-courses-card-status">with Teacher Max</span><span class="all-courses-card-duration">15 min</span></div>'
+        +'</div>'
+        +'<div class="course-card-thumb" aria-hidden="true"><span class="course-card-thumb-badge">Free</span>'
+        +'<img src="assets/quiz/quiz-dino.png" alt="" decoding="async" onerror="this.src=\'assets/dino-mascot.png\'"/></div></div>'
+        +'<div class="course-card-lines course-content-preview">Greet · Word: goal! · Video · Practice · Report</div>'
+        +'</div>'
+        +'<div class="course-card-actions class-home-actions"><div class="course-card-cta-wrap">'
+        +'<button type="button" class="btn btn-primary" data-cx-fb-start>Start Class</button>'
+        +'</div></div>';
+      list.insertBefore(card, list.firstChild);
+      card.querySelector("[data-cx-fb-start]").addEventListener("click", function(ev){
+        ev.stopPropagation();
+        if(window.cxToFootball) window.cxToFootball();
+      });
+      if(typeof centerClassWeekCurrent === "function") requestAnimationFrame(centerClassWeekCurrent);
     };
 
     addScreen("cx-football",
@@ -14557,7 +14716,10 @@
      +'#ic-tip .row{display:flex;gap:6px;align-items:center;}'
      +'#ic-tip .skip{background:transparent;border:0;color:#9aa7ae;font-weight:700;font-size:.76rem;cursor:pointer;padding:8px 6px;white-space:nowrap;}'
      +'#ic-tip .next{flex:1;background:#14233a;color:#fff;border:0;font-family:"Quicksand",system-ui,sans-serif;font-weight:600;font-size:.9rem;border-radius:12px;padding:9px 10px;cursor:pointer;line-height:1.05;}'
-     +'#ic-tip .next .en2{display:block;font-family:"Nunito Sans",system-ui,sans-serif;font-weight:700;font-size:.6rem;opacity:.72;margin-top:1px;}';
+     +'#ic-tip .next .en2{display:block;font-family:"Nunito Sans",system-ui,sans-serif;font-weight:700;font-size:.6rem;opacity:.72;margin-top:1px;}'
+     +'#ic-tip.one .dots{display:none;}'
+     +'#ic-tip.one .row{margin-top:12px;}'
+     +'#ic-tip.one .next .en2{display:inline;margin-left:6px;margin-top:0;}';
     var st=document.createElement("style"); st.textContent=CSS; document.head.appendChild(st);
 
     var TEACH=[
@@ -14594,7 +14756,9 @@
       tip.querySelector(".dots").innerHTML = seq.length>1 ? seq.map(function(_,i){return '<i class="'+(i===idx?"on":"")+'"></i>';}).join("") : "";
       tip.querySelector(".next").innerHTML = (idx>=seq.length-1) ? '知道了<span class="en2">Got it</span>' : '下一步<span class="en2">Next</span>';
       var tgt=document.querySelector(s.sel), B=bounds();
-      var tw=Math.min(250, B.width-20); tip.style.width=tw+"px";
+      // 单步引导（如答题泡泡）用宽版紧凑卡，压缩高度以便收在机身内
+      tip.classList.toggle("one", seq.length===1);
+      var tw=Math.min(seq.length===1?400:250, B.width-20); tip.style.width=tw+"px";
       var th=tip.offsetHeight||174;
       if(tgt && tgt.getBoundingClientRect().width>0){
         var r=tgt.getBoundingClientRect(), pad=8;
@@ -14602,10 +14766,10 @@
         spot.style.left=(r.left-pad)+"px"; spot.style.top=(r.top-pad)+"px";
         spot.style.width=(r.width+pad*2)+"px"; spot.style.height=(r.height+pad*2)+"px";
         var cx=r.left+r.width/2, left, top;
-        // 下边界：below 放置允许溢出到课堂下方的黑色留白（避免遮挡满宽的答题泡泡）
+        // 气泡一律收在机身内；below 放不下时向上让位，允许少量压住高亮框底缘
         var topBound = B.top+10, botBound = B.bottom-th-10;
         if(s.place==="below"){
-          top = r.bottom + 16; left = cx - tw/2; botBound = window.innerHeight - th - 10;
+          top = r.bottom + 12; left = cx - tw/2; botBound = B.bottom - th - 8;
         } else if(s.place==="above"){
           top = r.top - th - 16; left = cx - tw/2; topBound = 10;
         } else {
