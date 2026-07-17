@@ -384,14 +384,15 @@
     .who-intro .dino-wrap { width: 84px; height: auto; margin: 0; flex: 0 0 auto; }
     .who-intro .speech-bubble { flex: 1 1 auto; max-width: none; padding: 14px 16px; }
     .who-intro .speech-bubble p { text-align: left; }
+    /* 实心连体尾巴：白底菱形旋转 45°，左下两边带描边，盖住气泡左边框形成开口，
+       不再用双三角轮廓（旧实现渲染成悬空的浅色「‹」，易被误读为返回箭头）。 */
     .who-intro .speech-bubble::before {
-      top: 50%; left: -10px; transform: translateY(-50%);
-      border-bottom-color: transparent; border-right-color: var(--border);
+      top: 50%; left: -7px; transform: translateY(-50%) rotate(45deg);
+      width: 12px; height: 12px; background: #fff;
+      border: 0; border-left: 2px solid var(--border); border-bottom: 2px solid var(--border);
+      border-radius: 0 0 0 3px;
     }
-    .who-intro .speech-bubble::after {
-      top: 50%; left: -6px; transform: translateY(-50%);
-      border-bottom-color: transparent; border-right-color: #fff;
-    }
+    .who-intro .speech-bubble::after { display: none; }
     /* Loading */
     .loading-body {
       flex: 1;
@@ -13920,7 +13921,7 @@
     //  dot0 Dino  : p0 介绍（圈 Dino 角色区）→ p1 点 Chat with Dino 胶囊（真实进对话页 + 重写开场白）→ p2 点麦克风（脚本化一轮对话）→ 真实返回
     //  dot1 Play  : p3 介绍（圈 play-grid）→ p4 点盲盒卡 → p5 点 Start（限额时走 GAME.startCapsuleQuiz 兜底）→ p6 点正确选项（真实判题，不发金币/XP）→ p6b 赠抽 Open（必得新 Dino Figure）→ p6c 收下 → 真实返回
     //  dot2 Explore: p7 介绍（圈 explore-entries）→ p8 点 Listening 入口 → p9 点首个未锁电台（真实播放器）→ p10 被动欣赏 ~3.2s（真实时钟）→ 真实暂停 + 返回
-    //  dot3 Class : p11 介绍（圈 Class 内容区）→ p12 点老师卡（真实打开选老师页，自由点选任意老师 + Save 回 Class；已选过则自动跳过）→ p13 点足球预览课首课卡（Start Class；不转发、不进课堂）→ 庆祝 + Paywall②
+    //  dot3 Class : p11 介绍（圈 Class 内容区）→ p12 点老师卡（真实打开选老师页，自由点选任意老师 + Save 回 Class；已选过则自动跳过）→ p13 点足球预览课首课卡（Start Learning；不转发、不进课堂）→ 庆祝 + Paywall②
     var coachEl = null, coachPhase = 0, coachBusy = false, coachTimers = [], coachPoll = null;
     function coachName(){ return (typeof getDisplayName === "function" && getDisplayName()) || "your child"; }
     function coachFill(str){ return String(str).replace(/\{name\}/g, coachName()); }
@@ -14012,7 +14013,9 @@
         target:function(){ return document.querySelector("#screen-teacher .land-body.teacher-pick"); },
         copy:"First, pick a teacher {name} likes!",
         tap:coachPickTeacher },
-      { dot:3,   // p13 点足球预览课首课卡（Start Class 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
+      { dot:3,   // p13 点足球预览课首课卡（Start Learning 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
+        // 选老师确认走真实 showClassHome() 重渲染，会清掉注入的足球卡 → 进本步时重新注入，避免回退高亮正式课卡
+        enter:function(){ if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },
         target:function(){ return document.getElementById("cx-fb-card") || document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
         copy:"Now tap the first lesson. Time to learn!",
         tap:coachFinishClass },
@@ -14323,7 +14326,7 @@
       coachGoto(COACH_DOT_START[fromDot] || 0);   // 自带 rAF×2 + 280ms 重定位；可从 ⚙︎ States 反复重入
     };
     // B 组付费前 Class 首页的本周首课卡 = 免费足球预览课（PRD 模块 10.1/14）：
-    // Free 标记 + Start Class 按钮；引导 p13 圈选它，非引导态点按钮直接进足球课。
+    // Free 标记 + Start Learning 按钮；引导 p13 圈选它，非引导态点按钮直接进足球课。
     // renderClassWeek 重渲染会清掉本卡并恢复原 is-current，属预期（各 States 互不残留）。
     window.cxEnsureFootballCard = function(){
       var list = document.getElementById("class-week-list");
@@ -14344,7 +14347,7 @@
         +'<div class="course-card-lines course-content-preview">Greet · Word: goal! · Video · Practice · Report</div>'
         +'</div>'
         +'<div class="course-card-actions class-home-actions"><div class="course-card-cta-wrap">'
-        +'<button type="button" class="btn btn-primary" data-cx-fb-start>Start Class</button>'
+        +'<button type="button" class="btn btn-primary" data-cx-fb-start>Start Learning</button>'
         +'</div></div>';
       list.insertBefore(card, list.firstChild);
       card.querySelector("[data-cx-fb-start]").addEventListener("click", function(ev){
