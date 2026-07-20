@@ -6144,7 +6144,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(模块介绍 + Class 选老师，无 Skip) → Paywall② → 新人引导课 → 课程报告 → 限时折扣解锁 + ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）+ E3/E4 主题课挽留弹窗 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」与「世界杯主题课」</p>
+  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(模块介绍 + Class 选老师，无 Skip) → Paywall② → 新人引导课 → 课程报告 → 限时折扣解锁（付费成功=解锁正式课回首页，不再强制进定级课；体验课=定级课免费、首页置顶于正式课之前、付费与否可进）+ ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）+ E3/E4 主题课挽留弹窗 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」与「世界杯主题课」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -7954,7 +7954,8 @@
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
     function levelCefrLabel(levelId) { const i = levelOrderOf(levelId); return LEVEL_CEFR[i] || "A2"; }
     function levelLabelOf(levelId) { const lv = COURSE_LIBRARY.find((l) => l.id === levelId); return lv ? lv.label : "Level"; }
-    // 转化链路优化流程状态机：null=非转化流程；pay1/pay2/pay3=三轮付费推送中；winback=新人引导课退出周卡挽留；paid=已付费交付段。
+    // 转化链路优化流程状态机：null=非转化流程；pay1/pay2/pay3=三轮付费推送中；winback=新人引导课退出周卡挽留；
+    // paid=已付费(付费成功→解锁正式课回首页；不再强制进定级课，体验课=定级课免费置顶首页、付费与否可自行进入)。
     var cxStage = null;
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
@@ -10165,8 +10166,8 @@
       // Commit the performance-based best-fit level as the plan (first placement → no
       // keep/update choice; the assessed level IS the plan).
       applyFirstTrialPlacement();
-      // 体验课(定级课)报告：会员=领取学习计划；非会员=回到 class。
-      if (profile.premiumUnlocked) { showStudyPlan(); } else { showClassHome(); }
+      // 体验课(定级课)报告：会员=领取学习计划(转化流程内已付费→直接回解锁首页，不再回画饼/Paywall)；非会员=回到 class。
+      if (profile.premiumUnlocked) { if (cxStage) { showClassHome(); } else { showStudyPlan(); } } else { showClassHome(); }
     });
     $("#btn-trip-back")?.addEventListener("click", () => { showClassHome(); });
     // Formal-lesson report actions (portrait #screen-lesson-report). Continue → Class.
@@ -12780,8 +12781,9 @@
       profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
-      // 转化链路优化：任一订阅触点（含 Tab 会员入口）付费成功 → 付费后交付段（定级体验课 → 报告 → 排课解锁）。
-      if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
+      // 转化链路优化：付费成功 = 解锁正式课、回首页；不再强制进定级课。体验课(定级课)免费、
+      // 首页置顶于正式课之前，付费与否都可进（未定级用户在首页自行进入定级）。
+      if (cxStage) { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
       closePaywallPortrait();
       showPayToast("Premium unlocked 🎉");
     });
@@ -12888,8 +12890,8 @@
       profile.nextBillingDate = "Jul 8, 2026";
       profile.selectedPlan = "weekly";
       refreshUnlockState();
-      // 转化链路优化：任一订阅触点（报告解锁 / Tab 会员入口 / 周卡挽留）付费成功 → 付费后交付段（定级体验课）。
-      if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
+      // 转化链路优化：付费成功 = 解锁正式课、回首页;不再强制进定级课(体验课免费置顶首页可自行进)。
+      if (cxStage) { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
       enterLandscape();
       showLandScreen(winbackReturnScreen || "screen-class");
       showPayToast("Premium unlocked 🎉");
@@ -13690,13 +13692,20 @@
           if (window.cxShowReport) window.cxShowReport();
         } },
       { label: "⑩ 限时折扣页 · 报告解锁 / 每日启动回访共用（非常规 Paywall）", run: function () {
-          // 未付费回访挽单沿用线上每日启动限时折扣：同一折扣页与频控，支付成功同样进定级 intro。
+          // 未付费回访挽单沿用线上每日启动限时折扣：同一折扣页与频控，支付成功=解锁正式课回首页。
           cxStage = "pay-report";
           if (typeof openWinback === "function") openWinback("cx_report", "cx_report", "screen-class");
           else if (typeof openPaywall === "function") openPaywall("screen-class", "cx_report");
         } },
-      { label: "⑪ 付费后 · 定级体验课 intro", run: function () {
-          if (window.cxToLeveltest) window.cxToLeveltest();
+      { label: "⑪ 常规首页 · 体验课(定级课)免费置顶于正式课前（免费用户）", run: function () {
+          // 体验课=定级课免费、任意场景可进、首页置顶于正式课之前；正式课锁；新人引导课卡保留可重进。
+          if (window.cxToHome) window.cxToHome();
+        } },
+      { label: "⑫ 付费后 · 解锁首页（会员；未定级则体验课卡仍置顶，自行进入定级）", run: function () {
+          if (window.cxToUnlockedHome) window.cxToUnlockedHome();
+        } },
+      { label: "⑬ 定级课堂 · 进入体验课(定级课) → 完课出定级报告", run: function () {
+          if (window.cxEnterPlacement) window.cxEnterPlacement();
         } },
     ],
     // ⚽ 世界杯主题课（运营位）专用快捷入口：入口卡三态 / 落地页五态 / 进课 / E3·E4 挽留弹窗。
@@ -14269,8 +14278,10 @@
       // 非会员：课程报告「解锁更多」→ 限时折扣页（限时周卡折扣），不是常规 paywall。
       else { btn.textContent = "🔓 Unlock more courses"; btn.className = "cx-btn amber"; btn.onclick = function(){ cxStage = "pay-report"; if(typeof openWinback==="function") openWinback("cx_report", "cx_report", "screen-class"); else if(typeof openPaywall==="function") openPaywall("screen-class", "cx_report"); }; }
     };
-    window.cxToUnlockedHome = function(){ try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); };
-    window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); };
+    // 付费成功落点：解锁正式课、回首页；未定级则首页置顶注入体验课(定级课)卡，用户自行进入定级(不再强制)。
+    window.cxToUnlockedHome = function(){ try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
+    // 免费用户退出转化流程 → 常规首页：体验课(定级课)免费置顶于正式课之前，正式课锁；新人引导课卡保留可重进。
+    window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
 
     // 新增页倒计时（可见时每秒递减，纯视觉）。
     setInterval(function(){
@@ -14476,8 +14487,8 @@
     function cxDoPurchase(){
       try{ profile.premiumUnlocked = true; profile.maxReachedLevelId = profile.currentLevelId; profile.nextBillingDate = "Jul 8, 2026"; }catch(e){}
       if(typeof refreshUnlockState==="function") refreshUnlockState();
-      // 转化链路优化：任一订阅触点付费成功 → 定级体验课 intro（PRD 模块 12）。
-      if(cxStage){ cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); }
+      // 转化链路优化：付费成功 = 解锁正式课、回首页；不再强制进定级课(体验课免费置顶首页可自行进)。
+      if(cxStage){ cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); }
       else if(typeof closePaywallPortrait==="function"){ closePaywallPortrait(); }
       if(typeof showPayToast==="function") showPayToast("Premium unlocked 🎉");
     }
