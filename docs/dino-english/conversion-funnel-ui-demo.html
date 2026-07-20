@@ -9951,7 +9951,7 @@
       if (!lcReportReady) return;
       // ⚽ 世界杯主题课结算页 Continue → 回主题课来源页（不进报告、不走 cx 分支）。
       if (themeSettleRun) { themeSettleRun = false; themeExitTarget(); return; }
-      // 付费后的定级课（体验课）完课 → 体验课报告（带定级），报告内再按会员分底部按钮。
+      // 体验课(定级课)【完整上完】才产出定级 → 定级报告（带定级），报告内再按会员分底部按钮；中途退出不产出定级（见退出分支）。
       if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
       // 免费转化流程（新人引导课）完课 → 记完课（首课卡转 View report，PRD 模块 10）→ 课程报告 (cx-report)，非会员只保留 Unlock more courses。
       if (cxStage && cxStage !== "home" && window.cxShowReport) { if (cxStage === "football") window.__cxFbDone = true; window.cxShowReport(); return; }
@@ -10011,9 +10011,9 @@
         themeExitTarget();
         return;
       }
-      // 付费后的定级课退出 → 体验课报告（带定级）；免费新人引导课中途退出 → 不生成报告，
-      // 回 Class 首页，首课卡保持 Start Learning 可重进（PRD 模块 10/14）。
-      if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
+      // 体验课(定级课)中途退出 → 不产出定级、回 Class 首页，体验课卡保留可重进（必须完整上完才出定级与计划）；
+      // 免费新人引导课中途退出 → 同样不生成报告，回 Class 首页，首课卡保持 Start Learning 可重进。
+      if (cxStage === "paid") { showClassHome(); if (window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); return; }
       if (cxStage === "football") { cxStage = "home"; showClassHome(); if (window.cxEnsureFootballCard) window.cxEnsureFootballCard(); return; }
       if (cxStage && cxStage !== "home") { if (window.cxShowReport) { window.cxShowReport(); return; } }
       showClassHome();
