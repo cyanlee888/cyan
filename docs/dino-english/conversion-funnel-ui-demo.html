@@ -13829,6 +13829,7 @@
     .cx-card .was{font-size:.76rem;color:#8b9a90;text-decoration:line-through;margin-left:6px;}
     .cx-card .per{font-size:.72rem;color:var(--ink-muted);margin-top:4px;}
     .cx-gstep{width:92px;height:92px;border-radius:24px;background:var(--forest-mist,#d6f7f2);display:grid;place-items:center;font-size:2.5rem;margin-bottom:18px;}
+    .cx-back{position:absolute;top:44px;left:18px;z-index:5;width:34px;height:34px;border-radius:50%;border:1px solid #e7ded4;background:#fff;color:var(--ink);font-size:1.2rem;font-weight:700;cursor:pointer;display:grid;place-items:center;padding:0 0 2px;box-shadow:0 4px 10px rgba(0,0,0,.07);}
     .cx-dots{display:flex;gap:6px;margin-top:16px;} .cx-dots i{width:8px;height:8px;border-radius:50%;background:#e0d7cc;} .cx-dots i.on{width:20px;border-radius:4px;background:var(--forest-mid,#17b1a1);}
     .cx-fb{position:absolute;inset:0;background:#0f2a1c center/cover no-repeat;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;}
     .cx-fb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,42,28,.12),rgba(15,42,28,.86));}
@@ -14164,6 +14165,38 @@
       if(typeof centerClassWeekCurrent === "function") requestAnimationFrame(centerClassWeekCurrent);
     };
 
+    // 付费后、定级未完成期间的定级课卡（PRD 模块 11）：列新人引导课卡之后、正式课卡之前，
+    // 点卡进定级课堂；定级完成（出报告）后不再注入。renderClassWeek 重渲染清卡属预期，同引导课卡。
+    window.cxEnsurePlacementCard = function(){
+      if(window.__cxPlacementDone) return;
+      var list = document.getElementById("class-week-list");
+      if(!list || document.getElementById("cx-pl-card")) return;
+      var card = document.createElement("article");
+      card.className = "course-bridge-card class-home-course-card class-week-card";
+      card.id = "cx-pl-card";
+      card.innerHTML =
+        '<div class="class-home-course-scroll">'
+        +'<div class="course-card-top"><div class="course-card-topcopy">'
+        +'<span class="course-card-stage">Placement · Level check</span>'
+        +'<h3 class="course-card-title">Placement Class</h3>'
+        +'<div class="course-card-meta-row"><span class="all-courses-card-status">sets the real course plan</span><span class="all-courses-card-duration">15 min</span></div>'
+        +'</div>'
+        +'<div class="course-card-thumb" aria-hidden="true"><span class="course-card-thumb-badge">Placement</span>'
+        +'<img src="assets/dino-mascot.png" alt="" decoding="async" onerror="this.style.display=\'none\'"/></div></div>'
+        +'<div class="course-card-lines course-content-preview">Speak with the teacher · Level check · Personalised report</div>'
+        +'</div>'
+        +'<div class="course-card-actions class-home-actions"><div class="course-card-cta-wrap">'
+        +'<button type="button" class="btn btn-primary" data-cx-pl-start>Start Learning</button>'
+        +'</div></div>';
+      var fb = document.getElementById("cx-fb-card");
+      if(fb){ fb.nextSibling ? list.insertBefore(card, fb.nextSibling) : list.appendChild(card); }
+      else { list.insertBefore(card, list.firstChild); }
+      card.querySelector("[data-cx-pl-start]").addEventListener("click", function(ev){
+        ev.stopPropagation();
+        if(window.cxEnterPlacement) window.cxEnterPlacement();
+      });
+    };
+
     addScreen("cx-football",
       '<div class="cx-fb" style="background-image:url(assets/quiz/quiz-bg.jpg)">'
       +'<div class="cx-fb-top"><span onclick="cxExitFootball()" style="background:rgba(255,255,255,.16);padding:5px 10px;border-radius:999px;cursor:pointer;">✕ Exit class</span>'
@@ -14189,7 +14222,8 @@
       +'<button class="cx-btn line" onclick="cxToHome()">Maybe later</button></div></div>');
 
     addScreen("cx-leveltest",
-      '<div class="cx-pad" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;">'
+      '<button type="button" class="cx-back" aria-label="Back" onclick="cxLeaveLeveltest()">‹</button>'
+      +'<div class="cx-pad" style="display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;">'
       +'<span class="cx-newbadge" style="color:#0f6e56;background:#e1f5ee;">Placement class</span>'
       +'<div class="cx-gstep" style="background:#e1f5ee;">🎯</div>'
       +'<div class="cx-h1" id="cx-lt-h1">Time for Leo\'s<br/>placement class</div>'
@@ -14241,7 +14275,10 @@
     window.cxPaywall = function(stage){ cxStage = stage; openPaywall("screen-class", "cx"); };
     window.cxExitFootball = function(){ cxStage = "winback"; if(typeof openWinback==="function"){ openWinback("cx_football_exit", "cx", "screen-class"); } else { enterPortrait(); showPortraitScreen("screen-winback"); } };
     window.cxToLeveltest = function(){ cxStage = "paid"; try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterPortrait(); showPortraitScreen("cx-leveltest"); var lnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child"; var lt = document.getElementById("cx-lt-h1"); if(lt) lt.innerHTML = "Time for " + lnm + "'s<br/>placement class"; var ls = document.getElementById("cx-lt-sub"); if(ls) ls.textContent = "A short real class that measures " + lnm + "'s exact level and produces a personalised report. This sets the real course plan."; };
-    window.cxToReport = function(){ try{ trialReportMode = "trial"; profile.trialTakenLevelId = null; }catch(e){} if(typeof showTrialReport==="function") showTrialReport(); };
+    window.cxToReport = function(){ window.__cxPlacementDone = true; try{ trialReportMode = "trial"; profile.trialTakenLevelId = null; }catch(e){} if(typeof showTrialReport==="function") showTrialReport(); };
+    // 定级 intro 左上角返回：回 App 主页 Class Tab（会员权益不受影响），本周列表常驻定级课卡可随时重进；
+    // 重启续接仍进 intro（PRD 模块 11/13）。
+    window.cxLeaveLeveltest = function(){ enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
     // ⑤ 付费后：定级测试 → 先真实上课（openClassroomDemo），上完/退出再出体验课报告（不是直接跳报告）。
     window.cxEnterPlacement = function(){ cxStage = "paid"; if(typeof openClassroomDemo==="function"){ openClassroomDemo("cx-placement"); } else { window.cxShowReport(); } };
     // ⑧ 上课结束/退出 → 新版 Lesson Report。底部 CTA 按是否会员切换：会员=Back to class；非会员=Unlock more courses→支付。
