@@ -12843,7 +12843,8 @@
       profile.selectedPlan = "weekly"; // the win-back sells the weekly plan
       // 文案按入口切换：从课程报告「解锁更多」进来时，用「限时折扣解锁」正向话术；其余保持挽留话术。
       const wbName = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
-      const WB_COPY = { cx_report: { title: "Unlock more courses, limited price", sub: `A special weekly price to keep ${wbName} learning, only while the timer runs.` } };
+      // 限时折扣挽留页文案不定制、沿用线上折扣页（各入口共用同一套线上文案）。
+      const WB_COPY = {};
       const wt = $("#screen-winback .wb-title"), ws = $("#screen-winback .wb-sub"), wc = WB_COPY[winbackEntry];
       if (wt) wt.textContent = wc ? wc.title : "Wait! Dino saved something special for you";
       if (ws) ws.textContent = wc ? wc.sub : "A weekly plan at a special price, only while the timer runs.";
