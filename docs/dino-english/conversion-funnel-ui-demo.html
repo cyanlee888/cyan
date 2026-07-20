@@ -13672,7 +13672,7 @@
           if (window.cxStartCoach) window.cxStartCoach();
         } },
       { label: "⑥b 新手引导 · 中途退出重进（从首个未完成步续起）", run: function () {
-          // PRD 模块 14：引导进度本地持久化，重进回主页自动续起。引导中途切走任意 States
+          // PRD 模块 12（中途退出重进续接）：引导进度本地持久化，重进回主页自动续起。引导中途切走任意 States
           // 即模拟退出，此入口按记录的步续起；无进度（没退出过 / 已走完）时等同 ⑥ 从头开始。
           var d = (window.__cxCoachDot != null) ? window.__cxCoachDot : 0;
           if (window.cxStartCoach) window.cxStartCoach(d);
@@ -13689,7 +13689,8 @@
           if (typeof refreshUnlockState === "function") refreshUnlockState();
           if (window.cxShowReport) window.cxShowReport();
         } },
-      { label: "⑩ 限时折扣页 · 报告解锁（非常规 Paywall）", run: function () {
+      { label: "⑩ 限时折扣页 · 报告解锁 / 每日启动回访共用（非常规 Paywall）", run: function () {
+          // 未付费回访挽单沿用线上每日启动限时折扣：同一折扣页与频控，支付成功同样进定级 intro。
           cxStage = "pay-report";
           if (typeof openWinback === "function") openWinback("cx_report", "cx_report", "screen-class");
           else if (typeof openPaywall === "function") openPaywall("screen-class", "cx_report");
@@ -13778,7 +13779,7 @@
   <!-- ============================================================= -->
   <!-- 转化链路优化 · 引导浮层（追加层，不改动 V1.4.1 任何现有页面/逻辑） -->
   <!-- 复用真实页面：welcome/login/name/age/placement/goal-value/study-plan/paywall/teacher/winback/trial-report/class -->
-  <!-- 新增页面(cx-*)：新手村 · 新人引导课 · 每日折扣 · 定级体验课 intro -->
+  <!-- 新增页面(cx-*)：新手村 · 新人引导课 · 定级体验课 intro（回访挽单沿用线上每日启动限时折扣页，无新增页面） -->
   <!-- ============================================================= -->
   <style>
     #cx-panel{position:fixed;left:14px;top:14px;width:246px;max-height:calc(100vh - 28px);z-index:9000;
@@ -13821,13 +13822,6 @@
     .cx-btn.line{background:transparent;color:var(--ink-muted);box-shadow:none;font-weight:600;font-size:.86rem;height:40px;}
     .cx-timer{display:flex;align-items:center;justify-content:center;gap:8px;background:#fdefdc;color:#b4640f;border-radius:13px;padding:10px;font-weight:700;font-size:.88rem;margin:16px 0;}
     .cx-timer .c{font-variant-numeric:tabular-nums;background:#b4640f;color:#fff;border-radius:7px;padding:3px 8px;}
-    .cx-card{border:2px solid #e7ded4;border-radius:16px;padding:15px;background:#fff;position:relative;margin-top:8px;}
-    .cx-card.sel{border-color:#ea6c25;background:#fff8f3;}
-    .cx-card .tag{position:absolute;top:-10px;left:14px;background:#ea6c25;color:#fff;font-size:.62rem;font-weight:700;padding:3px 9px;border-radius:999px;}
-    .cx-card .row{display:flex;justify-content:space-between;align-items:baseline;}
-    .cx-card .nm{font-weight:700;color:var(--ink);} .cx-card .pr{font-family:var(--display,"Sora");font-weight:800;font-size:1.25rem;color:var(--ink);}
-    .cx-card .was{font-size:.76rem;color:#8b9a90;text-decoration:line-through;margin-left:6px;}
-    .cx-card .per{font-size:.72rem;color:var(--ink-muted);margin-top:4px;}
     .cx-gstep{width:92px;height:92px;border-radius:24px;background:var(--forest-mist,#d6f7f2);display:grid;place-items:center;font-size:2.5rem;margin-bottom:18px;}
     .cx-back{position:absolute;top:44px;left:18px;z-index:5;width:34px;height:34px;border-radius:50%;border:1px solid #e7ded4;background:#fff;color:var(--ink);font-size:1.2rem;font-weight:700;cursor:pointer;display:grid;place-items:center;padding:0 0 2px;box-shadow:0 4px 10px rgba(0,0,0,.07);}
     .cx-dots{display:flex;gap:6px;margin-top:16px;} .cx-dots i{width:8px;height:8px;border-radius:50%;background:#e0d7cc;} .cx-dots i.on{width:20px;border-radius:4px;background:var(--forest-mid,#17b1a1);}
@@ -13839,9 +13833,6 @@
     .cx-fb-body{position:relative;z-index:3;padding:16px 18px calc(16px + env(safe-area-inset-bottom));}
     .cx-scrub{display:flex;gap:4px;margin:10px 0 8px;} .cx-scrub i{flex:1;height:5px;border-radius:3px;background:rgba(255,255,255,.25);} .cx-scrub i.on{background:#ea6c25;}
     .cx-parts{display:flex;justify-content:space-between;font-size:.6rem;color:rgba(255,255,255,.6);margin-bottom:12px;}
-    .cx-sheet{position:absolute;inset:0;background:rgba(15,25,20,.5);display:flex;flex-direction:column;justify-content:flex-end;}
-    .cx-sheet .in{background:var(--surface);border-radius:24px 24px 0 0;padding:24px 22px calc(20px + env(safe-area-inset-bottom));}
-    .cx-sheet .grab{width:38px;height:4px;border-radius:3px;background:#e0d7cc;margin:0 auto 14px;}
   </style>
   <script>
   (function(){
@@ -14209,17 +14200,6 @@
       +'<div class="cx-scrub"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>'
       +'<div class="cx-parts"><span>Greet</span><span>Word</span><span>Video</span><span>Practice</span><span>Report</span></div>'
       +'<button class="cx-btn" style="background:rgba(255,255,255,.18);color:#fff;" onclick="cxExitFootball()">Sample report → exit</button></div></div>');
-
-    addScreen("cx-daily",
-      '<div class="cx-sheet"><div class="in"><div class="grab"></div>'
-      +'<span class="cx-newbadge">Welcome back · limited price</span>'
-      +'<div class="cx-h1" style="font-size:1.25rem;">Your low-price week is still here</div>'
-      +'<div class="cx-sub" style="font-size:.84rem;">Start small: one week, full access, cancel anytime.</div>'
-      +'<div class="cx-card sel" style="margin-top:18px;"><span class="tag">TODAY</span>'
-      +'<div class="row"><span class="nm">1-week pass</span><span><span class="was">$12.99</span><span class="pr">$8.99</span></span></div>'
-      +'<div class="per">full access · cancel anytime</div></div>'
-      +'<button class="cx-btn amber" style="margin-top:14px;" onclick="cxToLeveltest()">Start this week</button>'
-      +'<button class="cx-btn line" onclick="cxToHome()">Maybe later</button></div></div>');
 
     addScreen("cx-leveltest",
       '<button type="button" class="cx-back" aria-label="Back" onclick="cxLeaveLeveltest()">‹</button>'
