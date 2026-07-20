@@ -6759,7 +6759,7 @@
             <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore</button>
           </div>
           <!-- 转化链路优化：常规 Paywall 限时折扣倒计时（15 分钟），滚动时置顶不动（sticky）。 -->
-          <div class="pwpt-timer pwpt-timer--sticky">🔥 Limited offer ends in <span id="pwpt-timer-clock" data-cx-timer="900">15:00</span></div>
+          <div class="pwpt-timer pwpt-timer--sticky">🔥 Limited offer ends in <span id="pwpt-timer-clock">23:59:59</span></div>
           <!-- V1.3.2 (布局调整): title block on top; then Dino left + trust proof right;
                then a full-width benefits list. -->
           <div class="pwpt-hero-card">
@@ -13236,7 +13236,7 @@
       var jumps131 = config.jumps131 || [];
       var jumps131Label = config.jumps131Label || "1.3.2 变更";
       // ⚽ 世界杯主题课快捷跳转组（绿色高亮，与 jumps131 橙色区分）
-      var jumpsWC = config.jumpsWC || [];
+      var jumpsWC = [];  // 世界杯主题课(足球课)快捷入口已移除，不在 States 面板展示
       var jumpsWCLabel = config.jumpsWCLabel || "世界杯主题课";
       var beforeJump = config.beforeJump || function () {};
       var title = config.title || "States";
@@ -14283,15 +14283,19 @@
     // 免费用户退出转化流程 → 常规首页：体验课(定级课)免费置顶于正式课之前，正式课锁；新人引导课卡保留可重进。
     window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
 
-    // 新增页倒计时（可见时每秒递减，纯视觉）。
-    setInterval(function(){
-      Array.prototype.slice.call(document.querySelectorAll(".screen.active [data-cx-timer]")).forEach(function(e){
-        if(e.dataset.left === undefined || e.dataset.left === "") e.dataset.left = e.dataset.cxTimer;
-        var l = +e.dataset.left; if(l > 0){ l--; e.dataset.left = l; }
-        var m = String(Math.floor(l/60)), s = String(l%60); if(s.length<2) s = "0"+s; if(m.length<2) m = "0"+m;
-        e.textContent = m + ":" + s;
-      });
-    }, 1000);
+    // Paywall 限时折扣倒计时：当前时间距当天 24:00（次日 00:00）的真实倒计时，时:分:秒；
+    // 过 00:00 自然重置为 23:59:59，当天任意时间进入 Paywall 都在倒计时。
+    function pwptRenderCountdown(){
+      var el = document.getElementById("pwpt-timer-clock");
+      if(!el) return;
+      var now = new Date();
+      var mid = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0, 0);
+      var s = Math.max(0, Math.floor((mid - now) / 1000));
+      var p = function(n){ return (n<10?"0":"")+n; };
+      el.textContent = p(Math.floor(s/3600)) + ":" + p(Math.floor((s%3600)/60)) + ":" + p(s%60);
+    }
+    pwptRenderCountdown();
+    setInterval(pwptRenderCountdown, 1000);
 
     // ===== 追加样式（sticky 倒计时 / mock 授权 / 上课页会员入口 / 报告解锁按钮） =====
     var CX2_CSS =
