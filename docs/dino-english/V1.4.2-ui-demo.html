@@ -12582,11 +12582,7 @@
         if (ms <= 0) {
           stopWinbackCountdown();
           timerBox?.classList.add("is-ended");
-          // Auto-close at 00:00 — stop the offer and return to the trigger page
-          // (stays at 00:00 briefly, then dismisses; no fake reset, no re-show today).
-          setTimeout(() => {
-            if ($("#screen-winback")?.classList.contains("active")) dismissWinback("countdown_end");
-          }, 900);
+          // 归零停在 00:00、不自动关页（与线上折扣订阅页一致）。
         }
       };
       if (winbackTimer) clearInterval(winbackTimer);
@@ -12598,7 +12594,7 @@
       if (winbackTimer) { clearInterval(winbackTimer); winbackTimer = null; }
     }
 
-    function dismissWinback() { // reason: close · countdown_end (attribution only)
+    function dismissWinback() { // reason: close (attribution only)
       stopWinbackCountdown();
       enterLandscape();
       showLandScreen(winbackReturnScreen || "screen-class");

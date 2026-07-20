@@ -2285,7 +2285,7 @@
     .class-lead-row .class-home-lead { padding-top: 0; min-width: 0; flex: 1; }
     .class-lead-row .class-home-lead-title { overflow: hidden; text-overflow: ellipsis; }
     .class-lead-row .class-week-head { flex-shrink: 0; }
-    /* Non-member: reserve the top-right corner for the "Unlock all" membership pill so
+    /* Non-member: reserve the top-right corner for the "Go Premium" membership pill so
        "More lessons" sits just to its left instead of underneath it. */
     .hub-app--cxvip .hub-panel--class .class-lead-row { padding-right: 112px; }
     /* 方案二: "This Week" inline swiper on Class home (replaces the single hero card).
@@ -6144,7 +6144,7 @@
   </style>
 </head>
 <body>
-  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(框选核心功能) → Paywall② → Dino 引导选老师 → 足球主题体验课 → 课程报告 → 限时折扣解锁 + ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）+ E3/E4 主题课挽留弹窗 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」与「世界杯主题课」</p>
+  <p class="demo-bar">转化链路优化 Demo · 首启价值页(3 屏轮播)+登录合并 → Onboarding(年龄/水平/目标) → 学习计划画饼 → Paywall① → 新手引导(框选核心功能) → Paywall② → Dino 引导选老师 → 新人引导课 → 课程报告 → 限时折扣解锁 + ⚽ 世界杯主题课运营入口（首页 Banner 预告/进行中/已完成 · 落地页五态 · 进课与完课报告）+ E3/E4 主题课挽留弹窗 —— 按漏斗顺序的关键状态见右上 ⚙︎ States 的「转化链路」与「世界杯主题课」</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -7954,7 +7954,7 @@
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
     function levelCefrLabel(levelId) { const i = levelOrderOf(levelId); return LEVEL_CEFR[i] || "A2"; }
     function levelLabelOf(levelId) { const lv = COURSE_LIBRARY.find((l) => l.id === levelId); return lv ? lv.label : "Level"; }
-    // 转化链路优化流程状态机：null=非转化流程；pay1/pay2/pay3=三轮付费推送中；winback=足球课退出周卡挽留；paid=已付费交付段。
+    // 转化链路优化流程状态机：null=非转化流程；pay1/pay2/pay3=三轮付费推送中；winback=新人引导课退出周卡挽留；paid=已付费交付段。
     var cxStage = null;
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
@@ -9952,8 +9952,8 @@
       if (themeSettleRun) { themeSettleRun = false; themeExitTarget(); return; }
       // 付费后的定级课（体验课）完课 → 体验课报告（带定级），报告内再按会员分底部按钮。
       if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
-      // 免费转化流程（足球主题课）完课 → 课程报告 (cx-report)，非会员只保留 Unlock more courses。
-      if (cxStage && cxStage !== "home" && window.cxShowReport) { window.cxShowReport(); return; }
+      // 免费转化流程（新人引导课）完课 → 记完课（首课卡转 View report，PRD 模块 10）→ 课程报告 (cx-report)，非会员只保留 Unlock more courses。
+      if (cxStage && cxStage !== "home" && window.cxShowReport) { if (cxStage === "football") window.__cxFbDone = true; window.cxShowReport(); return; }
       if (lessonCompleteIsTrial) {
         // First-trial report (portrait) or level-up check (landscape) per trialReportMode.
         showTrialReport();
@@ -10010,8 +10010,10 @@
         themeExitTarget();
         return;
       }
-      // 付费后的定级课退出 → 体验课报告（带定级）；免费足球课退出 → 课程报告 (cx-report)。
+      // 付费后的定级课退出 → 体验课报告（带定级）；免费新人引导课中途退出 → 不生成报告，
+      // 回 Class 首页，首课卡保持 Start Learning 可重进（PRD 模块 10/14）。
       if (cxStage === "paid" && window.cxToReport) { window.cxToReport(); return; }
+      if (cxStage === "football") { cxStage = "home"; showClassHome(); if (window.cxEnsureFootballCard) window.cxEnsureFootballCard(); return; }
       if (cxStage && cxStage !== "home") { if (window.cxShowReport) { window.cxShowReport(); return; } }
       showClassHome();
     }));
@@ -10317,9 +10319,9 @@
     $("#btn-study-plan-start")?.addEventListener("click", () => { cxStage = "pay1"; openPaywall("screen-class", "cx_plan1"); });
     $("#btn-confirm-teacher").addEventListener("click", () => {
       // 确认即视为「已选过老师」：新手引导 Class 步与独立选老师页共用此标记，
-      // Paywall② 关闭时据此决定直接进足球课还是先选老师。
+      // Paywall② 关闭时据此决定直接进新人引导课还是先选老师。
       profile.teacherChosen = true;
-      // 转化链路优化：选老师完成 → ③ 足球课免费预览（而非直接进真实课堂）。
+      // 转化链路优化：选老师完成 → ③ 新人引导课（而非直接进真实课堂）。
       if (cxStage === "teacher") { window.cxToFootball && window.cxToFootball(); return; }
       if (teacherFlowMode === "app") {
         showClassHome();
@@ -12759,11 +12761,11 @@
     $("#btn-pwpt-back")?.addEventListener("click", () => {
       // 转化链路优化：三轮付费推送的“返回”不进挽留，按会议顺序推进下一环节。
       if (cxStage === "pay1") { window.cxToGuide && window.cxToGuide(); return; }      // ① 关闭 → ② 新手引导
-      if (cxStage === "pay2") { // ② 关闭：新手引导里已选过老师 → 直接进足球课；没选过 → 先选老师（选完进上课）
+      if (cxStage === "pay2") { // ② 关闭：新手引导里已选过老师 → 直接进新人引导课；没选过 → 先选老师（选完进上课）
         if (profile.teacherChosen) { window.cxToFootball && window.cxToFootball(); }
         else { window.cxToTeacher && window.cxToTeacher(); }
         return; }
-      if (cxStage === "pay3") { window.cxToFootball && window.cxToFootball(); return; }// ③ 关闭 → 回足球课
+      if (cxStage === "pay3") { window.cxToFootball && window.cxToFootball(); return; }// ③ 关闭 → 回新人引导课
       if (cxStage === "pay-inclass") { cxStage = "football"; enterLandscape(); showLandScreen("screen-inclass-teach"); return; } // 上课页会员入口关闭 → 回上课
       if (cxStage === "pay-report") { cxStage = "paid"; enterLandscape(); showClassHome(); return; } // 报告解锁更多关闭 → 回 Class
       // V1.4.0 原逻辑：非转化流程时，返回 = 取消 → 挽留（受频控）。
@@ -12784,9 +12786,7 @@
       profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
-      // Tab 会员入口购买 → 直接解锁并回 hub（不进定级测试）。
-      if (cxStage === "pay-tab") { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
-      // 转化链路优化：付费成功 → 付费后交付段（定级体验课 → 报告 → 排课解锁）。
+      // 转化链路优化：任一订阅触点（含 Tab 会员入口）付费成功 → 付费后交付段（定级体验课 → 报告 → 排课解锁）。
       if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
       closePaywallPortrait();
       showPayToast("Premium unlocked 🎉");
@@ -12869,11 +12869,7 @@
         if (ms <= 0) {
           stopWinbackCountdown();
           timerBox?.classList.add("is-ended");
-          // Auto-close at 00:00 — stop the offer and return to the trigger page
-          // (stays at 00:00 briefly, then dismisses; no fake reset, no re-show today).
-          setTimeout(() => {
-            if ($("#screen-winback")?.classList.contains("active")) dismissWinback("countdown_end");
-          }, 900);
+          // 归零停在 00:00、不自动关页（与线上折扣订阅页一致）。
         }
       };
       if (winbackTimer) clearInterval(winbackTimer);
@@ -12885,7 +12881,7 @@
       if (winbackTimer) { clearInterval(winbackTimer); winbackTimer = null; }
     }
 
-    function dismissWinback() { // reason: close · countdown_end (attribution only)
+    function dismissWinback() { // reason: close (attribution only)
       stopWinbackCountdown();
       enterLandscape();
       showLandScreen(winbackReturnScreen || "screen-class");
@@ -12898,11 +12894,7 @@
       profile.nextBillingDate = "Jul 8, 2026";
       profile.selectedPlan = "weekly";
       refreshUnlockState();
-      // 从课程报告「解锁更多」进限时折扣页并订阅 → 直接进已解锁的 Class 首页。
-      if (cxStage === "pay-report") { cxStage = "paid"; enterLandscape(); if (typeof showClassHome === "function") showClassHome(); showPayToast("Premium unlocked 🎉"); return; }
-      // Tab 会员入口购买（经挽留后成交）→ 直接解锁并回 hub。
-      if (cxStage === "pay-tab") { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
-      // 转化链路优化：周卡挽留订阅成功 → 付费后交付段。
+      // 转化链路优化：任一订阅触点（报告解锁 / Tab 会员入口 / 周卡挽留）付费成功 → 付费后交付段（定级体验课）。
       if (cxStage) { cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); showPayToast("Premium unlocked 🎉"); return; }
       enterLandscape();
       showLandScreen(winbackReturnScreen || "screen-class");
@@ -12927,7 +12919,7 @@
     }
 
     $("#btn-wb-close")?.addEventListener("click", () => {
-      // 转化链路优化：足球课退出的周卡挽留关闭 → 回常规首页 home（未付费态）。
+      // 转化链路优化：新人引导课退出的周卡挽留关闭 → 回常规首页 home（未付费态）。
       if (cxStage === "winback") { cxStage = "home"; window.cxToHome && window.cxToHome(); return; }
       dismissWinback("close");
     });
@@ -13682,7 +13674,7 @@
         } },
       { label: "⑥ 新手引导 · 四步轻量引导（Dino 打招呼 / Play 一览 / Explore 听电台 / Class 选老师）", run: function () {
           // 每步模块介绍气泡开场（框选内容区+Tab 标签，带 Next）：Dino 胶囊脉冲进对话打招呼 /
-          // Play 仅介绍（答题游戏玩中学）/ Explore 听一段电台 / 真实选老师 + 足球课首课卡；引导不发金币/XP。
+          // Play 仅介绍（答题游戏玩中学）/ Explore 听一段电台 / 真实选老师 + 新人引导课首课卡；引导不发金币/XP。
           if (window.cxStartCoach) window.cxStartCoach();
         } },
       { label: "⑥b 新手引导 · 中途退出重进（从首个未完成步续起）", run: function () {
@@ -13699,7 +13691,7 @@
           // Dino 继续引导：选老师即开始第一节免费体验课，选完直接进上课。
           if (window.cxToTeacher) window.cxToTeacher();
         } },
-      { label: "⑨ 足球主题体验课 · 上课页（课程与课中引导方案由 Rosa 输出）", run: function () {
+      { label: "⑨ 新人引导课 · 上课页（课程与课中引导方案由 Rosa 输出）", run: function () {
           if (window.cxToFootball) window.cxToFootball();
         } },
       { label: "⑩ 课程报告 · 非会员（只留 Unlock more courses）", run: function () {
@@ -13796,7 +13788,7 @@
   <!-- ============================================================= -->
   <!-- 转化链路优化 · 引导浮层（追加层，不改动 V1.4.1 任何现有页面/逻辑） -->
   <!-- 复用真实页面：welcome/login/name/age/placement/goal-value/study-plan/paywall/teacher/winback/trial-report/class -->
-  <!-- 新增页面(cx-*)：新手村 · 足球课免费预览 · 每日折扣 · 定级体验课 intro -->
+  <!-- 新增页面(cx-*)：新手村 · 新人引导课 · 每日折扣 · 定级体验课 intro -->
   <!-- ============================================================= -->
   <style>
     #cx-panel{position:fixed;left:14px;top:14px;width:246px;max-height:calc(100vh - 28px);z-index:9000;
@@ -13907,7 +13899,7 @@
     //  dot0 Dino  : p0 介绍即入口（原生气泡圈 Dino，Chat with Dino 胶囊脉冲曝光 + 指引手，点任意处真实进对话页 + 重写开场白）→ p1 点麦克风（脚本化一轮对话）→ 真实返回
     //  dot1 Play  : p2 介绍（圈 play-grid，点任意处/Next 推进，不进功能页）
     //  dot2 Explore: p3 介绍（圈 explore-entries）→ p4 点 Listening 入口（直达首个未锁电台的真实播放页，列表页不停留）→ p5 被动欣赏 ~3.2s（真实时钟，Next 可提前结束）→ 真实暂停 + 返回
-    //  dot3 Class : p6 介绍（圈 Class 内容区）→ p7 点老师卡（真实打开选老师页；已选过则自动跳过）→ p8 自由点选任意老师 + Save 回 Class → p9 点足球预览课首课卡（Start Learning；不转发、不进课堂）→ 庆祝 + Paywall②
+    //  dot3 Class : p6 介绍（圈 Class 内容区）→ p7 点老师卡（真实打开选老师页；已选过则自动跳过）→ p8 自由点选任意老师 + Save 回 Class → p9 点新人引导课首课卡（Start Learning；不转发、不进课堂）→ 庆祝 + Paywall②
     var coachEl = null, coachPhase = 0, coachBusy = false, coachTimers = [], coachPoll = null;
     function coachName(){ return (typeof getDisplayName === "function" && getDisplayName()) || "your child"; }
     function coachFill(str){ return String(str).replace(/\{name\}/g, coachName()); }
@@ -13967,7 +13959,7 @@
       { dot:2, passive:true, next:true, enter:coachEnjoyRadio,   // p5 被动欣赏 ~3.2s（真实时钟），Next 可提前结束
         target:function(){ return null; },
         copy:"Enjoy! {name} can switch songs and stories anytime here." },
-      // ---- dot3 · Class 选老师 + 足球预览课首课卡（终点，不进课堂）----
+      // ---- dot3 · Class 选老师 + 新人引导课首课卡（终点，不进课堂）----
       { dot:3, next:true, enter:function(){ coachHubTab("class"); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },   // p6 模块介绍
         target:function(){ return document.querySelector("#hub-panel-class .class-hub-main"); },
         tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="class"]'); },
@@ -13986,8 +13978,8 @@
         target:function(){ return document.querySelector("#screen-teacher .land-body.teacher-pick"); },
         copy:"First, pick a teacher {name} likes!",
         tap:coachPickTeacher },
-      { dot:3,   // p9 点足球预览课首课卡（Start Learning 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
-        // 选老师确认走真实 showClassHome() 重渲染，会清掉注入的足球卡 → 进本步时重新注入，避免回退高亮正式课卡
+      { dot:3,   // p9 点新人引导课首课卡（Start Learning 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
+        // 选老师确认走真实 showClassHome() 重渲染，会清掉注入的引导课卡 → 进本步时重新注入，避免回退高亮正式课卡
         enter:function(){ if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },
         target:function(){ return document.getElementById("cx-fb-card") || document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
         copy:"Now tap the first lesson. Time to learn!",
@@ -14239,14 +14231,14 @@
     var COACH_DOT_START = [0, 2, 3, 6];
     window.cxStartCoach = function(fromDot){
       cxStage = "guide"; enterLandscape(); showClassHome();
-      if(window.cxEnsureFootballCard) window.cxEnsureFootballCard();   // B 组首课卡=足球预览课
+      if(window.cxEnsureFootballCard) window.cxEnsureFootballCard();   // B 组首课卡=新人引导课
       buildCoach(); coachClearTimers(); coachBusy = false;
       coachEl.style.display = "block";
       coachGoto(COACH_DOT_START[fromDot] || 0);   // 自带 rAF×2 + 280ms 重定位；可从 ⚙︎ States 反复重入
     };
-    // B 组付费前 Class 首页的本周首课卡 = 免费足球预览课（PRD 模块 10.1/14）：
-    // Free 标记 + Start Learning 按钮；引导 p13 圈选它，非引导态点按钮直接进足球课。
-    // renderClassWeek 重渲染会清掉本卡并恢复原 is-current，属预期（各 States 互不残留）。
+    // B 组付费前 Class 首页的本周首课卡 = 免费新人引导课（PRD 模块 10.1/14，内容按 Rosa 方案配置，demo 用占位素材）：
+    // Free 标记；未完课 CTA=Start Learning 进课，完课（__cxFbDone）转 View report 打开课程报告，中途退出不算完课。
+    // 引导 p13 圈选它；renderClassWeek 重渲染会清掉本卡并恢复原 is-current，属预期（各 States 互不残留）。
     window.cxEnsureFootballCard = function(){
       var list = document.getElementById("class-week-list");
       if(!list || document.getElementById("cx-fb-card")) return;
@@ -14257,20 +14249,21 @@
       card.innerHTML =
         '<div class="class-home-course-scroll">'
         +'<div class="course-card-top"><div class="course-card-topcopy">'
-        +'<span class="course-card-stage">Free preview · World Cup</span>'
-        +'<h3 class="course-card-title">World Cup Class</h3>'
+        +'<span class="course-card-stage">Free · Starter class</span>'
+        +'<h3 class="course-card-title">Starter Class</h3>'
         +'<div class="course-card-meta-row"><span class="all-courses-card-status">with Teacher Max</span><span class="all-courses-card-duration">15 min</span></div>'
         +'</div>'
         +'<div class="course-card-thumb" aria-hidden="true"><span class="course-card-thumb-badge">Free</span>'
         +'<img src="assets/quiz/quiz-dino.png" alt="" decoding="async" onerror="this.src=\'assets/dino-mascot.png\'"/></div></div>'
-        +'<div class="course-card-lines course-content-preview">Greet · Word: goal! · Video · Practice · Report</div>'
+        +'<div class="course-card-lines course-content-preview">Greet · Word: hello! · Video · Practice · Report</div>'
         +'</div>'
         +'<div class="course-card-actions class-home-actions"><div class="course-card-cta-wrap">'
-        +'<button type="button" class="btn btn-primary" data-cx-fb-start>Start Learning</button>'
+        +'<button type="button" class="btn btn-primary" data-cx-fb-start>' + (window.__cxFbDone ? "View report" : "Start Learning") + '</button>'
         +'</div></div>';
       list.insertBefore(card, list.firstChild);
       card.querySelector("[data-cx-fb-start]").addEventListener("click", function(ev){
         ev.stopPropagation();
+        if(window.__cxFbDone){ cxStage = "home"; if(window.cxShowReport) window.cxShowReport(); return; }
         if(window.cxToFootball) window.cxToFootball();
       });
       if(typeof centerClassWeekCurrent === "function") requestAnimationFrame(centerClassWeekCurrent);
@@ -14278,13 +14271,13 @@
 
     addScreen("cx-football",
       '<div class="cx-fb" style="background-image:url(assets/quiz/quiz-bg.jpg)">'
-      +'<div class="cx-fb-top"><span onclick="cxExitFootball()" style="background:rgba(255,255,255,.16);padding:5px 10px;border-radius:999px;cursor:pointer;">✕ Exit preview</span>'
+      +'<div class="cx-fb-top"><span onclick="cxExitFootball()" style="background:rgba(255,255,255,.16);padding:5px 10px;border-radius:999px;cursor:pointer;">✕ Exit class</span>'
       +'<span style="background:rgba(255,255,255,.16);padding:5px 10px;border-radius:999px;">drag to explore</span></div>'
       +'<div class="cx-fb-sub" onclick="cxPaywall(\'pay3\')">⚡ Subscribe</div>'
       +'<img src="assets/quiz/quiz-dino.png" style="position:absolute;right:14px;bottom:150px;width:92px;z-index:3;" onerror="this.style.display=\'none\'"/>'
-      +'<div class="cx-fb-body"><span class="cx-newbadge">③ 足球课免费预览（新增，≠付费后定级体验课 · 课程与课中引导方案由 Rosa 输出）</span>'
-      +'<div style="font-family:var(--display,Sora);font-weight:800;font-size:1.2rem;">World Cup Class · with Max</div>'
-      +'<div style="font-size:.8rem;color:rgba(255,255,255,.75);margin:5px 0;">Part 2 of 5 · learning the word “goal!”</div>'
+      +'<div class="cx-fb-body"><span class="cx-newbadge">③ 新人引导课（新增，≠付费后定级体验课 · 课程与课中引导方案由 Rosa 输出）</span>'
+      +'<div style="font-family:var(--display,Sora);font-weight:800;font-size:1.2rem;">Starter Class · with Max</div>'
+      +'<div style="font-size:.8rem;color:rgba(255,255,255,.75);margin:5px 0;">Part 2 of 5 · learning the word “hello!”</div>'
       +'<div class="cx-scrub"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>'
       +'<div class="cx-parts"><span>Greet</span><span>Word</span><span>Video</span><span>Practice</span><span>Report</span></div>'
       +'<button class="cx-btn" style="background:rgba(255,255,255,.18);color:#fff;" onclick="cxExitFootball()">Sample report → exit</button></div></div>');
@@ -14364,11 +14357,11 @@
         var h1 = document.getElementById("teacher-guide-h1"), h2 = document.getElementById("teacher-guide-h2"), btn = document.getElementById("btn-confirm-teacher");
         var tnm = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
         if(h1) h1.textContent = "Let's start " + tnm + "'s first free lesson!";
-        if(h2) h2.textContent = "Dino here 👋! Just pick a teacher and we'll jump straight into class. You can switch anytime.";
+        if(h2) h2.textContent = "Pick a teacher " + tnm + " likes and jump right into class. You can switch anytime.";
         if(btn) btn.textContent = "Pick & start free class →";
       }, 30);
     };
-    // ③ 足球课 = 真实「上课」页（与选老师→体验课一致，都是上课），走 openClassroomDemo。
+    // ③ 新人引导课 = 真实「上课」页（与选老师→体验课一致，都是上课），走 openClassroomDemo。
     window.cxToFootball = function(){ cxStage = "football"; if(typeof openClassroomDemo==="function"){ openClassroomDemo("cx-football"); } else { enterPortrait(); showPortraitScreen("cx-football"); } };
     window.cxPaywall = function(stage){ cxStage = stage; openPaywall("screen-class", "cx"); };
     window.cxExitFootball = function(){ cxStage = "winback"; if(typeof openWinback==="function"){ openWinback("cx_football_exit", "cx", "screen-class"); } else { enterPortrait(); showPortraitScreen("screen-winback"); } };
@@ -14385,7 +14378,7 @@
       else { btn.textContent = "🔓 Unlock more courses"; btn.className = "cx-btn amber"; btn.onclick = function(){ cxStage = "pay-report"; if(typeof openWinback==="function") openWinback("cx_report", "cx_report", "screen-class"); else if(typeof openPaywall==="function") openPaywall("screen-class", "cx_report"); }; }
     };
     window.cxToUnlockedHome = function(){ try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); };
-    window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); };
+    window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); };
 
     // 新增页倒计时（可见时每秒递减，纯视觉）。
     setInterval(function(){
@@ -14552,7 +14545,7 @@
     })();
 
     // ⑦ 上课页会员入口（只说明限时折扣，不做倒计时），点击进 Paywall。
-    // 是否显示看是否已付费：已付费（如付费后的定级课）隐藏，未付费（免费足球课）显示——由 openClassroomDemo 同步。
+    // 是否显示看是否已付费：已付费（如付费后的定级课）隐藏，未付费（免费新人引导课）显示——由 openClassroomDemo 同步。
     ["screen-inclass-teach","screen-inclass-pt","screen-inclass-quiz"].forEach(function(id){
       var scr = document.getElementById(id); if(!scr || scr.querySelector(".cx-ic-vip")) return;
       var pill = document.createElement("button"); pill.className = "cx-ic-vip";
@@ -14570,7 +14563,7 @@
         vip.type = "button";
         vip.id = "hub-cx-vip";
         vip.className = "hub-cx-vip";
-        vip.innerHTML = '<span class="hcv-crown">👑</span> Unlock all';
+        vip.innerHTML = '<span class="hcv-crown">👑</span> Go Premium';
         vip.onclick = function(){ cxStage = "pay-tab"; if(typeof openPaywall==="function") openPaywall("screen-class", "cx_tab"); };
         hub.appendChild(vip);
       }
@@ -14585,15 +14578,14 @@
     })();
 
     // 说明：体验课(定级课)报告已改为「会员=领取学习计划 / 非会员=回到 class」（见 renderTrialReport +
-    // btn-trip-start），不再在此注入「Unlock more courses」按钮；免费足球课报告(cx-report)有自己的解锁入口。
+    // btn-trip-start），不再在此注入「Unlock more courses」按钮；免费新人引导课报告(cx-report)有自己的解锁入口。
 
     // ④ Paywall「Subscribe now」→ 弹「系统订阅确认」抽屉（mock App Store 流程），确认后再完成购买。
     function cxDoPurchase(){
       try{ profile.premiumUnlocked = true; profile.maxReachedLevelId = profile.currentLevelId; profile.nextBillingDate = "Jul 8, 2026"; }catch(e){}
       if(typeof refreshUnlockState==="function") refreshUnlockState();
-      if(cxStage === "pay-report"){ cxStage = "paid"; enterLandscape(); if(typeof showClassHome==="function") showClassHome(); }
-      else if(cxStage === "pay-tab"){ cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); }
-      else if(cxStage){ cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); }
+      // 转化链路优化：任一订阅触点付费成功 → 定级体验课 intro（PRD 模块 12）。
+      if(cxStage){ cxStage = "paid"; window.cxToLeveltest && window.cxToLeveltest(); }
       else if(typeof closePaywallPortrait==="function"){ closePaywallPortrait(); }
       if(typeof showPayToast==="function") showPayToast("Premium unlocked 🎉");
     }
