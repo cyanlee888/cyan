@@ -1110,7 +1110,20 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   setActive(initial||current);
   if(!location.hash&&current){
     var t=document.querySelector(current.getAttribute('href'));
-    if(t){window.addEventListener('load',function(){setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'});},400);});}
+    if(t){
+      // 用户一旦自己滚动就不再自动定位，避免抢焦点
+      var userScrolled=false, mark=function(){userScrolled=true;};
+      window.addEventListener('wheel',mark,{passive:true,once:true});
+      window.addEventListener('touchmove',mark,{passive:true,once:true});
+      window.addEventListener('keydown',function(e){if(['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].indexOf(e.key)>=0)mark();});
+      // 立即定位（瞬时，不用 smooth 以免动画被后续重排打断）；再在载入后与字体就绪后各校正一次——
+      // Web 字体异步换入会引起重排，只在单次固定延时定位会因位置漂移停在别的版本
+      var goCurrent=function(){if(!userScrolled)t.scrollIntoView({block:'start'});};
+      requestAnimationFrame(goCurrent);
+      if(document.readyState==='complete'){setTimeout(goCurrent,200);}
+      else{window.addEventListener('load',function(){setTimeout(goCurrent,200);});}
+      if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){setTimeout(goCurrent,60);});}
+    }
   }
 })();
 
