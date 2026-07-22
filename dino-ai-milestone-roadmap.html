@@ -397,7 +397,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="meta-row">
     <span data-zh="来源 <b>AI-里程碑 v2.0 · 李双-里程碑</b>">Source <b>AI Milestones v2.0 · Li Shuang</b></span>
     <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
-    <span data-zh="更新 <b>2026.07.21</b>">Updated <b>2026.07.21</b></span>
+    <span data-zh="更新 <b>2026.07.22</b>">Updated <b>2026.07.22</b></span>
   </div>
 </header>
 
@@ -447,6 +447,7 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n143" data-zh="<b>V1.4.3</b>对话记忆·课中"><b>V1.4.3</b>Memory · in-class</a>
     <a href="#n150" data-zh="<b>V1.5.0</b>品牌切换"><b>V1.5.0</b>Rebrand</a>
     <a href="#n160" data-zh="<b>V1.6.0</b>每日学习"><b>V1.6.0</b>Daily learning</a>
+    <a href="#n170" data-zh="<b>V1.7.0</b>家庭·内容"><b>V1.7.0</b>Family · content</a>
   </div>
 </nav>
 
@@ -948,7 +949,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='品牌切换 · 对话进化 · 教学模版与课中打磨<span class="tag">迭代版</span>'>Rebrand · chat evolution · templates & in-class polish<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化 + 课中体验打磨。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移；对话流式输出；分 level 模版整理、trace 字母、Prompt Forge eval agent 与 CMS / prompt eval 平台；金币激励声音与静默冲突等课中打磨。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，体系化教学内容并打磨课堂体验。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library + in-class polish.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration; streaming chat output; level-based template reorganization, letter-tracing, a Prompt Forge eval agent and the CMS / prompt-eval platforms; coin-sound and silence-conflict in-class polish.<br/><b>Value</b>: a unified brand, smooth migration of paying users, systematized teaching content, and a more polished classroom experience. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：品牌切换 + 对话进化 + 教学模版体系化 + 课中体验打磨。<br/><b>核心内容</b>：改名 Dino AI 与付费权益迁移；对话流式输出；分 level 模版整理、Prompt Forge eval agent 与 CMS / prompt eval 平台；静默与打断冲突处理等课中打磨。<br/><b>价值</b>：统一品牌、平滑迁移老付费用户，体系化教学内容并打磨课堂体验。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: brand switch + chat evolution + a systematized template library + in-class polish.<br/><b>Core</b>: the Dino AI rename with a paid-benefit migration; streaming chat output; level-based template reorganization, a Prompt Forge eval agent and the CMS / prompt-eval platforms; silence/interruption-conflict in-class polish.<br/><b>Value</b>: a unified brand, smooth migration of paying users, systematized teaching content, and a more polished classroom experience. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · 整体 App · 品牌与迁移'>Requirements · app-wide, brand & migration</h4>
@@ -960,7 +961,6 @@ section[id],.node[id]{scroll-margin-top:64px}
       <div class="block">
         <h4 data-zh='需求 · Class 课程 · 课中 UI 与体验'>Requirements · Class, in-class UI & experience</h4>
         <ul>
-          <li data-zh='<b>金币激励声音优化</b><span class="p0">P0</span>：缩短动效过渡，不打断心流'><b>Coin-reward sound polish</b><span class="p0">P0</span>: shorter transitions between effects, no flow-breaking</li>
           <li data-zh='<b>静默与打断冲突处理</b><span class="p0">P0</span>：静默触发与用户说话时序冲突导致回复错乱'><b>Silence / interruption conflict handling</b><span class="p0">P0</span>: fixing garbled replies when a silence trigger races with the user speaking</li>
         </ul>
       </div>
@@ -970,9 +970,7 @@ section[id],.node[id]{scroll-margin-top:64px}
           <li data-zh='<b>CMS 课程生产平台</b><span class="p0">P0</span>：导入大纲 / lesson plan / prompt / 资源配置，二期批量产课 + 个性化组课'><b>CMS lesson-production platform</b><span class="p0">P0</span>: outline import / lesson-plan / prompt / asset configuration; phase 2 adds batch production + personalized assembly</li>
           <li data-zh='<b>prompt eval 平台</b><span class="p0">P0</span>：6 节体验课与主题课 prompt 自动化优化'><b>Prompt-eval platform</b><span class="p0">P0</span>: automated prompt tuning for the 6 trial lessons and theme lessons</li>
           <li data-zh='<b>正课教学模版分 level 整理</b><span class="p1">P1</span>：分 level 整理全部模版 prompt、优化教学规则与动作'><b>Reorganize lesson templates by level</b><span class="p1">P1</span>: sort all template prompts by level, refine teaching rules & motions</li>
-          <li data-zh='<b>新增 trace 字母教学模版</b><span class="p1">P1</span>：练习字母写法'><b>New letter-tracing template</b><span class="p1">P1</span>: practice letter forms</li>
           <li data-zh='<b>Prompt Forge 管台优化：eval agent</b><span class="p1">P1</span>：评估三层 prompt 的基础冲突问题'><b>Prompt Forge console: eval agent</b><span class="p1">P1</span>: catch base conflicts across the three prompt layers</li>
-          <li data-zh='<b>写作课教学模版优化</b><span class="p2">P2</span>'><b>Writing-lesson template tuning</b><span class="p2">P2</span></li>
         </ul>
       </div>
       <div class="block">
@@ -994,7 +992,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   </div>
   <div class="node-body">
     <div class="node-title" data-zh='每日学习驱动 · 激励体系<span class="tag">迭代版</span>'>Daily-learning driver · motivation system<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以每日学习驱动 + 激励体系为核心。<br/><b>核心内容</b>：首页每日学习任务列表与 Dino 气泡承接、排行榜与每日连胜、单独 BYOM 课堂、语法课模版优化。<br/><b>价值</b>：养成每日学习习惯、强化动机与留存。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: built around a daily-learning driver plus the motivation system.<br/><b>Core</b>: a home daily learning-task list surfaced through the Dino bubble, leaderboard and daily streaks, a standalone BYOM classroom, grammar-template tuning.<br/><b>Value</b>: builds a daily learning habit, strengthening motivation and retention. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：以每日学习驱动 + 激励体系为核心。<br/><b>核心内容</b>：首页每日学习任务列表与 Dino 气泡承接、排行榜与每日连胜、单独 BYOM 课堂、trace 字母书写与各级别课型结构 review、语法课模版优化。<br/><b>价值</b>：养成每日学习习惯、强化动机与留存。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: built around a daily-learning driver plus the motivation system.<br/><b>Core</b>: a home daily learning-task list surfaced through the Dino bubble, leaderboard and daily streaks, a standalone BYOM classroom, letter-tracing and a level-by-level lesson-type structure review, grammar-template tuning.<br/><b>Value</b>: builds a daily learning habit, strengthening motivation and retention. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
     <div class="cols">
       <div class="block">
         <h4 data-zh='需求 · Dino Agent · 每日学习与激励'>Requirements · Dino Agent, daily learning & motivation</h4>
@@ -1005,10 +1003,62 @@ section[id],.node[id]{scroll-margin-top:64px}
         </ul>
       </div>
       <div class="block">
-        <h4 data-zh='需求 · Class 课程 · 教学模版'>Requirements · Class & teaching templates</h4>
+        <h4 data-zh='需求 · Class 课程 · 教学模版与课型'>Requirements · Class, templates & lesson types</h4>
         <ul>
           <li data-zh='<b>单独的 BYOM 课堂</b><span class="p1">P1</span>：基于用户上传照片快速生成个性化课，MVP 验证'><b>Standalone BYOM classroom</b><span class="p1">P1</span>: quickly generate a personalized lesson from user photos, as an MVP validation</li>
+          <li data-zh='<b>新增 trace 字母教学模版</b><span class="p1">P1</span>：练习字母写法'><b>New letter-tracing template</b><span class="p1">P1</span>: practice letter forms</li>
+          <li data-zh='<b>各级别课型结构 review 与优化</b>：逐级别梳理课型结构'><b>Level-by-level lesson-type structure review & tuning</b>: comb through the lesson-type structure at each level</li>
           <li data-zh='<b>语法课教学模版优化</b><span class="p1">P1</span>'><b>Grammar-lesson template tuning</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="minor-note">
+      <span class="minor-lab" data-zh='挂起项'>On hold</span>
+      <span data-zh='恢复课程中隐藏的 Dino 求助按键：暂缓，待课中交互整体评估后再定。'>Restore the hidden in-class Dino help button: deferred, pending an overall review of the in-class interaction.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ V1.7.0 ============ -->
+<section class="node reveal" id="n170">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">1.7.0</div>
+    <div class="node-sub" data-zh='家庭 · 内容拓展'>Family · content</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title" data-zh='家庭与内容拓展 · 本地化与账号<span class="tag">迭代版</span>'>Family & content expansion · localization & accounts<span class="tag">Iteration</span></div>
+    <div class="story" data-zh='<span class="lab">版本核心</span><b>方向</b>：面向家庭场景与内容拓展，叠加本地化与账号安全。<br/><b>核心内容</b>：家庭订阅套餐与多账号切换、家长学习周报；分级绘本 / 故事阅读；红点系统 + 新手引导 + 世界观说明；图片随系统语言本地化；账号绑定设备数限制。<br/><b>价值</b>：提升家庭客单与内容深度，完善新用户引导与账号安全。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.7.0 需求表 ↗</a>。'><span class="lab">Version core</span><b>Direction</b>: centered on family scenarios and content expansion, plus localization and account security.<br/><b>Core</b>: family subscription plans with multi-account switching, a parent weekly report; leveled picture books / story reading; a red-dot system + onboarding guide + world-setting intro; image localization following the system language; a per-account device-binding limit.<br/><b>Value</b>: lifts family ARPU and content depth while improving new-user guidance and account security. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.7.0 requirement list ↗</a>.</div>
+    <div class="cols">
+      <div class="block">
+        <h4 data-zh='需求 · 会员支付 · 家庭'>Requirements · membership & family</h4>
+        <ul>
+          <li data-zh='<b>家庭订阅套餐 + 多账号切换</b><span class="p2">P2</span>'><b>Family subscription plan + multi-account switching</b><span class="p2">P2</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · Profile · 家长'>Requirements · Profile & parents</h4>
+        <ul>
+          <li data-zh='<b>家长学习周报</b><span class="p1">P1</span>：个人中心入口'><b>Parent weekly learning report</b><span class="p1">P1</span>: entry in the profile center</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · Explore · 内容拓展'>Requirements · Explore & content</h4>
+        <ul>
+          <li data-zh='<b>分级绘本 / 故事阅读</b><span class="p1">P1</span>'><b>Leveled picture books / story reading</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · 登录注册及 Onboarding · 新手引导'>Requirements · login & onboarding</h4>
+        <ul>
+          <li data-zh='<b>红点系统 + 新手引导 + 世界观说明</b><span class="p1">P1</span>'><b>Red-dot system + onboarding guide + world-setting intro</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h4 data-zh='需求 · 整体 App · 本地化与账号'>Requirements · app-wide, localization & accounts</h4>
+        <ul>
+          <li data-zh='<b>图片本地化配置</b><span class="p1">P1</span>：随系统语言取不同物料，含产品内宣传物料'><b>Image localization config</b><span class="p1">P1</span>: pull different assets by system language, including in-product marketing materials</li>
+          <li data-zh='<b>账号绑定设备数限制</b><span class="p2">P2</span>：每账号最多绑定 2–3 个设备'><b>Per-account device-binding limit</b><span class="p2">P2</span>: cap each account at 2–3 bound devices</li>
         </ul>
       </div>
     </div>
