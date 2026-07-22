@@ -10230,8 +10230,8 @@
     const CX_GOAL_SHORT = {
       confidence: "Speak confidently",
       school: "Better school English",
-      path: "A clear path",
-      daily: "Everyday & travel",
+      path: "A strong foundation",
+      daily: "Everyday English",
       habit: "A steady habit",
     };
     function renderStudyPlanScreen() {
@@ -12361,10 +12361,10 @@
     // the subject pronoun (13–17 and 18+ share the teen/adult variant).
     // 转化链路优化：第 4 题「目标」——单选。目标决定后续家长决策页话术的精准度。
     const CX_GOALS = [
-      ["confidence", "🗣️ Speak with confidence"],
+      ["confidence", "🗣️ Speak English with confidence"],
       ["school",     "🏫 Improve English for school"],
-      ["path",       "🧭 Follow a clear learning path"],
-      ["daily",      "✈️ Use English in daily life and travel"],
+      ["path",       "🧱 Build a strong foundation in English"],
+      ["daily",      "💬 Use English in everyday situations"],
       ["habit",      "📅 Build a consistent learning habit"],
     ];
     function fillGoalValuePage() {
@@ -13913,13 +13913,13 @@
       // 聚光罩住 Dino 形象+气泡+入口胶囊，点任意处或悬浮 Next 推进，不进对话页。
       { dot:0, next:true, nativeBubble:true, enter:function(){ coachHubTab("dino"); },
         target:function(){ return document.querySelector("#hub-panel-dino .dino-night-char"); },
-        copy:'Hi {name}! I\'m Dino, your English buddy. We can chat anytime, and I\'m always right here!',
+        copy:'Hi! I\'m Dino, {name}\'s English buddy. {name} can chat with me anytime, and I\'m always right here!',
         tap:coachIntroTap(1) },
       // ---- dot1 · Play：仅模块介绍（文案讲清「答题游戏 · 玩中学」）----
       { dot:1, next:true, enter:function(){ coachHubTab("play"); },   // p1 模块介绍
         target:function(){ return document.querySelector("#hub-panel-play .play-grid"); },
         tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="play"]'); },
-        copy:"This is Play! Answer questions in fun games, win Dino Figures. {name} learns by playing!",
+        copy:"This is Play! {name} can answer questions in fun games, win Dino Figures, and learn by playing!",
         tap:coachIntroTap(2) },
       // ---- dot2 · Explore：仅模块介绍（不进电台）----
       { dot:2, next:true, enter:function(){ coachHubTab("practice"); },   // p2 模块介绍
