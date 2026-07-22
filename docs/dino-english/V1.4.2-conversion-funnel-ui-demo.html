@@ -8761,7 +8761,7 @@
       profile.profileComplete = true;
       enterLandscape();
       if (profile.hasStartedClass) {
-        showClassHome();
+        showDinoHome();
       } else {
         openTeacherPicker("onboarding");
       }
@@ -9375,6 +9375,13 @@
       enterLandscape();
       fillClassTab();
       setHubTab("class");
+      showLandScreen("screen-class");
+    }
+    // 老账号登录 / 首次进 App：默认落 Dino Tab（App 首页）；转化流程内的回主页仍走 showClassHome。
+    function showDinoHome() {
+      enterLandscape();
+      fillClassTab();
+      setHubTab("dino");
       showLandScreen("screen-class");
     }
     // 方案二: All Courses is now reached from the Learning Path (map → "View lessons")
