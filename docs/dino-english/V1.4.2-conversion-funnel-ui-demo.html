@@ -13913,29 +13913,29 @@
       // 聚光罩住 Dino 形象+气泡+入口胶囊，点任意处或悬浮 Next 推进，不进对话页。
       { dot:0, next:true, nativeBubble:true, enter:function(){ coachHubTab("dino"); },
         target:function(){ return document.querySelector("#hub-panel-dino .dino-night-char"); },
-        copy:'Hi! I\'m Dino, {name}\'s English buddy. {name} can chat with me anytime, and I\'m always right here!',
+        copy:'Hi, I\'m Dino—{name}\'s English buddy! We can practice speaking anytime.',
         tap:coachIntroTap(1) },
       // ---- dot1 · Play：仅模块介绍（文案讲清「答题游戏 · 玩中学」）----
       { dot:1, next:true, enter:function(){ coachHubTab("play"); },   // p1 模块介绍
         target:function(){ return document.querySelector("#hub-panel-play .play-grid"); },
         tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="play"]'); },
-        copy:"This is Play! {name} can answer questions in fun games, win Dino Figures, and learn by playing!",
+        copy:"{name} can learn through games and collect Dino Figures here!",
         tap:coachIntroTap(2) },
       // ---- dot2 · Explore：仅模块介绍（不进电台）----
       { dot:2, next:true, enter:function(){ coachHubTab("practice"); },   // p2 模块介绍
         target:function(){ return document.querySelector("#hub-panel-practice .explore-entries"); },
         tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="practice"]'); },
-        copy:"This is Explore! {name} can read stories, listen to radio and practice speaking here.",
+        copy:"{name} can read, listen, and practice speaking here.",
         tap:coachIntroTap(3) },
       // ---- dot3 · Class 选老师 + 新人引导课首课卡（唯一动手步，终点不进课堂）----
       { dot:3, next:true, enter:function(){ coachHubTab("class"); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },   // p3 模块介绍
         target:function(){ return document.querySelector("#hub-panel-class .class-hub-main"); },
         tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="class"]'); },
-        copy:"This is Class! All of {name}'s lessons live here. Tap to get ready!",
+        copy:"{name}'s weekly lessons are all here.",
         tap:coachIntroTap(4) },
       { dot:3, skip:coachTeacherDone,   // p4 点 Class Tab 老师卡 → 真实打开选老师页（app 模式：Save 后回 Class）
         target:function(){ return document.querySelector("#hub-panel-class .class-teacher-card"); },
-        copy:"First, pick a teacher {name} likes!",
+        copy:"First, choose a teacher {name} likes.",
         tap:function(){
           coachBusy = true;
           var btn = document.getElementById("btn-change-teacher");
@@ -13944,13 +13944,13 @@
         } },
       { dot:3, free:true, skip:coachTeacherDone,   // p5 自由点选：圈整个选老师区，点哪转发哪（任意老师可选）
         target:function(){ return document.querySelector("#screen-teacher .land-body.teacher-pick"); },
-        copy:"First, pick a teacher {name} likes!",
+        copy:"First, choose a teacher {name} likes.",
         tap:coachPickTeacher },
       { dot:3,   // p6 点新人引导课首课卡（Start Learning 按钮；不转发、不进课堂）→ 庆祝 + Paywall②
         // 选老师确认走真实 showClassHome() 重渲染，会清掉注入的引导课卡 → 进本步时重新注入，避免回退高亮正式课卡
         enter:function(){ if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); },
         target:function(){ return document.getElementById("cx-fb-card") || document.querySelector(".class-week-card.is-current") || document.querySelector("#screen-class .class-week-card"); },
-        copy:"Now tap the first lesson. Time to learn!",
+        copy:"Now, tap the first lesson to get started!",
         tap:coachFinishClass },
     ];
     // p4/p5 跳过条件：曾在任一入口确认过老师（引导重入时不再逼选）。
