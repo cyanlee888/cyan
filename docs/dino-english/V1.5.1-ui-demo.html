@@ -6357,7 +6357,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.5.1 · 课程升 / 降级 + Play 题型扩展 + 新手 8 日到访奖励，可在右上 ⚙︎ States 切换 A/B 曝光场景</p>
+  <p class="demo-bar">V1.5.1 · 课程升 / 降级 + Play 题型扩展 + 新手 8 日到访奖励，可在右上 ⚙︎ States 查看既有转化 A/B 链路下的奖励曝光</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8181,7 +8181,6 @@
       weekCaughtUp: false,
       kakaoPhoneBound: false,
       promoGovernorOff: false,
-      visitRewardExperiment: "treatment",
       visitRewardDay: "0",
       visitRewardExposure: "auto",
     };
@@ -14014,7 +14013,6 @@
       return toast;
     }
 
-    function inTreatment(){ return demoState.visitRewardExperiment === "treatment"; }
     function reward(){ return REWARDS[Math.max(0,Math.min(7,vr.dayIndex))] || REWARDS[0]; }
     function claimedCount(){
       var count = vr.dayIndex + 1;
@@ -14052,7 +14050,7 @@
       ensureUI();
       var entry = document.getElementById("visit-reward-entry");
       if(!entry) return;
-      var show = inTreatment() && vr.eligible && vr.granted;
+      var show = vr.eligible && vr.granted;
       entry.classList.toggle("is-visible",show);
       var uiDay = vr.dayIndex + 1;
       var d = document.getElementById("vre-day");
@@ -14094,7 +14092,7 @@
     }
 
     function showCompact(reason){
-      if(!inTreatment() || !vr.eligible || !vr.granted || vr.compactShown) return;
+      if(!vr.eligible || !vr.granted || vr.compactShown) return;
       var toast = ensureToast();
       if(!toast) return;
       var r = reward(), uiDay = vr.dayIndex + 1;
@@ -14116,7 +14114,7 @@
       renderEntry();
     }
     function openFull(source){
-      if(!inTreatment() || !vr.eligible || !vr.granted) return;
+      if(!vr.eligible || !vr.granted) return;
       if(source!=="entry" && !safeHome()){
         vr.pendingFull = true;
         showCompact("unsafe_full_request");
@@ -14134,7 +14132,7 @@
 
     function reconcile(id){
       renderEntry();
-      if(!inTreatment() || !vr.eligible || !vr.granted || vr.fullShown) return;
+      if(!vr.eligible || !vr.granted || vr.fullShown) return;
       clearTimeout(vr.timer);
       var mode = demoState.visitRewardExposure || "auto";
       if(mode==="deferred"){ vr.pendingFull = true; return; }
@@ -14161,7 +14159,6 @@
     }
 
     function grant(source){
-      if(!inTreatment()) return;
       vr.eligible = true;
       vr.granted = true;
       vr.pendingFull = true;
@@ -14186,20 +14183,6 @@
       renderEntry();
       reconcile(activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""));
     }
-    function setExperiment(v){
-      demoState.visitRewardExperiment = v==="control" ? "control" : "treatment";
-      if(inTreatment()){
-        vr.eligible = true;
-        vr.granted = true;
-        vr.pendingFull = true;
-      }else{
-        closeFull();
-        var toast = document.getElementById("visit-reward-toast");
-        if(toast) toast.classList.remove("show");
-      }
-      renderEntry();
-      reconcile(activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""));
-    }
     function setExposure(v){
       demoState.visitRewardExposure = ["auto","compact","deferred","full"].indexOf(v)!==-1 ? v : "auto";
       closeFull();
@@ -14220,7 +14203,6 @@
     function prime(day,exposure){
       vr.dayIndex = Math.max(0,Math.min(7,Number(day)||0));
       demoState.visitRewardDay = String(vr.dayIndex);
-      demoState.visitRewardExperiment = "treatment";
       demoState.visitRewardExposure = exposure || "auto";
       vr.eligible = true;
       vr.granted = true;
@@ -14309,7 +14291,6 @@
       open:openFull,
       close:closeFull,
       setDay:setDay,
-      setExperiment:setExperiment,
       setExposure:setExposure,
       resetVisuals:resetVisuals,
       openReview:openReview
@@ -14674,7 +14655,6 @@
     },
     getValue: function (key) {
       if (key === "experimentGroup") return demoState.experimentGroup;
-      if (key === "visitRewardExperiment") return demoState.visitRewardExperiment;
       if (key === "visitRewardDay") return demoState.visitRewardDay;
       if (key === "visitRewardExposure") return demoState.visitRewardExposure;
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
@@ -14693,7 +14673,7 @@
       var ctx = function (label, keys) {
         return {
           label: label,
-          keys: ["experimentGroup", "visitRewardExperiment", "visitRewardDay", "visitRewardExposure"].concat(keys || [])
+          keys: ["experimentGroup", "visitRewardDay", "visitRewardExposure"].concat(keys || [])
         };
       };
       var lw = document.querySelector("#wrap-landscape");
@@ -14737,9 +14717,6 @@
             showStudyPlan();
           }
         } },
-      { key: "visitRewardExperiment", label: "到访奖励实验",
-        options: [["control", "Control · 无奖励"], ["treatment", "Treatment · 8 日奖励"]],
-        apply: function (v) { window.VISIT_REWARD && window.VISIT_REWARD.setExperiment(v); } },
       { key: "visitRewardDay", label: "当前到访日",
         options: [["0", "D0 · Day 1"], ["1", "D1 · Day 2"], ["3", "D3 · Day 4"], ["7", "D7 · Day 8"]],
         apply: function (v) { window.VISIT_REWARD && window.VISIT_REWARD.setDay(v); } },
@@ -14882,7 +14859,7 @@
         run: withReviewProfile(function () { openExpandedPlayRequirement("wordpk"); }),
       } : null,
     ].filter(Boolean),
-    jumpsRewardLabel: "V1.5.1 · 新手 8 日到访奖励 · A/B 曝光场景",
+    jumpsRewardLabel: "V1.5.1 · 新手 8 日到访奖励 · 既有转化 A/B 链路曝光",
     jumpsReward: [
       { label: "A · 登录后：先轻提示，完整反馈延后", run: function () {
           window.VISIT_REWARD && window.VISIT_REWARD.openReview("a_post_login");
@@ -14904,13 +14881,6 @@
         } },
       { label: "D7 · Day 8：展示最终宝箱奖励", run: function () {
           window.VISIT_REWARD && window.VISIT_REWARD.openReview("d7_full");
-        } },
-      { label: "Control 对照组：首页无入口、无反馈", run: function () {
-          setExperimentGroup("b", false);
-          seedReviewProfile();
-          try { cxStage = "home"; } catch (e) {}
-          window.VISIT_REWARD && window.VISIT_REWARD.setExperiment("control");
-          showDinoHome();
         } },
     ],
     // ⚽ 世界杯主题课（运营位）专用快捷入口：入口卡三态 / 落地页五态 / 进课 / E3·E4 挽留弹窗。
