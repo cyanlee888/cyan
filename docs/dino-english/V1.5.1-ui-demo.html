@@ -6357,7 +6357,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.5.1 · 课程升 / 降级 + Play 题型扩展 + 新手 8 日到访奖励，可在右上 ⚙︎ States 查看既有转化 A/B 链路下的奖励曝光</p>
+  <p class="demo-bar">V1.5.1 · 课程升 / 降级 + Play 题型扩展 + 新人前 8 次到访奖励，可在右上 ⚙︎ States 查看签到日历各状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8181,8 +8181,7 @@
       weekCaughtUp: false,
       kakaoPhoneBound: false,
       promoGovernorOff: false,
-      visitRewardDay: "0",
-      visitRewardExposure: "auto",
+      visitRewardDaysLeft: "30",
     };
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -9127,7 +9126,7 @@
     }
     function onLoginSuccess() {
       const isNewAccount = !profile.profileComplete;
-      if (isNewAccount && window.VISIT_REWARD) window.VISIT_REWARD.grant("signup_result");
+      if (isNewAccount && window.VISIT_REWARD) window.VISIT_REWARD.unlock("signup_result");
       // New account with no profile yet (entered via "I already have an account"
       // but never went through Onboarding) → force questions-only info collection
       // starting at the first onboarding step (Who's learning, which now carries
@@ -13821,137 +13820,263 @@
   </script>
 
   <!-- ============================================================= -->
-  <!-- V1.5.1 · 新手 8 日到访奖励（叠加层）                         -->
-  <!-- 发奖与展示解耦：链路占用时轻提示，首个首页安全窗口再完整反馈。 -->
+  <!-- V1.5.1 · 30 天内新手 8 次到访奖励（签到日历浮层）             -->
+  <!-- 有效到访解锁奖励；用户点击 Claim 后发奖并播放揭晓动效。        -->
   <!-- ============================================================= -->
   <style>
     .visit-reward-entry{
-      position:absolute;top:11px;right:126px;z-index:62;display:none;align-items:center;gap:7px;
-      min-width:96px;height:42px;padding:5px 10px 5px 7px;border:1px solid rgba(255,255,255,.72);
-      border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(235,246,255,.94));
-      color:#18316b;box-shadow:0 8px 20px rgba(10,44,198,.24);cursor:pointer;font-family:var(--font);
+      position:absolute;top:10px;right:260px;z-index:62;display:none;align-items:center;justify-content:flex-start;gap:7px;
+      width:112px;height:44px;padding:5px 10px 5px 7px;border:1px solid rgba(255,255,255,.82);
+      border-radius:999px;background:rgba(255,255,255,.9);
+      color:#18316b;box-shadow:0 8px 20px rgba(10,44,198,.22),inset 0 0 0 1px rgba(255,255,255,.72);
+      cursor:pointer;font-family:var(--font);
     }
-    .visit-reward-entry.is-visible{display:flex;}
+    .hub-app--tab-dino .visit-reward-entry.is-visible{display:flex;}
     .visit-reward-entry:active{transform:scale(.97);}
     .visit-reward-entry .vre-gift{
-      width:31px;height:31px;border-radius:12px;display:grid;place-items:center;font-size:1.15rem;
-      background:linear-gradient(145deg,#fff8c9,#ffc333);box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),0 4px 9px rgba(255,160,20,.28);
+      display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;border-radius:10px;
+      background:linear-gradient(145deg,#fff8c9,#ffc333);font-size:1.18rem;line-height:1;
+      box-shadow:0 3px 8px rgba(159,86,0,.2);filter:drop-shadow(0 2px 3px rgba(159,86,0,.16));
     }
-    .visit-reward-entry .vre-copy{display:flex;flex-direction:column;align-items:flex-start;line-height:1.04;}
-    .visit-reward-entry .vre-copy b{font-family:var(--display);font-size:.7rem;font-weight:700;}
-    .visit-reward-entry .vre-copy span{margin-top:3px;font-size:.58rem;font-weight:800;color:#62729b;}
+    .visit-reward-entry .vre-label{font-family:var(--display);font-size:.56rem;font-weight:700;line-height:1.05;text-align:left}
     .visit-reward-entry .vre-dot{
-      position:absolute;right:-2px;top:-3px;width:11px;height:11px;border:2px solid #fff;border-radius:50%;
-      background:var(--cta-orange);box-shadow:0 2px 7px rgba(254,136,32,.52);
+      position:absolute;right:-2px;top:-2px;display:none;width:12px;height:12px;
+      border:2px solid #fff;border-radius:50%;background:#ff4f45;box-shadow:0 2px 6px rgba(116,15,24,.32);
     }
-
-    .visit-reward-toast{
-      position:absolute;left:50%;top:15px;z-index:9300;display:none;align-items:center;gap:10px;
-      max-width:calc(100% - 160px);padding:9px 15px 9px 10px;border:1px solid rgba(255,255,255,.82);
-      border-radius:999px;background:rgba(12,37,111,.94);color:#fff;
-      box-shadow:0 12px 28px rgba(5,20,75,.38);transform:translate(-50%,-18px);opacity:0;
-      transition:opacity .22s ease,transform .22s ease;pointer-events:none;font-family:var(--font);
-    }
-    .visit-reward-toast.show{display:flex;opacity:1;transform:translate(-50%,0);}
-    .visit-reward-toast .vrt-gift{width:30px;height:30px;border-radius:11px;display:grid;place-items:center;background:#ffc333;font-size:1rem;}
-    .visit-reward-toast .vrt-copy{min-width:0;white-space:nowrap;}
-    .visit-reward-toast .vrt-copy b{display:block;font-family:var(--display);font-size:.75rem;overflow:hidden;text-overflow:ellipsis;}
-    .visit-reward-toast .vrt-copy span{display:block;margin-top:2px;font-size:.59rem;color:#cfe4ff;overflow:hidden;text-overflow:ellipsis;}
+    .visit-reward-entry.has-pending .vre-dot{display:block;}
 
     .visit-reward-overlay{
-      position:absolute;inset:0;z-index:9250;display:none;align-items:center;justify-content:center;padding:18px;
-      background:radial-gradient(circle at 50% 28%,rgba(44,92,232,.25),rgba(5,13,60,.8));
-      backdrop-filter:blur(4px);
+      position:absolute;inset:0;z-index:9250;display:none;align-items:center;justify-content:center;
+      padding:18px;overflow:hidden;color:#fff;background:rgba(1,16,80,.68);
+      -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
     }
-    .visit-reward-overlay.show{display:flex;animation:vrFade .26s ease both;}
-    @keyframes vrFade{from{opacity:0}to{opacity:1}}
+    .visit-reward-overlay.show{display:flex;animation:vrOverlayIn .22s ease-out both;}
+    @keyframes vrOverlayIn{from{opacity:0}to{opacity:1}}
     .visit-reward-card{
-      position:relative;width:min(690px,94%);max-height:94%;display:grid;grid-template-columns:210px minmax(0,1fr);
-      gap:19px;padding:20px 20px 16px;border:2px solid rgba(129,249,227,.72);border-radius:28px;
+      position:relative;width:min(790px,96%);height:min(330px,92%);display:grid;
+      grid-template-rows:42px minmax(184px,1fr) 42px;gap:8px;padding:12px 18px 14px;
+      border:2px solid rgba(129,249,227,.74);border-radius:28px;
       background:
-        radial-gradient(circle at 14% 18%,rgba(255,248,55,.23),transparent 28%),
-        linear-gradient(145deg,#0a2cc6 0%,#0a54e1 58%,#367fdf 100%);
-      color:#fff;box-shadow:0 28px 70px rgba(3,13,70,.58),inset 0 0 0 1px rgba(255,255,255,.15);
-      overflow:hidden;
+        radial-gradient(circle at 50% 32%,rgba(45,172,226,.4),transparent 32%),
+        radial-gradient(circle at 12% 20%,rgba(255,248,55,.18),transparent 22%),
+        linear-gradient(145deg,#071b87 0%,#0a2cc6 38%,#0a54e1 70%,#2dace2 120%);
+      color:#fff;box-shadow:0 28px 56px rgba(1,16,80,.58),inset 0 0 0 1px rgba(255,255,255,.14);
+      overflow:hidden;animation:vrCardIn .32s var(--ease) both;transition:filter .2s ease,opacity .2s ease;
     }
+    .visit-reward-card.is-revealing{filter:brightness(.48) saturate(.7);opacity:.78;}
+    @keyframes vrCardIn{from{opacity:0;transform:translateY(12px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
     .visit-reward-card::before,.visit-reward-card::after{
       content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.78);box-shadow:0 0 15px rgba(255,255,255,.9);
     }
-    .visit-reward-card::before{width:5px;height:5px;top:22px;left:43%;box-shadow:78px 20px 0 -1px rgba(255,255,255,.7),198px 4px 0 rgba(255,255,255,.5),286px 60px 0 -1px #fff;}
-    .visit-reward-card::after{width:4px;height:4px;right:54px;bottom:48px;box-shadow:-100px 10px 0 rgba(255,255,255,.6),-234px -18px 0 -1px #fff;}
+    .visit-reward-card::before{width:4px;height:4px;top:24px;left:31%;box-shadow:128px 18px 0 -1px rgba(255,255,255,.7),310px -7px 0 rgba(255,255,255,.5),486px 48px 0 -1px #fff;}
+    .visit-reward-card::after{width:4px;height:4px;right:52px;bottom:124px;box-shadow:-170px 14px 0 rgba(255,255,255,.55),-390px -20px 0 -1px #fff,-640px 18px 0 -1px #e2ff5e;}
+    .visit-reward-head{
+      position:relative;z-index:4;display:flex;align-items:flex-start;justify-content:space-between;padding-right:46px;
+    }
+    .visit-reward-heading{display:flex;flex-direction:column;align-items:flex-start;min-width:0;}
     .visit-reward-close{
-      position:absolute;right:12px;top:11px;z-index:4;width:34px;height:34px;border:1px solid rgba(255,255,255,.28);
-      border-radius:50%;background:rgba(4,23,98,.34);color:#fff;font-size:1rem;cursor:pointer;
+      position:absolute;z-index:6;right:14px;top:12px;width:36px;height:36px;border:1px solid rgba(255,255,255,.44);
+      border-radius:50%;background:rgba(7,27,135,.44);color:#fff;font-family:var(--display);
+      font-size:1rem;font-weight:700;line-height:1;cursor:pointer;
     }
-    .visit-reward-hero{
-      position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      min-height:220px;border-radius:22px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.2);
+    .visit-reward-close:active{transform:scale(.94)}
+    .visit-reward-title{
+      margin:0;font-family:var(--display);font-size:1.24rem;line-height:1.08;font-weight:700;
     }
-    .visit-reward-orbit{
-      position:absolute;width:154px;height:154px;border:1px dashed rgba(158,255,250,.52);border-radius:50%;
-      animation:vrOrbit 12s linear infinite;
+    .visit-reward-countdown{
+      margin-top:3px;color:#e2ff5e;font-size:.62rem;font-weight:800;line-height:1.1;white-space:nowrap;
     }
-    .visit-reward-orbit::before,.visit-reward-orbit::after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#fff837;box-shadow:0 0 13px rgba(255,248,55,.9);}
-    .visit-reward-orbit::before{left:10px;top:29px}.visit-reward-orbit::after{right:7px;bottom:35px;background:#9efffa;}
-    @keyframes vrOrbit{to{transform:rotate(360deg)}}
-    .visit-reward-dino{position:relative;z-index:2;width:126px;height:126px;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(1,16,80,.36));}
-    .visit-reward-box{
-      position:relative;z-index:3;margin-top:-19px;padding:7px 17px;border-radius:14px;
-      background:linear-gradient(180deg,#fff837,#ffc333);color:#553400;font-family:var(--display);font-size:.8rem;font-weight:700;
-      box-shadow:0 6px 0 #e49118,0 12px 18px rgba(30,35,90,.28);
+    .visit-reward-days{
+      position:relative;z-index:3;display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));
+      align-items:stretch;gap:8px;min-width:0;
     }
-    .visit-reward-main{position:relative;z-index:2;min-width:0;display:flex;flex-direction:column;}
-    .visit-reward-eyebrow{margin:5px 0 3px;color:#e2ff5e;font-size:.66rem;font-weight:900;letter-spacing:.13em;text-transform:uppercase;}
-    .visit-reward-title{margin:0;padding-right:34px;font-family:var(--display);font-size:1.48rem;line-height:1.1;font-weight:700;}
-    .visit-reward-sub{margin:6px 0 9px;color:#dceaff;font-size:.72rem;line-height:1.35;}
-    .visit-reward-earned{display:flex;align-items:center;gap:8px;margin:0 0 9px;}
-    .visit-reward-pill{
-      display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:13px;background:rgba(255,255,255,.94);
-      color:#704d00;font-family:var(--display);font-size:.78rem;font-weight:700;box-shadow:0 6px 14px rgba(2,18,85,.18);
-    }
-    .visit-reward-pill.is-ticket{color:#633c8d;background:#f3e9ff;}
-    .visit-reward-days{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;margin:0 0 10px;}
     .visit-reward-day{
-      position:relative;min-width:0;padding:6px 2px 5px;border:1px solid rgba(255,255,255,.2);border-radius:10px;
-      background:rgba(255,255,255,.1);color:rgba(255,255,255,.72);text-align:center;
+      position:relative;min-width:0;min-height:82px;height:auto;padding:22px 6px 6px;border:1px solid rgba(255,255,255,.28);border-radius:14px;
+      background:linear-gradient(180deg,rgba(116,172,242,.38),rgba(10,44,198,.42));color:rgba(255,255,255,.84);
+      text-align:center;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
     }
-    .visit-reward-day b{display:block;font-size:.51rem}.visit-reward-day span{display:block;margin-top:3px;font-size:.8rem;}
+    .visit-reward-day b{
+      position:absolute;left:0;right:0;top:5px;display:block;font-family:var(--display);font-size:.54rem;
+      font-weight:700;letter-spacing:.03em;text-align:center;
+    }
+    .visit-reward-day img{display:block;width:42px;height:42px;margin:0 auto;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(1,16,80,.22))}
+    .visit-reward-day img.is-coins{border-radius:50%}
+    .visit-reward-day img.is-figure{width:46px;height:46px}
+    .visit-reward-day img.is-skin{width:46px;height:46px}
+    .visit-reward-day span{display:block;margin-top:2px;font-size:.58rem;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .visit-reward-day.is-claimed{background:rgba(165,255,186,.2);border-color:rgba(165,255,186,.7);color:#fff;}
-    .visit-reward-day.is-current{background:#fff;border-color:#fff;color:#0a2cc6;transform:translateY(-2px);box-shadow:0 7px 14px rgba(0,20,100,.22);}
-    .visit-reward-day.is-missed{opacity:.55;filter:saturate(.45);}
-    .visit-reward-day.is-current::after{content:"✓";position:absolute;right:-3px;top:-5px;width:13px;height:13px;border-radius:50%;display:grid;place-items:center;background:#28b46d;color:#fff;font-size:.52rem;font-weight:900;}
+    .visit-reward-day.is-current{background:#fff;border:3px solid var(--cta-orange,#FE8820);color:#0a2cc6;transform:translateY(-3px);box-shadow:0 8px 16px rgba(0,20,100,.26);padding:20px 4px 4px;}
+    .visit-reward-day.is-grand{
+      min-height:82px;height:auto;padding-top:22px;border:2px solid var(--star-gold,#FFC333);border-radius:16px;
+      background:
+        radial-gradient(circle at 72% 28%,rgba(255,248,55,.3),transparent 30%),
+        linear-gradient(145deg,rgba(255,195,51,.42),rgba(10,84,225,.72) 52%,rgba(10,44,198,.88));
+      box-shadow:0 0 20px rgba(255,195,51,.3),inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+    .visit-reward-day.is-grand::before{
+      content:"★";position:absolute;right:7px;top:5px;color:#fff837;font-size:.72rem;
+      filter:drop-shadow(0 0 7px rgba(255,248,55,.85));
+    }
+    .visit-reward-day.is-grand b{top:6px;color:#fff3a6;font-size:.63rem}
+    .visit-reward-day.is-grand img{width:56px;height:56px;margin-top:0}
+    .visit-reward-day.is-grand img.is-skin{width:60px;height:58px}
+    .visit-reward-day.is-grand span{font-size:.62rem;color:#fff}
+    .visit-reward-day.is-grand.is-current{
+      border:3px solid #fff837;color:#fff;transform:translateY(-5px);
+      background:linear-gradient(145deg,#ffb51f,#fe8820 46%,#0a54e1 110%);
+      box-shadow:0 0 26px rgba(255,248,55,.52),0 10px 18px rgba(0,20,100,.3);
+      padding-top:20px;
+    }
+    .visit-reward-check{position:absolute;right:6px;bottom:6px;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;background:#28b46d;color:#fff;font-size:.56rem;font-weight:900;}
+    .visit-reward-day.is-rewarding:not(.is-collectible){animation:vrDayPop .86s var(--ease) both;}
+    .visit-reward-day.is-rewarding.is-collectible{backface-visibility:hidden;transform-style:preserve-3d;animation:vrDayFlip .92s var(--ease) both;}
+    .visit-reward-day.is-rewarding img{animation:vrDayArt .58s .2s var(--ease) both;}
+    .visit-reward-day.is-rewarding .visit-reward-check{animation:vrDayCheck .34s .48s var(--ease) both;}
+    @keyframes vrDayPop{
+      0%{transform:translateY(-3px) scale(1);box-shadow:0 8px 16px rgba(0,20,100,.26)}
+      42%{transform:translateY(-12px) scale(1.12);box-shadow:0 0 0 7px rgba(255,248,55,.24),0 15px 28px rgba(0,20,100,.38)}
+      72%{transform:translateY(-2px) scale(.98);box-shadow:0 0 0 3px rgba(255,248,55,.12),0 8px 16px rgba(0,20,100,.26)}
+      100%{transform:translateY(-3px) scale(1);box-shadow:0 8px 16px rgba(0,20,100,.26)}
+    }
+    @keyframes vrDayFlip{
+      0%{transform:translateY(-3px) rotateY(0) scale(1)}
+      42%{transform:translateY(-10px) rotateY(90deg) scale(1.08);box-shadow:0 0 0 7px rgba(255,248,55,.2)}
+      68%{transform:translateY(-8px) rotateY(0) scale(1.1);box-shadow:0 0 0 4px rgba(255,248,55,.14),0 14px 24px rgba(0,20,100,.34)}
+      100%{transform:translateY(-3px) rotateY(0) scale(1);box-shadow:0 8px 16px rgba(0,20,100,.26)}
+    }
+    @keyframes vrDayArt{0%{opacity:.2;transform:scale(.55)}70%{opacity:1;transform:scale(1.18)}100%{opacity:1;transform:scale(1)}}
+    @keyframes vrDayCheck{0%{opacity:0;transform:scale(.25) rotate(-24deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
     .visit-reward-cta{
-      align-self:flex-start;min-width:158px;height:43px;border:0;border-radius:999px;
-      background:linear-gradient(180deg,var(--cta-orange-top),var(--cta-orange-bottom));color:#fff;
+      position:relative;z-index:4;justify-self:center;min-width:196px;height:42px;border:0;border-radius:999px;
+      background:linear-gradient(180deg,var(--cta-orange-top,#FCB141),var(--cta-orange-bottom,#FE8F26)) !important;color:#fff;
       font-family:var(--display);font-weight:700;font-size:.9rem;cursor:pointer;box-shadow:0 6px 0 #db6515,0 12px 20px rgba(7,22,92,.25);
+      transition:opacity .18s ease,transform .14s ease;
     }
+    .visit-reward-card.is-revealing .visit-reward-cta{opacity:.58;visibility:visible;pointer-events:none;}
+    .visit-reward-cta:disabled{cursor:default;}
     .visit-reward-cta:active{transform:translateY(2px);box-shadow:0 4px 0 #db6515,0 8px 15px rgba(7,22,92,.25);}
-    .visit-reward-rule{margin:7px 0 0;color:rgba(255,255,255,.68);font-size:.56rem;line-height:1.3;}
-    @media(max-width:700px){
-      .visit-reward-entry{right:112px;transform:scale(.92);transform-origin:top right}
-      .visit-reward-card{grid-template-columns:168px minmax(0,1fr);gap:14px;padding:15px 16px 13px}
-      .visit-reward-hero{min-height:205px}.visit-reward-dino{width:108px;height:108px}
-      .visit-reward-title{font-size:1.25rem}.visit-reward-sub{font-size:.66rem}
-      .visit-reward-day{padding:5px 1px}.visit-reward-day b{font-size:.46rem}
+    .visit-reward-celebration{
+      position:absolute;inset:0;z-index:9;display:grid;place-items:center;visibility:hidden;opacity:0;
+      pointer-events:none;perspective:760px;transition:opacity .14s ease,visibility 0s linear .14s;
     }
-    @media(prefers-reduced-motion:reduce){.visit-reward-orbit{animation:none}}
+    .visit-reward-celebration.is-showing{visibility:visible;opacity:1;transition-delay:0s;}
+    .vrc-inner{
+      position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      min-width:210px;min-height:190px;transform-style:preserve-3d;
+    }
+    .vrc-burst{
+      position:absolute;width:156px;height:156px;border-radius:50%;opacity:0;
+      background:
+        radial-gradient(circle,rgba(255,248,55,.9) 0 6%,rgba(255,195,51,.36) 7% 30%,transparent 67%),
+        repeating-conic-gradient(from 8deg,rgba(255,248,55,.9) 0 4deg,transparent 4deg 22deg);
+      -webkit-mask:radial-gradient(circle,transparent 0 19%,#000 20% 100%);
+      mask:radial-gradient(circle,transparent 0 19%,#000 20% 100%);
+      filter:drop-shadow(0 0 12px rgba(255,248,55,.72));
+    }
+    .vrc-art{
+      position:relative;z-index:2;width:118px;height:118px;object-fit:contain;opacity:0;
+      filter:drop-shadow(0 16px 18px rgba(1,16,80,.48));
+    }
+    .visit-reward-celebration.is-figure .vrc-art{width:148px;height:148px;}
+    .visit-reward-celebration.is-skin .vrc-art{width:150px;height:166px;}
+    .vrc-label{
+      position:relative;z-index:3;max-width:260px;margin-top:-8px;padding:8px 19px;border-radius:999px;
+      background:linear-gradient(180deg,var(--accent-yellow,#FFF837),var(--star-gold,#FFC333));
+      color:#563600;font-family:var(--display);font-size:.88rem;font-weight:700;line-height:1.1;text-align:center;
+      box-shadow:0 6px 0 #db8d18,0 12px 22px rgba(1,16,80,.34);opacity:0;
+    }
+    .visit-reward-celebration.is-showing .vrc-burst{animation:vrcBurst var(--vrc-duration,2s) ease-out both;}
+    .visit-reward-celebration.is-showing.is-coins .vrc-art{animation:vrcCoin var(--vrc-duration,1.4s) var(--ease) both;}
+    .visit-reward-celebration.is-showing.is-figure .vrc-art,
+    .visit-reward-celebration.is-showing.is-skin .vrc-art{animation:vrcCollectible var(--vrc-duration,2s) var(--ease) both;}
+    .visit-reward-celebration.is-showing .vrc-label{animation:vrcLabel var(--vrc-duration,2s) var(--ease) both;}
+    @keyframes vrcBurst{
+      0%{opacity:0;transform:scale(.25) rotate(-18deg)}
+      22%{opacity:1}
+      72%{opacity:.68}
+      100%{opacity:0;transform:scale(1.75) rotate(20deg)}
+    }
+    @keyframes vrcCoin{
+      0%{opacity:0;transform:translateY(18px) scale(.36) rotate(-14deg)}
+      18%{opacity:1;transform:translateY(-10px) scale(1.28) rotate(8deg)}
+      38%{transform:translateY(0) scale(1) rotate(0)}
+      70%{opacity:1;transform:translateY(-7px) scale(1.08)}
+      82%{opacity:1;transform:translateY(0) scale(1)}
+      100%{opacity:0;transform:translateY(-8px) scale(.72)}
+    }
+    @keyframes vrcCollectible{
+      0%{opacity:0;transform:translateY(14px) rotateY(-90deg) scale(.55)}
+      20%{opacity:1;transform:translateY(-8px) rotateY(8deg) scale(1.15)}
+      42%{transform:translateY(0) rotateY(0) scale(1)}
+      74%{opacity:1;transform:translateY(-6px) rotateY(0) scale(1.06)}
+      88%{opacity:1;transform:translateY(0) scale(1)}
+      100%{opacity:0;transform:translateY(-8px) scale(.86)}
+    }
+    @keyframes vrcLabel{
+      0%,13%{opacity:0;transform:translateY(12px) scale(.76)}
+      27%{opacity:1;transform:translateY(0) scale(1.08)}
+      42%,82%{opacity:1;transform:translateY(0) scale(1)}
+      100%{opacity:0;transform:translateY(-8px) scale(.9)}
+    }
+    .visit-reward-celebration.is-reduced .vrc-burst{display:none;}
+    .visit-reward-celebration.is-reduced .vrc-art,
+    .visit-reward-celebration.is-reduced .vrc-label{opacity:1;animation:none;}
+    @media(max-width:700px){
+      .visit-reward-entry{right:250px}
+      .visit-reward-overlay{padding:14px}
+      .visit-reward-card{width:98%;height:min(318px,94%);grid-template-rows:40px minmax(172px,1fr) 40px;padding:10px 13px 12px;border-radius:24px}
+      .visit-reward-title{font-size:1.12rem}
+      .visit-reward-countdown{font-size:.58rem}
+      .visit-reward-close{right:12px;top:10px;width:34px;height:34px}
+      .visit-reward-days{grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:6px}
+      .visit-reward-day{min-height:72px;height:auto;padding-left:4px;padding-right:4px}
+      .visit-reward-day.is-grand{min-height:72px;height:auto}
+      .visit-reward-day.is-grand img{width:52px;height:52px}
+      .visit-reward-day.is-grand img.is-skin{width:54px;height:54px}
+      .visit-reward-day b{font-size:.5rem}
+      .visit-reward-day span{font-size:.52rem}
+      .vrc-inner{min-height:170px}
+      .vrc-art{width:104px;height:104px}
+      .visit-reward-celebration.is-figure .vrc-art{width:132px;height:132px}
+      .visit-reward-celebration.is-skin .vrc-art{width:132px;height:146px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      .visit-reward-day.is-rewarding,
+      .visit-reward-day.is-rewarding img,
+      .visit-reward-day.is-rewarding .visit-reward-check,
+      .visit-reward-celebration .vrc-burst,
+      .visit-reward-celebration .vrc-art,
+      .visit-reward-celebration .vrc-label{animation:none}
+    }
   </style>
   <script>
   (function(){
+    // Figure / skin names below are sample draw results for the Demo.
+    // Production selection follows the PRD's inventory and skin-price rules.
     var REWARDS = [
-      { coins:10 }, { coins:10 }, { coins:10 }, { coins:20 },
-      { coins:10 }, { coins:20 }, { coins:20 }, { coins:50, ticket:1 }
+      { type:"coins", coins:20, label:"20 Coins", short:"20", preview:"20", art:"assets/v13fx/coin.png" },
+      { type:"figure", label:"Chef Dino", preview:"Figure", art:"assets/capsules/dino-dessert-4.png", previewArt:"assets/quiz/quiz-box.png" },
+      { type:"coins", coins:20, label:"20 Coins", short:"20", preview:"20", art:"assets/v13fx/coin.png" },
+      { type:"coins", coins:30, label:"30 Coins", short:"30", preview:"30", art:"assets/v13fx/coin.png" },
+      { type:"figure", label:"Pudding Dino", preview:"Figure", art:"assets/capsules/dino-dessert-5.png", previewArt:"assets/quiz/quiz-box.png" },
+      { type:"coins", coins:30, label:"30 Coins", short:"30", preview:"30", art:"assets/v13fx/coin.png" },
+      { type:"coins", coins:30, label:"30 Coins", short:"30", preview:"30", art:"assets/v13fx/coin.png" },
+      { type:"skin", label:"Dream Team Skin", preview:"Skin", art:"assets/skins/dreamteam.png", previewArt:"assets/quiz/quiz-box.png" }
     ];
     var vr = {
       eligible:false,
-      granted:false,
+      unlocked:false,
+      claimed:false,
+      claiming:false,
+      claimError:false,
       dayIndex:0,
-      pendingFull:false,
-      compactShown:false,
-      fullShown:false,
-      lastReason:"",
+      daysLeft:30,
+      pendingCalendar:false,
+      calendarShown:false,
       timer:null,
-      toastTimer:null
+      claimTimer:null,
+      revealTimer:null
     };
 
     function ensureUI(){
@@ -13961,8 +14086,8 @@
         entry.type = "button";
         entry.id = "visit-reward-entry";
         entry.className = "visit-reward-entry";
-        entry.setAttribute("aria-label","Open 8-day welcome gifts");
-        entry.innerHTML = '<span class="vre-gift" aria-hidden="true">🎁</span><span class="vre-copy"><b id="vre-day">Day 1</b><span id="vre-progress">1 / 8 gifts</span></span><i class="vre-dot" id="vre-dot"></i>';
+        entry.setAttribute("aria-label","Open welcome gifts");
+        entry.innerHTML = '<span class="vre-gift" aria-hidden="true">🎁</span><span class="vre-label">Welcome<br>Gifts</span><span class="vre-dot" aria-hidden="true"></span>';
         entry.addEventListener("click",function(){ openFull("entry"); });
         hub.appendChild(entry);
       }
@@ -13973,61 +14098,36 @@
         ov.className = "visit-reward-overlay";
         ov.setAttribute("aria-hidden","true");
         ov.innerHTML =
-          '<div class="visit-reward-card" role="dialog" aria-modal="true" aria-labelledby="vr-title">'
+          '<main class="visit-reward-card" role="dialog" aria-modal="true" aria-labelledby="vr-title">'
           +'<button type="button" class="visit-reward-close" id="vr-close" aria-label="Close">✕</button>'
-          +'<div class="visit-reward-hero"><span class="visit-reward-orbit" aria-hidden="true"></span>'
-          +'<img class="visit-reward-dino" src="assets/dino-mascot.png" alt="Dino" decoding="async"/>'
-          +'<div class="visit-reward-box" id="vr-box">Welcome gift!</div></div>'
-          +'<div class="visit-reward-main"><p class="visit-reward-eyebrow" id="vr-eyebrow">DAY 1 OF 8</p>'
-          +'<h2 class="visit-reward-title" id="vr-title">Your first gift is here!</h2>'
-          +'<p class="visit-reward-sub" id="vr-sub">Dino saved a little surprise for coming back today.</p>'
-          +'<div class="visit-reward-earned" id="vr-earned"></div>'
-          +'<div class="visit-reward-days" id="vr-days" aria-label="Eight-day reward progress"></div>'
-          +'<button type="button" class="visit-reward-cta" id="vr-continue">Yay! Continue</button>'
-          +'<p class="visit-reward-rule">Each day stands on its own. A missed gift never blocks the next one.</p>'
-          +'</div></div>';
+          +'<header class="visit-reward-head">'
+          +'<div class="visit-reward-heading"><h2 class="visit-reward-title" id="vr-title">8-Day Welcome Gifts</h2>'
+          +'<span class="visit-reward-countdown" id="vr-days-left">30 days left</span></div></header>'
+          +'<div class="visit-reward-days" id="vr-days" aria-label="Eight welcome gifts"></div>'
+          +'<button type="button" class="visit-reward-cta" id="vr-action">Claim</button>'
+          +'</main>'
+          +'<div class="visit-reward-celebration" id="vr-celebration" role="status" aria-live="polite" aria-hidden="true">'
+          +'<div class="vrc-inner"><span class="vrc-burst" aria-hidden="true"></span>'
+          +'<img class="vrc-art" id="vrc-art" src="assets/v13fx/coin.png" alt="" decoding="async"/>'
+          +'<strong class="vrc-label" id="vrc-label"></strong></div></div>';
         land.appendChild(ov);
-        ov.addEventListener("click",function(e){ if(e.target===ov) closeFull(); });
         ov.querySelector("#vr-close").addEventListener("click",closeFull);
-        ov.querySelector("#vr-continue").addEventListener("click",closeFull);
+        ov.querySelector("#vr-action").addEventListener("click",handleAction);
+        ov.addEventListener("click",function(event){ if(event.target===ov) closeFull(); });
       }
-    }
-
-    function currentDevice(){
-      var land = document.getElementById("wrap-landscape");
-      var landOn = land && getComputedStyle(land).display !== "none";
-      return document.getElementById(landOn ? "device-landscape" : "device-portrait");
-    }
-
-    function ensureToast(){
-      var host = currentDevice();
-      if(!host) return null;
-      var toast = document.getElementById("visit-reward-toast");
-      if(!toast){
-        toast = document.createElement("div");
-        toast.id = "visit-reward-toast";
-        toast.className = "visit-reward-toast";
-        toast.innerHTML = '<span class="vrt-gift" aria-hidden="true">🎁</span><span class="vrt-copy"><b id="vrt-title"></b><span id="vrt-sub"></span></span>';
-      }
-      if(toast.parentNode!==host) host.appendChild(toast);
-      return toast;
     }
 
     function reward(){ return REWARDS[Math.max(0,Math.min(7,vr.dayIndex))] || REWARDS[0]; }
-    function claimedCount(){
-      var count = vr.dayIndex + 1;
-      if(vr.dayIndex >= 3) count -= 1; // demo: Day 3 missed, to show no-reset behavior
-      return Math.max(1,count);
-    }
-    function activePortrait(){
-      var el = document.querySelector("#device-portrait .screen.active");
-      return el ? el.id : "";
+    function isExpired(){ return vr.daysLeft<=0; }
+    function countdownLabel(){
+      if(vr.dayIndex===7 && vr.claimed) return "";
+      return vr.daysLeft===1 ? "Last day" : vr.daysLeft + " days left";
     }
     function isCoachActive(){
       var coach = document.getElementById("cx-coach");
       return !!(coach && coach.style.display!=="none");
     }
-    function safeHome(){
+    function canOpenCalendarOnHome(){
       var wrap = document.getElementById("wrap-landscape");
       if(!wrap || getComputedStyle(wrap).display==="none") return false;
       if(typeof activeLandScreen==="function" && activeLandScreen()!=="screen-class") return false;
@@ -14036,262 +14136,260 @@
       if(document.querySelector(".dl-overlay.show,.levelup.show,#ic-coach.on")) return false;
       return true;
     }
-    function compactWindow(id){
-      if(isCoachActive()) return false;
-      if(typeof cxStage!=="undefined" && cxStage==="guide") return false;
-      return [
-        "screen-name","screen-age","screen-placement","screen-goal-value","screen-teacher",
-        "screen-inclass-teach","screen-inclass-pt","screen-inclass-quiz",
-        "screen-trial-report","screen-lesson-report","screen-levelup-report","screen-class"
-      ].indexOf(id)!==-1;
-    }
 
     function renderEntry(){
       ensureUI();
       var entry = document.getElementById("visit-reward-entry");
       if(!entry) return;
-      var show = vr.eligible && vr.granted;
+      var show = vr.eligible && vr.unlocked && !isExpired();
       entry.classList.toggle("is-visible",show);
-      var uiDay = vr.dayIndex + 1;
-      var d = document.getElementById("vre-day");
-      var p = document.getElementById("vre-progress");
-      var dot = document.getElementById("vre-dot");
-      if(d) d.textContent = "Day " + uiDay;
-      if(p) p.textContent = claimedCount() + " / 8 gifts";
-      if(dot) dot.hidden = vr.fullShown;
+      entry.classList.toggle("has-pending",show && !vr.claimed);
+      entry.setAttribute("aria-label",vr.claimed ? "Open welcome gifts" : "Claim Day " + (vr.dayIndex + 1) + " welcome gift");
     }
 
-    function renderFull(){
-      ensureUI();
-      var r = reward(), uiDay = vr.dayIndex + 1;
-      var title = uiDay===1 ? "Your first gift is here!" : (uiDay===8 ? "You came back on Day 8!" : "Dino is happy to see you!");
-      var sub = uiDay===8 ? "A special gift for making it all the way back today." : "Dino saved a little surprise for coming back today.";
-      var box = document.getElementById("vr-box");
-      var eye = document.getElementById("vr-eyebrow");
-      var h = document.getElementById("vr-title");
-      var s = document.getElementById("vr-sub");
-      var earned = document.getElementById("vr-earned");
-      var days = document.getElementById("vr-days");
-      if(box) box.textContent = uiDay===8 ? "Final gift!" : (uiDay===1 ? "Welcome gift!" : "Daily gift!");
-      if(eye) eye.textContent = "DAY " + uiDay + " OF 8";
-      if(h) h.textContent = title;
-      if(s) s.textContent = sub;
-      if(earned) earned.innerHTML = '<span class="visit-reward-pill">🪙 Dino Coins ×'+r.coins+'</span>'
-        +(r.ticket?'<span class="visit-reward-pill is-ticket">🎟️ Box Ticket ×'+r.ticket+'</span>':'');
-      if(days){
-        var html = "";
-        for(var i=0;i<8;i++){
-          var cls = "";
-          var ico = "🎁";
-          if(i<vr.dayIndex){ cls = (vr.dayIndex>=3 && i===2) ? "is-missed" : "is-claimed"; ico = cls==="is-missed" ? "☁️" : "✓"; }
-          else if(i===vr.dayIndex){ cls = "is-current"; ico = i===7 ? "🎟️" : "🎁"; }
-          html += '<div class="visit-reward-day '+cls+'"><b>DAY '+(i+1)+'</b><span>'+ico+'</span></div>';
-        }
-        days.innerHTML = html;
+    function resetRevealVisuals(){
+      var page = document.querySelector(".visit-reward-card");
+      var cta = document.getElementById("vr-action");
+      var reveal = document.getElementById("vr-celebration");
+      document.querySelectorAll(".visit-reward-day.is-rewarding").forEach(function(day){ day.classList.remove("is-rewarding"); });
+      if(page) page.classList.remove("is-revealing");
+      if(cta) cta.disabled = vr.claiming;
+      if(reveal){
+        reveal.className = "visit-reward-celebration";
+        reveal.setAttribute("aria-hidden","true");
+        reveal.style.removeProperty("--vrc-duration");
       }
     }
 
-    function showCompact(reason){
-      if(!vr.eligible || !vr.granted || vr.compactShown) return;
-      var toast = ensureToast();
-      if(!toast) return;
+    function renderFull(animateReveal){
+      ensureUI();
+      resetRevealVisuals();
       var r = reward(), uiDay = vr.dayIndex + 1;
-      var t = document.getElementById("vrt-title");
-      var s = document.getElementById("vrt-sub");
-      if(t) t.textContent = uiDay===1 ? "Welcome gift saved!" : "Day "+uiDay+" gift saved!";
-      if(s) s.textContent = "🪙 +"+r.coins+(r.ticket?" · 🎟️ +1":"")+" · Opens on Home";
-      vr.compactShown = true;
-      vr.lastReason = reason || "flow_busy";
-      clearTimeout(vr.toastTimer);
-      toast.classList.add("show");
-      vr.toastTimer = setTimeout(function(){ toast.classList.remove("show"); },2400);
-      renderEntry();
+      var countdown = document.getElementById("vr-days-left");
+      var days = document.getElementById("vr-days");
+      var cta = document.getElementById("vr-action");
+      if(countdown){
+        countdown.textContent = countdownLabel();
+        countdown.hidden = !countdown.textContent;
+      }
+      if(cta){
+        cta.textContent = vr.claiming ? "Claiming..." : vr.claimError ? "Try Again" : !vr.claimed ? "Claim" : uiDay===8 ? "Let’s Play!" : "See You Tomorrow!";
+        cta.disabled = vr.claiming;
+      }
+      if(days){
+        var html = "";
+        for(var i=0;i<8;i++){
+          var item = REWARDS[i];
+          var isClaimed = i<vr.dayIndex || (i===vr.dayIndex && vr.claimed);
+          var showActual = isClaimed || item.type==="coins";
+          var itemLabel = showActual ? (item.short || item.label) : item.preview;
+          var ariaLabel = showActual ? item.label : item.preview;
+          var itemArt = showActual ? item.art : (item.previewArt || item.art);
+          var cls = i<vr.dayIndex ? "is-claimed" : (i===vr.dayIndex ? "is-current" : "");
+          if(i===vr.dayIndex && isClaimed) cls += " is-claimed";
+          if(item.type!=="coins") cls += " is-collectible";
+          if(i===7) cls += " is-grand";
+          var imgClass = item.type==="figure" ? "is-figure" : (item.type==="skin" ? "is-skin" : "is-coins");
+          var badge = isClaimed ? '<i class="visit-reward-check" aria-hidden="true">✓</i>' : "";
+          var claimState = i===vr.dayIndex && !vr.claimed ? ", ready to claim" : isClaimed ? ", claimed" : "";
+          html += '<div class="visit-reward-day '+cls+'" aria-label="Day '+(i+1)+', '+ariaLabel+claimState+(i===7 ? ", final reward" : "")+'">'
+            +'<b>DAY '+(i+1)+'</b><img class="'+imgClass+'" src="'+itemArt+'" alt="" decoding="async"/>'
+            +'<span>'+itemLabel+'</span>'+badge+'</div>';
+        }
+        days.innerHTML = html;
+      }
+      var page = document.querySelector(".visit-reward-card");
+      if(animateReveal){
+        if(page) page.classList.add("is-revealing");
+        if(cta) cta.disabled = true;
+      }
+    }
+
+    function playReveal(){
+      var r = reward();
+      var day = document.querySelector(".visit-reward-day.is-current");
+      var page = document.querySelector(".visit-reward-card");
+      var cta = document.getElementById("vr-action");
+      var reveal = document.getElementById("vr-celebration");
+      var art = document.getElementById("vrc-art");
+      var label = document.getElementById("vrc-label");
+      if(!day || !page || !reveal || !art || !label) return;
+      clearTimeout(vr.revealTimer);
+      var reduced = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+      var duration = reduced ? 800 : r.type==="coins" ? 1400 : r.type==="skin" ? 2200 : 2000;
+      art.src = r.art;
+      art.alt = r.label;
+      label.textContent = r.type==="coins" ? "+" + r.label : r.label;
+      reveal.className = "visit-reward-celebration is-" + r.type + (reduced ? " is-reduced" : "");
+      reveal.style.setProperty("--vrc-duration",duration + "ms");
+      reveal.setAttribute("aria-hidden","false");
+      requestAnimationFrame(function(){ reveal.classList.add("is-showing"); });
+      vr.revealTimer = setTimeout(function(){
+        reveal.classList.remove("is-showing");
+        reveal.setAttribute("aria-hidden","true");
+        page.classList.remove("is-revealing");
+        if(cta) cta.disabled = false;
+        if(reduced){
+          vr.revealTimer = null;
+          return;
+        }
+        day.classList.add("is-rewarding");
+        vr.revealTimer = setTimeout(function(){
+          day.classList.remove("is-rewarding");
+          vr.revealTimer = null;
+        },940);
+      },duration);
     }
 
     function closeFull(){
+      clearTimeout(vr.revealTimer);
+      vr.revealTimer = null;
+      resetRevealVisuals();
       var ov = document.getElementById("visit-reward-overlay");
       if(ov){ ov.classList.remove("show"); ov.setAttribute("aria-hidden","true"); }
       renderEntry();
     }
     function openFull(source){
-      if(!vr.eligible || !vr.granted) return;
-      if(source!=="entry" && !safeHome()){
-        vr.pendingFull = true;
-        showCompact("unsafe_full_request");
+      if(!vr.eligible || !vr.unlocked || isExpired()) return;
+      if(source!=="entry" && !canOpenCalendarOnHome()){
+        vr.pendingCalendar = true;
         return;
       }
-      renderFull();
+      renderFull(false);
       var ov = document.getElementById("visit-reward-overlay");
       if(!ov) return;
-      vr.pendingFull = false;
-      vr.fullShown = true;
+      vr.pendingCalendar = false;
+      vr.calendarShown = true;
       ov.classList.add("show");
       ov.setAttribute("aria-hidden","false");
       renderEntry();
     }
 
-    function reconcile(id){
+    function reconcile(){
       renderEntry();
-      if(!vr.eligible || !vr.granted || vr.fullShown) return;
+      if(!vr.eligible || !vr.unlocked || isExpired() || vr.calendarShown) return;
       clearTimeout(vr.timer);
-      var mode = demoState.visitRewardExposure || "auto";
-      if(mode==="deferred"){ vr.pendingFull = true; return; }
-      if(mode==="compact"){
-        vr.pendingFull = true;
-        if(compactWindow(id || activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""))) {
-          vr.timer = setTimeout(function(){ showCompact("manual_compact"); },280);
-        }
-        return;
-      }
-      if(mode==="full" && safeHome()){
-        vr.timer = setTimeout(function(){ openFull("state_full"); },260);
-        return;
-      }
-      if(safeHome()){
-        var delay = (typeof cxStage!=="undefined" && cxStage==="paid") ? 2450 : 520;
-        vr.timer = setTimeout(function(){ if(safeHome()) openFull("safe_home"); },delay);
+      if(canOpenCalendarOnHome()){
+        vr.timer = setTimeout(function(){
+          if(canOpenCalendarOnHome()) openFull("auto_home");
+        },520);
       }else{
-        vr.pendingFull = true;
-        if(compactWindow(id || activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""))) {
-          vr.timer = setTimeout(function(){ showCompact("flow_busy"); },360);
-        }
+        vr.pendingCalendar = true;
       }
     }
 
-    function grant(source){
+    function unlock(){
       vr.eligible = true;
-      vr.granted = true;
-      vr.pendingFull = true;
-      vr.lastReason = source || "visit";
+      vr.unlocked = true;
+      vr.claimed = false;
+      vr.claiming = false;
+      vr.claimError = false;
+      vr.pendingCalendar = true;
+      vr.calendarShown = false;
       renderEntry();
-      setTimeout(function(){
-        var id = activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : "");
-        reconcile(id);
-      },80);
+      setTimeout(reconcile,80);
     }
 
-    function setDay(v){
-      var n = Math.max(0,Math.min(7,parseInt(v,10)||0));
-      demoState.visitRewardDay = String(n);
-      vr.dayIndex = n;
-      vr.eligible = true;
-      vr.granted = true;
-      vr.pendingFull = true;
-      vr.compactShown = false;
-      vr.fullShown = false;
-      closeFull();
-      renderEntry();
-      reconcile(activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""));
+    function claimReward(){
+      if(!vr.unlocked || vr.claimed || vr.claiming || isExpired()) return;
+      vr.claiming = true;
+      vr.claimError = false;
+      renderFull(false);
+      clearTimeout(vr.claimTimer);
+      vr.claimTimer = setTimeout(function(){
+        vr.claimTimer = null;
+        vr.claiming = false;
+        vr.claimed = true;
+        var granted = reward();
+        if(granted.type==="coins" && granted.coins && window.GAME && window.GAME.grantCoins){
+          window.GAME.grantCoins(granted.coins);
+        }
+        renderEntry();
+        var ov = document.getElementById("visit-reward-overlay");
+        if(ov && ov.classList.contains("show")){
+          renderFull(true);
+          playReveal();
+        }
+      },360);
     }
-    function setExposure(v){
-      demoState.visitRewardExposure = ["auto","compact","deferred","full"].indexOf(v)!==-1 ? v : "auto";
-      closeFull();
-      var toast = document.getElementById("visit-reward-toast");
-      if(toast) toast.classList.remove("show");
-      if(v==="compact") vr.compactShown = false;
-      if(v==="full") vr.fullShown = false;
-      vr.pendingFull = true;
-      reconcile(activePortrait() || (typeof activeLandScreen==="function" ? activeLandScreen() : ""));
+
+    function handleAction(){
+      if(vr.claimed) closeFull();
+      else claimReward();
+    }
+
+    function setDaysLeft(v){
+      var n = Math.max(0,Math.min(30,parseInt(v,10)||0));
+      demoState.visitRewardDaysLeft = String(n);
+      vr.daysLeft = n;
+      if(isExpired()) closeFull();
+      else {
+        renderEntry();
+        if(document.getElementById("visit-reward-overlay")?.classList.contains("show")) renderFull(false);
+      }
     }
     function resetVisuals(){
       clearTimeout(vr.timer);
-      clearTimeout(vr.toastTimer);
+      clearTimeout(vr.claimTimer);
+      vr.claimTimer = null;
+      vr.claiming = false;
       closeFull();
-      var toast = document.getElementById("visit-reward-toast");
-      if(toast) toast.classList.remove("show");
     }
-    function prime(day,exposure){
-      vr.dayIndex = Math.max(0,Math.min(7,Number(day)||0));
-      demoState.visitRewardDay = String(vr.dayIndex);
-      demoState.visitRewardExposure = exposure || "auto";
-      vr.eligible = true;
-      vr.granted = true;
-      vr.pendingFull = true;
-      vr.compactShown = false;
-      vr.fullShown = false;
+    function prime(day,daysLeft){
       resetVisuals();
+      vr.dayIndex = Math.max(0,Math.min(7,Number(day)||0));
+      vr.daysLeft = Math.max(0,Math.min(30,Number(daysLeft)));
+      demoState.visitRewardDaysLeft = String(vr.daysLeft);
+      vr.eligible = true;
+      vr.unlocked = true;
+      vr.claimed = false;
+      vr.claiming = false;
+      vr.claimError = false;
+      vr.pendingCalendar = true;
+      vr.calendarShown = false;
       renderEntry();
     }
 
     function openReview(kind){
       resetVisuals();
-      if(kind==="a_post_login"){
-        setExperimentGroup("a",false);
-        seedReviewProfile();
-        profile.profileComplete = true;
-        cxStage = null;
-        prime(0,"compact");
-        enterLandscape();
-        openTeacherPicker("onboarding");
-        reconcile("screen-teacher");
-        return;
-      }
-      if(kind==="b_profile"){
+      setExperimentGroup("b",false);
+      seedReviewProfile();
+      if(kind==="guide_wait"){
         setExperimentGroup("b",false);
-        seedReviewProfile("pre-goal");
-        profile.profileComplete = false;
-        postLoginInfo = true;
-        prime(0,"compact");
-        enterPortrait();
-        showPortraitScreen("screen-name");
-        reconcile("screen-name");
-        return;
-      }
-      if(kind==="b_plan"){
-        setExperimentGroup("b",false);
-        seedReviewProfile();
-        cxStage = null;
-        prime(0,"deferred");
-        showStudyPlan();
-        reconcile("screen-study-plan");
-        return;
-      }
-      if(kind==="b_guide"){
-        setExperimentGroup("b",false);
-        seedReviewProfile();
         cxStage = "guide";
-        prime(0,"auto");
+        prime(0,30);
         showDinoHome();
         if(window.cxStartCoach) setTimeout(function(){ window.cxStartCoach(); },90);
-        reconcile("screen-class");
+        reconcile();
         return;
       }
-      if(kind==="class_deeplink"){
-        setExperimentGroup("b",false);
-        seedReviewProfile();
+      if(kind==="class_wait"){
         cxStage = "football";
-        prime(1,"compact");
+        prime(1,29);
         openClassroomDemo("visit-reward-review");
-        reconcile("screen-inclass-teach");
+        reconcile();
         return;
       }
-      if(kind==="d7_full"){
-        setExperimentGroup("b",false);
-        seedReviewProfile();
-        cxStage = "home";
-        prime(7,"full");
-        showDinoHome();
-        reconcile("screen-class");
-        return;
-      }
-      setExperimentGroup(kind==="a_safe_home" ? "a" : "b",false);
-      seedReviewProfile();
       cxStage = "home";
-      prime(0,"full");
+      var reviewDay = kind==="day2_home" ? 1 : kind==="day4_entry" ? 3 : kind==="day5_home" || kind==="last_day" || kind==="expired" ? 4 : kind==="day8_home" ? 7 : 0;
+      var reviewDaysLeft = kind==="day2_home" ? 29 : kind==="day4_entry" ? 27 : kind==="day5_home" ? 26 : kind==="day8_home" ? 23 : kind==="last_day" ? 1 : kind==="expired" ? 0 : 30;
+      prime(reviewDay,reviewDaysLeft);
+      if(kind==="claim_error") vr.claimError = true;
       showDinoHome();
-      reconcile("screen-class");
+      if(kind==="expired") return;
+      if(kind==="day4_entry") setTimeout(function(){ openFull("entry"); },260);
+      else reconcile();
     }
 
     ensureUI();
     renderEntry();
     window.VISIT_REWARD = {
       state:vr,
-      grant:grant,
+      unlock:unlock,
       onScreen:reconcile,
       open:openFull,
       close:closeFull,
-      setDay:setDay,
-      setExposure:setExposure,
+      setDaysLeft:setDaysLeft,
       resetVisuals:resetVisuals,
       openReview:openReview
     };
@@ -14311,7 +14409,7 @@
       var jumps131 = config.jumps131 || [];
       var jumps131Label = config.jumps131Label || "1.3.2 变更";
       var jumpsReward = config.jumpsReward || [];
-      var jumpsRewardLabel = config.jumpsRewardLabel || "新手 8 日到访奖励";
+      var jumpsRewardLabel = config.jumpsRewardLabel || "新人 8 次到访奖励";
       // ⚽ 世界杯主题课快捷跳转组（绿色高亮，与 jumps131 橙色区分）
       var jumpsWC = [];  // 世界杯主题课(足球课)快捷入口已移除，不在 States 面板展示
       var jumpsWCLabel = config.jumpsWCLabel || "世界杯主题课";
@@ -14655,8 +14753,6 @@
     },
     getValue: function (key) {
       if (key === "experimentGroup") return demoState.experimentGroup;
-      if (key === "visitRewardDay") return demoState.visitRewardDay;
-      if (key === "visitRewardExposure") return demoState.visitRewardExposure;
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
       if (key === "levelUpResult") return demoState.levelUpResult;
@@ -14673,12 +14769,15 @@
       var ctx = function (label, keys) {
         return {
           label: label,
-          keys: ["experimentGroup", "visitRewardDay", "visitRewardExposure"].concat(keys || [])
+          keys: ["experimentGroup"].concat(keys || [])
         };
       };
       var lw = document.querySelector("#wrap-landscape");
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
+        if (document.querySelector("#visit-reward-overlay.show")) {
+          return { label: "签到日历", keys: [] };
+        }
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
         if (id && id.indexOf("screen-capsule") === 0) return ctx(
           "盲盒机",
@@ -14717,12 +14816,6 @@
             showStudyPlan();
           }
         } },
-      { key: "visitRewardDay", label: "当前到访日",
-        options: [["0", "D0 · Day 1"], ["1", "D1 · Day 2"], ["3", "D3 · Day 4"], ["7", "D7 · Day 8"]],
-        apply: function (v) { window.VISIT_REWARD && window.VISIT_REWARD.setDay(v); } },
-      { key: "visitRewardExposure", label: "曝光仲裁",
-        options: [["auto", "自动"], ["compact", "仅轻提示"], ["deferred", "仅延后"], ["full", "立即完整"]],
-        apply: function (v) { window.VISIT_REWARD && window.VISIT_REWARD.setExposure(v); } },
       { key: "membership", label: "会员状态",
         options: [["free", "Free"], ["premium", "Premium"]],
         apply: function (v) {
@@ -14859,28 +14952,22 @@
         run: withReviewProfile(function () { openExpandedPlayRequirement("wordpk"); }),
       } : null,
     ].filter(Boolean),
-    jumpsRewardLabel: "V1.5.1 · 新手 8 日到访奖励 · 既有转化 A/B 链路曝光",
+    jumpsRewardLabel: "V1.5.1 · 新人 8 天签到礼",
     jumpsReward: [
-      { label: "A · 登录后：先轻提示，完整反馈延后", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("a_post_login");
+      { label: "签到日历 · 待领取", run: function () {
+          window.VISIT_REWARD && window.VISIT_REWARD.openReview("day1_home");
         } },
-      { label: "B · 补资料：先轻提示，完整反馈延后", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("b_profile");
+      { label: "签到日历 · Day 8 最终大奖", run: function () {
+          window.VISIT_REWARD && window.VISIT_REWARD.openReview("day8_home");
         } },
-      { label: "B · 学习计划：静默延后，不叠弹窗", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("b_plan");
+      { label: "第 30 天 · Last day", run: function () {
+          window.VISIT_REWARD && window.VISIT_REWARD.openReview("last_day");
         } },
-      { label: "B · 首页引导中：入口保留，完整反馈延后", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("b_guide");
+      { label: "第 31 天 · 入口退出", run: function () {
+          window.VISIT_REWARD && window.VISIT_REWARD.openReview("expired");
         } },
-      { label: "安全首页：展示完整奖励反馈", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("safe_home");
-        } },
-      { label: "课堂深链：先轻提示，回首页再完整反馈", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("class_deeplink");
-        } },
-      { label: "D7 · Day 8：展示最终宝箱奖励", run: function () {
-          window.VISIT_REWARD && window.VISIT_REWARD.openReview("d7_full");
+      { label: "签到日历 · 领取失败", run: function () {
+          window.VISIT_REWARD && window.VISIT_REWARD.openReview("claim_error");
         } },
     ],
     // ⚽ 世界杯主题课（运营位）专用快捷入口：入口卡三态 / 落地页五态 / 进课 / E3·E4 挽留弹窗。
