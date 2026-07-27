@@ -345,7 +345,10 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   background:var(--orange-soft);border:1px solid var(--orange);border-radius:99px;
   padding:7px 22px;letter-spacing:.08em;white-space:nowrap
 }
-@media(max-width:600px){.plan-divider span{font-size:12px;padding:6px 14px}}
+@media(max-width:600px){
+  .plan-divider{gap:8px}
+  .plan-divider span{max-width:calc(100vw - 64px);font-size:12px;padding:6px 14px;white-space:normal;text-align:center;line-height:1.5}
+}
 
 /* ---------- milestone divider & achievement banner ---------- */
 .ms-divider{display:flex;align-items:center;gap:16px;padding:14px 0 4px}
@@ -417,7 +420,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="meta-row">
     <span data-zh="来源 <b>AI-里程碑 v2.0 · 需求池</b>">Source <b>AI Milestones v2.0 · Requirement Pool</b></span>
     <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
-    <span data-zh="更新 <b>2026.07.23</b>">Updated <b>2026.07.23</b></span>
+    <span data-zh="更新 <b>2026.07.27</b>">Updated <b>2026.07.27</b></span>
   </div>
 </header>
 
@@ -465,8 +468,8 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n140" data-date="2026-07-16" data-zh="<b>V1.4.0</b>功能扩展"><b>V1.4.0</b>Expansion</a>
     <a href="#n141" data-date="2026-07-17" data-zh="<b>V1.4.1</b>登录本地化"><b>V1.4.1</b>Login config</a>
     <a href="#n142" data-date="2026-07-29" data-current="true" data-zh="<b>V1.4.2</b>体验课·转化"><b>V1.4.2</b>Trial · funnel</a>
-    <a href="#n143" data-zh="<b>V1.4.3</b>对话记忆·课中"><b>V1.4.3</b>Memory · in-class</a>
-    <a href="#n150" data-zh="<b>V1.5.0</b>后台·越南转化"><b>V1.5.0</b>Admin · Vietnam</a>
+    <a href="#n150" data-date="2026-07-31" data-zh="<b>V1.5.0</b>品牌·后台·越南"><b>V1.5.0</b>Brand · admin · Vietnam</a>
+    <a href="#n151" data-zh="<b>V1.5.1</b>留存·课中"><b>V1.5.1</b>Retention · in-class</a>
     <a href="#n160" data-zh="<b>V1.6.0</b>教学模版·Push"><b>V1.6.0</b>Templates · push</a>
   </div>
 </nav>
@@ -834,11 +837,11 @@ section[id],.node[id]{scroll-margin-top:64px}
     <div class="node-sub" data-zh='功能迭代<br>计划 07/29'>Iteration<br>Planned 07/29</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='体验课与转化重排 · 多市场投放 · 数据洞察<span class="tag">迭代版</span>'>Trial & funnel rework · multi-market campaigns · insight<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">最新需求池 · 25 条主要需求</span><b>方向</b>：以带新手引导的体验课与转化链路重排为核心，集中推进多市场 Landing Page、投放归因、支付能力与数据看板。<br/><b>分类</b>：Landing Page 8 条；Dino English 12 条（Onboarding 登录注册链路 1 / 会员及付费 1 / Class 课程 8 / Dino 2）；管理后台 3 条；其他 2 条。<br/><b>价值</b>：跑顺核心付费转化漏斗、打磨新手体验课，并补齐马来 / 印尼 / 越南 / 韩国市场获客、归因和经营数据洞察。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 需求表 ↗</a>。'><span class="lab">Latest pool · 25 primary items</span><b>Direction</b>: guided trial lessons and funnel rework, with a concentrated push on multi-market Landing Pages, campaign attribution, payments, and data dashboards.<br/><b>Taxonomy</b>: Landing Page 8; Dino English 12 (Onboarding & sign-up 1 / Membership & payment 1 / Class 8 / Dino 2); Admin Backend 3; Other 2.<br/><b>Value</b>: smooths conversion and the trial experience while adding acquisition, attribution, and operating insight for Malaysia / Indonesia / Vietnam / Korea. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='体验课与转化重排 · 多市场投放 · 数据洞察<span class="tag">21 条开发中</span>'>Trial & funnel rework · multi-market campaigns · insight<span class="tag">21 in development</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 26 条</span><b>方向</b>：以带新手引导的体验课与转化链路重排为核心，集中推进多市场 Landing Page、投放归因、支付能力与数据看板。<br/><b>分类</b>：Landing Page 9 条；Dino English 用户端 15 条（Onboarding 1 / 会员支付 1 / Class 8 / Dino 2 / Explore 1 / 整体 App 2）；管理后台 2 条。<br/><b>状态</b>：21 条开发中、3 条 UI 设计中、1 条产品设计中、1 条未启动。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 需求表 ↗</a>。'><span class="lab">Pool · 26 items</span><b>Direction</b>: guided trial lessons and funnel rework, with a concentrated push on multi-market Landing Pages, attribution, payments, and data dashboards.<br/><b>Taxonomy</b>: Landing Page 9; Dino English App 15 (Onboarding 1 / Membership 1 / Class 8 / Dino 2 / Explore 1 / App-wide 2); Admin Backend 2.<br/><b>Status</b>: 21 in development, 3 in UI design, 1 in product design, 1 not started. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.2 requirement list ↗</a>.</div>
     <div class="cols requirement-groups">
       <div class="block scope-landing">
-        <h4 data-zh='Landing Page <span class="count">8</span>'>Landing Page <span class="count">8</span></h4>
+        <h4 data-zh='Landing Page <span class="count">9</span>'>Landing Page <span class="count">9</span></h4>
         <ul>
           <li data-zh='<b>Landing page 二期</b><span class="p0">P0</span>'><b>Landing Page phase 2</b><span class="p0">P0</span></li>
           <li data-zh='<b>马来新增支付方式</b><span class="p0">P0</span>：FPX、Atome、E-wallets'><b>Malaysia payment methods</b><span class="p0">P0</span>: FPX, Atome and e-wallets</li>
@@ -848,6 +851,7 @@ section[id],.node[id]{scroll-margin-top:64px}
           <li data-zh='<b>马来 &amp; 印尼仅保留手机号注册登录</b><span class="p1">P1</span>'><b>Malaysia &amp; Indonesia: phone-only sign-up / login</b><span class="p1">P1</span></li>
           <li data-zh='<b>韩国 KOL 渠道注册登录页 UI 优化</b><span class="p1">P1</span>'><b>Korea KOL sign-up / login UI polish</b><span class="p1">P1</span></li>
           <li data-zh='<b>二期 Landing Page 接入 AppsFlyer</b><span class="p1">P1</span>'><b>Landing Page phase 2: AppsFlyer integration</b><span class="p1">P1</span></li>
+          <li data-zh='<b>二期 Landing Page 数据看板</b><span class="p1">P1</span>'><b>Landing Page phase 2 data dashboard</b><span class="p1">P1</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
@@ -883,111 +887,37 @@ section[id],.node[id]{scroll-margin-top:64px}
         </ul>
       </div>
       <div class="block scope-admin">
-        <h4 data-zh='管理后台 <span class="count">3</span>'>Admin Backend <span class="count">3</span></h4>
+        <h4 data-zh='管理后台 <span class="count">2</span>'>Admin Backend <span class="count">2</span></h4>
         <ul>
           <li data-zh='<b>课中数据看板</b><span class="p1">P1</span>：Dino AI 课中实时数据看板'><b>In-class data dashboard</b><span class="p1">P1</span>: real-time Dino AI classroom data</li>
           <li data-zh='<b>Video Annotator 标注平台优化</b><span class="p1">P1</span>：支持实习生标注问题'><b>Video Annotator platform improvements</b><span class="p1">P1</span>: support intern annotation workflows</li>
-          <li data-zh='<b>二期 Landing Page 数据看板</b><span class="p1">P1</span>'><b>Landing Page phase 2 data dashboard</b><span class="p1">P1</span></li>
         </ul>
       </div>
-      <div class="block scope-other">
-        <h4 data-zh='其他 <span class="count">2</span>'>Other <span class="count">2</span></h4>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · 整体 App <span class="count">2</span>'>Dino English · App-wide <span class="count">2</span></h4>
         <ul>
           <li data-zh='<b>课外核心功能埋点（基于新规范）</b><span class="p0">P0</span>'><b>Core out-of-class analytics under the new spec</b><span class="p0">P0</span></li>
           <li data-zh='<b>Dino English 接入 PostHog</b><span class="p0">P0</span>：洞察用户使用问题'><b>PostHog integration</b><span class="p0">P0</span>: insight into user-experience issues</li>
         </ul>
       </div>
-    </div>
-    <div class="minor-note">
-      <span class="minor-lab" data-zh='其他优化项'>Other optimizations</span>
-      <span data-zh='<b>FM 播放逻辑调整</b>：改为跨页面后台悬浮播放，切换到其他页面后继续播放。'><b>FM playback logic</b>: switch to cross-page floating playback that continues after navigating elsewhere.</span>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Explore <span class="count">1</span>'>Dino English · Explore <span class="count">1</span></h4>
+        <ul>
+          <li data-zh='<b>FM 播放逻辑调整</b><span class="p2">P2</span>：改为跨页面后台悬浮播放，切换到其他页面后继续播放。'><b>FM playback logic</b><span class="p2">P2</span>: switch to cross-page floating playback that continues after navigating elsewhere.</li>
+        </ul>
+      </div>
     </div>
     <div class="demo-strip">
-      <div class="demo-thumb" onclick="openDemo('V1.4.3-ui-demo.html','V1.4.2 · UI Demo')">
-        <iframe data-src="V1.4.3-ui-demo.html" loading="lazy" title="V1.4.2 UI Demo"></iframe>
+      <div class="demo-thumb" onclick="openDemo('V1.4.2-A-flow-ui-demo.html','V1.4.2 · A组现有链路优化 Demo')">
+        <iframe data-src="V1.4.2-A-flow-ui-demo.html" loading="lazy" title="V1.4.2 A组现有链路优化 Demo"></iframe>
       </div>
       <div class="demo-info">
-        <span class="demo-name">V1.4.2 · UI Demo</span>
+        <span class="demo-name">V1.4.2 · A组现有链路优化 Demo</span>
         <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
       </div>
       <div class="demo-actions">
-        <button onclick="openDemo('V1.4.3-ui-demo.html','V1.4.2 · UI Demo')" data-zh='放大查看'>Enlarge</button>
-        <a class="btn" href="V1.4.3-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ V1.4.3 ============ -->
-<section class="node reveal" id="n143">
-  <div class="node-marker">
-    <div class="dot"></div>
-    <div class="node-date">1.4.3</div>
-    <div class="node-sub" data-zh='功能迭代<br>排期待定'>Iteration<br>Date TBD</div>
-  </div>
-  <div class="node-body">
-    <div class="node-title" data-zh='品牌切换 · 对话记忆升级 · 课中奖励与内容打磨<span class="tag">迭代版</span>'>Rebrand · chat memory · in-class rewards & content<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">最新需求池 · 25 条</span><b>方向</b>：以课中奖励与教学内容打磨为主，叠加每日签到打卡、Dino AI 品牌切换、Dino 对话记忆、课程生产与多语言文案评审平台。<br/><b>分类</b>：Landing Page 5 条；Dino English 17 条（Class 课程 12 / Dino 3 / Play 1 / 提升活跃及留存 1）；管理后台 2 条；其他 1 条。<br/><b>价值</b>：统一 App 与官网品牌，系统打磨教学内容与奖励反馈，升级 Dino 对话，通过每日签到强化回访，并提升多语言文案生产与评审效率。上线时间待定 · 详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.3 需求表 ↗</a>。'><span class="lab">Latest pool · 25 items</span><b>Direction</b>: in-class rewards and teaching-content polish, plus daily check-ins, the Dino AI rebrand, Dino chat memory, course production, and multilingual copy review tooling.<br/><b>Taxonomy</b>: Landing Page 5; Dino English 17 (Class 12 / Dino 3 / Play 1 / Engagement & retention 1); Admin Backend 2; Other 1.<br/><b>Value</b>: unifies the app and website brand, improves teaching and reward feedback, upgrades Dino chat, reinforces return visits through daily check-ins, and makes multilingual copy production and review more efficient. Launch date TBD · see the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.4.3 requirement list ↗</a>.</div>
-    <div class="cols requirement-groups">
-      <div class="block scope-landing">
-        <h4 data-zh='Landing Page <span class="count">5</span>'>Landing Page <span class="count">5</span></h4>
-        <ul>
-          <li data-zh='<b>Landing page 三期</b><span class="p0">P0</span>'><b>Landing Page phase 3</b><span class="p0">P0</span></li>
-          <li data-zh='<b>越南投放落地页</b><span class="p0">P0</span>：仅收集用户手机号'><b>Vietnam campaign landing page</b><span class="p0">P0</span>: phone-number lead capture only</li>
-          <li data-zh='<b>马来投放落地页</b><span class="p0">P0</span>：仅收集用户手机号'><b>Malaysia campaign landing page</b><span class="p0">P0</span>: phone-number lead capture only</li>
-          <li data-zh='<b>Dino English 官网改名 Dino AI</b><span class="p0">P0</span>'><b>Rename the Dino English website to Dino AI</b><span class="p0">P0</span></li>
-          <li data-zh='<b>SKU 有效期支持永久有效</b><span class="p1">P1</span>'><b>Support non-expiring SKUs</b><span class="p1">P1</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · Class 课程 <span class="count">12</span>'>Dino English · Class <span class="count">12</span></h4>
-        <ul>
-          <li data-zh='<b>单词教学增加 image description 字段</b><span class="p0">P0</span>：CMS 与 teaching prompt'><b>Word teaching adds image-description field</b><span class="p0">P0</span>: CMS & teaching prompt</li>
-          <li data-zh='<b>长句跟读 / 开放问题作答等待时间继续优化</b><span class="p0">P0</span>：覆盖其他 template'><b>Continue extending answer windows</b><span class="p0">P0</span>: cover the remaining templates</li>
-          <li data-zh='<b>增加课程升降级逻辑</b><span class="p1">P1</span>：控制成本'><b>Course level up/down logic</b><span class="p1">P1</span>: cost control</li>
-          <li data-zh='<b>游戏模板：点选听音改为听音翻卡</b><span class="p1">P1</span>'><b>Game template: pick-listening → listen-and-flip</b><span class="p1">P1</span></li>
-          <li data-zh='<b>金币获得数量规则调整</b><span class="p1">P1</span>'><b>Coin-earning rule adjustment</b><span class="p1">P1</span></li>
-          <li data-zh='<b>奖励结算反馈页设计优化</b><span class="p1">P1</span>'><b>Reward-settlement feedback page redesign</b><span class="p1">P1</span></li>
-          <li data-zh='<b>头像框奖励改为透明</b><span class="p1">P1</span>'><b>Avatar-frame reward turns transparent</b><span class="p1">P1</span></li>
-          <li data-zh='<b>Level 1 - letter 课型结构修改</b><span class="p1">P1</span>'><b>Level 1 letter lesson-type restructure</b><span class="p1">P1</span></li>
-          <li data-zh='<b>数字人口型新增</b><span class="p1">P1</span>'><b>New avatar mouth shapes</b><span class="p1">P1</span></li>
-          <li data-zh='<b>金币奖励出现 UI 效果</b><span class="p1">P1</span>：设计已出'><b>Coin-reward reveal UI effect</b><span class="p1">P1</span>: design ready</li>
-          <li data-zh='<b>图片未铺满出现异常白边问题修复</b><span class="p1">P1</span>'><b>Fix abnormal white edges around unfilled images</b><span class="p1">P1</span></li>
-          <li data-zh='<b>Level 1 &amp; Level 2 正式课程 prompt 优化</b><span class="p1">P1</span>'><b>Level 1 &amp; Level 2 formal-lesson prompt tuning</b><span class="p1">P1</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · Dino <span class="count">3</span>'>Dino English · Dino <span class="count">3</span></h4>
-        <ul>
-          <li data-zh='<b>Chat with Dino 多语言输出问题修复</b><span class="p0">P0</span>：按用户偏好语言对话，修复多语言混杂与语法问题'><b>Fix Chat with Dino multilingual output</b><span class="p0">P0</span>: honor language preference and remove mixed-language / grammar issues</li>
-          <li data-zh='<b>Dino 多入口记忆机制 + 三入口定位 / prompt</b><span class="p1">P1</span>'><b>Dino multi-entry memory + entry-specific positioning / prompts</b><span class="p1">P1</span></li>
-          <li data-zh='<b>首页 Dino 对话付费机制与付费引导</b><span class="p0">P0</span>'><b>Home Dino chat paywall & upsell</b><span class="p0">P0</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · Play <span class="count">1</span>'>Dino English · Play <span class="count">1</span></h4>
-        <ul>
-          <li data-zh='<b>盲盒机、单词 / 口语 PK 增加更多题型与答题反馈</b><span class="p1">P1</span>：听音选图、看图选词'><b>More Gacha and word / speaking PK questions with feedback</b><span class="p1">P1</span>: listen-and-pick and picture-to-word</li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · 提升活跃及留存 <span class="count">1</span>'>Dino English · Engagement & retention <span class="count">1</span></h4>
-        <ul>
-          <li data-zh='<b>每日签到打卡</b><span class="p0">P0</span>：结合当前激励体系设置每日奖励'><b>Daily check-ins</b><span class="p0">P0</span>: add daily rewards to the current incentive system</li>
-        </ul>
-      </div>
-      <div class="block scope-admin">
-        <h4 data-zh='管理后台 <span class="count">2</span>'>Admin Backend <span class="count">2</span></h4>
-        <ul>
-          <li data-zh='<b>CMS 课程生产平台</b><span class="p1">P1</span>：导入大纲、lesson plan、prompt 与资源配置'><b>CMS course-production platform</b><span class="p1">P1</span>: outline, lesson-plan, prompt and asset configuration</li>
-          <li data-zh='<b>多语言文案评审平台与流程 SOP</b><span class="p1">P1</span>：截图文案抽取、机翻替换及 reviewer 评论 / 修改 / approve'><b>Multilingual copy-review platform & SOP</b><span class="p1">P1</span>: extract copy from screenshots, machine-translate and replace it, with reviewer comments / edits / approval</li>
-        </ul>
-      </div>
-      <div class="block scope-other">
-        <h4 data-zh='其他 <span class="count">1</span>'>Other <span class="count">1</span></h4>
-        <ul>
-          <li data-zh='<b>Dino English 用户端改名 Dino AI</b><span class="p0">P0</span>'><b>Rename the Dino English app to Dino AI</b><span class="p0">P0</span></li>
-        </ul>
+        <button onclick="openDemo('V1.4.2-A-flow-ui-demo.html','V1.4.2 · A组现有链路优化 Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.4.2-A-flow-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -998,56 +928,125 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.5.0</div>
-    <div class="node-sub" data-zh='后台建设 · 越南转化'>Admin buildout · Vietnam</div>
+    <div class="node-sub" data-zh='品牌 · CRM · 越南转化<br>计划 07/31'>Brand · CRM · Vietnam<br>Planned 07/31</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='管理后台建设 · 每日学习驱动 · 越南支付转化<span class="tag">迭代版</span>'>Admin buildout · daily learning · Vietnam payments<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">最新需求池 · 15 条</span><b>方向</b>：集中建设 CRM 与销售跟进能力、prompt 评估工具和正课教学模版，同时推进越南支付转化与每日学习驱动。<br/><b>分类</b>：Landing Page 3 条；Dino English 4 条（Class 课程 2 / Dino 1 / 提升活跃及留存 1）；管理后台 7 条；其他 1 条。<br/><b>价值</b>：形成从获客、线索分配、外呼到跟进记录的销售闭环，提升 prompt 生产质量，补齐越南支付链路，并通过每日学习任务强化学习动机。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Latest pool · 15 items</span><b>Direction</b>: CRM and sales follow-up, prompt-evaluation tooling, formal-lesson templates, Vietnam payment conversion, and a daily-learning driver.<br/><b>Taxonomy</b>: Landing Page 3; Dino English 4 (Class 2 / Dino 1 / Engagement & retention 1); Admin Backend 7; Other 1.<br/><b>Value</b>: creates a sales loop from acquisition and lead assignment through outbound calls and follow-up records, improves prompt production, completes Vietnam payment flows, and strengthens motivation through daily learning tasks. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='品牌统一 · Landing Page 与越南支付 · CRM / Prompt 基建<span class="tag">20 条</span>'>Brand unification · Landing Pages & Vietnam payments · CRM / prompt foundations<span class="tag">20 items</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 20 条</span><b>方向</b>：统一 Dino AI 品牌，继续建设多市场 Landing Page 与越南支付，同时集中推进 CRM 销售闭环和 prompt 评估工具。<br/><b>分类</b>：Landing Page 8 条；Dino English 用户端 4 条；管理后台 8 条。优先级为 P0 9 条 / P1 10 条 / P2 1 条。<br/><b>状态</b>：9 条产品设计中、8 条未启动，其余分布在排期中 / 待评审 / 开发中。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 需求表 ↗</a>。'><span class="lab">Pool · 20 items</span><b>Direction</b>: unify the Dino AI brand, extend multi-market Landing Pages and Vietnam payments, and build CRM sales workflows plus prompt evaluation tooling.<br/><b>Taxonomy</b>: Landing Page 8; Dino English App 4; Admin Backend 8. Priority mix: P0 9 / P1 10 / P2 1.<br/><b>Status</b>: 9 in product design and 8 not started; the remainder are scheduled, under review, or in development. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.0 requirement list ↗</a>.</div>
     <div class="cols requirement-groups">
       <div class="block scope-landing">
-        <h4 data-zh='Landing Page <span class="count">3</span>'>Landing Page <span class="count">3</span></h4>
+        <h4 data-zh='Landing Page <span class="count">8</span>'>Landing Page <span class="count">8</span></h4>
         <ul>
+          <li data-zh='<b>Landing page 三期</b><span class="p0">P0</span>'><b>Landing Page phase 3</b><span class="p0">P0</span></li>
+          <li data-zh='<b>越南投放落地页</b><span class="p0">P0</span>：仅收集用户手机号'><b>Vietnam campaign landing page</b><span class="p0">P0</span>: phone-number lead capture only</li>
+          <li data-zh='<b>马来投放落地页</b><span class="p0">P0</span>：仅收集用户手机号'><b>Malaysia campaign landing page</b><span class="p0">P0</span>: phone-number lead capture only</li>
+          <li data-zh='<b>Dino English 官网改名 Dino AI</b><span class="p0">P0</span>'><b>Rename the Dino English website to Dino AI</b><span class="p0">P0</span></li>
           <li data-zh='<b>Landing page 四期</b><span class="p0">P0</span>'><b>Landing Page phase 4</b><span class="p0">P0</span></li>
           <li data-zh='<b>越南增加支付方式</b><span class="p0">P0</span>'><b>Add payment methods in Vietnam</b><span class="p0">P0</span></li>
           <li data-zh='<b>越南收取押金</b><span class="p1">P1</span>'><b>Collect a deposit in Vietnam</b><span class="p1">P1</span></li>
+          <li data-zh='<b>SKU 有效期支持永久有效</b><span class="p1">P1</span>'><b>Support non-expiring SKUs</b><span class="p1">P1</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Class 课程 <span class="count">2</span>'>Dino English · Class <span class="count">2</span></h4>
+        <h4 data-zh='Dino English 用户端 <span class="count">4</span>'>Dino English App <span class="count">4</span></h4>
         <ul>
-          <li data-zh='<b>正课教学模版分 level 整理</b><span class="p0">P0</span>：整理全部模版 prompt、优化教学规则与动作'><b>Reorganize formal-lesson templates by level</b><span class="p0">P0</span>: sort all template prompts and refine teaching rules & motions</li>
-          <li data-zh='<b>静默状态下支持打断静默</b><span class="p1">P1</span>'><b>Allow interruption while in a silent state</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Dino English 改名 Dino AI（App + 官网）</b><span class="p0">P0</span>（排期中）'><b>Rename Dino English to Dino AI (app + website)</b><span class="p0">P0</span> (scheduling)</li>
+          <li data-zh='<b>正课教学模版按 Level 整理</b><span class="p0">P0</span>：优化教学规则与动作'><b>Reorganize formal-lesson templates by level</b><span class="p0">P0</span>: refine teaching rules and motions</li>
+          <li data-zh='<b>静默状态支持打断</b><span class="p1">P1</span>'><b>Allow interruption while silent</b><span class="p1">P1</span></li>
+          <li data-zh='<b>同一语音条多语言 ASR 识别修复</b><span class="p2">P2</span>'><b>Fix multilingual ASR within one utterance</b><span class="p2">P2</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Dino <span class="count">1</span>'>Dino English · Dino <span class="count">1</span></h4>
+        <h4 data-zh='管理后台 · Prompt <span class="count">2</span>'>Admin Backend · Prompt <span class="count">2</span></h4>
         <ul>
-          <li data-zh='<b>Dino 对话改造：信息流式输出</b><span class="p2">P2</span>'><b>Dino chat revamp: streaming message output</b><span class="p2">P2</span></li>
+          <li data-zh='<b>Prompt Eval 平台</b><span class="p1">P1</span>：评测 Dino Agent 与课中 prompt'><b>Prompt Eval platform</b><span class="p1">P1</span>: evaluate Dino Agent and in-class prompts</li>
+          <li data-zh='<b>Prompt Forge 增加 eval agent</b><span class="p1">P1</span>：检查三层 prompt 基础冲突'><b>Prompt Forge adds an eval agent</b><span class="p1">P1</span>: detect conflicts across three prompt layers</li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · 提升活跃及留存 <span class="count">1</span>'>Dino English · Engagement & retention <span class="count">1</span></h4>
+        <h4 data-zh='管理后台 · CRM <span class="count">6</span>'>Admin Backend · CRM <span class="count">6</span></h4>
         <ul>
-          <li data-zh='<b>首页每日学习任务列表</b><span class="p0">P0</span>：最关键任务进入 Dino 气泡承接'><b>Home daily learning-task list</b><span class="p0">P0</span>: the most important task is surfaced in the Dino bubble</li>
-        </ul>
-      </div>
-      <div class="block scope-admin">
-        <h4 data-zh='管理后台 <span class="count">7</span>'>Admin Backend <span class="count">7</span></h4>
-        <ul>
-          <li data-zh='<b>Prompt Eval 平台</b><span class="p1">P1</span>：支持评测 Dino Agent 与课中各环节 prompt'><b>Prompt Eval platform</b><span class="p1">P1</span>: evaluate Dino Agent and prompts across in-class stages</li>
-          <li data-zh='<b>Prompt Forge 管台增加 eval agent</b><span class="p1">P1</span>：评估三层 prompt 的基础冲突问题'><b>Prompt Forge console adds an eval agent</b><span class="p1">P1</span>: catch base conflicts across the three prompt layers</li>
-          <li data-zh='<b>CRM 二期</b><span class="p1">P1</span>'><b>CRM phase 2</b><span class="p1">P1</span></li>
-          <li data-zh='<b>销售分配 leads 策略</b><span class="p1">P1</span>'><b>Sales lead-assignment strategy</b><span class="p1">P1</span></li>
+          <li data-zh='<b>CRM 二期外呼短期方案</b><span class="p0">P0</span>（待评审）'><b>CRM phase-2 short-term outbound plan</b><span class="p0">P0</span> (under review)</li>
+          <li data-zh='<b>CRM 二期：权限 / Leads 分配 / 外呼</b><span class="p1">P1</span>'><b>CRM phase 2: permissions / lead assignment / outbound</b><span class="p1">P1</span></li>
+          <li data-zh='<b>销售分配 Leads 策略</b><span class="p1">P1</span>'><b>Sales lead-assignment strategy</b><span class="p1">P1</span></li>
           <li data-zh='<b>外呼能力</b><span class="p1">P1</span>'><b>Outbound calling</b><span class="p1">P1</span></li>
           <li data-zh='<b>销售跟进记录</b><span class="p1">P1</span>'><b>Sales follow-up records</b><span class="p1">P1</span></li>
           <li data-zh='<b>权限管理</b><span class="p1">P1</span>'><b>Permission management</b><span class="p1">P1</span></li>
         </ul>
       </div>
-      <div class="block scope-other">
-        <h4 data-zh='其他 <span class="count">1</span>'>Other <span class="count">1</span></h4>
+    </div>
+  </div>
+</section>
+
+<!-- ============ V1.5.1 ============ -->
+<section class="node reveal" id="n151">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">1.5.1</div>
+    <div class="node-sub" data-zh='留存 · 课中奖励与内容<br>排期待定'>Retention · in-class rewards<br>Date TBD</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title" data-zh='留存与付费承接 · Dino 对话 · 课中奖励与内容打磨<span class="tag">21 条</span>'>Retention & payment follow-up · Dino chat · in-class rewards & content<span class="tag">21 items</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 21 条</span><b>方向</b>：以 7 日留存、每日签到和 Dino 对话能力为留存抓手，系统打磨课中奖励、教学模版与课程生产，同时在拒付后承接高意向线索。<br/><b>分类</b>：Dino English 用户端 19 条（Dino 5 / Class 12 / Play 1 / 会员支付 1）；管理后台 2 条。优先级为 P0 5 条 / P1 16 条。<br/><b>状态</b>：9 条待评审、4 条产品设计中、4 条未启动、3 条开发中、1 条排期中。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.1 需求表 ↗</a>。'><span class="lab">Pool · 21 items</span><b>Direction</b>: use 7-day retention, daily check-ins and Dino chat as retention levers; improve in-class rewards, teaching templates and course production; and capture high-intent leads after payment refusal.<br/><b>Taxonomy</b>: Dino English App 19 (Dino 5 / Class 12 / Play 1 / Membership 1); Admin Backend 2. Priority mix: P0 5 / P1 16.<br/><b>Status</b>: 9 under review, 4 in product design, 4 not started, 3 in development, 1 scheduling. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.1 requirement list ↗</a>.</div>
+    <div class="cols requirement-groups">
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Dino <span class="count">5</span>'>Dino English · Dino <span class="count">5</span></h4>
         <ul>
-          <li data-zh='<b>Dino Daily 改名 Daily Speaking</b><span class="p0">P0</span>'><b>Rename Dino Daily to Daily Speaking</b><span class="p0">P0</span></li>
+          <li data-zh='<b>每日签到打卡</b><span class="p0">P0</span>'><b>Daily check-ins</b><span class="p0">P0</span></li>
+          <li data-zh='<b>7 日留存提升方案</b><span class="p0">P0</span>'><b>7-day retention plan</b><span class="p0">P0</span></li>
+          <li data-zh='<b>首页 Dino 对话付费机制与引导</b><span class="p0">P0</span>'><b>Home Dino chat paywall & upsell</b><span class="p0">P0</span></li>
+          <li data-zh='<b>Dino Agent 多入口记忆机制</b><span class="p1">P1</span>：课后 / Explore prompt 分工'><b>Dino Agent multi-entry memory</b><span class="p1">P1</span>: post-class / Explore prompt roles</li>
+          <li data-zh='<b>Chat with Dino 多语言输出修复</b><span class="p1">P1</span>'><b>Fix Chat with Dino multilingual output</b><span class="p1">P1</span></li>
         </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Class 课程 <span class="count">12</span>'>Dino English · Class <span class="count">12</span></h4>
+        <ul>
+          <li data-zh='<b>单词教学增加 image description 字段</b><span class="p0">P0</span>'><b>Word teaching adds an image-description field</b><span class="p0">P0</span></li>
+          <li data-zh='<b>长句跟读 / 开放问题等待时间继续优化</b><span class="p0">P0</span>'><b>Continue extending answer windows</b><span class="p0">P0</span></li>
+          <li data-zh='<b>增加课程升降级逻辑</b><span class="p1">P1</span>'><b>Course level up/down logic</b><span class="p1">P1</span></li>
+          <li data-zh='<b>点选听音改为听音翻卡</b><span class="p1">P1</span>'><b>Pick-listening → listen-and-flip</b><span class="p1">P1</span></li>
+          <li data-zh='<b>金币获得数量规则调整</b><span class="p1">P1</span>'><b>Coin-earning rule adjustment</b><span class="p1">P1</span></li>
+          <li data-zh='<b>奖励结算反馈页优化</b><span class="p1">P1</span>'><b>Reward-settlement page redesign</b><span class="p1">P1</span></li>
+          <li data-zh='<b>头像框奖励改为透明</b><span class="p1">P1</span>'><b>Avatar-frame reward turns transparent</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Level 1 Letter 课型结构修改</b><span class="p1">P1</span>'><b>Level 1 Letter lesson restructure</b><span class="p1">P1</span></li>
+          <li data-zh='<b>数字人口型新增</b><span class="p1">P1</span>'><b>New avatar mouth shapes</b><span class="p1">P1</span></li>
+          <li data-zh='<b>金币奖励出现 UI 效果</b><span class="p1">P1</span>'><b>Coin-reward reveal UI effect</b><span class="p1">P1</span></li>
+          <li data-zh='<b>图片异常白边修复</b><span class="p1">P1</span>'><b>Fix abnormal white edges around images</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Level 1 &amp; 2 正式课程 prompt 优化</b><span class="p1">P1</span>'><b>Level 1 &amp; 2 formal-lesson prompt tuning</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Play <span class="count">1</span>'>Dino English · Play <span class="count">1</span></h4>
+        <ul>
+          <li data-zh='<b>盲盒机、单词 / 口语 PK 增加题型与反馈</b><span class="p1">P1</span>'><b>More Gacha and word / speaking PK questions with feedback</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · 会员支付 <span class="count">1</span>'>Dino English · Membership <span class="count">1</span></h4>
+        <ul>
+          <li data-zh='<b>拒付后增加预约人工咨询入口</b><span class="p1">P1</span>：筛选高意向付费线索'><b>Add human-consult booking after payment refusal</b><span class="p1">P1</span>: capture high-intent payment leads</li>
+        </ul>
+      </div>
+      <div class="block scope-admin">
+        <h4 data-zh='管理后台 <span class="count">2</span>'>Admin Backend <span class="count">2</span></h4>
+        <ul>
+          <li data-zh='<b>CMS 课程生产平台</b><span class="p1">P1</span>：大纲、lesson plan、prompt 与资源配置'><b>CMS course-production platform</b><span class="p1">P1</span>: outline, lesson-plan, prompt and asset configuration</li>
+          <li data-zh='<b>多语言文案评审平台与流程 SOP</b><span class="p1">P1</span>'><b>Multilingual copy-review platform & SOP</b><span class="p1">P1</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo-strip">
+      <div class="demo-thumb" onclick="openDemo('V1.5.1-ui-demo.html','V1.5.1 · UI Demo')">
+        <iframe data-src="V1.5.1-ui-demo.html" loading="lazy" title="V1.5.1 UI Demo"></iframe>
+      </div>
+      <div class="demo-info">
+        <span class="demo-name">V1.5.1 · UI Demo</span>
+        <span class="demo-hint" data-zh='本节点对应版本演示，点击缩略图放大查看'>The demo for this milestone — click the thumbnail to enlarge</span>
+      </div>
+      <div class="demo-actions">
+        <button onclick="openDemo('V1.5.1-ui-demo.html','V1.5.1 · UI Demo')" data-zh='放大查看'>Enlarge</button>
+        <a class="btn" href="V1.5.1-ui-demo.html" target="_blank" data-zh='新窗口打开'>Open in new tab</a>
       </div>
     </div>
   </div>
@@ -1058,11 +1057,11 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.6.0</div>
-    <div class="node-sub" data-zh='教学模版 · Push 补充'>Teaching templates · push</div>
+    <div class="node-sub" data-zh='教学模版 · Push 补充<br>排期待定'>Teaching templates · push<br>Date TBD</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='教学模版拓展 · 个性化课堂 · Push 场景补充<span class="tag">迭代版</span>'>Teaching templates · personalized class · push scenarios<span class="tag">Iteration</span></div>
-    <div class="story" data-zh='<span class="lab">最新需求池 · 6 条</span><b>方向</b>：以个性化课堂与教学模版优化为核心，补充更多 Push 触达场景。<br/><b>分类</b>：Dino English 6 条（Class 课程 5 / 提升活跃及留存 1）。<br/><b>价值</b>：扩展课堂形态与教学内容能力，并通过更多消息场景提升学习提醒和用户召回。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Latest pool · 6 items</span><b>Direction</b>: personalized classrooms and teaching-template improvements, plus more push-notification scenarios.<br/><b>Taxonomy</b>: Dino English 6 (Class 5 / Engagement & retention 1).<br/><b>Value</b>: expands classroom formats and teaching capabilities while improving learning reminders and re-engagement through more messaging scenarios. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='品牌命名 · 教学模版 · Push 与对话形态<span class="tag">9 条有效需求</span>'>Brand naming · teaching templates · push & chat formats<span class="tag">9 valid items</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 10 条记录 / 9 条有效需求</span><b>方向</b>：推进 Daily Speaking 命名、个性化课堂与教学模版，补充 Push 场景，并探索 Dino 流式输出与周包。<br/><b>分类</b>：Dino English 用户端 8 条；另 1 条「周包」缺少产品 / 功能 / 优先级字段；1 条为空记录。<br/><b>状态</b>：5 条未启动、2 条产品设计中、1 条挂起、1 条状态待补；空记录不计入需求数。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Pool · 10 records / 9 valid items</span><b>Direction</b>: move to the Daily Speaking name, expand personalized classes and teaching templates, add push scenarios, and explore streaming Dino messages plus a weekly plan.<br/><b>Taxonomy</b>: Dino English App 8; one "weekly plan" item lacks product / feature / priority fields; one record is blank.<br/><b>Status</b>: 5 not started, 2 in product design, 1 on hold, 1 status missing; the blank record is excluded from item counts. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
     <div class="cols requirement-groups">
       <div class="block scope-dino">
         <h4 data-zh='Dino English · Class 课程 <span class="count">5</span>'>Dino English · Class <span class="count">5</span></h4>
@@ -1075,9 +1074,17 @@ section[id],.node[id]{scroll-margin-top:64px}
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · 提升活跃及留存 <span class="count">1</span>'>Dino English · Engagement & retention <span class="count">1</span></h4>
+        <h4 data-zh='Dino English · 整体与增长 <span class="count">3</span>'>Dino English · App-wide & growth <span class="count">3</span></h4>
         <ul>
+          <li data-zh='<b>Dino Daily 改名 Daily Speaking</b><span class="p0">P0</span>'><b>Rename Dino Daily to Daily Speaking</b><span class="p0">P0</span></li>
           <li data-zh='<b>其他 Push 场景补充</b><span class="p0">P0</span>'><b>Additional push-notification scenarios</b><span class="p0">P0</span></li>
+          <li data-zh='<b>周包</b>（产品 / 功能 / 优先级 / 状态待补）'><b>Weekly plan</b> (product / feature / priority / status missing)</li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Dino <span class="count">1</span>'>Dino English · Dino <span class="count">1</span></h4>
+        <ul>
+          <li data-zh='<b>Dino 信息流式输出</b><span class="p2">P2</span>'><b>Streaming Dino message output</b><span class="p2">P2</span></li>
         </ul>
       </div>
     </div>
