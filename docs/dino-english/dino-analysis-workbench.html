@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dino English · 核心指标观测工作台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7; --paper-deep:#efe7d6; --card:#fffdf8;
+  --ink:#1f2a24; --ink-soft:#4c5a52; --ink-faint:#8a958d;
+  --green:#1d5c3f; --green-bright:#2e8b57;
+  --orange:#d9641e; --orange-soft:#f3e0cf;
+  --red:#b3402a; --yellow:#c98a12; --line:#d8cfba;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:'Noto Sans SC',sans-serif;font-size:13.5px;line-height:1.7}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.35;z-index:2;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{max-width:1180px;margin:0 auto;padding:36px 28px 80px;position:relative;z-index:3}
+
+.kicker{font-family:'Fraunces',serif;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:10px}
+.kicker::before{content:'';width:26px;height:2px;background:var(--green)}
+h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:30px;line-height:1.3;margin:10px 0 6px}
+h1 em{font-style:normal;color:var(--orange)}
+.meta{font-size:12px;color:var(--ink-faint)}
+.meta b{color:var(--ink-soft)}
+
+.tabs{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;padding:14px 0 12px;background:linear-gradient(var(--paper) 82%,transparent)}
+.tab{font-size:12.5px;font-weight:500;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--card);cursor:pointer;color:var(--ink-soft);user-select:none}
+.tab.on{background:var(--green);border-color:var(--green);color:#f6f1e3;font-weight:700}
+.tab:hover:not(.on){border-color:var(--green-bright);color:var(--green)}
+
+.groups{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 2px}
+.group{font-family:'Fraunces',serif;font-size:14px;font-weight:700;padding:9px 18px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;color:var(--ink-soft);display:flex;align-items:baseline;gap:8px}
+.group.on{background:var(--orange);border-color:var(--orange);color:#fff}
+.group .gn{font-family:'Fraunces',serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;opacity:.75}
+.group:hover:not(.on){border-color:var(--orange);color:var(--orange)}
+.ph{color:var(--ink-faint);font-style:italic}
+
+.sec{display:none;margin-top:14px}
+.sec.on{display:block}
+.sec-h{font-family:'Noto Serif SC',serif;font-weight:900;font-size:19px;margin:18px 0 4px}
+.sec-h .en{font-family:'Fraunces',serif;font-weight:600;font-size:11px;letter-spacing:.14em;color:var(--ink-faint);margin-left:10px;text-transform:uppercase}
+.sec-desc{font-size:12.5px;color:var(--ink-soft);max-width:960px;margin-bottom:12px}
+.sec-desc b{color:var(--ink)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(31,42,36,.05);min-width:0}
+.card-t{font-weight:700;font-size:14px;margin-bottom:2px}
+.card-s{font-size:11.5px;color:var(--ink-faint);margin-bottom:10px}
+
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th{font-family:'Fraunces',serif;font-size:10.5px;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-weight:700;text-align:right;padding:5px 8px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+th:first-child{text-align:left}
+td{padding:5px 8px;text-align:right;border-bottom:1px dashed #e8e0cc;white-space:nowrap;font-variant-numeric:tabular-nums}
+td:first-child{text-align:left;font-weight:500}
+tr:last-child td{border-bottom:none}
+td .n{color:var(--ink-faint);font-size:10.5px;margin-left:3px}
+td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;border-radius:4px}
+.up{color:var(--green-bright);font-weight:700}
+.down{color:var(--red);font-weight:700}
+.flat{color:var(--ink-faint)}
+.warnrow td{background:#fbeee8}
+.tbl-scroll{overflow-x:auto;max-width:100%}
+
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.pill{font-size:12px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper-deep);cursor:pointer;color:var(--ink-soft)}
+.pill.on{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+
+.note{background:#fbeee8;border:1.5px dashed var(--red);border-radius:8px;padding:10px 14px;font-size:12.5px;margin:12px 0}
+.note b{color:var(--red)}
+.tip{background:var(--paper-deep);border:1px solid var(--line);border-radius:8px;padding:10px 14px;font-size:12.5px;margin:12px 0;color:var(--ink-soft)}
+.tip b{color:var(--ink)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid2>*{min-width:0}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:104px}
+.kpi .kl{font-size:11px;color:var(--ink-faint);margin-bottom:3px}
+.kpi .kv{font-family:'Fraunces','Noto Serif SC',serif;font-size:25px;font-weight:700;line-height:1.25;color:var(--green)}
+.kpi.hot .kv{color:var(--orange)}
+.kpi.warn .kv{color:var(--red)}
+.kpi .kn{font-size:11.5px;color:var(--ink-soft);margin-top:5px}
+.push-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:12px}
+.flow-step{position:relative;background:var(--paper-deep);border:1px solid var(--line);border-radius:9px;padding:14px 12px}
+.flow-step:not(:last-child)::after{content:'→';position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-family:'Fraunces',serif;font-size:20px;color:var(--orange)}
+.flow-num{font-family:'Fraunces',serif;font-size:23px;font-weight:700;color:var(--ink);line-height:1.2}
+.flow-lab{font-size:12px;font-weight:700;margin-top:3px}
+.flow-rate{font-size:10.5px;color:var(--ink-faint);margin-top:5px}
+.scope-tag{display:inline-block;padding:1px 7px;border-radius:999px;background:var(--paper-deep);border:1px solid var(--line);font-size:10.5px;color:var(--ink-soft)}
+@media(max-width:860px){
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .push-flow{grid-template-columns:1fr 1fr}
+  .flow-step:not(:last-child)::after{display:none}
+}
+@media(max-width:520px){.kpi-grid,.push-flow{grid-template-columns:1fr}}
+
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+
+details{margin-bottom:10px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+summary{cursor:pointer;font-weight:700;font-size:13px}
+pre{background:#20291f;color:#dfe8d8;border-radius:8px;padding:14px;font-size:11.5px;line-height:1.6;overflow-x:auto;margin-top:10px;font-family:ui-monospace,'SF Mono',Menlo,monospace}
+.ok-badge{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 8px;border-radius:999px;margin-right:6px;vertical-align:1px}
+.b-up{background:#e2efe4;color:var(--green)}
+.b-down{background:#fbeee8;color:var(--red)}
+svg text{font-family:'Noto Sans SC',sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Dino English · Analysis Workbench · Internal</div>
+  <h1>核心指标<em>观测工作台</em></h1>
+  <div class="meta"><b>三大观测域:</b>登录注册 · 留存 / Push · 支付转化 · <b>登录/留存快照:</b>2026-07-10~07-26(UTC)· <b>Push窗口:</b>2026-07-16~07-26(UTC；24h 归因截至 07-25)· <b>支付转化:</b>V1.4.0 转化链路(07-16 上线)· <b>最近更新:</b>2026-07-27 · 汇报版看 <b>dino-launch-dashboard.html</b> · 「注册率」= 首启当日注册 ÷ 当日首启设备(GA4 cohort)</div>
+
+  <div class="groups" id="groups"></div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <!-- ═══════════ TAB 0 结论速览 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="结论速览">
+    <div class="sec-h">谁在涨,谁在跌 <span class="en">Country Momentum</span></div>
+    <p class="sec-desc">对比前段(07-10~12)与最近三天(07-24~26)的注册转化率(GA4 cohort 口径)。<b>除韩国外，各主投市场均高于前段；韩国是唯一明确恶化项。</b>韩国 07-24 起新增量快速放大，但注册率从 20.6% 继续降到 14.5%，需要优先拆渠道与素材；越南/马来已从 07-18~19 低谷恢复，但越南成功注册已几乎全部依赖手机号。</p>
+    <div class="card">
+      <div class="card-t">国家注册转化率:前段 vs 后段</div>
+      <div class="card-s">GA4 cohort 口径 · Δ = 后段 − 前段(百分点)· 点击列头无排序,表已按 Δ 降序</div>
+      <div class="tbl-scroll"><table id="momentum"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-t">注册转化率 · 分国家 17 天走势</div>
+      <div class="card-s">GA4 cohort 口径 · 纵轴 0~75% · 韩国样本小(日均 <150 台)波动大,仅参考</div>
+      <div id="countryChart"></div>
+      <div class="legend" id="chartLegend"></div>
+    </div>
+    <div class="note"><b>当前四个重点:</b>① 网盟 ecommonltbn_int 累计 5,078 安装 / 12 激活 / 9 注册，仍是明显假量，所有主口径继续剔除；② 韩国 07-24~26 放量但注册率降至 20.6% / 20.0% / 14.5%；③ 越南 07-21 起手机号占成功注册 95%+，OTP 风险高度集中；④ V1.4 支付链路的 report_page_view 已恢复，但 study_plan_page_view 仍为 0，主漏斗中段仍不可归因。</div>
+  </section>
+
+  <!-- ═══════════ TAB 1 国家明细 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="国家明细">
+    <div class="sec-h">天 × 国家 注册转化明细 <span class="en">Day × Country Matrix</span></div>
+    <p class="sec-desc">三个口径互相校验:<b>GA4 口径</b>看产品内真实转化(打开了 App 的设备);<b>AF 注册/安装</b>对齐数据侧宽表(已剔网盟假量);<b>AF 注册/激活</b>排除「装了没打开」的影响,最接近「进了 App 的人有多少注册」。三口径趋势一致才可下结论。</p>
+    <div class="pillrow" id="metricPills"></div>
+    <div class="card">
+      <div class="tbl-scroll"><table id="countryMatrix"></table></div>
+      <div class="legend">单元格:转化率(样本数)· 色深=转化率高 · 红字=对比 07-16 高点回落超 5pt 的市场</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TAB 2 渠道 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="渠道">
+    <div class="sec-h">天 × 渠道 注册转化 <span class="en">Day × Channel</span></div>
+    <p class="sec-desc">宽表口径(注册/归因安装)。<b>网盟 ecommonltbn_int 是假量</b>:激活率 0.1%,对照其他渠道 90~92%(激活 = AppsFlyer 安装能关联到 GA4 first_open,即真的打开过 App)。</p>
+    <div class="card">
+      <div class="tbl-scroll"><table id="channelTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-t">Google 渠道 · 分国家注册率(07-16 ~ 07-26)</div>
+      <div class="card-s">宽表口径 · Google 是量最大渠道(占归因安装 53%),它的越南/马来质量下滑是真实下滑的主因之一</div>
+      <div class="tbl-scroll"><table id="googleCountry"></table></div>
+    </div>
+    <div class="tip"><b>渠道激活率对照(07-10~26):</b>Google 92.1%(13,856 装 → 12,764 激活)· Facebook 93.1% · 自然量 90.3% · <b style="color:var(--red)">网盟 0.2%(5,078 → 12)</b>。Google 韩国 07-24~26 注册/安装仅 18.4% / 20.3% / 15.2%，是新增异常的主要来源。</div>
+  </section>
+
+  <!-- ═══════════ TAB 3 版本对比 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="版本对比">
+    <div class="sec-h">V1.4.1 登录改版影响 <span class="en">Version Comparison</span></div>
+    <p class="sec-desc">07-17 当天新装用户随商店灰度分别拿到 1.4.0 / 1.4.1,流量来源相同,构成天然对照。<b>OB 四题完成率两版本持平,断点精确落在「填完第 4 题 → 注册成功」这一步</b>,且 1.4.1 把注册方式从 Google 一键大幅导向手机验证码。</p>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">首启当日注册率 · 按版本 × 天</div>
+        <div class="card-s">GA4 cohort 口径 · 值 = 注册率(首启设备数)· 1.3.2 后期为存量老设备,样本小仅参考</div>
+        <div class="tbl-scroll"><table id="verTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">OB 第 4 题 → 注册成功 · 按版本 × 天</div>
+        <div class="card-s">当日填完 4_english_level 的设备中,当日注册成功的比例</div>
+        <div class="tbl-scroll"><table id="ob4Table"></table></div>
+      </div>
+    </div>
+    <div class="note"><b>07-17 同日对照仍成立:</b>1.4.0 注册率 49.4%(1,039 台)vs 1.4.1 41.5%(458 台)，差约 8pt；OB4→注册 68.4% vs 60.4%。但 1.4.1 后续已回稳：07-22~25 OB4→注册为 68.0% / 65.6% / 66.4% / 65.0%，07-26 回落到 57.5%，需结合韩国放量结构继续观察。</div>
+  </section>
+
+  <!-- ═══════════ TAB 4 注册方式 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="注册方式">
+    <div class="sec-h">注册方式结构 <span class="en">Signup Method Mix</span></div>
+    <p class="sec-desc">signup_result(成功)的 signup_method 参数。<b>手机号已从辅助方式变成部分市场的主路径</b>：越南 07-21~26 的成功注册中 95%+ 来自手机号；全量日峰值为 07-24 的 284 人。短信通道的余额、发送成功率和 OTP 到达率需要常态告警。</p>
+    <div class="card">
+      <div class="card-t">每日成功注册用户 · 按方式</div>
+      <div class="card-s">GA4 设备级去重 · 括号内为当日占比</div>
+      <div class="tbl-scroll"><table id="methodTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-t">手机号注册占比 · 分国家(07-16 ~ 07-26)</div>
+      <div class="card-s">install_country 参数口径 · 占当日该国成功注册的比例</div>
+      <div class="tbl-scroll"><table id="phoneShareTable"></table></div>
+      <div class="legend">越南已转为近乎纯手机号注册；马来/印尼稳定在约 31%~58%。OTP 送达率异常会直接压低这些市场的注册率。</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TAB 5 小时级 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="小时级">
+    <div class="sec-h">小时级注册量:短信欠费影响评估 <span class="en">Hourly · SMS Outage</span></div>
+    <p class="sec-desc">火山短信 07-18 北京时间 00:23~9:02 欠费(≈100 次发送、40~50 用户收不到码),对应 <b>UTC 07-17 16:23 ~ 07-18 01:02</b>(表中标红时段)。该窗口是东南亚深夜~清晨的注册低谷,估算损失约 10~15 个注册,<b>对当日大盘影响 ≤1pt,不是本轮下滑主因</b>;但 1.4.1 后手机号注册占比升至 25~43%,短信通道需加余额/送达率告警。</p>
+    <div class="card">
+      <div class="card-t">成功注册用户数 · 按 UTC 小时(07-17 / 07-18)</div>
+      <div class="card-s">phone = 手机号注册 · other = Google/Facebook/Apple/Kakao 合计 · 红底 = 欠费窗口</div>
+      <div class="tbl-scroll"><table id="hourlyTable"></table></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TAB 6 留存 ═══════════ -->
+  <section class="sec" data-group="retention" data-tab="留存">
+    <div class="sec-h">留存明细 <span class="en">Retention Detail</span></div>
+    <p class="sec-desc">GA4 设备级,cohort 按首启日分组,当日任意事件即活跃。汇报版热力图在老板看板;这里放原始数值方便复查与二次计算。</p>
+    <div class="card">
+      <div class="card-t">Cohort × D1~D7 回访人数与比率</div>
+      <div class="card-s">「—」= 未到观察期 · 括号内为回访人数</div>
+      <div class="tbl-scroll"><table id="retTable"></table></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">D1 分层(07-10~25 cohort 合并)</div>
+        <div class="tbl-scroll"><table id="segTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">合并留存曲线</div>
+        <div class="tbl-scroll"><table id="curveTable"></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 留存 · Push 分析 ═══════════ -->
+  <section class="sec" data-group="retention" data-tab="Push分析">
+    <div class="sec-h">Push 触达、点击与回访 <span class="en">Push Attribution</span></div>
+    <p class="sec-desc">Firebase / GA4 设备级数据,窗口为 <b>2026-07-16~07-26 UTC</b>。Android 有 notification_receive,可计算收到→打开；iOS 仍只有 notification_open，本期 16 次打开，不计算送达率与点击率。24h 学习/完课只统计可完整观察的 07-16~25 打开事件，仍是<b>时序归因代理</b>，不等同于因果增量。</p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kl">Android · 权限授权用户率</div><div class="kv">69.2%</div><div class="kn">5,404 / 7,813 个触发权限结果的设备</div></div>
+      <div class="kpi"><div class="kl">Android · 收到 Push</div><div class="kv">6,407</div><div class="kn">Firebase 自动事件 notification_receive</div></div>
+      <div class="kpi warn"><div class="kl">Android · 收到 → 打开</div><div class="kv">2.31%</div><div class="kn">148 次打开；仍是当前最主要漏斗瓶颈</div></div>
+      <div class="kpi hot"><div class="kl">Android · 收到 → 划掉</div><div class="kv">66.2%</div><div class="kn">4,240 次 notification_dismiss，较上期继续升高</div></div>
+      <div class="kpi"><div class="kl">打开 → 24h 内学习</div><div class="kv">48.1%</div><div class="kn">65 / 135 次可完整观察的打开</div></div>
+      <div class="kpi"><div class="kl">打开 → 24h 内完课</div><div class="kv">27.4%</div><div class="kn">37 / 135 次可完整观察的打开</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-t">Android Push 核心漏斗</div>
+      <div class="card-s">为保证 24h 观察完整，本漏斗使用 07-16~25：学习 / 完课为同设备打开后的时序代理，最终完课占同期收到量的 0.65%</div>
+      <div class="push-flow">
+        <div class="flow-step"><div class="flow-num">5,729</div><div class="flow-lab">收到</div><div class="flow-rate">100% · 07-16~25</div></div>
+        <div class="flow-step"><div class="flow-num">135</div><div class="flow-lab">打开</div><div class="flow-rate">收到的 2.36%</div></div>
+        <div class="flow-step"><div class="flow-num">65</div><div class="flow-lab">24h 内学习</div><div class="flow-rate">打开的 48.1% · 收到的 1.13%</div></div>
+        <div class="flow-step"><div class="flow-num">37</div><div class="flow-lab">24h 内完课</div><div class="flow-rate">打开的 27.4% · 收到的 0.65%</div></div>
+      </div>
+    </div>
+
+    <div class="note"><b>核心判断:</b>主要问题仍在“收到后愿不愿意点”，且划掉率从 59.5% 升到 66.2%。点击后的学习/完课率随样本扩大回落，但仍显著高于整体大盘；优先优化文案、时机和 R3 频控，并用不发送对照组验证增量。</div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">每日触达表现 · Android</div>
+        <div class="card-s">07-16 为启动小流量,不与后续日期直接比较</div>
+        <div class="tbl-scroll"><table id="pushDailyTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">通知权限结果 · 分平台</div>
+        <div class="card-s">按 user_pseudo_id 去重;“授权”= 窗口内至少一次允许</div>
+        <div class="tbl-scroll"><table id="pushPermissionTable"></table></div>
+        <div class="legend">Android is_success 上报为字符串 true / false;iOS 上报为整数 1 / 0,分析时已兼容。</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-t">场景 × 轮次表现</div>
+      <div class="card-s">R1 / R2 / R3 的首启后中位触达时点约为第 0 / 1 / 2~3 天;表内完课率分母均为该行打开次数</div>
+      <div class="tbl-scroll"><table id="pushLabelTable"></table></div>
+      <div class="legend">场景表的学习/完课使用 07-16~25 完整归因窗口；07-26 的收到与打开只进入每日总览。</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">国家表现 · Android</div>
+        <div class="card-s">按 notification_receive 的 geo.country;仅展示收到 ≥20 的市场</div>
+        <div class="tbl-scroll"><table id="pushCountryTable"></table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">当前 D0–D3 节奏映射</div>
+        <div class="card-s">从首启到收到的中位小时数;当前 Push 已形成新手陪跑雏形</div>
+        <div class="tbl-scroll"><table id="pushTimingTable"></table></div>
+      </div>
+    </div>
+
+    <div class="tip"><b>优先实验:</b>① quit_midway R1 / R2 仍是主力，点击后完课率约 31% / 38%；② quit_midway R3 点击率仅约 1.2%，点击后完课约 9%，应降频或停发；③ 韩国点击率 5.2% 当前最高但样本仍小，泰国 1.5% 最低；④ 必须补 5%~10% 同条件不发送组，才能判断 Push 对 D1 / D3 的真实增量。</div>
+  </section>
+
+  <!-- ═══════════ 留存 · Push 口径 ═══════════ -->
+  <section class="sec" data-group="retention" data-tab="Push口径">
+    <div class="sec-h">Push 归因口径与数据缺口 <span class="en">Definitions & Gaps</span></div>
+    <p class="sec-desc">现有 Firebase 自动事件已经能回答“权限、收到、打开、划掉”,自定义 label 能拆场景与轮次;但业务事件没有携带 push_id / task_id,所以“回访与任务完成”目前只能做同设备的时序归因。</p>
+
+    <div class="card">
+      <div class="card-t">当前可用事件</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>分析环节</th><th style="text-align:left">事件 / 参数</th><th style="text-align:left">当前可回答</th><th style="text-align:left">限制</th></tr>
+        <tr><td>权限</td><td style="text-align:left">push_permission_result · is_success</td><td style="text-align:left">平台授权率</td><td style="text-align:left">Android / iOS 参数类型不一致</td></tr>
+        <tr><td>收到</td><td style="text-align:left">notification_receive · label</td><td style="text-align:left">Android 送达量、场景 / 轮次</td><td style="text-align:left">iOS 无 receive 分母</td></tr>
+        <tr><td>点击</td><td style="text-align:left">notification_open · label</td><td style="text-align:left">Android 点击率;各 label 点击表现</td><td style="text-align:left">缺少统一 push_id / campaign_id</td></tr>
+        <tr><td>划掉</td><td style="text-align:left">notification_dismiss · label</td><td style="text-align:left">Android 划掉率</td><td style="text-align:left">iOS 不提供同口径事件</td></tr>
+        <tr><td>回访 / 任务</td><td style="text-align:left">打开后 30m / 24h 的业务事件</td><td style="text-align:left">学习、完课、商业页、购买的时序结果</td><td style="text-align:left">无法证明由某条 Push 直接带来</td></tr>
+      </table></div>
+    </div>
+
+    <div class="note"><b>补齐完整归因的最小改造:</b>发送侧生成 push_id,并同时写入 scene、round、send_batch、target_task、deeplink;客户端在 receive / open 及落地页首个业务事件透传同一 push_id;另保留 5%~10% 同条件不发送组,才能计算 Push 对 D1 / D3、学习与付费的真实增量。</div>
+
+    <details><summary>① 每日收到 / 打开 / 划掉</summary>
+<pre>SELECT
+  PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) AS d,
+  device.operating_system AS os,
+  COUNTIF(event_name='notification_receive') AS receive,
+  COUNTIF(event_name='notification_open') AS open,
+  COUNTIF(event_name='notification_dismiss') AS dismiss,
+  COUNTIF(event_name='notification_foreground') AS foreground,
+  ROUND(SAFE_DIVIDE(COUNTIF(event_name='notification_open'),
+                    COUNTIF(event_name='notification_receive'))*100,2) AS open_rate
+FROM `dino-english-497507.analytics_538991439.events_*`
+WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+  AND event_name IN ('notification_receive','notification_open',
+                     'notification_dismiss','notification_foreground')
+GROUP BY 1,2 ORDER BY 1,2</pre></details>
+
+    <details><summary>② 场景 / 轮次点击率</summary>
+<pre>WITH e AS (
+  SELECT event_name, user_pseudo_id,
+    (SELECT value.string_value FROM UNNEST(event_params) WHERE key='label') AS label
+  FROM `dino-english-497507.analytics_538991439.events_*`
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+    AND device.operating_system='Android'
+    AND event_name IN ('notification_receive','notification_open')
+)
+SELECT label,
+  COUNTIF(event_name='notification_receive') receive,
+  COUNTIF(event_name='notification_open') open,
+  ROUND(SAFE_DIVIDE(COUNTIF(event_name='notification_open'),
+                    COUNTIF(event_name='notification_receive'))*100,2) open_rate
+FROM e GROUP BY 1 ORDER BY receive DESC</pre></details>
+
+    <details><summary>③ 打开后 24h 学习 / 完课(时序归因代理)</summary>
+<pre>WITH opens AS (
+  SELECT user_pseudo_id, event_timestamp open_ts,
+    (SELECT value.string_value FROM UNNEST(event_params) WHERE key='label') label
+  FROM `dino-english-497507.analytics_538991439.events_*`
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260725'
+    AND device.operating_system='Android'
+    AND event_name='notification_open'
+),
+biz AS (
+  SELECT user_pseudo_id, event_timestamp, event_name
+  FROM `dino-english-497507.analytics_538991439.events_*`
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+)
+SELECT o.label, COUNT(*) opens,
+  COUNTIF(EXISTS(
+    SELECT 1 FROM biz b
+    WHERE b.user_pseudo_id=o.user_pseudo_id
+      AND b.event_timestamp BETWEEN o.open_ts AND o.open_ts+24*60*60*1000000
+      AND b.event_name IN ('class_lesson_start','dino_assistant_progress')
+  )) learning_24h,
+  COUNTIF(EXISTS(
+    SELECT 1 FROM biz b
+    WHERE b.user_pseudo_id=o.user_pseudo_id
+      AND b.event_timestamp BETWEEN o.open_ts AND o.open_ts+24*60*60*1000000
+      AND b.event_name IN ('class_lesson_end','trial_lesson_complete')
+  )) lesson_complete_24h
+FROM opens o GROUP BY 1 ORDER BY opens DESC</pre></details>
+
+    <div class="tip"><b>读数边界:</b>① 当前有 11 个发送日、Android 148 次打开，分轮次结论仍需扩样；② notification_receive 是 Firebase 客户端自动事件，不等于服务端“发送成功”；③ 同一设备在 24 小时内自然回访也会被计入，没有不发送对照组前不可宣称增量；④ iOS 只有 16 次 open，本页不展示虚假的点击率。SQL 用日期正则同时覆盖日表与 07-26 intraday；24h 归因只取打开至 07-25。</div>
+  </section>
+
+  <!-- ═══════════ TAB 7 口径与 SQL ═══════════ -->
+  <section class="sec" data-group="login" data-tab="口径与SQL">
+    <div class="sec-h">口径说明与可复跑 SQL <span class="en">Definitions & Queries</span></div>
+    <p class="sec-desc">所有查询在 BigQuery 项目 <b>dino-english-497507</b> 跑,GA4 数据集 <b>analytics_538991439</b>(日表 events_YYYYMMDD + 当日 events_intraday_*),数据侧宽表在 <b>de_dwd</b>。跑法:<b>bq query --use_legacy_sql=false '…'</b>。</p>
+
+    <div class="tip"><b>口径速查:</b>① <b>GA4 注册率</b> = 首启当日 signup_result 设备 ÷ 当日 first_open 设备(user_pseudo_id 去重,cohort 化,国家取首启事件 geo.country;intraday 表 geo 可能缺失,分国家时改用 install_country 参数);② <b>宽表注册率</b> = is_registered ÷ is_installed(de_dwd.product_conversion_funnel_user,AppsFlyer 安装锚点,身份桥 appsflyer_id→user_pseudo_id→uid);③ <b>激活</b> = 安装能关联到 first_open 且日期 ≥ 安装日;④ <b>留存</b> = cohort 首启日分组,第 N 天有任意事件。</div>
+
+    <details><summary>① 天 × 国家 注册转化(GA4 cohort 口径)</summary>
+<pre>WITH ev AS (
+  SELECT event_name, user_pseudo_id, geo.country AS country,
+    PARSE_DATE('%Y%m%d',REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) d
+  FROM `dino-english-497507.analytics_538991439.events_*`
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260726'
+    AND event_name IN ('first_open','signup_result')
+),
+firsts AS (
+  SELECT user_pseudo_id, MIN(d) cd,
+    ARRAY_AGG(IF(event_name='first_open',country,NULL) IGNORE NULLS ORDER BY d LIMIT 1)[SAFE_OFFSET(0)] country
+  FROM ev WHERE event_name='first_open' GROUP BY 1
+),
+su AS (SELECT user_pseudo_id, MIN(d) sd FROM ev WHERE event_name='signup_result' GROUP BY 1)
+SELECT f.cd, f.country, COUNT(*) installs,
+  COUNTIF(s.sd=f.cd) su_same_day,
+  ROUND(COUNTIF(s.sd=f.cd)/COUNT(*)*100,1) rate
+FROM firsts f LEFT JOIN su s USING(user_pseudo_id)
+GROUP BY 1,2 ORDER BY 1,2</pre></details>
+
+    <details><summary>② 天 × 国家/渠道(数据侧宽表,剔网盟)</summary>
+<pre>SELECT install_date, install_country, media_source,
+  COUNT(*) installs, SUM(is_activated) activated, SUM(is_registered) registered
+FROM `dino-english-497507.de_dwd.product_conversion_funnel_user`
+WHERE install_date BETWEEN '2026-07-10' AND '2026-07-26'
+  AND media_source != 'ecommonltbn_int'   -- 网盟假量,默认剔除
+GROUP BY 1,2,3 ORDER BY 1,2</pre></details>
+
+    <details><summary>③ 版本对比(首启当日注册率 按 app 版本)</summary>
+<pre>-- ev 同① 再加 app_info.version 字段;firsts 取首启时的版本
+SELECT f.cd, f.ver, COUNT(*) n, COUNTIF(s.sd=f.cd) su_same,
+  ROUND(COUNTIF(s.sd=f.cd)/COUNT(*)*100,1) rate
+FROM firsts f LEFT JOIN su s USING(user_pseudo_id)
+GROUP BY 1,2 HAVING n>=30 ORDER BY 1,n DESC
+-- OB4→注册:把 firsts 换成「当日提交 step_submitted step_id='4_english_level' 的设备」</pre></details>
+
+    <details><summary>④ 注册方式结构 / 手机号占比</summary>
+<pre>SELECT PARSE_DATE('%Y%m%d',REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) d,
+  (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key='signup_method') m,
+  COUNT(DISTINCT user_pseudo_id) users
+FROM `dino-english-497507.analytics_538991439.events_*`
+WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260711' AND '20260726'
+  AND event_name='signup_result'
+GROUP BY 1,2 ORDER BY 1,3 DESC
+-- 分国家时用 event_params 里的 install_country(intraday 的 geo.country 常缺失)</pre></details>
+
+    <details><summary>⑤ 小时级(排查短信欠费类事故)</summary>
+<pre>SELECT DATE(TIMESTAMP_MICROS(event_timestamp)) d,
+  EXTRACT(HOUR FROM TIMESTAMP_MICROS(event_timestamp)) h,
+  COUNT(DISTINCT IF(m='phone',user_pseudo_id,NULL)) phone,
+  COUNT(DISTINCT IF(m!='phone' OR m IS NULL,user_pseudo_id,NULL)) other
+FROM ( ... signup_result + signup_method 同④ ... )
+GROUP BY 1,2 ORDER BY 1,2</pre></details>
+
+    <details><summary>⑥ 留存(cohort × 第 N 天)</summary>
+<pre>WITH ev AS ( ... 全事件,日表+intraday ... ),
+act AS (SELECT DISTINCT user_pseudo_id, d FROM ev),
+firsts AS (SELECT user_pseudo_id, MIN(d) cd FROM ev WHERE event_name='first_open' GROUP BY 1)
+SELECT f.cd, COUNT(DISTINCT f.user_pseudo_id) n,
+  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 1 DAY),a.user_pseudo_id,NULL)) d1,
+  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 3 DAY),a.user_pseudo_id,NULL)) d3,
+  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 7 DAY),a.user_pseudo_id,NULL)) d7
+FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre></details>
+
+    <div class="tip"><b>踩过的坑:</b>① intraday 国家字段需先验收完整度，缺失时用 install_country 或首启日表锚定；② 宽表字段是 STRING，SUM 前要 SAFE_CAST；③ signup_result 只在成功时上报，失败率需查 login_result / 服务端日志；④ Google Ads 平台侧花费已完整到 07-26，Meta 花费仍缺失，混合获客成本不可算。</div>
+  </section>
+
+  <!-- ═══════════ 支付转化 · 转化总览 ═══════════ -->
+  <section class="sec" data-group="payment" data-tab="转化总览">
+    <div class="sec-h">免费 → 付费主链路 <span class="en">Monetization Funnel</span></div>
+    <p class="sec-desc">V1.4.0 转化链路优化的核心观测:体验课报告 → 学习计划页 → 订阅页 → 支付。<b>报告页与领取计划已恢复上报，但学习计划页曝光仍为 0，后续 source 透传也缺失</b>，因此当前只能确认漏斗前两步，不能把支付成功归因到学习计划链路。</p>
+    <div class="note"><b>埋点结论:</b>report_page_view 与 trial_report_get_plan 已有稳定量；study_plan_page_view=0，subscription_page_view / checkout_start 的 subscription_source=study_plan 也为 0。请先修复中段埋点，再评价学习计划页转化。</div>
+    <div class="card">
+      <div class="card-t">生产库权威支付结果 · 07-10~07-26</div>
+      <div class="card-s">de_ods.payment_order · 成功仅认 status=SUCCESS 且 env_type=PRODUCTION</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>订单发起</th><th>PENDING</th><th>生产成功</th><th>沙盒成功</th><th>失败</th><th>发起→生产成功</th></tr>
+        <tr><td>1,611 笔 / 885 用户</td><td style="color:var(--red);font-weight:700">1,586</td><td style="color:var(--green);font-weight:700">18</td><td>6</td><td>1</td><td>1.12%</td></tr>
+      </table></div>
+      <div class="legend">生产成功：Apple 9 / Google 9 · 周卡 10 / 月卡 8 · 入口：试听报告 4、取消支付挽留 2、课程/练习解锁 3、会员入口 2、每日折扣 1、其他 1、无来源 5</div>
+    </div>
+    <div class="card">
+      <div class="card-t">核心漏斗:报告 → 计划 → 订阅(免费用户)</div>
+      <div class="card-s">GA4 user_pseudo_id 去重 · 环节转化 = 本环节 ÷ 上一环节</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>环节</th><th style="text-align:left">埋点事件(V1.4.0)</th><th>人数</th><th>环节转化</th></tr>
+        <tr><td>报告页曝光</td><td style="text-align:left;white-space:normal">report_page_view · lesson_type=trial · view_source=course_flow</td><td>1,181</td><td>100%</td></tr>
+        <tr><td>点击领取计划</td><td style="text-align:left;white-space:normal">button_click · trial_report_get_plan</td><td>775</td><td>65.6%</td></tr>
+        <tr><td>学习计划页曝光</td><td style="text-align:left;white-space:normal">study_plan_page_view · plan_source=trial_report</td><td style="color:var(--red);font-weight:700">0 · 埋点缺失</td><td>不可算</td></tr>
+        <tr><td>订阅页曝光</td><td style="text-align:left;white-space:normal">subscription_page_view · subscription_source=study_plan</td><td style="color:var(--red)">0（全来源 637）</td><td>不可算</td></tr>
+        <tr><td>发起支付</td><td style="text-align:left;white-space:normal">subscription_checkout_start · source=study_plan</td><td style="color:var(--red)">0 · source 缺失</td><td>不可算</td></tr>
+        <tr><td>支付成功(首购)</td><td style="text-align:left;white-space:normal">subscription_purchase_result · success · initial_purchase（全来源）</td><td>22</td><td>不可归因</td></tr>
+      </table></div>
+    </div>
+    <div class="card">
+      <div class="card-t">Paywall 收敛年+月:周期结构</div>
+      <div class="card-s">常规 Paywall 撤掉周卡后监控年/月占比与客单价;周卡现只在挽留 / 每日折扣页出现</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>周期</th><th>发起支付</th><th>首购成功</th><th>发起→成功</th><th>首购占比</th><th>客单价 price</th></tr>
+        <tr><td>年 yearly</td><td>218</td><td>9</td><td>4.1%</td><td>37.5%</td><td>未归一币种</td></tr>
+        <tr><td>月 monthly</td><td>34</td><td>9</td><td>26.5%</td><td>37.5%</td><td>未归一币种</td></tr>
+        <tr><td>周 weekly</td><td>10</td><td>6</td><td>60.0%</td><td>25.0%</td><td>未归一币种</td></tr>
+      </table></div>
+      <div class="legend">GA4 事件口径；checkout 的 cycle 为小写、purchase 为大写，已统一。price 混有本地币种/最小货币单位，未归一前不展示客单价。</div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 支付转化 · 挽留 & 每日折扣 ═══════════ -->
+  <section class="sec" data-group="payment" data-tab="挽留 & 每日折扣">
+    <div class="sec-h">挽留折扣页 & 每日折扣 <span class="en">Win-back & Daily Offer</span></div>
+    <p class="sec-desc">按 <b>subscription_source</b> 拆折扣页三入口:取消支付挽留 / 关闭 Paywall 挽留 / 每日启动折扣。曝光 → 发起 → 成功同入口漏斗(V1.4.0 新增 discount_offer_view + 三个 source)。</p>
+    <div class="card">
+      <div class="card-t">折扣页转化:曝光 → 发起 → 成功</div>
+      <div class="card-s">discount_offer_view(曝光)· checkout_start(发起)· purchase_result success(成功)· 挽回率 = 成功 ÷ 曝光</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>入口 subscription_source</th><th>折扣页曝光</th><th>发起支付</th><th>支付成功</th><th>挽回率</th></tr>
+        <tr><td>取消支付挽留 · winback_payment_cancel</td><td>190</td><td style="color:var(--red)">0 · source 缺失</td><td>2</td><td>1.05%</td></tr>
+        <tr><td>关闭 Paywall 挽留 · winback_paywall_close</td><td>1,624</td><td style="color:var(--red)">0 · source 缺失</td><td>0</td><td>0%</td></tr>
+        <tr><td>每日启动折扣 · daily_offer</td><td>760</td><td style="color:var(--red)">0 · source 缺失</td><td>1</td><td>0.13%</td></tr>
+      </table></div>
+    </div>
+    <div class="tip"><b>看点:</b>① winback 看的是<b>增量</b>——这些人本已放弃支付,挽回率高说明折扣页把流失兜回来了;② daily_offer 重点看<b>频控是否生效</b>(每日一次)与对<b>次日留存 / DAU</b>的负向;③ 周卡 SKU(price 8.49~11.99)主要在这里成交,与常规 Paywall 的年 / 月分开看。</div>
+  </section>
+
+  <!-- ═══════════ 支付转化 · 口径与SQL ═══════════ -->
+  <section class="sec" data-group="payment" data-tab="口径与SQL(支付)">
+    <div class="sec-h">支付转化口径与可复跑 SQL <span class="en">Definitions & Queries</span></div>
+    <p class="sec-desc">与登录 / 留存同一 GA4 数据集 <b>analytics_538991439</b>;把日期窗口改成 V1.4.0 上线后的区间。事件与参数口径见飞书《埋点事件明细》§5.6 / §7 / §8。</p>
+    <div class="tip"><b>口径速查:</b>report_page_view / study_plan_page_view / subscription_page_view / discount_offer_view 均按 user_pseudo_id 单次进入去重;checkout_start / purchase_result 按订单;首购口径 = purchase_result=success 且 purchase_type=initial_purchase;续费不带 subscription_source。</div>
+    <details><summary>① 核心免费转化漏斗(报告 → 计划 → 订阅)</summary>
+<pre>WITH e AS (
+  SELECT event_name, user_pseudo_id,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='view_source') view_source,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='lesson_type') lesson_type,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='button_id') button_id,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='plan_source') plan_source,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='subscription_source') sub_source,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='purchase_result') purchase_result,
+    (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='purchase_type') purchase_type
+  FROM `dino-english-497507.analytics_538991439.events_*`
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+)
+SELECT
+  COUNT(DISTINCT IF(event_name='report_page_view' AND lesson_type='trial' AND view_source='course_flow', user_pseudo_id, NULL)) s1_report,
+  COUNT(DISTINCT IF(event_name='button_click' AND button_id='trial_report_get_plan', user_pseudo_id, NULL)) s2_get_plan,
+  COUNT(DISTINCT IF(event_name='study_plan_page_view' AND plan_source='trial_report', user_pseudo_id, NULL)) s3_plan,
+  COUNT(DISTINCT IF(event_name='subscription_page_view' AND sub_source='study_plan', user_pseudo_id, NULL)) s4_paywall,
+  COUNT(DISTINCT IF(event_name='subscription_checkout_start' AND sub_source='study_plan', user_pseudo_id, NULL)) s5_checkout,
+  COUNT(DISTINCT IF(event_name='subscription_purchase_result' AND purchase_result='success' AND purchase_type='initial_purchase', user_pseudo_id, NULL)) s6_purchase
+FROM e</pre></details>
+    <details><summary>② 挽留 / 每日折扣(按 subscription_source)</summary>
+<pre>SELECT
+  (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='subscription_source') source,
+  COUNTIF(event_name='discount_offer_view') offer_view,
+  COUNTIF(event_name='subscription_checkout_start') checkout_start,
+  COUNTIF(event_name='subscription_purchase_result'
+    AND (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='purchase_result')='success') success
+FROM `dino-english-497507.analytics_538991439.events_*`
+WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+  AND event_name IN ('discount_offer_view','subscription_checkout_start','subscription_purchase_result')
+GROUP BY 1
+HAVING source IN ('winback_payment_cancel','winback_paywall_close','daily_offer')</pre></details>
+    <details><summary>③ Paywall 年+月结构(周期 × 客单价)</summary>
+<pre>SELECT
+  (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='billing_cycle') cycle,
+  COUNTIF(event_name='subscription_checkout_start') checkout_start,
+  COUNTIF(event_name='subscription_purchase_result'
+    AND (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='purchase_result')='success'
+    AND (SELECT x.value.string_value FROM UNNEST(event_params) x WHERE x.key='purchase_type')='initial_purchase') first_purchase,
+  ROUND(AVG(IF(event_name='subscription_purchase_result',
+    (SELECT x.value.double_value FROM UNNEST(event_params) x WHERE x.key='price'), NULL)),2) avg_price
+FROM `dino-english-497507.analytics_538991439.events_*`
+WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260726'
+  AND event_name IN ('subscription_checkout_start','subscription_purchase_result')
+GROUP BY 1</pre></details>
+    <div class="tip"><b>踩坑预警:</b>① report_page_view / trial_report_get_plan 依赖客户端修复,先确认有量;② price 字段类型可能是 double_value 或 int_value,按实际 events schema 调整;③ 续费(renewal)的 purchase_result 不带 subscription_source,算入口漏斗时会漏,故按 initial_purchase 过滤;④ 若要「订单数」口径用 order_id 去重更准,这里按事件 / 设备去重为快查口径。</div>
+  </section>
+
+</div>
+
+<script>
+/* ═══════════ 数据(2026-07-10 ~ 07-26 UTC,查询于 07-27) ═══════════ */
+const DAYS=['07-10','07-11','07-12','07-13','07-14','07-15','07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26'];
+const CTY=['VN','ID','MY','SA','TH','KR','Other'];
+const CN={VN:'越南 VN',ID:'印尼 ID',MY:'马来 MY',SA:'沙特 SA',TH:'泰国 TH',KR:'韩国 KR',Other:'其他'};
+const CCOLOR={VN:'#b3402a',ID:'#1d5c3f',MY:'#c98a12',SA:'#4c5a52',TH:'#d9641e',KR:'#8a958d',Other:'#c9b98a'};
+
+// GA4 cohort 口径:[首启设备, 当日注册]
+const GA4={
+ VN:[[558,194],[342,120],[322,113],[446,141],[565,235],[641,245],[644,283],[447,181],[406,140],[519,125],[127,53],[224,66],[230,84],[117,36],[148,64],[59,19],[39,17]],
+ ID:[[800,360],[888,396],[552,259],[551,275],[908,391],[303,182],[290,171],[213,120],[176,96],[135,80],[143,81],[152,87],[218,131],[243,127],[308,175],[239,152],[126,76]],
+ MY:[[271,122],[187,94],[198,94],[240,107],[301,125],[387,175],[522,280],[547,272],[435,165],[462,169],[171,79],[145,62],[243,141],[267,123],[248,149],[179,76],[77,40]],
+ SA:[[260,97],[245,94],[315,132],[362,132],[562,203],[507,185],[283,125],[172,67],[162,78],[91,44],[79,40],[132,61],[92,42],[79,51],[98,52],[103,53],[35,21]],
+ TH:[[67,40],[247,107],[180,78],[247,91],[211,92],[136,52],[175,98],[125,67],[95,51],[70,42],[68,42],[104,70],[108,73],[60,38],[85,47],[71,45],[75,45]],
+ KR:[[50,36],[17,12],[43,19],[61,35],[187,54],[166,48],[123,35],[83,23],[37,11],[88,18],[23,9],[17,3],[30,9],[39,20],[165,34],[150,30],[269,39]],
+ Other:[[53,18],[67,25],[55,14],[57,28],[78,35],[86,38],[102,29],[45,16],[49,16],[30,8],[23,11],[32,17],[27,13],[36,11],[18,9],[21,12],[17,4]]};
+
+// 宽表(AppsFlyer 锚点,剔网盟):[安装, 激活, 注册]
+const AF={
+ VN:[[575,498,201],[328,302,126],[313,285,113],[433,390,143],[550,499,246],[612,549,258],[619,575,296],[435,428,189],[385,378,139],[507,495,129],[123,117,56],[220,214,72],[224,218,89],[110,108,39],[140,137,69],[61,56,21],[41,38,17]],
+ ID:[[868,713,387],[845,787,406],[521,488,280],[517,470,294],[863,801,413],[290,259,202],[280,262,181],[207,197,131],[172,166,104],[134,128,92],[142,137,91],[141,138,94],[208,206,140],[232,224,143],[298,288,180],[223,216,157],[113,110,77]],
+ MY:[[298,223,127],[179,157,101],[196,177,108],[220,189,111],[275,239,132],[371,329,190],[491,454,283],[508,493,278],[423,410,178],[443,434,178],[155,152,80],[139,134,71],[232,225,146],[243,238,136],[224,217,141],[174,168,84],[76,70,42]],
+ SA:[[230,170,87],[227,197,87],[295,269,133],[334,302,139],[520,476,200],[475,422,188],[261,236,128],[165,157,67],[148,141,79],[89,82,48],[78,73,43],[125,121,61],[81,76,41],[78,74,50],[88,87,52],[97,95,56],[29,28,22]],
+ TH:[[107,61,41],[241,216,108],[170,155,86],[235,205,96],[202,176,94],[126,113,55],[171,158,102],[123,117,70],[91,84,55],[64,63,41],[67,66,45],[101,100,74],[105,103,78],[62,59,42],[79,78,51],[69,66,45],[72,70,44]],
+ KR:[[48,43,35],[17,15,12],[42,38,19],[59,54,35],[182,158,56],[160,141,49],[123,115,35],[78,77,23],[35,34,11],[87,87,19],[21,21,9],[16,16,4],[28,27,9],[39,39,21],[155,155,33],[145,141,31],[260,256,38]],
+ Other:[[52,40,18],[67,62,30],[57,49,17],[63,53,29],[75,64,39],[79,70,38],[85,81,29],[43,40,18],[55,45,13],[37,36,10],[27,21,13],[26,26,18],[24,24,12],[28,25,10],[21,18,8],[21,20,13],[16,15,4]]};
+
+// 渠道(宽表,含网盟):[归因安装, 注册]
+const CH={
+ 'Google Ads':[[1518,513],[1340,501],[1063,415],[1275,497],[1909,723],[1296,464],[1050,425],[818,313],[611,193],[729,177],[175,88],[300,114],[290,134],[191,87],[483,208],[335,162],[473,179]],
+ 'Facebook Ads':[[387,246],[355,243],[351,238],[386,246],[505,343],[585,404],[685,460],[462,293],[476,282],[427,255],[334,189],[382,228],[507,314],[486,298],[413,263],[334,182],[36,21]],
+ '自然量':[[201,97],[158,89],[144,79],[147,64],[213,80],[187,82],[240,128],[197,111],[186,82],[176,63],[68,35],[72,43],[101,64],[89,44],[102,58],[96,51],[77,29]],
+ '网盟 ecommonltbn':[null,null,null,null,null,[196,0],[332,1],[563,1],[808,1],[844,0],[926,1],[912,1],[493,1],[1,1],[2,2],[1,0],null]};
+
+// Google 渠道 × 国家(宽表 07-16~26):[安装, 注册]
+const GOOGLE_DAYS=['07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26'];
+const GOOG={VN:[[449,191],[335,130],[276,89],[419,92],[65,30],[135,34],[122,36],[61,19],[101,45],[22,10],[26,9]],MY:[[126,42],[149,49],[175,44],[162,31],[13,3],[18,6],[21,16],[35,12],[38,22],[24,14],[34,16]],ID:[[127,61],[99,53],[24,10],[33,20],[37,26],[34,25],[42,31],[18,7],[119,65],[102,74],[97,67]],SA:[[167,68],[113,42],[91,43],[37,16],[26,13],[75,31],[56,24],[44,33],[43,23],[26,18],[20,16]],TH:[[71,36],[41,19],[16,5],[11,7],[15,12],[12,10],[18,10],[6,4],[46,22],[37,26],[57,35]],KR:[[80,21],[55,9],[12,5],[53,9],[10,2],[9,1],[18,7],[16,7],[125,23],[118,24],[231,35]]};
+
+// 版本 × 天(GA4 cohort):{day:{ver:[n,su]}}
+const VER=[
+ ['07-14',{'1.3.2':[2796,1135]}],
+ ['07-15',{'1.3.2':[2207,920]}],
+ ['07-16',{'1.3.2':[1621,776],'1.4.0':[514,245]}],
+ ['07-17',{'1.3.2':[135,43],'1.4.0':[1039,513],'1.4.1':[458,190]}],
+ ['07-18',{'1.3.2':[74,20],'1.4.0':[55,21],'1.4.1':[1231,516]}],
+ ['07-19',{'1.3.2':[36,10],'1.4.0':[27,7],'1.4.1':[1332,469]}],
+ ['07-20',{'1.4.1':[609,310]}],
+ ['07-21',{'1.4.1':[793,361]}],
+ ['07-22',{'1.4.1':[923,484]}],
+ ['07-23',{'1.4.1':[815,404]}],
+ ['07-24',{'1.4.1':[1039,515]}],
+ ['07-25',{'1.4.1':[812,385]}],
+ ['07-26',{'1.4.1':[628,241]}]];
+const OB4=[
+ ['07-15',{'1.3.2':[1568,969]}],
+ ['07-16',{'1.3.2':[1237,821],'1.4.0':[326,240]}],
+ ['07-17',{'1.3.2':[126,78],'1.4.0':[775,530],'1.4.1':[316,191]}],
+ ['07-18',{'1.3.2':[68,40],'1.4.0':[50,24],'1.4.1':[944,528]}],
+ ['07-19',{'1.3.2':[38,25],'1.4.1':[990,507]}],
+ ['07-20',{'1.4.1':[470,333]}],
+ ['07-21',{'1.4.1':[632,388]}],
+ ['07-22',{'1.4.1':[750,510]}],
+ ['07-23',{'1.4.1':[668,438]}],
+ ['07-24',{'1.4.1':[847,562]}],
+ ['07-25',{'1.4.1':[659,428]}],
+ ['07-26',{'1.4.1':[466,268]}]];
+const VERS=['1.3.2','1.4.0','1.4.1'];
+
+// 注册方式 × 天(成功注册用户)
+const METHOD={
+ google:[766,761,639,732,1021,839,918,633,383,308,195,219,229,207,259,251,168],
+ facebook:[69,80,65,75,111,92,99,85,71,68,32,39,50,65,57,30,19],
+ phone:[37,7,22,40,44,48,57,82,135,158,136,162,252,172,284,148,83],
+ apple:[36,37,27,17,21,19,23,33,12,14,14,8,15,18,15,14,11],
+ kakao:[9,1,5,6,2,11,3,4,6,9,7,2,5,7,5,5,9],
+ unknown:[0,0,0,0,0,0,0,0,0,0,9,10,11,6,16,11,3]};
+// 手机号注册占比 %(install_country 口径,07-16~26)
+const PHONE_DAYS=['07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26'];
+const PHONE_SHARE={VN:[1.3,15.7,38.9,28.7,45.9,97.1,96.7,97.7,100,96.3,95.0],MY:[6.4,8.3,25.4,37.8,51.0,45.6,51.6,38.9,58.2,40.7,42.6],ID:[4.8,11.9,26.0,43.1,46.7,43.1,45.5,40.6,41.6,40.2,30.7]};
+
+// 小时级(UTC):成功注册用户
+const HOURLY={
+ '07-17':{phone:[3,3,1,1,3,2,3,5,1,0,2,4,9,16,15,9,0,0,0,1,0,0,0,2],
+          other:[35,44,39,38,42,48,33,62,59,53,50,47,50,35,47,17,8,3,1,2,2,5,11,22]},
+ '07-18':{phone:[1,6,9,9,10,13,12,8,13,4,12,10,8,1,5,2,1,1,2,0,1,0,4,3],
+          other:[20,19,26,28,22,27,14,22,23,30,26,29,45,39,31,21,9,9,8,1,3,3,9,8]}};
+// 欠费窗口(UTC):07-17 16:23 → 07-18 01:02
+const OUTAGE={'07-17':[16,23],'07-18':[0,1]}; // 起始小时数组
+
+// 留存:cohort × [D1..D7] 回访人数
+const RET=[
+ {d:'07-10',n:2059,r:[254,119,95,68,65,54,43]},
+ {d:'07-11',n:1993,r:[231,122,82,69,61,50,51]},
+ {d:'07-12',n:1665,r:[226,117,79,58,63,61,54]},
+ {d:'07-13',n:1964,r:[280,132,97,87,69,67,60]},
+ {d:'07-14',n:2812,r:[299,190,132,112,113,102,97]},
+ {d:'07-15',n:2226,r:[274,162,131,120,108,93,101]},
+ {d:'07-16',n:2139,r:[380,267,214,128,97,88,107]},
+ {d:'07-17',n:1632,r:[385,293,197,115,81,115,108]},
+ {d:'07-18',n:1360,r:[356,240,156,92,93,74,73]},
+ {d:'07-19',n:1395,r:[274,232,142,101,101,89,66]},
+ {d:'07-20',n:634,r:[217,170,136,70,72,54,null]},
+ {d:'07-21',n:806,r:[244,210,157,74,63,null,null]},
+ {d:'07-22',n:948,r:[344,269,184,108,null,null,null]},
+ {d:'07-23',n:841,r:[313,254,139,null,null,null,null]},
+ {d:'07-24',n:1070,r:[365,296,null,null,null,null,null]},
+ {d:'07-25',n:822,r:[294,null,null,null,null,null,null]}];
+const SEG=[['当日完成首课(trial_lesson_complete 当天)',1158,559],['当日注册·未完课',9508,2745],['当日未注册',13700,1432]];
+const CURVE=[['D1 次日(07-10~25 cohort)',24366,4736],['D3 第 3 天(07-10~23 cohort)',22474,1941],['D7 第 7 天(07-10~19 cohort)',19245,760]];
+
+// Push · Firebase 自动通知事件(2026-07-16~07-26 UTC,查询于 07-27)
+const PUSH_DAILY=[
+ {d:'07-16',receive:24,open:4,dismiss:5,foreground:5},
+ {d:'07-17',receive:282,open:8,dismiss:149,foreground:10},
+ {d:'07-18',receive:488,open:9,dismiss:257,foreground:11},
+ {d:'07-19',receive:645,open:22,dismiss:378,foreground:12},
+ {d:'07-20',receive:575,open:10,dismiss:363,foreground:6},
+ {d:'07-21',receive:521,open:12,dismiss:373,foreground:9},
+ {d:'07-22',receive:598,open:12,dismiss:412,foreground:18},
+ {d:'07-23',receive:817,open:15,dismiss:558,foreground:10},
+ {d:'07-24',receive:894,open:27,dismiss:629,foreground:15},
+ {d:'07-25',receive:885,open:16,dismiss:626,foreground:10},
+ {d:'07-26',receive:678,open:13,dismiss:490,foreground:5}];
+const PUSH_PERMISSION=[
+ {os:'Android',users:7813,allow:5404,deny:2412},
+ {os:'iOS',users:571,allow:354,deny:222}];
+const PUSH_LABEL=[
+ {scene:'首课中途退出',round:'R1',median:11.3,receive:1633,open:48,learn:25,complete:15,note:'主力场景;点击后完课 31.3%'},
+ {scene:'首课中途退出',round:'R2',median:36.0,receive:1206,open:29,learn:16,complete:11,note:'点击后完课 37.9%;继续保留'},
+ {scene:'首课中途退出',round:'R3',median:60.2,receive:967,open:11,learn:3,complete:1,note:'点击率与承接均明显衰减'},
+ {scene:'从未开始首课',round:'R1',median:12.3,receive:307,open:3,learn:1,complete:2,note:'点击率约 1.0%;样本仍小'},
+ {scene:'从未开始首课',round:'R2',median:37.4,receive:226,open:5,learn:2,complete:1,note:'小样本'},
+ {scene:'从未开始首课',round:'R3',median:66.9,receive:181,open:2,learn:1,complete:1,note:'小样本,不下结论'},
+ {scene:'体验课已完成',round:'R1',median:22.7,receive:510,open:21,learn:11,complete:5,note:'本场景首轮最好'},
+ {scene:'体验课已完成',round:'R2',median:46.5,receive:382,open:9,learn:3,complete:1,note:'点击率约 2.4%;继续复盘文案'},
+ {scene:'体验课已完成',round:'R3',median:70.2,receive:282,open:5,learn:2,complete:0,note:'第三轮承接弱'},
+ {scene:'会员能力解锁',round:'A/B/C',median:44.0,receive:30,open:2,learn:1,complete:0,note:'总触达仅 30;暂不判断'}];
+const PUSH_COUNTRY=[
+ {country:'马来西亚 MY',receive:1778,open:37,dismiss:1148},
+ {country:'印度尼西亚 ID',receive:1749,open:36,dismiss:1160},
+ {country:'越南 VN',receive:1053,open:32,dismiss:754},
+ {country:'泰国 TH',receive:844,open:13,dismiss:620},
+ {country:'沙特 SA',receive:576,open:12,dismiss:337},
+ {country:'韩国 KR',receive:289,open:15,dismiss:150}];
+const PUSH_TIMING=[
+ {scene:'首课中途退出',r1:11.3,r2:36.0,r3:60.2},
+ {scene:'从未开始首课',r1:12.3,r2:37.4,r3:66.9},
+ {scene:'体验课已完成',r1:22.7,r2:46.5,r3:70.2}];
+
+/* ═══════════ 工具 ═══════════ */
+const pct=(a,b)=>b?(a/b*100):0;
+const fp=v=>v.toFixed(1)+'%';
+function heat(v,max){ // 绿色热力
+  const a=Math.max(0,Math.min(1,v/max));
+  const bg=`rgba(29,92,63,${(0.05+a*0.9).toFixed(2)})`;
+  const fg=a>0.45?'#f6f1e3':'#1f2a24';
+  return `background:${bg};color:${fg}`;
+}
+const el=id=>document.getElementById(id);
+
+/* ═══════════ Groups + Tabs(两级导航) ═══════════ */
+const GROUPS=[
+ {k:'login',label:'登录 / 注册',en:'Signup'},
+ {k:'retention',label:'留存',en:'Retention'},
+ {k:'payment',label:'支付转化',en:'Monetization'}];
+const secs=[...document.querySelectorAll('.sec')];
+let curGroup='login';
+el('groups').innerHTML=GROUPS.map((g,i)=>`<div class="group${i===0?' on':''}" data-k="${g.k}">${g.label}<span class="gn">${g.en}</span></div>`).join('');
+function renderTabs(){
+  const gsecs=secs.filter(s=>s.dataset.group===curGroup);
+  el('tabs').innerHTML=gsecs.map((s,i)=>`<div class="tab${i===0?' on':''}" data-tab="${s.dataset.tab}">${s.dataset.tab}</div>`).join('');
+  secs.forEach(x=>x.classList.remove('on'));
+  if(gsecs[0])gsecs[0].classList.add('on');
+  el('tabs').querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    el('tabs').querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    gsecs.forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');
+    const tgt=gsecs.find(s=>s.dataset.tab===t.dataset.tab);
+    if(tgt)tgt.classList.add('on');
+  }));
+}
+el('groups').querySelectorAll('.group').forEach(g=>g.addEventListener('click',()=>{
+  el('groups').querySelectorAll('.group').forEach(x=>x.classList.remove('on'));
+  g.classList.add('on');curGroup=g.dataset.k;renderTabs();
+}));
+renderTabs();
+
+/* ═══════════ TAB0 结论:momentum 表 ═══════════ */
+function seg3(arr,idx){ // idx 数组求和 [n,su]
+  let n=0,s=0;idx.forEach(i=>{n+=arr[i][0];s+=arr[i][1];});return [n,s];
+}
+const momRows=CTY.map(c=>{
+  const [n1,s1]=seg3(GA4[c],[0,1,2]), [np,sp]=seg3(GA4[c],[5,6]), [n2,s2]=seg3(GA4[c],[14,15,16]);
+  const r1=pct(s1,n1), rp=pct(sp,np), r2=pct(s2,n2);
+  return {c,r1,rp,r2,d:r2-r1,dp:r2-rp,n1,np,n2};
+}).sort((a,b)=>b.d-a.d);
+el('momentum').innerHTML=
+ '<tr><th>国家</th><th>前段 07-10~12</th><th>中段 07-15~16</th><th>最近 07-24~26</th><th>Δ 最近−前段</th><th>Δ 最近−中段</th><th>判读</th></tr>'+
+ momRows.map(r=>{
+  const cls=v=>v>2?'up':v<-2?'down':'flat';
+  const badge=r.d>2&&r.dp>-3?'<span class="ok-badge b-up">上升</span>':(r.dp<-5||r.d<-2)?'<span class="ok-badge b-down">下降</span>':'';
+  const note={TH:'最近三天 59.3%,继续高于前段',ID:'最近三天 59.9%,量质均稳',SA:'最近三天 53.4%,较前段提升 14pt',VN:'已从 07-19 低谷恢复到 40.7%,但 95%+ 注册依赖手机号',MY:'最近三天恢复至 52.6%,07-24 单日 60.1%',KR:'07-24 起放量,最近三天仅 17.6%;唯一明确恶化项',Other:'样本仅 56 台,只作参考'}[r.c]||'';
+  const sgn=v=>(v>0?'+':'')+v.toFixed(1);
+  return `<tr><td>${CN[r.c]} ${badge}</td><td>${fp(r.r1)}<span class="n">(${r.n1.toLocaleString()})</span></td>`+
+   `<td>${fp(r.rp)}<span class="n">(${r.np.toLocaleString()})</span></td>`+
+   `<td>${fp(r.r2)}<span class="n">(${r.n2.toLocaleString()})</span></td>`+
+   `<td class="${cls(r.d)}">${sgn(r.d)}</td><td class="${cls(r.dp)}">${sgn(r.dp)}</td>`+
+   `<td style="white-space:normal;text-align:left;font-size:11.5px;color:var(--ink-soft)">${note}</td></tr>`;
+ }).join('');
+
+/* TAB0:分国家折线图 */
+(function(){
+  const W=1080,H=320,PL=44,PR=14,PT=16,PB=34,ymax=75;
+  const xw=(W-PL-PR)/(DAYS.length-1), yh=H-PT-PB;
+  const Y=v=>PT+yh*(1-v/ymax), X=i=>PL+i*xw;
+  let g='';
+  for(let v=0;v<=70;v+=10){
+    g+=`<line x1="${PL}" y1="${Y(v)}" x2="${W-PR}" y2="${Y(v)}" stroke="#e6ddc8" stroke-width="1" ${v?'stroke-dasharray="3 3"':''}/>`;
+    g+=`<text x="${PL-6}" y="${Y(v)+4}" font-size="10" fill="#a89c82" text-anchor="end">${v}%</text>`;
+  }
+  DAYS.forEach((d,i)=>{g+=`<text x="${X(i)}" y="${H-10}" font-size="10.5" fill="#6b6049" text-anchor="middle">${d}</text>`;});
+  // 1.4.1 上线标记(07-17)
+  g+=`<line x1="${X(6)}" y1="${PT}" x2="${X(6)}" y2="${H-PB}" stroke="#d9641e" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  g+=`<text x="${X(6)+5}" y="${PT+12}" font-size="10" fill="#d9641e">1.4.1 上线</text>`;
+  CTY.forEach(c=>{
+    const pts=GA4[c].map((v,i)=>`${X(i)},${Y(pct(v[1],v[0]))}`).join(' ');
+    const w=(c==='VN'||c==='ID'||c==='TH')?2.6:1.6;
+    const op=(c==='KR'||c==='Other')?.45:1;
+    g+=`<polyline points="${pts}" fill="none" stroke="${CCOLOR[c]}" stroke-width="${w}" opacity="${op}"/>`;
+    GA4[c].forEach((v,i)=>{g+=`<circle cx="${X(i)}" cy="${Y(pct(v[1],v[0]))}" r="2.6" fill="${CCOLOR[c]}" opacity="${op}"/>`;});
+  });
+  el('countryChart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${g}</svg>`;
+  el('chartLegend').innerHTML=CTY.map(c=>`<span><i style="background:${CCOLOR[c]}"></i>${CN[c]}</span>`).join('');
+})();
+
+/* ═══════════ TAB1 国家矩阵(口径切换) ═══════════ */
+const METRICS=[
+ {k:'ga4',label:'GA4 当日注册率',calc:c=>GA4[c].map(v=>[v[1],v[0]]),max:60},
+ {k:'afi',label:'AF 注册/安装(剔网盟)',calc:c=>AF[c].map(v=>[v[2],v[0]]),max:60},
+ {k:'afa',label:'AF 注册/激活(剔网盟)',calc:c=>AF[c].map(v=>[v[2],v[1]]),max:65}];
+let curMetric=0;
+el('metricPills').innerHTML=METRICS.map((m,i)=>`<div class="pill${i===0?' on':''}" data-i="${i}">${m.label}</div>`).join('');
+document.querySelectorAll('#metricPills .pill').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('#metricPills .pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');curMetric=+p.dataset.i;renderMatrix();
+}));
+function renderMatrix(){
+  const m=METRICS[curMetric];
+  let html='<tr><th>日期</th>'+CTY.map(c=>`<th>${CN[c]}</th>`).join('')+'<th>全体</th></tr>';
+  DAYS.forEach((d,i)=>{
+    let tn=0,ts=0;
+    const tds=CTY.map(c=>{
+      const [s,n]=m.calc(c)[i];tn+=n;ts+=s;
+      const r=pct(s,n);
+      const fall=(c==='VN'||c==='MY'||c==='KR')&&i>=7;
+      return `<td class="heat"><span class="v" style="${heat(r,m.max)}">${fp(r)}</span><span class="n"${fall?' style="color:var(--red);font-weight:700"':''}>(${n.toLocaleString()})</span></td>`;
+    }).join('');
+    const tr=pct(ts,tn);
+    html+=`<tr><td>${d}</td>${tds}<td><b style="font-family:'Fraunces',serif">${fp(tr)}</b><span class="n">(${tn.toLocaleString()})</span></td></tr>`;
+  });
+  el('countryMatrix').innerHTML=html;
+}
+renderMatrix();
+
+/* ═══════════ TAB2 渠道 ═══════════ */
+(function(){
+  let html='<tr><th>日期</th>'+Object.keys(CH).map(k=>`<th>${k}</th>`).join('')+'</tr>';
+  DAYS.forEach((d,i)=>{
+    const tds=Object.keys(CH).map(k=>{
+      const v=CH[k][i];
+      if(!v)return '<td class="flat">未投放</td>';
+      const r=pct(v[1],v[0]);
+      const warn=k.startsWith('网盟');
+      return `<td${warn?' style="color:var(--red)"':''}><b style="font-family:'Fraunces',serif">${fp(r)}</b><span class="n">(${v[0].toLocaleString()})</span></td>`;
+    }).join('');
+    html+=`<tr>${DAYS[i]>='07-18'?'<td style="color:var(--red);font-weight:700">'+d+'</td>':'<td>'+d+'</td>'}${tds}</tr>`;
+  });
+  el('channelTable').innerHTML=html;
+
+  let gh='<tr><th>国家</th>'+GOOGLE_DAYS.map(d=>`<th>${d}</th>`).join('')+'</tr>';
+  Object.keys(GOOG).forEach(c=>{
+    gh+=`<tr><td>${CN[c]}</td>`+GOOG[c].map((v,i)=>{
+      const r=pct(v[1],v[0]);
+      const warn=(c==='VN'||c==='MY')&&i>=2;
+      return `<td${warn?' style="color:var(--red);font-weight:700"':''}>${fp(r)}<span class="n">(${v[0]})</span></td>`;
+    }).join('')+'</tr>';
+  });
+  el('googleCountry').innerHTML=gh;
+})();
+
+/* ═══════════ TAB3 版本 ═══════════ */
+function verTable(data,elId){
+  let html='<tr><th>日期</th>'+VERS.map(v=>`<th>${v}</th>`).join('')+'</tr>';
+  data.forEach(([d,m])=>{
+    html+=`<tr><td>${d}</td>`+VERS.map(v=>{
+      if(!m[v])return '<td class="flat">–</td>';
+      const [n,s]=m[v], r=pct(s,n);
+      const small=n<200;
+      const hl=v==='1.4.1';
+      return `<td${hl?' style="color:var(--orange);font-weight:700"':''}>${fp(r)}<span class="n">(${n.toLocaleString()}${small?'·小样本':''})</span></td>`;
+    }).join('')+'</tr>';
+  });
+  el(elId).innerHTML=html;
+}
+verTable(VER,'verTable');verTable(OB4,'ob4Table');
+
+/* ═══════════ TAB4 注册方式 ═══════════ */
+(function(){
+  const ms=Object.keys(METHOD);
+  let html='<tr><th>日期</th>'+ms.map(m=>`<th>${m}</th>`).join('')+'<th>合计</th></tr>';
+  DAYS.forEach((d,i)=>{
+    const tot=ms.reduce((a,m)=>a+METHOD[m][i],0);
+    html+=`<tr><td>${d}</td>`+ms.map(m=>{
+      const v=METHOD[m][i], share=pct(v,tot);
+      const hl=(m==='phone'&&share>10)||(m==='google'&&share<60&&i>=6);
+      return `<td${hl?' style="color:var(--orange);font-weight:700"':''}>${v.toLocaleString()}<span class="n">(${share.toFixed(0)}%)</span></td>`;
+    }).join('')+`<td><b>${tot.toLocaleString()}</b></td></tr>`;
+  });
+  el('methodTable').innerHTML=html;
+
+  let ph='<tr><th>国家</th>'+PHONE_DAYS.map(d=>`<th>${d}</th>`).join('')+'</tr>';
+  Object.keys(PHONE_SHARE).forEach(c=>{
+    ph+=`<tr><td>${CN[c]}</td>`+PHONE_SHARE[c].map((v,i)=>
+      `<td${v>20?' style="color:var(--orange);font-weight:700"':''}>${v.toFixed(1)}%</td>`).join('')+'</tr>';
+  });
+  el('phoneShareTable').innerHTML=ph;
+})();
+
+/* ═══════════ TAB5 小时级 ═══════════ */
+(function(){
+  let html='<tr><th>UTC 时</th>'+Array.from({length:24},(_,h)=>`<th>${h}</th>`).join('')+'</tr>';
+  ['07-17','07-18'].forEach(d=>{
+    ['phone','other'].forEach(k=>{
+      html+=`<tr><td>${d} ${k}</td>`+HOURLY[d][k].map((v,h)=>{
+        const inOutage=(d==='07-17'&&h>=16)||(d==='07-18'&&h<=1);
+        return `<td${inOutage?' style="background:#fbeee8;color:var(--red);font-weight:700"':''}>${v}</td>`;
+      }).join('')+'</tr>';
+    });
+  });
+  el('hourlyTable').innerHTML=html;
+})();
+
+/* ═══════════ TAB6 留存 ═══════════ */
+(function(){
+  let html='<tr><th>cohort</th><th>首启</th>'+[1,2,3,4,5,6,7].map(i=>`<th>D${i}</th>`).join('')+'</tr>';
+  RET.forEach(c=>{
+    html+=`<tr><td>${c.d}</td><td>${c.n.toLocaleString()}</td>`+c.r.map(v=>{
+      if(v===null)return '<td class="flat">—</td>';
+      const r=pct(v,c.n);
+      return `<td class="heat"><span class="v" style="${heat(r,40)}">${fp(r)}</span><span class="n">(${v})</span></td>`;
+    }).join('')+'</tr>';
+  });
+  el('retTable').innerHTML=html;
+  el('segTable').innerHTML='<tr><th>分层</th><th>人数</th><th>D1 回访</th><th>D1 率</th></tr>'+
+   SEG.map(([l,n,d1])=>`<tr><td style="white-space:normal">${l}</td><td>${n.toLocaleString()}</td><td>${d1.toLocaleString()}</td><td><b style="font-family:'Fraunces',serif">${fp(pct(d1,n))}</b></td></tr>`).join('');
+  el('curveTable').innerHTML='<tr><th>观察点</th><th>可测样本</th><th>回访</th><th>比率</th></tr>'+
+   CURVE.map(([l,n,v])=>`<tr><td style="white-space:normal">${l}</td><td>${n.toLocaleString()}</td><td>${v.toLocaleString()}</td><td><b style="font-family:'Fraunces',serif">${fp(pct(v,n))}</b></td></tr>`).join('');
+})();
+
+/* ═══════════ 留存 · Push 分析 ═══════════ */
+(function(){
+  el('pushDailyTable').innerHTML=
+    '<tr><th>日期</th><th>收到</th><th>打开</th><th>点击率</th><th>划掉</th><th>划掉率</th><th>前台收到</th></tr>'+
+    PUSH_DAILY.map((r,i)=>`<tr${i===0?' class="warnrow"':''}><td>${r.d}${i===0?' <span class="scope-tag">启动小流量</span>':''}</td>`+
+      `<td>${r.receive.toLocaleString()}</td><td>${r.open}</td>`+
+      `<td class="${pct(r.open,r.receive)>=3?'up':pct(r.open,r.receive)<2?'down':''}"><b>${fp(pct(r.open,r.receive))}</b></td>`+
+      `<td>${r.dismiss.toLocaleString()}</td><td>${fp(pct(r.dismiss,r.receive))}</td><td>${r.foreground}</td></tr>`).join('');
+
+  el('pushPermissionTable').innerHTML=
+    '<tr><th>平台</th><th>结果用户</th><th>至少一次授权</th><th>授权率</th><th>至少一次拒绝</th></tr>'+
+    PUSH_PERMISSION.map(r=>`<tr><td>${r.os}</td><td>${r.users.toLocaleString()}</td>`+
+      `<td>${r.allow.toLocaleString()}</td><td><b style="font-family:'Fraunces',serif">${fp(pct(r.allow,r.users))}</b></td>`+
+      `<td>${r.deny.toLocaleString()}<span class="n">(${fp(pct(r.deny,r.users))})</span></td></tr>`).join('');
+
+  el('pushLabelTable').innerHTML=
+    '<tr><th>场景</th><th>轮次</th><th>首启→收到</th><th>收到</th><th>打开</th><th>点击率</th><th>24h学习</th><th>24h完课</th><th style="text-align:left">判断</th></tr>'+
+    PUSH_LABEL.map(r=>{
+      const openRate=pct(r.open,r.receive);
+      const rateCls=openRate>=2.8?'up':openRate<1.5?'down':'';
+      return `<tr><td>${r.scene}</td><td>${r.round}</td><td>${r.median===null?'—':r.median.toFixed(1)+'h'}</td>`+
+        `<td>${r.receive.toLocaleString()}</td><td>${r.open}</td><td class="${rateCls}"><b>${fp(openRate)}</b></td>`+
+        `<td>${r.learn}<span class="n">(${r.open?fp(pct(r.learn,r.open)):'—'})</span></td>`+
+        `<td>${r.complete}<span class="n">(${r.open?fp(pct(r.complete,r.open)):'—'})</span></td>`+
+        `<td style="white-space:normal;text-align:left;color:var(--ink-soft)">${r.note}</td></tr>`;
+    }).join('');
+
+  el('pushCountryTable').innerHTML=
+    '<tr><th>国家</th><th>收到</th><th>打开</th><th>点击率</th><th>划掉率</th></tr>'+
+    PUSH_COUNTRY.map(r=>{
+      const openRate=pct(r.open,r.receive);
+      return `<tr><td>${r.country}</td><td>${r.receive.toLocaleString()}</td><td>${r.open}</td>`+
+        `<td class="${openRate>=3.5?'up':openRate<1.5?'down':''}"><b>${fp(openRate)}</b></td>`+
+        `<td>${fp(pct(r.dismiss,r.receive))}</td></tr>`;
+    }).join('');
+
+  el('pushTimingTable').innerHTML=
+    '<tr><th>场景</th><th>R1 · D0</th><th>R2 · D1</th><th>R3 · D2~3</th></tr>'+
+    PUSH_TIMING.map(r=>`<tr><td>${r.scene}</td><td>${r.r1.toFixed(1)}h</td><td>${r.r2.toFixed(1)}h</td><td>${r.r3.toFixed(1)}h</td></tr>`).join('');
+})();
+</script>
+</body>
+</html>
