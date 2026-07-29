@@ -7334,7 +7334,7 @@
       </section>
 
       <!-- V1.5.1 · 越南两轮人工咨询触达。
-           第一轮为顾问专属优惠，第二轮为延长体验；两页均使用账号已有手机号。 -->
+           第一轮为顾问专属优惠，第二轮为延长体验。 -->
       <section class="screen" id="screen-vn-consult" aria-labelledby="vnc-title">
         <div class="vnc-shell" id="vnc-shell">
           <div class="vnc-head">
@@ -8486,6 +8486,22 @@
       courseLeveling: true,
       expandedPlayQuiz: true,
     });
+    const VN_CONSULT_STATE = Object.freeze({
+      UNSEEN: "unseen",
+      WAITING_SECOND: "waiting_second",
+      STOPPED: "stopped",
+    });
+    const VN_CONSULT_EVENT = Object.freeze({
+      PAYWALL_DECLINED: "paywall_declined",
+      REPORT_UNLOCK: "report_unlock",
+    });
+    const VN_CONSULT_ROUTE = Object.freeze({
+      CLASS_HOME: "class_home",
+      GROUP_B_GUIDE: "group_b_guide",
+      NEWCOMER_CLASS: "newcomer_class",
+      INCLASS: "inclass",
+      RETURN_SCREEN: "return_screen",
+    });
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = {
       // 越南人工咨询沿用 conv_funnel_v1 分组；两组共享同一套用户级咨询状态。
@@ -8493,7 +8509,7 @@
       experimentGroup: "b",
       vnConsultSubmitted: false,
       vnConsultSubmitResult: "success",
-      vnConsultSequence: 0,
+      vnConsultState: VN_CONSULT_STATE.UNSEEN,
       vnConsultHook: "discount",
       vnConsultTrialDays: 7,
       levelUpResult: "up",
@@ -13676,15 +13692,17 @@
     }
 
     // ===== V1.5.1 · Vietnam two-hook advisor consultation =====
-    let vnConsultResumeMode = "class_home";
-    let vnConsultReviewMode = false;
+    let vnConsultNextRoute = { type: VN_CONSULT_ROUTE.CLASS_HOME };
     function isVnSalesRoute() {
       return demoState.marketRoute === "vn";
     }
     function isVnConsultEligible() {
-      return isVnSalesRoute()
-        && !demoState.vnConsultSubmitted
-        && demoState.vnConsultSequence < 2;
+      if (!isVnSalesRoute()) return false;
+      if (profile.premiumUnlocked || demoState.vnConsultSubmitted) {
+        demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
+        return false;
+      }
+      return demoState.vnConsultState !== VN_CONSULT_STATE.STOPPED;
     }
     function vnConsultName() {
       return (profile.name || "").trim() || "your child";
@@ -13728,42 +13746,67 @@
       primary.textContent = "Request a free consultation";
       if (window.demoStatePanel) window.demoStatePanel.sync();
     }
-    function openVnConsult(hook, resumeMode, reviewMode) {
-      const normalizedHook = hook === "trial_extension" ? "trial_extension" : "discount";
-      if (!reviewMode && !isVnConsultEligible()) return false;
-      demoState.vnConsultHook = normalizedHook;
-      vnConsultResumeMode = resumeMode || "class_home";
-      vnConsultReviewMode = !!reviewMode;
-      if (!vnConsultReviewMode) {
-        demoState.vnConsultSequence = Math.min(2, demoState.vnConsultSequence + 1);
+    function normalizeVnConsultRoute(nextRoute) {
+      if (!nextRoute || typeof nextRoute !== "object") {
+        return { type: VN_CONSULT_ROUTE.CLASS_HOME };
       }
+      return {
+        type: Object.values(VN_CONSULT_ROUTE).includes(nextRoute.type)
+          ? nextRoute.type
+          : VN_CONSULT_ROUTE.CLASS_HOME,
+        screen: nextRoute.screen || "",
+      };
+    }
+    function openVnConsult(hook, nextRoute, nextState) {
+      const normalizedHook = hook === "trial_extension" ? "trial_extension" : "discount";
+      if (!isVnConsultEligible()) return false;
+      demoState.vnConsultHook = normalizedHook;
+      vnConsultNextRoute = normalizeVnConsultRoute(nextRoute);
+      demoState.vnConsultState = nextState;
       renderVnConsult();
       enterPortrait();
       showPortraitScreen("screen-vn-consult");
       const scroll = $("#vnc-scroll"); if (scroll) scroll.scrollTop = 0;
       return true;
     }
-    function maybeOpenVnConsultFromPaywallClose() {
+    function maybeOpenVnConsult(eventName, nextRoute) {
       if (!isVnConsultEligible()) return false;
-      if (demoState.vnConsultSequence === 0) {
-        // 第一次：A、B 两组统一在用户首次拒绝 Paywall 后展示专属折扣。
-        // B 组 Paywall①关闭后仍需续接原首页引导；其他入口关闭后回 Class 首页。
-        // 咨询页替代原 Paywall 关闭后的挽留支付，两者严格二选一。
-        const resumeMode = demoState.experimentGroup === "b" && cxStage === "pay1"
-          ? "group_b_guide"
-          : "class_home";
-        return openVnConsult("discount", resumeMode, false);
+      if (
+        demoState.vnConsultState === VN_CONSULT_STATE.UNSEEN
+        && eventName === VN_CONSULT_EVENT.PAYWALL_DECLINED
+      ) {
+        return openVnConsult("discount", nextRoute, VN_CONSULT_STATE.WAITING_SECOND);
       }
-      if (demoState.vnConsultSequence === 1 && demoState.experimentGroup === "a") {
-        // 第二次 · A：后续任一 Paywall 再次被拒绝时展示延长体验。
-        return openVnConsult("trial_extension", "class_home", false);
+      if (demoState.vnConsultState !== VN_CONSULT_STATE.WAITING_SECOND) return false;
+      const isSecondTouch = (
+        demoState.experimentGroup === "a"
+        && eventName === VN_CONSULT_EVENT.PAYWALL_DECLINED
+      ) || (
+        demoState.experimentGroup === "b"
+        && eventName === VN_CONSULT_EVENT.REPORT_UNLOCK
+      );
+      if (isSecondTouch) {
+        return openVnConsult("trial_extension", nextRoute, VN_CONSULT_STATE.STOPPED);
       }
       return false;
     }
-    function maybeOpenVnConsultFromReport() {
-      if (!isVnConsultEligible()) return false;
-      if (demoState.experimentGroup !== "b" || demoState.vnConsultSequence !== 1) return false;
-      return openVnConsult("trial_extension", "class_home", false);
+    function resolvePaywallConsultNextRoute() {
+      if (cxStage === "pay1") {
+        return {
+          type: demoState.experimentGroup === "b"
+            ? VN_CONSULT_ROUTE.GROUP_B_GUIDE
+            : VN_CONSULT_ROUTE.CLASS_HOME,
+        };
+      }
+      if (cxStage === "pay2" || cxStage === "pay3") {
+        return { type: VN_CONSULT_ROUTE.NEWCOMER_CLASS };
+      }
+      if (cxStage === "pay-inclass") return { type: VN_CONSULT_ROUTE.INCLASS };
+      if (cxStage === "pay-report") return { type: VN_CONSULT_ROUTE.CLASS_HOME };
+      return {
+        type: VN_CONSULT_ROUTE.RETURN_SCREEN,
+        screen: paywallReturnScreen || "screen-class",
+      };
     }
     function continueAfterPaywallClose() {
       if (cxStage === "pay1") {
@@ -13778,13 +13821,26 @@
       closePaywallPortrait();
     }
     function finishVnConsult() {
-      if (vnConsultReviewMode) {
-        renderPaywallPortrait();
-        showPortraitScreen("screen-paywall-pt");
+      const nextRoute = vnConsultNextRoute;
+      if (nextRoute.type === VN_CONSULT_ROUTE.GROUP_B_GUIDE) {
+        window.cxToGuide && window.cxToGuide();
         return;
       }
-      if (vnConsultResumeMode === "group_b_guide") {
-        window.cxToGuide && window.cxToGuide();
+      if (nextRoute.type === VN_CONSULT_ROUTE.NEWCOMER_CLASS) {
+        window.cxToFootball
+          ? window.cxToFootball()
+          : (enterLandscape(), showClassHome());
+        return;
+      }
+      if (nextRoute.type === VN_CONSULT_ROUTE.INCLASS) {
+        cxStage = "football";
+        enterLandscape();
+        showLandScreen("screen-inclass-teach");
+        return;
+      }
+      if (nextRoute.type === VN_CONSULT_ROUTE.RETURN_SCREEN) {
+        enterLandscape();
+        showLandScreen(nextRoute.screen || "screen-class");
         return;
       }
       cxStage = "home";
@@ -13793,7 +13849,9 @@
     window.isVnSalesRoute = isVnSalesRoute;
     window.isVnConsultEligible = isVnConsultEligible;
     window.openVnConsult = openVnConsult;
-    window.maybeOpenVnConsultFromReport = maybeOpenVnConsultFromReport;
+    window.maybeOpenVnConsult = maybeOpenVnConsult;
+    window.VN_CONSULT_EVENT = VN_CONSULT_EVENT;
+    window.VN_CONSULT_ROUTE = VN_CONSULT_ROUTE;
     window.vnConsultIsSubmitted = function () { return !!demoState.vnConsultSubmitted; };
     window.vnRefreshConsult = renderVnConsult;
 
@@ -13816,17 +13874,20 @@
           return;
         }
         demoState.vnConsultSubmitted = true;
+        demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
         finishVnConsult();
         setTimeout(() => showPayToast("Consultation requested ✓"), 120);
       }, 650);
     });
 
     $("#btn-pwpt-back")?.addEventListener("click", () => {
-      if (maybeOpenVnConsultFromPaywallClose()) return;
+      const nextRoute = resolvePaywallConsultNextRoute();
+      if (maybeOpenVnConsult(VN_CONSULT_EVENT.PAYWALL_DECLINED, nextRoute)) return;
       continueAfterPaywallClose();
     });
     $("#btn-pwpt-restore")?.addEventListener("click", () => {
       profile.premiumUnlocked = true;
+      demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       closePaywallPortrait();
@@ -13834,6 +13895,7 @@
     });
     $("#btn-pwpt-purchase")?.addEventListener("click", () => {
       profile.premiumUnlocked = true;
+      demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       // Free→member landing: current = maxReached = the pre-conversion current pointer
       // (i.e. the last trial placement; onboarding fuzzy level if no trial was taken).
       profile.maxReachedLevelId = profile.currentLevelId;
@@ -13848,6 +13910,7 @@
 
     function completePurchase() {
       profile.premiumUnlocked = true;
+      demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       // Free→member landing: current = maxReached = the pre-conversion current pointer.
       profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
@@ -13945,6 +14008,7 @@
     function winbackSubscribe() { // subscribe the weekly plan
       stopWinbackCountdown();
       profile.premiumUnlocked = true;
+      demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       profile.maxReachedLevelId = profile.currentLevelId;
       profile.nextBillingDate = "Jul 8, 2026";
       profile.selectedPlan = "weekly";
@@ -13983,6 +14047,7 @@
 
     function restorePurchase() {
       profile.premiumUnlocked = true;
+      demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showPayToast("Purchase restored ✓");
@@ -15428,25 +15493,36 @@
           demoState.marketRoute = "vn";
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultSubmitResult = "success";
-          demoState.vnConsultSequence = 0;
+          demoState.vnConsultState = VN_CONSULT_STATE.UNSEEN;
           demoState.vnConsultHook = "discount";
           seedReviewProfile();
-          window.openVnConsult && window.openVnConsult("discount", "class_home", true);
+          profile.premiumUnlocked = false;
+          window.maybeOpenVnConsult && window.maybeOpenVnConsult(
+            VN_CONSULT_EVENT.PAYWALL_DECLINED,
+            { type: VN_CONSULT_ROUTE.CLASS_HOME }
+          );
         }) },
       { label: "越南咨询·第二轮延长体验", run: withReviewProfile(function () {
           demoState.marketRoute = "vn";
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultSubmitResult = "success";
-          demoState.vnConsultSequence = 1;
+          demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
           demoState.vnConsultHook = "trial_extension";
           seedReviewProfile();
-          window.openVnConsult && window.openVnConsult("trial_extension", "class_home", true);
+          profile.premiumUnlocked = false;
+          const eventName = demoState.experimentGroup === "a"
+            ? VN_CONSULT_EVENT.PAYWALL_DECLINED
+            : VN_CONSULT_EVENT.REPORT_UNLOCK;
+          window.maybeOpenVnConsult && window.maybeOpenVnConsult(
+            eventName,
+            { type: VN_CONSULT_ROUTE.CLASS_HOME }
+          );
         }) },
       { label: "新人课报告", run: withReviewProfile(function () {
           setExperimentGroup("b", false);
           demoState.marketRoute = "vn";
           demoState.vnConsultSubmitted = false;
-          demoState.vnConsultSequence = 1;
+          demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
           seedReviewProfile();
           profile.premiumUnlocked = false;
           window.cxShowReport && window.cxShowReport();
@@ -16088,13 +16164,19 @@
       enterPortrait(); showPortraitScreen("cx-report");
       var btn = document.getElementById("cxr-cta-btn"); if(!btn) return;
       if(profile.premiumUnlocked){ btn.textContent = "Back to class"; btn.className = "cx-btn teal"; btn.onclick = function(){ enterLandscape(); showClassHome(); }; }
-      // 非会员：B 组已看过第一轮咨询时，课程报告 CTA 触发第二轮延长体验；
+      // B 组处于等待第二轮状态时，课程报告 CTA 触发延长体验咨询；
       // 其他情况沿用原折扣 / Paywall 链路。
       else {
         btn.textContent = "🔓 Unlock more courses";
         btn.className = "cx-btn amber";
         btn.onclick = function(){
-          if (window.maybeOpenVnConsultFromReport && window.maybeOpenVnConsultFromReport()) return;
+          if (
+            window.maybeOpenVnConsult
+            && window.maybeOpenVnConsult(
+              VN_CONSULT_EVENT.REPORT_UNLOCK,
+              { type: VN_CONSULT_ROUTE.CLASS_HOME }
+            )
+          ) return;
           cxStage = "pay-report";
           if(typeof openWinback==="function"){
             openWinback("cx_report", "cx_report", "screen-class");
