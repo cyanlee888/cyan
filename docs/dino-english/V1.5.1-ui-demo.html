@@ -8488,10 +8488,9 @@
     });
     // Demo-only state knobs (driven by the ⚙︎ States panel) — never gate real logic.
     const demoState = {
-      // 越南人工咨询沿用 conv_funnel_v1 分组，在两组各自节点触发。
+      // 越南人工咨询沿用 conv_funnel_v1 分组；两组共享同一套用户级咨询状态。
       marketRoute: "vn",
       experimentGroup: "b",
-      vnContactPhone: true,
       vnConsultSubmitted: false,
       vnConsultSubmitResult: "success",
       vnConsultSequence: 0,
@@ -13684,8 +13683,6 @@
     }
     function isVnConsultEligible() {
       return isVnSalesRoute()
-        && !profile.premiumUnlocked
-        && !!demoState.vnContactPhone
         && !demoState.vnConsultSubmitted
         && demoState.vnConsultSequence < 2;
     }
@@ -13749,15 +13746,15 @@
     function maybeOpenVnConsultFromPaywallClose() {
       if (!isVnConsultEligible()) return false;
       if (demoState.vnConsultSequence === 0) {
-        if (demoState.experimentGroup === "a" && paywallTrigger === "trial_report") {
-          return openVnConsult("discount", "class_home", false);
-        }
-        if (demoState.experimentGroup === "b" && cxStage === "pay1") {
-          return openVnConsult("discount", "paywall_close", false);
-        }
-        return false;
+        // 第一次：A、B 两组统一在用户首次拒绝 Paywall 后展示专属折扣。
+        // B 组 Paywall①关闭后仍需续接原首页引导；其他入口关闭后回 Class 首页。
+        const resumeMode = demoState.experimentGroup === "b" && cxStage === "pay1"
+          ? "paywall_close"
+          : "class_home";
+        return openVnConsult("discount", resumeMode, false);
       }
       if (demoState.vnConsultSequence === 1 && demoState.experimentGroup === "a") {
+        // 第二次 · A：后续任一 Paywall 再次被拒绝时展示延长体验。
         return openVnConsult("trial_extension", "class_home", false);
       }
       return false;
@@ -15233,7 +15230,6 @@
     getValue: function (key) {
       if (key === "marketRoute") return demoState.marketRoute;
       if (key === "experimentGroup") return demoState.experimentGroup;
-      if (key === "vnContactPhone") return demoState.vnContactPhone ? "true" : "false";
       if (key === "vnConsultHook") return demoState.vnConsultHook;
       if (key === "vnConsultSubmitResult") return demoState.vnConsultSubmitResult;
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
@@ -15281,8 +15277,8 @@
       var pid = pel ? pel.id : null;
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", ["kakaoPhoneBound"]);
       if (pid === "screen-login")        return ctx("登录", ["kakaoPhoneBound"]);
-      if (pid === "screen-paywall-pt")   return ctx("Paywall（竖屏）", ["membership", "vnContactPhone"]);
-      if (pid === "screen-vn-consult")   return ctx("越南人工咨询", ["vnContactPhone", "vnConsultHook", "vnConsultSubmitResult"]);
+      if (pid === "screen-paywall-pt")   return ctx("Paywall（竖屏）", ["membership"]);
+      if (pid === "screen-vn-consult")   return ctx("越南人工咨询", ["vnConsultHook", "vnConsultSubmitResult"]);
       if (pid === "screen-study-plan-a") return ctx("学习计划 · A（Level / Unit）", ["membership", "startLevel"]);
       if (pid === "screen-study-plan")   return ctx("学习计划 · B（转化价值）", ["membership", "startLevel"]);
       if (pid === "screen-trial-report") return ctx("体验课报告", ["membership", "startLevel", "trialResult"]);
@@ -15309,14 +15305,6 @@
           if (currentPlan) {
             seedReviewProfile();
             showStudyPlan();
-          }
-        } },
-      { key: "vnContactPhone", label: "账号可联系手机号",
-        options: [["true", "有 · 可进入咨询触达"], ["false", "无 · 继续原流程"]],
-        apply: function (v) {
-          demoState.vnContactPhone = v === "true";
-          if (!demoState.vnContactPhone && document.querySelector("#screen-vn-consult")?.classList.contains("active")) {
-            showPortraitScreen("screen-paywall-pt");
           }
         } },
       { key: "vnConsultHook", label: "咨询轮次",
@@ -15437,7 +15425,6 @@
       { label: "正价课报告",  run: withReviewProfile(function () { showLessonReport(); }) },
       { label: "越南咨询·第一轮优惠", run: withReviewProfile(function () {
           demoState.marketRoute = "vn";
-          demoState.vnContactPhone = true;
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultSubmitResult = "success";
           demoState.vnConsultSequence = 0;
@@ -15447,7 +15434,6 @@
         }) },
       { label: "越南咨询·第二轮延长体验", run: withReviewProfile(function () {
           demoState.marketRoute = "vn";
-          demoState.vnContactPhone = true;
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultSubmitResult = "success";
           demoState.vnConsultSequence = 1;
@@ -15458,7 +15444,6 @@
       { label: "新人课报告", run: withReviewProfile(function () {
           setExperimentGroup("b", false);
           demoState.marketRoute = "vn";
-          demoState.vnContactPhone = true;
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultSequence = 1;
           seedReviewProfile();
