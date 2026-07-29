@@ -13748,8 +13748,9 @@
       if (demoState.vnConsultSequence === 0) {
         // 第一次：A、B 两组统一在用户首次拒绝 Paywall 后展示专属折扣。
         // B 组 Paywall①关闭后仍需续接原首页引导；其他入口关闭后回 Class 首页。
+        // 咨询页替代原 Paywall 关闭后的挽留支付，两者严格二选一。
         const resumeMode = demoState.experimentGroup === "b" && cxStage === "pay1"
-          ? "paywall_close"
+          ? "group_b_guide"
           : "class_home";
         return openVnConsult("discount", resumeMode, false);
       }
@@ -13782,8 +13783,8 @@
         showPortraitScreen("screen-paywall-pt");
         return;
       }
-      if (vnConsultResumeMode === "paywall_close") {
-        continueAfterPaywallClose();
+      if (vnConsultResumeMode === "group_b_guide") {
+        window.cxToGuide && window.cxToGuide();
         return;
       }
       cxStage = "home";
