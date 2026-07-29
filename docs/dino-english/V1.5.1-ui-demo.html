@@ -7436,7 +7436,7 @@
                       aria-describedby="vnc-phone-help"
                     />
                   </div>
-                  <p class="vnc-phone-help" id="vnc-phone-help">No verification code needed. We’ll only use this number for your consultation.</p>
+                  <p class="vnc-phone-help" id="vnc-phone-help" hidden></p>
                 </div>
               </div>
             </div>
@@ -13813,13 +13813,13 @@
       if (phoneBox) phoneBox.hidden = !needsPhone;
       if (!primary || primary.classList.contains("is-submitting")) return;
       const valid = !needsPhone || !!normalizeVnConsultPhone();
+      const hasError = needsPhone && showError && !valid;
       primary.disabled = !valid;
-      input?.setAttribute("aria-invalid", needsPhone && showError && !valid ? "true" : "false");
+      input?.setAttribute("aria-invalid", hasError ? "true" : "false");
       if (helper) {
-        helper.classList.toggle("is-error", needsPhone && showError && !valid);
-        helper.textContent = needsPhone && showError && !valid
-          ? "Enter a valid Vietnam phone number."
-          : "No verification code needed. We’ll only use this number for your consultation.";
+        helper.hidden = !hasError;
+        helper.classList.toggle("is-error", hasError);
+        helper.textContent = hasError ? "Enter a valid Vietnam phone number." : "";
       }
     }
     function renderVnConsult() {
