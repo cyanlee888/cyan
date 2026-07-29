@@ -14543,7 +14543,7 @@
   <style>
     .visit-reward-entry{
       position:absolute;top:10px;right:260px;z-index:62;display:none;align-items:center;justify-content:flex-start;gap:7px;
-      width:112px;height:44px;padding:5px 10px 5px 7px;border:1px solid rgba(255,255,255,.82);
+      width:132px;height:44px;padding:5px 10px 5px 7px;border:1px solid rgba(255,255,255,.82);
       border-radius:999px;background:rgba(255,255,255,.9);
       color:#18316b;box-shadow:0 8px 20px rgba(10,44,198,.22),inset 0 0 0 1px rgba(255,255,255,.72);
       cursor:pointer;font-family:var(--font);
@@ -14798,8 +14798,8 @@
         entry.type = "button";
         entry.id = "visit-reward-entry";
         entry.className = "visit-reward-entry";
-        entry.setAttribute("aria-label","Open check-in gifts");
-        entry.innerHTML = '<span class="vre-gift" aria-hidden="true">🎁</span><span class="vre-label">Check-in<br>Gifts</span><span class="vre-dot" aria-hidden="true"></span>';
+        entry.setAttribute("aria-label","Open Dino Welcome Gifts");
+        entry.innerHTML = '<span class="vre-gift" aria-hidden="true">🎁</span><span class="vre-label">Dino Welcome<br>Gifts</span><span class="vre-dot" aria-hidden="true"></span>';
         entry.addEventListener("click",function(){ openFull("entry"); });
         hub.appendChild(entry);
       }
@@ -14812,9 +14812,9 @@
         ov.innerHTML =
           '<main class="visit-reward-card" role="dialog" aria-modal="true" aria-labelledby="vr-title">'
           +'<header class="visit-reward-head">'
-          +'<div class="visit-reward-heading"><h2 class="visit-reward-title" id="vr-title">8-Day Check-in Gifts</h2>'
+          +'<div class="visit-reward-heading"><h2 class="visit-reward-title" id="vr-title">Dino Welcome Gifts</h2>'
           +'<span class="visit-reward-countdown" id="vr-days-left">14 days left</span></div></header>'
-          +'<div class="visit-reward-days" id="vr-days" aria-label="Eight check-in gifts"></div>'
+          +'<div class="visit-reward-days" id="vr-days" aria-label="Dino welcome gifts"></div>'
           +'<button type="button" class="visit-reward-cta" id="vr-action">Claim</button>'
           +'</main>'
           +'<div class="visit-reward-celebration" id="vr-celebration" role="status" aria-live="polite" aria-hidden="true">'
@@ -14853,7 +14853,7 @@
       var show = vr.eligible && vr.unlocked && !isExpired();
       entry.classList.toggle("is-visible",show);
       entry.classList.toggle("has-pending",show && !vr.claimed);
-      entry.setAttribute("aria-label",vr.claimed ? "Open check-in gifts" : "Claim Day " + (vr.dayIndex + 1) + " check-in gift");
+      entry.setAttribute("aria-label",vr.claimed ? "Open Dino Welcome Gifts" : "Claim Day " + (vr.dayIndex + 1) + " Dino Welcome Gift");
     }
 
     function resetRevealVisuals(){
