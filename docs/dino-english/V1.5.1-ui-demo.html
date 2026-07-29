@@ -7424,7 +7424,7 @@
                 <div class="vnc-phone" id="vnc-phone" hidden>
                   <label class="vnc-phone-label" for="vnc-phone-input">Phone number</label>
                   <div class="vnc-phone-row">
-                    <span class="vnc-phone-code">+84</span>
+                    <span class="vnc-phone-code" id="vnc-phone-code">+84</span>
                     <input
                       type="tel"
                       class="vnc-phone-input"
@@ -8560,6 +8560,12 @@
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
     const VN_REVIEW_PHONE = "+84 912 345 678";
+    const VN_CONSULT_PHONE_REGIONS = Object.freeze({
+      vn: Object.freeze({ label: "Vietnam", callingCode: "+84", example: "912 345 678", nationalLength: 9, groups: [3, 3, 3] }),
+      kr: Object.freeze({ label: "South Korea", callingCode: "+82", example: "10 1234 5678", nationalLength: 10, groups: [2, 4, 4] }),
+      us: Object.freeze({ label: "United States", callingCode: "+1", example: "202 555 0123", nationalLength: 10, groups: [3, 3, 4] }),
+      sg: Object.freeze({ label: "Singapore", callingCode: "+65", example: "8123 4567", nationalLength: 8, groups: [4, 4] }),
+    });
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
@@ -8596,6 +8602,7 @@
       vnConsultSubmitResult: "success",
       vnConsultState: VN_CONSULT_STATE.UNSEEN,
       vnConsultHook: "discount",
+      vnConsultIpCountry: "vn",
       vnConsultTrialDays: 7,
       levelUpResult: "up",
       trialResult: "same",
@@ -13797,20 +13804,47 @@
     function vnConsultHasPhone() {
       return !!String(profile.contactPhone || "").trim();
     }
+    function vnConsultPhoneRegion() {
+      return VN_CONSULT_PHONE_REGIONS[demoState.vnConsultIpCountry]
+        || VN_CONSULT_PHONE_REGIONS.vn;
+    }
+    function formatVnConsultPhone(digits, groups) {
+      let offset = 0;
+      return groups.map((size) => {
+        const part = digits.slice(offset, offset + size);
+        offset += size;
+        return part;
+      }).filter(Boolean).join(" ");
+    }
     function normalizeVnConsultPhone() {
+      const region = vnConsultPhoneRegion();
+      const callingDigits = region.callingCode.replace(/\D/g, "");
       let digits = ($("#vnc-phone-input")?.value || "").replace(/\D/g, "");
-      if (digits.length === 11 && digits.startsWith("84")) digits = digits.slice(2);
-      if (digits.length === 10 && digits.startsWith("0")) digits = digits.slice(1);
-      if (digits.length !== 9) return "";
-      return `+84 ${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+      if (
+        digits.length === region.nationalLength + callingDigits.length
+        && digits.startsWith(callingDigits)
+      ) digits = digits.slice(callingDigits.length);
+      if (
+        digits.length === region.nationalLength + 1
+        && digits.startsWith("0")
+      ) digits = digits.slice(1);
+      if (digits.length !== region.nationalLength) return "";
+      return `${region.callingCode} ${formatVnConsultPhone(digits, region.groups)}`;
     }
     function refreshVnConsultPhone(showError = false) {
       const phoneBox = $("#vnc-phone");
       const input = $("#vnc-phone-input");
+      const callingCode = $("#vnc-phone-code");
       const helper = $("#vnc-phone-help");
       const primary = $("#btn-vnc-primary");
       const needsPhone = !vnConsultHasPhone();
+      const region = vnConsultPhoneRegion();
       if (phoneBox) phoneBox.hidden = !needsPhone;
+      if (callingCode) callingCode.textContent = region.callingCode;
+      if (input) {
+        input.placeholder = region.example;
+        input.setAttribute("aria-label", `Phone number · ${region.label} ${region.callingCode}`);
+      }
       if (!primary || primary.classList.contains("is-submitting")) return;
       const valid = !needsPhone || !!normalizeVnConsultPhone();
       const hasError = needsPhone && showError && !valid;
@@ -15429,6 +15463,7 @@
       if (key === "marketRoute") return demoState.marketRoute;
       if (key === "experimentGroup") return demoState.experimentGroup;
       if (key === "vnConsultPhone") return profile.contactPhone ? "existing" : "missing";
+      if (key === "vnConsultIpCountry") return demoState.vnConsultIpCountry;
       if (key === "vnConsultHook") return demoState.vnConsultHook;
       if (key === "vnConsultSubmitResult") return demoState.vnConsultSubmitResult;
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
@@ -15477,7 +15512,12 @@
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", ["kakaoPhoneBound"]);
       if (pid === "screen-login")        return ctx("登录", ["kakaoPhoneBound"]);
       if (pid === "screen-paywall-pt")   return ctx("Paywall（竖屏）", ["membership"]);
-      if (pid === "screen-vn-consult")   return ctx("越南人工咨询", ["vnConsultPhone", "vnConsultHook", "vnConsultSubmitResult"]);
+      if (pid === "screen-vn-consult")   return ctx(
+        "越南人工咨询",
+        ["vnConsultPhone"]
+          .concat(profile.contactPhone ? [] : ["vnConsultIpCountry"])
+          .concat(["vnConsultHook", "vnConsultSubmitResult"])
+      );
       if (pid === "screen-study-plan-a") return ctx("学习计划 · A（Level / Unit）", ["membership", "startLevel"]);
       if (pid === "screen-study-plan")   return ctx("学习计划 · B（转化价值）", ["membership", "startLevel"]);
       if (pid === "screen-trial-report") return ctx("体验课报告", ["membership", "startLevel", "trialResult"]);
@@ -15510,6 +15550,14 @@
         options: [["existing", "已有"], ["missing", "未填写"]],
         apply: function (v) {
           profile.contactPhone = v === "missing" ? "" : VN_REVIEW_PHONE;
+          const input = document.getElementById("vnc-phone-input");
+          if (input) input.value = "";
+          window.vnRefreshConsult && window.vnRefreshConsult();
+        } },
+      { key: "vnConsultIpCountry", label: "当前 IP 国家/地区",
+        options: [["vn", "越南"], ["kr", "韩国"], ["us", "美国"], ["sg", "新加坡"], ["unknown", "解析失败 · 越南兜底"]],
+        apply: function (v) {
+          demoState.vnConsultIpCountry = VN_CONSULT_PHONE_REGIONS[v] ? v : "unknown";
           const input = document.getElementById("vnc-phone-input");
           if (input) input.value = "";
           window.vnRefreshConsult && window.vnRefreshConsult();
