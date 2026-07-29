@@ -4471,6 +4471,71 @@
       background: rgba(255,255,255,.11);
       color: rgba(255,255,255,.82);
     }
+    .vnc-phone {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 10px;
+      padding: 11px;
+      border: 1px solid rgba(45,172,226,.22);
+      border-radius: var(--radius-sm);
+      background: rgba(244,250,255,.9);
+      text-align: left;
+    }
+    .vnc-phone[hidden] { display: none; }
+    .vnc-shell.is-trial .vnc-phone {
+      border-color: rgba(129,249,227,.38);
+      background: rgba(10,44,198,.3);
+    }
+    .vnc-phone-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--sky-mid);
+      font: 700 .74rem/1.2 var(--display);
+    }
+    .vnc-shell.is-trial .vnc-phone-label { color: var(--brand-lime); }
+    .vnc-phone-row {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      overflow: hidden;
+      border: 1.5px solid rgba(45,172,226,.28);
+      border-radius: 12px;
+      background: #fff;
+    }
+    .vnc-phone-row:focus-within {
+      border-color: var(--brand-cyan);
+      box-shadow: 0 0 0 3px rgba(45,172,226,.13);
+    }
+    .vnc-phone-code {
+      flex: 0 0 auto;
+      padding: 0 10px;
+      border-right: 1px solid #e7edf3;
+      color: var(--sky-deep);
+      font-size: .8rem;
+      font-weight: 800;
+    }
+    .vnc-phone-input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      padding: 11px 10px;
+      background: transparent;
+      color: var(--ink-on-light);
+      font: 700 .86rem/1.2 var(--font);
+      letter-spacing: .02em;
+    }
+    .vnc-phone-input::placeholder { color: #9aa8b6; font-weight: 600; }
+    .vnc-phone-help {
+      min-height: 16px;
+      margin: 6px 2px 0;
+      color: #6f7f8c;
+      font-size: .61rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .vnc-shell.is-trial .vnc-phone-help { color: rgba(255,255,255,.75); }
+    .vnc-phone-help.is-error { color: #d94b4b; }
     .vnc-result {
       min-height: 18px;
       max-width: 320px;
@@ -4509,7 +4574,8 @@
       cursor: pointer;
     }
     .vnc-primary:active { transform: scale(.98); }
-    .vnc-primary:disabled { opacity: .74; cursor: wait; }
+    .vnc-primary:disabled { opacity: .58; cursor: not-allowed; }
+    .vnc-primary.is-submitting:disabled { opacity: .74; cursor: wait; }
     @media (max-height: 760px) {
       .vnc-card { padding: 12px; }
       .vnc-title { font-size: 1.42rem; }
@@ -4517,6 +4583,7 @@
       .vnc-offer-hero { width: 90px; height: 98px; }
       .vnc-round-art { right: 54px; bottom: 2px; }
       .vnc-benefit { min-height: 58px; }
+      .vnc-phone { padding: 9px; }
     }
 
     /* ---------- Paywall (V1.2.0) ---------- */
@@ -7354,6 +7421,23 @@
                   <div class="vnc-benefit" id="vnc-benefit-2"><b id="vnc-benefit-2-title">Exclusive offer</b><span id="vnc-benefit-2-copy">Ask about an advisor-only enrollment offer.</span></div>
                 </div>
                 <p class="vnc-contact-note" id="vnc-contact-note">A Dino advisor will contact you by phone or Zalo to explain the offer.</p>
+                <div class="vnc-phone" id="vnc-phone" hidden>
+                  <label class="vnc-phone-label" for="vnc-phone-input">Phone number</label>
+                  <div class="vnc-phone-row">
+                    <span class="vnc-phone-code">+84</span>
+                    <input
+                      type="tel"
+                      class="vnc-phone-input"
+                      id="vnc-phone-input"
+                      inputmode="numeric"
+                      autocomplete="tel-national"
+                      placeholder="912 345 678"
+                      maxlength="14"
+                      aria-describedby="vnc-phone-help"
+                    />
+                  </div>
+                  <p class="vnc-phone-help" id="vnc-phone-help">No verification code needed. We’ll only use this number for your consultation.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -8475,10 +8559,11 @@
   <script>
     const $ = (s, r = document) => r.querySelector(s);
     const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const VN_REVIEW_PHONE = "+84 912 345 678";
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0 };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, contactPhone: "" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -8552,6 +8637,7 @@
       currentUnitId: "unit-1",
       currentLessonId: "lesson-1",
       teacherId: "kim",
+      contactPhone: VN_REVIEW_PHONE,
     });
     // States 快捷页不是独立业务入口：到达中后段页面前，补齐正常流程中
     // 已经采集到的资料，避免学习计划、报告、课堂等页面出现空昵称或空画像。
@@ -9711,6 +9797,7 @@
       // Phone now bound to the account → continue into the app.
       demoState.kakaoPhoneBound = true;
       profile.phoneBound = true;
+      profile.contactPhone = `${bindCC.code} ${bindDigits()}`;
       setTimeout(() => { onLoginSuccess(); }, 700);
     });
     const PRACTICE_STORIES = [
@@ -13707,6 +13794,34 @@
     function vnConsultName() {
       return (profile.name || "").trim() || "your child";
     }
+    function vnConsultHasPhone() {
+      return !!String(profile.contactPhone || "").trim();
+    }
+    function normalizeVnConsultPhone() {
+      let digits = ($("#vnc-phone-input")?.value || "").replace(/\D/g, "");
+      if (digits.length === 11 && digits.startsWith("84")) digits = digits.slice(2);
+      if (digits.length === 10 && digits.startsWith("0")) digits = digits.slice(1);
+      if (digits.length !== 9) return "";
+      return `+84 ${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6)}`;
+    }
+    function refreshVnConsultPhone(showError = false) {
+      const phoneBox = $("#vnc-phone");
+      const input = $("#vnc-phone-input");
+      const helper = $("#vnc-phone-help");
+      const primary = $("#btn-vnc-primary");
+      const needsPhone = !vnConsultHasPhone();
+      if (phoneBox) phoneBox.hidden = !needsPhone;
+      if (!primary || primary.classList.contains("is-submitting")) return;
+      const valid = !needsPhone || !!normalizeVnConsultPhone();
+      primary.disabled = !valid;
+      input?.setAttribute("aria-invalid", needsPhone && showError && !valid ? "true" : "false");
+      if (helper) {
+        helper.classList.toggle("is-error", needsPhone && showError && !valid);
+        helper.textContent = needsPhone && showError && !valid
+          ? "Enter a valid Vietnam phone number."
+          : "No verification code needed. We’ll only use this number for your consultation.";
+      }
+    }
     function renderVnConsult() {
       const hook = demoState.vnConsultHook === "trial_extension" ? "trial_extension" : "discount";
       const trialDays = Number(demoState.vnConsultTrialDays) || 7;
@@ -13742,8 +13857,9 @@
         result.classList.remove("is-error");
         result.innerHTML = "&nbsp;";
       }
-      primary.disabled = false;
+      primary.classList.remove("is-submitting");
       primary.textContent = "Request a free consultation";
+      refreshVnConsultPhone(false);
       if (window.demoStatePanel) window.demoStatePanel.sync();
     }
     function normalizeVnConsultRoute(nextRoute) {
@@ -13856,10 +13972,23 @@
     window.vnRefreshConsult = renderVnConsult;
 
     $("#btn-vnc-back")?.addEventListener("click", finishVnConsult);
+    $("#vnc-phone-input")?.addEventListener("input", (event) => {
+      event.target.value = event.target.value.replace(/[^\d\s]/g, "").slice(0, 14);
+      refreshVnConsultPhone(false);
+    });
     $("#btn-vnc-primary")?.addEventListener("click", () => {
       const btn = $("#btn-vnc-primary");
       if (!btn) return;
       const result = $("#vnc-result");
+      const contactPhone = vnConsultHasPhone()
+        ? String(profile.contactPhone).trim()
+        : normalizeVnConsultPhone();
+      if (!contactPhone) {
+        refreshVnConsultPhone(true);
+        $("#vnc-phone-input")?.focus();
+        return;
+      }
+      btn.classList.add("is-submitting");
       btn.disabled = true;
       btn.textContent = "Sending request…";
       setTimeout(() => {
@@ -13868,13 +13997,16 @@
             result.classList.add("is-error");
             result.textContent = "We couldn't send your request. Try again.";
           }
-          btn.disabled = false;
+          btn.classList.remove("is-submitting");
           btn.textContent = "Try again";
+          refreshVnConsultPhone(false);
           if (window.demoStatePanel) window.demoStatePanel.sync();
           return;
         }
+        profile.contactPhone = contactPhone;
         demoState.vnConsultSubmitted = true;
         demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
+        btn.classList.remove("is-submitting");
         finishVnConsult();
         setTimeout(() => showPayToast("Consultation requested ✓"), 120);
       }, 650);
@@ -15296,6 +15428,7 @@
     getValue: function (key) {
       if (key === "marketRoute") return demoState.marketRoute;
       if (key === "experimentGroup") return demoState.experimentGroup;
+      if (key === "vnConsultPhone") return profile.contactPhone ? "existing" : "missing";
       if (key === "vnConsultHook") return demoState.vnConsultHook;
       if (key === "vnConsultSubmitResult") return demoState.vnConsultSubmitResult;
       if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
@@ -15344,7 +15477,7 @@
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", ["kakaoPhoneBound"]);
       if (pid === "screen-login")        return ctx("登录", ["kakaoPhoneBound"]);
       if (pid === "screen-paywall-pt")   return ctx("Paywall（竖屏）", ["membership"]);
-      if (pid === "screen-vn-consult")   return ctx("越南人工咨询", ["vnConsultHook", "vnConsultSubmitResult"]);
+      if (pid === "screen-vn-consult")   return ctx("越南人工咨询", ["vnConsultPhone", "vnConsultHook", "vnConsultSubmitResult"]);
       if (pid === "screen-study-plan-a") return ctx("学习计划 · A（Level / Unit）", ["membership", "startLevel"]);
       if (pid === "screen-study-plan")   return ctx("学习计划 · B（转化价值）", ["membership", "startLevel"]);
       if (pid === "screen-trial-report") return ctx("体验课报告", ["membership", "startLevel", "trialResult"]);
@@ -15372,6 +15505,14 @@
             seedReviewProfile();
             showStudyPlan();
           }
+        } },
+      { key: "vnConsultPhone", label: "咨询联系电话",
+        options: [["existing", "已有"], ["missing", "未填写"]],
+        apply: function (v) {
+          profile.contactPhone = v === "missing" ? "" : VN_REVIEW_PHONE;
+          const input = document.getElementById("vnc-phone-input");
+          if (input) input.value = "";
+          window.vnRefreshConsult && window.vnRefreshConsult();
         } },
       { key: "vnConsultHook", label: "咨询轮次",
         options: [["discount", "第一次 · 顾问专属优惠"], ["trial_extension", "第二次 · 延长体验"]],
