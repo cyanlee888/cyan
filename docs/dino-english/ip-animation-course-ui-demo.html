@@ -7965,10 +7965,26 @@
     .ip-speaking-hint {
       min-height: 17px;
       margin: 9px 0 0;
+      padding: 4px 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border-radius: var(--radius-pill);
       color: #68758a;
       font-size: .65rem;
       line-height: 1.15;
       font-weight: 700;
+      transition: color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .ip-speaking-hint.is-retry {
+      color: var(--reward-orange);
+      background: rgba(255,195,51,.22);
+      box-shadow: inset 0 0 0 2px rgba(255,195,51,.5);
+    }
+    .ip-speaking-hint.is-retry::before {
+      content: "↻";
+      font-size: .82rem;
     }
     .ip-speaking-wave {
       height: 30px;
@@ -7999,6 +8015,10 @@
     .ip-speaking-wave.is-checking i:nth-child(3) { animation-delay: .2s; }
     .ip-speaking-wave.is-checking i:nth-child(4) { animation-delay: .3s; }
     .ip-speaking-wave.is-checking i:nth-child(5) { animation-delay: .4s; }
+    .ip-speaking-wave.is-retry i {
+      opacity: 1;
+      background: var(--star-gold);
+    }
     .ip-speaking-cta {
       min-height: 94px;
       padding: 12px 16px;
@@ -8033,6 +8053,9 @@
       background: linear-gradient(180deg, var(--accent-yellow), var(--star-gold));
       box-shadow: 0 8px 0 #dc9217;
       cursor: wait;
+    }
+    .ip-speaking-cta.is-retry {
+      box-shadow: 0 8px 0 #d9650f, 0 0 0 7px rgba(255,195,51,.2);
     }
     @keyframes ipSpeakerPulse {
       to { transform: scale(1.08); box-shadow: 0 5px 0 rgba(10,44,198,.22), 0 0 0 6px rgba(45,172,226,.16); }
@@ -9643,7 +9666,7 @@
                 <div class="ip-speaking-wave" id="ip-speaking-wave" aria-hidden="true">
                   <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                 </div>
-                <p class="ip-speaking-hint" id="ip-speaking-hint">Listen, then say the sentence.</p>
+                <p class="ip-speaking-hint" id="ip-speaking-hint" role="status" aria-live="polite">Listen, then say the sentence.</p>
               </div>
               <button type="button" class="ip-speaking-cta" id="ip-speaking-cta">
                 <span aria-hidden="true">🎙️</span>
@@ -11753,6 +11776,7 @@
     const ipCourseState = {
       variant: "a",
       speakingLevel: "basic",
+      nextSpeakingResult: "pass",
       quizIndex: 0,
       inlineNextIndex: 0,
       inlineActive: false,
@@ -11884,9 +11908,12 @@
       if (title) title.textContent = task.title;
       if (count) count.textContent = `${index + 1} of ${IP_INTERACTIVE_SPEAKING_TASKS.length}`;
       if (sentence) sentence.textContent = speakingSentence;
-      if (hint) hint.textContent = "Listen, then say the sentence.";
-      wave.classList.remove("is-recording", "is-checking");
-      cta.classList.remove("is-recording", "is-checking");
+      if (hint) {
+        hint.textContent = "Listen, then say the sentence.";
+        hint.classList.remove("is-retry");
+      }
+      wave.classList.remove("is-recording", "is-checking", "is-retry");
+      cta.classList.remove("is-recording", "is-checking", "is-retry");
       cta.disabled = false;
       cta.dataset.state = "idle";
       if (ctaLabel) ctaLabel.textContent = "Tap to speak";
@@ -11898,6 +11925,9 @@
       cta.onclick = () => {
         if (cta.dataset.state === "idle") {
           stopIpSentenceVoice();
+          hint?.classList.remove("is-retry");
+          wave.classList.remove("is-retry");
+          cta.classList.remove("is-retry");
           cta.dataset.state = "recording";
           cta.classList.add("is-recording");
           wave.classList.add("is-recording");
@@ -11917,6 +11947,24 @@
         ipQuizAdvanceTimer = window.setTimeout(() => {
           ipQuizAdvanceTimer = 0;
           if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive || ipCourseState.inlineTaskIndex !== index) return;
+          const passed = ipCourseState.nextSpeakingResult !== "retry";
+          ipCourseState.nextSpeakingResult = "pass";
+          window.demoStatePanel?.sync?.();
+          if (!passed) {
+            cta.dataset.state = "idle";
+            cta.disabled = false;
+            cta.classList.remove("is-checking");
+            cta.classList.add("is-retry");
+            wave.classList.remove("is-checking");
+            wave.classList.add("is-retry");
+            if (ctaLabel) ctaLabel.textContent = "Try again";
+            if (hint) {
+              hint.textContent = "Almost! Listen, then try again.";
+              hint.classList.add("is-retry");
+            }
+            enforceIpInlinePause();
+            return;
+          }
           showIpCorrectFeedback("b", task.success);
           ipCourseState.inlineNextIndex = Math.max(ipCourseState.inlineNextIndex, index + 1);
           syncIpCheckpointTrack();
@@ -11940,6 +11988,9 @@
       ) {
         renderIpSpeakingTask(ipCourseState.inlineTaskIndex);
       }
+    }
+    function setIpSpeakingResult(value) {
+      ipCourseState.nextSpeakingResult = value === "retry" ? "retry" : "pass";
     }
     function handleIpVideoTimeUpdate() {
       syncIpCheckpointTrack();
@@ -12017,6 +12068,7 @@
       hideIpSpeakingTask();
       ipCourseState.quizIndex = 0;
       ipCourseState.inlineNextIndex = 0;
+      ipCourseState.nextSpeakingResult = "pass";
       ipCourseState.completed = false;
       ipCourseState.rewarded = false;
       syncIpCheckpointTrack();
@@ -17293,9 +17345,8 @@
   })();
   </script>
 
-  <!-- ⚙︎ States review panel (demo-only): switch membership / placement level /
-       level-up verdict per page and quick-jump between key pages. Never gates real
-       logic; lets reviewers see non-happy-path states a single click path can't reach. -->
+  <!-- ⚙︎ States review panel (demo-only): compare IP animation-course variants,
+       speaking levels, recognition outcomes and key checkpoints. -->
   <script>
   /* Demo State Panel — drop-in, dependency-free state-machine overlay. */
   (function (global) {
@@ -17651,6 +17702,7 @@
     getValue: function (key) {
       if (key === "ipCourseVariant") return ipCourseState.variant;
       if (key === "ipSpeakingLevel") return ipCourseState.speakingLevel;
+      if (key === "ipSpeakingResult") return ipCourseState.nextSpeakingResult;
       if (key === "ipInteractivePreview") {
         return ipCourseState.inlineTaskIndex >= 0 ? `q${ipCourseState.inlineTaskIndex + 1}` : "play";
       }
@@ -17671,55 +17723,14 @@
       return null;
     },
     context: function () {
-      var ctx = function (label, keys) {
-        var routeKeys = ["marketRoute", "experimentGroup"];
-        return {
-          label: label,
-          keys: routeKeys.concat(keys || [])
-        };
+      return {
+        label: "IP 动画课",
+        keys: ["ipCourseVariant"].concat(
+          ipCourseState.variant === "b"
+            ? ["ipSpeakingLevel", "ipSpeakingResult", "ipInteractivePreview"]
+            : []
+        )
       };
-      var lw = document.querySelector("#wrap-landscape");
-      var landscapeOn = lw && getComputedStyle(lw).display !== "none";
-      if (landscapeOn) {
-        if (document.querySelector("#visit-reward-overlay.show")) {
-          return { label: "签到日历", keys: [] };
-        }
-        var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
-        if (id && id.indexOf("screen-ip-") === 0) {
-          return {
-            label: "IP 动画课",
-            keys: ["ipCourseVariant"].concat(
-              ipCourseState.variant === "b" ? ["ipSpeakingLevel", "ipInteractivePreview"] : []
-            )
-          };
-        }
-        if (id && id.indexOf("screen-capsule") === 0) return ctx("盲盒机", ["capsuleOutcome"]);
-        if (id === "screen-theme-course") return ctx("主题课落地页", ["themeActivity", "themeUser", "themePast"]);
-        if (id === "screen-wordpk")      return ctx("单词 PK", []);
-        if (id === "screen-course-map")  return ctx("Level·Unit 列表", ["membership", "startLevel"]);
-        if (id === "screen-all-courses") return ctx("课程列表", ["membership", "startLevel"]);
-        if (id === "screen-membership")  return ctx("会员中心", ["membership"]);
-        if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
-        if (id === "screen-class")       return ctx("Class 首页", ["membership", "startLevel", "themeActivity", "themeUser"]);
-        return ctx("App 内", ["membership"]);
-      }
-      // V1.3.0: study plan + trial report are portrait takeovers.
-      var pel = document.querySelector("#device-portrait .screen.active");
-      var pid = pel ? pel.id : null;
-      if (pid === "screen-bind-phone")   return ctx("手机号绑定", ["kakaoPhoneBound"]);
-      if (pid === "screen-login")        return ctx("登录", ["kakaoPhoneBound"]);
-      if (pid === "screen-paywall-pt")   return ctx("Paywall（竖屏）", ["membership"]);
-      if (pid === "screen-vn-consult")   return ctx(
-        "越南人工咨询",
-        ["vnConsultPhone"]
-          .concat(profile.contactPhone ? [] : ["vnConsultIpCountry"])
-          .concat(["vnConsultHook", "vnConsultSubmitResult"])
-      );
-      if (pid === "screen-study-plan-a") return ctx("学习计划 · A（Level / Unit）", ["membership", "startLevel"]);
-      if (pid === "screen-study-plan")   return ctx("学习计划 · B（转化价值）", ["membership", "startLevel"]);
-      if (pid === "screen-trial-report") return ctx("体验课报告", ["membership", "startLevel", "trialResult"]);
-      if (pid === "screen-lesson-report") return ctx("正价课报告", ["startLevel"]);
-      return ctx("Onboarding", []);
     },
     groups: [
       { key: "ipCourseVariant", label: "动画互动方案",
@@ -17728,6 +17739,9 @@
       { key: "ipSpeakingLevel", label: "B · 用户英语 Level",
         options: [["starter", "入门"], ["basic", "初级"], ["advanced", "进阶"]],
         apply: function (v) { setIpSpeakingLevel(v); } },
+      { key: "ipSpeakingResult", label: "B · 下次跟读结果",
+        options: [["pass", "通过"], ["retry", "未通过 · 重试"]],
+        apply: function (v) { setIpSpeakingResult(v); } },
       { key: "ipInteractivePreview", label: "B 方案演示节点",
         options: [["play", "从头播放"], ["q1", "跟读 1 · 寻找 Bob"], ["q2", "跟读 2 · 唤醒消息"], ["q3", "跟读 3 · 启动飞船"]],
         apply: function (v) { previewIpInteractivePoint(v); } },
@@ -17838,64 +17852,15 @@
         } },
     ].filter(Boolean),
     jumps: [
-      { label: "IP 动画课 Demo（从 Explore 开始）", run: function () { openIpAnimationReview(); } },
-      { label: "Class 首页",  run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
-      { label: "课程列表",    run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
-      { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
-      { label: "下一周期（解锁下批）", run: withReviewProfile(function () {
-          // Demo: roll the 7-day cycle → refill this cycle's 3-lesson budget so the
-          // next batch opens (Opens soon → startable). Pointer already sits at the
-          // next to-do lesson from the last completion.
-          profile.weekDoneCount = 0;
-          refreshUnlockState();
+      { label: "从 Explore 进入", run: function () { openIpAnimationReview(); } },
+      { label: "动画列表", run: function () {
           enterLandscape();
-          if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
-        }) },
-      { label: "学习计划",    run: withReviewProfile(function () { showStudyPlan(); }) },
-      { label: "体验课报告",  run: withReviewProfile(function () { trialReportMode = "trial"; profile.trialTakenLevelId = null; showTrialReport(); }) },
-      { label: "正价课报告",  run: withReviewProfile(function () { showLessonReport(); }) },
-      { label: "越南咨询·第一轮优惠", run: withReviewProfile(function () {
-          demoState.marketRoute = "vn";
-          demoState.vnConsultSubmitted = false;
-          demoState.vnConsultSubmitResult = "success";
-          demoState.vnConsultState = VN_CONSULT_STATE.UNSEEN;
-          demoState.vnConsultHook = "discount";
-          seedReviewProfile();
-          profile.premiumUnlocked = false;
-          window.maybeOpenVnConsult && window.maybeOpenVnConsult(
-            VN_CONSULT_EVENT.PAYWALL_DECLINED,
-            { type: VN_CONSULT_ROUTE.CLASS_HOME }
-          );
-        }) },
-      { label: "越南咨询·第二轮延长体验", run: withReviewProfile(function () {
-          demoState.marketRoute = "vn";
-          demoState.vnConsultSubmitted = false;
-          demoState.vnConsultSubmitResult = "success";
-          demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
-          demoState.vnConsultHook = "trial_extension";
-          seedReviewProfile();
-          profile.premiumUnlocked = false;
-          const eventName = demoState.experimentGroup === "a"
-            ? VN_CONSULT_EVENT.PAYWALL_DECLINED
-            : VN_CONSULT_EVENT.REPORT_UNLOCK;
-          window.maybeOpenVnConsult && window.maybeOpenVnConsult(
-            eventName,
-            { type: VN_CONSULT_ROUTE.CLASS_HOME }
-          );
-        }) },
-      { label: "新人课报告", run: withReviewProfile(function () {
-          setExperimentGroup("b", false);
-          demoState.marketRoute = "vn";
-          demoState.vnConsultSubmitted = false;
-          demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
-          seedReviewProfile();
-          profile.premiumUnlocked = false;
-          window.cxShowReport && window.cxShowReport();
-        }) },
-      { label: "Dino 升级",   run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); }) },
-      { label: "盲盒抽取",    run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); }) },
-      { label: "Paywall",    run: withReviewProfile(function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { label: "会员中心",    run: withReviewProfile(function () { enterLandscape(); showLandScreen("screen-membership"); }) },
+          openIpAnimationCatalog();
+        } },
+      { label: "播放页", run: function () {
+          enterLandscape();
+          openIpAnimationPlayer();
+        } },
     ].filter(Boolean),
     // ⚽ 世界杯主题课（运营位）专用快捷入口：入口卡三态 / 落地页五态 / 进课 / E3·E4 挽留弹窗。
     // 每条先清 cxStage，防止残留转化链路状态劫持课堂退出/完课分支。
