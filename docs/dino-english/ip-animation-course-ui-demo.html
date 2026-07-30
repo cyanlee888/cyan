@@ -7911,15 +7911,143 @@
       font-size: .6rem;
       font-weight: 800;
     }
-    .ip-inline-feedback {
-      min-height: 17px;
-      margin: 4px 0 7px;
-      color: #68758a;
-      font-size: .63rem;
-      line-height: 1.1;
+    .ip-speaking-stage {
+      flex: 1;
+      min-height: 0;
+      padding: 4px 10px 2px;
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 158px;
+      align-items: center;
+      gap: 18px;
+    }
+    .ip-speaking-guide {
+      width: 92px;
+      max-height: 142px;
+      align-self: end;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 12px rgba(10,44,198,.18));
+    }
+    .ip-speaking-copy {
+      min-width: 0;
+      text-align: center;
+    }
+    .ip-speaking-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .ip-speaking-audio {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border: 2px solid rgba(10,84,225,.2);
+      border-radius: 50%;
+      color: #fff;
+      background: var(--sky-mid);
+      box-shadow: 0 5px 0 rgba(10,44,198,.22);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .ip-speaking-audio.is-playing {
+      animation: ipSpeakerPulse .7s ease-in-out infinite alternate;
+    }
+    .ip-speaking-sentence {
+      margin: 0;
+      color: var(--reward-orange);
+      font-family: var(--display);
+      font-size: clamp(1.4rem, 3.3vw, 2rem);
+      line-height: 1.05;
       font-weight: 700;
     }
-    .ip-inline-feedback.is-good { color: #17894d; }
+    .ip-speaking-hint {
+      min-height: 17px;
+      margin: 9px 0 0;
+      color: #68758a;
+      font-size: .65rem;
+      line-height: 1.15;
+      font-weight: 700;
+    }
+    .ip-speaking-wave {
+      height: 30px;
+      margin: 8px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    .ip-speaking-wave i {
+      width: 5px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--brand-cyan);
+      opacity: .34;
+    }
+    .ip-speaking-wave.is-recording i {
+      opacity: 1;
+      animation: ipVoiceWave .62s ease-in-out infinite alternate;
+    }
+    .ip-speaking-wave.is-recording i:nth-child(2n) { animation-delay: -.28s; }
+    .ip-speaking-wave.is-recording i:nth-child(3n) { animation-delay: -.44s; }
+    .ip-speaking-wave.is-checking i {
+      opacity: 1;
+      animation: ipVoiceChecking .8s ease-in-out infinite;
+    }
+    .ip-speaking-wave.is-checking i:nth-child(2) { animation-delay: .1s; }
+    .ip-speaking-wave.is-checking i:nth-child(3) { animation-delay: .2s; }
+    .ip-speaking-wave.is-checking i:nth-child(4) { animation-delay: .3s; }
+    .ip-speaking-wave.is-checking i:nth-child(5) { animation-delay: .4s; }
+    .ip-speaking-cta {
+      min-height: 94px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 3px solid #fff;
+      border-radius: var(--radius-lg);
+      color: #fff;
+      background: linear-gradient(180deg, var(--cta-orange-top), var(--cta-orange-bottom));
+      box-shadow: 0 8px 0 #d9650f, 0 14px 28px rgba(254,136,32,.28);
+      cursor: pointer;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .ip-speaking-cta:hover { transform: translateY(-2px); }
+    .ip-speaking-cta > span { font-size: 1.55rem; line-height: 1; }
+    .ip-speaking-cta b {
+      font-family: var(--display);
+      font-size: .82rem;
+      line-height: 1.05;
+      font-weight: 700;
+    }
+    .ip-speaking-cta.is-recording {
+      background: linear-gradient(180deg, #ff7860, var(--reward-orange));
+      box-shadow: 0 8px 0 #c83a0d, 0 0 0 7px rgba(255,83,19,.16);
+      animation: ipRecordPulse .8s ease-in-out infinite alternate;
+    }
+    .ip-speaking-cta.is-checking {
+      color: var(--ink-on-light);
+      background: linear-gradient(180deg, var(--accent-yellow), var(--star-gold));
+      box-shadow: 0 8px 0 #dc9217;
+      cursor: wait;
+    }
+    @keyframes ipSpeakerPulse {
+      to { transform: scale(1.08); box-shadow: 0 5px 0 rgba(10,44,198,.22), 0 0 0 6px rgba(45,172,226,.16); }
+    }
+    @keyframes ipVoiceWave {
+      from { height: 8px; }
+      to { height: 28px; }
+    }
+    @keyframes ipVoiceChecking {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes ipRecordPulse {
+      to { transform: scale(1.025); }
+    }
     .ip-correct-pop {
       position: absolute;
       left: 50%;
@@ -7974,23 +8102,6 @@
       0% { transform: rotate(-18deg) scale(.5); }
       70% { transform: rotate(8deg) scale(1.2); }
       100% { transform: rotate(0) scale(1); }
-    }
-    .ip-inline-answer-grid {
-      flex: 1;
-      min-height: 0;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 10px;
-    }
-    .ip-inline-answer-grid .ip-answer {
-      min-height: 0;
-      height: 100%;
-      padding: 7px;
-    }
-    .ip-inline-answer-grid .ip-answer img {
-      flex: 1;
-      min-height: 0;
-      height: auto;
     }
     .ip-quiz-body {
       padding: 10px 22px 18px;
@@ -9490,12 +9601,12 @@
               <i><span aria-hidden="true">⭐</span></i>
             </div>
           </div>
-          <div class="ip-video-checkpoint-track" id="ip-video-checkpoint-track" aria-label="Interactive question checkpoints" hidden>
+          <div class="ip-video-checkpoint-track" id="ip-video-checkpoint-track" aria-label="Interactive voice checkpoints" hidden>
             <div class="ip-video-checkpoint-rail">
               <span class="ip-video-checkpoint-fill" id="ip-video-checkpoint-fill"></span>
-              <i class="ip-video-checkpoint" data-ip-checkpoint="0"><b>Q1</b></i>
-              <i class="ip-video-checkpoint" data-ip-checkpoint="1"><b>Q2</b></i>
-              <i class="ip-video-checkpoint" data-ip-checkpoint="2"><b>Q3</b></i>
+              <i class="ip-video-checkpoint" data-ip-checkpoint="0"><b>🎙</b></i>
+              <i class="ip-video-checkpoint" data-ip-checkpoint="1"><b>🎙</b></i>
+              <i class="ip-video-checkpoint" data-ip-checkpoint="2"><b>🎙</b></i>
             </div>
           </div>
         </header>
@@ -9513,24 +9624,39 @@
             ></video>
           </section>
         </div>
-        <div class="ip-inline-quiz" id="ip-inline-quiz" role="dialog" aria-modal="true" aria-labelledby="ip-inline-question-title" hidden>
+        <div class="ip-inline-quiz" id="ip-inline-quiz" role="dialog" aria-modal="true" aria-labelledby="ip-inline-task-title" hidden>
           <section class="ip-inline-card">
             <div class="ip-inline-head">
               <div>
-                <span class="ip-eyebrow">Story checkpoint</span>
-                <h2 id="ip-inline-question-title">Where does the message come from?</h2>
+                <span class="ip-eyebrow">Your voice moves the story!</span>
+                <h2 id="ip-inline-task-title">Help the family find Bob!</h2>
               </div>
-              <span class="ip-inline-count" id="ip-inline-question-count">1 of 3</span>
+              <span class="ip-inline-count" id="ip-inline-task-count">1 of 3</span>
             </div>
-            <p class="ip-inline-feedback" id="ip-inline-feedback" aria-live="polite">Choose what you just saw.</p>
-            <div class="ip-inline-answer-grid" id="ip-inline-answer-grid"></div>
+            <div class="ip-speaking-stage">
+              <img class="ip-speaking-guide" src="assets/v13fx/dino.png" alt="" decoding="async" />
+              <div class="ip-speaking-copy">
+                <div class="ip-speaking-line">
+                  <button type="button" class="ip-speaking-audio" id="ip-speaking-audio" aria-label="Hear the sentence">🔊</button>
+                  <p class="ip-speaking-sentence" id="ip-speaking-sentence">Let’s find Bob!</p>
+                </div>
+                <div class="ip-speaking-wave" id="ip-speaking-wave" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <p class="ip-speaking-hint" id="ip-speaking-hint">Listen, then say the sentence.</p>
+              </div>
+              <button type="button" class="ip-speaking-cta" id="ip-speaking-cta">
+                <span aria-hidden="true">🎙️</span>
+                <b>Tap to speak</b>
+              </button>
+            </div>
           </section>
         </div>
         <div class="ip-correct-pop" id="ip-inline-correct-pop" role="status" aria-live="assertive" hidden>
           <span aria-hidden="true">⭐</span>
           <div>
             <b>Great job!</b>
-            <p id="ip-inline-correct-copy">You found the right answer.</p>
+            <p id="ip-inline-correct-copy">Your voice moved the story!</p>
           </div>
         </div>
       </section>
@@ -9591,7 +9717,7 @@
           <div class="ip-reward-badge" aria-hidden="true">🚀</div>
           <span class="ip-eyebrow">Mission complete</span>
           <h1>Adventure Complete!</h1>
-          <p>You watched the story and answered all three questions.</p>
+          <p id="ip-reward-summary">You watched the story and answered all three questions.</p>
           <div class="ip-prize-row">
             <div class="ip-prize"><i>✨</i><span><b>+30 XP</b><span>Experience earned</span></span></div>
             <div class="ip-prize"><i>🪙</i><span><b>+40 Dino Coins</b><span>Coins earned</span></span></div>
@@ -11591,44 +11717,46 @@
         praise: "Excellent! They travel into space.",
       },
     ]);
-    const IP_INTERACTIVE_QUESTIONS = Object.freeze([
+    const IP_SPEAKING_LEVELS = Object.freeze(["starter", "basic", "advanced"]);
+    const IP_INTERACTIVE_SPEAKING_TASKS = Object.freeze([
       {
-        pauseAt: 25,
-        question: "Where does the message come from?",
-        options: [
-          { image: "assets/ip-quiz/q3-space.jpg", label: "From space", correct: true },
-          { image: "assets/ip-quiz/q3-under-sea.png", label: "Under the sea", correct: false },
-          { image: "assets/ip-quiz/q3-school.png", label: "From school", correct: false },
-        ],
-        praise: "Yes! The message comes from space.",
+        pauseAt: 24.7,
+        title: "Help the family find Bob!",
+        sentences: Object.freeze({
+          starter: "Find Bob!",
+          basic: "Let’s find Bob!",
+          advanced: "Let’s go and find Bob!",
+        }),
+        success: "You helped the family find Bob!",
       },
       {
-        pauseAt: 77,
-        question: "Who goes on the adventure?",
-        options: [
-          { image: "assets/ip-quiz/q2-dinosaur-family.jpg", label: "The dinosaur family", correct: true },
-          { image: "assets/ip-quiz/q2-one-dinosaur.png", label: "One dinosaur", correct: false },
-          { image: "assets/ip-quiz/q2-robots.png", label: "Some robots", correct: false },
-        ],
-        praise: "Great! The whole dinosaur family goes together.",
+        pauseAt: 54.5,
+        title: "Wake up the space message!",
+        sentences: Object.freeze({
+          starter: "Open it!",
+          basic: "Show the message!",
+          advanced: "Show us the space message!",
+        }),
+        success: "You opened the space message!",
       },
       {
-        pauseAt: null,
-        question: "What do they travel in?",
-        options: [
-          { image: "assets/ip-quiz/q1-spaceship.jpg", label: "A spaceship", correct: true },
-          { image: "assets/ip-quiz/q1-bicycle.png", label: "A bicycle", correct: false },
-          { image: "assets/ip-quiz/q1-cake.png", label: "A cake", correct: false },
-        ],
-        praise: "That’s right! They fly in a spaceship.",
+        pauseAt: 109.5,
+        title: "Launch the spaceship!",
+        sentences: Object.freeze({
+          starter: "Go!",
+          basic: "Start the spaceship!",
+          advanced: "Start the engines and take off!",
+        }),
+        success: "You launched the spaceship!",
       },
     ]);
     const ipCourseState = {
       variant: "a",
+      speakingLevel: "basic",
       quizIndex: 0,
       inlineNextIndex: 0,
       inlineActive: false,
-      inlineQuestionIndex: -1,
+      inlineTaskIndex: -1,
       rewarded: false,
       completed: false,
     };
@@ -11668,6 +11796,13 @@
     function stopIpVideo() {
       $("#ip-animation-video")?.pause();
     }
+    function enforceIpInlinePause() {
+      if (ipCourseState.variant !== "b" || !ipCourseState.inlineActive) return;
+      stopIpVideo();
+      window.requestAnimationFrame(() => {
+        if (ipCourseState.variant === "b" && ipCourseState.inlineActive) stopIpVideo();
+      });
+    }
     function syncIpCheckpointTrack() {
       const interactive = ipCourseState.variant === "b";
       const screen = $("#screen-ip-player");
@@ -11685,97 +11820,172 @@
       if (fill) fill.style.width = `${progress}%`;
       track.querySelectorAll("[data-ip-checkpoint]").forEach((marker) => {
         const index = Number(marker.dataset.ipCheckpoint);
-        const q = IP_INTERACTIVE_QUESTIONS[index];
-        const checkpointTime = q?.pauseAt == null ? duration : q.pauseAt;
+        const task = IP_INTERACTIVE_SPEAKING_TASKS[index];
+        const checkpointTime = task?.pauseAt == null ? duration : task.pauseAt;
         const checkpointPosition = Math.max(1.8, Math.min(98.2, checkpointTime / duration * 100));
         const done = index < ipCourseState.inlineNextIndex;
-        const current = ipCourseState.inlineActive && index === ipCourseState.inlineQuestionIndex;
+        const current = ipCourseState.inlineActive && index === ipCourseState.inlineTaskIndex;
         marker.style.left = `${checkpointPosition}%`;
         marker.classList.toggle("is-done", done);
         marker.classList.toggle("is-current", current);
-        marker.querySelector("b").textContent = done ? "✓" : `Q${index + 1}`;
+        marker.querySelector("b").textContent = done ? "✓" : "🎙";
         marker.setAttribute(
           "aria-label",
-          `Question ${index + 1}${done ? ", answered" : current ? ", paused here" : ""}`
+          `Speaking mission ${index + 1}${done ? ", completed" : current ? ", speak now" : ""}`
         );
       });
     }
-    function hideIpInlineQuestion() {
+    function stopIpSentenceVoice() {
+      window.speechSynthesis?.cancel?.();
+      $("#ip-speaking-audio")?.classList.remove("is-playing");
+    }
+    function getIpSpeakingSentence(task) {
+      if (!task?.sentences) return "";
+      return task.sentences[ipCourseState.speakingLevel] || task.sentences.basic || "";
+    }
+    function playIpSentenceVoice(sentence) {
+      const audioButton = $("#ip-speaking-audio");
+      stopIpSentenceVoice();
+      if (!("speechSynthesis" in window) || typeof SpeechSynthesisUtterance === "undefined") return;
+      const utterance = new SpeechSynthesisUtterance(sentence);
+      utterance.lang = "en-US";
+      utterance.rate = .82;
+      utterance.pitch = 1.08;
+      utterance.onstart = () => audioButton?.classList.add("is-playing");
+      utterance.onend = utterance.onerror = () => audioButton?.classList.remove("is-playing");
+      window.speechSynthesis.speak(utterance);
+    }
+    function hideIpSpeakingTask() {
       const overlay = $("#ip-inline-quiz");
+      hideIpCorrectFeedback();
+      stopIpSentenceVoice();
       if (overlay) overlay.hidden = true;
       ipCourseState.inlineActive = false;
-      ipCourseState.inlineQuestionIndex = -1;
+      ipCourseState.inlineTaskIndex = -1;
       syncIpCheckpointTrack();
     }
-    function renderIpInlineQuestion(index) {
-      const q = IP_INTERACTIVE_QUESTIONS[index];
+    function renderIpSpeakingTask(index) {
+      const task = IP_INTERACTIVE_SPEAKING_TASKS[index];
+      const speakingSentence = getIpSpeakingSentence(task);
       const overlay = $("#ip-inline-quiz");
-      const title = $("#ip-inline-question-title");
-      const count = $("#ip-inline-question-count");
-      const feedback = $("#ip-inline-feedback");
-      const grid = $("#ip-inline-answer-grid");
-      if (!q || !overlay || !grid) return;
+      const title = $("#ip-inline-task-title");
+      const count = $("#ip-inline-task-count");
+      const sentence = $("#ip-speaking-sentence");
+      const hint = $("#ip-speaking-hint");
+      const wave = $("#ip-speaking-wave");
+      const cta = $("#ip-speaking-cta");
+      const ctaLabel = cta?.querySelector("b");
+      const audioButton = $("#ip-speaking-audio");
+      if (!task || !overlay || !cta || !wave) return;
       clearIpQuizAdvance();
       stopIpVideo();
       ipCourseState.inlineActive = true;
-      ipCourseState.inlineQuestionIndex = index;
-      if (title) title.textContent = q.question;
-      if (count) count.textContent = `${index + 1} of ${IP_INTERACTIVE_QUESTIONS.length}`;
-      if (feedback) {
-        feedback.textContent = "Choose what you just saw.";
-        feedback.classList.remove("is-good");
-      }
-      grid.innerHTML = q.options.map((option, optionIndex) => `
-        <button type="button" class="ip-answer" data-ip-inline-answer="${optionIndex}">
-          <img src="${option.image}" alt="" decoding="async" />
-          <b>${option.label}</b>
-        </button>`).join("");
+      ipCourseState.inlineTaskIndex = index;
+      if (title) title.textContent = task.title;
+      if (count) count.textContent = `${index + 1} of ${IP_INTERACTIVE_SPEAKING_TASKS.length}`;
+      if (sentence) sentence.textContent = speakingSentence;
+      if (hint) hint.textContent = "Listen, then say the sentence.";
+      wave.classList.remove("is-recording", "is-checking");
+      cta.classList.remove("is-recording", "is-checking");
+      cta.disabled = false;
+      cta.dataset.state = "idle";
+      if (ctaLabel) ctaLabel.textContent = "Tap to speak";
       overlay.hidden = false;
       syncIpCheckpointTrack();
-      grid.querySelectorAll("[data-ip-inline-answer]").forEach((button) => {
-        button.addEventListener("click", () => {
-          const choice = Number(button.dataset.ipInlineAnswer);
-          if (!q.options[choice].correct) {
-            button.classList.add("is-wrong");
-            if (feedback) feedback.textContent = "Almost! Look at the story and try again.";
-            window.setTimeout(() => button.classList.remove("is-wrong"), 520);
-            return;
-          }
-          grid.querySelectorAll(".ip-answer").forEach((answer) => { answer.disabled = true; });
-          button.classList.add("is-correct");
-          if (feedback) {
-            feedback.textContent = q.praise;
-            feedback.classList.add("is-good");
-          }
-          showIpCorrectFeedback("b", q.praise);
+      enforceIpInlinePause();
+      playIpSentenceVoice(speakingSentence);
+      audioButton.onclick = () => playIpSentenceVoice(speakingSentence);
+      cta.onclick = () => {
+        if (cta.dataset.state === "idle") {
+          stopIpSentenceVoice();
+          cta.dataset.state = "recording";
+          cta.classList.add("is-recording");
+          wave.classList.add("is-recording");
+          if (ctaLabel) ctaLabel.textContent = "Send my voice";
+          if (hint) hint.textContent = "Say it out loud, then tap Send.";
+          return;
+        }
+        if (cta.dataset.state !== "recording") return;
+        cta.dataset.state = "checking";
+        cta.disabled = true;
+        cta.classList.remove("is-recording");
+        cta.classList.add("is-checking");
+        wave.classList.remove("is-recording");
+        wave.classList.add("is-checking");
+        if (ctaLabel) ctaLabel.textContent = "Checking...";
+        if (hint) hint.textContent = "Listening to your words...";
+        ipQuizAdvanceTimer = window.setTimeout(() => {
+          ipQuizAdvanceTimer = 0;
+          if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive || ipCourseState.inlineTaskIndex !== index) return;
+          showIpCorrectFeedback("b", task.success);
+          ipCourseState.inlineNextIndex = Math.max(ipCourseState.inlineNextIndex, index + 1);
+          syncIpCheckpointTrack();
+          if (hint) hint.textContent = "You did it!";
           ipQuizAdvanceTimer = window.setTimeout(() => {
             ipQuizAdvanceTimer = 0;
-            if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive) return;
-            ipCourseState.inlineNextIndex = Math.max(ipCourseState.inlineNextIndex, index + 1);
-            hideIpInlineQuestion();
-            if (index + 1 >= IP_INTERACTIVE_QUESTIONS.length) {
-              showIpReward();
-              return;
-            }
+            if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive || ipCourseState.inlineTaskIndex !== index) return;
+            hideIpSpeakingTask();
             const playback = $("#ip-animation-video")?.play();
             playback?.catch?.(() => {});
           }, IP_QUIZ_AUTO_ADVANCE_MS);
-        });
-      });
+        }, 680);
+      };
+    }
+    function setIpSpeakingLevel(value) {
+      ipCourseState.speakingLevel = IP_SPEAKING_LEVELS.includes(value) ? value : "basic";
+      if (
+        ipCourseState.variant === "b"
+        && ipCourseState.inlineActive
+        && ipCourseState.inlineTaskIndex >= 0
+      ) {
+        renderIpSpeakingTask(ipCourseState.inlineTaskIndex);
+      }
     }
     function handleIpVideoTimeUpdate() {
       syncIpCheckpointTrack();
       if (ipCourseState.variant !== "b" || ipCourseState.inlineActive || ipCourseState.completed) return;
       const nextIndex = ipCourseState.inlineNextIndex;
-      const next = IP_INTERACTIVE_QUESTIONS[nextIndex];
+      const next = IP_INTERACTIVE_SPEAKING_TASKS[nextIndex];
       const video = $("#ip-animation-video");
       if (!next || next.pauseAt == null || !video) return;
-      if (video.currentTime >= next.pauseAt) renderIpInlineQuestion(nextIndex);
+      if (video.currentTime >= next.pauseAt) renderIpSpeakingTask(nextIndex);
+    }
+    function handleIpVideoSeeked() {
+      syncIpCheckpointTrack();
+      if (ipCourseState.variant !== "b" || ipCourseState.completed) return;
+      const video = $("#ip-animation-video");
+      if (ipCourseState.inlineActive) {
+        const activeTask = IP_INTERACTIVE_SPEAKING_TASKS[ipCourseState.inlineTaskIndex];
+        if (video && activeTask && video.currentTime > activeTask.pauseAt + .25) {
+          try { video.currentTime = activeTask.pauseAt; } catch (_error) {}
+        }
+        enforceIpInlinePause();
+        return;
+      }
+      const nextIndex = ipCourseState.inlineNextIndex;
+      const next = IP_INTERACTIVE_SPEAKING_TASKS[nextIndex];
+      if (!next || next.pauseAt == null || !video || video.currentTime < next.pauseAt) return;
+      if (video.currentTime > next.pauseAt + .25) {
+        try { video.currentTime = next.pauseAt; } catch (_error) {}
+      }
+      renderIpSpeakingTask(nextIndex);
+      enforceIpInlinePause();
+    }
+    function handleIpVideoPlay() {
+      if (ipCourseState.variant === "b" && ipCourseState.inlineActive) enforceIpInlinePause();
     }
     function completeIpVideo() {
       stopIpVideo();
       if (ipCourseState.variant === "b") {
-        renderIpInlineQuestion(IP_INTERACTIVE_QUESTIONS.length - 1);
+        if (ipCourseState.inlineActive) {
+          enforceIpInlinePause();
+          return;
+        }
+        if (ipCourseState.inlineNextIndex < IP_INTERACTIVE_SPEAKING_TASKS.length) {
+          renderIpSpeakingTask(ipCourseState.inlineNextIndex);
+          return;
+        }
+        showIpReward();
         return;
       }
       clearIpQuizTransition();
@@ -11788,7 +11998,7 @@
     function resetIpVideo() {
       stopIpVideo();
       clearIpQuizAdvance();
-      hideIpInlineQuestion();
+      hideIpSpeakingTask();
       ipCourseState.inlineNextIndex = 0;
       const video = $("#ip-animation-video");
       if (video) {
@@ -11804,7 +12014,7 @@
       ipCourseState.variant = value === "b" ? "b" : "a";
       clearIpQuizTransition();
       clearIpQuizAdvance();
-      hideIpInlineQuestion();
+      hideIpSpeakingTask();
       ipCourseState.quizIndex = 0;
       ipCourseState.inlineNextIndex = 0;
       ipCourseState.completed = false;
@@ -11819,16 +12029,14 @@
       if (value === "play") return;
       const indexByValue = { q1: 0, q2: 1, q3: 2 };
       const index = indexByValue[value];
-      const q = IP_INTERACTIVE_QUESTIONS[index];
+      const task = IP_INTERACTIVE_SPEAKING_TASKS[index];
       const video = $("#ip-animation-video");
-      if (!q || !video) return;
+      if (!task || !video) return;
       ipCourseState.inlineNextIndex = index;
       try {
-        video.currentTime = q.pauseAt == null
-          ? (Number.isFinite(video.duration) ? Math.max(0, video.duration - .2) : 132.8)
-          : q.pauseAt;
+        video.currentTime = task.pauseAt;
       } catch (_error) {}
-      renderIpInlineQuestion(index);
+      renderIpSpeakingTask(index);
     }
     function syncIpCatalog() {
       const episode = $("#ip-episode-start");
@@ -11846,7 +12054,7 @@
     function openIpAnimationCatalog() {
       clearIpQuizTransition();
       clearIpQuizAdvance();
-      hideIpInlineQuestion();
+      hideIpSpeakingTask();
       stopIpVideo();
       syncIpCatalog();
       showLandScreen("screen-ip-catalog");
@@ -11888,16 +12096,11 @@
           const choice = Number(button.dataset.ipAnswer);
           if (!q.options[choice].correct) {
             button.classList.add("is-wrong");
-            if (feedback) feedback.textContent = "Almost! Look at Dino’s clue and try again.";
             setTimeout(() => button.classList.remove("is-wrong"), 520);
             return;
           }
           grid.querySelectorAll(".ip-answer").forEach((answer) => { answer.disabled = true; });
           button.classList.add("is-correct");
-          if (feedback) {
-            feedback.textContent = q.praise;
-            feedback.classList.add("is-good");
-          }
           showIpCorrectFeedback("a", q.praise);
           ipQuizAdvanceTimer = window.setTimeout(() => {
             ipQuizAdvanceTimer = 0;
@@ -11921,8 +12124,14 @@
     }
     function showIpReward() {
       clearIpQuizAdvance();
-      hideIpInlineQuestion();
+      hideIpSpeakingTask();
       ipCourseState.completed = true;
+      const summary = $("#ip-reward-summary");
+      if (summary) {
+        summary.textContent = ipCourseState.variant === "b"
+          ? "You watched the story and completed all three voice missions."
+          : "You watched the story and answered all three questions.";
+      }
       if (!ipCourseState.rewarded) {
         ipCourseState.rewarded = true;
         window.GAME?.grantXp?.(IP_REWARD_XP);
@@ -11953,6 +12162,8 @@
       $("#ip-animation-video")?.addEventListener("loadedmetadata", syncIpCheckpointTrack);
       $("#ip-animation-video")?.addEventListener("durationchange", syncIpCheckpointTrack);
       $("#ip-animation-video")?.addEventListener("seeking", syncIpCheckpointTrack);
+      $("#ip-animation-video")?.addEventListener("seeked", handleIpVideoSeeked);
+      $("#ip-animation-video")?.addEventListener("play", handleIpVideoPlay);
       $("#ip-quiz-back")?.addEventListener("click", () => {
         clearIpQuizAdvance();
         showLandScreen("screen-ip-player");
@@ -17439,8 +17650,9 @@
     },
     getValue: function (key) {
       if (key === "ipCourseVariant") return ipCourseState.variant;
+      if (key === "ipSpeakingLevel") return ipCourseState.speakingLevel;
       if (key === "ipInteractivePreview") {
-        return ipCourseState.inlineQuestionIndex >= 0 ? `q${ipCourseState.inlineQuestionIndex + 1}` : "play";
+        return ipCourseState.inlineTaskIndex >= 0 ? `q${ipCourseState.inlineTaskIndex + 1}` : "play";
       }
       if (key === "marketRoute") return demoState.marketRoute;
       if (key === "experimentGroup") return demoState.experimentGroup;
@@ -17476,7 +17688,9 @@
         if (id && id.indexOf("screen-ip-") === 0) {
           return {
             label: "IP 动画课",
-            keys: ["ipCourseVariant"].concat(ipCourseState.variant === "b" ? ["ipInteractivePreview"] : [])
+            keys: ["ipCourseVariant"].concat(
+              ipCourseState.variant === "b" ? ["ipSpeakingLevel", "ipInteractivePreview"] : []
+            )
           };
         }
         if (id && id.indexOf("screen-capsule") === 0) return ctx("盲盒机", ["capsuleOutcome"]);
@@ -17509,10 +17723,13 @@
     },
     groups: [
       { key: "ipCourseVariant", label: "动画互动方案",
-        options: [["a", "A · 看完集中答题"], ["b", "B · 剧情内暂停答题"]],
+        options: [["a", "A · 看完集中答题"], ["b", "B · 剧情口令跟读"]],
         apply: function (v) { setIpCourseVariant(v); } },
+      { key: "ipSpeakingLevel", label: "B · 用户英语 Level",
+        options: [["starter", "入门"], ["basic", "初级"], ["advanced", "进阶"]],
+        apply: function (v) { setIpSpeakingLevel(v); } },
       { key: "ipInteractivePreview", label: "B 方案演示节点",
-        options: [["play", "从头播放"], ["q1", "互动 1"], ["q2", "互动 2"], ["q3", "片尾题"]],
+        options: [["play", "从头播放"], ["q1", "跟读 1 · 寻找 Bob"], ["q2", "跟读 2 · 唤醒消息"], ["q3", "跟读 3 · 启动飞船"]],
         apply: function (v) { previewIpInteractivePoint(v); } },
       { key: "marketRoute", label: "市场",
         options: [["vn", "越南 · 增加人工咨询预约"], ["global", "其他市场 · 自助订阅"]],
