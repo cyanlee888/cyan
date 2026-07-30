@@ -7977,15 +7977,6 @@
       font-weight: 700;
       transition: color .18s ease, background .18s ease, box-shadow .18s ease;
     }
-    .ip-speaking-hint.is-retry {
-      color: var(--reward-orange);
-      background: rgba(255,195,51,.22);
-      box-shadow: inset 0 0 0 2px rgba(255,195,51,.5);
-    }
-    .ip-speaking-hint.is-retry::before {
-      content: "↻";
-      font-size: .82rem;
-    }
     .ip-speaking-result {
       width: min(100%, 460px);
       min-height: 42px;
@@ -12041,6 +12032,7 @@
       wave.classList.add("is-checking");
       if (ctaLabel) ctaLabel.textContent = "Checking...";
       if (hint) {
+        hint.hidden = false;
         hint.textContent = "Checking your words...";
         hint.classList.remove("is-retry");
       }
@@ -12068,8 +12060,8 @@
       wave.classList.add("is-retry");
       if (ctaLabel) ctaLabel.textContent = "Try again";
       if (hint) {
-        hint.textContent = "Listen, then try once more.";
-        hint.classList.add("is-retry");
+        hint.hidden = true;
+        hint.classList.remove("is-retry");
       }
       if (reason === "not-allowed" || reason === "service-not-allowed") {
         setIpSpeechResultPanel(
@@ -12185,6 +12177,7 @@
       wave.classList.add("is-recording");
       if (ctaLabel) ctaLabel.textContent = "Listening…";
       if (hint) {
+        hint.hidden = false;
         hint.textContent = "Say the sentence out loud.";
         hint.classList.remove("is-retry");
       }
@@ -12305,6 +12298,7 @@
       if (count) count.textContent = `${index + 1} of ${IP_INTERACTIVE_SPEAKING_TASKS.length}`;
       if (sentence) sentence.textContent = speakingSentence;
       if (hint) {
+        hint.hidden = false;
         hint.textContent = "Listen, then say the sentence.";
         hint.classList.remove("is-retry");
       }
