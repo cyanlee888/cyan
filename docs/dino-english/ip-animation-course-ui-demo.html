@@ -7986,6 +7986,56 @@
       content: "↻";
       font-size: .82rem;
     }
+    .ip-speaking-result {
+      width: min(100%, 460px);
+      min-height: 42px;
+      margin: 7px auto 0;
+      padding: 7px 10px;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      border: 2px solid rgba(45,172,226,.28);
+      border-radius: var(--radius-sm);
+      color: var(--ink-on-light);
+      background: rgba(45,172,226,.1);
+      text-align: left;
+    }
+    .ip-speaking-result[hidden] { display: none; }
+    .ip-speaking-result > span {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff;
+      font-size: 1rem;
+    }
+    .ip-speaking-result b {
+      display: block;
+      color: var(--sky-deep);
+      font-family: var(--display);
+      font-size: .7rem;
+      line-height: 1.1;
+    }
+    .ip-speaking-result p {
+      margin: 2px 0 0;
+      color: #53627a;
+      font-size: .58rem;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    .ip-speaking-result.is-hearing {
+      border-color: rgba(45,172,226,.62);
+      background: rgba(158,255,250,.28);
+    }
+    .ip-speaking-result.is-retry,
+    .ip-speaking-result.is-no-input {
+      border-color: rgba(255,195,51,.78);
+      background: rgba(255,248,55,.2);
+    }
+    .ip-speaking-result.is-retry b,
+    .ip-speaking-result.is-no-input b { color: #b44a13; }
     .ip-speaking-wave {
       height: 30px;
       margin: 8px auto 0;
@@ -9667,6 +9717,13 @@
                   <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
                 </div>
                 <p class="ip-speaking-hint" id="ip-speaking-hint" role="status" aria-live="polite">Listen, then say the sentence.</p>
+                <div class="ip-speaking-result" id="ip-speaking-result" role="status" aria-live="polite" hidden>
+                  <span id="ip-speaking-result-icon" aria-hidden="true">👂</span>
+                  <div>
+                    <b id="ip-speaking-result-title">I’m listening…</b>
+                    <p id="ip-speaking-result-copy">Say the sentence when you’re ready.</p>
+                  </div>
+                </div>
               </div>
               <button type="button" class="ip-speaking-cta" id="ip-speaking-cta">
                 <span aria-hidden="true">🎙️</span>
@@ -11776,7 +11833,7 @@
     const ipCourseState = {
       variant: "a",
       speakingLevel: "basic",
-      nextSpeakingResult: "pass",
+      nextSpeakingResult: "auto",
       quizIndex: 0,
       inlineNextIndex: 0,
       inlineActive: false,
@@ -11791,6 +11848,8 @@
     const IP_VIDEO_DURATION_FALLBACK = 133.07;
     let ipQuizTransitionTimer = 0;
     let ipQuizAdvanceTimer = 0;
+    let ipSpeechCheckTimer = 0;
+    let ipSpeechSession = null;
     function clearIpQuizTransition() {
       if (!ipQuizTransitionTimer) return;
       window.clearTimeout(ipQuizTransitionTimer);
@@ -11867,6 +11926,95 @@
       if (!task?.sentences) return "";
       return task.sentences[ipCourseState.speakingLevel] || task.sentences.basic || "";
     }
+    function normalizeIpSpeechText(value) {
+      return String(value || "")
+        .toLowerCase()
+        .replace(/[’']/g, "")
+        .replace(/\blet us\b/g, "lets")
+        .replace(/\bspace ship\b/g, "spaceship")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function getIpEditDistance(left, right) {
+      const a = Array.isArray(left) ? left : Array.from(String(left || ""));
+      const b = Array.isArray(right) ? right : Array.from(String(right || ""));
+      const row = Array.from({ length: b.length + 1 }, (_, index) => index);
+      for (let i = 1; i <= a.length; i += 1) {
+        let diagonal = row[0];
+        row[0] = i;
+        for (let j = 1; j <= b.length; j += 1) {
+          const above = row[j];
+          row[j] = Math.min(
+            row[j] + 1,
+            row[j - 1] + 1,
+            diagonal + (a[i - 1] === b[j - 1] ? 0 : 1)
+          );
+          diagonal = above;
+        }
+      }
+      return row[b.length];
+    }
+    function scoreIpSpeech(candidate, target) {
+      const heard = normalizeIpSpeechText(candidate);
+      const expected = normalizeIpSpeechText(target);
+      if (!heard || !expected) return 0;
+      if (heard === expected) return 1;
+      const charScore = 1 - getIpEditDistance(heard, expected) / Math.max(heard.length, expected.length, 1);
+      const heardWords = heard.split(" ");
+      const targetWords = expected.split(" ");
+      const wordScore = 1 - getIpEditDistance(heardWords, targetWords) / Math.max(heardWords.length, targetWords.length, 1);
+      return Math.max(0, Math.min(1, charScore * .56 + wordScore * .44));
+    }
+    function getIpSpeechKeywordCoverage(candidate, target) {
+      const ignored = new Set(["a", "an", "the", "and", "us", "lets", "go", "it"]);
+      const heardWords = normalizeIpSpeechText(candidate).split(" ").filter(Boolean);
+      const targetWords = normalizeIpSpeechText(target)
+        .split(" ")
+        .filter((word) => word && !ignored.has(word));
+      if (!targetWords.length) return heardWords.length ? 1 : 0;
+      const matched = targetWords.filter((targetWord) => heardWords.some((heardWord) => {
+        if (heardWord === targetWord) return true;
+        return 1 - getIpEditDistance(heardWord, targetWord) / Math.max(heardWord.length, targetWord.length, 1) >= .74;
+      }));
+      return matched.length / targetWords.length;
+    }
+    function getIpSpeechThreshold() {
+      if (ipCourseState.speakingLevel === "starter") return .56;
+      if (ipCourseState.speakingLevel === "advanced") return .72;
+      return .65;
+    }
+    function setIpSpeechResultPanel(kind, title, copy, icon) {
+      const panel = $("#ip-speaking-result");
+      if (!panel) return;
+      panel.classList.remove("is-hearing", "is-retry", "is-no-input");
+      if (!kind) {
+        panel.hidden = true;
+        return;
+      }
+      panel.hidden = false;
+      panel.classList.add(`is-${kind}`);
+      const titleNode = $("#ip-speaking-result-title");
+      const copyNode = $("#ip-speaking-result-copy");
+      const iconNode = $("#ip-speaking-result-icon");
+      if (titleNode) titleNode.textContent = title;
+      if (copyNode) copyNode.textContent = copy;
+      if (iconNode) iconNode.textContent = icon || "👂";
+    }
+    function cancelIpSpeechSession() {
+      const session = ipSpeechSession;
+      ipSpeechSession = null;
+      if (!session) return;
+      session.cancelled = true;
+      if (session.timer) window.clearTimeout(session.timer);
+      try { session.recognition?.abort?.(); } catch (_error) {}
+    }
+    function clearIpSpeechCheck() {
+      cancelIpSpeechSession();
+      if (!ipSpeechCheckTimer) return;
+      window.clearTimeout(ipSpeechCheckTimer);
+      ipSpeechCheckTimer = 0;
+    }
     function playIpSentenceVoice(sentence) {
       const audioButton = $("#ip-speaking-audio");
       stopIpSentenceVoice();
@@ -11879,9 +12027,256 @@
       utterance.onend = utterance.onerror = () => audioButton?.classList.remove("is-playing");
       window.speechSynthesis.speak(utterance);
     }
+    function setIpSpeechCheckingUi() {
+      const cta = $("#ip-speaking-cta");
+      const wave = $("#ip-speaking-wave");
+      const hint = $("#ip-speaking-hint");
+      const ctaLabel = cta?.querySelector("b");
+      if (!cta || !wave) return;
+      cta.dataset.state = "checking";
+      cta.disabled = true;
+      cta.classList.remove("is-recording", "is-retry");
+      cta.classList.add("is-checking");
+      wave.classList.remove("is-recording", "is-retry");
+      wave.classList.add("is-checking");
+      if (ctaLabel) ctaLabel.textContent = "Checking...";
+      if (hint) {
+        hint.textContent = "Checking your words...";
+        hint.classList.remove("is-retry");
+      }
+    }
+    function getIpSimulatedTranscript(index, target, result) {
+      if (result === "pass") return target;
+      if (result !== "retry") return "";
+      return [
+        "Let’s find a ball!",
+        "Show the magic!",
+        "Stop the spaceship!",
+      ][index] || "Try the story!";
+    }
+    function showIpSpeechRetry(reason, transcript, target) {
+      const cta = $("#ip-speaking-cta");
+      const wave = $("#ip-speaking-wave");
+      const hint = $("#ip-speaking-hint");
+      const ctaLabel = cta?.querySelector("b");
+      if (!cta || !wave) return;
+      cta.dataset.state = "idle";
+      cta.disabled = false;
+      cta.classList.remove("is-checking", "is-recording");
+      cta.classList.add("is-retry");
+      wave.classList.remove("is-checking", "is-recording");
+      wave.classList.add("is-retry");
+      if (ctaLabel) ctaLabel.textContent = "Try again";
+      if (hint) {
+        hint.textContent = "Listen, then try once more.";
+        hint.classList.add("is-retry");
+      }
+      if (reason === "not-allowed" || reason === "service-not-allowed") {
+        setIpSpeechResultPanel(
+          "no-input",
+          "Microphone is off",
+          "Allow microphone access, then tap Try again.",
+          "🎙️"
+        );
+      } else if (reason === "unsupported" || reason === "network") {
+        setIpSpeechResultPanel(
+          "no-input",
+          "Voice check isn’t available here",
+          "Use States to preview a correct or incorrect result.",
+          "⚙️"
+        );
+      } else if (!transcript) {
+        setIpSpeechResultPanel(
+          "no-input",
+          "I couldn’t hear that",
+          "Move a little closer and say the whole sentence.",
+          "👂"
+        );
+      } else {
+        setIpSpeechResultPanel(
+          "retry",
+          "Almost! Let’s try again",
+          `I heard “${transcript}”. Listen, then say “${target}”.`,
+          "💪"
+        );
+      }
+      enforceIpInlinePause();
+    }
+    function finishIpSpeechEvaluation(index, task, target, candidates, reason, override) {
+      if (
+        activeLandScreen() !== "screen-ip-player"
+        || !ipCourseState.inlineActive
+        || ipCourseState.inlineTaskIndex !== index
+      ) return;
+      setIpSpeechCheckingUi();
+      if (override !== "auto") {
+        ipCourseState.nextSpeakingResult = "auto";
+        window.demoStatePanel?.sync?.();
+      }
+      const heardCandidates = Array.from(new Set((candidates || []).map((item) => String(item || "").trim()).filter(Boolean)));
+      let bestTranscript = "";
+      let bestScore = 0;
+      let bestKeywordCoverage = 0;
+      heardCandidates.forEach((candidate) => {
+        const score = scoreIpSpeech(candidate, target);
+        const keywordCoverage = getIpSpeechKeywordCoverage(candidate, target);
+        if (score + keywordCoverage >= bestScore + bestKeywordCoverage) {
+          bestScore = score;
+          bestKeywordCoverage = keywordCoverage;
+          bestTranscript = candidate;
+        }
+      });
+      const passed = override === "pass"
+        || (
+          override === "auto"
+          && !reason
+          && bestScore >= getIpSpeechThreshold()
+          && bestKeywordCoverage >= .75
+        );
+      const noInput = override === "noinput" || (!heardCandidates.length && override !== "pass");
+      ipSpeechCheckTimer = window.setTimeout(() => {
+        ipSpeechCheckTimer = 0;
+        if (
+          activeLandScreen() !== "screen-ip-player"
+          || !ipCourseState.inlineActive
+          || ipCourseState.inlineTaskIndex !== index
+        ) return;
+        if (!passed) {
+          showIpSpeechRetry(noInput ? (reason || "no-speech") : reason, bestTranscript, target);
+          return;
+        }
+        setIpSpeechResultPanel(null);
+        showIpCorrectFeedback("b", task.success);
+        ipCourseState.inlineNextIndex = Math.max(ipCourseState.inlineNextIndex, index + 1);
+        syncIpCheckpointTrack();
+        const hint = $("#ip-speaking-hint");
+        if (hint) hint.textContent = "You did it!";
+        ipQuizAdvanceTimer = window.setTimeout(() => {
+          ipQuizAdvanceTimer = 0;
+          if (
+            activeLandScreen() !== "screen-ip-player"
+            || !ipCourseState.inlineActive
+            || ipCourseState.inlineTaskIndex !== index
+          ) return;
+          hideIpSpeakingTask();
+          const playback = $("#ip-animation-video")?.play();
+          playback?.catch?.(() => {});
+        }, IP_QUIZ_AUTO_ADVANCE_MS);
+      }, 620);
+    }
+    function startIpSpeechAttempt(index, task, target) {
+      cancelIpSpeechSession();
+      if (ipSpeechCheckTimer) {
+        window.clearTimeout(ipSpeechCheckTimer);
+        ipSpeechCheckTimer = 0;
+      }
+      const cta = $("#ip-speaking-cta");
+      const wave = $("#ip-speaking-wave");
+      const hint = $("#ip-speaking-hint");
+      const ctaLabel = cta?.querySelector("b");
+      if (!cta || !wave) return;
+      stopIpSentenceVoice();
+      hideIpCorrectFeedback();
+      cta.dataset.state = "recording";
+      cta.disabled = false;
+      cta.classList.remove("is-checking", "is-retry");
+      cta.classList.add("is-recording");
+      wave.classList.remove("is-checking", "is-retry");
+      wave.classList.add("is-recording");
+      if (ctaLabel) ctaLabel.textContent = "Listening…";
+      if (hint) {
+        hint.textContent = "Say the sentence out loud.";
+        hint.classList.remove("is-retry");
+      }
+      setIpSpeechResultPanel("hearing", "I’m listening…", "Speak now — I’ll check your words.", "🎙️");
+
+      const override = ["pass", "retry", "noinput"].includes(ipCourseState.nextSpeakingResult)
+        ? ipCourseState.nextSpeakingResult
+        : "auto";
+      const session = {
+        cancelled: false,
+        finished: false,
+        recognition: null,
+        timer: 0,
+        candidates: [],
+        reason: "",
+      };
+      ipSpeechSession = session;
+      session.finish = () => {
+        if (session.cancelled || session.finished) return;
+        session.finished = true;
+        if (session.timer) window.clearTimeout(session.timer);
+        if (ipSpeechSession === session) ipSpeechSession = null;
+        finishIpSpeechEvaluation(index, task, target, session.candidates, session.reason, override);
+      };
+
+      if (override !== "auto") {
+        const simulated = getIpSimulatedTranscript(index, target, override);
+        if (simulated) session.candidates = [simulated];
+        session.reason = override === "noinput" ? "no-speech" : "";
+        session.timer = window.setTimeout(session.finish, 1150);
+        return;
+      }
+
+      const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!Recognition) {
+        session.reason = "unsupported";
+        session.timer = window.setTimeout(session.finish, 500);
+        return;
+      }
+      try {
+        const recognition = new Recognition();
+        session.recognition = recognition;
+        recognition.lang = "en-US";
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.maxAlternatives = 3;
+        recognition.onresult = (event) => {
+          const primaryParts = [];
+          const alternatives = [];
+          for (let resultIndex = 0; resultIndex < event.results.length; resultIndex += 1) {
+            const result = event.results[resultIndex];
+            primaryParts.push(result[0]?.transcript || "");
+            for (let alternativeIndex = 0; alternativeIndex < Math.min(result.length, 3); alternativeIndex += 1) {
+              alternatives.push(result[alternativeIndex]?.transcript || "");
+            }
+          }
+          const primary = primaryParts.join(" ").replace(/\s+/g, " ").trim();
+          session.candidates = primary ? [primary].concat(alternatives) : alternatives;
+          if (primary) {
+            setIpSpeechResultPanel("hearing", "I heard you!", `“${primary}”`, "👂");
+          }
+        };
+        recognition.onerror = (event) => {
+          session.reason = event.error || "no-speech";
+          if (["not-allowed", "service-not-allowed", "network", "no-speech"].includes(session.reason)) {
+            session.finish();
+          }
+        };
+        recognition.onend = session.finish;
+        recognition.start();
+        session.timer = window.setTimeout(() => {
+          try { recognition.stop(); } catch (_error) { session.finish(); }
+        }, 6000);
+      } catch (_error) {
+        session.reason = "unsupported";
+        session.timer = window.setTimeout(session.finish, 300);
+      }
+    }
+    function submitIpSpeechAttempt() {
+      const session = ipSpeechSession;
+      if (!session || session.cancelled || session.finished) return;
+      setIpSpeechCheckingUi();
+      if (session.recognition) {
+        try { session.recognition.stop(); } catch (_error) { session.finish(); }
+      } else {
+        session.finish();
+      }
+    }
     function hideIpSpeakingTask() {
       const overlay = $("#ip-inline-quiz");
       hideIpCorrectFeedback();
+      clearIpSpeechCheck();
       stopIpSentenceVoice();
       if (overlay) overlay.hidden = true;
       ipCourseState.inlineActive = false;
@@ -11902,6 +12297,7 @@
       const audioButton = $("#ip-speaking-audio");
       if (!task || !overlay || !cta || !wave) return;
       clearIpQuizAdvance();
+      clearIpSpeechCheck();
       stopIpVideo();
       ipCourseState.inlineActive = true;
       ipCourseState.inlineTaskIndex = index;
@@ -11914,6 +12310,7 @@
       }
       wave.classList.remove("is-recording", "is-checking", "is-retry");
       cta.classList.remove("is-recording", "is-checking", "is-retry");
+      setIpSpeechResultPanel(null);
       cta.disabled = false;
       cta.dataset.state = "idle";
       if (ctaLabel) ctaLabel.textContent = "Tap to speak";
@@ -11924,59 +12321,10 @@
       audioButton.onclick = () => playIpSentenceVoice(speakingSentence);
       cta.onclick = () => {
         if (cta.dataset.state === "idle") {
-          stopIpSentenceVoice();
-          hint?.classList.remove("is-retry");
-          wave.classList.remove("is-retry");
-          cta.classList.remove("is-retry");
-          cta.dataset.state = "recording";
-          cta.classList.add("is-recording");
-          wave.classList.add("is-recording");
-          if (ctaLabel) ctaLabel.textContent = "Send my voice";
-          if (hint) hint.textContent = "Say it out loud, then tap Send.";
+          startIpSpeechAttempt(index, task, speakingSentence);
           return;
         }
-        if (cta.dataset.state !== "recording") return;
-        cta.dataset.state = "checking";
-        cta.disabled = true;
-        cta.classList.remove("is-recording");
-        cta.classList.add("is-checking");
-        wave.classList.remove("is-recording");
-        wave.classList.add("is-checking");
-        if (ctaLabel) ctaLabel.textContent = "Checking...";
-        if (hint) hint.textContent = "Listening to your words...";
-        ipQuizAdvanceTimer = window.setTimeout(() => {
-          ipQuizAdvanceTimer = 0;
-          if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive || ipCourseState.inlineTaskIndex !== index) return;
-          const passed = ipCourseState.nextSpeakingResult !== "retry";
-          ipCourseState.nextSpeakingResult = "pass";
-          window.demoStatePanel?.sync?.();
-          if (!passed) {
-            cta.dataset.state = "idle";
-            cta.disabled = false;
-            cta.classList.remove("is-checking");
-            cta.classList.add("is-retry");
-            wave.classList.remove("is-checking");
-            wave.classList.add("is-retry");
-            if (ctaLabel) ctaLabel.textContent = "Try again";
-            if (hint) {
-              hint.textContent = "Almost! Listen, then try again.";
-              hint.classList.add("is-retry");
-            }
-            enforceIpInlinePause();
-            return;
-          }
-          showIpCorrectFeedback("b", task.success);
-          ipCourseState.inlineNextIndex = Math.max(ipCourseState.inlineNextIndex, index + 1);
-          syncIpCheckpointTrack();
-          if (hint) hint.textContent = "You did it!";
-          ipQuizAdvanceTimer = window.setTimeout(() => {
-            ipQuizAdvanceTimer = 0;
-            if (activeLandScreen() !== "screen-ip-player" || !ipCourseState.inlineActive || ipCourseState.inlineTaskIndex !== index) return;
-            hideIpSpeakingTask();
-            const playback = $("#ip-animation-video")?.play();
-            playback?.catch?.(() => {});
-          }, IP_QUIZ_AUTO_ADVANCE_MS);
-        }, 680);
+        if (cta.dataset.state === "recording") submitIpSpeechAttempt();
       };
     }
     function setIpSpeakingLevel(value) {
@@ -11990,7 +12338,7 @@
       }
     }
     function setIpSpeakingResult(value) {
-      ipCourseState.nextSpeakingResult = value === "retry" ? "retry" : "pass";
+      ipCourseState.nextSpeakingResult = ["auto", "pass", "retry", "noinput"].includes(value) ? value : "auto";
     }
     function handleIpVideoTimeUpdate() {
       syncIpCheckpointTrack();
@@ -12068,7 +12416,7 @@
       hideIpSpeakingTask();
       ipCourseState.quizIndex = 0;
       ipCourseState.inlineNextIndex = 0;
-      ipCourseState.nextSpeakingResult = "pass";
+      ipCourseState.nextSpeakingResult = "auto";
       ipCourseState.completed = false;
       ipCourseState.rewarded = false;
       syncIpCheckpointTrack();
@@ -17740,7 +18088,7 @@
         options: [["starter", "入门"], ["basic", "初级"], ["advanced", "进阶"]],
         apply: function (v) { setIpSpeakingLevel(v); } },
       { key: "ipSpeakingResult", label: "B · 下次跟读结果",
-        options: [["pass", "通过"], ["retry", "未通过 · 重试"]],
+        options: [["auto", "真实语音识别"], ["pass", "演示 · 读对"], ["retry", "演示 · 读错"], ["noinput", "演示 · 没听清"]],
         apply: function (v) { setIpSpeakingResult(v); } },
       { key: "ipInteractivePreview", label: "B 方案演示节点",
         options: [["play", "从头播放"], ["q1", "跟读 1 · 寻找 Bob"], ["q2", "跟读 2 · 唤醒消息"], ["q3", "跟读 3 · 启动飞船"]],
