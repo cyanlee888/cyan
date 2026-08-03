@@ -169,50 +169,77 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 <div class="wrap">
 
   <div class="kicker">Dino English · Product Core Funnel</div>
-  <h1>产品核心链路看板 · <em>投放首 20 天</em>观测</h1>
+  <h1>产品核心链路看板 · <em>投放首 25 天</em>观测</h1>
   <p class="sub">投放把用户送到门口,产品经理真正要盯的是<mark>进门之后的这条链路</mark>:注册 → 选老师 → <b>首课试听(核心体验/aha)</b> → 试听报告 → 学习计划 → 订阅。本看板追踪 7/10 投放放量后,新用户在<b>产品内部每一步的到达与流失</b>,定位阻碍价值兑现的瓶颈。</p>
 
   <div class="ctx">
     <span class="tag">上游背景</span>
-    <span>投放 7/10 起 · 统计窗口 <b>07-10~07-29 04:30 UTC（19 个完整日 + 当日滚动）</b> · 期内启动 <b>26,476</b> · 归因安装 <b>25,365</b>(剔网盟假量)· 主投 VN/ID/MY/SA/TH，韩国 07-24 起放量</span>
+    <span>投放 7/10 起 · 统计窗口 <b>07-10~08-03 04:04 UTC（24 个完整日 + 当日滚动）</b> · 期内启动 <b>28,289</b> · 归因安装 <b>26,986</b>(剔网盟假量)· 主投 VN/ID/MY/SA/TH，韩国 07-24 起放量</span>
     <span style="color:var(--ink-faint)">（投放效率由增长同学主盯,详见文末上游小节）</span>
   </div>
 
   <!-- 产品诊断 KPI -->
   <section class="sec reveal">
-    <div class="sec-h">核心链路诊断 <span class="en">Diagnostics · 07-10~07-29 04:30 UTC</span></div>
-    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00 → 07-29 04:30(UTC)</b>；07-10~27 使用日表，07-28 使用完整 intraday，07-29 为当日滚动数据。GA4 与生产库均为 UTC、口径已对齐；留存与 24h 归因只使用已到完整观察期的 cohort。</p>
+    <div class="sec-h">核心链路诊断 <span class="en">Diagnostics · 07-10~08-03 04:04 UTC</span></div>
+    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00 → 08-03 04:04(UTC)</b>；07-10~08-01 使用完整日表，08-02~03 使用 intraday，08-03 为滚动日。GA4 与生产库均为 UTC；留存与 A/B 成熟指标只使用已到完整观察期的 cohort。</p>
     <div class="kpis">
       <div class="kpi warn">
         <div class="lab">首课完成率(完整试听 / 首课开始)</div>
-        <div class="val">18.3<small>%</small></div>
-        <div class="note"><span class="flag">仍是最大瓶颈</span> 10,158 开始首课,1,854 走完整个试听；较上期 18.0% 再升 0.3pt，但 07-27/28 回落至 17.3% / 18.9%</div>
+        <div class="val">18.9<small>%</small></div>
+        <div class="note"><span class="flag">仍是最大瓶颈</span> 10,935 开始首课,2,063 走完整个试听；最近三个完整日 19.8% → 19.5% → 17.1%，08-02 再次回落</div>
       </div>
       <div class="kpi mid">
         <div class="lab">注册转化(注册 / 打开)</div>
-        <div class="val">47.9<small>%</small></div>
-        <div class="note">12,682 / 26,476；较上期 47.4% 提升 0.5pt，越南成功注册仍几乎全部依赖手机号</div>
+        <div class="val">49.4<small>%</small></div>
+        <div class="note">13,981 / 28,289；07-31 起 A/B 的 24h 成熟注册率为 A 53.8% / B 62.6%</div>
       </div>
       <div class="kpi warn">
         <div class="lab">课内最大断点(热身 → 正课导入)</div>
         <div class="val">58<small>%</small></div>
-        <div class="note"><span class="flag">课内悬崖</span> 热身 10,657 → 导入 6,139，42% 在正课前离开；L5–6 到达率降至 41%</div>
+        <div class="note"><span class="flag">课内悬崖</span> 热身 10,173 → 导入 5,918，42% 在正课前离开；分 Level 明细仍用 07-30 稳定模板快照</div>
       </div>
       <div class="kpi">
         <div class="lab">Dino 对话触达(GA4 去重)</div>
-        <div class="val">6,035<small>人</small></div>
-        <div class="note">约 18,147 场对话；游戏入口 3,498、探索入口 2,920(GA4 点击去重)，模块内深度指标见下方</div>
+        <div class="val">6,240<small>人</small></div>
+        <div class="note">19,169 场对话；游戏入口 3,805、探索入口 3,194(GA4 点击去重)，模块内深度指标见下方</div>
       </div>
       <div class="kpi">
         <div class="lab">D1 次日留存</div>
-        <div class="val">19.9<small>%</small></div>
-        <div class="note">07-10~27 cohort(25,596→5,086)· <span class="flag">07-26/27 回落到 29.1% / 27.3%</span>，仍高于全窗口均值</div>
+        <div class="val">20.6<small>%</small></div>
+        <div class="note">07-10~08-01 成熟 cohort(27,860→5,740)· 07-31 / 08-01 D1 为 26.4% / 29.7%</div>
       </div>
       <div class="kpi warn">
         <div class="lab">早期卸载率(卸载 / 打开)</div>
-        <div class="val">56.6<small>%</small></div>
-        <div class="note"><span class="flag">留存漏水</span> 14,972 台设备窗口内卸载；比例较上期 56.8% 略降，但仍偏高</div>
+        <div class="val">58.3<small>%</small></div>
+        <div class="note"><span class="flag">留存漏水</span> 16,499 台设备窗口内卸载；比例继续上升，需结合版本和国家排查</div>
       </div>
+    </div>
+  </section>
+
+  <!-- A/B 实验核心结论 -->
+  <section class="sec reveal">
+    <div class="sec-h">转化链路 A/B 实验 <span class="en">Android · Assigned 07-31~08-03 04:04 UTC</span></div>
+    <p class="sec-desc">按用户指定口径，<b>只纳入 2026-07-31 00:00 UTC 后首次进组</b>的稳定 Android 设备，07-30 样本全部排除。A=先问后登 / 体验课后 Paywall；B=先登后问 / Paywall 后新人引导课。</p>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="lab">24h 成熟注册率 · 主指标</div>
+        <div class="val">+8.9<small>pp</small></div>
+        <div class="note">A 53.8%(143/266) → B 62.6%(181/289)；95% CI +0.7~+17.1pp，p=.034</div>
+      </div>
+      <div class="kpi warn">
+        <div class="lab">首课完课率 · 7d 早期滚动</div>
+        <div class="val">−3.4<small>pp</small></div>
+        <div class="note">A 7.7%(30/391) → B 4.3%(17/399)；B 完成严格筛选 lesson_id=1661，7d 成熟样本为 0，不作显著性结论</div>
+      </div>
+      <div class="kpi mid">
+        <div class="lab">生产付费率 · 7d 早期滚动</div>
+        <div class="val">0.3 → 0.5<small>%</small></div>
+        <div class="note">A 1 / 391，B 2 / 399；PENDING A 18 / B 36，量级不足</div>
+      </div>
+    </div>
+    <div class="insight">
+      <div class="it">实验建议：继续，不提前发布 B</div>
+      <p>稳定样本 A 391 / B 399，分流 49.5% / 50.5%，SRM p=.776；注册提升已初步显著，但实验仅覆盖约 3 天，且 fallback 仍有 38 / 828(4.6%)。B 组“完成 Onboarding → 学习计划”主链路为 188 → 83，仍是中段最大断点；等待 7d 首课与付费成熟后再做最终决策。</p>
     </div>
   </section>
 
@@ -222,8 +249,8 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <p class="sec-desc">从启动、首启价值页、onboarding 四步到注册的全链路(条形长度=相对启动)。上期缺失的 <span class="src">step_submitted</span> 分步埋点已补上,断点第一次能看清。<b>入口两条路</b>:多数点「立即开始」走 onboarding 再注册,少数点「已有账号」直接登录。</p>
     <div class="lbars" id="journeyFunnel"></div>
     <div class="insight">
-      <div class="it">⚠ Onboarding 四步仍顺畅，真正的悬崖是「填完第 4 题 → 完成注册」仅 66% 走完</div>
-      <p>点「立即开始」22,804 人，onboarding 到第 4 步仍有 18,850 人(占启动 71%)；完成注册 12,682——<b>约 33% 流失集中在注册/登录页</b>。登录方式点击：手机号 4,277 / Google 3,847 / Meta 873 / Kakao 335 / Apple 244；手机号点击后获取验证码 2,520，仍有 41% 卡在验证码动作前。<b>越南从 07-21 起成功注册几乎全部来自手机号</b>，OTP 送达率仍是该市场的关键单点风险。</p>
+      <div class="it">⚠ Onboarding 四步仍顺畅，真正的悬崖是「填完第 4 题 → 完成注册」约 70% 走完</div>
+      <p>点「立即开始」23,848 人，onboarding 到第 4 步仍有 20,007 人(占启动 71%)；完成注册 13,981——<b>约 30% 的量差集中在注册/登录页</b>。登录方式点击：手机号 4,797 / Google 4,541 / Meta 988 / Kakao 445 / Apple 366；手机号点击后获取验证码 2,873，仍有 40% 卡在验证码动作前。</p>
     </div>
   </section>
 
@@ -234,59 +261,59 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
     <div class="stage-lab">① 激活 Activation</div>
     <div class="funnel" id="fun1"></div>
-    <p class="sec-desc" style="margin-top:12px;font-size:12.5px"><b>激活第一大流失是「打开 → 注册」(52%)</b>;注册后选老师、进首课都很顺(90% / 89%)。<span style="color:var(--ink-faint)">注册前的首启价值页 / onboarding 全链路见上方「首启 → 注册 全链路」。</span></p>
+    <p class="sec-desc" style="margin-top:12px;font-size:12.5px"><b>激活第一大流失仍是「打开 → 注册」(51%)</b>;注册后选老师、进首课分别为 87% / 90%。<span style="color:var(--ink-faint)">注册前的首启价值页 / onboarding 全链路见上方「首启 → 注册 全链路」。</span></p>
     <div class="stage-lab">② 首课体验(核心 aha)Core Trial Experience</div>
     <div class="funnel" id="fun2"></div>
 
     <div class="insight">
-      <div class="it">⚠ 首课完成仍是最大瓶颈；累计升至 18.3%，但最近两个完整日回落</div>
-      <p>进入首课 10,158 人 → <b>完整试听完成 1,854(18.3%)</b>。07-25/26 曾到 21.7% / 21.8%，07-27/28 回落至 <b>17.3% / 18.9%</b>，改善尚未稳定。仍有八成以上用户没有走完整个试听，继续压缩热身→导入断点，是同时提升报告触达、留存与付费上限的第一杠杆。</p>
+      <div class="it">⚠ 首课完成仍是最大瓶颈；累计 18.9%，08-02 回落到 17.1%</div>
+      <p>进入首课 10,935 人 → <b>完整试听完成 2,063(18.9%)</b>。最近三个完整日 07-31~08-02 为 <b>19.8% → 19.5% → 17.1%</b>，改善尚未稳定。继续压缩热身→导入断点，并同步观察 A/B 两条不同首课路径。</p>
     </div>
   </section>
 
   <!-- 试听课内环节流失 -->
   <section class="sec reveal">
     <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off · 分 Level</span></div>
-    <p class="sec-desc">不同 Level 的试听课环节配置不同,按 Level 分档查看(以「热身」模板锚定用户所属档位,GA4 关卡进度 block_template_id 归组,去重用户,07-10~07-29 04:30 UTC)。右侧为<b>到达率(占该档起点「热身」)</b>,<b>红色为最大流失环节</b>。奖励宝箱贯穿全程、不计入教学主线。</p>
+    <p class="sec-desc">不同 Level 的试听课环节配置不同,按 Level 分档查看(以「热身」模板锚定用户所属档位,GA4 关卡进度 block_template_id 归组,去重用户)。<b>本节保持 07-30 12:28 UTC 的稳定模板快照</b>，避免 1.4.2 两条新链路的课程模板差异改变历史分档口径；总盘首课与热身→导入已更新到当前。</p>
     <div class="lvltabs" id="lvltabs"></div>
     <div class="lbars" id="lessonStages"></div>
     <div class="insight">
       <div class="it">⚠ 三档共性:热身→导入仍是唯一悬崖;Level 越高、流失越狠的格局未变</div>
-      <p>各 Level 最大流失仍在<b>「热身 → 导入」</b>，到达率为 L1–2 63% / L3–4 52% / <b>L5–6 41%</b>；走完到收尾的比例为 25% / 19% / <b>12%</b>。Level 越高、流失越重的梯度进一步扩大。奖励宝箱触达 L1–2 4,631 人，可继续测试前置到导入前，帮助用户跨过唯一的大悬崖。</p>
+      <p>各 Level 最大流失仍在<b>「热身 → 导入」</b>，到达率为 L1–2 63% / L3–4 52% / <b>L5–6 41%</b>；走完到收尾的比例为 25% / 19% / <b>12%</b>。Level 越高、流失越重的梯度不变。奖励宝箱触达 L1–2 4,680 人，可继续测试前置到导入前，帮助用户跨过唯一的大悬崖。</p>
     </div>
   </section>
 
   <!-- 课外核心模块使用 -->
   <section class="sec reveal">
     <div class="sec-h">核心模块使用 <span class="en">Core Modules · GA4</span></div>
-    <p class="sec-desc">试听课之外的模块在投放期的触达(GA4 埋点 <span class="src">dino_assistant_progress</span> + 首页各入口 <span class="src">button_click</span>,去重用户,07-10~07-29 04:30 UTC)。<b>Dino 对话仍是最强自选抓手(6,035 人)，游戏入口次之，探索入口第三</b>。生产库 <span class="src">play_* / vocab_* / fm_*</span> 从库仍未接入，下方继续采用 GA4 入口触达口径。</p>
+    <p class="sec-desc">试听课之外的模块在投放期的触达(GA4 埋点 <span class="src">dino_assistant_progress</span> + 首页各入口 <span class="src">button_click</span>,去重用户,07-10~08-03 04:04 UTC)。<b>Dino 对话仍是最强自选抓手(6,240 人)，游戏入口次之，探索入口第三</b>。</p>
     <div class="mods">
       <div class="mod dino">
         <div class="mh">🦕 Dino 对话</div>
         <div class="msub">GA4 dino_assistant_progress · 去重用户</div>
-        <div class="mbig">6,035 <small>人</small></div>
+        <div class="mbig">6,240 <small>人</small></div>
         <div class="mlist">
-          <div class="mi"><span>对话会话</span><b>约 18,147 场</b></div>
-          <div class="mi"><span>主场景 · 首页聊天</span><b>5,792 人</b></div>
-          <div class="mi"><span>探索口语 / 课程卡入口</span><b>1,127 / 573 人</b></div>
+          <div class="mi"><span>对话会话</span><b>19,169 场</b></div>
+          <div class="mi"><span>主场景 · 首页聊天</span><b>5,991 人</b></div>
+          <div class="mi"><span>探索口语 / 课程卡入口</span><b>1,174 / 612 人</b></div>
         </div>
       </div>
       <div class="mod play">
         <div class="mh">🎮 Play 游戏(入口)</div>
         <div class="msub">home_play 点击 · 去重用户</div>
-        <div class="mbig">3,498 <small>人</small></div>
+        <div class="mbig">3,805 <small>人</small></div>
         <div class="mlist">
-          <div class="mi"><span>进入游戏中心</span><b>3,498 人</b></div>
-          <div class="mi"><span>渗透 vs 完整试听人数</span><b>1.9×(1,854)</b></div>
+          <div class="mi"><span>进入游戏中心</span><b>3,805 人</b></div>
+          <div class="mi"><span>渗透 vs 完整试听人数</span><b>1.8×(2,063)</b></div>
           <div class="mi"><span>对局完成率(盲盒/PK)</span><b class="lo">需生产库·未刷新</b></div>
         </div>
       </div>
       <div class="mod">
         <div class="mh">🧭 Explore 探索(入口)</div>
         <div class="msub">home_explore 点击 · 去重用户</div>
-        <div class="mbig">2,920 <small>人</small></div>
+        <div class="mbig">3,194 <small>人</small></div>
         <div class="mlist">
-          <div class="mi"><span>进入探索(单词/听力)</span><b>2,920 人</b></div>
+          <div class="mi"><span>进入探索(单词/听力)</span><b>3,194 人</b></div>
           <div class="mi"><span>GA4 无法拆分词/听深度</span><b>合并口径</b></div>
           <div class="mi"><span>完成次数 / 收听次数</span><b class="lo">需生产库·未刷新</b></div>
         </div>
@@ -294,24 +321,24 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
       <div class="mod weak">
         <div class="mh">📚 进课复访(入口)</div>
         <div class="msub">home_class / Dino 跳转 · 去重用户</div>
-        <div class="mbig">4,714 <small>人</small></div>
+        <div class="mbig">5,138 <small>人</small></div>
         <div class="mlist">
-          <div class="mi"><span>首页进课入口点击</span><b>4,714 人</b></div>
-          <div class="mi"><span>从 Dino 对话跳转进课</span><b>3,263 人</b></div>
+          <div class="mi"><span>首页进课入口点击</span><b>5,138 人</b></div>
+          <div class="mi"><span>从 Dino 对话跳转进课</span><b>3,458 人</b></div>
           <div class="mi"><span>Dino→课堂是有效衔接</span><b>值得做深</b></div>
         </div>
       </div>
     </div>
     <div class="insight pos" style="margin-top:16px">
       <div class="it">✓ 亮点 &amp; 待办</div>
-      <p><b>Dino 对话是最强自选模块</b>：6,035 人发起约 18,147 场对话，首页聊天触达 5,792 人；Dino 直接跳转进课增至 3,263 人，衔接持续成立。<b>游戏入口 3,498 人仍显著超过完整试听 1,854 人</b>，可继续用于承接首课流失用户。数据缺口不变：需要接入生产库从库，才能恢复 Play 对局完成率、单词完成次数、听力收听次数，并拆开 Explore 内单词与听力的真实黏性。</p>
+      <p><b>Dino 对话是最强自选模块</b>：6,240 人发起 19,169 场对话，首页聊天触达 5,991 人；Dino 直接跳转进课增至 3,458 人。<b>游戏入口 3,805 人仍显著超过完整试听 2,063 人</b>，可继续用于承接首课流失用户。</p>
     </div>
   </section>
 
   <!-- 留存 -->
   <section class="sec reveal">
     <div class="sec-h">留存 <span class="en">Retention · GA4 设备级 Cohort</span></div>
-    <p class="sec-desc">按「首次打开 App 的日期」分同期群。口径:GA4 设备级(user_pseudo_id),当日有任意事件即算活跃；只使用截至 07-28 的完整观察日，D1 可测至 07-27、D3 至 07-25、D7 至 07-21。</p>
+    <p class="sec-desc">按「首次打开 App 的日期」分同期群。口径:GA4 设备级(user_pseudo_id),当日有任意事件即算活跃；08-03 为部分日，因此 D1 只读至 08-01、D3 至 07-30、D7 至 07-26。</p>
 
     <div class="stage-lab">① 留存三角 · 每个 cohort 在第 1~7 天还回来的比例(颜色越深留存越高)</div>
     <div class="rettab-wrap"><table class="rettab" id="retTable"></table></div>
@@ -319,22 +346,22 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <div class="split" style="margin-top:16px">
       <div class="panel">
         <div class="panel-t">D1 分层:首日走多远,决定次日回不回来</div>
-        <div class="panel-s">07-10~27 cohort 合并 · 按用户首日(首启当天)的行为分层看 D1</div>
+        <div class="panel-s">07-10~08-01 成熟 cohort 合并 · 按用户首日行为分层看 D1</div>
         <div id="retSeg"></div>
       </div>
       <div class="panel">
         <div class="panel-t">留存曲线 D1 → D3 → D7</div>
         <div class="panel-s">各观察期内可测 cohort 合并</div>
-        <div class="minirow"><span>D1 次日(07-10~27 cohort)</span><span class="mv">19.9%<span class="sub2">5,086 / 25,596</span></span></div>
-        <div class="minirow"><span>D3 第 3 天(07-10~25 cohort)</span><span class="mv">9.3%<span class="sub2">2,271 / 24,369</span></span></div>
-        <div class="minirow"><span>D7 第 7 天(07-10~21 cohort)</span><span class="mv">4.0%<span class="sub2">833 / 20,685</span></span></div>
-        <div class="minirow"><span style="color:var(--ink-faint)">注:07-26/27 D1 回落至 29.1% / 27.3%；晚近 cohort 尚未到 D3/D7 完整观察期</span><span></span></div>
+        <div class="minirow"><span>D1 次日(07-10~08-01 cohort)</span><span class="mv">20.6%<span class="sub2">5,740 / 27,860</span></span></div>
+        <div class="minirow"><span>D3 第 3 天(07-10~07-30 cohort)</span><span class="mv">9.9%<span class="sub2">2,676 / 27,082</span></span></div>
+        <div class="minirow"><span>D7 第 7 天(07-10~07-26 cohort)</span><span class="mv">4.4%<span class="sub2">1,101 / 24,948</span></span></div>
+        <div class="minirow"><span style="color:var(--ink-faint)">注:07-31 / 08-01 D1 为 26.4% / 29.7%；晚近 cohort 尚未到 D3/D7 完整观察期</span><span></span></div>
       </div>
     </div>
 
     <div class="insight pos">
-      <div class="it">✓ 合并 D1 / D3 / D7 继续改善，但最近两个完整 cohort 的 D1 已回落</div>
-      <p>合并 D1 升至 <b>19.9%</b>，D3 升至 9.3%，D7 升至 4.0%；但 07-26/27 cohort 的 D1 从前几日 34%~36% 回落到 29.1% / 27.3%。分层看：<b>首日完成首课用户 D1 48.4%</b>，注册未完课 29.8%，未注册 10.6%。注册与完课仍各贡献一层留存增益，学习计划提醒、Push 与连续奖励应继续集中在注册后第 1~3 天。</p>
+      <div class="it">✓ D1 / D3 / D7 合并值继续改善，08-01 cohort D1 回到 29.7%</div>
+      <p>合并 D1 为 <b>20.6%</b>，D3 9.9%，D7 4.4%。分层看：<b>首日完成首课用户 D1 50.0%</b>，注册未完课 31.0%，未注册 10.9%。注册与完课仍各贡献一层留存增益。</p>
     </div>
   </section>
 
@@ -343,13 +370,13 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <div class="sec-h">变现:发起订阅 ≠ 成功付费 <span class="en">Monetization Reality</span></div>
     <p class="sec-desc"><b>「发起订单」的埋点量 ≠ 真实成功付费</b>。发起订单对应事件是 <span class="src">subscription_checkout_start</span>(带 order_id,进结算即建一张 payment_order);<span class="src">subscription_purchase_result</span> 无成功标识、且混入续订/恢复购买,不能当成功口径,已不采用。以生产库支付订单为准,投放期发起了大量购买,但几乎没有走完商店支付。</p>
     <div class="panel">
-      <div class="panel-t">发起订单 → 成功付费 的断层(投放期 07-10~07-29 04:30 UTC)</div>
+      <div class="panel-t">发起订单 → 成功付费 的断层(投放期 07-10~08-03 04:04 UTC)</div>
       <div class="panel-s">发起=payment_order 创建(GA4 checkout_start 埋点);成功=生产库 payment_* 权威口径</div>
       <div id="paygap"></div>
     </div>
     <div class="insight">
-      <div class="it">⚠ 断层仍在：1,767 笔发起、仅 21 笔生产成功(1.2%)</div>
-      <p>窗口内 <span class="src">payment_order</span> 创建 1,767 笔(954 用户)，其中 <b>1,739 笔停留在 PENDING</b>；生产成功 21 笔(Apple 11 / Google 10，另沙盒 6、失败 1)。成功结构为周卡 13 / 月卡 8，无年卡；入口包括试听报告 4、取消支付挽留 3、课程/练习解锁 4、会员入口 2、其他挽留/折扣 3、无来源 5。<b>PENDING 仍占 98.4%</b>，支付回执与商店支付流失仍应优先排查。GA4 purchase_result 继续只作行为参考，成功付费以生产库为准。</p>
+      <div class="it">⚠ 断层仍在：2,130 笔订单、仅 26 笔生产成功(1.2%)</div>
+      <p>窗口内 <span class="src">payment_order</span> 创建 2,130 笔(1,129 用户)，其中 <b>2,093 笔停留在 PENDING</b>；生产成功 26 笔(Apple 12 / Google 14，另沙盒 9、失败 2)。成功结构为周卡 14 / 月卡 11 / 年卡 1。<b>PENDING 仍占 98.3%</b>，支付回执与商店支付流失仍应优先排查。</p>
     </div>
   </section>
 
@@ -358,29 +385,29 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <div class="sec-h">上游:投放背景 <span class="en">Acquisition Context · 次要</span></div>
     <p class="sec-desc">仅作产品链路的输入背景。<b>PM 视角关注点:不同渠道/国家送进来的用户,首课完成率与留存是否有系统性差异</b>——若某渠道量大但链路质量差,应反馈增长侧调整,而非在产品内硬转。</p>
     <div class="upstream">
-      <div class="ut">统计窗口 07-10~07-29 04:30 UTC（Google 花费截至 07-28 完整日）</div>
+      <div class="ut">统计窗口 07-10~08-03 04:04 UTC（Google 花费截至 08-02 完整日）</div>
       <div class="up-grid">
-        <div class="u"><div class="uv">$22,399*</div><div class="ul">广告花费(*Google 两账户 07-10~28)</div></div>
-        <div class="u"><div class="uv">25,365</div><div class="ul">归因安装(AppsFlyer,剔网盟,含 07-29 滚动)</div></div>
-        <div class="u"><div class="uv">$1.52</div><div class="ul">CPI(Google 花费 / 14,744 安装,同截至 07-28)</div></div>
-        <div class="u"><div class="uv">$4.00</div><div class="ul">单注册成本(Google 花费 / 5,600 注册,同截至 07-28)</div></div>
-        <div class="u"><div class="uv">21 单</div><div class="ul">成功付费(生产库)</div></div>
+        <div class="u"><div class="uv">$25,356*</div><div class="ul">广告花费(*Google 两账户 07-10~08-02)</div></div>
+        <div class="u"><div class="uv">26,986</div><div class="ul">归因安装(AppsFlyer,剔网盟,含 08-03 滚动)</div></div>
+        <div class="u"><div class="uv">$1.61</div><div class="ul">CPI(Google 花费 / 15,720 安装,同截至 08-02)</div></div>
+        <div class="u"><div class="uv">$4.34</div><div class="ul">单注册成本(Google 花费 / 5,841 注册,同截至 08-02)</div></div>
+        <div class="u"><div class="uv">26 单</div><div class="ul">成功付费(生产库)</div></div>
       </div>
-      <div class="un">市场(归因安装,剔网盟):越南 5,823 · 印尼 6,275 · 马来 4,831 · 沙特 3,376 · 泰国 2,211 · 韩国 2,033 · 其他 816。渠道:Google 14,846 · Facebook 7,128 · 自然量 2,667 · 其他小渠道 724 · <b style="color:var(--red)">三方网盟 5,078(12 激活 / 9 注册，仍为假量)</b>。激活率:Google 92.6% · Facebook 93.2% · 自然量 90.1% · 其他小渠道 93.9%。韩国 GA4 首启当日注册率 07-26~28 为 14.4% → 15.4% → 21.8%，低位回升但仍显著弱于其他主投市场。<b>⚠ 花费口径仍不全:$22,399 仅为 Google Ads 两账户；Meta 表最新仅到 07-03，本窗口无可用花费。</b></div>
+      <div class="un">市场(归因安装,剔网盟):越南 5,922 · 印尼 6,411 · 马来 5,262 · 沙特 3,822 · 泰国 2,278 · 韩国 2,287 · 其他 1,004。渠道:Google 15,756 · Facebook 7,271 · 自然量 3,147 · 其他小渠道 812 · <b style="color:var(--red)">三方网盟 5,078(12 激活 / 9 注册，仍为假量)</b>。有效归因安装 26,986，激活 24,069，注册 12,347。<b>⚠ 花费口径仍不全:$25,356 仅为 Google Ads 两账户；Meta 本窗口仍无可用花费。</b></div>
     </div>
   </section>
 
   <div class="foot">
-    <b>数据源:</b>GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span>(07-10~27 日表 + 07-28/29 intraday)· AppsFlyer 宽表 <span class="src">de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class="src">de_ods.payment_order</span> · Google Ads 平台侧花费 <span class="src">google_ads_*.ads_AccountBasicStats</span>。生产库 <span class="src">play_* / vocab_* / fm_*</span> 从库仍未接入。<br>
-    <b>统计窗口:</b>2026-07-10 00:00 → 2026-07-29 04:30 UTC；07-28 为完整日，07-29 为滚动部分日。<b>GA4 属性时区与生产库均为 UTC</b>；Google 花费截至 07-28，Meta 本窗口无可用花费。<br>
-    <b>口径:</b>链路各步为去重用户；GA4 为设备级(user_pseudo_id)、生产库为账号级(user_id)。首课完成=trial_lesson_complete；onboarding=step_submitted；成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存 cohort 按首启日分组(D1 可测至 07-27、D3 至 07-25、D7 至 07-21)。CPI/单注册成本=Google 平台侧花费 ÷ 同渠道同窗口 AppsFlyer 归因安装/注册(均截至 07-28)。<br>
-    <b>生成:</b>Dino English 产品 · 2026-07-29 04:30 UTC(全量重拉复核；07-29 为滚动数据)
+    <b>数据源:</b>GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span>(07-10~08-01 日表 + 08-02~03 intraday)· AppsFlyer 宽表 <span class="src">de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class="src">de_ods.payment_order</span> · Google Ads 平台侧花费 <span class="src">google_ads_*.ads_AccountBasicStats</span>。生产库 <span class="src">play_* / vocab_* / fm_*</span> 从库仍未接入。<br>
+    <b>统计窗口:</b>2026-07-10 00:00 → 2026-08-03 04:04 UTC；07-10~08-02 为完整日，08-03 为滚动部分日。<b>GA4 属性时区与生产库均为 UTC</b>；Google 花费截至 08-02，Meta 本窗口无可用花费。A/B 仅纳入 07-31 00:00 UTC 后首次进组设备。<br>
+    <b>口径:</b>链路各步为去重用户；GA4 为设备级(user_pseudo_id)、生产库为账号级(user_id)。首课完成=trial_lesson_complete；新人引导课完成=<span class="src">class_lesson_end result=complete AND lesson_id=1661</span>；onboarding=step_submitted；成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存 cohort 按首启日分组(D1 可测至 08-01、D3 至 07-30、D7 至 07-26)。CPI/单注册成本=Google 平台侧花费 ÷ 同渠道同窗口 AppsFlyer 归因安装/注册(均截至 08-02)。<br>
+    <b>生成:</b>Dino English 产品 · 2026-08-03 04:04 UTC(全量重拉复核；08-03 为滚动数据)
   </div>
 
 </div>
 
 <script>
-const OPEN=26476;
+const OPEN=28289;
 function renderFunnel(el,steps){
   el.innerHTML=steps.map((s,i)=>{
     const w=Math.max(5,Math.round(s.v/OPEN*100));
@@ -393,7 +420,7 @@ function renderFunnel(el,steps){
     }else if(s.prev){
       const r=(s.v/s.prev*100);
       const cls=s.drop?'frate drop':'frate';
-      const baseLine=s.base?`<div class="of" style="margin-top:2px">占首课开始 <b style="font-size:12px;color:${s.drop?'var(--red)':'var(--ink-soft)'}">${(s.v/2074*100).toFixed(0)}%</b></div>`:'';
+      const baseLine=s.base?`<div class="of" style="margin-top:2px">占首课开始 <b style="font-size:12px;color:${s.drop?'var(--red)':'var(--ink-soft)'}">${(s.v/2063*100).toFixed(0)}%</b></div>`:'';
       rate=`<div class="${cls}"><b>${r.toFixed(0)}%</b> <span class="of">环比上步</span>${s.drop?'<span class="dropflag">主要流失</span>':''}${baseLine}</div>`;
     }else{
       rate=`<div class="frate"><span class="of">基准 100%</span></div>`;
@@ -404,26 +431,26 @@ function renderFunnel(el,steps){
   }).join('');
 }
 renderFunnel(document.getElementById('fun1'),[
- {l:'打开 App',s:'first_open',v:26476,c:'#1d5c3f'},
- {l:'注册开户',s:'signup_result',v:12682,c:'#2e8b57',prev:26476,drop:true},
- {l:'选老师',s:'teacher_selected',v:11443,c:'#2e8b57',prev:12682},
- {l:'首课开始',s:'class_lesson_start',v:10158,c:'#2e8b57',prev:11443},
+ {l:'打开 App',s:'first_open',v:28289,c:'#1d5c3f'},
+ {l:'注册开户',s:'signup_result',v:13981,c:'#2e8b57',prev:28289,drop:true},
+ {l:'选老师',s:'teacher_selected',v:12169,c:'#2e8b57',prev:13981},
+ {l:'首课开始',s:'class_lesson_start',v:10935,c:'#2e8b57',prev:12169},
 ]);
 renderFunnel(document.getElementById('fun2'),[
- {l:'进入首课',s:'class_lesson_start',v:10158,c:'#c98a12'},
- {l:'完整试听完成·出报告',s:'trial_lesson_complete',v:1854,c:'#d9641e',prev:10158,drop:true},
+ {l:'进入首课',s:'class_lesson_start',v:10935,c:'#c98a12'},
+ {l:'完整试听完成·出报告',s:'trial_lesson_complete',v:2063,c:'#d9641e',prev:10935,drop:true},
 ]);
 // 首启 → 注册 全链路(onboarding 分步埋点 step_submitted）
 const journey=[
- {l:'启动 App',s:'first_open',v:26476,c:'#1d5c3f'},
- {l:'首启价值页·立即开始',s:'welcome_get_started',v:22804,c:'#2e8b57'},
- {l:'OB① 学习者类型',s:'step_submitted 1_learner_type',v:21232,c:'#2e8b57'},
- {l:'OB② 学习者姓名',s:'step_submitted 2_learner_name',v:19478,c:'#2e8b57'},
- {l:'OB③ 学习者年龄',s:'step_submitted 3_learner_age',v:19202,c:'#2e8b57'},
- {l:'OB④ 英语水平',s:'step_submitted 4_english_level',v:18850,c:'#2e8b57'},
- {l:'注册开户',s:'signup_result（注册/登录页）',v:12682,c:'#1d5c3f',cliff:true},
+ {l:'启动 App',s:'first_open',v:28289,c:'#1d5c3f'},
+ {l:'首启价值页·立即开始',s:'welcome_get_started',v:23848,c:'#2e8b57'},
+ {l:'OB① 学习者类型',s:'step_submitted 1_learner_type',v:21734,c:'#2e8b57'},
+ {l:'OB② 学习者姓名',s:'step_submitted 2_learner_name',v:20671,c:'#2e8b57'},
+ {l:'OB③ 学习者年龄',s:'step_submitted 3_learner_age',v:20374,c:'#2e8b57'},
+ {l:'OB④ 英语水平',s:'step_submitted 4_english_level',v:20007,c:'#2e8b57'},
+ {l:'注册开户',s:'signup_result（注册/登录页）',v:13981,c:'#1d5c3f',cliff:true},
 ];
-const jbase=26476, jmax=26476;
+const jbase=28289, jmax=28289;
 document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
   const w=Math.max(3,Math.round(s.v/jmax*100));
   const reach=Math.round(s.v/jbase*100);
@@ -435,11 +462,11 @@ document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
 }).join('');
 // 变现:发起 vs 成功 断层条
 const pay=[
- {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:1767,c:'#c98a12',note:'1,739 PENDING + 21 生产成功 + 6 沙盒 + 1 失败 · 954 用户'},
- {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:21,c:'#b3402a',note:'生产环境 · 权威口径(Apple 11 / Google 10)',hl:true},
- {l:'周期结构',s:'生产成功订单 billing_period',v:21,c:'#b3402a',note:'周卡 13 / 月卡 8 · 生产无年卡成功',hl:true},
+ {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:2130,c:'#c98a12',note:'2,093 PENDING + 26 生产成功 + 9 沙盒 + 2 失败 · 1,129 用户'},
+ {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:26,c:'#b3402a',note:'生产环境 · 权威口径(Apple 12 / Google 14)',hl:true},
+ {l:'周期结构',s:'生产成功订单 billing_period',v:26,c:'#b3402a',note:'周卡 14 / 月卡 11 / 年卡 1',hl:true},
 ];
-const pmax=1767;
+const pmax=2130;
 document.getElementById('paygap').innerHTML=pay.map(p=>{
  const w=Math.max(2,Math.round(p.v/pmax*100));
  return `<div class="lrow${p.hl?' cliff':''}"><div class="ll">${p.l}<small>${p.s}</small></div>`+
@@ -449,7 +476,7 @@ document.getElementById('paygap').innerHTML=pay.map(p=>{
 
 // 留存三角:cohort × 第 N 天回访人数(GA4 设备级,活跃=任意事件;- = 未到观察期)
 const ret=[
- {d:'07-10',n:2059,r:[254,119,95,68,65,54,43]},
+ {d:'07-10',n:1998,r:[251,114,92,66,64,51,43]},
  {d:'07-11',n:1993,r:[231,122,82,69,61,50,51]},
  {d:'07-12',n:1665,r:[226,117,79,58,63,61,54]},
  {d:'07-13',n:1964,r:[280,132,97,87,69,67,60]},
@@ -459,14 +486,19 @@ const ret=[
  {d:'07-17',n:1632,r:[385,293,197,115,81,116,108]},
  {d:'07-18',n:1360,r:[356,240,156,92,93,74,74]},
  {d:'07-19',n:1395,r:[274,232,142,101,101,90,66]},
- {d:'07-20',n:634,r:[217,170,136,70,72,55,33]},
+ {d:'07-20',n:634,r:[217,170,136,70,72,55,34]},
  {d:'07-21',n:806,r:[244,210,157,77,63,50,39]},
- {d:'07-22',n:948,r:[344,269,186,110,85,56,null]},
- {d:'07-23',n:841,r:[313,256,140,81,54,null,null]},
- {d:'07-24',n:1070,r:[367,302,182,79,null,null,null]},
- {d:'07-25',n:825,r:[296,235,145,null,null,null,null]},
- {d:'07-26',n:640,r:[186,124,null,null,null,null,null]},
- {d:'07-27',n:587,r:[160,null,null,null,null,null,null]},
+ {d:'07-22',n:948,r:[344,269,186,110,86,57,58]},
+ {d:'07-23',n:841,r:[313,256,140,83,55,58,47]},
+ {d:'07-24',n:1070,r:[367,302,187,80,72,64,61]},
+ {d:'07-25',n:825,r:[296,240,147,89,73,65,59]},
+ {d:'07-26',n:640,r:[187,130,83,41,36,50,42]},
+ {d:'07-27',n:593,r:[164,121,87,48,34,32,null]},
+ {d:'07-28',n:701,r:[194,138,105,60,57,null,null]},
+ {d:'07-29',n:567,r:[159,121,76,30,null,null,null]},
+ {d:'07-30',n:273,r:[81,59,50,null,null,null,null]},
+ {d:'07-31',n:387,r:[102,89,null,null,null,null,null]},
+ {d:'08-01',n:391,r:[116,null,null,null,null,null,null]},
 ];
 const RETPEAK=40; // 上色标尺:D1 峰值约 37%
 document.getElementById('retTable').innerHTML=
@@ -481,11 +513,11 @@ document.getElementById('retTable').innerHTML=
   }).join('');
   return `<tr><td class="coh">${c.d}<small>${c.n.toLocaleString()} 台</small></td>${cells}</tr>`;
  }).join('');
-// 留存:D1 按首日行为分层(07-11~18 cohort 合并)
+// 留存:D1 按首日行为分层(已成熟 cohort 合并至 08-01)
 const seg=[
- {l:'当日完成首课',s:'trial_lesson_complete 当天',n:1222,d1:592,c:'#1d5c3f'},
- {l:'当日注册·未完课',s:'signup_result 当天,未完成首课',n:9925,d1:2957,c:'#c98a12'},
- {l:'当日未注册',s:'首启当天无注册行为',n:14449,d1:1537,c:'#b3402a'},
+ {l:'当日完成首课',s:'trial_lesson_complete 当天',n:1385,d1:693,c:'#1d5c3f'},
+ {l:'当日注册·未完课',s:'signup_result 当天,未完成首课',n:10782,d1:3339,c:'#c98a12'},
+ {l:'当日未注册',s:'首启当天无注册行为',n:15693,d1:1708,c:'#b3402a'},
 ];
 document.getElementById('retSeg').innerHTML=seg.map(g=>{
  const rate=g.d1/g.n*100, w=Math.max(3,Math.round(rate/45*100));
@@ -507,9 +539,9 @@ const stageDefs=[
 ];
 // 每档:各环节到达用户数(顺序同 stageDefs);reward=奖励宝箱贯穿全程
 const levels=[
- {key:'l1l2',name:'L1–L2',reward:4631,v:[6857,4324,3655,3432,2599,2308,1990,1739,1684]},
- {key:'l3l4',name:'L3–L4',reward:1340,v:[2334,1210,1029,828,657,518,540,448,437]},
- {key:'l5l6',name:'L5–L6',reward:787,v:[1466,605,572,407,301,284,244,198,172]},
+ {key:'l1l2',name:'L1–L2',reward:4680,v:[6906,4369,3699,3474,2634,2339,2023,1763,1710]},
+ {key:'l3l4',name:'L3–L4',reward:1356,v:[2354,1226,1045,844,669,529,553,456,444]},
+ {key:'l5l6',name:'L5–L6',reward:800,v:[1485,613,577,412,305,288,247,203,177]},
 ];
 function renderLevel(lv){
   const base=lv.v[0];
