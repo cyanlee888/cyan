@@ -153,7 +153,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <div class="kicker">Dino English · Analysis Workbench · Internal</div>
   <h1>核心指标<em>观测工作台</em></h1>
-  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-03 04:04 UTC · <b>注册总览 / 国家×方式:</b>2026-07-10~08-04 10:01 UTC（08-04 滚动） · <b>支付转化:</b>2026-07-10~08-03 05:20 UTC · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-04 10:01 UTC（北京时间 18:01） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
+  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-04 10:59 UTC（08-04 滚动） · <b>注册总览 / 国家×方式:</b>2026-07-10~08-04 10:01 UTC（08-04 滚动） · <b>支付转化:</b>2026-07-10~08-03 05:20 UTC · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-04 10:59 UTC（北京时间 18:59） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
 
   <div class="groups" id="groups"></div>
 
@@ -174,7 +174,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="card-s">两组路径顺序不同，不拼成一条伪线性漏斗；所有到达率仍以各组进组设备为分母</div>
       <div class="tbl-scroll"><table id="abDiagTable"></table></div>
     </div>
-    <div class="note"><b>当前结论:</b>24h 成熟注册率 A <b>53.8%</b> / B <b>62.6%</b>，B 高 <b>8.9pp</b>（95% CI +0.7~+17.1pp，p=.034），是初步显著的正向信号；但实验仅覆盖约 3 天，尚未覆盖完整业务周期，且出现 fallback 的设备仍占 4.6%，因此建议继续实验、不提前发布。7d 付费与首课成熟样本仍为 0；早期滚动值分别为付费 A 0.3% / B 0.5%，首课完课 A 7.7% / B 4.3%。</div>
+    <div class="note"><b>当前结论:</b>24h 成熟注册率 A <b>50.4%</b> / B <b>56.2%</b>，B 高 <b>5.8pp</b>（95% CI −0.7~+12.2pp，p=.079），方向仍为正，但<b>尚未达到统计显著</b>；实验仅覆盖约 4.5 天，尚未覆盖完整业务周期，且出现 fallback 的设备仍占 5.6%，因此建议继续实验、不提前发布。7d 付费与首课成熟样本仍为 0；早期滚动值分别为付费 A 0.3% / B 0.5%，首课完课 A 7.0% / B 5.0%。</div>
   </section>
 
   <!-- ═══════════ A/B 实验 · 主链路 ═══════════ -->
@@ -201,7 +201,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="tbl-scroll"><table id="abFlowBTable"></table></div>
       <div class="legend" id="abFlowBLegend"></div>
     </div>
-    <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 118 / 378 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 206 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
+    <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 179 / 522 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 197 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
   </section>
 
   <!-- ═══════════ A/B 实验 · B 组新人引导课 ═══════════ -->
@@ -211,7 +211,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="kpi-grid" id="abBLessonKpis"></div>
     <div class="card">
       <div class="card-t">课内到达漏斗 · 先总后分</div>
-      <div class="card-s">以 86 台开始课程 1661 的设备为 100%；每一步展示环比转化、相对开课到达率与绝对流失</div>
+      <div class="card-s">以开始课程 1661 的设备为 100%；每一步展示环比转化、相对开课到达率与绝对流失</div>
       <div class="route-strip" id="abBLessonRoute"></div>
       <div class="tbl-scroll"><table id="abBLessonTable"></table></div>
       <div class="legend" id="abBLessonLegend"></div>
@@ -227,7 +227,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ A/B 实验 · 按天 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="按天">
     <div class="sec-h">按进组日拆分 <span class="en">Assigned Cohort · UTC</span></div>
-    <p class="sec-desc">同一指标先看总盘，再看 UTC 进组日期。注册列把 24h 成熟口径与滚动口径分开；08-03 为滚动部分日。付费与首课尚无 7d 成熟 cohort，不做日间胜负解释。</p>
+    <p class="sec-desc">同一指标先看总盘，再看 UTC 进组日期。注册列把 24h 成熟口径与滚动口径分开；08-04* 为滚动部分日。付费与首课尚无 7d 成熟 cohort，不做日间胜负解释。</p>
     <div class="card">
       <div class="tbl-scroll"><table id="abDayTable"></table></div>
       <div class="legend">正式注册率 = 进组后满 24h 且在 24h 内注册 ÷ 24h 成熟设备 · 滚动注册 / 首课 / 支付仅作早期诊断 · PENDING 不算付费成功</div>
@@ -239,9 +239,9 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="sec-h">实验健康与读数门槛 <span class="en">Data Health</span></div>
     <p class="sec-desc">效果之前先验证分组、归属与事件。分流比例通过 SRM 检查，注册已可读第一批成熟 cohort；fallback、分组真相源与 7d 成熟度仍限制最终发布决策。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">790</div><div class="kn">A 391 / B 399；49.5% / 50.5%，SRM p=.776</div></div>
-      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">4.6%</div><div class="kn">38 / 828；高于实验启动门槛 ≤1%</div></div>
-      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">15</div><div class="kn">同设备多分组或与 fallback 重叠；已从效果样本剔除</div></div>
+      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">1,169</div><div class="kn">A 586 / B 583；50.1% / 49.9%，SRM p=.930</div></div>
+      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">5.6%</div><div class="kn">70 / 1,239；高于实验启动门槛 ≤1%</div></div>
+      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">26</div><div class="kn">同设备多分组或与 fallback 重叠；已从效果样本剔除</div></div>
     </div>
     <div class="card">
       <div class="tbl-scroll"><table id="abHealthTable"></table></div>
@@ -252,7 +252,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="tbl-scroll"><table id="abLessonTable"></table></div>
       <div class="legend">开始 = class_lesson_start；A 完成 = trial_lesson_complete 或 class_lesson_end(result=complete)，B 完成 = class_lesson_end(result=complete) 且 lesson_id=1661 · 每个 ID 内设备去重，总体再跨 ID 去重</div>
     </div>
-    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 15 台冲突分组与 4.6% fallback；③ 等待 7d 付费与首课 cohort 成熟；④ 至少覆盖一个完整业务周期。Google Play 已出现生产 SUCCESS（A 1 / B 2），但量级远不足以判断付费差异。首课继续使用明确 Lesson ID 白名单识别，B 完成严格筛选 lesson_id=1661。</div>
+    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 26 台冲突分组与 5.6% fallback；③ 等待 7d 付费与首课 cohort 成熟；④ 至少覆盖一个完整业务周期。Google Play 已出现生产 SUCCESS（A 2 / B 3），但量级远不足以判断付费差异。首课继续使用明确 Lesson ID 白名单识别，B 完成严格筛选 lesson_id=1661。</div>
   </section>
 
   <!-- ═══════════ 登录注册 · 总览 ═══════════ -->
@@ -1180,10 +1180,10 @@ SELECT
 </div>
 
 <script>
-/* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-03 04:04 UTC） ═══════════ */
+/* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-04 10:59 UTC） ═══════════ */
 const AB_TOTAL={
- a:{assigned:391,firstOpen:371,loginPage:263,registered:143,registeredDenom:266,registeredRolling:197,paywall:36,checkout:17,pending:18,paid:1,lessonStart:153,lessonComplete:30},
- b:{assigned:399,firstOpen:386,loginPage:378,registered:181,registeredDenom:289,registeredRolling:235,paywall:180,checkout:34,pending:36,paid:2,lessonStart:86,lessonComplete:17}
+ a:{assigned:586,firstOpen:557,loginPage:378,registered:225,registeredDenom:446,registeredRolling:285,paywall:53,checkout:21,pending:50,paid:2,lessonStart:190,lessonComplete:41},
+ b:{assigned:583,firstOpen:550,loginPage:522,registered:266,registeredDenom:473,registeredRolling:324,paywall:261,checkout:59,pending:95,paid:3,lessonStart:111,lessonComplete:29}
 };
 const AB_FLOW_A_SCHEMA=[
  {label:'首次启动',anchor:'first_open'},
@@ -1214,52 +1214,54 @@ const AB_FLOW_B_SCHEMA=[
  {label:'折扣支付发起',anchor:'subscription_checkout_start · guidance_report'}
 ];
 const AB_FLOW_COUNTRIES=[
- {key:'all',tab:'全部',label:'全部国家',a:{assigned:391,counts:[371,360,311,244,243,187,185,150,30,19]},b:{assigned:399,counts:[386,370,228,225,189,84,81,76,66,66,44,11,9,2]}},
- {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:56,counts:[55,54,43,28,28,25,25,17,1,1]},b:{assigned:46,counts:[46,46,26,26,20,5,5,5,4,4,2,2,2,1]}},
- {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:98,counts:[98,95,86,63,62,52,51,39,5,1]},b:{assigned:116,counts:[116,115,84,84,65,14,13,13,9,9,5,0,0,0]}},
- {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:43,counts:[43,43,40,40,40,30,30,27,13,11]},b:{assigned:52,counts:[52,48,29,28,28,10,8,8,7,7,5,1,1,1]}},
- {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:15,counts:[13,12,10,10,10,10,10,10,1,0]},b:{assigned:16,counts:[16,16,13,13,13,4,4,4,4,4,3,0,0,0]}},
- {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:5,counts:[2,2,1,1,1,0,0,0,0,0]},b:{assigned:5,counts:[5,5,1,1,1,0,0,0,0,0,0,0,0,0]}}
+ {key:'all',tab:'全部',label:'全部国家',a:{assigned:586,counts:[557,537,458,360,358,266,264,214,38,25]},b:{assigned:583,counts:[550,514,306,303,258,150,146,134,113,113,77,24,20,4]}},
+ {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:74,counts:[73,72,57,38,38,34,34,26,1,1]},b:{assigned:69,counts:[69,69,43,43,33,17,17,16,13,13,9,4,4,1]}},
+ {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:143,counts:[143,138,122,92,91,74,73,55,9,4]},b:{assigned:148,counts:[147,144,104,104,83,28,26,26,20,20,14,3,3,1]}},
+ {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:70,counts:[69,69,65,63,63,48,48,41,17,14]},b:{assigned:77,counts:[76,70,44,43,42,23,22,22,20,20,14,5,4,1]}},
+ {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:26,counts:[21,19,16,14,14,12,12,12,2,1]},b:{assigned:28,counts:[26,25,17,17,17,8,8,8,8,8,7,1,0,0]}},
+ {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:9,counts:[5,5,4,4,4,2,2,2,0,0]},b:{assigned:9,counts:[8,8,2,2,2,1,1,1,1,1,1,0,0,0]}}
 ];
 const AB_DAY=[
- {d:'07-31',g:'A',assigned:126,mature:126,registered:68,registeredRolling:68,lessonComplete:8,paid:0,pending:4},
- {d:'07-31',g:'B',assigned:131,mature:131,registered:83,registeredRolling:83,lessonComplete:6,paid:2,pending:16},
- {d:'08-01',g:'A',assigned:116,mature:116,registered:62,registeredRolling:62,lessonComplete:13,paid:0,pending:9},
- {d:'08-01',g:'B',assigned:134,mature:134,registered:80,registeredRolling:80,lessonComplete:3,paid:0,pending:7},
- {d:'08-02',g:'A',assigned:114,mature:24,registered:13,registeredRolling:53,lessonComplete:8,paid:1,pending:5},
- {d:'08-02',g:'B',assigned:102,mature:24,registered:18,registeredRolling:59,lessonComplete:7,paid:0,pending:9},
- {d:'08-03*',g:'A',assigned:35,mature:0,registered:0,registeredRolling:14,lessonComplete:1,paid:0,pending:0},
- {d:'08-03*',g:'B',assigned:32,mature:0,registered:0,registeredRolling:13,lessonComplete:1,paid:0,pending:4}
+ {d:'07-31',g:'A',assigned:126,mature:126,registered:68,registeredRolling:69,lessonComplete:8,paid:0,pending:8},
+ {d:'07-31',g:'B',assigned:131,mature:131,registered:83,registeredRolling:83,lessonComplete:6,paid:2,pending:21},
+ {d:'08-01',g:'A',assigned:116,mature:116,registered:62,registeredRolling:62,lessonComplete:13,paid:0,pending:16},
+ {d:'08-01',g:'B',assigned:134,mature:134,registered:80,registeredRolling:80,lessonComplete:4,paid:0,pending:10},
+ {d:'08-02',g:'A',assigned:116,mature:116,registered:57,registeredRolling:59,lessonComplete:9,paid:1,pending:21},
+ {d:'08-02',g:'B',assigned:102,mature:102,registered:61,registeredRolling:61,lessonComplete:8,paid:0,pending:23},
+ {d:'08-03',g:'A',assigned:132,mature:88,registered:38,registeredRolling:55,lessonComplete:8,paid:0,pending:5},
+ {d:'08-03',g:'B',assigned:144,mature:106,registered:42,registeredRolling:59,lessonComplete:7,paid:1,pending:21},
+ {d:'08-04*',g:'A',assigned:96,mature:0,registered:0,registeredRolling:40,lessonComplete:3,paid:1,pending:0},
+ {d:'08-04*',g:'B',assigned:72,mature:0,registered:0,registeredRolling:41,lessonComplete:4,paid:0,pending:20}
 ];
 const AB_HEALTH=[
- ['正式 A/B 稳定样本','790 台','A 391 / B 399；07-30 及更早首次进组样本已排除','可监控'],
- ['分流均衡性 SRM','p=.776','A/B 49.5% / 50.5%；未发现样本比例错配','通过'],
- ['24h 成熟样本','555 台','A 266 / B 289；注册 B−A +8.9pp，p=.034','初步显著'],
+ ['正式 A/B 稳定样本','1,169 台','A 586 / B 583；07-30 及更早首次进组样本已排除','可监控'],
+ ['分流均衡性 SRM','p=.930','A/B 50.1% / 49.9%；未发现样本比例错配','通过'],
+ ['24h 成熟样本','919 台','A 446 / B 473；注册 B−A +5.8pp，p=.079','未显著'],
  ['7d 成熟样本','0 台','付费与首课正式口径尚未成熟；最早约 08-07 00:00 UTC','等待'],
- ['分组冲突','15 台','同设备多分组或与 fallback 重叠；已剔除','阻断'],
- ['fallback','38 / 828 · 4.6%','包含 23 台纯 fallback + 15 台冲突设备；目标 ≤1%','阻断'],
+ ['分组冲突','26 台','同设备多分组或与 fallback 重叠；已剔除','阻断'],
+ ['fallback','70 / 1,239 · 5.6%','包含 44 台纯 fallback + 26 台冲突设备；目标 ≤1%','阻断'],
  ['分组真相源','experiment_group_assign','服务端明细表尚未进入当前 BigQuery 查询层','待补'],
- ['分组事件时序','B 中位滞后约 206 秒','时序审计有 118 / 378 台 B 登录页早于分组事件；主链路用前序累计命中','可监控'],
+ ['分组事件时序','B 中位滞后约 197 秒','时序审计有 179 / 522 台 B 登录页早于分组事件；主链路用前序累计命中','可监控'],
  ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614；B=1661。lesson_type 缺失不再阻断识别','可监控'],
- ['Google Play 支付','生产 SUCCESS A 1 / B 2','实验样本映射到 PENDING：A 18 / B 36；SANDBOX 已排除','未成熟']
+ ['Google Play 支付','生产 SUCCESS A 2 / B 3','实验样本映射到 PENDING：A 50 / B 95；SANDBOX 已排除','未成熟']
 ];
 const AB_LESSON=[
- {type:'体验课',level:'Level 1',lessonId:'732',group:'A',started:58,completed:15},
- {type:'体验课',level:'Level 2',lessonId:'1615',group:'A',started:33,completed:11},
- {type:'体验课',level:'Level 3',lessonId:'734',group:'A',started:11,completed:2},
- {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:23,completed:2},
- {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:22,completed:0},
+ {type:'体验课',level:'Level 1',lessonId:'732',group:'A',started:67,completed:19},
+ {type:'体验课',level:'Level 2',lessonId:'1615',group:'A',started:39,completed:13},
+ {type:'体验课',level:'Level 3',lessonId:'734',group:'A',started:20,completed:4},
+ {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:33,completed:5},
+ {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:27,completed:0},
  {type:'体验课',level:'Level 6',lessonId:'1614',group:'A',started:6,completed:0},
- {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:86,completed:17}
+ {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:111,completed:29}
 ];
 const AB_B_ONBOARDING_LESSON=[
- {label:'开始新人引导课',count:86,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
- {label:'课堂导入',count:86,ended:55,anchor:'class_stage_start/end · lead-in-template_l1l2'},
- {label:'视频示范',count:50,ended:47,anchor:'class_stage_start/end · play-video-template'},
- {label:'单词教学',count:47,ended:39,anchor:'class_stage_start/end · word_teach_image_l1l2'},
- {label:'单词练习',count:19,ended:18,anchor:'class_stage_start/end · word_practice_bubble_image'},
- {label:'总结收尾',count:18,ended:18,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
- {label:'完成新人引导课',count:17,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
+ {label:'开始新人引导课',count:121,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
+ {label:'课堂导入',count:121,ended:74,anchor:'class_stage_start/end · lead-in-template_l1l2'},
+ {label:'视频示范',count:69,ended:66,anchor:'class_stage_start/end · play-video-template'},
+ {label:'单词教学',count:66,ended:58,anchor:'class_stage_start/end · word_teach_image_l1l2'},
+ {label:'单词练习',count:31,ended:30,anchor:'class_stage_start/end · word_practice_bubble_image'},
+ {label:'总结收尾',count:30,ended:29,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
+ {label:'完成新人引导课',count:29,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
 ];
 
 /* ═══════════ 登录注册最新数据（GA4 表最后更新 2026-08-04 10:01 UTC） ═══════════ */
@@ -1453,7 +1455,7 @@ const el=id=>document.getElementById(id);
 (function(){
   const A=AB_TOTAL.a,B=AB_TOTAL.b;
   const metrics=[
-    {label:'登录注册转化率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI +0.7~+17.1pp · p=.034',cls:'hot',status:'初步显著 · 继续实验',statusCls:'up'},
+    {label:'登录注册转化率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI −0.7~+12.2pp · p=.079',cls:'hot',status:'未显著 · 继续实验',statusCls:'flat'},
     {label:'付费转化率',a:A.paid,b:B.paid,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:`生产 SUCCESS A ${A.paid} / B ${B.paid}；PENDING A ${A.pending} / B ${B.pending}`,cls:'warn',status:'7d 未成熟 · 不判胜',statusCls:'flat'},
     {label:'首课完课率',a:A.lessonComplete,b:B.lessonComplete,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:'A 体验课 6 ID · B 新人引导课 1661',cls:'hot',status:'7d 未成熟 · 不判胜',statusCls:'flat'}
   ];
@@ -1523,14 +1525,17 @@ const el=id=>document.getElementById(id);
   renderAbCountry('all');
 
   const bLesson=AB_B_ONBOARDING_LESSON,bLessonStart=bLesson[0].count,bLessonComplete=bLesson.at(-1).count;
+  const bLessonTransitions=bLesson.slice(1).map((to,i)=>({from:bLesson[i],to,rate:pct(to.count,bLesson[i].count),lost:bLesson[i].count-to.count}));
+  const bLessonLowest=bLessonTransitions.reduce((lowest,row)=>row.rate<lowest.rate?row:lowest);
+  const bLessonLargestLoss=bLessonTransitions.reduce((largest,row)=>row.lost>largest.lost?row:largest);
   el('abBLessonKpis').innerHTML=[
-    {label:'稳定 B 组样本',value:B.assigned,note:`正式实验样本；课程 1661 开始 ${bLessonStart} 台`},
-    {label:'进入新人引导课',value:fp(pct(bLessonStart,B.assigned)),note:`${bLessonStart} / ${B.assigned}；相对稳定 B 组`},
+    {label:'稳定 B 组样本',value:B.assigned,note:`课程累计命中 ${bLessonStart} 台；进组后正式口径 ${B.lessonStart} 台`},
+    {label:'进入新人引导课 · 累计命中',value:fp(pct(bLessonStart,B.assigned)),note:`${bLessonStart} / ${B.assigned}；兼容分组事件延迟，不替代正式指标`},
     {label:'新人引导课完课率',value:fp(pct(bLessonComplete,bLessonStart)),note:`${bLessonComplete} / ${bLessonStart}；严格 result=complete`,cls:'hot'},
-    {label:'最低环比转化',value:fp(pct(19,47)),note:'单词教学 47 → 单词练习 19；流失 28 台',cls:'warn'}
+    {label:'最低环比转化',value:fp(bLessonLowest.rate),note:`${bLessonLowest.from.label} ${bLessonLowest.from.count} → ${bLessonLowest.to.label} ${bLessonLowest.to.count}；流失 ${bLessonLowest.lost} 台`,cls:'warn'}
   ].map(k=>`<div class="kpi ${k.cls||''}"><div class="kl">${k.label}</div><div class="kv">${k.value}</div><div class="kn">${k.note}</div></div>`).join('');
   renderFlow('abBLessonRoute','abBLessonTable',bLesson);
-  el('abBLessonLegend').innerHTML=`最大绝对流失：课堂导入 86 → 视频示范 50，流失 36 台；最低环比转化：单词教学 47 → 单词练习 19，仅 ${fp(pct(19,47))}。最终完课 ${bLessonComplete} / ${bLessonStart}，课内完课率 <b>${fp(pct(bLessonComplete,bLessonStart))}</b>`;
+  el('abBLessonLegend').innerHTML=`最大绝对流失：${bLessonLargestLoss.from.label} ${bLessonLargestLoss.from.count} → ${bLessonLargestLoss.to.label} ${bLessonLargestLoss.to.count}，流失 ${bLessonLargestLoss.lost} 台；最低环比转化：${bLessonLowest.from.label} ${bLessonLowest.from.count} → ${bLessonLowest.to.label} ${bLessonLowest.to.count}，仅 ${fp(bLessonLowest.rate)}。最终完课 ${bLessonComplete} / ${bLessonStart}，课内完课率 <b>${fp(pct(bLessonComplete,bLessonStart))}</b>`;
   const lessonStages=bLesson.slice(1,-1);
   el('abBLessonStageTable').innerHTML='<tr><th>课内环节</th><th>进入</th><th>环节结束</th><th>环节内完成率</th><th>下一步到达</th><th>结束→下一步</th><th>模板锚点</th></tr>'+lessonStages.map((r,i)=>{
     const next=bLesson[i+2].count,inside=pct(r.ended,r.count),handoff=pct(next,r.ended);
