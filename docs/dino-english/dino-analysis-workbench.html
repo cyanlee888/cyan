@@ -153,7 +153,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <div class="kicker">Dino English · Analysis Workbench · Internal</div>
   <h1>核心指标<em>观测工作台</em></h1>
-  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-03 04:04 UTC · <b>注册总览:</b>2026-07-10~08-03 04:04 UTC · <b>支付转化:</b>2026-07-10~08-03 05:20 UTC · <b>登录细分/活跃时段/Push:</b>仍截至 07-30 12:28 UTC · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-03 05:20 UTC（北京时间 13:20） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
+  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-03 04:04 UTC · <b>注册总览 / 国家×方式:</b>2026-07-10~08-04 10:01 UTC（08-04 滚动） · <b>支付转化:</b>2026-07-10~08-03 05:20 UTC · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-04 10:01 UTC（北京时间 18:01） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
 
   <div class="groups" id="groups"></div>
 
@@ -204,6 +204,26 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 118 / 378 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 206 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
   </section>
 
+  <!-- ═══════════ A/B 实验 · B 组新人引导课 ═══════════ -->
+  <section class="sec" data-group="experiment" data-tab="B组新手课">
+    <div class="sec-h">B 组 · 新人引导课环节漏斗 <span class="en">Onboarding Lesson · 1661</span></div>
+    <p class="sec-desc">单独观察稳定 B 组进入新人引导课后的课内流失。课程严格限定 <b>lesson_id=1661</b>；按 GA4 <b>user_pseudo_id</b> 去重，阶段到达使用 <b>class_stage_start</b>，环节内完成使用 <b>class_stage_end</b>，最终完课使用 <b>class_lesson_end(result=complete)</b>。</p>
+    <div class="kpi-grid" id="abBLessonKpis"></div>
+    <div class="card">
+      <div class="card-t">课内到达漏斗 · 先总后分</div>
+      <div class="card-s">以 86 台开始课程 1661 的设备为 100%；每一步展示环比转化、相对开课到达率与绝对流失</div>
+      <div class="route-strip" id="abBLessonRoute"></div>
+      <div class="tbl-scroll"><table id="abBLessonTable"></table></div>
+      <div class="legend" id="abBLessonLegend"></div>
+    </div>
+    <div class="card">
+      <div class="card-t">各环节内部完成情况</div>
+      <div class="card-s">“进入→结束”定位环节内部流失；“结束→下一步”定位环节切换流失</div>
+      <div class="tbl-scroll"><table id="abBLessonStageTable"></table></div>
+    </div>
+    <div class="tip"><b>事件模型:</b>课程 1661 使用新版统一模型 <span class="src">event_name=trigger</span>，具体节点读取 <span class="src">event_id</span>；旧版独立事件 <span class="src">class_lesson_start / class_stage_start</span> 中出现的 lesson_id=1616 是另一门课，未混入本漏斗。分组事件存在延迟，因此沿用主链路的稳定分组累计命中口径，不用分组时间戳硬截断课内事件。</div>
+  </section>
+
   <!-- ═══════════ A/B 实验 · 按天 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="按天">
     <div class="sec-h">按进组日拆分 <span class="en">Assigned Cohort · UTC</span></div>
@@ -238,18 +258,18 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ 登录注册 · 总览 ═══════════ -->
   <section class="sec" data-group="login" data-tab="总览">
     <div class="sec-h">注册转化总览 <span class="en">Signup Overview</span></div>
-    <p class="sec-desc">先看整体，再看国家、渠道、版本和注册方式。统一口径为：<b>首启当日注册成功设备 ÷ 当日首启设备</b>，按 GA4 user_pseudo_id 去重、UTC 日 cohort；08-03 为滚动部分日。</p>
+    <p class="sec-desc">先看整体，再看国家、渠道、版本和注册方式。统一口径为：<b>首启当日注册成功设备 ÷ 当日首启设备</b>，按 GA4 user_pseudo_id 去重、UTC 日 cohort；成功兼容 <b>true / 1 / success</b>，08-04* 为滚动部分日。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">07-10~08-03* 总体注册率</div><div class="kv">43.5%</div><div class="kn">12,306 / 28,289 台首启设备</div></div>
-      <div class="kpi hot"><div class="kl">最近 3 个完整日 · 07-31~08-02</div><div class="kv">50.8%</div><div class="kn">562 / 1,106；高于全窗 7.3 个百分点</div></div>
-      <div class="kpi"><div class="kl">Android 全窗注册率</div><div class="kv">42.6%</div><div class="kn">11,326 / 26,610；平台细分仅用于诊断</div></div>
+      <div class="kpi" id="signupWindowKpi"></div>
+      <div class="kpi hot" id="signupRecentKpi"></div>
+      <div class="kpi" id="signupAndroidKpi"></div>
     </div>
     <div class="card">
       <div class="card-t">每日注册转化率 · 总体优先</div>
       <div class="card-s">总盘列在前，Android 放在最后用于观察 Google Play 版本变化；Δ 为总体环比百分点</div>
       <div class="tbl-scroll"><table id="regDailyTable"></table></div>
     </div>
-    <div class="tip"><b>读取顺序:</b>先用本页确认总盘水平与日趋势；再进入「结论速览 / 国家明细」看市场差异，进入「渠道 / 版本对比 / 注册方式」解释变化来源。08-03 未结束，不与完整日直接比较；登录细分页仍是 07-30 快照，以页头时间为准。</div>
+    <div class="tip"><b>读取顺序:</b>先用本页确认总盘水平与日趋势；再进入「国家×方式」看各市场由哪种注册方式贡献转化，进入「渠道 / 版本对比」解释历史变化来源。08-04* 未结束，不与完整日直接比较；渠道、版本等旧页仍以各自标注的快照时间为准。</div>
   </section>
 
   <!-- ═══════════ TAB 0 结论速览 ═══════════ -->
@@ -315,20 +335,38 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="note"><b>07-17 同日对照仍成立:</b>1.4.0 注册率 49.4%(1,039 台)vs 1.4.1 41.5%(458 台)，差约 8pt；OB4→注册 68.6% vs 60.4%。1.4.1 最近三个完整日 OB4→注册为 61.9% / 70.2% / 67.3%，已恢复；1.4.2 在 07-29 有 74 台首启、注册率 47.3%，样本仍小，暂不判断。</div>
   </section>
 
+  <!-- ═══════════ 登录注册 · 国家 × 方式 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="国家×方式">
+    <div class="sec-h">天 × 国家 × 注册方式 <span class="en">Day × Country × Signup Method</span></div>
+    <p class="sec-desc">按首启国家选择市场，再看每天各注册方式对总注册率的贡献。每个方式的比率均为：<b>该方式成功注册设备 ÷ 当日该国首启设备</b>；各方式相加等于总注册率。成功事件兼容历史 <b>true / 1 / success</b> 三种值，并对设备日去重。</p>
+    <div class="pillrow" id="authCountryPills"></div>
+    <div class="card">
+      <div class="card-t" id="authMethodDailyTitle">国家注册方式 · 按日</div>
+      <div class="card-s">括号内为成功注册设备数；首启是所有方式共用的分母 · 08-04* 为滚动部分日</div>
+      <div class="tbl-scroll"><table id="authMethodDailyTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-t">最近 3 个已结束 UTC 日 · 国家 × 方式</div>
+      <div class="card-s">窗口 08-01~08-03；单元格为方式注册率（成功设备数），用于横向看各市场的方式依赖</div>
+      <div class="tbl-scroll"><table id="authMethodCountrySummary"></table></div>
+    </div>
+    <div class="note"><b>当前信号:</b>① 越南最近 3 个已结束日仅 43 台首启、7 台注册，全部走手机号，样本小但 OTP 单点依赖仍高；② 马来注册率 59.7%，Phone 贡献 26.8pp、Apple 贡献 17.4pp，方式更分散；③ 沙特注册率 52.1%，Google 单独贡献 44.7pp；④ 韩国注册率 42.8%，Google 22.2pp 与 Kakao 20.0pp 接近。低样本市场优先看连续多日，不按单日波动下结论。</div>
+  </section>
+
   <!-- ═══════════ TAB 4 注册方式 ═══════════ -->
   <section class="sec" data-group="login" data-tab="注册方式">
     <div class="sec-h">注册方式结构 <span class="en">Signup Method Mix</span></div>
-    <p class="sec-desc">signup_result(成功)的 signup_method 参数。<b>手机号已从辅助方式变成部分市场的主路径</b>：越南 07-21~30 的成功注册几乎全部来自手机号；全量日峰值仍为 07-24 的 284 人。07-29 手机号注册 210 人，马来手机号占比升至 68.9%。短信通道的余额、发送成功率和 OTP 到达率需要常态告警。</p>
+    <p class="sec-desc">signup_result 成功事件的 signup_method 参数，按设备日去重。<b>手机号已从辅助方式变成部分市场的主路径</b>：越南近两周成功注册仍几乎全部依赖手机号；马来在 Phone、Google、Apple 之间更分散；韩国主要由 Google 与 Kakao 共同贡献。短信通道的余额、发送成功率和 OTP 到达率需要常态告警。</p>
     <div class="card">
       <div class="card-t">每日成功注册用户 · 按方式</div>
       <div class="card-s">GA4 设备级去重 · 括号内为当日占比</div>
       <div class="tbl-scroll"><table id="methodTable"></table></div>
     </div>
     <div class="card">
-      <div class="card-t">手机号注册占比 · 分国家(07-16 ~ 07-30*)</div>
-      <div class="card-s">install_country 参数口径 · 占当日该国成功注册的比例</div>
+      <div class="card-t">手机号注册占比 · 分国家（最近两周）</div>
+      <div class="card-s">首启国家 cohort 口径 · 占当日该国成功注册设备的比例</div>
       <div class="tbl-scroll"><table id="phoneShareTable"></table></div>
-      <div class="legend">越南已转为近乎纯手机号注册；马来/印尼稳定在约 31%~58%。OTP 送达率异常会直接压低这些市场的注册率。</div>
+      <div class="legend">最近 3 个已结束日：越南成功注册全部来自手机号（7 / 7，小样本）；马来手机号占 44.9%，印尼占 28.1%。OTP 送达率异常会直接压低这些市场的注册率。</div>
     </div>
   </section>
 
@@ -574,27 +612,15 @@ FROM opens o GROUP BY 1 ORDER BY opens DESC</pre></details>
     <div class="sec-h">口径说明与可复跑 SQL <span class="en">Definitions & Queries</span></div>
     <p class="sec-desc">所有查询在 BigQuery 项目 <b>dino-english-497507</b> 跑,GA4 数据集 <b>analytics_538991439</b>(日表 events_YYYYMMDD + 当日 events_intraday_*),数据侧宽表在 <b>de_dwd</b>。跑法:<b>bq query --use_legacy_sql=false '…'</b>。</p>
 
-    <div class="tip"><b>口径速查:</b>① <b>GA4 注册率</b> = 首启当日 signup_result 设备 ÷ 当日 first_open 设备(user_pseudo_id 去重,cohort 化,国家取首启事件 geo.country;intraday 表 geo 可能缺失,分国家时改用 install_country 参数);② <b>宽表注册率</b> = is_registered ÷ is_installed(de_dwd.product_conversion_funnel_user,AppsFlyer 安装锚点,身份桥 appsflyer_id→user_pseudo_id→uid);③ <b>激活</b> = 安装能关联到 first_open 且日期 ≥ 安装日;④ <b>留存</b> = cohort 首启日分组,第 N 天有任意事件。</div>
+    <div class="tip"><b>口径速查:</b>① <b>GA4 注册率</b> = 首启当日成功 signup_result 设备 ÷ 当日 first_open 设备（user_pseudo_id 去重、UTC 日 cohort、国家锚定首启事件 geo.country）；成功值统一兼容 true / 1 / success；② <b>方式注册率</b> = 该方式成功注册设备 ÷ 同国家同日首启设备，各方式相加等于总注册率；③ <b>宽表注册率</b> = is_registered ÷ is_installed；④ <b>留存</b> = cohort 首启日分组，第 N 天有任意事件。</div>
 
     <details><summary>① 天 × 国家 注册转化(GA4 cohort 口径)</summary>
-<pre>WITH ev AS (
-  SELECT event_name, user_pseudo_id, geo.country AS country,
-    PARSE_DATE('%Y%m%d',REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) d
-  FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260803'
-    AND event_name IN ('first_open','signup_result')
-),
-firsts AS (
-  SELECT user_pseudo_id, MIN(d) cd,
-    ARRAY_AGG(IF(event_name='first_open',country,NULL) IGNORE NULLS ORDER BY d LIMIT 1)[SAFE_OFFSET(0)] country
-  FROM ev WHERE event_name='first_open' GROUP BY 1
-),
-su AS (SELECT user_pseudo_id, MIN(d) sd FROM ev WHERE event_name='signup_result' GROUP BY 1)
-SELECT f.cd, f.country, COUNT(*) installs,
-  COUNTIF(s.sd=f.cd) su_same_day,
-  ROUND(COUNTIF(s.sd=f.cd)/COUNT(*)*100,1) rate
-FROM firsts f LEFT JOIN su s USING(user_pseudo_id)
-GROUP BY 1,2 ORDER BY 1,2</pre></details>
+<pre>-- 与「国家×方式」共用同一聚合结果，避免总览与下钻出现两套成功口径。
+SELECT cohort_date, country_code, first_opens, registered,
+  ROUND(SAFE_DIVIDE(registered, first_opens) * 100, 1) AS registered_rate
+FROM country_daily
+ORDER BY cohort_date, country_code
+-- country_daily 的完整构造见：analytics/bigquery/signup-country-method-daily.sql</pre></details>
 
     <details><summary>② 天 × 国家/渠道(数据侧宽表,剔网盟)</summary>
 <pre>SELECT install_date, install_country, media_source,
@@ -612,15 +638,16 @@ FROM firsts f LEFT JOIN su s USING(user_pseudo_id)
 GROUP BY 1,2 HAVING n>=30 ORDER BY 1,n DESC
 -- OB4→注册:把 firsts 换成「当日提交 step_submitted step_id='4_english_level' 的设备」</pre></details>
 
-    <details><summary>④ 注册方式结构 / 手机号占比</summary>
-<pre>SELECT PARSE_DATE('%Y%m%d',REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) d,
-  (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key='signup_method') m,
-  COUNT(DISTINCT user_pseudo_id) users
-FROM `dino-english-497507.analytics_538991439.events_*`
-WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260803'
-  AND event_name='signup_result'
-GROUP BY 1,2 ORDER BY 1,3 DESC
--- 分国家时用 event_params 里的 install_country(intraday 的 geo.country 常缺失)</pre></details>
+    <details><summary>④ 天 × 国家 × 注册方式（当前主查询）</summary>
+<pre>-- 完整可复跑 SQL：analytics/bigquery/signup-country-method-daily.sql
+-- 日表优先；intraday 只补日表尚未落地的日期，避免重复。
+-- 国家取设备首次 first_open 的 geo.country；注册方式取首个有效成功事件。
+WHERE event_name='signup_result'
+  AND LOWER(COALESCE(is_success_string,
+                     CAST(is_success_int AS STRING),
+                     result)) IN ('true','1','success')
+-- 输出：cohort_date × country_code × first_opens / registered /
+--       google / phone / apple / facebook / kakao / unknown</pre></details>
 
     <details><summary>⑤ 小时级(排查短信欠费类事故)</summary>
 <pre>SELECT DATE(TIMESTAMP_MICROS(event_timestamp)) d,
@@ -640,7 +667,7 @@ SELECT f.cd, COUNT(DISTINCT f.user_pseudo_id) n,
   COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 7 DAY),a.user_pseudo_id,NULL)) d7
 FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre></details>
 
-    <div class="tip"><b>踩过的坑:</b>① 08-02~03 仍是 intraday，查询时需避免与后续日表重复；② 宽表字段是 STRING，SUM 前要 SAFE_CAST；③ signup_result 只在成功时上报，失败率需查 login_result / 服务端日志；④ Google Ads 花费已到 08-02，Meta 本窗口仍无数据，混合获客成本仍不可算。</div>
+    <div class="tip"><b>踩过的坑:</b>① 当前日表到 08-02，08-03~04 仍走 intraday；查询按“已有日表优先、之后才补 intraday”避免重复；② signup_result 已同时包含成功与失败，不能再把事件出现直接等同成功，且成功值跨版本有 true / 1 / success 三种；③ 新版部分 signup_result 的 geo.country 缺失，因此国家必须锚定同设备 first_open；④ 同设备日可能有重复结果事件，按首个带有效方式的成功事件归一。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · 转化总览 ═══════════ -->
@@ -1156,7 +1183,7 @@ SELECT
 /* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-03 04:04 UTC） ═══════════ */
 const AB_TOTAL={
  a:{assigned:391,firstOpen:371,loginPage:263,registered:143,registeredDenom:266,registeredRolling:197,paywall:36,checkout:17,pending:18,paid:1,lessonStart:153,lessonComplete:30},
- b:{assigned:399,firstOpen:386,loginPage:378,registered:181,registeredDenom:289,registeredRolling:235,paywall:180,checkout:34,pending:36,paid:2,lessonStart:84,lessonComplete:17}
+ b:{assigned:399,firstOpen:386,loginPage:378,registered:181,registeredDenom:289,registeredRolling:235,paywall:180,checkout:34,pending:36,paid:2,lessonStart:86,lessonComplete:17}
 };
 const AB_FLOW_A_SCHEMA=[
  {label:'首次启动',anchor:'first_open'},
@@ -1223,37 +1250,23 @@ const AB_LESSON=[
  {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:23,completed:2},
  {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:22,completed:0},
  {type:'体验课',level:'Level 6',lessonId:'1614',group:'A',started:6,completed:0},
- {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:84,completed:17}
+ {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:86,completed:17}
+];
+const AB_B_ONBOARDING_LESSON=[
+ {label:'开始新人引导课',count:86,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
+ {label:'课堂导入',count:86,ended:55,anchor:'class_stage_start/end · lead-in-template_l1l2'},
+ {label:'视频示范',count:50,ended:47,anchor:'class_stage_start/end · play-video-template'},
+ {label:'单词教学',count:47,ended:39,anchor:'class_stage_start/end · word_teach_image_l1l2'},
+ {label:'单词练习',count:19,ended:18,anchor:'class_stage_start/end · word_practice_bubble_image'},
+ {label:'总结收尾',count:18,ended:18,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
+ {label:'完成新人引导课',count:17,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
 ];
 
-/* ═══════════ 每日注册总览（2026-07-10 ~ 2026-08-03 04:04 UTC） ═══════════ */
-const REG_DAILY=[
- {d:'07-10',n:1998,s:849,an:1899,as:776},
- {d:'07-11',n:1993,s:844,an:1922,as:790},
- {d:'07-12',n:1665,s:707,an:1595,as:660},
- {d:'07-13',n:1964,s:809,an:1892,as:769},
- {d:'07-14',n:2812,s:1131,an:2744,as:1097},
- {d:'07-15',n:2226,s:919,an:2153,as:885},
- {d:'07-16',n:2139,s:1013,an:2058,as:957},
- {d:'07-17',n:1632,s:741,an:1517,as:669},
- {d:'07-18',n:1360,s:555,an:1318,as:523},
- {d:'07-19',n:1395,s:483,an:1360,as:461},
- {d:'07-20',n:634,s:312,an:593,as:292},
- {d:'07-21',n:806,s:364,an:771,as:343},
- {d:'07-22',n:948,s:491,an:898,as:462},
- {d:'07-23',n:841,s:405,an:764,as:370},
- {d:'07-24',n:1070,s:517,an:1003,as:490},
- {d:'07-25',n:825,s:388,an:768,as:359},
- {d:'07-26',n:640,s:249,an:594,as:224},
- {d:'07-27',n:593,s:228,an:511,as:191},
- {d:'07-28',n:701,s:306,an:576,as:242},
- {d:'07-29',n:567,s:258,an:457,as:198},
- {d:'07-30',n:273,s:130,an:239,as:113},
- {d:'07-31',n:387,s:191,an:339,as:164},
- {d:'08-01',n:391,s:204,an:303,as:144},
- {d:'08-02',n:328,s:167,an:261,as:118},
- {d:'08-03*',n:101,s:45,an:75,as:29}
-];
+/* ═══════════ 登录注册最新数据（GA4 表最后更新 2026-08-04 10:01 UTC） ═══════════ */
+// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]
+const AUTH_METHOD_DAYS=["07-22","07-23","07-24","07-25","07-26","07-27","07-28","07-29","07-30","07-31","08-01","08-02","08-03","08-04*"];
+const AUTH_METHOD_DATA={"VN":[[230,84,3,81,0,0,0,0],[117,36,1,35,0,0,0,0],[148,64,0,64,0,0,0,0],[59,19,0,19,0,0,0,0],[39,19,2,17,0,0,0,0],[60,23,0,23,0,0,0,0],[88,39,1,38,0,0,0,0],[62,30,0,30,0,0,0,0],[14,6,0,6,0,0,0,0],[11,3,0,3,0,0,0,0],[15,2,0,2,0,0,0,0],[9,4,0,4,0,0,0,0],[19,1,0,1,0,0,0,0],[9,1,0,1,0,0,0,0]],"ID":[[218,131,55,60,0,16,0,0],[243,127,52,51,2,22,0,0],[308,175,78,69,4,24,0,0],[240,152,85,57,1,9,0,0],[127,79,52,23,2,2,0,0],[101,63,38,18,3,4,0,0],[116,80,53,25,1,1,0,0],[61,43,24,15,0,4,0,0],[24,11,8,3,0,0,0,0],[26,17,12,3,0,2,0,0],[29,12,9,2,1,0,0,0],[28,11,8,3,0,0,0,0],[27,9,5,4,0,0,0,0],[18,7,4,2,0,1,0,0]],"MY":[[243,141,46,73,5,16,1,0],[267,123,48,44,10,21,0,0],[248,149,40,90,6,13,0,0],[181,77,31,33,6,7,0,0],[77,40,17,15,3,5,0,0],[76,46,16,22,5,3,0,0],[110,67,26,24,12,5,0,0],[99,61,19,31,7,4,0,0],[62,41,14,20,4,3,0,0],[75,44,13,23,7,1,0,0],[141,87,21,35,25,6,0,0],[113,76,14,40,17,5,0,0],[126,64,9,27,24,4,0,0],[65,38,8,16,12,2,0,0]],"SA":[[92,42,33,4,4,1,0,0],[79,51,45,2,2,2,0,0],[98,52,45,3,1,3,0,0],[103,53,45,2,1,5,0,0],[35,22,19,1,1,1,0,0],[34,14,12,0,0,2,0,0],[25,7,7,0,0,0,0,0],[66,32,28,3,0,1,0,0],[94,45,41,2,0,2,0,0],[160,84,73,5,0,6,0,0],[113,63,56,5,1,1,0,0],[96,46,38,6,0,2,0,0],[131,68,58,3,2,5,0,0],[69,33,31,0,0,2,0,0]],"TH":[[108,73,60,0,1,12,0,0],[60,38,26,0,3,9,0,0],[85,47,39,0,2,6,0,0],[71,45,36,0,3,6,0,0],[75,46,41,0,3,2,0,0],[54,34,30,0,3,1,0,0],[67,49,35,0,8,6,0,0],[34,19,15,0,3,1,0,0],[9,2,1,0,0,1,0,0],[9,5,5,0,0,0,0,0],[15,7,2,0,5,0,0,0],[11,5,2,0,2,1,0,0],[16,4,3,0,1,0,0,0],[29,16,10,0,4,2,0,0]],"KR":[[30,9,3,2,0,1,3,0],[39,20,3,8,0,2,7,0],[165,34,17,11,0,1,5,0],[150,30,12,13,0,0,5,0],[270,39,15,13,1,1,9,0],[242,37,21,6,0,2,8,0],[248,56,29,1,0,1,25,0],[158,44,22,0,0,0,22,0],[45,15,6,0,0,1,8,0],[63,29,15,0,0,0,14,0],[59,24,10,0,0,0,14,0],[46,28,16,0,0,1,11,0],[75,25,14,0,0,0,11,0],[31,13,7,2,0,0,4,0]],"Other":[[27,13,9,2,2,0,0,0],[36,11,9,1,1,0,0,0],[18,9,7,1,1,0,0,0],[21,12,11,0,0,1,0,0],[17,4,4,0,0,0,0,0],[26,14,8,4,2,0,0,0],[47,22,4,13,3,0,0,2],[87,34,7,22,2,2,0,1],[25,11,6,3,1,0,0,1],[43,11,6,2,1,1,0,1],[23,9,7,0,2,0,0,0],[24,4,3,0,0,1,0,0],[23,9,5,3,1,0,0,0],[20,8,2,4,2,0,0,0]]};
+const REG_DAILY=[{"d":"07-10","n":2059,"s":867,"an":1959,"as":792},{"d":"07-11","n":1993,"s":848,"an":1922,"as":794},{"d":"07-12","n":1665,"s":709,"an":1595,"as":662},{"d":"07-13","n":1964,"s":811,"an":1892,"as":770},{"d":"07-14","n":2812,"s":1136,"an":2744,"as":1100},{"d":"07-15","n":2226,"s":926,"an":2153,"as":888},{"d":"07-16","n":2139,"s":1021,"an":2058,"as":961},{"d":"07-17","n":1632,"s":748,"an":1517,"as":671},{"d":"07-18","n":1360,"s":557,"an":1318,"as":525},{"d":"07-19","n":1395,"s":486,"an":1360,"as":464},{"d":"07-20","n":634,"s":315,"an":593,"as":293},{"d":"07-21","n":806,"s":366,"an":771,"as":345},{"d":"07-22","n":948,"s":493,"an":898,"as":463},{"d":"07-23","n":841,"s":406,"an":764,"as":371},{"d":"07-24","n":1070,"s":530,"an":1003,"as":492},{"d":"07-25","n":825,"s":388,"an":768,"as":359},{"d":"07-26","n":640,"s":249,"an":594,"as":224},{"d":"07-27","n":593,"s":231,"an":511,"as":191},{"d":"07-28","n":701,"s":320,"an":576,"as":243},{"d":"07-29","n":567,"s":263,"an":457,"as":198},{"d":"07-30","n":273,"s":131,"an":239,"as":113},{"d":"07-31","n":387,"s":193,"an":339,"as":164},{"d":"08-01","n":395,"s":204,"an":306,"as":144},{"d":"08-02","n":327,"s":174,"an":260,"as":123},{"d":"08-03","n":417,"s":180,"an":311,"as":116},{"d":"08-04*","n":241,"s":116,"an":160,"as":73}];
 
 /* ═══════════ 数据(2026-07-10 ~ 07-30 12:28 UTC；07-30* 为滚动部分日) ═══════════ */
 const DAYS=['07-10','07-11','07-12','07-13','07-14','07-15','07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26','07-27','07-28','07-29','07-30*'];
@@ -1332,17 +1345,18 @@ const OB4=[
  ['07-30*',{'1.3.2':[5,2],'1.4.1':[119,80]}]];
 const VERS=['1.3.2','1.4.0','1.4.1','1.4.2'];
 
-// 注册方式 × 天(成功注册用户)
-const METHOD={
- google:[766,761,639,732,1021,839,918,633,383,308,195,219,229,207,259,251,173,152,180,134,55],
- facebook:[69,80,65,75,111,92,99,85,71,68,32,39,50,65,57,30,19,19,16,16,4],
- phone:[37,7,22,40,44,48,57,82,135,158,136,162,252,172,284,149,92,96,187,210,79],
- apple:[36,37,27,17,21,19,23,33,12,14,14,8,15,18,15,14,11,14,30,15,7],
- kakao:[9,1,5,6,2,11,3,4,6,9,7,2,5,7,5,5,9,9,27,24,7],
- unknown:[0,0,0,0,0,0,0,0,0,0,9,10,11,6,16,11,3,10,15,12,4]};
-// 手机号注册占比 %(install_country 口径,07-16~30)
-const PHONE_DAYS=['07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26','07-27','07-28','07-29','07-30*'];
-const PHONE_SHARE={VN:[1.3,15.7,38.9,28.7,45.9,97.1,96.7,97.7,100,96.3,90.9,100,100,100,100],MY:[6.4,8.3,25.4,37.8,51.0,45.6,51.6,38.9,58.2,41.3,45.6,46.2,51.9,68.9,86.5],ID:[4.8,11.9,26.0,43.1,46.7,43.1,45.5,40.6,41.6,40.2,30.8,27.8,33.0,38.3,66.7]};
+// 注册方式 × 天：从国家方式数据汇总，确保总盘与下钻使用同一口径。
+const METHOD_DAYS=AUTH_METHOD_DAYS;
+const METHOD_INDEX={google:2,phone:3,apple:4,facebook:5,kakao:6,unknown:7};
+const METHOD=Object.fromEntries(Object.entries(METHOD_INDEX).map(([method,idx])=>[
+ method,
+ AUTH_METHOD_DAYS.map((_,i)=>Object.values(AUTH_METHOD_DATA).reduce((sum,rows)=>sum+rows[i][idx],0))
+]));
+const PHONE_DAYS=AUTH_METHOD_DAYS;
+const PHONE_SHARE=Object.fromEntries(['VN','MY','ID'].map(country=>[
+ country,
+ AUTH_METHOD_DATA[country].map(row=>row[1]?row[3]/row[1]*100:0)
+]));
 
 // 小时级(UTC):成功注册用户
 const HOURLY={
@@ -1508,6 +1522,22 @@ const el=id=>document.getElementById(id);
   el('abCountryTabs').querySelectorAll('.segment-tab').forEach(tab=>tab.addEventListener('click',()=>renderAbCountry(tab.dataset.country)));
   renderAbCountry('all');
 
+  const bLesson=AB_B_ONBOARDING_LESSON,bLessonStart=bLesson[0].count,bLessonComplete=bLesson.at(-1).count;
+  el('abBLessonKpis').innerHTML=[
+    {label:'稳定 B 组样本',value:B.assigned,note:`正式实验样本；课程 1661 开始 ${bLessonStart} 台`},
+    {label:'进入新人引导课',value:fp(pct(bLessonStart,B.assigned)),note:`${bLessonStart} / ${B.assigned}；相对稳定 B 组`},
+    {label:'新人引导课完课率',value:fp(pct(bLessonComplete,bLessonStart)),note:`${bLessonComplete} / ${bLessonStart}；严格 result=complete`,cls:'hot'},
+    {label:'最低环比转化',value:fp(pct(19,47)),note:'单词教学 47 → 单词练习 19；流失 28 台',cls:'warn'}
+  ].map(k=>`<div class="kpi ${k.cls||''}"><div class="kl">${k.label}</div><div class="kv">${k.value}</div><div class="kn">${k.note}</div></div>`).join('');
+  renderFlow('abBLessonRoute','abBLessonTable',bLesson);
+  el('abBLessonLegend').innerHTML=`最大绝对流失：课堂导入 86 → 视频示范 50，流失 36 台；最低环比转化：单词教学 47 → 单词练习 19，仅 ${fp(pct(19,47))}。最终完课 ${bLessonComplete} / ${bLessonStart}，课内完课率 <b>${fp(pct(bLessonComplete,bLessonStart))}</b>`;
+  const lessonStages=bLesson.slice(1,-1);
+  el('abBLessonStageTable').innerHTML='<tr><th>课内环节</th><th>进入</th><th>环节结束</th><th>环节内完成率</th><th>下一步到达</th><th>结束→下一步</th><th>模板锚点</th></tr>'+lessonStages.map((r,i)=>{
+    const next=bLesson[i+2].count,inside=pct(r.ended,r.count),handoff=pct(next,r.ended);
+    return `<tr><td class="funnel-node"><span class="idx">${i+1}</span>${r.label}</td><td><b>${r.count}</b></td><td>${r.ended}</td>`+
+      `<td class="${inside<70?'down':'up'}">${fp(inside)}</td><td>${next}</td><td class="${handoff<70?'down':'up'}">${fp(handoff)}</td><td class="anchor">${r.anchor.replace('class_stage_start/end · ','')}</td></tr>`;
+  }).join('');
+
   const diag=[
     ['首次启动',A.firstOpen,B.firstOpen,'first_open；主链路起点'],
     ['登录页曝光',A.loginPage,B.loginPage,'page_view(login)；不按分组事件时间截断'],
@@ -1544,6 +1574,12 @@ const el=id=>document.getElementById(id);
       `<td>${r.started}</td><td>${r.completed}</td><td>${r.started?fp(pct(r.completed,r.started)):'—'}</td></tr>`).join('');
 
   const total=REG_DAILY.reduce((x,r)=>({n:x.n+r.n,s:x.s+r.s,an:x.an+r.an,as:x.as+r.as}),{n:0,s:0,an:0,as:0});
+  const recent=REG_DAILY.slice(-4,-1);
+  const recentTotal=recent.reduce((x,r)=>({n:x.n+r.n,s:x.s+r.s}),{n:0,s:0});
+  const windowRate=pct(total.s,total.n),recentRate=pct(recentTotal.s,recentTotal.n);
+  el('signupWindowKpi').innerHTML=`<div class="kl">${REG_DAILY[0].d}~${REG_DAILY.at(-1).d} 总体注册率</div><div class="kv">${fp(windowRate)}</div><div class="kn">${total.s.toLocaleString()} / ${total.n.toLocaleString()} 台首启设备</div>`;
+  el('signupRecentKpi').innerHTML=`<div class="kl">最近 3 个已结束日 · ${recent[0].d}~${recent.at(-1).d}</div><div class="kv">${fp(recentRate)}</div><div class="kn">${recentTotal.s.toLocaleString()} / ${recentTotal.n.toLocaleString()}；较全窗 ${(recentRate-windowRate)>=0?'+':''}${(recentRate-windowRate).toFixed(1)}pp</div>`;
+  el('signupAndroidKpi').innerHTML=`<div class="kl">Android 全窗注册率</div><div class="kv">${fp(pct(total.as,total.an))}</div><div class="kn">${total.as.toLocaleString()} / ${total.an.toLocaleString()}；平台细分仅用于诊断</div>`;
   let regHtml='<tr><th>UTC 日期</th><th>首启设备</th><th>当日注册成功</th><th>总体注册率</th><th>环比</th><th>Android 首启</th><th>Android 注册率</th></tr>';
   regHtml+=`<tr style="background:var(--paper-deep);font-weight:700"><td>全窗合计</td><td>${total.n.toLocaleString()}</td><td>${total.s.toLocaleString()}</td>`+
     `<td>${fp(pct(total.s,total.n))}</td><td class="flat">—</td><td>${total.an.toLocaleString()}</td><td>${fp(pct(total.as,total.an))}</td></tr>`;
@@ -1706,11 +1742,54 @@ function verTable(data,elId){
 }
 verTable(VER,'verTable');verTable(OB4,'ob4Table');
 
+/* ═══════════ 国家 × 注册方式 ═══════════ */
+const AUTH_COUNTRIES=['VN','ID','MY','SA','TH','KR','Other'];
+const AUTH_METHOD_COLUMNS=[
+ {label:'Google',idx:2},{label:'Phone',idx:3},{label:'Apple',idx:4},
+ {label:'Facebook',idx:5},{label:'Kakao',idx:6},{label:'其他',idx:7}
+];
+let currentAuthCountry='VN';
+el('authCountryPills').innerHTML=AUTH_COUNTRIES.map((c,i)=>`<div class="pill${i===0?' on':''}" data-country="${c}">${CN[c]}</div>`).join('');
+
+function authRateCell(count,base,max=65){
+  if(!count)return '<td class="flat">—</td>';
+  const rate=pct(count,base);
+  return `<td class="heat"><span class="v" style="${heat(rate,max)}">${fp(rate)}</span><span class="n">(${count})</span></td>`;
+}
+function renderAuthMethodDaily(){
+  const rows=AUTH_METHOD_DATA[currentAuthCountry];
+  el('authMethodDailyTitle').textContent=`${CN[currentAuthCountry]} · 每日注册率贡献`;
+  let html='<tr><th>UTC 日期</th><th>首启</th><th>总注册率</th>'+AUTH_METHOD_COLUMNS.map(m=>`<th>${m.label}</th>`).join('')+'</tr>';
+  [...AUTH_METHOD_DAYS].reverse().forEach((day,reverseIndex)=>{
+    const i=AUTH_METHOD_DAYS.length-1-reverseIndex,row=rows[i],partial=day.endsWith('*');
+    html+=`<tr${partial?' class="warnrow"':''}><td>${day}</td><td>${row[0].toLocaleString()}</td>`+
+      `<td><b>${fp(pct(row[1],row[0]))}</b><span class="n">(${row[1]})</span></td>`+
+      AUTH_METHOD_COLUMNS.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
+  });
+  el('authMethodDailyTable').innerHTML=html;
+}
+el('authCountryPills').querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{
+  el('authCountryPills').querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');currentAuthCountry=p.dataset.country;renderAuthMethodDaily();
+}));
+renderAuthMethodDaily();
+
+(function(){
+  const endedIndexes=[AUTH_METHOD_DAYS.length-4,AUTH_METHOD_DAYS.length-3,AUTH_METHOD_DAYS.length-2];
+  const sumRows=(rows,indexes)=>indexes.reduce((sum,i)=>sum.map((v,j)=>v+rows[i][j]),Array(8).fill(0));
+  el('authMethodCountrySummary').innerHTML='<tr><th>国家</th><th>首启</th><th>总注册率</th>'+AUTH_METHOD_COLUMNS.map(m=>`<th>${m.label}</th>`).join('')+'</tr>'+
+    AUTH_COUNTRIES.map(country=>{
+      const row=sumRows(AUTH_METHOD_DATA[country],endedIndexes);
+      return `<tr><td>${CN[country]}</td><td>${row[0].toLocaleString()}</td><td><b>${fp(pct(row[1],row[0]))}</b><span class="n">(${row[1]})</span></td>`+
+        AUTH_METHOD_COLUMNS.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
+    }).join('');
+})();
+
 /* ═══════════ TAB4 注册方式 ═══════════ */
 (function(){
   const ms=Object.keys(METHOD);
   let html='<tr><th>日期</th>'+ms.map(m=>`<th>${m}</th>`).join('')+'<th>合计</th></tr>';
-  DAYS.forEach((d,i)=>{
+  METHOD_DAYS.forEach((d,i)=>{
     const tot=ms.reduce((a,m)=>a+METHOD[m][i],0);
     html+=`<tr><td>${d}</td>`+ms.map(m=>{
       const v=METHOD[m][i], share=pct(v,tot);
