@@ -153,7 +153,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <div class="kicker">Dino English · Analysis Workbench · Internal</div>
   <h1>核心指标<em>观测工作台</em></h1>
-  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-04 10:59 UTC（08-04 滚动） · <b>注册总览 / 国家×方式:</b>2026-07-10~08-04 10:01 UTC（08-04 滚动） · <b>支付转化:</b>2026-07-10~08-03 05:20 UTC · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-04 10:59 UTC（北京时间 18:59） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
+  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-05 04:15 UTC（08-05 滚动） · <b>注册总览 / 国家×方式:</b>2026-07-10~08-05 04:15 UTC（08-05 滚动） · <b>支付转化:</b>2026-07-10~08-05 04:15 UTC · <b>留存:</b>完整日更新至 08-04 · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-05 04:15 UTC（北京时间 12:15） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
 
   <div class="groups" id="groups"></div>
 
@@ -174,7 +174,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="card-s">两组路径顺序不同，不拼成一条伪线性漏斗；所有到达率仍以各组进组设备为分母</div>
       <div class="tbl-scroll"><table id="abDiagTable"></table></div>
     </div>
-    <div class="note"><b>当前结论:</b>24h 成熟注册率 A <b>50.4%</b> / B <b>56.2%</b>，B 高 <b>5.8pp</b>（95% CI −0.7~+12.2pp，p=.079），方向仍为正，但<b>尚未达到统计显著</b>；实验仅覆盖约 4.5 天，尚未覆盖完整业务周期，且出现 fallback 的设备仍占 5.6%，因此建议继续实验、不提前发布。7d 付费与首课成熟样本仍为 0；早期滚动值分别为付费 A 0.3% / B 0.5%，首课完课 A 7.0% / B 5.0%。</div>
+    <div class="note"><b>当前结论:</b>24h 成熟注册率 A <b>49.4%</b> / B <b>56.8%</b>，B 高 <b>7.4pp</b>（95% CI +1.4~+13.4pp，p=.016），<b>已达到统计显著</b>；但实验仅覆盖约 5.2 天，尚未覆盖完整业务周期，且出现 fallback 的设备仍占 6.2%，因此建议继续实验、不提前发布。7d 付费与首课成熟样本仍为 0；早期滚动值分别为付费 A 0.3% / B 0.5%，首课完课 A 7.5% / B 5.7%。</div>
   </section>
 
   <!-- ═══════════ A/B 实验 · 主链路 ═══════════ -->
@@ -201,7 +201,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="tbl-scroll"><table id="abFlowBTable"></table></div>
       <div class="legend" id="abFlowBLegend"></div>
     </div>
-    <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 179 / 522 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 197 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
+    <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 122 / 583 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 192 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
   </section>
 
   <!-- ═══════════ A/B 实验 · B 组新人引导课 ═══════════ -->
@@ -227,7 +227,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ A/B 实验 · 按天 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="按天">
     <div class="sec-h">按进组日拆分 <span class="en">Assigned Cohort · UTC</span></div>
-    <p class="sec-desc">同一指标先看总盘，再看 UTC 进组日期。注册列把 24h 成熟口径与滚动口径分开；08-04* 为滚动部分日。付费与首课尚无 7d 成熟 cohort，不做日间胜负解释。</p>
+    <p class="sec-desc">同一指标先看总盘，再看 UTC 进组日期。注册列把 24h 成熟口径与滚动口径分开；08-05* 为滚动部分日。付费与首课尚无 7d 成熟 cohort，不做日间胜负解释。</p>
     <div class="card">
       <div class="tbl-scroll"><table id="abDayTable"></table></div>
       <div class="legend">正式注册率 = 进组后满 24h 且在 24h 内注册 ÷ 24h 成熟设备 · 滚动注册 / 首课 / 支付仅作早期诊断 · PENDING 不算付费成功</div>
@@ -239,9 +239,9 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="sec-h">实验健康与读数门槛 <span class="en">Data Health</span></div>
     <p class="sec-desc">效果之前先验证分组、归属与事件。分流比例通过 SRM 检查，注册已可读第一批成熟 cohort；fallback、分组真相源与 7d 成熟度仍限制最终发布决策。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">1,169</div><div class="kn">A 586 / B 583；50.1% / 49.9%，SRM p=.930</div></div>
-      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">5.6%</div><div class="kn">70 / 1,239；高于实验启动门槛 ≤1%</div></div>
-      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">26</div><div class="kn">同设备多分组或与 fallback 重叠；已从效果样本剔除</div></div>
+      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">1,309</div><div class="kn">A 657 / B 652；50.2% / 49.8%，SRM p=.782</div></div>
+      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">6.2%</div><div class="kn">86 / 1,395；高于实验启动门槛 ≤1%</div></div>
+      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">28</div><div class="kn">同设备多分组或与 fallback 重叠；已从效果样本剔除</div></div>
     </div>
     <div class="card">
       <div class="tbl-scroll"><table id="abHealthTable"></table></div>
@@ -252,13 +252,13 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="tbl-scroll"><table id="abLessonTable"></table></div>
       <div class="legend">开始 = class_lesson_start；A 完成 = trial_lesson_complete 或 class_lesson_end(result=complete)，B 完成 = class_lesson_end(result=complete) 且 lesson_id=1661 · 每个 ID 内设备去重，总体再跨 ID 去重</div>
     </div>
-    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 26 台冲突分组与 5.6% fallback；③ 等待 7d 付费与首课 cohort 成熟；④ 至少覆盖一个完整业务周期。Google Play 已出现生产 SUCCESS（A 2 / B 3），但量级远不足以判断付费差异。首课继续使用明确 Lesson ID 白名单识别，B 完成严格筛选 lesson_id=1661。</div>
+    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 28 台冲突分组与 6.2% fallback；③ 等待 7d 付费与首课 cohort 成熟；④ 至少覆盖一个完整业务周期。Google Play 已出现生产 SUCCESS（A 2 / B 3），但量级远不足以判断付费差异。首课继续使用明确 Lesson ID 白名单识别，B 完成严格筛选 lesson_id=1661。</div>
   </section>
 
   <!-- ═══════════ 登录注册 · 总览 ═══════════ -->
   <section class="sec" data-group="login" data-tab="总览">
     <div class="sec-h">注册转化总览 <span class="en">Signup Overview</span></div>
-    <p class="sec-desc">先看整体，再看国家、渠道、版本和注册方式。统一口径为：<b>首启当日注册成功设备 ÷ 当日首启设备</b>，按 GA4 user_pseudo_id 去重、UTC 日 cohort；成功兼容 <b>true / 1 / success</b>，08-04* 为滚动部分日。</p>
+    <p class="sec-desc">先看整体，再看国家、渠道、版本和注册方式。统一口径为：<b>首启当日注册成功设备 ÷ 当日首启设备</b>，按 GA4 user_pseudo_id 去重、UTC 日 cohort；成功兼容 <b>true / 1 / success</b>，08-05* 为滚动部分日。</p>
     <div class="kpi-grid">
       <div class="kpi" id="signupWindowKpi"></div>
       <div class="kpi hot" id="signupRecentKpi"></div>
@@ -269,7 +269,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="card-s">总盘列在前，Android 放在最后用于观察 Google Play 版本变化；Δ 为总体环比百分点</div>
       <div class="tbl-scroll"><table id="regDailyTable"></table></div>
     </div>
-    <div class="tip"><b>读取顺序:</b>先用本页确认总盘水平与日趋势；再进入「国家×方式」看各市场由哪种注册方式贡献转化，进入「渠道 / 版本对比」解释历史变化来源。08-04* 未结束，不与完整日直接比较；渠道、版本等旧页仍以各自标注的快照时间为准。</div>
+    <div class="tip"><b>读取顺序:</b>先用本页确认总盘水平与日趋势；再进入「国家×方式」看各市场由哪种注册方式贡献转化，进入「渠道 / 版本对比」解释历史变化来源。08-05* 未结束，不与完整日直接比较；渠道、版本等旧页仍以各自标注的快照时间为准。</div>
   </section>
 
   <!-- ═══════════ TAB 0 结论速览 ═══════════ -->
@@ -342,15 +342,15 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="pillrow" id="authCountryPills"></div>
     <div class="card">
       <div class="card-t" id="authMethodDailyTitle">国家注册方式 · 按日</div>
-      <div class="card-s">括号内为成功注册设备数；首启是所有方式共用的分母 · 08-04* 为滚动部分日</div>
+      <div class="card-s">括号内为成功注册设备数；首启是所有方式共用的分母 · 08-05* 为滚动部分日</div>
       <div class="tbl-scroll"><table id="authMethodDailyTable"></table></div>
     </div>
     <div class="card">
       <div class="card-t">最近 3 个已结束 UTC 日 · 国家 × 方式</div>
-      <div class="card-s">窗口 08-01~08-03；单元格为方式注册率（成功设备数），用于横向看各市场的方式依赖</div>
+      <div class="card-s">窗口 08-02~08-04；单元格为方式注册率（成功设备数），用于横向看各市场的方式依赖</div>
       <div class="tbl-scroll"><table id="authMethodCountrySummary"></table></div>
     </div>
-    <div class="note"><b>当前信号:</b>① 越南最近 3 个已结束日仅 43 台首启、7 台注册，全部走手机号，样本小但 OTP 单点依赖仍高；② 马来注册率 59.7%，Phone 贡献 26.8pp、Apple 贡献 17.4pp，方式更分散；③ 沙特注册率 52.1%，Google 单独贡献 44.7pp；④ 韩国注册率 42.8%，Google 22.2pp 与 Kakao 20.0pp 接近。低样本市场优先看连续多日，不按单日波动下结论。</div>
+    <div class="note"><b>当前信号:</b>① 越南最近 3 个已结束日 39 台首启、6 台注册，全部走手机号，样本小但 OTP 单点依赖仍高；② 马来注册率 61.4%，Phone 贡献 28.1pp、Apple 贡献 18.8pp，方式更分散；③ 沙特注册率 48.8%，Google 单独贡献 42.9pp；④ 韩国注册率 49.7%，Google 26.2pp、Kakao 20.8pp。低样本市场优先看连续多日，不按单日波动下结论。</div>
   </section>
 
   <!-- ═══════════ TAB 4 注册方式 ═══════════ -->
@@ -392,7 +392,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     </div>
     <div class="grid2">
       <div class="card">
-        <div class="card-t">D1 分层(07-10~08-01 成熟 cohort 合并)</div>
+        <div class="card-t">D1 分层(07-10~08-03 成熟 cohort 合并)</div>
         <div class="tbl-scroll"><table id="segTable"></table></div>
       </div>
       <div class="card">
@@ -667,45 +667,45 @@ SELECT f.cd, COUNT(DISTINCT f.user_pseudo_id) n,
   COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 7 DAY),a.user_pseudo_id,NULL)) d7
 FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre></details>
 
-    <div class="tip"><b>踩过的坑:</b>① 当前日表到 08-02，08-03~04 仍走 intraday；查询按“已有日表优先、之后才补 intraday”避免重复；② signup_result 已同时包含成功与失败，不能再把事件出现直接等同成功，且成功值跨版本有 true / 1 / success 三种；③ 新版部分 signup_result 的 geo.country 缺失，因此国家必须锚定同设备 first_open；④ 同设备日可能有重复结果事件，按首个带有效方式的成功事件归一。</div>
+    <div class="tip"><b>踩过的坑:</b>① 当前日表到 08-03，08-04~05 仍走 intraday；查询按“已有日表优先、之后才补 intraday”避免重复；② signup_result 已同时包含成功与失败，不能再把事件出现直接等同成功，且成功值跨版本有 true / 1 / success 三种；③ 新版部分 signup_result 的 geo.country 缺失，因此国家必须锚定同设备 first_open；④ 同设备日可能有重复结果事件，按首个带有效方式的成功事件归一。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · 转化总览 ═══════════ -->
   <section class="sec" data-group="payment" data-tab="转化总览">
     <div class="sec-h">付费转化总盘 <span class="en">Monetization Overview</span></div>
-    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00~08-03 05:20 UTC</b>。先看付费页面触达、可串联的客户端漏斗，再看生产订单结算。线上同时存在老事件名与新版本 <span class="anchor">event_id</span>，本页已归一；<b>最终成功只认生产订单 status=SUCCESS 且 env_type=PRODUCTION</b>。</p>
+    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00~08-05 04:15 UTC</b>。先看付费页面触达、可串联的客户端漏斗，再看生产订单结算。线上同时存在老事件名与新版本 <span class="anchor">event_id</span>，本页已归一；<b>最终成功只认生产订单 status=SUCCESS 且 env_type=PRODUCTION</b>。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">常规 Paywall 触达</div><div class="kv">1,275</div><div class="kn">2,765 次曝光 · GA4 设备去重</div></div>
-      <div class="kpi"><div class="kl">折扣订阅页触达</div><div class="kv">2,265</div><div class="kn">4,093 次曝光 · 含挽留 / 每日折扣 / 引导课</div></div>
-      <div class="kpi"><div class="kl">任一付费页面触达</div><div class="kv">2,474</div><div class="kn">Paywall 与折扣页跨页面去重</div></div>
-      <div class="kpi warn"><div class="kl">可串联曝光→发起</div><div class="kv">9.2%</div><div class="kn">2,474 台曝光设备中 228 台随后发起支付</div></div>
-      <div class="kpi warn"><div class="kl">生产订单成功率</div><div class="kv">1.22%</div><div class="kn">26 / 2,137 笔；PENDING 2,100 笔</div></div>
-      <div class="kpi warn"><div class="kl">订单来源缺失率</div><div class="kv">48.0%</div><div class="kn">1,025 / 2,137 笔 subscription_source 为空</div></div>
+      <div class="kpi"><div class="kl">常规 Paywall 触达</div><div class="kv">1,575</div><div class="kn">3,589 次曝光 · GA4 设备去重</div></div>
+      <div class="kpi"><div class="kl">折扣订阅页触达</div><div class="kv">2,428</div><div class="kn">4,512 次曝光 · 含挽留 / 每日折扣 / 引导课</div></div>
+      <div class="kpi"><div class="kl">任一付费页面触达</div><div class="kv">2,773</div><div class="kn">Paywall 与折扣页跨页面去重</div></div>
+      <div class="kpi warn"><div class="kl">可串联曝光→发起</div><div class="kv">11.8%</div><div class="kn">2,773 台曝光设备中 326 台随后发起支付</div></div>
+      <div class="kpi warn"><div class="kl">生产订单成功率</div><div class="kv">1.21%</div><div class="kn">28 / 2,316 笔；PENDING 2,276 笔</div></div>
+      <div class="kpi warn"><div class="kl">订单来源缺失率</div><div class="kv">44.3%</div><div class="kn">1,025 / 2,316 笔 subscription_source 为空</div></div>
     </div>
     <div class="card">
       <div class="card-t">客户端可串联漏斗 · 同设备且后一步晚于前一步</div>
       <div class="card-s">GA4 user_pseudo_id 去重；用于定位前端断点，不替代生产结算</div>
       <div class="push-flow">
-        <div class="flow-step"><div class="flow-num">2,474</div><div class="flow-lab">付费页面触达</div><div class="flow-rate">Paywall / 折扣页跨页面去重</div></div>
-        <div class="flow-step"><div class="flow-num">228</div><div class="flow-lab">随后发起支付</div><div class="flow-rate">9.2% · 可归因 checkout</div></div>
-        <div class="flow-step"><div class="flow-num">216</div><div class="flow-lab">商店返回结果</div><div class="flow-rate">94.7% · 含取消 / 失败 / 成功</div></div>
-        <div class="flow-step"><div class="flow-num">11</div><div class="flow-lab">客户端首购成功信号</div><div class="flow-rate">5.1% · 仅诊断，不作财务口径</div></div>
+        <div class="flow-step"><div class="flow-num">2,773</div><div class="flow-lab">付费页面触达</div><div class="flow-rate">Paywall / 折扣页跨页面去重</div></div>
+        <div class="flow-step"><div class="flow-num">326</div><div class="flow-lab">随后发起支付</div><div class="flow-rate">11.8% · 可归因 checkout</div></div>
+        <div class="flow-step"><div class="flow-num">310</div><div class="flow-lab">商店返回结果</div><div class="flow-rate">95.1% · 含取消 / 失败 / 成功</div></div>
+        <div class="flow-step"><div class="flow-num">15</div><div class="flow-lab">客户端首购成功信号</div><div class="flow-rate">4.8% · 仅诊断，不作财务口径</div></div>
       </div>
-      <div class="legend">全部 checkout：1,109 次 / 1,105 个 order_id / 666 台设备；仅 228 台能在同设备向前串到已知付费页面，链路覆盖率 34.2%。</div>
+      <div class="legend">全部 checkout：1,261 次 / 约 1,257 个 order_id / 751 台设备；其中 326 台能在同设备向前串到已知付费页面，链路覆盖率 43.4%。</div>
     </div>
     <div class="card">
       <div class="card-t">生产订单结算漏斗 · 权威口径</div>
-      <div class="card-s">de_ods.payment_order · 2,137 笔 / 1,132 个账号</div>
+      <div class="card-s">de_ods.payment_order · 2,316 笔 / 1,222 个账号</div>
       <div class="tbl-scroll"><table>
         <tr><th>环节 / 状态</th><th>订单</th><th>占全部订单</th><th>说明</th></tr>
-        <tr><td>创建订单</td><td><b>2,137</b></td><td>100%</td><td style="text-align:left;white-space:normal">进入结算即建单</td></tr>
-        <tr class="warnrow"><td>PENDING</td><td><b>2,100</b></td><td class="down">98.3%</td><td style="text-align:left;white-space:normal">未收到可确认的生产成功结果</td></tr>
-        <tr><td>生产成功</td><td><b>26</b></td><td class="up">1.22%</td><td style="text-align:left;white-space:normal">Apple 12 / Google 14</td></tr>
-        <tr><td>沙盒成功</td><td>9</td><td>0.42%</td><td style="text-align:left;white-space:normal">测试环境，排除商业转化</td></tr>
+        <tr><td>创建订单</td><td><b>2,316</b></td><td>100%</td><td style="text-align:left;white-space:normal">进入结算即建单</td></tr>
+        <tr class="warnrow"><td>PENDING</td><td><b>2,276</b></td><td class="down">98.3%</td><td style="text-align:left;white-space:normal">未收到可确认的生产成功结果</td></tr>
+        <tr><td>生产成功</td><td><b>28</b></td><td class="up">1.21%</td><td style="text-align:left;white-space:normal">Apple 12 / Google 16</td></tr>
+        <tr><td>沙盒成功</td><td>10</td><td>0.43%</td><td style="text-align:left;white-space:normal">测试环境，排除商业转化</td></tr>
         <tr><td>失败</td><td>2</td><td>0.09%</td><td style="text-align:left;white-space:normal">显式 FAILED；大量未完成仍停在 PENDING</td></tr>
       </table></div>
     </div>
-    <div class="note"><b>当前第一优先级不是继续加 Paywall 曝光，而是修复链路可解释性与支付回执：</b>50.2% 的 GA4 checkout order_id 无法归因到来源，生产订单仍有 48.0% 来源缺失，且 98.3% 停在 PENDING。先把 source 和订单终态打通，再比较入口优劣。</div>
+    <div class="note"><b>当前第一优先级不是继续加 Paywall 曝光，而是修复链路可解释性与支付回执：</b>44.2% 的 GA4 checkout order_id 未带来源，生产订单仍有 44.3% 来源缺失，且 98.3% 停在 PENDING。先把 source 和订单终态打通，再比较入口优劣。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · Paywall 来源 ═══════════ -->
@@ -714,52 +714,54 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
     <p class="sec-desc">合并老事件 <span class="anchor">subscription_page_view</span> 与新事件 <span class="anchor">page_view + event_id=subscription</span>。占比按曝光次数计算，可加总为 100%；UV 在来源内去重，同一设备访问多个来源时会跨行重复。</p>
     <div class="card">
       <div class="card-t">Paywall 曝光来源 · 数量与占比</div>
-      <div class="card-s">合计 2,765 次曝光 · 1,275 台去重设备</div>
+      <div class="card-s">合计 3,589 次曝光 · 1,575 台去重设备</div>
       <div class="tbl-scroll"><table>
         <tr><th>业务入口</th><th>subscription_source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th></tr>
-        <tr><td>单词内容锁</td><td>locked_words</td><td>892</td><td><b>32.3%</b></td><td>529</td></tr>
-        <tr><td>会员入口</td><td>profile_membership</td><td>430</td><td><b>15.6%</b></td><td>305</td></tr>
-        <tr><td>课程内容锁</td><td>locked_lesson</td><td>296</td><td>10.7%</td><td>191</td></tr>
-        <tr><td>听力内容锁</td><td>locked_listening</td><td>283</td><td>10.2%</td><td>174</td></tr>
-        <tr><td>B 组新手引导后</td><td>onboarding_guide</td><td>243</td><td>8.8%</td><td>229</td></tr>
-        <tr><td>B 组学习计划</td><td>study_plan_preview</td><td>179</td><td>6.5%</td><td>164</td></tr>
-        <tr><td>体验课报告</td><td>trial_report</td><td>130</td><td>4.7%</td><td>82</td></tr>
-        <tr><td>Play 内容锁</td><td>lock_play</td><td>115</td><td>4.2%</td><td>43</td></tr>
-        <tr><td>Work PK</td><td>work-pk</td><td>55</td><td>2.0%</td><td>54</td></tr>
-        <tr><td>首页 Dino 会员入口</td><td>home_dino_go_premium</td><td>51</td><td>1.8%</td><td>31</td></tr>
-        <tr><td>扭蛋机</td><td>capsule_machine</td><td>21</td><td>0.8%</td><td>20</td></tr>
-        <tr><td>课堂付费按钮</td><td>class_pay_button</td><td>18</td><td>0.7%</td><td>17</td></tr>
-        <tr><td>Speaking PK</td><td>speaking_pk</td><td>18</td><td>0.7%</td><td>18</td></tr>
-        <tr><td>首页课堂会员入口</td><td>home_class_go_premium</td><td>14</td><td>0.5%</td><td>13</td></tr>
-        <tr><td>首页 Play 会员入口</td><td>home_play_go_premium</td><td>13</td><td>0.5%</td><td>10</td></tr>
-        <tr><td>首页探索会员入口</td><td>home_explore_go_premium</td><td>6</td><td>0.2%</td><td>6</td></tr>
+        <tr><td>单词内容锁</td><td>locked_words</td><td>941</td><td><b>26.2%</b></td><td>560</td></tr>
+        <tr><td>会员入口</td><td>profile_membership</td><td>461</td><td><b>12.8%</b></td><td>326</td></tr>
+        <tr><td>课程内容锁</td><td>locked_lesson</td><td>356</td><td>9.9%</td><td>232</td></tr>
+        <tr><td>听力内容锁</td><td>locked_listening</td><td>306</td><td>8.5%</td><td>190</td></tr>
+        <tr><td>B 组新手引导后</td><td>onboarding_guide</td><td>389</td><td>10.8%</td><td>366</td></tr>
+        <tr><td>B 组学习计划</td><td>study_plan_preview</td><td>372</td><td>10.4%</td><td>345</td></tr>
+        <tr><td>体验课报告</td><td>trial_report</td><td>200</td><td>5.6%</td><td>137</td></tr>
+        <tr><td>Play 内容锁</td><td>lock_play</td><td>209</td><td>5.8%</td><td>85</td></tr>
+        <tr><td>Work PK</td><td>work-pk</td><td>110</td><td>3.1%</td><td>105</td></tr>
+        <tr><td>首页 Dino 会员入口</td><td>home_dino_go_premium</td><td>70</td><td>2.0%</td><td>46</td></tr>
+        <tr><td>扭蛋机</td><td>capsule_machine</td><td>46</td><td>1.3%</td><td>39</td></tr>
+        <tr><td>课堂付费按钮</td><td>class_pay_button</td><td>36</td><td>1.0%</td><td>32</td></tr>
+        <tr><td>Speaking PK</td><td>speaking_pk</td><td>37</td><td>1.0%</td><td>35</td></tr>
+        <tr><td>首页课堂会员入口</td><td>home_class_go_premium</td><td>22</td><td>0.6%</td><td>21</td></tr>
+        <tr><td>首页 Play 会员入口</td><td>home_play_go_premium</td><td>19</td><td>0.5%</td><td>16</td></tr>
+        <tr><td>首页探索会员入口</td><td>home_explore_go_premium</td><td>14</td><td>0.4%</td><td>13</td></tr>
         <tr><td>旧学习计划入口</td><td>study_plan</td><td>1</td><td>&lt;0.1%</td><td>1</td></tr>
       </table></div>
     </div>
     <div class="card">
       <div class="card-t">支付发起来源 · GA4 order_id 归因</div>
-      <div class="card-s">优先使用 checkout_start 自带 source，再用 checkout_result / 生产订单同 order_id 回填；合计 1,105 个 order_id</div>
+      <div class="card-s">按 checkout_start 自带 source 直接归因；合计约 1,257 个 order_id，缺失来源单列</div>
       <div class="tbl-scroll"><table>
         <tr><th>来源</th><th>order_id</th><th>占支付发起</th><th>设备 UV</th></tr>
-        <tr class="warnrow"><td>来源缺失</td><td>555</td><td class="down">50.2%</td><td>367</td></tr>
-        <tr><td>locked_lesson</td><td>105</td><td>9.5%</td><td>51</td></tr>
-        <tr><td>membership_entry</td><td>89</td><td>8.1%</td><td>65</td></tr>
-        <tr><td>locked_words</td><td>54</td><td>4.9%</td><td>40</td></tr>
-        <tr><td>daily_offer</td><td>41</td><td>3.7%</td><td>24</td></tr>
-        <tr><td>study_plan_preview</td><td>39</td><td>3.5%</td><td>32</td></tr>
-        <tr><td>lock_practice</td><td>35</td><td>3.2%</td><td>30</td></tr>
-        <tr><td>locked_listening</td><td>35</td><td>3.2%</td><td>23</td></tr>
-        <tr><td>trial_report</td><td>33</td><td>3.0%</td><td>21</td></tr>
-        <tr><td>lock_radio</td><td>27</td><td>2.4%</td><td>18</td></tr>
-        <tr><td>onboarding_guide</td><td>25</td><td>2.3%</td><td>20</td></tr>
-        <tr><td>winback_paywall_close</td><td>23</td><td>2.1%</td><td>19</td></tr>
-        <tr><td>lock_play</td><td>14</td><td>1.3%</td><td>10</td></tr>
-        <tr><td>home_dino_go_premium</td><td>10</td><td>0.9%</td><td>9</td></tr>
-        <tr><td>guidance_report</td><td>8</td><td>0.7%</td><td>6</td></tr>
-        <tr><td>其他 4 个小来源</td><td>12</td><td>1.1%</td><td>—</td></tr>
+        <tr class="warnrow"><td>来源缺失</td><td>555</td><td class="down">44.2%</td><td>367</td></tr>
+        <tr><td>locked_lesson</td><td>117</td><td>9.3%</td><td>61</td></tr>
+        <tr><td>study_plan_preview</td><td>81</td><td>6.4%</td><td>65</td></tr>
+        <tr><td>profile_membership</td><td>77</td><td>6.1%</td><td>52</td></tr>
+        <tr><td>daily_offer</td><td>58</td><td>4.6%</td><td>34</td></tr>
+        <tr><td>locked_words</td><td>55</td><td>4.4%</td><td>41</td></tr>
+        <tr><td>trial_report</td><td>52</td><td>4.1%</td><td>38</td></tr>
+        <tr><td>locked_listening</td><td>39</td><td>3.1%</td><td>24</td></tr>
+        <tr><td>lock_practice</td><td>35</td><td>2.8%</td><td>30</td></tr>
+        <tr><td>onboarding_guide</td><td>35</td><td>2.8%</td><td>29</td></tr>
+        <tr><td>winback_paywall_close</td><td>31</td><td>2.5%</td><td>26</td></tr>
+        <tr><td>lock_radio</td><td>27</td><td>2.1%</td><td>18</td></tr>
+        <tr><td>lock_play</td><td>21</td><td>1.7%</td><td>16</td></tr>
+        <tr><td>membership_entry</td><td>18</td><td>1.4%</td><td>16</td></tr>
+        <tr><td>capsule_machine</td><td>14</td><td>1.1%</td><td>9</td></tr>
+        <tr><td>guidance_report</td><td>13</td><td>1.0%</td><td>11</td></tr>
+        <tr><td>home_dino_go_premium</td><td>11</td><td>0.9%</td><td>10</td></tr>
+        <tr><td>其他 8 个小来源</td><td>18</td><td>1.4%</td><td>—</td></tr>
       </table></div>
     </div>
-    <div class="tip"><b>解释边界:</b>“曝光来源”和“支付发起来源”不能直接逐行相除。半数 checkout 缺 source，且两代客户端对来源命名不完全一致；修复前只用来源分布定位量级，不据此宣布哪个 Paywall 转化最好。</div>
+    <div class="tip"><b>解释边界:</b>“曝光来源”和“支付发起来源”不能直接逐行相除。44.2% checkout 缺 source，且两代客户端对来源命名不完全一致；修复前只用来源分布定位量级，不据此宣布哪个 Paywall 转化最好。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · 折扣订阅 ═══════════ -->
@@ -768,33 +770,33 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
     <p class="sec-desc">合并老事件 <span class="anchor">discount_offer_view</span> 与新事件 <span class="anchor">page_view + event_id=discount_offer</span>。曝光使用 GA4，订单与生产成功使用 <span class="anchor">de_ods.payment_order.subscription_source</span>；因账号与设备口径不同，不把“订单 ÷ UV”写成正式转化率。</p>
     <div class="card">
       <div class="card-t">折扣入口 · 曝光、订单与生产成功</div>
-      <div class="card-s">曝光占比按 4,093 次折扣页曝光计算；订单成功率仅在生产订单表内计算</div>
+      <div class="card-s">曝光占比按 4,512 次折扣页曝光计算；订单成功率仅在生产订单表内计算</div>
       <div class="tbl-scroll"><table>
         <tr><th>入口</th><th>source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th><th>订单</th><th>生产成功</th><th>订单成功率</th></tr>
-        <tr><td>关闭 Paywall 挽留</td><td>winback_paywall_close</td><td>2,398</td><td><b>58.6%</b></td><td>1,915</td><td>118</td><td>1</td><td>0.85%</td></tr>
-        <tr><td>每日启动折扣</td><td>daily_offer</td><td>1,310</td><td><b>32.0%</b></td><td>738</td><td>136</td><td>2</td><td>1.47%</td></tr>
-        <tr><td>取消支付挽留</td><td>winback_payment_cancel</td><td>264</td><td>6.5%</td><td>239</td><td>72</td><td>3</td><td class="up">4.17%</td></tr>
-        <tr><td>退出引导课折扣</td><td>guidance_class_exit</td><td>64</td><td>1.6%</td><td>46</td><td>1</td><td>0</td><td>0%</td></tr>
-        <tr><td>引导课报告折扣</td><td>guidance_report</td><td>57</td><td>1.4%</td><td>35</td><td>9</td><td>0</td><td>0%</td></tr>
+        <tr><td>关闭 Paywall 挽留</td><td>winback_paywall_close</td><td>2,586</td><td><b>57.3%</b></td><td>2,037</td><td>126</td><td>1</td><td>0.79%</td></tr>
+        <tr><td>每日启动折扣</td><td>daily_offer</td><td>1,450</td><td><b>32.1%</b></td><td>795</td><td>155</td><td>3</td><td>1.94%</td></tr>
+        <tr><td>取消支付挽留</td><td>winback_payment_cancel</td><td>281</td><td>6.2%</td><td>253</td><td>72</td><td>3</td><td class="up">4.17%</td></tr>
+        <tr><td>退出引导课折扣</td><td>guidance_class_exit</td><td>101</td><td>2.2%</td><td>74</td><td>2</td><td>0</td><td>0%</td></tr>
+        <tr><td>引导课报告折扣</td><td>guidance_report</td><td>94</td><td>2.1%</td><td>59</td><td>16</td><td>0</td><td>0%</td></tr>
       </table></div>
     </div>
     <div class="grid2">
       <div class="card">
         <div class="card-t">折扣来源生产成功贡献</div>
-        <div class="card-s">折扣 / 挽留相关来源合计 438 单，生产成功 8 单</div>
+        <div class="card-s">折扣 / 挽留相关来源合计 472 单，生产成功 9 单</div>
         <div class="tbl-scroll"><table>
           <tr><th>来源集合</th><th>订单</th><th>生产成功</th><th>成功贡献</th></tr>
-          <tr><td>取消 / 关闭 Paywall 挽留</td><td>190</td><td>4</td><td>15.4%</td></tr>
-          <tr><td>每日折扣（两代命名）</td><td>189</td><td>3</td><td>11.5%</td></tr>
-          <tr><td>留存挽回</td><td>59</td><td>1</td><td>3.8%</td></tr>
-          <tr><td>折扣 / 挽留合计</td><td><b>438</b></td><td><b>8</b></td><td><b>30.8%</b></td></tr>
+          <tr><td>取消 / 关闭 Paywall 挽留</td><td>198</td><td>4</td><td>14.3%</td></tr>
+          <tr><td>每日折扣（两代命名）</td><td>211</td><td>4</td><td>14.3%</td></tr>
+          <tr><td>留存挽回</td><td>63</td><td>1</td><td>3.6%</td></tr>
+          <tr><td>折扣 / 挽留合计</td><td><b>472</b></td><td><b>9</b></td><td><b>32.1%</b></td></tr>
         </table></div>
       </div>
       <div class="card">
         <div class="card-t">读数建议</div>
         <div class="card-s">当前只能读订单内成功率，不能读真实增量</div>
         <div class="tip"><b>取消支付挽留</b>订单成功率 4.17%，高于另外两类主要折扣入口，但只有 72 单；没有“不展示折扣”的随机对照组前，不能把成功全归因于折扣。</div>
-        <div class="tip"><b>关闭 Paywall 挽留</b>贡献 58.6% 折扣曝光，却只有 1 笔生产成功；优先检查触发频率、文案与是否过早打扰。</div>
+        <div class="tip"><b>关闭 Paywall 挽留</b>贡献 57.3% 折扣曝光，却只有 1 笔生产成功；优先检查触发频率、文案与是否过早打扰。</div>
       </div>
     </div>
   </section>
@@ -802,33 +804,36 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
   <!-- ═══════════ 支付转化 · 订单来源 ═══════════ -->
   <section class="sec" data-group="payment" data-tab="订单来源">
     <div class="sec-h">订单来源与结算结果 <span class="en">Order Sources & Settlement</span></div>
-    <p class="sec-desc">全部指标来自生产订单表。订单占比以 2,137 笔为分母；生产成功率 = 同来源生产成功订单 ÷ 同来源全部订单。沙盒成功单独列出，不计商业成功。</p>
+    <p class="sec-desc">全部指标来自生产订单表。订单占比以 2,316 笔为分母；生产成功率 = 同来源生产成功订单 ÷ 同来源全部订单。沙盒成功单独列出，不计商业成功。</p>
     <div class="card">
       <div class="card-t">各 subscription_source 数量、占比与结果</div>
       <div class="tbl-scroll"><table>
         <tr><th>来源</th><th>订单</th><th>订单占比</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-        <tr class="warnrow"><td>来源缺失</td><td>1,025</td><td class="down">48.0%</td><td>654</td><td>1,018</td><td>5</td><td>2</td><td>0</td><td>0.49%</td></tr>
-        <tr><td>daily_offer</td><td>136</td><td>6.4%</td><td>98</td><td>134</td><td>2</td><td>0</td><td>0</td><td>1.47%</td></tr>
-        <tr><td>trial_report</td><td>122</td><td>5.7%</td><td>73</td><td>114</td><td class="up">7</td><td>0</td><td>1</td><td class="up">5.74%</td></tr>
-        <tr><td>winback_paywall_close</td><td>118</td><td>5.5%</td><td>102</td><td>117</td><td>1</td><td>0</td><td>0</td><td>0.85%</td></tr>
-        <tr><td>lock_lesson</td><td>113</td><td>5.3%</td><td>55</td><td>109</td><td>3</td><td>1</td><td>0</td><td>2.65%</td></tr>
-        <tr><td>lock_practice</td><td>95</td><td>4.4%</td><td>75</td><td>94</td><td>1</td><td>0</td><td>0</td><td>1.05%</td></tr>
-        <tr><td>membership_entry</td><td>92</td><td>4.3%</td><td>69</td><td>88</td><td>2</td><td>2</td><td>0</td><td>2.17%</td></tr>
+        <tr class="warnrow"><td>来源缺失</td><td>1,025</td><td class="down">44.3%</td><td>654</td><td>1,018</td><td>5</td><td>2</td><td>0</td><td>0.49%</td></tr>
+        <tr><td>daily_offer</td><td>155</td><td>6.7%</td><td>108</td><td>152</td><td>3</td><td>0</td><td>0</td><td>1.94%</td></tr>
+        <tr><td>trial_report</td><td>143</td><td>6.2%</td><td>91</td><td>135</td><td class="up">7</td><td>0</td><td>1</td><td class="up">4.90%</td></tr>
+        <tr><td>winback_paywall_close</td><td>126</td><td>5.4%</td><td>109</td><td>125</td><td>1</td><td>0</td><td>0</td><td>0.79%</td></tr>
+        <tr><td>lock_lesson</td><td>128</td><td>5.5%</td><td>67</td><td>124</td><td>3</td><td>1</td><td>0</td><td>2.34%</td></tr>
+        <tr><td>lock_practice</td><td>97</td><td>4.2%</td><td>77</td><td>96</td><td>1</td><td>0</td><td>0</td><td>1.03%</td></tr>
+        <tr><td>membership_entry</td><td>103</td><td>4.4%</td><td>74</td><td>99</td><td>2</td><td>2</td><td>0</td><td>1.94%</td></tr>
         <tr><td>winback_payment_cancel</td><td>72</td><td>3.4%</td><td>62</td><td>69</td><td>3</td><td>0</td><td>0</td><td class="up">4.17%</td></tr>
-        <tr><td>lock_radio</td><td>65</td><td>3.0%</td><td>44</td><td>65</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>winback_retention</td><td>59</td><td>2.8%</td><td>36</td><td>58</td><td>1</td><td>0</td><td>0</td><td>1.69%</td></tr>
-        <tr><td>lock_play</td><td>57</td><td>2.7%</td><td>38</td><td>56</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
-        <tr><td>winback_daily_launch</td><td>53</td><td>2.5%</td><td>26</td><td>52</td><td>1</td><td>0</td><td>0</td><td>1.89%</td></tr>
-        <tr><td>study_plan_preview</td><td>41</td><td>1.9%</td><td>34</td><td>40</td><td>0</td><td>0</td><td>1</td><td>0%</td></tr>
-        <tr><td>onboarding_guide</td><td>25</td><td>1.2%</td><td>20</td><td>24</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
-        <tr><td>unknown</td><td>19</td><td>0.9%</td><td>13</td><td>19</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>capsule_machine</td><td>13</td><td>0.6%</td><td>9</td><td>13</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>work-pk</td><td>12</td><td>0.6%</td><td>10</td><td>12</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>guidance_report</td><td>9</td><td>0.4%</td><td>7</td><td>9</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_dino_go_premium</td><td>7</td><td>0.3%</td><td>6</td><td>5</td><td>0</td><td>2</td><td>0</td><td>0%</td></tr>
+        <tr><td>lock_radio</td><td>69</td><td>3.0%</td><td>45</td><td>69</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>winback_retention</td><td>63</td><td>2.7%</td><td>40</td><td>62</td><td>1</td><td>0</td><td>0</td><td>1.59%</td></tr>
+        <tr><td>lock_play</td><td>64</td><td>2.8%</td><td>44</td><td>63</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
+        <tr><td>winback_daily_launch</td><td>56</td><td>2.4%</td><td>28</td><td>55</td><td>1</td><td>0</td><td>0</td><td>1.79%</td></tr>
+        <tr><td>study_plan_preview</td><td>87</td><td>3.8%</td><td>69</td><td>85</td><td>0</td><td>1</td><td>1</td><td>0%</td></tr>
+        <tr><td>onboarding_guide</td><td>36</td><td>1.6%</td><td>30</td><td>35</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
+        <tr><td>unknown</td><td>19</td><td>0.8%</td><td>13</td><td>19</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>capsule_machine</td><td>21</td><td>0.9%</td><td>13</td><td>21</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>work-pk</td><td>16</td><td>0.7%</td><td>13</td><td>16</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>guidance_report</td><td>16</td><td>0.7%</td><td>13</td><td>16</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>home_dino_go_premium</td><td>9</td><td>0.4%</td><td>8</td><td>6</td><td>1</td><td>2</td><td>0</td><td class="up">11.11%</td></tr>
         <tr><td>speaking_pk</td><td>2</td><td>0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>guidance_class_exit</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_class_go_premium</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>guidance_class_exit</td><td>2</td><td>&lt;0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>home_class_go_premium</td><td>2</td><td>&lt;0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>home_play_go_premium</td><td>3</td><td>0.1%</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>class_pay_button</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+        <tr><td>home_explore_go_premium</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
       </table></div>
     </div>
     <div class="grid2">
@@ -836,17 +841,17 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
         <div class="card-t">平台结算</div>
         <div class="tbl-scroll"><table>
           <tr><th>平台</th><th>全部订单</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-          <tr><td>Google Play</td><td>1,685</td><td>1,665</td><td>14</td><td>6</td><td>0</td><td>0.83%</td></tr>
-          <tr><td>Apple</td><td>452</td><td>435</td><td>12</td><td>3</td><td>2</td><td>2.65%</td></tr>
+          <tr><td>Google Play</td><td>1,807</td><td>1,785</td><td>16</td><td>6</td><td>0</td><td>0.89%</td></tr>
+          <tr><td>Apple</td><td>509</td><td>491</td><td>12</td><td>4</td><td>2</td><td>2.36%</td></tr>
         </table></div>
       </div>
       <div class="card">
         <div class="card-t">订阅周期</div>
         <div class="tbl-scroll"><table>
           <tr><th>周期</th><th>全部订单</th><th>订单占比</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-          <tr><td>年卡</td><td>1,408</td><td>65.9%</td><td>1,399</td><td>1</td><td>6</td><td>2</td><td>0.07%</td></tr>
-          <tr><td>周卡</td><td>528</td><td>24.7%</td><td>512</td><td>14</td><td>2</td><td>0</td><td class="up">2.65%</td></tr>
-          <tr><td>月卡</td><td>201</td><td>9.4%</td><td>189</td><td>11</td><td>1</td><td>0</td><td class="up">5.47%</td></tr>
+          <tr><td>年卡</td><td>1,515</td><td>65.4%</td><td>1,505</td><td>1</td><td>7</td><td>2</td><td>0.07%</td></tr>
+          <tr><td>周卡</td><td>570</td><td>24.6%</td><td>553</td><td>15</td><td>2</td><td>0</td><td class="up">2.63%</td></tr>
+          <tr><td>月卡</td><td>231</td><td>10.0%</td><td>218</td><td>12</td><td>1</td><td>0</td><td class="up">5.19%</td></tr>
         </table></div>
       </div>
     </div>
@@ -869,8 +874,8 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
       (SELECT value.string_value FROM UNNEST(event_params) WHERE key='source'),
       (SELECT value.string_value FROM UNNEST(event_params) WHERE key='trigger_source')) source
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260803'
-    AND event_timestamp &lt;= UNIX_MICROS(TIMESTAMP '2026-08-03 05:20:46+00')
+  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260805'
+    AND event_timestamp &lt; UNIX_MICROS(TIMESTAMP '2026-08-05 04:15:00+00')
 )
 SELECT IF(action IN ('subscription','subscription_page_view'),'paywall','discount') surface,
   source, COUNT(*) exposures, COUNT(DISTINCT user_pseudo_id) users
@@ -885,8 +890,8 @@ GROUP BY 1,2 ORDER BY 1,3 DESC;</pre></details>
   COUNTIF(status='SUCCESS' AND env_type='PRODUCTION') production_success,
   COUNTIF(status='SUCCESS' AND env_type='SANDBOX') sandbox_success
 FROM `dino-english-497507.de_ods.payment_order`
-WHERE created_at BETWEEN TIMESTAMP '2026-07-10 00:00:00+00'
-  AND TIMESTAMP '2026-08-03 05:20:46+00'
+WHERE created_at &gt;= TIMESTAMP '2026-07-10 00:00:00+00'
+  AND created_at &lt; TIMESTAMP '2026-08-05 04:15:00+00'
 GROUP BY 1 ORDER BY orders DESC;</pre></details>
     <details><summary>③ 客户端严格时序漏斗</summary>
 <pre>-- 先按设备求首次 Paywall/折扣页、checkout、checkout_result、首购成功时间；
@@ -1180,10 +1185,10 @@ SELECT
 </div>
 
 <script>
-/* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-04 10:59 UTC） ═══════════ */
+/* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-05 04:15 UTC） ═══════════ */
 const AB_TOTAL={
- a:{assigned:586,firstOpen:557,loginPage:378,registered:225,registeredDenom:446,registeredRolling:285,paywall:53,checkout:21,pending:50,paid:2,lessonStart:190,lessonComplete:41},
- b:{assigned:583,firstOpen:550,loginPage:522,registered:266,registeredDenom:473,registeredRolling:324,paywall:261,checkout:59,pending:95,paid:3,lessonStart:111,lessonComplete:29}
+ a:{assigned:657,firstOpen:620,loginPage:434,registered:256,registeredDenom:518,registeredRolling:329,paywall:64,checkout:27,pending:59,paid:2,lessonStart:239,lessonComplete:49},
+ b:{assigned:652,firstOpen:613,loginPage:583,registered:305,registeredDenom:537,registeredRolling:374,paywall:302,checkout:71,pending:115,paid:3,lessonStart:135,lessonComplete:37}
 };
 const AB_FLOW_A_SCHEMA=[
  {label:'首次启动',anchor:'first_open'},
@@ -1214,61 +1219,63 @@ const AB_FLOW_B_SCHEMA=[
  {label:'折扣支付发起',anchor:'subscription_checkout_start · guidance_report'}
 ];
 const AB_FLOW_COUNTRIES=[
- {key:'all',tab:'全部',label:'全部国家',a:{assigned:586,counts:[557,537,458,360,358,266,264,214,38,25]},b:{assigned:583,counts:[550,514,306,303,258,150,146,134,113,113,77,24,20,4]}},
- {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:74,counts:[73,72,57,38,38,34,34,26,1,1]},b:{assigned:69,counts:[69,69,43,43,33,17,17,16,13,13,9,4,4,1]}},
- {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:143,counts:[143,138,122,92,91,74,73,55,9,4]},b:{assigned:148,counts:[147,144,104,104,83,28,26,26,20,20,14,3,3,1]}},
- {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:70,counts:[69,69,65,63,63,48,48,41,17,14]},b:{assigned:77,counts:[76,70,44,43,42,23,22,22,20,20,14,5,4,1]}},
- {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:26,counts:[21,19,16,14,14,12,12,12,2,1]},b:{assigned:28,counts:[26,25,17,17,17,8,8,8,8,8,7,1,0,0]}},
- {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:9,counts:[5,5,4,4,4,2,2,2,0,0]},b:{assigned:9,counts:[8,8,2,2,2,1,1,1,1,1,1,0,0,0]}}
+ {key:'all',tab:'全部',label:'全部国家',a:{assigned:657,counts:[620,597,517,414,412,307,304,249,45,28]},b:{assigned:652,counts:[613,574,356,355,307,199,193,173,145,145,96,30,24,5]}},
+ {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:106,counts:[105,104,83,59,59,49,48,35,2,2]},b:{assigned:103,counts:[103,101,60,60,46,29,29,24,20,20,11,5,4,1]}},
+ {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:196,counts:[195,189,170,132,130,101,100,78,13,6]},b:{assigned:195,counts:[194,189,131,131,105,49,47,42,33,33,21,6,6,1]}},
+ {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:91,counts:[89,87,81,78,78,59,58,49,18,14]},b:{assigned:102,counts:[101,93,56,56,55,36,34,33,28,28,19,8,6,1]}},
+ {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:31,counts:[26,23,19,16,16,14,14,13,3,1]},b:{assigned:35,counts:[33,31,20,20,20,11,11,11,11,11,7,1,0,0]}},
+ {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:16,counts:[12,10,7,4,4,2,2,2,0,0]},b:{assigned:18,counts:[16,14,2,2,2,1,1,1,1,1,1,0,0,0]}}
 ];
 const AB_DAY=[
- {d:'07-31',g:'A',assigned:126,mature:126,registered:68,registeredRolling:69,lessonComplete:8,paid:0,pending:8},
+ {d:'07-31',g:'A',assigned:126,mature:126,registered:68,registeredRolling:70,lessonComplete:9,paid:0,pending:8},
  {d:'07-31',g:'B',assigned:131,mature:131,registered:83,registeredRolling:83,lessonComplete:6,paid:2,pending:21},
- {d:'08-01',g:'A',assigned:116,mature:116,registered:62,registeredRolling:62,lessonComplete:13,paid:0,pending:16},
- {d:'08-01',g:'B',assigned:134,mature:134,registered:80,registeredRolling:80,lessonComplete:4,paid:0,pending:10},
- {d:'08-02',g:'A',assigned:116,mature:116,registered:57,registeredRolling:59,lessonComplete:9,paid:1,pending:21},
- {d:'08-02',g:'B',assigned:102,mature:102,registered:61,registeredRolling:61,lessonComplete:8,paid:0,pending:23},
- {d:'08-03',g:'A',assigned:132,mature:88,registered:38,registeredRolling:55,lessonComplete:8,paid:0,pending:5},
- {d:'08-03',g:'B',assigned:144,mature:106,registered:42,registeredRolling:59,lessonComplete:7,paid:1,pending:21},
- {d:'08-04*',g:'A',assigned:96,mature:0,registered:0,registeredRolling:40,lessonComplete:3,paid:1,pending:0},
- {d:'08-04*',g:'B',assigned:72,mature:0,registered:0,registeredRolling:41,lessonComplete:4,paid:0,pending:20}
+ {d:'08-01',g:'A',assigned:116,mature:116,registered:62,registeredRolling:62,lessonComplete:13,paid:0,pending:17},
+ {d:'08-01',g:'B',assigned:134,mature:134,registered:80,registeredRolling:81,lessonComplete:5,paid:0,pending:10},
+ {d:'08-02',g:'A',assigned:117,mature:117,registered:57,registeredRolling:59,lessonComplete:9,paid:1,pending:21},
+ {d:'08-02',g:'B',assigned:102,mature:102,registered:61,registeredRolling:61,lessonComplete:9,paid:0,pending:25},
+ {d:'08-03',g:'A',assigned:132,mature:132,registered:62,registeredRolling:62,lessonComplete:7,paid:0,pending:9},
+ {d:'08-03',g:'B',assigned:144,mature:144,registered:69,registeredRolling:69,lessonComplete:7,paid:1,pending:22},
+ {d:'08-04',g:'A',assigned:138,mature:27,registered:7,registeredRolling:63,lessonComplete:10,paid:1,pending:2},
+ {d:'08-04',g:'B',assigned:118,mature:26,registered:12,registeredRolling:65,lessonComplete:7,paid:0,pending:36},
+ {d:'08-05*',g:'A',assigned:28,mature:0,registered:0,registeredRolling:13,lessonComplete:1,paid:0,pending:2},
+ {d:'08-05*',g:'B',assigned:23,mature:0,registered:0,registeredRolling:15,lessonComplete:3,paid:0,pending:1}
 ];
 const AB_HEALTH=[
- ['正式 A/B 稳定样本','1,169 台','A 586 / B 583；07-30 及更早首次进组样本已排除','可监控'],
- ['分流均衡性 SRM','p=.930','A/B 50.1% / 49.9%；未发现样本比例错配','通过'],
- ['24h 成熟样本','919 台','A 446 / B 473；注册 B−A +5.8pp，p=.079','未显著'],
+ ['正式 A/B 稳定样本','1,309 台','A 657 / B 652；07-30 及更早首次进组样本已排除','可监控'],
+ ['分流均衡性 SRM','p=.782','A/B 50.2% / 49.8%；未发现样本比例错配','通过'],
+ ['24h 成熟样本','1,055 台','A 518 / B 537；注册 B−A +7.4pp，p=.016','初步显著'],
  ['7d 成熟样本','0 台','付费与首课正式口径尚未成熟；最早约 08-07 00:00 UTC','等待'],
- ['分组冲突','26 台','同设备多分组或与 fallback 重叠；已剔除','阻断'],
- ['fallback','70 / 1,239 · 5.6%','包含 44 台纯 fallback + 26 台冲突设备；目标 ≤1%','阻断'],
+ ['分组冲突','28 台','同设备多分组或与 fallback 重叠；已剔除','阻断'],
+ ['fallback','86 / 1,395 · 6.2%','包含 58 台纯 fallback + 28 台冲突设备；目标 ≤1%','阻断'],
  ['分组真相源','experiment_group_assign','服务端明细表尚未进入当前 BigQuery 查询层','待补'],
- ['分组事件时序','B 中位滞后约 197 秒','时序审计有 179 / 522 台 B 登录页早于分组事件；主链路用前序累计命中','可监控'],
+ ['分组事件时序','B 中位滞后约 192 秒','时序审计有 122 / 583 台 B 登录页早于分组事件；主链路用前序累计命中','可监控'],
  ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614；B=1661。lesson_type 缺失不再阻断识别','可监控'],
- ['Google Play 支付','生产 SUCCESS A 2 / B 3','实验样本映射到 PENDING：A 50 / B 95；SANDBOX 已排除','未成熟']
+ ['Google Play 支付','生产 SUCCESS A 2 / B 3','实验样本映射到 PENDING：A 59 / B 115；SANDBOX 已排除','未成熟']
 ];
 const AB_LESSON=[
- {type:'体验课',level:'Level 1',lessonId:'732',group:'A',started:67,completed:19},
- {type:'体验课',level:'Level 2',lessonId:'1615',group:'A',started:39,completed:13},
- {type:'体验课',level:'Level 3',lessonId:'734',group:'A',started:20,completed:4},
- {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:33,completed:5},
- {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:27,completed:0},
+ {type:'体验课',level:'Level 1',lessonId:'732',group:'A',started:87,completed:24},
+ {type:'体验课',level:'Level 2',lessonId:'1615',group:'A',started:47,completed:15},
+ {type:'体验课',level:'Level 3',lessonId:'734',group:'A',started:28,completed:4},
+ {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:42,completed:6},
+ {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:29,completed:0},
  {type:'体验课',level:'Level 6',lessonId:'1614',group:'A',started:6,completed:0},
- {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:111,completed:29}
+ {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:135,completed:37}
 ];
 const AB_B_ONBOARDING_LESSON=[
- {label:'开始新人引导课',count:121,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
- {label:'课堂导入',count:121,ended:74,anchor:'class_stage_start/end · lead-in-template_l1l2'},
- {label:'视频示范',count:69,ended:66,anchor:'class_stage_start/end · play-video-template'},
- {label:'单词教学',count:66,ended:58,anchor:'class_stage_start/end · word_teach_image_l1l2'},
- {label:'单词练习',count:31,ended:30,anchor:'class_stage_start/end · word_practice_bubble_image'},
- {label:'总结收尾',count:30,ended:29,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
- {label:'完成新人引导课',count:29,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
+ {label:'开始新人引导课',count:143,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
+ {label:'课堂导入',count:143,ended:89,anchor:'class_stage_start/end · lead-in-template_l1l2'},
+ {label:'视频示范',count:83,ended:77,anchor:'class_stage_start/end · play-video-template'},
+ {label:'单词教学',count:77,ended:68,anchor:'class_stage_start/end · word_teach_image_l1l2'},
+ {label:'单词练习',count:39,ended:38,anchor:'class_stage_start/end · word_practice_bubble_image'},
+ {label:'总结收尾',count:38,ended:37,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
+ {label:'完成新人引导课',count:37,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
 ];
 
-/* ═══════════ 登录注册最新数据（GA4 表最后更新 2026-08-04 10:01 UTC） ═══════════ */
+/* ═══════════ 登录注册最新数据（统一截点 2026-08-05 04:15 UTC） ═══════════ */
 // 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]
-const AUTH_METHOD_DAYS=["07-22","07-23","07-24","07-25","07-26","07-27","07-28","07-29","07-30","07-31","08-01","08-02","08-03","08-04*"];
-const AUTH_METHOD_DATA={"VN":[[230,84,3,81,0,0,0,0],[117,36,1,35,0,0,0,0],[148,64,0,64,0,0,0,0],[59,19,0,19,0,0,0,0],[39,19,2,17,0,0,0,0],[60,23,0,23,0,0,0,0],[88,39,1,38,0,0,0,0],[62,30,0,30,0,0,0,0],[14,6,0,6,0,0,0,0],[11,3,0,3,0,0,0,0],[15,2,0,2,0,0,0,0],[9,4,0,4,0,0,0,0],[19,1,0,1,0,0,0,0],[9,1,0,1,0,0,0,0]],"ID":[[218,131,55,60,0,16,0,0],[243,127,52,51,2,22,0,0],[308,175,78,69,4,24,0,0],[240,152,85,57,1,9,0,0],[127,79,52,23,2,2,0,0],[101,63,38,18,3,4,0,0],[116,80,53,25,1,1,0,0],[61,43,24,15,0,4,0,0],[24,11,8,3,0,0,0,0],[26,17,12,3,0,2,0,0],[29,12,9,2,1,0,0,0],[28,11,8,3,0,0,0,0],[27,9,5,4,0,0,0,0],[18,7,4,2,0,1,0,0]],"MY":[[243,141,46,73,5,16,1,0],[267,123,48,44,10,21,0,0],[248,149,40,90,6,13,0,0],[181,77,31,33,6,7,0,0],[77,40,17,15,3,5,0,0],[76,46,16,22,5,3,0,0],[110,67,26,24,12,5,0,0],[99,61,19,31,7,4,0,0],[62,41,14,20,4,3,0,0],[75,44,13,23,7,1,0,0],[141,87,21,35,25,6,0,0],[113,76,14,40,17,5,0,0],[126,64,9,27,24,4,0,0],[65,38,8,16,12,2,0,0]],"SA":[[92,42,33,4,4,1,0,0],[79,51,45,2,2,2,0,0],[98,52,45,3,1,3,0,0],[103,53,45,2,1,5,0,0],[35,22,19,1,1,1,0,0],[34,14,12,0,0,2,0,0],[25,7,7,0,0,0,0,0],[66,32,28,3,0,1,0,0],[94,45,41,2,0,2,0,0],[160,84,73,5,0,6,0,0],[113,63,56,5,1,1,0,0],[96,46,38,6,0,2,0,0],[131,68,58,3,2,5,0,0],[69,33,31,0,0,2,0,0]],"TH":[[108,73,60,0,1,12,0,0],[60,38,26,0,3,9,0,0],[85,47,39,0,2,6,0,0],[71,45,36,0,3,6,0,0],[75,46,41,0,3,2,0,0],[54,34,30,0,3,1,0,0],[67,49,35,0,8,6,0,0],[34,19,15,0,3,1,0,0],[9,2,1,0,0,1,0,0],[9,5,5,0,0,0,0,0],[15,7,2,0,5,0,0,0],[11,5,2,0,2,1,0,0],[16,4,3,0,1,0,0,0],[29,16,10,0,4,2,0,0]],"KR":[[30,9,3,2,0,1,3,0],[39,20,3,8,0,2,7,0],[165,34,17,11,0,1,5,0],[150,30,12,13,0,0,5,0],[270,39,15,13,1,1,9,0],[242,37,21,6,0,2,8,0],[248,56,29,1,0,1,25,0],[158,44,22,0,0,0,22,0],[45,15,6,0,0,1,8,0],[63,29,15,0,0,0,14,0],[59,24,10,0,0,0,14,0],[46,28,16,0,0,1,11,0],[75,25,14,0,0,0,11,0],[31,13,7,2,0,0,4,0]],"Other":[[27,13,9,2,2,0,0,0],[36,11,9,1,1,0,0,0],[18,9,7,1,1,0,0,0],[21,12,11,0,0,1,0,0],[17,4,4,0,0,0,0,0],[26,14,8,4,2,0,0,0],[47,22,4,13,3,0,0,2],[87,34,7,22,2,2,0,1],[25,11,6,3,1,0,0,1],[43,11,6,2,1,1,0,1],[23,9,7,0,2,0,0,0],[24,4,3,0,0,1,0,0],[23,9,5,3,1,0,0,0],[20,8,2,4,2,0,0,0]]};
-const REG_DAILY=[{"d":"07-10","n":2059,"s":867,"an":1959,"as":792},{"d":"07-11","n":1993,"s":848,"an":1922,"as":794},{"d":"07-12","n":1665,"s":709,"an":1595,"as":662},{"d":"07-13","n":1964,"s":811,"an":1892,"as":770},{"d":"07-14","n":2812,"s":1136,"an":2744,"as":1100},{"d":"07-15","n":2226,"s":926,"an":2153,"as":888},{"d":"07-16","n":2139,"s":1021,"an":2058,"as":961},{"d":"07-17","n":1632,"s":748,"an":1517,"as":671},{"d":"07-18","n":1360,"s":557,"an":1318,"as":525},{"d":"07-19","n":1395,"s":486,"an":1360,"as":464},{"d":"07-20","n":634,"s":315,"an":593,"as":293},{"d":"07-21","n":806,"s":366,"an":771,"as":345},{"d":"07-22","n":948,"s":493,"an":898,"as":463},{"d":"07-23","n":841,"s":406,"an":764,"as":371},{"d":"07-24","n":1070,"s":530,"an":1003,"as":492},{"d":"07-25","n":825,"s":388,"an":768,"as":359},{"d":"07-26","n":640,"s":249,"an":594,"as":224},{"d":"07-27","n":593,"s":231,"an":511,"as":191},{"d":"07-28","n":701,"s":320,"an":576,"as":243},{"d":"07-29","n":567,"s":263,"an":457,"as":198},{"d":"07-30","n":273,"s":131,"an":239,"as":113},{"d":"07-31","n":387,"s":193,"an":339,"as":164},{"d":"08-01","n":395,"s":204,"an":306,"as":144},{"d":"08-02","n":327,"s":174,"an":260,"as":123},{"d":"08-03","n":417,"s":180,"an":311,"as":116},{"d":"08-04*","n":241,"s":116,"an":160,"as":73}];
+const AUTH_METHOD_DAYS=["07-23","07-24","07-25","07-26","07-27","07-28","07-29","07-30","07-31","08-01","08-02","08-03","08-04","08-05*"];
+const AUTH_METHOD_DATA={"VN":[[117,36,1,35,0,0,0,0],[148,64,0,64,0,0,0,0],[59,19,0,19,0,0,0,0],[39,19,2,17,0,0,0,0],[60,23,0,23,0,0,0,0],[88,39,1,38,0,0,0,0],[62,30,0,30,0,0,0,0],[14,6,0,6,0,0,0,0],[11,3,0,3,0,0,0,0],[15,2,0,2,0,0,0,0],[9,4,0,4,0,0,0,0],[19,1,0,1,0,0,0,0],[11,1,0,1,0,0,0,0],[3,0,0,0,0,0,0,0]],"ID":[[243,127,52,51,2,22,0,0],[308,175,78,69,4,24,0,0],[240,152,85,57,1,9,0,0],[127,79,52,23,2,2,0,0],[101,63,38,18,3,4,0,0],[116,80,53,25,1,1,0,0],[61,43,24,15,0,4,0,0],[24,11,8,3,0,0,0,0],[26,17,12,3,0,2,0,0],[29,12,9,2,1,0,0,0],[28,11,8,3,0,0,0,0],[27,10,6,4,0,0,0,0],[30,11,6,4,0,1,0,0],[7,4,3,1,0,0,0,0]],"MY":[[267,123,48,44,10,21,0,0],[248,149,40,90,6,13,0,0],[181,77,31,33,6,7,0,0],[77,40,17,15,3,5,0,0],[76,46,16,22,5,3,0,0],[110,67,26,24,12,5,0,0],[99,61,19,31,7,4,0,0],[62,41,14,20,4,3,0,0],[75,44,13,23,7,1,0,0],[141,87,21,35,25,6,0,0],[113,76,14,40,17,5,0,0],[126,69,10,30,24,5,0,0],[106,67,14,27,24,2,0,0],[24,14,5,4,4,1,0,0]],"SA":[[79,51,45,2,2,2,0,0],[98,52,45,3,1,3,0,0],[103,53,45,2,1,5,0,0],[35,22,19,1,1,1,0,0],[34,14,12,0,0,2,0,0],[25,7,7,0,0,0,0,0],[66,32,28,3,0,1,0,0],[94,45,41,2,0,2,0,0],[160,84,73,5,0,6,0,0],[113,63,56,5,1,1,0,0],[97,46,38,6,0,2,0,0],[131,73,62,4,2,5,0,0],[143,62,59,1,0,2,0,0],[24,9,9,0,0,0,0,0]],"TH":[[60,38,26,0,3,9,0,0],[85,47,39,0,2,6,0,0],[71,45,36,0,3,6,0,0],[75,46,41,0,3,2,0,0],[54,34,30,0,3,1,0,0],[67,49,35,0,8,6,0,0],[34,19,15,0,3,1,0,0],[9,2,1,0,0,1,0,0],[9,5,5,0,0,0,0,0],[15,7,2,0,5,0,0,0],[11,5,2,0,2,1,0,0],[16,6,4,0,2,0,0,0],[39,20,12,0,6,2,0,0],[1,0,0,0,0,0,0,0]],"KR":[[39,20,3,8,0,2,7,0],[165,34,17,11,0,1,5,0],[150,30,12,13,0,0,5,0],[270,39,15,13,1,1,9,0],[242,37,21,6,0,2,8,0],[248,56,29,1,0,1,25,0],[158,44,22,0,0,0,22,0],[45,15,6,0,0,1,8,0],[63,29,15,0,0,0,14,0],[59,24,10,0,0,0,14,0],[46,28,16,0,0,1,11,0],[75,32,17,0,0,0,15,0],[62,31,15,4,0,0,12,0],[8,5,1,0,0,0,4,0]],"Other":[[36,11,9,1,1,0,0,0],[18,9,7,1,1,0,0,0],[21,12,11,0,0,1,0,0],[17,4,4,0,0,0,0,0],[26,14,8,4,2,0,0,0],[47,22,4,13,3,0,0,2],[87,34,7,22,2,2,0,1],[25,11,6,3,1,0,0,1],[43,11,6,2,1,1,0,1],[23,9,7,0,2,0,0,0],[25,4,3,0,0,1,0,0],[23,9,5,3,1,0,0,0],[32,15,5,4,6,0,0,0],[4,2,1,1,0,0,0,0]]};
+const REG_DAILY=[{"d":"07-10","n":2059,"s":867,"an":1959,"as":792},{"d":"07-11","n":1993,"s":848,"an":1922,"as":794},{"d":"07-12","n":1665,"s":709,"an":1595,"as":662},{"d":"07-13","n":1964,"s":811,"an":1892,"as":770},{"d":"07-14","n":2812,"s":1136,"an":2744,"as":1100},{"d":"07-15","n":2226,"s":926,"an":2153,"as":888},{"d":"07-16","n":2139,"s":1021,"an":2058,"as":961},{"d":"07-17","n":1632,"s":748,"an":1517,"as":671},{"d":"07-18","n":1360,"s":557,"an":1318,"as":525},{"d":"07-19","n":1395,"s":486,"an":1360,"as":464},{"d":"07-20","n":634,"s":315,"an":593,"as":293},{"d":"07-21","n":806,"s":366,"an":771,"as":345},{"d":"07-22","n":948,"s":493,"an":898,"as":463},{"d":"07-23","n":841,"s":406,"an":764,"as":371},{"d":"07-24","n":1070,"s":530,"an":1003,"as":492},{"d":"07-25","n":825,"s":388,"an":768,"as":359},{"d":"07-26","n":640,"s":249,"an":594,"as":224},{"d":"07-27","n":593,"s":231,"an":511,"as":191},{"d":"07-28","n":701,"s":320,"an":576,"as":243},{"d":"07-29","n":567,"s":263,"an":457,"as":198},{"d":"07-30","n":273,"s":131,"an":239,"as":113},{"d":"07-31","n":387,"s":193,"an":339,"as":164},{"d":"08-01","n":395,"s":204,"an":306,"as":144},{"d":"08-02","n":329,"s":174,"an":262,"as":123},{"d":"08-03","n":417,"s":200,"an":311,"as":134},{"d":"08-04","n":423,"s":207,"an":292,"as":132},{"d":"08-05*","n":71,"s":34,"an":54,"as":25}];
 
 /* ═══════════ 数据(2026-07-10 ~ 07-30 12:28 UTC；07-30* 为滚动部分日) ═══════════ */
 const DAYS=['07-10','07-11','07-12','07-13','07-14','07-15','07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26','07-27','07-28','07-29','07-30*'];
@@ -1385,17 +1392,19 @@ const RET=[
  {d:'07-21',n:806,r:[244,210,157,77,63,50,39]},
  {d:'07-22',n:948,r:[344,269,186,110,86,57,58]},
  {d:'07-23',n:841,r:[313,256,140,83,55,58,47]},
- {d:'07-24',n:1070,r:[367,302,187,80,72,64,61]},
- {d:'07-25',n:825,r:[296,240,147,89,73,65,59]},
- {d:'07-26',n:640,r:[187,130,83,41,36,50,42]},
- {d:'07-27',n:593,r:[164,121,87,48,34,32,null]},
- {d:'07-28',n:701,r:[194,138,105,60,57,null,null]},
- {d:'07-29',n:567,r:[159,121,76,30,null,null,null]},
- {d:'07-30',n:273,r:[81,59,50,null,null,null,null]},
- {d:'07-31',n:387,r:[102,89,null,null,null,null,null]},
- {d:'08-01',n:391,r:[116,null,null,null,null,null,null]}];
-const SEG=[['当日完成首课(trial_lesson_complete 当天)',1385,693],['当日注册·未完课',10782,3339],['当日未注册',15693,1708]];
-const CURVE=[['D1 次日(07-10~08-01 cohort)',27860,5740],['D3 第 3 天(07-10~07-30 cohort)',27082,2676],['D7 第 7 天(07-10~07-26 cohort)',24948,1101]];
+ {d:'07-24',n:1070,r:[367,302,187,80,72,64,62]},
+ {d:'07-25',n:825,r:[296,240,147,89,73,65,63]},
+ {d:'07-26',n:640,r:[187,130,83,41,36,51,43]},
+ {d:'07-27',n:593,r:[164,121,87,49,34,32,42]},
+ {d:'07-28',n:701,r:[194,138,106,64,58,54,39]},
+ {d:'07-29',n:567,r:[159,121,78,30,39,34,null]},
+ {d:'07-30',n:273,r:[81,62,50,39,28,null,null]},
+ {d:'07-31',n:387,r:[104,91,63,41,null,null,null]},
+ {d:'08-01',n:395,r:[118,85,39,null,null,null,null]},
+ {d:'08-02',n:329,r:[95,74,null,null,null,null,null]},
+ {d:'08-03',n:417,r:[129,null,null,null,null,null,null]}];
+const SEG=[['当日完成首课(trial_lesson_complete 当天)',1416,712],['当日注册·未完课',11214,3486],['当日未注册',15980,1770]];
+const CURVE=[['D1 次日(07-10~08-03 cohort)',28610,5968],['D3 第 3 天(07-10~08-01 cohort)',27864,2781],['D7 第 7 天(07-10~07-28 cohort)',26242,1188]];
 
 // Push · Firebase 自动通知事件(2026-07-16~07-30 12:28 UTC；24h 归因截至 07-28)
 const PUSH_DAILY=[
@@ -1455,7 +1464,7 @@ const el=id=>document.getElementById(id);
 (function(){
   const A=AB_TOTAL.a,B=AB_TOTAL.b;
   const metrics=[
-    {label:'登录注册转化率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI −0.7~+12.2pp · p=.079',cls:'hot',status:'未显著 · 继续实验',statusCls:'flat'},
+    {label:'登录注册转化率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI +1.4~+13.4pp · p=.016',cls:'hot',status:'初步显著 · 继续实验',statusCls:'up'},
     {label:'付费转化率',a:A.paid,b:B.paid,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:`生产 SUCCESS A ${A.paid} / B ${B.paid}；PENDING A ${A.pending} / B ${B.pending}`,cls:'warn',status:'7d 未成熟 · 不判胜',statusCls:'flat'},
     {label:'首课完课率',a:A.lessonComplete,b:B.lessonComplete,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:'A 体验课 6 ID · B 新人引导课 1661',cls:'hot',status:'7d 未成熟 · 不判胜',statusCls:'flat'}
   ];
