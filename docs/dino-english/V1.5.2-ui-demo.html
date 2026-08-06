@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino English V1.5.2 — A 链路定级报告提示、B 链路目标多选、强更多语言、短信极验与 Feedback 系统邮件路由 Demo</title>
-  <!-- DESIGN.md · V1.5.2 · V1.5.1 baseline + A-flow placement-report promise + B-flow multi-select goals + localized mandatory update + GeeTest before SMS send/resend + system Mail recipient routing -->
+  <title>Dino English V1.5.2 — A 链路定级报告提示、B 链路目标多选、强更多语言、短信极验与 Feedback 系统邮件 To / Cc 路由 Demo</title>
+  <!-- DESIGN.md · V1.5.2 · V1.5.1 baseline + A-flow placement-report promise + B-flow multi-select goals + localized mandatory update + GeeTest before SMS send/resend + system Mail To / Cc routing -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
@@ -5209,6 +5209,9 @@
     .feedback-mail-label { color: #8f8f98; flex: 0 0 auto; }
     .feedback-mail-value { min-width: 0; color: #f5f5f7; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .feedback-mail-value.is-recipient { color: #1aa7ff; }
+    .feedback-mail-row.is-multiline { align-items: flex-start; padding: 9px 0; }
+    .feedback-mail-value.is-cc { color: #1aa7ff; white-space: normal; overflow-wrap: anywhere; }
+    .feedback-mail-value.is-empty { color: #8f8f98; }
     .feedback-mail-body {
       flex: 1; min-height: 0; overflow-y: auto; padding: 8px 18px 14px;
       font-size: .7rem; line-height: 1.4; color: #f5f5f7;
@@ -7263,7 +7266,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.5.2 · A 链路选老师页定级报告提示、B 链路学习目标多选、强更多语言、短信极验与 Feedback 系统邮件收件人路由；右上 ⚙︎ States 可切换关键状态和快捷页面</p>
+  <p class="demo-bar">V1.5.2 · A 链路选老师页定级报告提示、B 链路学习目标多选、强更多语言、短信极验与 Feedback 系统邮件 To / Cc 路由；右上 ⚙︎ States 可切换关键状态和快捷页面</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8807,7 +8810,7 @@
         </div>
       </section>
 
-      <!-- Feedback 沿用线上系统邮件能力：此处仅用于评审收件人路由，不是 App 内新页面。 -->
+      <!-- Feedback 沿用线上系统邮件能力：此处仅用于评审 To / Cc 路由，不是 App 内新页面。 -->
       <div class="feedback-mail-overlay" id="feedback-mail-overlay" aria-hidden="true">
         <div class="feedback-mail-head">
           <button type="button" class="feedback-mail-close" id="btn-feedback-mail-close" aria-label="关闭系统邮件示意">×</button>
@@ -8817,10 +8820,14 @@
         <div class="feedback-mail-fields">
           <div class="feedback-mail-row">
             <span class="feedback-mail-label">收件人：</span>
-            <span class="feedback-mail-value is-recipient" id="feedback-mail-recipients">support@dinoai.ai</span>
+            <span class="feedback-mail-value is-recipient" id="feedback-mail-to">support@dinoai.ai</span>
+          </div>
+          <div class="feedback-mail-row is-multiline">
+            <span class="feedback-mail-label">抄送：</span>
+            <span class="feedback-mail-value is-cc" id="feedback-mail-cc">[越南运营邮箱 1]，[越南运营邮箱 2]</span>
           </div>
           <div class="feedback-mail-row">
-            <span class="feedback-mail-label">抄送/密送，发件人：</span>
+            <span class="feedback-mail-label">发件人：</span>
             <span class="feedback-mail-value">家长的系统邮箱</span>
           </div>
           <div class="feedback-mail-row">
@@ -15601,12 +15608,12 @@
       showPayToast("Profile updated ✓");
     });
 
-    // ---------- Feedback · system Mail recipients sketch (V1.5.2) ----------
-    // 运营邮箱尚未提供，Demo 用可辨识占位符表达路由，不虚构真实地址。
+    // ---------- Feedback · system Mail To / Cc sketch (V1.5.2) ----------
+    // 运营邮箱尚未提供，Demo 用可辨识占位符表达抄送路由，不虚构真实地址。
     const FEEDBACK_REVIEW_ROUTES = Object.freeze({
-      vn: { label: "越南", recipients: ["support@dinoai.ai", "[越南运营邮箱]"] },
-      sa: { label: "沙特阿拉伯", recipients: ["support@dinoai.ai", "[沙特运营邮箱]"] },
-      other: { label: "其他国家", recipients: ["support@dinoai.ai"] },
+      vn: { label: "越南", to: ["support@dinoai.ai"], cc: ["[越南运营邮箱 1]", "[越南运营邮箱 2]"] },
+      sa: { label: "沙特阿拉伯", to: ["support@dinoai.ai"], cc: ["[沙特运营邮箱]"] },
+      other: { label: "其他国家", to: ["support@dinoai.ai"], cc: [] },
     });
 
     function feedbackMailOpen() {
@@ -15616,9 +15623,14 @@
     function renderFeedbackMail() {
       const route = FEEDBACK_REVIEW_ROUTES[demoState.feedbackMarket] || FEEDBACK_REVIEW_ROUTES.other;
       const overlay = $("#feedback-mail-overlay");
-      const recipients = $("#feedback-mail-recipients");
+      const to = $("#feedback-mail-to");
+      const cc = $("#feedback-mail-cc");
       const meta = $("#feedback-mail-meta");
-      if (recipients) recipients.textContent = route.recipients.join("，");
+      if (to) to.textContent = route.to.join("，");
+      if (cc) {
+        cc.textContent = route.cc.length ? route.cc.join("，") : "无";
+        cc.classList.toggle("is-empty", route.cc.length === 0);
+      }
       if (meta) {
         meta.textContent = [
           "================",
@@ -15630,7 +15642,8 @@
       }
       if (overlay) {
         overlay.dataset.demoMarket = route.label;
-        overlay.dataset.demoRecipients = route.recipients.join(",");
+        overlay.dataset.demoTo = route.to.join(",");
+        overlay.dataset.demoCc = route.cc.join(",");
       }
     }
 
@@ -16969,8 +16982,8 @@
           demoState.forceUpdateCopyMode = v;
           if (document.getElementById("force-update-overlay")?.classList.contains("show")) forceUpdateRender();
         } },
-      { key: "feedbackMarket", label: "Feedback · 运营国家与收件路由",
-        options: [["vn", "越南 · 全局+运营"], ["sa", "沙特 · 全局+运营"], ["other", "其他 · 仅全局"]],
+      { key: "feedbackMarket", label: "Feedback · 运营邮箱抄送",
+        options: [["vn", "越南 · To + 2 个 Cc"], ["sa", "沙特 · To + Cc"], ["other", "其他 · 仅 To"]],
         apply: function (v) {
           demoState.feedbackMarket = FEEDBACK_REVIEW_ROUTES[v] ? v : "other";
           if (feedbackMailOpen()) renderFeedbackMail();
@@ -17102,7 +17115,7 @@
       { label: "④ 强更弹窗 · 翻译缺失回退英文", run: function () { openForceUpdateReview("ko", "english_fallback"); } },
       { label: "⑤ 手机号登录/注册 · 发码验证", run: function () { openPhoneLoginReview(false); } },
       { label: "⑥ 手机号绑定 · 发码验证", run: function () { openBindPhoneReview("initial", false); } },
-      { label: "⑦ Feedback · 系统邮件收件人", run: function () { openFeedbackMailReview("vn"); } },
+      { label: "⑦ Feedback · 系统邮件 To / Cc", run: function () { openFeedbackMailReview("vn"); } },
       { label: "⑧ B 链路 · 学习目标多选", run: function () { openBGoalReview(); } },
       { label: "⑨ A 链路 · 选老师与定级报告提示", run: function () { openATeacherReportReview(); } },
     ].filter(Boolean),
@@ -17211,7 +17224,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V1.5.2 · B 链路目标多选、强更多语言、短信极验与 Feedback 系统邮件路由",
+      demo: "V1.5.2 · B 链路目标多选、强更多语言、短信极验与 Feedback 系统邮件 To / Cc 路由",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";
