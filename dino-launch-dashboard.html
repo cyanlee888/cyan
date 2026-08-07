@@ -212,8 +212,8 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
       </div>
       <div class="kpi warn">
         <div class="lab">课内最大断点(热身 → 正课导入)</div>
-        <div class="val">62<small>%</small></div>
-        <div class="note"><span class="flag">课内悬崖</span> 热身 11,331 → 导入 6,980，38% 在正课前离开；分 Level 明细也已更新至统一截点</div>
+        <div class="val">58<small>%</small></div>
+        <div class="note"><span class="flag">课内悬崖</span> 六节体验课热身 11,247 → 同课导入 6,484，42% 未触达导入；仅统计指定 lesson_id</div>
       </div>
       <div class="kpi">
         <div class="lab">Dino 对话触达(GA4 去重)</div>
@@ -260,49 +260,35 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     </div>
   </section>
 
-  <!-- 首启全链路漏斗 -->
+  <!-- 通用总漏斗 + A/B 分路径漏斗 -->
   <section class="sec reveal">
-    <div class="sec-h">首启 → 注册 全链路 <span class="en">First-Launch → Sign-up</span></div>
-    <p class="sec-desc">从启动、首启价值页、onboarding 四步到注册的全链路(条形长度=相对启动)。上期缺失的 <span class="src">step_submitted</span> 分步埋点已补上,断点第一次能看清。<b>入口两条路</b>:多数点「立即开始」走 onboarding 再注册,少数点「已有账号」直接登录。</p>
+    <div class="sec-h">首启 → 首课用户旅程漏斗 <span class="en">First Launch → Trial Complete · 去重用户</span></div>
+    <p class="sec-desc">线上同时存在旧路径与 A/B 新路径，总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课结束</b>。不把首启价值页、Onboarding 逐题、选老师、引导或 Paywall 硬拼进同一条线；路径差异放在下方 A/B 子 Tab 中。</p>
+
+    <div class="stage-lab">① 全量通用主漏斗</div>
     <div class="lbars" id="journeyFunnel"></div>
-    <div class="insight">
-      <div class="it">⚠ Onboarding 四步仍顺畅，真正的悬崖是「填完第 4 题 → 完成注册」约 70% 走完</div>
-      <p>点「立即开始」24,775 人，onboarding 到第 4 步仍有 21,146 人(占启动 70%)；完成注册 15,029——<b>约 29% 的量差集中在注册/登录页</b>。登录方式点击：手机号 5,262 / Google 5,289 / Meta 1,098 / Kakao 550 / Apple 507；手机号点击后获取验证码 3,151，仍有 40% 卡在验证码动作前。</p>
-    </div>
-  </section>
-
-  <!-- 主漏斗 -->
-  <section class="sec reveal">
-    <div class="sec-h">用户旅程漏斗 <span class="en">In-App Journey · 去重用户</span></div>
-    <p class="sec-desc">从打开到完成首课的逐步收敛,分「激活 / 首课体验」两段(订阅不是这条漏斗的下一步——它有多个入口,单列在下方「变现」一节)。右侧为环比上一步转化率,<b>红色标注主要流失</b>。</p>
-
-    <div class="stage-lab">① 激活 Activation</div>
-    <div class="funnel" id="fun1"></div>
-    <p class="sec-desc" style="margin-top:12px;font-size:12.5px"><b>激活第一大流失仍是「打开 → 注册」(50%)</b>;注册后选老师、进首课分别为 84% / 91%。<span style="color:var(--ink-faint)">注册前的首启价值页 / onboarding 全链路见上方「首启 → 注册 全链路」。</span></p>
-    <div class="stage-lab">② 首课体验(核心 aha)Core Trial Experience</div>
-    <div class="funnel" id="fun2"></div>
 
     <div class="insight">
-      <div class="it">⚠ 首课完成仍是最大瓶颈；08-05 回落到 15.8%</div>
-      <p>进入首课 11,593 人 → <b>完整试听完成 2,245(19.4%)</b>。最近三个完整日 08-03~05 为 <b>18.9% → 24.2% → 15.8%</b>，改善未稳定。继续压缩热身→导入断点，并同步观察 A/B 两条不同首课路径。</p>
+      <div class="it">⚠ 总盘两处主要流失：首次启动 → 注册成功，以及首课开始 → 首课结束</div>
+      <p>30,042 人首次启动 → 15,029 人注册成功(<b>50.0%</b>) → 11,593 人开始首课(注册后 <b>77.1%</b>) → 2,245 人完整试听结束(首课开始后 <b>19.4%</b>)。总盘用这四个共同节点判断整体健康，具体是哪条页面路径造成流失，再看下方 A/B 链路。</p>
     </div>
 
-    <div class="stage-lab">③ A/B 实验主链路 · Android</div>
+    <div class="stage-lab">② A/B 实验分路径漏斗 · Android</div>
     <div class="abtabs" id="abMainTabs" role="tablist" aria-label="切换 A/B 实验主链路"></div>
     <div class="abflow-meta" id="abMainMeta" role="status" aria-live="polite"></div>
     <div class="lbars abflow-list" id="abMainFlow"></div>
     <p class="abflow-note" id="abMainNote"></p>
   </section>
 
-  <!-- 试听课内环节流失 -->
+  <!-- 体验课内模板触达 -->
   <section class="sec reveal">
-    <div class="sec-h">试听课内环节流失 <span class="en">In-Lesson Stage Drop-off · 分 Level</span></div>
-    <p class="sec-desc">不同 Level 的试听课环节配置不同，按设备首次热身模板归入 L1–2 / L3–4 / L5–6，再统计该设备此后到达各类课内模板的去重人数。<b>窗口统一更新到 2026-08-06 14:30 UTC，并排除测试设备</b>；这是模板触达视图，不强行把不同课型拼成严格线性漏斗。</p>
+    <div class="sec-h">体验课内模板触达 <span class="en">In-Lesson Template Reach · 分 Level</span></div>
+    <p class="sec-desc">仅统计六节体验课：<b>L1=732、L2=1615、L3=734、L4=733、L5=1613、L6=1614</b>。设备按首次命中的体验课热身归入 L1–2 / L3–4 / L5–6，后续模板必须属于<b>同一个 lesson_id</b>。窗口更新到 2026-08-06 14:30 UTC，并排除测试设备；各模板为独立触达，不把不同教学与练习分支强行解释成严格线性漏斗。</p>
     <div class="lvltabs" id="lvltabs"></div>
     <div class="lbars" id="lessonStages"></div>
     <div class="insight">
-      <div class="it">⚠ 三档共性:热身→导入仍是唯一悬崖;Level 越高、流失越狠的格局未变</div>
-      <p>各 Level 最大流失仍在<b>「热身 → 导入」</b>，当前到达率为 L1–2 <b>65%</b> / L3–4 <b>55%</b> / L5–6 <b>45%</b>；到达收尾模板的比例为 25% / 20% / 12%。Level 越高、流失越重的梯度仍在，优先优化高 Level 的导入承接。</p>
+      <div class="it">⚠ 限定六节体验课后，热身 → 导入仍是三个 Level 档共同的最大掉量</div>
+      <p>同一 lesson_id 内，导入触达率为 L1–2 <b>63%</b> / L3–4 <b>53%</b> / L5–6 <b>42%</b>；收尾模板触达率为 24% / 17% / 10%。不同教学与练习模板可能属于可选分支，因此相邻行只表示各自触达，不能直接当作前后转化。</p>
     </div>
   </section>
 
@@ -430,54 +416,19 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 </div>
 
 <script>
-const OPEN=30042;
-function renderFunnel(el,steps){
-  el.innerHTML=steps.map((s,i)=>{
-    const w=Math.max(5,Math.round(s.v/OPEN*100));
-    let rate='';
-    if(s.cum){
-      const r=(s.v/OPEN*100);
-      const cls=s.drop?'frate drop':'frate';
-      const lossLine=s.drop?`<span class="dropflag">主要流失 ↓${(100-r).toFixed(0)}%</span>`:'';
-      rate=`<div class="${cls}"><b>${r.toFixed(0)}%</b> <span class="of">占打开 App</span>${lossLine}</div>`;
-    }else if(s.prev){
-      const r=(s.v/s.prev*100);
-      const cls=s.drop?'frate drop':'frate';
-      const baseLine=s.base?`<div class="of" style="margin-top:2px">占首课开始 <b style="font-size:12px;color:${s.drop?'var(--red)':'var(--ink-soft)'}">${(s.v/2245*100).toFixed(0)}%</b></div>`:'';
-      rate=`<div class="${cls}"><b>${r.toFixed(0)}%</b> <span class="of">环比上步</span>${s.drop?'<span class="dropflag">主要流失</span>':''}${baseLine}</div>`;
-    }else{
-      rate=`<div class="frate"><span class="of">基准 100%</span></div>`;
-    }
-    return `<div class="frow"><div class="fl">${s.l}<small>${s.s}</small></div>`+
-      `<div class="fbar-wrap"><div class="fbar" style="width:0;background:${s.c}" data-w="${w}">${s.v.toLocaleString()}</div></div>`+
-      rate+`</div>`;
-  }).join('');
-}
-renderFunnel(document.getElementById('fun1'),[
- {l:'打开 App',s:'first_open',v:30042,c:'#1d5c3f'},
- {l:'注册开户',s:'signup_result · success',v:15029,c:'#2e8b57',prev:30042,drop:true},
- {l:'选老师',s:'teacher_selected',v:12679,c:'#2e8b57',prev:15029},
- {l:'首课开始',s:'class_lesson_start',v:11593,c:'#2e8b57',prev:12679},
-]);
-renderFunnel(document.getElementById('fun2'),[
- {l:'进入首课',s:'class_lesson_start',v:11593,c:'#c98a12'},
- {l:'完整试听完成·出报告',s:'trial_lesson_complete',v:2245,c:'#d9641e',prev:11593,drop:true},
-]);
-// 首启 → 注册 全链路(onboarding 分步埋点 step_submitted）
+// 全量通用主漏斗：只保留旧路径与 A/B 新路径共有的业务里程碑。
 const journey=[
- {l:'启动 App',s:'first_open',v:30042,c:'#1d5c3f'},
- {l:'首启价值页·立即开始',s:'welcome_get_started',v:24775,c:'#2e8b57'},
- {l:'OB① 学习者类型',s:'step_submitted 1_learner_type',v:21775,c:'#2e8b57'},
- {l:'OB② 学习者姓名',s:'step_submitted 2_learner_name',v:21858,c:'#2e8b57'},
- {l:'OB③ 学习者年龄',s:'step_submitted 3_learner_age',v:21538,c:'#2e8b57'},
- {l:'OB④ 英语水平',s:'step_submitted 4_english_level',v:21146,c:'#2e8b57'},
- {l:'注册开户',s:'signup_result · success（注册/登录页）',v:15029,c:'#1d5c3f',cliff:true},
+ {l:'首次启动',s:'first_open',v:30042,c:'#1d5c3f'},
+ {l:'注册成功',s:'signup_result · success',v:15029,c:'#2e8b57',cliff:true},
+ {l:'首课开始',s:'class_lesson_start',v:11593,c:'#c98a12'},
+ {l:'首课结束',s:'trial_lesson_complete',v:2245,c:'#d9641e',cliff:true},
 ];
 const jbase=30042, jmax=30042;
 document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
   const w=Math.max(3,Math.round(s.v/jmax*100));
-  const reach=Math.round(s.v/jbase*100);
-  const rate = i===0 ? '起点(启动)' : s.incomp ? '＞首装口径' : `占启动 ${reach}%`;
+  const startRate=s.v/jbase*100;
+  const stepRate=i===0?100:s.v/journey[i-1].v*100;
+  const rate=i===0?'起点 100%':`环比 ${stepRate.toFixed(1)}% · 启动 ${startRate.toFixed(1)}%`;
   const rcls = s.cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
   return `<div class="lrow${s.cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
    `<div class="lbar-track"><div class="lbar-fill" style="width:${w}%;background:${s.c}"></div></div>`+
@@ -627,16 +578,15 @@ const stageDefs=[
  {l:'视频 Video',s:'play-video',c:'#c98a12'},
  {l:'单词教学 Word·Teach',s:'word_teach',c:'#c98a12'},
  {l:'单词练习 Word·Practice',s:'word_practice',c:'#c98a12'},
- {l:'听力练习 Listening',s:'practice_listen',c:'#c98a12'},
  {l:'句子教学 Sentence·Teach',s:'sentence_teach',c:'#c98a12'},
  {l:'句子练习 Sentence·Practice',s:'sentence_practice',c:'#c98a12'},
  {l:'收尾/完成 Wrap-up',s:'wrapup',c:'#1d5c3f'},
 ];
-// 每档：以设备首次热身模板归组，再看之后各环节模板触达用户数。
+// 每档：以设备首次命中的指定体验课归组，后续模板仅统计同一 lesson_id。
 const levels=[
- {key:'l1l2',name:'L1–L2',v:[7107,4592,3824,3661,2730,1414,2124,1842,1801]},
- {key:'l3l4',name:'L3–L4',v:[2614,1445,1188,1042,769,618,624,506,510]},
- {key:'l5l6',name:'L5–L6',v:[1610,723,625,497,332,319,275,220,187]},
+ {key:'l1l2',name:'L1–L2',ids:'732 / 1615',v:[7018,4416,3744,3488,2570,2024,1748,1660]},
+ {key:'l3l4',name:'L3–L4',ids:'734 / 733',v:[2620,1398,1132,972,697,581,461,449]},
+ {key:'l5l6',name:'L5–L6',ids:'1613 / 1614',v:[1609,670,600,449,295,255,205,164]},
 ];
 function renderLevel(lv){
   const base=lv.v[0];
@@ -653,7 +603,7 @@ function renderLevel(lv){
   }).join('');
 }
 document.getElementById('lvltabs').innerHTML=levels.map((lv,i)=>
- `<div class="lvltab${i===0?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">起点 ${lv.v[0].toLocaleString()} 人</span></div>`).join('');
+ `<div class="lvltab${i===0?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">${lv.ids} · 起点 ${lv.v[0].toLocaleString()} 人</span></div>`).join('');
 document.querySelectorAll('.lvltab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.lvltab').forEach(x=>x.classList.remove('on'));
   t.classList.add('on');
