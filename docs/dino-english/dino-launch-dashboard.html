@@ -191,7 +191,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <div class="ctx">
     <span class="tag">上游背景</span>
-    <span>投放 7/10 起 · 统计窗口 <b>07-10~08-06 14:30 UTC（27 个完整日 + 当日滚动）</b> · 期内启动 <b>30,042</b> · 归因安装 <b>28,714</b>(剔网盟假量)· GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
+    <span>投放 7/10 起 · 统计窗口 <b>07-10~08-06 14:30 UTC（27 个完整日 + 当日滚动）</b> · 期内启动 <b>30,044</b> · 归因安装 <b>28,714</b>(剔网盟假量)· GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
     <span style="color:var(--ink-faint)">（投放效率由增长同学主盯,详见文末上游小节）</span>
   </div>
 
@@ -201,14 +201,14 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <p class="sec-desc">统计窗口 <b>2026-07-10 00:00 → 08-06 14:30(UTC)</b>；07-10~08-05 使用日表，08-06 使用 intraday 滚动表。GA4 任一事件命中 user_type=test 的设备及可映射支付/归因账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
     <div class="kpis">
       <div class="kpi warn">
-        <div class="lab">首课完成率(完整试听 / 首课开始)</div>
-        <div class="val">19.4<small>%</small></div>
-        <div class="note"><span class="flag">仍是最大瓶颈</span> 11,593 开始首课,2,245 走完整个试听；最近三个完整日 18.9% → 24.2% → 15.8%，08-05 再次回落</div>
+        <div class="lab">首课完成率(兼容完课 / 指定首课开始)</div>
+        <div class="val">19.8<small>%</small></div>
+        <div class="note"><span class="flag">仍是最大瓶颈</span> 2,292 / 11,575；六节体验课兼容历史 <span class="src">trial_lesson_complete</span>，1661 / 1616 只认同课 <span class="src">class_lesson_end · complete</span></div>
       </div>
       <div class="kpi mid">
         <div class="lab">注册转化(注册 / 打开)</div>
         <div class="val">50.0<small>%</small></div>
-        <div class="note">15,029 / 30,042；A/B 24h 成熟注册率 A 56.1% / B 61.7%，B +5.6pp，p=.022</div>
+        <div class="note">15,030 / 30,044；A/B 24h 成熟注册率 A 56.1% / B 61.7%，B +5.6pp，p=.022</div>
       </div>
       <div class="kpi warn">
         <div class="lab">课内最大断点(热身 → 正课导入)</div>
@@ -262,15 +262,15 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 通用总漏斗 + A/B 分路径漏斗 -->
   <section class="sec reveal">
-    <div class="sec-h">首启 → 首课用户旅程漏斗 <span class="en">First Launch → Trial Complete · 去重用户</span></div>
-    <p class="sec-desc">线上同时存在旧路径与 A/B 新路径，总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课结束</b>。不把首启价值页、Onboarding 逐题、选老师、引导或 Paywall 硬拼进同一条线；路径差异放在下方 A/B 子 Tab 中。</p>
+    <div class="sec-h">首启 → 首课用户旅程漏斗 <span class="en">First Launch → First Lesson Complete · 去重用户</span></div>
+    <p class="sec-desc">线上同时存在旧路径与 A/B 新路径，总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课完成</b>。首课只取设备首次命中的指定课程：L1=732、L2=1615、L3=734、L4=733、L5=1613、L6=1614、新手引导课=1661、足球课=1616。六节体验课完成兼容开始后的历史 <span class="src">trial_lesson_complete</span>，同时接受同一 lesson_id 的 <span class="src">class_lesson_end · result=complete</span>；1661 / 1616 只接受后者。路径差异放在下方 A/B 子 Tab 中。</p>
 
     <div class="stage-lab">① 全量通用主漏斗</div>
     <div class="lbars" id="journeyFunnel"></div>
 
     <div class="insight">
-      <div class="it">⚠ 总盘两处主要流失：首次启动 → 注册成功，以及首课开始 → 首课结束</div>
-      <p>30,042 人首次启动 → 15,029 人注册成功(<b>50.0%</b>) → 11,593 人开始首课(注册后 <b>77.1%</b>) → 2,245 人完整试听结束(首课开始后 <b>19.4%</b>)。总盘用这四个共同节点判断整体健康，具体是哪条页面路径造成流失，再看下方 A/B 链路。</p>
+      <div class="it">⚠ 指定首课开始 → 完整完成仍是当前最大课内断点，兼容口径完成率 19.8%</div>
+      <p>30,044 人首次启动 → 15,030 人注册成功(<b>50.0%</b>) → 11,575 人开始指定首课(注册后 <b>77.0%</b>) → 2,292 人完整完成首课(<b>19.8%</b>)。兼容旧完课事件只用于六节体验课；退出、进入 Paywall 等其他结束原因不计为完成。具体路径继续看下方 A/B 链路。</p>
     </div>
 
     <div class="stage-lab">② A/B 实验分路径漏斗 · Android</div>
@@ -418,12 +418,12 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 <script>
 // 全量通用主漏斗：只保留旧路径与 A/B 新路径共有的业务里程碑。
 const journey=[
- {l:'首次启动',s:'first_open',v:30042,c:'#1d5c3f'},
- {l:'注册成功',s:'signup_result · success',v:15029,c:'#2e8b57',cliff:true},
- {l:'首课开始',s:'class_lesson_start',v:11593,c:'#c98a12'},
- {l:'首课结束',s:'trial_lesson_complete',v:2245,c:'#d9641e',cliff:true},
+ {l:'首次启动',s:'first_open',v:30044,c:'#1d5c3f'},
+ {l:'注册成功',s:'signup_result · success',v:15030,c:'#2e8b57',cliff:true},
+ {l:'首课开始',s:'class_lesson_start · 8 个指定课程 ID',v:11575,c:'#c98a12'},
+ {l:'首课完成',s:'新旧完课事件兼容 · 指定首课',v:2292,c:'#d9641e'},
 ];
-const jbase=30042, jmax=30042;
+const jbase=30044, jmax=30044;
 document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
   const w=Math.max(3,Math.round(s.v/jmax*100));
   const startRate=s.v/jbase*100;
@@ -472,7 +472,6 @@ const AB_MAIN_FLOWS={
    {p:'变现',l:'Paywall 第 2 轮',s:'page_view · subscription · onboarding_guide',v:255},
    {p:'课堂',l:'新人引导课开始',s:'class_lesson_start · lesson_id=1661',v:165},
    {p:'课堂',l:'新人引导课完成',s:'class_lesson_end · 1661 · complete',v:53},
-   {p:'报告',l:'新人引导课报告',s:'page_view · report · course_flow',v:20},
    {p:'变现',l:'限时折扣 Paywall',s:'discount_offer · guidance_report',v:20},
    {p:'变现',l:'折扣支付发起',s:'subscription_checkout_start · guidance_report',v:4},
    {p:'变现',l:'折扣支付成功',s:'payment_order · SUCCESS · PRODUCTION',v:0}
