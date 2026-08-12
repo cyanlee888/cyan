@@ -41,7 +41,15 @@ SELECT
     (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'source'),
     (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'trigger_source')
   ) AS source,
-  (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'order_id') AS order_id
+  (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'order_id') AS order_id,
+  COALESCE(
+    (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'is_success'),
+    CAST((SELECT ep.value.int_value FROM UNNEST(event_params) ep WHERE ep.key = 'is_success') AS STRING)
+  ) AS is_success,
+  COALESCE(
+    (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'reason'),
+    (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'failed_reason')
+  ) AS result_reason
 FROM base
 WHERE event_timestamp < UNIX_MICROS(cutoff);
 
@@ -142,6 +150,60 @@ purchase_after_checkout AS (
     AND e.event_timestamp >= c.checkout_ts
   GROUP BY 1
 ),
+checkout_starts AS (
+  SELECT order_id, MIN(event_timestamp) AS start_ts
+  FROM ga4_events
+  WHERE action = 'subscription_checkout_start'
+    AND order_id IS NOT NULL
+  GROUP BY 1
+),
+latest_checkout_result AS (
+  SELECT
+    s.order_id,
+    e.is_success,
+    e.result_reason
+  FROM checkout_starts s
+  JOIN ga4_events e
+    ON e.order_id = s.order_id
+   AND e.action = 'subscription_checkout_result'
+   AND e.event_timestamp >= s.start_ts
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY s.order_id ORDER BY e.event_timestamp DESC) = 1
+),
+order_outcome AS (
+  SELECT
+    CASE
+      WHEN s.order_id IS NULL THEN 'unmatched_checkout_start'
+      WHEN r.order_id IS NULL THEN 'checkout_start_no_result'
+      WHEN r.is_success = 'false' THEN 'client_fail_or_cancel'
+      WHEN r.is_success = 'true' THEN 'client_success'
+      ELSE 'result_missing_is_success'
+    END AS row_key,
+    COUNT(*) AS orders,
+    COUNTIF(o.status = 'PENDING') AS pending,
+    COUNTIF(o.status = 'SUCCESS' AND o.env_type = 'PRODUCTION') AS production_success,
+    COUNTIF(o.status = 'SUCCESS' AND o.env_type = 'SANDBOX') AS sandbox_success,
+    COUNTIF(o.status = 'FAILED') AS failed,
+    COUNTIF(o.status IN ('CANCELED', 'ABANDONED')) AS canceled_or_abandoned
+  FROM orders o
+  LEFT JOIN checkout_starts s ON o.order_no = s.order_id
+  LEFT JOIN latest_checkout_result r ON s.order_id = r.order_id
+  GROUP BY 1
+),
+successful_pairs AS (
+  SELECT user_id, platform, MIN(created_at) AS first_success_at
+  FROM orders
+  WHERE status = 'SUCCESS' AND env_type = 'PRODUCTION'
+  GROUP BY 1, 2
+),
+retry_before_success AS (
+  SELECT
+    s.user_id,
+    s.platform,
+    COUNTIF(o.status = 'PENDING' AND o.created_at < s.first_success_at) AS pending_before
+  FROM successful_pairs s
+  JOIN orders o USING (user_id, platform)
+  GROUP BY 1, 2
+),
 order_source AS (
   SELECT
     COALESCE(NULLIF(subscription_source, ''), '__missing__') AS row_key,
@@ -199,6 +261,28 @@ SELECT 'client_funnel', 'strict',
   (SELECT COUNT(*) FROM result_after_checkout),
   (SELECT COUNT(*) FROM purchase_after_checkout),
   NULL, NULL
+UNION ALL
+SELECT 'order_outcome', row_key, orders, pending, production_success, sandbox_success, failed, canceled_or_abandoned
+FROM order_outcome
+UNION ALL
+SELECT 'pending_health', 'all',
+  COUNTIF(status = 'PENDING'),
+  COUNTIF(status = 'PENDING' AND updated_at = created_at),
+  COUNTIF(status = 'PENDING' AND created_at < TIMESTAMP_SUB(cutoff, INTERVAL 7 DAY)),
+  COUNTIF(status = 'PENDING'
+    AND env_type IS NULL
+    AND subscription_id IS NULL
+    AND payment_event_id IS NULL
+    AND platform_order_id IS NULL
+    AND platform_transaction_id IS NULL
+    AND purchase_token_hash IS NULL
+    AND paid_at IS NULL),
+  NULL, NULL
+FROM orders
+UNION ALL
+SELECT 'payment_retry_health', 'successful_pairs',
+  COUNT(*), COUNTIF(pending_before > 0), SUM(pending_before), NULL, NULL, NULL
+FROM retry_before_success
 UNION ALL
 SELECT 'order_source', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_source
 UNION ALL

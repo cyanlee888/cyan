@@ -144,6 +144,19 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 
 .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-soft);margin-top:8px}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.result-stack{display:flex;height:20px;margin:14px 0 12px;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper-deep)}
+.result-stack span{display:block;min-width:2px}
+.result-fail{background:var(--red)}
+.result-unmatched{background:var(--orange)}
+.result-no-result{background:var(--yellow)}
+.result-missing{background:var(--ink-faint)}
+.result-success{background:var(--green-bright)}
+.result-keys{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.result-key{padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--paper-deep);font-size:11px;color:var(--ink-soft);line-height:1.5}
+.result-key i{display:inline-block;width:9px;height:9px;margin-right:6px;border-radius:2px}
+.result-key b{display:block;margin-top:2px;font-family:'Fraunces','Noto Serif SC',serif;font-size:15px;color:var(--ink)}
+@media(max-width:860px){.result-keys{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.result-keys{grid-template-columns:1fr}}
 .minirow{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:8px 0;border-bottom:1px dashed #e8e0cc}
 .minirow:last-child{border-bottom:none}
 .minirow .mv{font-family:'Fraunces',serif;font-weight:700;text-align:right;white-space:nowrap}
@@ -422,6 +435,101 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     </div>
   </section>
 
+  <!-- ═══════════ 留存 · 签到欢迎礼 ═══════════ -->
+  <section class="sec" data-group="retention" data-tab="签到欢迎礼">
+    <div class="sec-h">签到参与与留存影响 <span class="en">Participation & Retention Impact</span></div>
+    <p class="sec-desc">V1.5.1 上线首轮观测，窗口为 <b>2026-08-08 00:00~08-12 01:21 UTC</b>。活动资格同时覆盖新注册与既有注册用户，整体数据未按注册新旧筛选；新注册账号仅作为单独子群观察。当前仅纳入越南、韩国、沙特、马来西亚、印度尼西亚五国并排除 test / debug。参与定义为账号成功领取 Day1 奖励；因资格 / unlock / calendar 事件缺失，暂用“窗口内可识别前台活跃账号 + 已领取账号”作为参与分母代理。</p>
+
+    <div class="note"><b>核心结论：</b>当前首要问题是参与覆盖：在包含新老用户的可识别活跃账号口径下，Day1 参与率为 <b>12.6%</b>，成熟参与者中也只有 <b>18.4%</b> 到达 Day2。参与者 D1 比同日、同国家、同平台未参与者高 <b>14.1pp</b>，但新注册子群的全量 D1 上线前后仅提升 <b>0.8pp</b>，区间跨 0；现阶段只能说“参与和留存正相关”，不能说功能已经带来留存净提升。</div>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kl">可识别活跃账号</div><div class="kv">1,996</div><div class="kn">含新注册与既有账号；参与分母代理</div></div>
+      <div class="kpi warn"><div class="kl">Day1 参与率</div><div class="kv">12.6%</div><div class="kn">251 / 1,996；95% CI 11.2%~14.1%</div></div>
+      <div class="kpi"><div class="kl">新注册子群参与率</div><div class="kv">15.2%</div><div class="kn">142 / 932；注册同日参与 11.8%</div></div>
+      <div class="kpi hot"><div class="kl">参与后到达 Day2</div><div class="kv">18.4%</div><div class="kn">32 / 174 个已成熟 Day1 cohort</div></div>
+      <div class="kpi"><div class="kl">参与者 D1 相关差异</div><div class="kv">+14.1pp</div><div class="kn">33.9% vs 匹配未参与 19.8%；非因果</div></div>
+      <div class="kpi"><div class="kl">全量新注册 · 上线前后</div><div class="kv">+0.8pp</div><div class="kn">18.6% → 19.4%；95% CI −2.3~+3.9pp</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-t">参与主漏斗</div>
+      <div class="card-s">Day2 / Day3 使用各自已成熟 cohort 作分母，不能直接用 1,996 作为后续节点分母</div>
+      <div class="push-flow">
+        <div class="flow-step"><div class="flow-num">1,996</div><div class="flow-lab">可识别活跃账号</div><div class="flow-rate">含新老用户 · 账号级去重</div></div>
+        <div class="flow-step"><div class="flow-num">251</div><div class="flow-lab">Day1 参与</div><div class="flow-rate">251 / 1,996 · 12.6%</div></div>
+        <div class="flow-step"><div class="flow-num">32 / 174</div><div class="flow-lab">到达 Day2</div><div class="flow-rate">成熟参与者的 18.4%</div></div>
+        <div class="flow-step"><div class="flow-num">4 / 58</div><div class="flow-lab">到达 Day3</div><div class="flow-rate">成熟参与者的 6.9%</div></div>
+      </div>
+      <div class="legend">Day5 与 Day8 尚无成熟 cohort；首批核心国家账号最早 08-15 可看 D7、08-22 可看完整 14 日窗口。</div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">按国家看 Day1 参与</div>
+        <div class="card-s">参与账号 ÷ 该国可识别活跃账号；当前用于发现覆盖差异，不等同于曝光→领取转化</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>国家</th><th>可识别活跃</th><th>参与账号</th><th>参与率</th></tr>
+          <tr><td>越南</td><td>203</td><td>42</td><td class="up"><b>20.7%</b></td></tr>
+          <tr><td>马来西亚</td><td>742</td><td>102</td><td>13.7%</td></tr>
+          <tr><td>韩国</td><td>225</td><td>26</td><td>11.6%</td></tr>
+          <tr><td>沙特阿拉伯</td><td>532</td><td>58</td><td>10.9%</td></tr>
+          <tr><td>印度尼西亚</td><td>294</td><td>23</td><td class="down">7.8%</td></tr>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">每日 Day1 参与</div>
+        <div class="card-s">每日账号去重；08-12* 截至 01:21 UTC，为部分日</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>日期</th><th>可识别活跃</th><th>参与账号</th><th>参与率</th><th style="text-align:left">阶段</th></tr>
+          <tr><td>08-08</td><td>686</td><td>2</td><td>0.3%</td><td style="text-align:left">首批记录</td></tr>
+          <tr><td>08-09</td><td>677</td><td>56</td><td>8.3%</td><td style="text-align:left">开始放量</td></tr>
+          <tr><td>08-10</td><td>563</td><td>116</td><td><b>20.6%</b></td><td style="text-align:left">当前峰值</td></tr>
+          <tr><td>08-11</td><td>623</td><td>71</td><td>11.4%</td><td style="text-align:left">回落</td></tr>
+          <tr class="warnrow"><td>08-12*</td><td>53</td><td>6</td><td>11.3%</td><td style="text-align:left">部分日</td></tr>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-t">留存影响 · 三角验证</div>
+      <div class="card-s">D1 均为 Exact-day 前台活跃；先看所有参与者（含新老用户）的参与相关，再看新注册子群，最后用新注册账号上线前后验证该子群是否同步抬升</div>
+      <div class="tbl-scroll"><table>
+        <tr><th style="text-align:left">比较</th><th>组别</th><th>样本</th><th>D1 回访</th><th>D1</th><th>差异</th><th style="text-align:left">可以怎么解释</th></tr>
+        <tr><td rowspan="2" style="text-align:left">同日 × 国家 × 平台</td><td>参与</td><td>174</td><td>59</td><td><b>33.9%</b></td><td rowspan="2" class="up"><b>+14.1pp</b></td><td rowspan="2" style="text-align:left">匹配了日期、国家、平台，但未控制用户意愿；只能说明相关</td></tr>
+        <tr><td>未参与 · 标准化</td><td>1,118 次观察</td><td>222</td><td>19.8%</td></tr>
+        <tr><td rowspan="2" style="text-align:left">同期新注册账号</td><td>注册同日参与</td><td>108</td><td>36</td><td><b>33.3%</b></td><td rowspan="2" class="up"><b>+15.7pp</b></td><td rowspan="2" style="text-align:left">差异区间 +6.4~+25.0pp，但仍有主动参与选择偏差</td></tr>
+        <tr><td>未参与</td><td>805</td><td>142</td><td>17.6%</td></tr>
+        <tr><td rowspan="2" style="text-align:left">全量新注册 · 前后</td><td>上线前 08-01~07</td><td>1,914</td><td>356</td><td>18.6%</td><td rowspan="2" class="flat"><b>+0.8pp</b></td><td rowspan="2" style="text-align:left">差异区间 −2.3~+3.9pp；全量层尚未看到明确提升</td></tr>
+        <tr><td>上线后 08-08~10</td><td>913</td><td>177</td><td>19.4%</td></tr>
+      </table></div>
+    </div>
+
+    <div class="note"><b>影响判断：尚不能确认。</b>“参与者留存更高”与“新注册子群全量留存基本持平”同时出现，说明当前更可能是高意愿用户主动参与，而非功能已经把低意愿用户拉回。要回答净提升，需要在新老资格用户中保留随机 holdout；若不能做随机实验，至少补齐 calendar 曝光并使用曝光资格、历史活跃、注册日期、国家、平台做倾向得分或差分分析。</div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">新注册子群参与拆分</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>口径</th><th>账号</th><th>占 932 个新注册账号</th></tr>
+          <tr><td>窗口内参与</td><td>142</td><td><b>15.2%</b></td></tr>
+          <tr><td>注册同日参与</td><td>110</td><td>11.8%</td></tr>
+          <tr><td>窗口内未参与</td><td>790</td><td>84.8%</td></tr>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">参与后的学习承接 · 次要信号</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>观察点</th><th>可观察账号</th><th>达成</th><th>比率</th></tr>
+          <tr><td>Day1 领取后 24h 进课</td><td>177</td><td>79</td><td><b>44.6%</b></td></tr>
+          <tr><td>进课后 24h 内完课</td><td>177</td><td>69</td><td>39.0%</td></tr>
+        </table></div>
+        <div class="legend">仅表示领取后的时序承接，不代表由签到礼造成。</div>
+      </div>
+    </div>
+
+    <div class="tip"><b>数据限制：</b>活动覆盖新注册与既有注册用户，但线上可用的核心事件只有 newcomer_checkin_reward_grant 与 newcomer_visit_reward_entry；资格 / unlock / calendar / claim / continue / close 均缺失，且 grant 与 PRD 命名不一致。因此 12.6% 是“参与账号 ÷ 可识别活跃账号”，不是严格的“全部资格账号参与率”或“曝光后参与率”。优先补齐资格、日历曝光与领取点击事件，再按新老用户复查真实曝光→参与→留存转化。</div>
+  </section>
+
   <!-- ═══════════ 留存 · 活跃时段 ═══════════ -->
   <section class="sec" data-group="retention-archive" data-tab="活跃时段">
     <div class="sec-h">用户当地活跃与 Push 响应时段 <span class="en">Local-time Activity</span></div>
@@ -614,6 +722,86 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       </table></div>
     </div>
     <div class="note"><b>当前第一优先级仍是修复链路可解释性与支付回执：</b>24.7% 的 GA4 checkout order_id 未带来源，生产订单仍有 30.7% 来源缺失，且 98.7% 停在 PENDING。先把 source 和订单终态打通，再比较入口优劣。</div>
+  </section>
+
+  <!-- ═══════════ 支付转化 · 支付结果诊断 ═══════════ -->
+  <section class="sec" data-group="payment" data-tab="支付结果诊断">
+    <div class="sec-h">支付事件结果全分类 <span class="en">Payment Outcome Diagnostics</span></div>
+    <p class="sec-desc">沿用 <b>2026-07-10 00:00~08-12 01:21 UTC</b> 窗口与测试账号排除规则，使用 <b>payment_order.order_no = GA4 order_id</b> 串联“购买意图创建 → 商店面板 → 客户端结果 → 生产结算”。本页回答每笔订单最终落在哪一类，并把“真实支付异常”与“未完成、回传缺失、状态未收口”分开。</p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kl">购买意图订单</div><div class="kv">3,345</div><div class="kn">1,718 个账号 · ODS 复查口径</div></div>
+      <div class="kpi warn"><div class="kl">仍为 PENDING</div><div class="kv">98.65%</div><div class="kn">3,300 笔；创建后均未再更新</div></div>
+      <div class="kpi"><div class="kl">已进入明确终态</div><div class="kv">45</div><div class="kn">生产成功 40 · 沙盒 4 · 失败 1</div></div>
+      <div class="kpi warn"><div class="kl">PENDING 超过 7 天</div><div class="kv">67.2%</div><div class="kn">2,217 / 3,300；不是正常短时等待</div></div>
+      <div class="kpi warn"><div class="kl">订单→checkout_start 覆盖</div><div class="kv">66.5%</div><div class="kn">2,224 / 3,345 可按 order_id 串联</div></div>
+      <div class="kpi hot"><div class="kl">客户端成功→生产成功</div><div class="kv">95.0%</div><div class="kn">19 / 20；仅 1 笔成功信号仍 Pending</div></div>
+    </div>
+
+    <div class="note"><b>核心判断：</b>Pending 的主体不是“已经付款、后端卡单”，而是购买意图创建后没有被写回终态。3,300 笔 Pending 中，只有 <b>1 笔</b>出现客户端成功但后端未结算；其余集中在客户端失败 / 取消、未记录成功拉起支付面板、没有结果事件或结果字段缺失。</div>
+
+    <div class="card">
+      <div class="card-t">后端订单终态 · 全量状态字典</div>
+      <div class="card-s">payment_order 权威状态；CANCELED / ABANDONED 虽在状态字典中存在，但当前窗口没有订单进入这两个终态</div>
+      <div class="tbl-scroll"><table>
+        <tr><th>后端状态</th><th>订单</th><th>占全部订单</th><th style="text-align:left">判读</th></tr>
+        <tr class="warnrow"><td>PENDING</td><td><b>3,300</b></td><td class="down">98.65%</td><td style="text-align:left;white-space:normal">默认购买意图状态；全部缺平台回执字段，且创建后未更新</td></tr>
+        <tr><td>SUCCESS · PRODUCTION</td><td><b>40</b></td><td class="up">1.20%</td><td style="text-align:left;white-space:normal">唯一计入商业支付成功的终态</td></tr>
+        <tr><td>SUCCESS · SANDBOX</td><td>4</td><td>0.12%</td><td style="text-align:left;white-space:normal">测试环境成功，排除商业转化</td></tr>
+        <tr><td>FAILED</td><td>1</td><td>0.03%</td><td style="text-align:left;white-space:normal">后端明确记录失败</td></tr>
+        <tr><td>CANCELED</td><td>0</td><td>0%</td><td style="text-align:left;white-space:normal">客户端取消没有同步收口到该状态</td></tr>
+        <tr><td>ABANDONED</td><td>0</td><td>0%</td><td style="text-align:left;white-space:normal">无结果订单没有超时任务写入放弃状态</td></tr>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <div class="card-t">购买意图后的支付事件结果 · 5 类互斥去向</div>
+      <div class="card-s">每笔后端订单只进入一类；按 order_id 取 checkout_start 之后最后一条 checkout_result</div>
+      <div class="result-stack" role="img" aria-label="客户端失败或取消 38.6%，未匹配 checkout start 33.5%，已发起但无结果 22.7%，结果缺 is success 4.6%，客户端成功 0.6%">
+        <span class="result-fail" style="width:38.6%" title="客户端失败 / 取消 38.6%"></span>
+        <span class="result-unmatched" style="width:33.5%" title="未匹配 checkout_start 33.5%"></span>
+        <span class="result-no-result" style="width:22.7%" title="已发起但无结果 22.7%"></span>
+        <span class="result-missing" style="width:4.6%" title="结果缺 is_success 4.6%"></span>
+        <span class="result-success" style="width:.6%" title="客户端成功 0.6%"></span>
+      </div>
+      <div class="result-keys">
+        <div class="result-key"><i class="result-fail"></i>客户端失败 / 取消<b>1,291 · 38.6%</b></div>
+        <div class="result-key"><i class="result-unmatched"></i>未匹配 checkout_start<b>1,121 · 33.5%</b></div>
+        <div class="result-key"><i class="result-no-result"></i>已发起但无结果事件<b>759 · 22.7%</b></div>
+        <div class="result-key"><i class="result-missing"></i>结果缺 is_success<b>154 · 4.6%</b></div>
+        <div class="result-key"><i class="result-success"></i>客户端成功<b>20 · 0.6%</b></div>
+      </div>
+      <div class="tbl-scroll"><table>
+        <tr><th style="text-align:left">支付事件分类</th><th>全部订单</th><th>PENDING</th><th>生产成功</th><th>其他终态</th><th style="text-align:left">当前可解释原因</th></tr>
+        <tr class="warnrow"><td style="text-align:left">客户端失败 / 取消</td><td>1,291</td><td class="down">1,291</td><td>0</td><td>0</td><td style="text-align:left;white-space:normal">客户端已返回 is_success=false，但 reason 全部缺失，无法再分主动取消与商店错误</td></tr>
+        <tr class="warnrow"><td style="text-align:left">未匹配 checkout_start</td><td>1,121</td><td class="down">1,104</td><td>13</td><td>4</td><td style="text-align:left;white-space:normal">订单已创建，但没有记录支付面板成功拉起；也可能存在事件丢失或 order_id 不一致</td></tr>
+        <tr class="warnrow"><td style="text-align:left">已发起但无结果事件</td><td>759</td><td class="down">751</td><td>7</td><td>1</td><td style="text-align:left;white-space:normal">常见于关闭支付面板、杀进程、系统中断或结果埋点未发送</td></tr>
+        <tr class="warnrow"><td style="text-align:left">结果缺 is_success</td><td>154</td><td class="down">153</td><td>1</td><td>0</td><td style="text-align:left;white-space:normal">结果事件存在但缺核心字段，无法判定成功、失败或取消</td></tr>
+        <tr><td style="text-align:left">客户端成功</td><td>20</td><td class="down">1</td><td class="up">19</td><td>0</td><td style="text-align:left;white-space:normal">19 笔已正常生产结算；1 笔需要单独核查回执 / 验单链路</td></tr>
+      </table></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">Pending 状态健康检查</div>
+        <div class="card-s">判断是短时等待、真实验单故障，还是状态机没有收口</div>
+        <div class="minirow"><span>创建后从未更新</span><span class="mv down">100%<span class="sub2">3,300 / 3,300</span></span></div>
+        <div class="minirow"><span>平台订单 / 交易 / token 均为空</span><span class="mv down">100%<span class="sub2">3,300 / 3,300</span></span></div>
+        <div class="minirow"><span>超过 7 天仍 Pending</span><span class="mv down">67.2%<span class="sub2">2,217 / 3,300</span></span></div>
+        <div class="minirow"><span>客户端成功但后端未成功</span><span class="mv">1<span class="sub2">真正疑似回执 / 验单卡单</span></span></div>
+      </div>
+      <div class="card">
+        <div class="card-t">重复尝试造成的 Pending 膨胀</div>
+        <div class="card-s">生产成功账号 × 平台组合，回看首次成功之前留下的购买意图</div>
+        <div class="minirow"><span>生产成功账号 × 平台组合</span><span class="mv">39</span></div>
+        <div class="minirow"><span>成功前已有 Pending</span><span class="mv down">32<span class="sub2">82.1%</span></span></div>
+        <div class="minirow"><span>成功前累计遗留 Pending</span><span class="mv down">119</span></div>
+        <div class="minirow"><span>含义</span><span class="mv"><span class="sub2">重试建新单，旧单未关闭</span></span></div>
+      </div>
+    </div>
+
+    <div class="note"><b>处理优先级：</b>P0：checkout_result=false 时写回 CANCELED / FAILED，并强制透传 reason；P0：无结果订单经商店查询后超时写 ABANDONED；P1：重试前关闭上一笔同用户、同 SKU 的 Pending；P1：工作台改为监控“超过 30 分钟仍 Pending”，而不是累计 Pending 占比。</div>
+    <div class="tip"><b>快照差异：</b>本页原始支付总览生成时为 3,334 笔订单 / 3,289 笔 Pending；本次按相同截止时间复查时，ODS 晚到补录了 11 笔历史 Pending，因此诊断页使用 3,345 / 3,300。新增记录不改变占比和根因判断。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · Paywall 来源 ═══════════ -->
