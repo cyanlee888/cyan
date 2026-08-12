@@ -2,31 +2,45 @@
 -- 口径：首启当日成功注册设备 ÷ 当日首启设备；设备与日期均按 UTC。
 -- 成功兼容历史值 true / 1 / success；每台设备只取首个带有效方式的成功事件。
 -- 日表优先，intraday 仅补日表尚未落地的日期，避免重复扫描同一天。
+-- 任一事件出现 user_properties.user_type=test 的设备从首启分母与注册分子统一排除。
 
 DECLARE start_date DATE DEFAULT DATE '2026-07-10';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-12 01:21:00+00';
 DECLARE daily_max_suffix STRING DEFAULT (
   SELECT MAX(REGEXP_EXTRACT(table_name, r'^events_(\d{8})$'))
   FROM `dino-english-497507.analytics_538991439.INFORMATION_SCHEMA.TABLES`
   WHERE REGEXP_CONTAINS(table_name, r'^events_\d{8}$')
 );
 
-WITH events_union AS (
+WITH raw_union AS (
   SELECT
     event_name, event_date, event_timestamp, user_pseudo_id,
-    event_params, geo, platform
+    event_params, user_properties, geo, platform
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
     AND _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', start_date) AND daily_max_suffix
-    AND event_name IN ('first_open', 'signup_result')
+    AND event_timestamp < UNIX_MICROS(cutoff)
 
   UNION ALL
 
   SELECT
     event_name, event_date, event_timestamp, user_pseudo_id,
-    event_params, geo, platform
+    event_params, user_properties, geo, platform
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
   WHERE _TABLE_SUFFIX > daily_max_suffix
-    AND _TABLE_SUFFIX <= FORMAT_DATE('%Y%m%d', CURRENT_DATE('UTC'))
+    AND _TABLE_SUFFIX <= FORMAT_DATE('%Y%m%d', DATE(cutoff))
+    AND event_timestamp < UNIX_MICROS(cutoff)
+),
+test_devices AS (
+  SELECT DISTINCT user_pseudo_id
+  FROM raw_union
+  WHERE LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) = 'test'
+),
+events_union AS (
+  SELECT r.* EXCEPT(user_properties)
+  FROM raw_union r
+  LEFT JOIN test_devices t USING (user_pseudo_id)
+  WHERE t.user_pseudo_id IS NULL
     AND event_name IN ('first_open', 'signup_result')
 ),
 first_open_ranked AS (

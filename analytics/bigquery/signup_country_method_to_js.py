@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import csv
 import json
+import io
 import sys
 from argparse import ArgumentParser
 from collections import defaultdict
@@ -35,7 +36,14 @@ parser.add_argument(
 )
 args = parser.parse_args()
 
-rows = list(csv.DictReader(sys.stdin))
+raw_lines = sys.stdin.readlines()
+header_index = next(
+    (i for i, line in enumerate(raw_lines) if line.startswith("cohort_date,")),
+    None,
+)
+if header_index is None:
+    raise SystemExit("CSV header cohort_date not found in bq output")
+rows = list(csv.DictReader(io.StringIO("".join(raw_lines[header_index:]))))
 if not rows:
     raise SystemExit("No CSV rows received")
 

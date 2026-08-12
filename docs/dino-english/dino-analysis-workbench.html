@@ -65,6 +65,7 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 .tbl-scroll{overflow-x:auto;max-width:100%}
 .route-strip{display:flex;align-items:center;gap:7px;overflow-x:auto;padding:3px 1px 10px;margin-bottom:6px}
 .route-node{flex:0 0 auto;padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper-deep);font-size:11.5px;font-weight:700;white-space:nowrap}
+.route-node small{display:block;font-family:'Fraunces',serif;font-size:8.5px;line-height:1.1;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px}
 .route-arrow{flex:0 0 auto;color:var(--orange);font-family:'Fraunces',serif;font-size:16px}
 .segment-control{display:flex;align-items:center;gap:12px;margin:12px 0 8px}
 .segment-label{flex:0 0 auto;font-family:'Fraunces','Noto Serif SC',serif;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--ink-faint);text-transform:uppercase}
@@ -72,10 +73,16 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 .segment-tab{appearance:none;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink-soft);font:500 12px/1.4 'Noto Sans SC',sans-serif;padding:6px 13px;cursor:pointer}
 .segment-tab:hover:not(.on){border-color:var(--green-bright);color:var(--green)}
 .segment-tab.on{border-color:var(--green);background:var(--green);color:#f6f1e3;font-weight:700}
+.country-filter{align-items:flex-start;margin:14px 0 8px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
+.country-filter .segment-label{padding-top:7px;color:var(--green);font-size:12px}
+.country-filter-body{min-width:0}
+.country-filter-hint{margin-top:7px;color:var(--ink-faint);font-size:11.5px;line-height:1.55}
 .segment-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper-deep);font-size:11.5px;color:var(--ink-soft)}
 .segment-meta b{color:var(--ink)}
 .funnel-node{text-align:left!important;min-width:148px;white-space:normal!important}
 .funnel-node .idx{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:7px;border-radius:50%;background:var(--paper-deep);color:var(--green);font-family:'Fraunces',serif;font-size:10.5px;font-weight:700}
+.phase-cell{text-align:left!important;color:var(--ink-faint);font-size:10.5px;font-weight:700}
+.phase-start td{border-top:1.5px solid var(--line)}
 .funnel-rate{display:grid;grid-template-columns:minmax(64px,1fr) 50px;gap:8px;align-items:center;min-width:132px}
 .funnel-track{height:7px;border-radius:999px;background:var(--paper-deep);overflow:hidden}
 .funnel-track i{display:block;height:100%;border-radius:999px;background:var(--green)}
@@ -86,6 +93,9 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 .pillrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
 .pill{font-size:12px;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper-deep);cursor:pointer;color:var(--ink-soft)}
 .pill.on{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+.filterrow{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.filterrow .pillrow{margin:0}
+.filter-label{flex:0 0 32px;padding-top:5px;color:var(--ink-faint);font-size:11px;font-weight:700;letter-spacing:.08em}
 
 .note{background:#fbeee8;border:1.5px dashed var(--red);border-radius:8px;padding:10px 14px;font-size:12.5px;margin:12px 0}
 .note b{color:var(--red)}
@@ -153,7 +163,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <div class="kicker">Dino English · Analysis Workbench · Internal</div>
   <h1>核心指标<em>观测工作台</em></h1>
-  <div class="meta"><b>五大观测域:</b>A/B 实验 · 登录注册 · 留存 / 活跃时段 / Push · 支付转化 · 金币 / 收藏 · <b>A/B Android:</b>2026-07-31 00:00~08-05 04:15 UTC（08-05 滚动） · <b>注册总览 / 国家×方式:</b>2026-07-10~08-05 04:15 UTC（08-05 滚动） · <b>支付转化:</b>2026-07-10~08-05 04:15 UTC · <b>留存:</b>完整日更新至 08-04 · <b>渠道/版本/活跃时段/Push:</b>仍为各自历史快照 · <b>金币/收藏:</b>生产 MySQL 仍为 07-27 13:58 UTC 快照 · <b>最近更新:</b>2026-08-05 04:15 UTC（北京时间 12:15） · 汇报版看 <b>dino-launch-dashboard.html</b></div>
+  <div class="meta"><b>四大当前观测域:</b>A/B 实验 · 登录注册 · 留存 · 支付转化 · <b>统一实时截点:</b>2026-08-12 01:21 UTC（北京时间 09:21） · <b>测试账号:</b>GA4 任一事件命中 <b>user_type=test</b> 的设备，以及可映射的 AppsFlyer / 支付账号，均已排除 · <b>完整日:</b>截至 08-11；08-12* 为滚动日 · <b>核心导航:</b>仅保留当前可行动指标；旧渠道、版本、短信事故、活跃时段与 Push 专项已归档 · <b>金币/收藏:</b>生产镜像尚不能按同一测试账号口径过滤，历史快照暂不进入当前导航 · 汇报版看 <b>dino-launch-dashboard.html</b></div>
 
   <div class="groups" id="groups"></div>
 
@@ -161,53 +171,61 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <!-- ═══════════ A/B 实验 · 总览 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="总览">
-    <div class="sec-h">转化链路 A/B 实验 <span class="en">Conversion Funnel · Android</span></div>
-    <p class="sec-desc">实验键 <b>conv_funnel_v1</b>；按本次指定口径，<b>只纳入 2026-07-31 00:00 UTC 后首次进组</b>的稳定 Android 设备，07-30 样本全部排除。三项核心指标先总后分：注册使用进组后 24h 成熟 cohort，付费与首课使用 7d 成熟 cohort。注册已有成熟样本；付费与首课仍是<b>早期滚动值，不作为实验胜负依据</b>。</p>
+    <div class="sec-h">转化链路 A/B 实验 <span class="en">Conversion Funnel · Android + iOS</span></div>
+    <p class="sec-desc">实验键 <b>conv_funnel_v1</b>；只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的 Android / iOS 非测试设备，冲突与 fallback 不进入效果样本。24h 注册是早期次指标，但 A / B 的注册节点位于不同流程阶段，需同时看 Android 对齐业务状态“注册且完成 Onboarding”；首课完课率独立于页面漏斗。7 日订阅成功才是主指标，当前仍不作为实验胜负依据。</p>
     <div class="kpi-grid" id="abKpis"></div>
     <div class="card">
-      <div class="card-t">三项核心指标 · 总体 A vs B</div>
-      <div class="card-s">先看总体，再下钻按天；A=先问后登 / 体验课后 Paywall，B=先登后问 / Paywall 后新人引导课</div>
+      <div class="card-t">三项观测指标 · 总体 A vs B</div>
+      <div class="card-s">总体合并 Android + iOS；首课指标不要求命中前序页面，只在真正开始过指定首课的用户中计算完课率</div>
       <div class="tbl-scroll"><table id="abCoreTable"></table></div>
     </div>
     <div class="card">
+      <div class="card-t">24h 成熟注册率 · 按平台</div>
+      <div class="card-s">成熟样本只纳入已完整观察24小时的设备；平台方向不一致时，不用总体均值替代平台判断</div>
+      <div class="tbl-scroll"><table id="abPlatformTable"></table></div>
+    </div>
+    <div class="card">
       <div class="card-t">必要诊断锚点</div>
-      <div class="card-s">两组路径顺序不同，不拼成一条伪线性漏斗；所有到达率仍以各组进组设备为分母</div>
+      <div class="card-s">两组路径顺序不同，不拼成一条伪线性漏斗；页面锚点以进组设备为分母，首课开始与完成使用独立课程口径</div>
       <div class="tbl-scroll"><table id="abDiagTable"></table></div>
     </div>
-    <div class="note"><b>当前结论:</b>24h 成熟注册率 A <b>49.4%</b> / B <b>56.8%</b>，B 高 <b>7.4pp</b>（95% CI +1.4~+13.4pp，p=.016），<b>已达到统计显著</b>；但实验仅覆盖约 5.2 天，尚未覆盖完整业务周期，且出现 fallback 的设备仍占 6.2%，因此建议继续实验、不提前发布。7d 付费与首课成熟样本仍为 0；早期滚动值分别为付费 A 0.3% / B 0.5%，首课完课 A 7.5% / B 5.7%。</div>
+    <div class="note"><b>当前结论:</b>排除测试账号后，总体24h早期注册率 A <b>56.4%</b> / B <b>61.5%</b>，B 高 <b>5.1pp</b>（p=.00049）；但 Android 对齐到“注册且完成 Onboarding”后 A <b>51.8%</b> / B <b>52.9%</b>，仅 +1.1pp（p=.487），不显著。独立首课结果偏向 B，但两组课程构成不同；支付成功 A / B 均为 8 单。<b>当前不能判 A 或 B 胜出，继续实验。</b></div>
   </section>
 
   <!-- ═══════════ A/B 实验 · 主链路 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="主链路">
-    <div class="sec-h">A / B 主链路漏斗 <span class="en">Variant Journeys</span></div>
-    <p class="sec-desc">两组页面顺序不同，分别按各自真实路径阅读。选择“全部”或五个重点国家时，A / B 两条漏斗与顶部摘要同步切换。国家固定为设备<b>首次稳定进组事件的 geo.country</b>；“全部”包含其他国家与未知地区。漏斗以 <b>first_open</b> 为新装起点，每一步要求同时命中全部前序节点，但不强制按原始事件时间戳排序。</p>
-    <div class="segment-control">
-      <div class="segment-label">Country</div>
-      <div class="segment-tabs" id="abCountryTabs" role="tablist" aria-label="切换 A/B 主链路国家"></div>
+    <div class="sec-h">A / B 页面级主链路漏斗 <span class="en">Android Page-level Journeys</span></div>
+    <p class="sec-desc">本页仅展示 <b>Android</b>：iOS 的分组、注册和课程结果事件可用，但页面 / Onboarding 锚点尚未与 Android 对齐，不能硬拼成同一条漏斗。窗口为 2026-08-01 00:00~08-12 01:21 UTC；国家固定为设备<b>首次稳定进组事件的 geo.country</b>，每一步要求累计命中全部前序节点；A / B 末端均继续串联生产支付成功。</p>
+    <div class="segment-control country-filter" aria-label="A/B 主链路国家筛选">
+      <div class="segment-label">国家筛选</div>
+      <div class="country-filter-body">
+        <div class="segment-tabs" id="abCountryTabs" role="tablist" aria-label="切换 A/B 主链路国家"></div>
+        <div class="country-filter-hint">默认查看全部国家；切换后，A / B 摘要、关键转化指标和两条完整漏斗会同步更新。</div>
+      </div>
     </div>
     <div class="segment-meta" id="abCountryMeta" role="status" aria-live="polite"></div>
     <div class="kpi-grid" id="abFlowKpis"></div>
     <div class="card">
-      <div class="card-t">A 组 · 先问后登 / 体验课路径</div>
+      <div class="card-t">A 组 · 先问后登 / 逐题 Onboarding / 体验课路径</div>
       <div class="card-s" id="abFlowASub"></div>
       <div class="route-strip" id="abFlowARoute"></div>
       <div class="tbl-scroll"><table id="abFlowATable"></table></div>
       <div class="legend" id="abFlowALegend"></div>
     </div>
     <div class="card">
-      <div class="card-t">B 组 · 先登后问 / 多轮价值触达路径</div>
+      <div class="card-t">B 组 · 先登后问 / 逐题 Onboarding / 六步 Hub 引导</div>
       <div class="card-s" id="abFlowBSub"></div>
       <div class="route-strip" id="abFlowBRoute"></div>
       <div class="tbl-scroll"><table id="abFlowBTable"></table></div>
       <div class="legend" id="abFlowBLegend"></div>
     </div>
-    <div class="tip"><b>数据边界:</b>独立时序审计中，B 组有 122 / 583 台登录页曝光早于 experiment_group_assign，上报滞后中位数约 192 秒；因此本页使用“前序节点累计命中”而非原始时间戳串联。B 组 1.4.2 的学习计划 H5 埋点未随版本上线，且第一轮 Paywall 在该版本存在漏记；这两步的国家差异只用于排查，不用于评价国家优劣。当前主链路在同一事件截点重跑，已纳入迟到事件回补。</div>
+    <div class="tip"><b>可比口径:</b>A 的注册发生在 Onboarding 之后，B 的注册发生在 Onboarding 之前，不能直接用两个“注册成功”节点判断方案优劣；默认以“注册且完成 Onboarding”作为页面级同状态比较。<br><b>节点口径:</b>Onboarding 的不同问题共用 <span class="src">OnboardingSetupActivity</span>，没有独立页面曝光事件，因此以每题 <span class="src">step_submitted</span> 作为“完成并流转到下一题”的代理节点。<span class="src">1_learner_type</span> 仅 1 台设备命中，未纳入漏斗。B 组登录页存在分组事件上报滞后，因此沿用“前序节点累计命中”；B 组 1.4.2 的学习计划 H5 与第一轮 Paywall 有埋点缺口，这两步只用于排查。</div>
   </section>
 
   <!-- ═══════════ A/B 实验 · B 组新人引导课 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="B组新手课">
     <div class="sec-h">B 组 · 新人引导课环节漏斗 <span class="en">Onboarding Lesson · 1661</span></div>
-    <p class="sec-desc">单独观察稳定 B 组进入新人引导课后的课内流失。课程严格限定 <b>lesson_id=1661</b>；按 GA4 <b>user_pseudo_id</b> 去重，阶段到达使用 <b>class_stage_start</b>，环节内完成使用 <b>class_stage_end</b>，最终完课使用 <b>class_lesson_end(result=complete)</b>。</p>
+    <p class="sec-desc">单独观察 Android + iOS 稳定 B 组进入新人引导课后的课内流失。课程严格限定 <b>lesson_id=1661</b>；按平台和 GA4 <b>user_pseudo_id</b> 去重，阶段到达使用 <b>class_stage_start</b>，最终完课使用 <b>class_lesson_end(result=complete)</b>。</p>
     <div class="kpi-grid" id="abBLessonKpis"></div>
     <div class="card">
       <div class="card-t">课内到达漏斗 · 先总后分</div>
@@ -227,7 +245,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ A/B 实验 · 按天 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="按天">
     <div class="sec-h">按进组日拆分 <span class="en">Assigned Cohort · UTC</span></div>
-    <p class="sec-desc">同一指标先看总盘，再看 UTC 进组日期。注册列把 24h 成熟口径与滚动口径分开；08-05* 为滚动部分日。付费与首课尚无 7d 成熟 cohort，不做日间胜负解释。</p>
+    <p class="sec-desc">本表合并 Android + iOS，并按 UTC 进组日期拆分。注册列把 24h 成熟口径与滚动口径分开；08-11 仅部分设备成熟，08-12* 为滚动部分日。付费绝对量仍小，不做日间胜负解释。</p>
     <div class="card">
       <div class="tbl-scroll"><table id="abDayTable"></table></div>
       <div class="legend">正式注册率 = 进组后满 24h 且在 24h 内注册 ÷ 24h 成熟设备 · 滚动注册 / 首课 / 支付仅作早期诊断 · PENDING 不算付费成功</div>
@@ -239,9 +257,9 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="sec-h">实验健康与读数门槛 <span class="en">Data Health</span></div>
     <p class="sec-desc">效果之前先验证分组、归属与事件。分流比例通过 SRM 检查，注册已可读第一批成熟 cohort；fallback、分组真相源与 7d 成熟度仍限制最终发布决策。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">1,309</div><div class="kn">A 657 / B 652；50.2% / 49.8%，SRM p=.782</div></div>
-      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">6.2%</div><div class="kn">86 / 1,395；高于实验启动门槛 ≤1%</div></div>
-      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">28</div><div class="kn">同设备多分组或与 fallback 重叠；已从效果样本剔除</div></div>
+      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">5,010</div><div class="kn">A 2,489 / B 2,521；49.7% / 50.3%，SRM p=.651</div></div>
+      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">7.1%</div><div class="kn">385 / 5,395；Android 5.9%，iOS 11.2%</div></div>
+      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">126</div><div class="kn">Android 81 / iOS 45；已从效果样本剔除</div></div>
     </div>
     <div class="card">
       <div class="tbl-scroll"><table id="abHealthTable"></table></div>
@@ -252,13 +270,13 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="tbl-scroll"><table id="abLessonTable"></table></div>
       <div class="legend">开始 = class_lesson_start；A 完成 = trial_lesson_complete 或 class_lesson_end(result=complete)，B 完成 = class_lesson_end(result=complete) 且 lesson_id=1661 · 每个 ID 内设备去重，总体再跨 ID 去重</div>
     </div>
-    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 28 台冲突分组与 6.2% fallback；③ 等待 7d 付费与首课 cohort 成熟；④ 至少覆盖一个完整业务周期。Google Play 已出现生产 SUCCESS（A 2 / B 3），但量级远不足以判断付费差异。首课继续使用明确 Lesson ID 白名单识别，B 完成严格筛选 lesson_id=1661。</div>
+    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明126台冲突分组与7.1% fallback，尤其是 iOS 11.2%；③ 对齐 iOS 页面 / Onboarding 锚点后再补跨端页面漏斗；④ 继续积累支付样本。生产 SUCCESS A / B 均为 8 单，量级远不足以判断付费差异。</div>
   </section>
 
   <!-- ═══════════ 登录注册 · 总览 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="总览">
+  <section class="sec" data-group="login" data-tab="核心概览">
     <div class="sec-h">注册转化总览 <span class="en">Signup Overview</span></div>
-    <p class="sec-desc">先看整体，再看国家、渠道、版本和注册方式。统一口径为：<b>首启当日注册成功设备 ÷ 当日首启设备</b>，按 GA4 user_pseudo_id 去重、UTC 日 cohort；成功兼容 <b>true / 1 / success</b>，08-05* 为滚动部分日。</p>
+    <p class="sec-desc">核心只保留一条主指标：<b>首启当日注册成功设备 ÷ 当日首启设备</b>。按 GA4 user_pseudo_id 去重、UTC 日 cohort，并排除 <b>user_type=test</b>；08-11 是最近完整日，08-12* 为滚动部分日。</p>
     <div class="kpi-grid">
       <div class="kpi" id="signupWindowKpi"></div>
       <div class="kpi hot" id="signupRecentKpi"></div>
@@ -269,11 +287,11 @@ svg text{font-family:'Noto Sans SC',sans-serif}
       <div class="card-s">总盘列在前，Android 放在最后用于观察 Google Play 版本变化；Δ 为总体环比百分点</div>
       <div class="tbl-scroll"><table id="regDailyTable"></table></div>
     </div>
-    <div class="tip"><b>读取顺序:</b>先用本页确认总盘水平与日趋势；再进入「国家×方式」看各市场由哪种注册方式贡献转化，进入「渠道 / 版本对比」解释历史变化来源。08-05* 未结束，不与完整日直接比较；渠道、版本等旧页仍以各自标注的快照时间为准。</div>
+    <div class="tip"><b>核心洞察:</b>最近三个完整日 08-09~11 注册率为 <b>50.8%</b>（906 / 1,785），高于全窗 45.1%；当前滚动日 08-12* 为 45.0%，样本仅 40 台，不与完整日直接比较。下一步进入「国家与方式」确认增长由哪些市场和登录方式贡献。</div>
   </section>
 
   <!-- ═══════════ TAB 0 结论速览 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="结论速览">
+  <section class="sec" data-group="login-archive" data-tab="结论速览">
     <div class="sec-h">谁在涨,谁在跌 <span class="en">Country Momentum</span></div>
     <p class="sec-desc">对比前段(07-10~12)与最近三个完整日(07-27~29)的注册转化率(GA4 cohort 口径；07-30 滚动日不参与趋势判断)。<b>除韩国外，各主投市场均高于前段；韩国仍是唯一显著低位项。</b>韩国最近三日注册率回升至 21.2%，07-29 单日已到 27.8%；越南/马来继续恢复，越南成功注册仍几乎全部依赖手机号。</p>
     <div class="card">
@@ -291,7 +309,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ TAB 1 国家明细 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="国家明细">
+  <section class="sec" data-group="login-archive" data-tab="国家明细">
     <div class="sec-h">天 × 国家 注册转化明细 <span class="en">Day × Country Matrix</span></div>
     <p class="sec-desc">三个口径互相校验:<b>GA4 口径</b>看产品内真实转化(打开了 App 的设备);<b>AF 注册/安装</b>对齐数据侧宽表(已剔网盟假量);<b>AF 注册/激活</b>排除「装了没打开」的影响,最接近「进了 App 的人有多少注册」。三口径趋势一致才可下结论。</p>
     <div class="pillrow" id="metricPills"></div>
@@ -302,7 +320,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ TAB 2 渠道 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="渠道">
+  <section class="sec" data-group="login-archive" data-tab="渠道">
     <div class="sec-h">天 × 渠道 注册转化 <span class="en">Day × Channel</span></div>
     <p class="sec-desc">宽表口径(注册/归因安装)。<b>网盟 ecommonltbn_int 是假量</b>:激活率 0.2%,对照其他渠道 90%~94%(激活 = AppsFlyer 安装能关联到 GA4 first_open,即真的打开过 App)。</p>
     <div class="card">
@@ -317,7 +335,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ TAB 3 版本对比 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="版本对比">
+  <section class="sec" data-group="login-archive" data-tab="版本对比">
     <div class="sec-h">V1.4.1 登录改版影响 <span class="en">Version Comparison</span></div>
     <p class="sec-desc">07-17 当天新装用户随商店灰度分别拿到 1.4.0 / 1.4.1,流量来源相同,构成天然对照。<b>OB 四题完成率两版本持平,断点精确落在「填完第 4 题 → 注册成功」这一步</b>,且 1.4.1 把注册方式从 Google 一键大幅导向手机验证码。</p>
     <div class="grid2">
@@ -336,25 +354,26 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ 登录注册 · 国家 × 方式 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="国家×方式">
+  <section class="sec" data-group="login" data-tab="国家与方式">
     <div class="sec-h">天 × 国家 × 注册方式 <span class="en">Day × Country × Signup Method</span></div>
-    <p class="sec-desc">按首启国家选择市场，再看每天各注册方式对总注册率的贡献。每个方式的比率均为：<b>该方式成功注册设备 ÷ 当日该国首启设备</b>；各方式相加等于总注册率。成功事件兼容历史 <b>true / 1 / success</b> 三种值，并对设备日去重。</p>
-    <div class="pillrow" id="authCountryPills"></div>
+    <p class="sec-desc">默认先看全部国家、全部方式的总盘，再按首启国家或注册方式下钻。每个方式的比率均为：<b>该方式成功注册设备 ÷ 当日所选国家首启设备</b>；全部方式相加等于总注册率。成功事件兼容历史 <b>true / 1 / success</b> 三种值，并对设备日去重。</p>
+    <div class="filterrow"><span class="filter-label">国家</span><div class="pillrow" id="authCountryPills"></div></div>
+    <div class="filterrow"><span class="filter-label">方式</span><div class="pillrow" id="authMethodPills"></div></div>
     <div class="card">
-      <div class="card-t" id="authMethodDailyTitle">国家注册方式 · 按日</div>
-      <div class="card-s">括号内为成功注册设备数；首启是所有方式共用的分母 · 08-05* 为滚动部分日</div>
+      <div class="card-t" id="authMethodDailyTitle">全部国家 · 全部方式 · 按日</div>
+      <div class="card-s">括号内为成功注册设备数；首启是所有方式共用的分母 · 08-12* 为滚动部分日</div>
       <div class="tbl-scroll"><table id="authMethodDailyTable"></table></div>
     </div>
     <div class="card">
       <div class="card-t">最近 3 个已结束 UTC 日 · 国家 × 方式</div>
-      <div class="card-s">窗口 08-02~08-04；单元格为方式注册率（成功设备数），用于横向看各市场的方式依赖</div>
+      <div class="card-s">窗口 08-09~08-11；单元格为方式注册率（成功设备数），用于横向看各市场的方式依赖</div>
       <div class="tbl-scroll"><table id="authMethodCountrySummary"></table></div>
     </div>
-    <div class="note"><b>当前信号:</b>① 越南最近 3 个已结束日 39 台首启、6 台注册，全部走手机号，样本小但 OTP 单点依赖仍高；② 马来注册率 61.4%，Phone 贡献 28.1pp、Apple 贡献 18.8pp，方式更分散；③ 沙特注册率 48.8%，Google 单独贡献 42.9pp；④ 韩国注册率 49.7%，Google 26.2pp、Kakao 20.8pp。低样本市场优先看连续多日，不按单日波动下结论。</div>
+    <div class="note"><b>当前信号:</b>① 马来最近三个完整日注册率 <b>49.7%</b>（240 / 483），Google 占成功 40.8%、Phone 35.0%、Apple 14.6%，结构仍最分散；② 沙特 <b>50.9%</b>（230 / 452），83.9% 的成功来自 Google；③ 韩国 <b>50.0%</b>（117 / 234），Kakao 53.8%、Google 42.7%；④ 越南 <b>44.1%</b>（49 / 111），Phone 占 98.0%，OTP 风险最高。</div>
   </section>
 
   <!-- ═══════════ TAB 4 注册方式 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="注册方式">
+  <section class="sec" data-group="login-archive" data-tab="注册方式">
     <div class="sec-h">注册方式结构 <span class="en">Signup Method Mix</span></div>
     <p class="sec-desc">signup_result 成功事件的 signup_method 参数，按设备日去重。<b>手机号已从辅助方式变成部分市场的主路径</b>：越南近两周成功注册仍几乎全部依赖手机号；马来在 Phone、Google、Apple 之间更分散；韩国主要由 Google 与 Kakao 共同贡献。短信通道的余额、发送成功率和 OTP 到达率需要常态告警。</p>
     <div class="card">
@@ -371,7 +390,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ TAB 5 小时级 ═══════════ -->
-  <section class="sec" data-group="login" data-tab="小时级">
+  <section class="sec" data-group="login-archive" data-tab="小时级">
     <div class="sec-h">小时级注册量:短信欠费影响评估 <span class="en">Hourly · SMS Outage</span></div>
     <p class="sec-desc">火山短信 07-18 北京时间 00:23~9:02 欠费(≈100 次发送、40~50 用户收不到码),对应 <b>UTC 07-17 16:23 ~ 07-18 01:02</b>(表中标红时段)。该窗口是东南亚深夜~清晨的注册低谷,估算损失约 10~15 个注册,<b>对当日大盘影响 ≤1pt,不是本轮下滑主因</b>;但 1.4.1 后手机号注册占比升至 25~43%,短信通道需加余额/送达率告警。</p>
     <div class="card">
@@ -384,7 +403,8 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ TAB 6 留存 ═══════════ -->
   <section class="sec" data-group="retention" data-tab="留存">
     <div class="sec-h">留存明细 <span class="en">Retention Detail</span></div>
-    <p class="sec-desc">GA4 设备级,cohort 按首启日分组,当日任意事件即活跃。汇报版热力图在老板看板;这里放原始数值方便复查与二次计算。</p>
+    <p class="sec-desc">采用市面常用的 <b>Exact-day / 第 N 日留存</b>：以 first_open 的 UTC 日期分 cohort，同一 user_pseudo_id 在恰好第 N 个自然日产生明确前台活跃事件（session_start / user_engagement / screen_view / page_view）即算回访。它不是“第 N 日之前回来过一次”的滚动留存，也不是账号级跨设备留存。</p>
+    <div class="tip"><b>口径判断:</b>当前只将前台会话、前台互动、页面或屏幕浏览视为回访；notification_receive、app_remove、app_update 等后台或系统事件不计，因此比“任意事件”口径更接近用户真实打开并使用 App。若要衡量学习价值，建议并列增加“第 N 日发生学习事件”的学习留存；重装或换设备会被视为新设备，是设备级口径的固有限制。</div>
     <div class="card">
       <div class="card-t">Cohort × D1~D7 回访人数与比率</div>
       <div class="card-s">「—」= 未到观察期 · 括号内为回访人数</div>
@@ -392,7 +412,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     </div>
     <div class="grid2">
       <div class="card">
-        <div class="card-t">D1 分层(07-10~08-03 成熟 cohort 合并)</div>
+        <div class="card-t">D1 分层(07-10~08-10 成熟 cohort 合并)</div>
         <div class="tbl-scroll"><table id="segTable"></table></div>
       </div>
       <div class="card">
@@ -403,7 +423,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ 留存 · 活跃时段 ═══════════ -->
-  <section class="sec" data-group="retention" data-tab="活跃时段">
+  <section class="sec" data-group="retention-archive" data-tab="活跃时段">
     <div class="sec-h">用户当地活跃与 Push 响应时段 <span class="en">Local-time Activity</span></div>
     <p class="sec-desc">GA4 设备级数据，统计窗口为 <b>2026-07-10 00:00~07-30 12:28 UTC</b>；全部时间已换算为用户所在国当地时间，印度尼西亚按省份映射 WIB / WITA / WIT。自然活跃按 session_start，并剔除与 notification_open 同会话或前后 5 分钟内的会话；活跃强度使用“设备日”去重，避免高频用户放大峰值。</p>
 
@@ -461,7 +481,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ 留存 · Push 分析 ═══════════ -->
-  <section class="sec" data-group="retention" data-tab="Push分析">
+  <section class="sec" data-group="retention-archive" data-tab="Push分析">
     <div class="sec-h">Push 触达、点击与回访 <span class="en">Push Attribution</span></div>
     <p class="sec-desc">Firebase / GA4 设备级数据,窗口为 <b>2026-07-16~07-30 12:28 UTC</b>。Android 有 notification_receive,可计算收到→打开；iOS 仍只有 notification_open，本期 24 次打开，不计算送达率与点击率。24h 学习/完课只统计可完整观察的 07-16~28 打开事件，仍是<b>时序归因代理</b>，不等同于因果增量。</p>
 
@@ -525,7 +545,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   </section>
 
   <!-- ═══════════ 留存 · Push 口径 ═══════════ -->
-  <section class="sec" data-group="retention" data-tab="Push口径">
+  <section class="sec" data-group="retention-archive" data-tab="Push口径">
     <div class="sec-h">Push 归因口径与数据缺口 <span class="en">Definitions & Gaps</span></div>
     <p class="sec-desc">现有 Firebase 自动事件已经能回答“权限、收到、打开、划掉”,自定义 label 能拆场景与轮次;但业务事件没有携带 push_id / task_id,所以“回访与任务完成”目前只能做同设备的时序归因。</p>
 
@@ -543,225 +563,127 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
     <div class="note"><b>补齐完整归因的最小改造:</b>发送侧生成 push_id,并同时写入 scene、round、send_batch、target_task、deeplink;客户端在 receive / open 及落地页首个业务事件透传同一 push_id;另保留 5%~10% 同条件不发送组,才能计算 Push 对 D1 / D3、学习与付费的真实增量。</div>
 
-    <details><summary>① 每日收到 / 打开 / 划掉</summary>
-<pre>SELECT
-  PARSE_DATE('%Y%m%d', REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$')) AS d,
-  device.operating_system AS os,
-  COUNTIF(event_name='notification_receive') AS receive,
-  COUNTIF(event_name='notification_open') AS open,
-  COUNTIF(event_name='notification_dismiss') AS dismiss,
-  COUNTIF(event_name='notification_foreground') AS foreground,
-  ROUND(SAFE_DIVIDE(COUNTIF(event_name='notification_open'),
-                    COUNTIF(event_name='notification_receive'))*100,2) AS open_rate
-FROM `dino-english-497507.analytics_538991439.events_*`
-WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260730'
-  AND event_name IN ('notification_receive','notification_open',
-                     'notification_dismiss','notification_foreground')
-GROUP BY 1,2 ORDER BY 1,2</pre></details>
-
-    <details><summary>② 场景 / 轮次点击率</summary>
-<pre>WITH e AS (
-  SELECT event_name, user_pseudo_id,
-    (SELECT value.string_value FROM UNNEST(event_params) WHERE key='label') AS label
-  FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260730'
-    AND device.operating_system='Android'
-    AND event_name IN ('notification_receive','notification_open')
-)
-SELECT label,
-  COUNTIF(event_name='notification_receive') receive,
-  COUNTIF(event_name='notification_open') open,
-  ROUND(SAFE_DIVIDE(COUNTIF(event_name='notification_open'),
-                    COUNTIF(event_name='notification_receive'))*100,2) open_rate
-FROM e GROUP BY 1 ORDER BY receive DESC</pre></details>
-
-    <details><summary>③ 打开后 24h 学习 / 完课(时序归因代理)</summary>
-<pre>WITH opens AS (
-  SELECT user_pseudo_id, event_timestamp open_ts,
-    (SELECT value.string_value FROM UNNEST(event_params) WHERE key='label') label
-  FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260728'
-    AND device.operating_system='Android'
-    AND event_name='notification_open'
-),
-biz AS (
-  SELECT user_pseudo_id, event_timestamp, event_name
-  FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260716' AND '20260729'
-)
-SELECT o.label, COUNT(*) opens,
-  COUNTIF(EXISTS(
-    SELECT 1 FROM biz b
-    WHERE b.user_pseudo_id=o.user_pseudo_id
-      AND b.event_timestamp BETWEEN o.open_ts AND o.open_ts+24*60*60*1000000
-      AND b.event_name IN ('class_lesson_start','dino_assistant_progress')
-  )) learning_24h,
-  COUNTIF(EXISTS(
-    SELECT 1 FROM biz b
-    WHERE b.user_pseudo_id=o.user_pseudo_id
-      AND b.event_timestamp BETWEEN o.open_ts AND o.open_ts+24*60*60*1000000
-      AND b.event_name IN ('class_lesson_end','trial_lesson_complete')
-  )) lesson_complete_24h
-FROM opens o GROUP BY 1 ORDER BY opens DESC</pre></details>
+    <div class="tip"><b>查询资产不随 HTML 公开：</b>每日触达、场景轮次及打开后 24h 行为的复跑逻辑仅保存在本地分析目录；页面只展示聚合结果、定义和数据缺口。</div>
 
     <div class="tip"><b>读数边界:</b>① 当前有 15 个发送日、Android 186 次打开，分轮次结论仍需扩样；② notification_receive 是 Firebase 客户端自动事件，不等于服务端“发送成功”；③ 同一设备在 24 小时内自然回访也会被计入，没有不发送对照组前不可宣称增量；④ iOS 只有 24 次 open，本页不展示虚假的点击率。SQL 同时覆盖 07-16~29 日表与 07-30 intraday；24h 归因只取打开至 07-28。</div>
   </section>
 
-  <!-- ═══════════ TAB 7 口径与 SQL ═══════════ -->
-  <section class="sec" data-group="login" data-tab="口径与SQL">
-    <div class="sec-h">口径说明与可复跑 SQL <span class="en">Definitions & Queries</span></div>
-    <p class="sec-desc">所有查询在 BigQuery 项目 <b>dino-english-497507</b> 跑,GA4 数据集 <b>analytics_538991439</b>(日表 events_YYYYMMDD + 当日 events_intraday_*),数据侧宽表在 <b>de_dwd</b>。跑法:<b>bq query --use_legacy_sql=false '…'</b>。</p>
+  <!-- ═══════════ 登录注册 · 口径 ═══════════ -->
+  <section class="sec" data-group="login" data-tab="口径">
+    <div class="sec-h">口径说明 <span class="en">Definitions</span></div>
+    <p class="sec-desc">登录注册主口径来自 GA4 设备级 cohort；08-10 及以前使用日表，08-11~12 补 intraday，并以 2026-08-12 01:21 UTC 为统一截点。查询资产仅保存在本地分析目录，不随 HTML 公开。</p>
 
-    <div class="tip"><b>口径速查:</b>① <b>GA4 注册率</b> = 首启当日成功 signup_result 设备 ÷ 当日 first_open 设备（user_pseudo_id 去重、UTC 日 cohort、国家锚定首启事件 geo.country）；成功值统一兼容 true / 1 / success；② <b>方式注册率</b> = 该方式成功注册设备 ÷ 同国家同日首启设备，各方式相加等于总注册率；③ <b>宽表注册率</b> = is_registered ÷ is_installed；④ <b>留存</b> = cohort 首启日分组，第 N 天有任意事件。</div>
+    <div class="tip"><b>口径速查:</b>① <b>GA4 注册率</b> = 首启当日成功 signup_result 设备 ÷ 当日 first_open 设备（user_pseudo_id 去重、UTC 日 cohort、国家锚定首启事件 geo.country）；成功值统一兼容 true / 1 / success；② <b>方式注册率</b> = 该方式成功注册设备 ÷ 同国家同日首启设备，各方式相加等于总注册率；③ <b>宽表注册率</b> = is_registered ÷ is_installed；④ <b>留存</b> = cohort 首启日分组，第 N 天发生 session_start / user_engagement / screen_view / page_view 之一。</div>
 
-    <details><summary>① 天 × 国家 注册转化(GA4 cohort 口径)</summary>
-<pre>-- 与「国家×方式」共用同一聚合结果，避免总览与下钻出现两套成功口径。
-SELECT cohort_date, country_code, first_opens, registered,
-  ROUND(SAFE_DIVIDE(registered, first_opens) * 100, 1) AS registered_rate
-FROM country_daily
-ORDER BY cohort_date, country_code
--- country_daily 的完整构造见：analytics/bigquery/signup-country-method-daily.sql</pre></details>
-
-    <details><summary>② 天 × 国家/渠道(数据侧宽表,剔网盟)</summary>
-<pre>SELECT install_date, install_country, media_source,
-  COUNT(*) installs, SUM(is_activated) activated, SUM(is_registered) registered
-FROM `dino-english-497507.de_dwd.product_conversion_funnel_user`
-WHERE install_date BETWEEN '2026-07-10' AND '2026-08-03'
-  AND media_source != 'ecommonltbn_int'   -- 网盟假量,默认剔除
-GROUP BY 1,2,3 ORDER BY 1,2</pre></details>
-
-    <details><summary>③ 版本对比(首启当日注册率 按 app 版本)</summary>
-<pre>-- ev 同① 再加 app_info.version 字段;firsts 取首启时的版本
-SELECT f.cd, f.ver, COUNT(*) n, COUNTIF(s.sd=f.cd) su_same,
-  ROUND(COUNTIF(s.sd=f.cd)/COUNT(*)*100,1) rate
-FROM firsts f LEFT JOIN su s USING(user_pseudo_id)
-GROUP BY 1,2 HAVING n>=30 ORDER BY 1,n DESC
--- OB4→注册:把 firsts 换成「当日提交 step_submitted step_id='4_english_level' 的设备」</pre></details>
-
-    <details><summary>④ 天 × 国家 × 注册方式（当前主查询）</summary>
-<pre>-- 完整可复跑 SQL：analytics/bigquery/signup-country-method-daily.sql
--- 日表优先；intraday 只补日表尚未落地的日期，避免重复。
--- 国家取设备首次 first_open 的 geo.country；注册方式取首个有效成功事件。
-WHERE event_name='signup_result'
-  AND LOWER(COALESCE(is_success_string,
-                     CAST(is_success_int AS STRING),
-                     result)) IN ('true','1','success')
--- 输出：cohort_date × country_code × first_opens / registered /
---       google / phone / apple / facebook / kakao / unknown</pre></details>
-
-    <details><summary>⑤ 小时级(排查短信欠费类事故)</summary>
-<pre>SELECT DATE(TIMESTAMP_MICROS(event_timestamp)) d,
-  EXTRACT(HOUR FROM TIMESTAMP_MICROS(event_timestamp)) h,
-  COUNT(DISTINCT IF(m='phone',user_pseudo_id,NULL)) phone,
-  COUNT(DISTINCT IF(m!='phone' OR m IS NULL,user_pseudo_id,NULL)) other
-FROM ( ... signup_result + signup_method 同④ ... )
-GROUP BY 1,2 ORDER BY 1,2</pre></details>
-
-    <details><summary>⑥ 留存(cohort × 第 N 天)</summary>
-<pre>WITH ev AS ( ... 全事件,日表+intraday ... ),
-act AS (SELECT DISTINCT user_pseudo_id, d FROM ev),
-firsts AS (SELECT user_pseudo_id, MIN(d) cd FROM ev WHERE event_name='first_open' GROUP BY 1)
-SELECT f.cd, COUNT(DISTINCT f.user_pseudo_id) n,
-  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 1 DAY),a.user_pseudo_id,NULL)) d1,
-  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 3 DAY),a.user_pseudo_id,NULL)) d3,
-  COUNT(DISTINCT IF(a.d=DATE_ADD(f.cd,INTERVAL 7 DAY),a.user_pseudo_id,NULL)) d7
-FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre></details>
-
-    <div class="tip"><b>踩过的坑:</b>① 当前日表到 08-03，08-04~05 仍走 intraday；查询按“已有日表优先、之后才补 intraday”避免重复；② signup_result 已同时包含成功与失败，不能再把事件出现直接等同成功，且成功值跨版本有 true / 1 / success 三种；③ 新版部分 signup_result 的 geo.country 缺失，因此国家必须锚定同设备 first_open；④ 同设备日可能有重复结果事件，按首个带有效方式的成功事件归一。</div>
+    <div class="tip"><b>实现边界:</b>① 当前日表到 08-10，08-11~12 补 intraday，避免重复；② signup_result 同时包含成功与失败，成功值统一兼容 true / 1 / success；③ 国家锚定同设备 first_open，避免新版 signup_result 国家缺失；④ 同设备日重复结果按首个带有效方式的成功事件归一；⑤ 任一事件命中 user_type=test 的设备整体排除。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · 转化总览 ═══════════ -->
   <section class="sec" data-group="payment" data-tab="转化总览">
     <div class="sec-h">付费转化总盘 <span class="en">Monetization Overview</span></div>
-    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00~08-05 04:15 UTC</b>。先看付费页面触达、可串联的客户端漏斗，再看生产订单结算。线上同时存在老事件名与新版本 <span class="anchor">event_id</span>，本页已归一；<b>最终成功只认生产订单 status=SUCCESS 且 env_type=PRODUCTION</b>。</p>
+    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00~08-12 01:21 UTC</b>。先看付费页面触达、可串联的客户端漏斗，再看生产订单结算。线上新旧事件名已归一；<b>最终成功只认生产订单 status=SUCCESS 且 env_type=PRODUCTION</b>。GA4 测试设备及可映射支付账号均已排除。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">常规 Paywall 触达</div><div class="kv">1,575</div><div class="kn">3,589 次曝光 · GA4 设备去重</div></div>
-      <div class="kpi"><div class="kl">折扣订阅页触达</div><div class="kv">2,428</div><div class="kn">4,512 次曝光 · 含挽留 / 每日折扣 / 引导课</div></div>
-      <div class="kpi"><div class="kl">任一付费页面触达</div><div class="kv">2,773</div><div class="kn">Paywall 与折扣页跨页面去重</div></div>
-      <div class="kpi warn"><div class="kl">可串联曝光→发起</div><div class="kv">11.8%</div><div class="kn">2,773 台曝光设备中 326 台随后发起支付</div></div>
-      <div class="kpi warn"><div class="kl">生产订单成功率</div><div class="kv">1.21%</div><div class="kn">28 / 2,316 笔；PENDING 2,276 笔</div></div>
-      <div class="kpi warn"><div class="kl">订单来源缺失率</div><div class="kv">44.3%</div><div class="kn">1,025 / 2,316 笔 subscription_source 为空</div></div>
+      <div class="kpi"><div class="kl">常规 Paywall 触达</div><div class="kv">3,136</div><div class="kn">8,442 次曝光 · GA4 设备去重</div></div>
+      <div class="kpi"><div class="kl">折扣订阅页触达</div><div class="kv">3,310</div><div class="kn">6,578 次曝光 · 含挽留 / 每日折扣 / 引导课</div></div>
+      <div class="kpi"><div class="kl">任一付费页面触达</div><div class="kv">4,366</div><div class="kn">Paywall 与折扣页跨页面去重</div></div>
+      <div class="kpi warn"><div class="kl">可串联曝光→发起</div><div class="kv">18.9%</div><div class="kn">4,366 台曝光设备中 827 台随后发起支付</div></div>
+      <div class="kpi warn"><div class="kl">生产订单成功率</div><div class="kv">1.20%</div><div class="kn">40 / 3,334 笔；PENDING 3,289 笔</div></div>
+      <div class="kpi warn"><div class="kl">订单来源缺失率</div><div class="kv">30.7%</div><div class="kn">1,022 / 3,334 笔 subscription_source 为空</div></div>
     </div>
     <div class="card">
       <div class="card-t">客户端可串联漏斗 · 同设备且后一步晚于前一步</div>
       <div class="card-s">GA4 user_pseudo_id 去重；用于定位前端断点，不替代生产结算</div>
       <div class="push-flow">
-        <div class="flow-step"><div class="flow-num">2,773</div><div class="flow-lab">付费页面触达</div><div class="flow-rate">Paywall / 折扣页跨页面去重</div></div>
-        <div class="flow-step"><div class="flow-num">326</div><div class="flow-lab">随后发起支付</div><div class="flow-rate">11.8% · 可归因 checkout</div></div>
-        <div class="flow-step"><div class="flow-num">310</div><div class="flow-lab">商店返回结果</div><div class="flow-rate">95.1% · 含取消 / 失败 / 成功</div></div>
-        <div class="flow-step"><div class="flow-num">15</div><div class="flow-lab">客户端首购成功信号</div><div class="flow-rate">4.8% · 仅诊断，不作财务口径</div></div>
+        <div class="flow-step"><div class="flow-num">4,366</div><div class="flow-lab">付费页面触达</div><div class="flow-rate">Paywall / 折扣页跨页面去重</div></div>
+        <div class="flow-step"><div class="flow-num">827</div><div class="flow-lab">随后发起支付</div><div class="flow-rate">18.9% · 可归因 checkout</div></div>
+        <div class="flow-step"><div class="flow-num">790</div><div class="flow-lab">商店返回结果</div><div class="flow-rate">95.5% · 含取消 / 失败 / 成功</div></div>
+        <div class="flow-step"><div class="flow-num">23</div><div class="flow-lab">客户端首购成功信号</div><div class="flow-rate">2.9% · 仅诊断，不作财务口径</div></div>
       </div>
-      <div class="legend">全部 checkout：1,261 次 / 约 1,257 个 order_id / 751 台设备；其中 326 台能在同设备向前串到已知付费页面，链路覆盖率 43.4%。</div>
+      <div class="legend">全部 checkout：2,251 次 / 2,247 个 order_id / 1,247 台设备；其中 827 台能在同设备向前串到已知付费页面，链路覆盖率 66.3%。</div>
     </div>
     <div class="card">
       <div class="card-t">生产订单结算漏斗 · 权威口径</div>
-      <div class="card-s">de_ods.payment_order · 2,316 笔 / 1,222 个账号</div>
+      <div class="card-s">de_ods.payment_order · 3,334 笔 / 1,714 个账号</div>
       <div class="tbl-scroll"><table>
         <tr><th>环节 / 状态</th><th>订单</th><th>占全部订单</th><th>说明</th></tr>
-        <tr><td>创建订单</td><td><b>2,316</b></td><td>100%</td><td style="text-align:left;white-space:normal">进入结算即建单</td></tr>
-        <tr class="warnrow"><td>PENDING</td><td><b>2,276</b></td><td class="down">98.3%</td><td style="text-align:left;white-space:normal">未收到可确认的生产成功结果</td></tr>
-        <tr><td>生产成功</td><td><b>28</b></td><td class="up">1.21%</td><td style="text-align:left;white-space:normal">Apple 12 / Google 16</td></tr>
-        <tr><td>沙盒成功</td><td>10</td><td>0.43%</td><td style="text-align:left;white-space:normal">测试环境，排除商业转化</td></tr>
-        <tr><td>失败</td><td>2</td><td>0.09%</td><td style="text-align:left;white-space:normal">显式 FAILED；大量未完成仍停在 PENDING</td></tr>
+        <tr><td>创建订单</td><td><b>3,334</b></td><td>100%</td><td style="text-align:left;white-space:normal">进入结算即建单</td></tr>
+        <tr class="warnrow"><td>PENDING</td><td><b>3,289</b></td><td class="down">98.7%</td><td style="text-align:left;white-space:normal">未收到可确认的生产成功结果</td></tr>
+        <tr><td>生产成功</td><td><b>40</b></td><td class="up">1.20%</td><td style="text-align:left;white-space:normal">Apple 21 / Google 19</td></tr>
+        <tr><td>沙盒成功</td><td>4</td><td>0.12%</td><td style="text-align:left;white-space:normal">测试环境，排除商业转化</td></tr>
+        <tr><td>失败</td><td>1</td><td>0.03%</td><td style="text-align:left;white-space:normal">显式 FAILED；大量未完成仍停在 PENDING</td></tr>
       </table></div>
     </div>
-    <div class="note"><b>当前第一优先级不是继续加 Paywall 曝光，而是修复链路可解释性与支付回执：</b>44.2% 的 GA4 checkout order_id 未带来源，生产订单仍有 44.3% 来源缺失，且 98.3% 停在 PENDING。先把 source 和订单终态打通，再比较入口优劣。</div>
+    <div class="note"><b>当前第一优先级仍是修复链路可解释性与支付回执：</b>24.7% 的 GA4 checkout order_id 未带来源，生产订单仍有 30.7% 来源缺失，且 98.7% 停在 PENDING。先把 source 和订单终态打通，再比较入口优劣。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · Paywall 来源 ═══════════ -->
   <section class="sec" data-group="payment" data-tab="Paywall 来源">
     <div class="sec-h">常规 Paywall 入口拆解 <span class="en">Paywall Sources</span></div>
-    <p class="sec-desc">合并老事件 <span class="anchor">subscription_page_view</span> 与新事件 <span class="anchor">page_view + event_id=subscription</span>。占比按曝光次数计算，可加总为 100%；UV 在来源内去重，同一设备访问多个来源时会跨行重复。</p>
+    <p class="sec-desc">合并老事件 <span class="anchor">subscription_page_view</span> 与新事件 <span class="anchor">page_view + event_id=subscription</span>。占比按曝光次数计算；UV 在来源内去重，同一设备访问多个来源时会跨行重复。</p>
     <div class="card">
       <div class="card-t">Paywall 曝光来源 · 数量与占比</div>
-      <div class="card-s">合计 3,589 次曝光 · 1,575 台去重设备</div>
-      <div class="tbl-scroll"><table>
-        <tr><th>业务入口</th><th>subscription_source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th></tr>
-        <tr><td>单词内容锁</td><td>locked_words</td><td>941</td><td><b>26.2%</b></td><td>560</td></tr>
-        <tr><td>会员入口</td><td>profile_membership</td><td>461</td><td><b>12.8%</b></td><td>326</td></tr>
-        <tr><td>课程内容锁</td><td>locked_lesson</td><td>356</td><td>9.9%</td><td>232</td></tr>
-        <tr><td>听力内容锁</td><td>locked_listening</td><td>306</td><td>8.5%</td><td>190</td></tr>
-        <tr><td>B 组新手引导后</td><td>onboarding_guide</td><td>389</td><td>10.8%</td><td>366</td></tr>
-        <tr><td>B 组学习计划</td><td>study_plan_preview</td><td>372</td><td>10.4%</td><td>345</td></tr>
-        <tr><td>体验课报告</td><td>trial_report</td><td>200</td><td>5.6%</td><td>137</td></tr>
-        <tr><td>Play 内容锁</td><td>lock_play</td><td>209</td><td>5.8%</td><td>85</td></tr>
-        <tr><td>Work PK</td><td>work-pk</td><td>110</td><td>3.1%</td><td>105</td></tr>
-        <tr><td>首页 Dino 会员入口</td><td>home_dino_go_premium</td><td>70</td><td>2.0%</td><td>46</td></tr>
-        <tr><td>扭蛋机</td><td>capsule_machine</td><td>46</td><td>1.3%</td><td>39</td></tr>
-        <tr><td>课堂付费按钮</td><td>class_pay_button</td><td>36</td><td>1.0%</td><td>32</td></tr>
-        <tr><td>Speaking PK</td><td>speaking_pk</td><td>37</td><td>1.0%</td><td>35</td></tr>
-        <tr><td>首页课堂会员入口</td><td>home_class_go_premium</td><td>22</td><td>0.6%</td><td>21</td></tr>
-        <tr><td>首页 Play 会员入口</td><td>home_play_go_premium</td><td>19</td><td>0.5%</td><td>16</td></tr>
-        <tr><td>首页探索会员入口</td><td>home_explore_go_premium</td><td>14</td><td>0.4%</td><td>13</td></tr>
-        <tr><td>旧学习计划入口</td><td>study_plan</td><td>1</td><td>&lt;0.1%</td><td>1</td></tr>
+      <div class="card-s">合计 8,442 次曝光 · 3,136 台去重设备</div>
+      <div class="tbl-scroll"><table><tr><th>subscription_source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th></tr>
+<tr><td>study_plan_preview</td><td>1,402</td><td><b>16.6%</b></td><td>1,367</td></tr>
+<tr><td>locked_words</td><td>1,275</td><td><b>15.1%</b></td><td>724</td></tr>
+<tr><td>onboarding_guide</td><td>1,199</td><td><b>14.2%</b></td><td>1,181</td></tr>
+<tr><td>locked_lesson</td><td>842</td><td><b>10.0%</b></td><td>499</td></tr>
+<tr><td>lock_play</td><td>824</td><td><b>9.8%</b></td><td>272</td></tr>
+<tr><td>trial_report</td><td>745</td><td><b>8.8%</b></td><td>456</td></tr>
+<tr><td>profile_membership</td><td>566</td><td><b>6.7%</b></td><td>422</td></tr>
+<tr><td>locked_listening</td><td>473</td><td><b>5.6%</b></td><td>270</td></tr>
+<tr><td>work-pk</td><td>360</td><td><b>4.3%</b></td><td>314</td></tr>
+<tr><td>home_dino_go_premium</td><td>149</td><td><b>1.8%</b></td><td>102</td></tr>
+<tr><td>capsule_machine</td><td>130</td><td><b>1.5%</b></td><td>109</td></tr>
+<tr><td>speaking_pk</td><td>112</td><td><b>1.3%</b></td><td>101</td></tr>
+<tr><td>class_pay_button</td><td>103</td><td><b>1.2%</b></td><td>90</td></tr>
+<tr><td>home_class_go_premium</td><td>71</td><td><b>0.8%</b></td><td>64</td></tr>
+<tr><td>home_lock_card</td><td>66</td><td><b>0.8%</b></td><td>33</td></tr>
+<tr><td>home_play_go_premium</td><td>53</td><td><b>0.6%</b></td><td>40</td></tr>
+<tr><td>home_explore_go_premium</td><td>38</td><td><b>0.5%</b></td><td>32</td></tr>
+<tr><td>radio_next_locked</td><td>13</td><td><b>0.2%</b></td><td>12</td></tr>
+<tr><td>radio_list_locked</td><td>7</td><td><b>0.1%</b></td><td>5</td></tr>
+<tr><td>chat_round_limit</td><td>6</td><td><b>0.1%</b></td><td>1</td></tr>
+<tr><td>explore_lock_card</td><td>4</td><td><b>0.0%</b></td><td>3</td></tr>
+<tr><td>class_lock_card</td><td>3</td><td><b>0.0%</b></td><td>2</td></tr>
+<tr><td>study_plan</td><td>1</td><td><b>0.0%</b></td><td>1</td></tr>
       </table></div>
     </div>
     <div class="card">
       <div class="card-t">支付发起来源 · GA4 order_id 归因</div>
-      <div class="card-s">按 checkout_start 自带 source 直接归因；合计约 1,257 个 order_id，缺失来源单列</div>
-      <div class="tbl-scroll"><table>
-        <tr><th>来源</th><th>order_id</th><th>占支付发起</th><th>设备 UV</th></tr>
-        <tr class="warnrow"><td>来源缺失</td><td>555</td><td class="down">44.2%</td><td>367</td></tr>
-        <tr><td>locked_lesson</td><td>117</td><td>9.3%</td><td>61</td></tr>
-        <tr><td>study_plan_preview</td><td>81</td><td>6.4%</td><td>65</td></tr>
-        <tr><td>profile_membership</td><td>77</td><td>6.1%</td><td>52</td></tr>
-        <tr><td>daily_offer</td><td>58</td><td>4.6%</td><td>34</td></tr>
-        <tr><td>locked_words</td><td>55</td><td>4.4%</td><td>41</td></tr>
-        <tr><td>trial_report</td><td>52</td><td>4.1%</td><td>38</td></tr>
-        <tr><td>locked_listening</td><td>39</td><td>3.1%</td><td>24</td></tr>
-        <tr><td>lock_practice</td><td>35</td><td>2.8%</td><td>30</td></tr>
-        <tr><td>onboarding_guide</td><td>35</td><td>2.8%</td><td>29</td></tr>
-        <tr><td>winback_paywall_close</td><td>31</td><td>2.5%</td><td>26</td></tr>
-        <tr><td>lock_radio</td><td>27</td><td>2.1%</td><td>18</td></tr>
-        <tr><td>lock_play</td><td>21</td><td>1.7%</td><td>16</td></tr>
-        <tr><td>membership_entry</td><td>18</td><td>1.4%</td><td>16</td></tr>
-        <tr><td>capsule_machine</td><td>14</td><td>1.1%</td><td>9</td></tr>
-        <tr><td>guidance_report</td><td>13</td><td>1.0%</td><td>11</td></tr>
-        <tr><td>home_dino_go_premium</td><td>11</td><td>0.9%</td><td>10</td></tr>
-        <tr><td>其他 8 个小来源</td><td>18</td><td>1.4%</td><td>—</td></tr>
+      <div class="card-s">按 checkout_start 自带 source 直接归因；合计 2,247 个 order_id，缺失来源单列</div>
+      <div class="tbl-scroll"><table><tr><th>来源</th><th>order_id</th><th>占支付发起</th><th>来源内设备 UV</th></tr>
+<tr class="warnrow"><td>来源缺失</td><td>555</td><td class="down">24.7%</td><td>367</td></tr>
+<tr><td>study_plan_preview</td><td>347</td><td>15.4%</td><td>263</td></tr>
+<tr><td>locked_lesson</td><td>207</td><td>9.2%</td><td>122</td></tr>
+<tr><td>trial_report</td><td>206</td><td>9.2%</td><td>137</td></tr>
+<tr><td>daily_offer</td><td>140</td><td>6.2%</td><td>103</td></tr>
+<tr><td>onboarding_guide</td><td>111</td><td>4.9%</td><td>95</td></tr>
+<tr><td>lock_play</td><td>96</td><td>4.3%</td><td>47</td></tr>
+<tr><td>winback_paywall_close</td><td>89</td><td>4.0%</td><td>80</td></tr>
+<tr><td>profile_membership</td><td>74</td><td>3.3%</td><td>51</td></tr>
+<tr><td>locked_words</td><td>69</td><td>3.1%</td><td>54</td></tr>
+<tr><td>locked_listening</td><td>64</td><td>2.8%</td><td>42</td></tr>
+<tr><td>guidance_report</td><td>61</td><td>2.7%</td><td>48</td></tr>
+<tr><td>work-pk</td><td>37</td><td>1.6%</td><td>26</td></tr>
+<tr><td>lock_practice</td><td>35</td><td>1.6%</td><td>30</td></tr>
+<tr><td>capsule_machine</td><td>30</td><td>1.3%</td><td>20</td></tr>
+<tr><td>lock_radio</td><td>27</td><td>1.2%</td><td>18</td></tr>
+<tr><td>home_dino_go_premium</td><td>20</td><td>0.9%</td><td>15</td></tr>
+<tr><td>home_lock_card</td><td>18</td><td>0.8%</td><td>10</td></tr>
+<tr><td>membership_entry</td><td>18</td><td>0.8%</td><td>16</td></tr>
+<tr><td>guidance_class_exit</td><td>12</td><td>0.5%</td><td>8</td></tr>
+<tr><td>winback_payment_cancel</td><td>10</td><td>0.4%</td><td>8</td></tr>
+<tr><td>speaking_pk</td><td>5</td><td>0.2%</td><td>5</td></tr>
+<tr><td>class_pay_button</td><td>4</td><td>0.2%</td><td>4</td></tr>
+<tr><td>home_class_go_premium</td><td>4</td><td>0.2%</td><td>4</td></tr>
+<tr><td>home_explore_go_premium</td><td>3</td><td>0.1%</td><td>3</td></tr>
+<tr><td>home_play_go_premium</td><td>3</td><td>0.1%</td><td>3</td></tr>
+<tr><td>explore_lock_card</td><td>1</td><td>0.0%</td><td>1</td></tr>
+<tr><td>radio_list_locked</td><td>1</td><td>0.0%</td><td>1</td></tr>
       </table></div>
     </div>
-    <div class="tip"><b>解释边界:</b>“曝光来源”和“支付发起来源”不能直接逐行相除。44.2% checkout 缺 source，且两代客户端对来源命名不完全一致；修复前只用来源分布定位量级，不据此宣布哪个 Paywall 转化最好。</div>
+    <div class="tip"><b>解释边界:</b>“曝光来源”和“支付发起来源”不能直接逐行相除。24.7% checkout 缺 source，且两代客户端对来源命名不完全一致；修复前只用来源分布定位量级，不据此宣布哪个 Paywall 转化最好。</div>
   </section>
 
   <!-- ═══════════ 支付转化 · 折扣订阅 ═══════════ -->
@@ -770,33 +692,30 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
     <p class="sec-desc">合并老事件 <span class="anchor">discount_offer_view</span> 与新事件 <span class="anchor">page_view + event_id=discount_offer</span>。曝光使用 GA4，订单与生产成功使用 <span class="anchor">de_ods.payment_order.subscription_source</span>；因账号与设备口径不同，不把“订单 ÷ UV”写成正式转化率。</p>
     <div class="card">
       <div class="card-t">折扣入口 · 曝光、订单与生产成功</div>
-      <div class="card-s">曝光占比按 4,512 次折扣页曝光计算；订单成功率仅在生产订单表内计算</div>
-      <div class="tbl-scroll"><table>
-        <tr><th>入口</th><th>source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th><th>订单</th><th>生产成功</th><th>订单成功率</th></tr>
-        <tr><td>关闭 Paywall 挽留</td><td>winback_paywall_close</td><td>2,586</td><td><b>57.3%</b></td><td>2,037</td><td>126</td><td>1</td><td>0.79%</td></tr>
-        <tr><td>每日启动折扣</td><td>daily_offer</td><td>1,450</td><td><b>32.1%</b></td><td>795</td><td>155</td><td>3</td><td>1.94%</td></tr>
-        <tr><td>取消支付挽留</td><td>winback_payment_cancel</td><td>281</td><td>6.2%</td><td>253</td><td>72</td><td>3</td><td class="up">4.17%</td></tr>
-        <tr><td>退出引导课折扣</td><td>guidance_class_exit</td><td>101</td><td>2.2%</td><td>74</td><td>2</td><td>0</td><td>0%</td></tr>
-        <tr><td>引导课报告折扣</td><td>guidance_report</td><td>94</td><td>2.1%</td><td>59</td><td>16</td><td>0</td><td>0%</td></tr>
+      <div class="card-s">曝光占比按 6,578 次折扣页曝光计算；订单成功率仅在生产订单表内计算</div>
+      <div class="tbl-scroll"><table><tr><th>source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th><th>订单</th><th>生产成功</th><th>订单成功率</th></tr>
+<tr><td>winback_paywall_close</td><td>3,465</td><td>52.7%</td><td>2,647</td><td>171</td><td>2</td><td>1.17%</td></tr>
+<tr><td>daily_offer</td><td>2,141</td><td>32.5%</td><td>1,149</td><td>227</td><td>5</td><td>2.20%</td></tr>
+<tr><td>guidance_report</td><td>376</td><td>5.7%</td><td>234</td><td>79</td><td>0</td><td>0.00%</td></tr>
+<tr><td>winback_payment_cancel</td><td>318</td><td>4.8%</td><td>285</td><td>71</td><td>3</td><td>4.23%</td></tr>
+<tr><td>guidance_class_exit</td><td>278</td><td>4.2%</td><td>229</td><td>14</td><td>0</td><td>0.00%</td></tr>
       </table></div>
     </div>
     <div class="grid2">
       <div class="card">
         <div class="card-t">折扣来源生产成功贡献</div>
-        <div class="card-s">折扣 / 挽留相关来源合计 472 单，生产成功 9 单</div>
-        <div class="tbl-scroll"><table>
-          <tr><th>来源集合</th><th>订单</th><th>生产成功</th><th>成功贡献</th></tr>
-          <tr><td>取消 / 关闭 Paywall 挽留</td><td>198</td><td>4</td><td>14.3%</td></tr>
-          <tr><td>每日折扣（两代命名）</td><td>211</td><td>4</td><td>14.3%</td></tr>
-          <tr><td>留存挽回</td><td>63</td><td>1</td><td>3.6%</td></tr>
-          <tr><td>折扣 / 挽留合计</td><td><b>472</b></td><td><b>9</b></td><td><b>32.1%</b></td></tr>
+        <div class="card-s">按相关 subscription_source 归并，成功贡献以全部 40 笔生产成功订单为分母</div>
+        <div class="tbl-scroll"><table><tr><th>来源集合</th><th>订单</th><th>生产成功</th><th>成功贡献</th></tr>
+<tr><td>取消 / 关闭 Paywall 挽留</td><td>242</td><td>5</td><td>12.5%</td></tr>
+<tr><td>每日折扣（两代命名）</td><td>301</td><td>7</td><td>17.5%</td></tr>
+<tr><td>留存挽回</td><td>85</td><td>4</td><td>10.0%</td></tr>
+          <tr><td>折扣 / 挽留合计</td><td><b>628</b></td><td><b>16</b></td><td><b>40.0%</b></td></tr>
         </table></div>
       </div>
       <div class="card">
         <div class="card-t">读数建议</div>
-        <div class="card-s">当前只能读订单内成功率，不能读真实增量</div>
-        <div class="tip"><b>取消支付挽留</b>订单成功率 4.17%，高于另外两类主要折扣入口，但只有 72 单；没有“不展示折扣”的随机对照组前，不能把成功全归因于折扣。</div>
-        <div class="tip"><b>关闭 Paywall 挽留</b>贡献 57.3% 折扣曝光，却只有 1 笔生产成功；优先检查触发频率、文案与是否过早打扰。</div>
+        <div class="tip"><b>取消支付挽留</b>订单成功率 4.23%，高于其他主要折扣入口，但只有 71 单；没有随机对照组前，不能把成功全归因于折扣。</div>
+        <div class="tip"><b>关闭 Paywall 挽留</b>贡献 52.7% 折扣曝光，生产成功 2 单；优先检查触发频率、文案与是否过早打扰。</div>
       </div>
     </div>
   </section>
@@ -804,101 +723,60 @@ FROM firsts f LEFT JOIN act a USING(user_pseudo_id) GROUP BY 1 ORDER BY 1</pre><
   <!-- ═══════════ 支付转化 · 订单来源 ═══════════ -->
   <section class="sec" data-group="payment" data-tab="订单来源">
     <div class="sec-h">订单来源与结算结果 <span class="en">Order Sources & Settlement</span></div>
-    <p class="sec-desc">全部指标来自生产订单表。订单占比以 2,316 笔为分母；生产成功率 = 同来源生产成功订单 ÷ 同来源全部订单。沙盒成功单独列出，不计商业成功。</p>
+    <p class="sec-desc">全部指标来自生产订单表，并排除可映射测试账号。订单占比以 3,334 笔为分母；生产成功率 = 同来源生产成功订单 ÷ 同来源全部订单。沙盒成功单独列出，不计商业成功。</p>
     <div class="card">
       <div class="card-t">各 subscription_source 数量、占比与结果</div>
-      <div class="tbl-scroll"><table>
-        <tr><th>来源</th><th>订单</th><th>订单占比</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-        <tr class="warnrow"><td>来源缺失</td><td>1,025</td><td class="down">44.3%</td><td>654</td><td>1,018</td><td>5</td><td>2</td><td>0</td><td>0.49%</td></tr>
-        <tr><td>daily_offer</td><td>155</td><td>6.7%</td><td>108</td><td>152</td><td>3</td><td>0</td><td>0</td><td>1.94%</td></tr>
-        <tr><td>trial_report</td><td>143</td><td>6.2%</td><td>91</td><td>135</td><td class="up">7</td><td>0</td><td>1</td><td class="up">4.90%</td></tr>
-        <tr><td>winback_paywall_close</td><td>126</td><td>5.4%</td><td>109</td><td>125</td><td>1</td><td>0</td><td>0</td><td>0.79%</td></tr>
-        <tr><td>lock_lesson</td><td>128</td><td>5.5%</td><td>67</td><td>124</td><td>3</td><td>1</td><td>0</td><td>2.34%</td></tr>
-        <tr><td>lock_practice</td><td>97</td><td>4.2%</td><td>77</td><td>96</td><td>1</td><td>0</td><td>0</td><td>1.03%</td></tr>
-        <tr><td>membership_entry</td><td>103</td><td>4.4%</td><td>74</td><td>99</td><td>2</td><td>2</td><td>0</td><td>1.94%</td></tr>
-        <tr><td>winback_payment_cancel</td><td>72</td><td>3.4%</td><td>62</td><td>69</td><td>3</td><td>0</td><td>0</td><td class="up">4.17%</td></tr>
-        <tr><td>lock_radio</td><td>69</td><td>3.0%</td><td>45</td><td>69</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>winback_retention</td><td>63</td><td>2.7%</td><td>40</td><td>62</td><td>1</td><td>0</td><td>0</td><td>1.59%</td></tr>
-        <tr><td>lock_play</td><td>64</td><td>2.8%</td><td>44</td><td>63</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
-        <tr><td>winback_daily_launch</td><td>56</td><td>2.4%</td><td>28</td><td>55</td><td>1</td><td>0</td><td>0</td><td>1.79%</td></tr>
-        <tr><td>study_plan_preview</td><td>87</td><td>3.8%</td><td>69</td><td>85</td><td>0</td><td>1</td><td>1</td><td>0%</td></tr>
-        <tr><td>onboarding_guide</td><td>36</td><td>1.6%</td><td>30</td><td>35</td><td>0</td><td>1</td><td>0</td><td>0%</td></tr>
-        <tr><td>unknown</td><td>19</td><td>0.8%</td><td>13</td><td>19</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>capsule_machine</td><td>21</td><td>0.9%</td><td>13</td><td>21</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>work-pk</td><td>16</td><td>0.7%</td><td>13</td><td>16</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>guidance_report</td><td>16</td><td>0.7%</td><td>13</td><td>16</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_dino_go_premium</td><td>9</td><td>0.4%</td><td>8</td><td>6</td><td>1</td><td>2</td><td>0</td><td class="up">11.11%</td></tr>
-        <tr><td>speaking_pk</td><td>2</td><td>0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>guidance_class_exit</td><td>2</td><td>&lt;0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_class_go_premium</td><td>2</td><td>&lt;0.1%</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_play_go_premium</td><td>3</td><td>0.1%</td><td>1</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>class_pay_button</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
-        <tr><td>home_explore_go_premium</td><td>1</td><td>&lt;0.1%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0%</td></tr>
+      <div class="tbl-scroll"><table><tr><th>来源</th><th>订单</th><th>订单占比</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
+<tr class="warnrow"><td>来源缺失</td><td>1,022</td><td class="down">30.7%</td><td>652</td><td>1,016</td><td class="up">4</td><td>2</td><td>0</td><td>0.39%</td></tr>
+<tr><td>study_plan_preview</td><td>362</td><td>10.9%</td><td>275</td><td>359</td><td class="up">2</td><td>1</td><td>0</td><td>0.55%</td></tr>
+<tr><td>trial_report</td><td>293</td><td>8.8%</td><td>183</td><td>285</td><td class="up">7</td><td>0</td><td>1</td><td>2.39%</td></tr>
+<tr><td>daily_offer</td><td>227</td><td>6.8%</td><td>163</td><td>222</td><td class="up">5</td><td>0</td><td>0</td><td>2.20%</td></tr>
+<tr><td>lock_lesson</td><td>213</td><td>6.4%</td><td>124</td><td>209</td><td class="up">4</td><td>0</td><td>0</td><td>1.88%</td></tr>
+<tr><td>winback_paywall_close</td><td>171</td><td>5.1%</td><td>151</td><td>169</td><td class="up">2</td><td>0</td><td>0</td><td>1.17%</td></tr>
+<tr><td>lock_play</td><td>140</td><td>4.2%</td><td>75</td><td>139</td><td>0</td><td>1</td><td>0</td><td>0.00%</td></tr>
+<tr><td>onboarding_guide</td><td>124</td><td>3.7%</td><td>100</td><td>122</td><td class="up">2</td><td>0</td><td>0</td><td>1.61%</td></tr>
+<tr><td>lock_practice</td><td>110</td><td>3.3%</td><td>89</td><td>109</td><td class="up">1</td><td>0</td><td>0</td><td>0.91%</td></tr>
+<tr><td>lock_radio</td><td>93</td><td>2.8%</td><td>62</td><td>93</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>membership_entry</td><td>93</td><td>2.8%</td><td>69</td><td>91</td><td class="up">2</td><td>0</td><td>0</td><td>2.15%</td></tr>
+<tr><td>winback_retention</td><td>85</td><td>2.5%</td><td>57</td><td>81</td><td class="up">4</td><td>0</td><td>0</td><td>4.71%</td></tr>
+<tr><td>guidance_report</td><td>79</td><td>2.4%</td><td>63</td><td>79</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>winback_daily_launch</td><td>74</td><td>2.2%</td><td>45</td><td>72</td><td class="up">2</td><td>0</td><td>0</td><td>2.70%</td></tr>
+<tr><td>winback_payment_cancel</td><td>71</td><td>2.1%</td><td>61</td><td>68</td><td class="up">3</td><td>0</td><td>0</td><td>4.23%</td></tr>
+<tr><td>work-pk</td><td>49</td><td>1.5%</td><td>36</td><td>49</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>capsule_machine</td><td>38</td><td>1.1%</td><td>25</td><td>38</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>unknown</td><td>19</td><td>0.6%</td><td>13</td><td>19</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>home_dino_go_premium</td><td>18</td><td>0.5%</td><td>15</td><td>16</td><td class="up">2</td><td>0</td><td>0</td><td>11.11%</td></tr>
+<tr><td>home_lock_card</td><td>17</td><td>0.5%</td><td>8</td><td>17</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>guidance_class_exit</td><td>14</td><td>0.4%</td><td>10</td><td>14</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>speaking_pk</td><td>7</td><td>0.2%</td><td>7</td><td>7</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>class_pay_button</td><td>4</td><td>0.1%</td><td>4</td><td>4</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>home_class_go_premium</td><td>3</td><td>0.1%</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>home_explore_go_premium</td><td>3</td><td>0.1%</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>home_play_go_premium</td><td>3</td><td>0.1%</td><td>3</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>explore_lock_card</td><td>1</td><td>0.0%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
+<tr><td>locked_unit</td><td>1</td><td>0.0%</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0.00%</td></tr>
       </table></div>
     </div>
     <div class="grid2">
-      <div class="card">
-        <div class="card-t">平台结算</div>
-        <div class="tbl-scroll"><table>
-          <tr><th>平台</th><th>全部订单</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-          <tr><td>Google Play</td><td>1,807</td><td>1,785</td><td>16</td><td>6</td><td>0</td><td>0.89%</td></tr>
-          <tr><td>Apple</td><td>509</td><td>491</td><td>12</td><td>4</td><td>2</td><td>2.36%</td></tr>
-        </table></div>
-      </div>
-      <div class="card">
-        <div class="card-t">订阅周期</div>
-        <div class="tbl-scroll"><table>
-          <tr><th>周期</th><th>全部订单</th><th>订单占比</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
-          <tr><td>年卡</td><td>1,515</td><td>65.4%</td><td>1,505</td><td>1</td><td>7</td><td>2</td><td>0.07%</td></tr>
-          <tr><td>周卡</td><td>570</td><td>24.6%</td><td>553</td><td>15</td><td>2</td><td>0</td><td class="up">2.63%</td></tr>
-          <tr><td>月卡</td><td>231</td><td>10.0%</td><td>218</td><td>12</td><td>1</td><td>0</td><td class="up">5.19%</td></tr>
-        </table></div>
-      </div>
+      <div class="card"><div class="card-t">平台结算结果</div><div class="tbl-scroll"><table><tr><th>平台</th><th>订单</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
+<tr><td>GOOGLE</td><td>2,545</td><td>1,399</td><td>2,524</td><td>19</td><td>2</td><td>0</td><td>0.75%</td></tr>
+<tr><td>APPLE</td><td>789</td><td>317</td><td>765</td><td>21</td><td>2</td><td>1</td><td>2.66%</td></tr>
+      </table></div></div>
+      <div class="card"><div class="card-t">订阅周期结算结果</div><div class="tbl-scroll"><table><tr><th>周期</th><th>订单</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>
+<tr><td>YEAR</td><td>2,199</td><td>1,369</td><td>2,194</td><td>1</td><td>3</td><td>1</td><td>0.05%</td></tr>
+<tr><td>WEEK</td><td>796</td><td>556</td><td>773</td><td>22</td><td>1</td><td>0</td><td>2.76%</td></tr>
+<tr><td>MONTH</td><td>339</td><td>210</td><td>322</td><td>17</td><td>0</td><td>0</td><td>5.01%</td></tr>
+      </table></div></div>
     </div>
+    <div class="note"><b>结构结论:</b>订单来源缺失仍占 30.7%；生产成功共 40 单，周卡 22 / 月卡 17 / 年卡 1。98.7% 订单停在 PENDING，当前最大的商业问题仍是支付终态不可解释，而不是单一来源表现。</div>
   </section>
 
-  <!-- ═══════════ 支付转化 · 口径与SQL ═══════════ -->
-  <section class="sec" data-group="payment" data-tab="口径与SQL(支付)">
-    <div class="sec-h">支付转化口径与可复跑 SQL <span class="en">Definitions & Queries</span></div>
+  <!-- ═══════════ 支付转化 · 口径 ═══════════ -->
+  <section class="sec" data-group="payment" data-tab="口径(支付)">
+    <div class="sec-h">支付转化口径 <span class="en">Definitions</span></div>
     <p class="sec-desc">GA4 数据集 <b>analytics_538991439</b>，生产订单表 <b>de_ods.payment_order</b>。页面与发起用于行为诊断，订单表用于结算真相；两者不可混用分母。</p>
     <div class="tip"><b>事件归一:</b>action = COALESCE(button_id, event_id, event_name)。Paywall = subscription_page_view / subscription；折扣页 = discount_offer_view / discount_offer；发起 = subscription_checkout_start。来源依次取 subscription_source / source / trigger_source。</div>
-    <details><summary>① Paywall / 折扣页来源分布</summary>
-<pre>WITH e AS (
-  SELECT user_pseudo_id,
-    COALESCE(
-      (SELECT value.string_value FROM UNNEST(event_params) WHERE key='button_id'),
-      (SELECT value.string_value FROM UNNEST(event_params) WHERE key='event_id'),
-      event_name) action,
-    COALESCE(
-      (SELECT value.string_value FROM UNNEST(event_params) WHERE key='subscription_source'),
-      (SELECT value.string_value FROM UNNEST(event_params) WHERE key='source'),
-      (SELECT value.string_value FROM UNNEST(event_params) WHERE key='trigger_source')) source
-  FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_EXTRACT(_TABLE_SUFFIX,r'(\d{8})$') BETWEEN '20260710' AND '20260805'
-    AND event_timestamp &lt; UNIX_MICROS(TIMESTAMP '2026-08-05 04:15:00+00')
-)
-SELECT IF(action IN ('subscription','subscription_page_view'),'paywall','discount') surface,
-  source, COUNT(*) exposures, COUNT(DISTINCT user_pseudo_id) users
-FROM e
-WHERE action IN ('subscription','subscription_page_view','discount_offer','discount_offer_view')
-GROUP BY 1,2 ORDER BY 1,3 DESC;</pre></details>
-    <details><summary>② 生产订单按来源与状态</summary>
-<pre>SELECT COALESCE(NULLIF(subscription_source,''),'__missing__') source,
-  COUNT(*) orders,
-  COUNTIF(status='PENDING') pending,
-  COUNTIF(status='FAILED') failed,
-  COUNTIF(status='SUCCESS' AND env_type='PRODUCTION') production_success,
-  COUNTIF(status='SUCCESS' AND env_type='SANDBOX') sandbox_success
-FROM `dino-english-497507.de_ods.payment_order`
-WHERE created_at &gt;= TIMESTAMP '2026-07-10 00:00:00+00'
-  AND created_at &lt; TIMESTAMP '2026-08-05 04:15:00+00'
-GROUP BY 1 ORDER BY orders DESC;</pre></details>
-    <details><summary>③ 客户端严格时序漏斗</summary>
-<pre>-- 先按设备求首次 Paywall/折扣页、checkout、checkout_result、首购成功时间；
--- 后一步必须晚于前一步。正式成功仍回到 payment_order 复核。
-COUNTIF(checkout_ts &gt;= offer_ts) AS checkout_after_offer,
-COUNTIF(checkout_result_ts &gt;= checkout_ts) AS store_result_after_checkout,
-COUNTIF(initial_success_ts &gt;= checkout_ts) AS client_initial_success</pre></details>
+    <div class="tip"><b>查询资产不随 HTML 公开：</b>Paywall / 折扣页来源、客户端严格时序漏斗与生产订单结算的复跑逻辑仅保存在本地分析目录；页面只展示聚合结果与定义。</div>
     <div class="tip"><b>必须补齐:</b>① checkout_start 全量透传 subscription_source；② 客户端与订单表统一 source 枚举（如 lock_lesson / locked_lesson、daily_offer / winback_daily_launch）；③ PENDING 超时后写明确终态；④ 保持 order_id 全链路一致，才能做入口级严格漏斗。</div>
   </section>
 
@@ -1124,9 +1002,9 @@ COUNTIF(initial_success_ts &gt;= checkout_ts) AS client_initial_success</pre></d
     <div class="tip"><b>产品判断:</b>“买后穿戴 82.3%”证明购买不是仓库收藏，而是真正用于角色表达；但 711 位非默认皮肤拥有者中只有 224 位当前换装，免费/同步奖励皮肤的使用引导仍弱。建议在获得皮肤后直接给「立即穿戴」CTA，并补埋点 <b>skin_equip_result</b>（item_id、source、from_item_id、entry），才能分析首次换装率、换装频次和购买后时延。</div>
   </section>
 
-  <!-- ═══════════ 金币 / 收藏 · 口径与 SQL ═══════════ -->
-  <section class="sec" data-group="economy" data-tab="口径与SQL(金币)">
-    <div class="sec-h">MySQL 口径、限制与可复跑 SQL <span class="en">Definitions & Queries</span></div>
+  <!-- ═══════════ 金币 / 收藏 · 口径 ═══════════ -->
+  <section class="sec" data-group="economy" data-tab="口径(金币)">
+    <div class="sec-h">MySQL 口径与限制 <span class="en">Definitions</span></div>
     <p class="sec-desc">数据来自生产只读实例，MySQL 会话时区为 <b>UTC</b>。所有查询在 <b>REPEATABLE READ + CONSISTENT SNAPSHOT</b> 中执行；页面只保存聚合数字，不保存 user_id 或连接凭证。</p>
     <div class="card">
       <div class="card-t">核心表与口径</div>
@@ -1138,144 +1016,465 @@ COUNTIF(initial_success_ts &gt;= checkout_ts) AS client_initial_success</pre></d
         <tr><td style="text-align:left">换装</td><td style="text-align:left">user_equip</td><td style="text-align:left">当前装备快照</td><td style="text-align:left">不是事件流水，无法还原完整换装历史</td></tr>
       </table></div>
     </div>
-    <details><summary>① 金币余额分布</summary>
-<pre>SELECT CASE
-  WHEN balance = 0 THEN '0'
-  WHEN balance BETWEEN 1 AND 49 THEN '1-49'
-  WHEN balance BETWEEN 50 AND 99 THEN '50-99'
-  WHEN balance BETWEEN 100 AND 299 THEN '100-299'
-  WHEN balance BETWEEN 300 AND 999 THEN '300-999'
-  ELSE '1000+'
-END AS bucket,
-COUNT(*) users
-FROM dino_coin_account
-GROUP BY bucket;</pre></details>
-    <details><summary>② 手办门槛 → 抽取</summary>
-<pre>SELECT
-  COUNT(*) AS progress_users,
-  SUM(total_correct &gt;= 5) AS reached_threshold,
-  COUNT(DISTINCT d.user_id) AS draw_users,
-  SUM(p.pending_draws) AS pending_draws
-FROM play_capsule_progress p
-LEFT JOIN (
-  SELECT DISTINCT user_id
-  FROM play_capsule_draw_record
-) d USING(user_id);</pre></details>
-    <details><summary>③ 皮肤购买与当前穿戴</summary>
-<pre>WITH buyers AS (
-  SELECT DISTINCT ui.user_id
-  FROM user_item ui
-  JOIN item_catalog ic ON ic.id=ui.item_id
-  WHERE ic.item_type='SKIN'
-    AND ui.source='SHOP_PURCHASE'
-),
-equipped_purchased AS (
-  SELECT DISTINCT ue.user_id
-  FROM user_equip ue
-  JOIN user_item ui
-    ON ui.user_id=ue.user_id AND ui.item_id=ue.item_id
-  WHERE ui.source='SHOP_PURCHASE'
-)
-SELECT
-  (SELECT COUNT(*) FROM buyers) buyers,
-  (SELECT COUNT(*) FROM equipped_purchased) using_purchase;</pre></details>
+    <div class="tip"><b>查询资产不随 HTML 公开：</b>金币余额、手办抽取与皮肤穿戴的复跑逻辑仅保存在本地分析目录；页面只保留聚合数字、定义与限制。</div>
     <div class="note"><b>必须补的数据能力:</b>① 新增换装事件流水，避免用 user_equip.updated_at 猜测行为；② 金币账户初始化必须记 opening_balance 流水；③ 皮肤订单保留成交时 price，而不是事后回看 item_catalog 当前价；④ 手办重复抽取需要记录补偿结果，才能衡量重复体验是否伤害第 2 抽。</div>
   </section>
 
 </div>
 
 <script>
-/* ═══════════ A/B 实验（Android；首次进组 2026-07-31 00:00 ~ 2026-08-05 04:15 UTC） ═══════════ */
+/* ═══════════ A/B 实验（Android + iOS；首次进组 2026-08-01 00:00 ~ 2026-08-12 01:21 UTC；排除测试账号） ═══════════ */
 const AB_TOTAL={
- a:{assigned:657,firstOpen:620,loginPage:434,registered:256,registeredDenom:518,registeredRolling:329,paywall:64,checkout:27,pending:59,paid:2,lessonStart:239,lessonComplete:49},
- b:{assigned:652,firstOpen:613,loginPage:583,registered:305,registeredDenom:537,registeredRolling:374,paywall:302,checkout:71,pending:115,paid:3,lessonStart:135,lessonComplete:37}
+ a:{assigned:2489,firstOpen:2379,loginPage:1838,registered:1252,registeredDenom:2219,registeredRolling:1420,paywall:416,checkout:155,pending:414,paid:8,lessonStart:1080,lessonComplete:283,lessonIndependentStart:1080,lessonIndependentComplete:283},
+ b:{assigned:2521,firstOpen:2410,loginPage:2348,registered:1391,registeredDenom:2260,registeredRolling:1573,paywall:1291,checkout:351,pending:719,paid:8,lessonStart:676,lessonComplete:251,lessonIndependentStart:676,lessonIndependentComplete:251}
 };
+const AB_PLATFORM_TOTAL=[
+ {platform:'全部平台',a:{assigned:2489,mature:2219,registered:1252},b:{assigned:2521,mature:2260,registered:1391},diff:5.13,ci:'+2.2~+8.0pp',p:'.00049'},
+ {platform:'Android',a:{assigned:1960,mature:1740,registered:939},b:{assigned:1951,mature:1747,registered:1048},diff:6.02,ci:'+2.7~+9.3pp',p:'.00033'},
+ {platform:'iOS',a:{assigned:529,mature:479,registered:313},b:{assigned:570,mature:513,registered:343},diff:1.52,ci:'−4.4~+7.4pp',p:'.614'}
+];
 const AB_FLOW_A_SCHEMA=[
- {label:'首次启动',anchor:'first_open'},
- {label:'首期价值页',anchor:'screen_view · WelcomeActivity'},
- {label:'进入 Onboarding',anchor:'screen_view · OnboardingSetupActivity'},
- {label:'完成 Onboarding',anchor:'step_submitted · 4_english_level'},
- {label:'登录注册页',anchor:'page_view · login'},
- {label:'注册成功',anchor:'signup_result · success'},
- {label:'选老师完成',anchor:'teacher_selected'},
- {label:'体验课开始',anchor:'class_lesson_start · 6 个体验课 ID'},
- {label:'体验课完成',anchor:'trial_lesson_complete / class_lesson_end complete'},
- {label:'体验课 Paywall',anchor:'subscription · source=trial_report'}
+ {phase:'启动',label:'首次启动',anchor:'first_open'},
+ {phase:'启动',label:'首期价值页',anchor:'screen_view · WelcomeActivity'},
+ {phase:'问卷',label:'进入 Onboarding',anchor:'screen_view · OnboardingSetupActivity'},
+ {phase:'问卷',label:'完成问题① 姓名',anchor:'step_submitted · 2_learner_name'},
+ {phase:'问卷',label:'完成问题② 年龄',anchor:'step_submitted · 3_learner_age'},
+ {phase:'问卷',label:'完成问题③ 英语水平',anchor:'step_submitted · 4_english_level'},
+ {phase:'账号',label:'登录注册页',anchor:'page_view · login'},
+ {phase:'账号',label:'注册成功',anchor:'signup_result · success'},
+ {phase:'选课',label:'进入选老师页',anchor:'screen_view · DinoClassTeacherSelectActivity'},
+ {phase:'选课',label:'选老师完成',anchor:'teacher_selected'},
+ {phase:'课堂',label:'体验课开始',anchor:'class_lesson_start · 6 个体验课 ID'},
+ {phase:'课堂',label:'体验课完成',anchor:'trial_lesson_complete / class_lesson_end complete'},
+ {phase:'报告',label:'体验课报告',anchor:'page_view · report · source=course_flow'},
+ {phase:'报告',label:'学习计划',anchor:'page_view · study_plan · source=trial_report'},
+ {phase:'变现',label:'体验课 Paywall',anchor:'page_view · subscription · source=trial_report'},
+ {phase:'变现',label:'体验课支付发起',anchor:'subscription_checkout_start · source=trial_report'},
+ {phase:'变现',label:'体验课支付成功',anchor:'payment_order · SUCCESS · PRODUCTION · source=trial_report'}
 ];
 const AB_FLOW_B_SCHEMA=[
- {label:'首次启动',anchor:'first_open'},
- {label:'登录页',anchor:'page_view · login'},
- {label:'注册成功',anchor:'signup_result · success'},
- {label:'进入 Onboarding',anchor:'screen_view · OnboardingSetupActivity'},
- {label:'完成 Onboarding',anchor:'step_submitted · 5_learning_goal'},
- {label:'学习计划',anchor:'study_plan_preview · source=onboarding'},
- {label:'Paywall 第 1 轮',anchor:'subscription · source=study_plan_preview'},
- {label:'进入新手引导',anchor:'onboarding_guide_progress · hub_dino'},
- {label:'完成新手引导',anchor:'onboarding_guide_progress · hub_complete'},
- {label:'Paywall 第 2 轮',anchor:'subscription · source=onboarding_guide'},
- {label:'新人引导课开始',anchor:'class_lesson_start · lesson_id=1661'},
- {label:'新人引导课完成',anchor:'class_lesson_end · lesson_id=1661 · complete'},
- {label:'限时折扣 Paywall',anchor:'discount_offer · source=guidance_report'},
- {label:'折扣支付发起',anchor:'subscription_checkout_start · guidance_report'}
+ {phase:'启动',label:'首次启动',anchor:'first_open'},
+ {phase:'账号',label:'登录注册页',anchor:'page_view · login'},
+ {phase:'账号',label:'注册成功',anchor:'signup_result · success'},
+ {phase:'问卷',label:'进入 Onboarding',anchor:'screen_view · OnboardingSetupActivity'},
+ {phase:'问卷',label:'完成问题① 姓名',anchor:'step_submitted · 2_learner_name'},
+ {phase:'问卷',label:'完成问题② 年龄',anchor:'step_submitted · 3_learner_age'},
+ {phase:'问卷',label:'完成问题③ 英语水平',anchor:'step_submitted · 4_english_level'},
+ {phase:'问卷',label:'完成问题④ 学习目标',anchor:'step_submitted · 5_learning_goal'},
+ {phase:'价值',label:'学习计划预览',anchor:'page_view · study_plan_preview · source=onboarding'},
+ {phase:'变现',label:'Paywall 第 1 轮',anchor:'page_view · subscription · source=study_plan_preview'},
+ {phase:'Hub 引导',label:'引导① Dino',anchor:'onboarding_guide_progress · hub_dino'},
+ {phase:'Hub 引导',label:'引导② Play',anchor:'onboarding_guide_progress · hub_play'},
+ {phase:'Hub 引导',label:'引导③ Explore',anchor:'onboarding_guide_progress · hub_explore'},
+ {phase:'Hub 引导',label:'引导④ Class',anchor:'onboarding_guide_progress · hub_class_intro'},
+ {phase:'Hub 引导',label:'引导⑤ 选老师',anchor:'onboarding_guide_progress · hub_teacher_select'},
+ {phase:'Hub 引导',label:'进入选老师页',anchor:'screen_view · DinoClassTeacherSelectActivity'},
+ {phase:'Hub 引导',label:'引导⑥ 首课卡',anchor:'onboarding_guide_progress · hub_lesson_start'},
+ {phase:'Hub 引导',label:'完成 Hub 引导',anchor:'onboarding_guide_progress · hub_complete'},
+ {phase:'变现',label:'Paywall 第 2 轮',anchor:'page_view · subscription · source=onboarding_guide'},
+ {phase:'课堂',label:'新人引导课开始',anchor:'class_lesson_start · lesson_id=1661'},
+ {phase:'课堂',label:'新人引导课完成',anchor:'class_lesson_end · lesson_id=1661 · complete'},
+ {phase:'报告',label:'新人引导课报告',anchor:'page_view · report · source=course_flow'},
+ {phase:'变现',label:'限时折扣 Paywall',anchor:'discount_offer · source=guidance_report'},
+ {phase:'变现',label:'折扣支付发起',anchor:'subscription_checkout_start · guidance_report'},
+ {phase:'变现',label:'折扣支付成功',anchor:'payment_order · SUCCESS · PRODUCTION · source=guidance_report'}
 ];
 const AB_FLOW_COUNTRIES=[
- {key:'all',tab:'全部',label:'全部国家',a:{assigned:657,counts:[620,597,517,414,412,307,304,249,45,28]},b:{assigned:652,counts:[613,574,356,355,307,199,193,173,145,145,96,30,24,5]}},
- {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:106,counts:[105,104,83,59,59,49,48,35,2,2]},b:{assigned:103,counts:[103,101,60,60,46,29,29,24,20,20,11,5,4,1]}},
- {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:196,counts:[195,189,170,132,130,101,100,78,13,6]},b:{assigned:195,counts:[194,189,131,131,105,49,47,42,33,33,21,6,6,1]}},
- {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:91,counts:[89,87,81,78,78,59,58,49,18,14]},b:{assigned:102,counts:[101,93,56,56,55,36,34,33,28,28,19,8,6,1]}},
- {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:31,counts:[26,23,19,16,16,14,14,13,3,1]},b:{assigned:35,counts:[33,31,20,20,20,11,11,11,11,11,7,1,0,0]}},
- {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:16,counts:[12,10,7,4,4,2,2,2,0,0]},b:{assigned:18,counts:[16,14,2,2,2,1,1,1,1,1,1,0,0,0]}}
+ {key:'all',tab:'全部',label:'全部国家 · Android',a:{"assigned":1960,"counts":[1856,1817,1608,1400,1369,1354,1346,1015,1012,992,814,184,182,118,107,36,1]},b:{"assigned":1951,"counts":[1848,1776,1137,1134,1068,1058,1045,1032,960,925,833,769,749,743,732,719,716,700,698,437,167,62,59,22,0]}},
+ {key:'vn',tab:'越南',label:'越南 · Android',code:'VN',a:{"assigned":73,"counts":[67,63,57,48,48,48,48,27,27,26,25,9,9,6,4,1,0]},b:{"assigned":70,"counts":[67,60,31,31,31,31,31,31,31,31,29,28,28,28,28,28,28,28,28,19,5,1,1,0,0]}},
+ {key:'kr',tab:'韩国',label:'韩国 · Android',code:'KR',a:{"assigned":297,"counts":[295,294,249,206,197,193,193,153,151,148,116,23,23,16,14,2,0]},b:{"assigned":312,"counts":[311,305,197,197,175,173,169,168,160,153,125,109,107,106,104,99,99,96,96,52,24,10,9,2,0]}},
+ {key:'sa',tab:'沙特',label:'沙特阿拉伯 · Android',code:'SA',a:{"assigned":651,"counts":[649,640,589,499,493,486,480,366,366,360,271,43,43,27,27,15,0]},b:{"assigned":603,"counts":[600,581,384,384,358,356,351,345,309,298,274,260,249,246,240,238,237,232,230,149,52,15,14,8,0]}},
+ {key:'my',tab:'马来',label:'马来西亚 · Android',code:'MY',a:{"assigned":294,"counts":[290,285,248,235,232,230,230,168,168,162,145,52,52,31,30,7,0]},b:{"assigned":320,"counts":[319,303,184,184,182,181,180,178,160,153,143,131,129,128,127,125,124,120,120,70,36,23,23,7,0]}},
+ {key:'id',tab:'印尼',label:'印度尼西亚 · Android',code:'ID',a:{"assigned":152,"counts":[145,138,124,109,107,107,106,85,85,84,75,11,11,8,7,4,1]},b:{"assigned":137,"counts":[133,128,86,86,86,85,85,85,79,79,76,73,73,73,73,72,72,72,72,55,16,4,4,1,0]}}
 ];
 const AB_DAY=[
- {d:'07-31',g:'A',assigned:126,mature:126,registered:68,registeredRolling:70,lessonComplete:9,paid:0,pending:8},
- {d:'07-31',g:'B',assigned:131,mature:131,registered:83,registeredRolling:83,lessonComplete:6,paid:2,pending:21},
- {d:'08-01',g:'A',assigned:116,mature:116,registered:62,registeredRolling:62,lessonComplete:13,paid:0,pending:17},
- {d:'08-01',g:'B',assigned:134,mature:134,registered:80,registeredRolling:81,lessonComplete:5,paid:0,pending:10},
- {d:'08-02',g:'A',assigned:117,mature:117,registered:57,registeredRolling:59,lessonComplete:9,paid:1,pending:21},
- {d:'08-02',g:'B',assigned:102,mature:102,registered:61,registeredRolling:61,lessonComplete:9,paid:0,pending:25},
- {d:'08-03',g:'A',assigned:132,mature:132,registered:62,registeredRolling:62,lessonComplete:7,paid:0,pending:9},
- {d:'08-03',g:'B',assigned:144,mature:144,registered:69,registeredRolling:69,lessonComplete:7,paid:1,pending:22},
- {d:'08-04',g:'A',assigned:138,mature:27,registered:7,registeredRolling:63,lessonComplete:10,paid:1,pending:2},
- {d:'08-04',g:'B',assigned:118,mature:26,registered:12,registeredRolling:65,lessonComplete:7,paid:0,pending:36},
- {d:'08-05*',g:'A',assigned:28,mature:0,registered:0,registeredRolling:13,lessonComplete:1,paid:0,pending:2},
- {d:'08-05*',g:'B',assigned:23,mature:0,registered:0,registeredRolling:15,lessonComplete:3,paid:0,pending:1}
+ {
+  d: '08-01',
+  g: 'A',
+  assigned: 136,
+  mature: 136,
+  registered: 77,
+  registeredRolling: 77,
+  lessonComplete: 17,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-01',
+  g: 'B',
+  assigned: 157,
+  mature: 157,
+  registered: 93,
+  registeredRolling: 96,
+  lessonComplete: 7,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-02',
+  g: 'A',
+  assigned: 138,
+  mature: 138,
+  registered: 73,
+  registeredRolling: 75,
+  lessonComplete: 13,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-02',
+  g: 'B',
+  assigned: 139,
+  mature: 139,
+  registered: 91,
+  registeredRolling: 91,
+  lessonComplete: 14,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-03',
+  g: 'A',
+  assigned: 172,
+  mature: 172,
+  registered: 91,
+  registeredRolling: 93,
+  lessonComplete: 16,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-03',
+  g: 'B',
+  assigned: 184,
+  mature: 184,
+  registered: 99,
+  registeredRolling: 101,
+  lessonComplete: 8,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-04',
+  g: 'A',
+  assigned: 192,
+  mature: 192,
+  registered: 107,
+  registeredRolling: 111,
+  lessonComplete: 28,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-04',
+  g: 'B',
+  assigned: 191,
+  mature: 191,
+  registered: 119,
+  registeredRolling: 124,
+  lessonComplete: 17,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-05',
+  g: 'A',
+  assigned: 237,
+  mature: 237,
+  registered: 143,
+  registeredRolling: 144,
+  lessonComplete: 20,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-05',
+  g: 'B',
+  assigned: 224,
+  mature: 224,
+  registered: 152,
+  registeredRolling: 153,
+  lessonComplete: 37,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-06',
+  g: 'A',
+  assigned: 278,
+  mature: 278,
+  registered: 146,
+  registeredRolling: 147,
+  lessonComplete: 32,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-06',
+  g: 'B',
+  assigned: 259,
+  mature: 259,
+  registered: 161,
+  registeredRolling: 163,
+  lessonComplete: 26,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-07',
+  g: 'A',
+  assigned: 265,
+  mature: 265,
+  registered: 161,
+  registeredRolling: 163,
+  lessonComplete: 30,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-07',
+  g: 'B',
+  assigned: 274,
+  mature: 274,
+  registered: 182,
+  registeredRolling: 185,
+  lessonComplete: 34,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-08',
+  g: 'A',
+  assigned: 278,
+  mature: 278,
+  registered: 171,
+  registeredRolling: 174,
+  lessonComplete: 34,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-08',
+  g: 'B',
+  assigned: 276,
+  mature: 276,
+  registered: 171,
+  registeredRolling: 173,
+  lessonComplete: 34,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-09',
+  g: 'A',
+  assigned: 275,
+  mature: 275,
+  registered: 145,
+  registeredRolling: 146,
+  lessonComplete: 39,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-09',
+  g: 'B',
+  assigned: 288,
+  mature: 288,
+  registered: 182,
+  registeredRolling: 187,
+  lessonComplete: 32,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-10',
+  g: 'A',
+  assigned: 223,
+  mature: 223,
+  registered: 126,
+  registeredRolling: 128,
+  lessonComplete: 26,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-10',
+  g: 'B',
+  assigned: 248,
+  mature: 248,
+  registered: 128,
+  registeredRolling: 129,
+  lessonComplete: 22,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-11',
+  g: 'A',
+  assigned: 280,
+  mature: 25,
+  registered: 12,
+  registeredRolling: 156,
+  lessonComplete: 27,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-11',
+  g: 'B',
+  assigned: 261,
+  mature: 20,
+  registered: 13,
+  registeredRolling: 160,
+  lessonComplete: 20,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-12*',
+  g: 'A',
+  assigned: 15,
+  mature: 0,
+  registered: 0,
+  registeredRolling: 6,
+  lessonComplete: 1,
+  paid: null,
+  pending: null
+ },
+ {
+  d: '08-12*',
+  g: 'B',
+  assigned: 20,
+  mature: 0,
+  registered: 0,
+  registeredRolling: 11,
+  lessonComplete: 0,
+  paid: null,
+  pending: null
+ }
 ];
 const AB_HEALTH=[
- ['正式 A/B 稳定样本','1,309 台','A 657 / B 652；07-30 及更早首次进组样本已排除','可监控'],
- ['分流均衡性 SRM','p=.782','A/B 50.2% / 49.8%；未发现样本比例错配','通过'],
- ['24h 成熟样本','1,055 台','A 518 / B 537；注册 B−A +7.4pp，p=.016','初步显著'],
- ['7d 成熟样本','0 台','付费与首课正式口径尚未成熟；最早约 08-07 00:00 UTC','等待'],
- ['分组冲突','28 台','同设备多分组或与 fallback 重叠；已剔除','阻断'],
- ['fallback','86 / 1,395 · 6.2%','包含 58 台纯 fallback + 28 台冲突设备；目标 ≤1%','阻断'],
+ ['正式 A/B 稳定样本','5,010 台','A 2,489 / B 2,521；Android 3,911，iOS 1,099；已排除测试账号','可监控'],
+ ['分流均衡性 SRM','p=.651','A/B 49.7% / 50.3%；未见样本比例异常','通过'],
+ ['24h 成熟样本','4,479 台','A 2,219 / B 2,260；早期注册 B−A +5.1pp，p=.00049','显著'],
+ ['同业务状态 · Android','A 51.8% / B 52.9%','注册且完成 Onboarding；B−A +1.1pp，p=.487，不显著','观察'],
+ ['7d 观察期','首批 cohort 已成熟','支付成功 A 8 / B 8，绝对量仍不足以判断胜负','等待'],
+ ['分组冲突','126 台','Android 81 / iOS 45；已剔除','阻断'],
+ ['fallback','385 / 5,395 · 7.1%','Android 5.9%，iOS 11.2%；目标 ≤1%','阻断'],
+ ['平台差异','Android +6.0pp / iOS +1.5pp','早期注册 Android 显著，iOS 置信区间跨 0；且注册流程位置不同','观察'],
  ['分组真相源','experiment_group_assign','服务端明细表尚未进入当前 BigQuery 查询层','待补'],
- ['分组事件时序','B 中位滞后约 192 秒','时序审计有 122 / 583 台 B 登录页早于分组事件；主链路用前序累计命中','可监控'],
- ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614；B=1661。lesson_type 缺失不再阻断识别','可监控'],
- ['Google Play 支付','生产 SUCCESS A 2 / B 3','实验样本映射到 PENDING：A 59 / B 115；SANDBOX 已排除','未成熟']
+ ['iOS 页面锚点','未对齐','分组/注册/课程结果可读；Onboarding 页面级漏斗暂不跨端合并','阻断'],
+ ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614；B=1661','可监控'],
+ ['生产支付','SUCCESS A 8 / B 8','PENDING A 414 / B 719；A 主链路成功 1，B 折扣主链路成功 0','未成熟']
 ];
 const AB_LESSON=[
- {type:'体验课',level:'Level 1',lessonId:'732',group:'A',started:87,completed:24},
- {type:'体验课',level:'Level 2',lessonId:'1615',group:'A',started:47,completed:15},
- {type:'体验课',level:'Level 3',lessonId:'734',group:'A',started:28,completed:4},
- {type:'体验课',level:'Level 4',lessonId:'733',group:'A',started:42,completed:6},
- {type:'体验课',level:'Level 5',lessonId:'1613',group:'A',started:29,completed:0},
- {type:'体验课',level:'Level 6',lessonId:'1614',group:'A',started:6,completed:0},
- {type:'新手引导课',level:'—',lessonId:'1661',group:'B',started:135,completed:37}
+ {
+  type: '体验课',
+  level: 'Level 1',
+  lessonId: '732',
+  group: 'A',
+  started: 461,
+  completed: 142
+ },
+ {
+  type: '体验课',
+  level: 'Level 2',
+  lessonId: '1615',
+  group: 'A',
+  started: 187,
+  completed: 77
+ },
+ {
+  type: '体验课',
+  level: 'Level 3',
+  lessonId: '734',
+  group: 'A',
+  started: 141,
+  completed: 34
+ },
+ {
+  type: '体验课',
+  level: 'Level 4',
+  lessonId: '733',
+  group: 'A',
+  started: 161,
+  completed: 24
+ },
+ {
+  type: '体验课',
+  level: 'Level 5',
+  lessonId: '1613',
+  group: 'A',
+  started: 103,
+  completed: 17
+ },
+ {
+  type: '体验课',
+  level: 'Level 6',
+  lessonId: '1614',
+  group: 'A',
+  started: 18,
+  completed: 2
+ },
+ {
+  type: '新人引导课',
+  level: '—',
+  lessonId: '1661',
+  group: 'B',
+  started: 584,
+  completed: 234
+ }
 ];
 const AB_B_ONBOARDING_LESSON=[
- {label:'开始新人引导课',count:143,ended:null,anchor:'class_lesson_start · lesson_id=1661'},
- {label:'课堂导入',count:143,ended:89,anchor:'class_stage_start/end · lead-in-template_l1l2'},
- {label:'视频示范',count:83,ended:77,anchor:'class_stage_start/end · play-video-template'},
- {label:'单词教学',count:77,ended:68,anchor:'class_stage_start/end · word_teach_image_l1l2'},
- {label:'单词练习',count:39,ended:38,anchor:'class_stage_start/end · word_practice_bubble_image'},
- {label:'总结收尾',count:38,ended:37,anchor:'class_stage_start/end · wrapup_summary_video_trail'},
- {label:'完成新人引导课',count:37,ended:null,anchor:'class_lesson_end · result=complete · lesson_id=1661'}
+ {
+  label: '开始新人引导课',
+  count: 599,
+  ended: null,
+  anchor: 'class_lesson_start · lesson_id=1661'
+ },
+ {
+  label: '课堂导入',
+  count: 599,
+  ended: 399,
+  anchor: 'class_stage_start/end · lead-in-template_l1l2'
+ },
+ {
+  label: '视频示范',
+  count: 375,
+  ended: 357,
+  anchor: 'class_stage_start/end · play-video-template'
+ },
+ {
+  label: '单词教学',
+  count: 355,
+  ended: 321,
+  anchor: 'class_stage_start/end · word_teach_image_l1l2'
+ },
+ {
+  label: '单词练习',
+  count: 250,
+  ended: 244,
+  anchor: 'class_stage_start/end · word_practice_bubble_image'
+ },
+ {
+  label: '总结收尾',
+  count: 244,
+  ended: 236,
+  anchor: 'class_stage_start/end · wrapup_summary_video_trail'
+ },
+ {
+  label: '完成新人引导课',
+  count: 234,
+  ended: null,
+  anchor: 'class_lesson_end · result=complete · lesson_id=1661'
+ }
 ];
 
-/* ═══════════ 登录注册最新数据（统一截点 2026-08-05 04:15 UTC） ═══════════ */
+/* ═══════════ 登录注册最新数据（统一截点 2026-08-12 01:21 UTC；排除测试账号） ═══════════ */
 // 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]
-const AUTH_METHOD_DAYS=["07-23","07-24","07-25","07-26","07-27","07-28","07-29","07-30","07-31","08-01","08-02","08-03","08-04","08-05*"];
-const AUTH_METHOD_DATA={"VN":[[117,36,1,35,0,0,0,0],[148,64,0,64,0,0,0,0],[59,19,0,19,0,0,0,0],[39,19,2,17,0,0,0,0],[60,23,0,23,0,0,0,0],[88,39,1,38,0,0,0,0],[62,30,0,30,0,0,0,0],[14,6,0,6,0,0,0,0],[11,3,0,3,0,0,0,0],[15,2,0,2,0,0,0,0],[9,4,0,4,0,0,0,0],[19,1,0,1,0,0,0,0],[11,1,0,1,0,0,0,0],[3,0,0,0,0,0,0,0]],"ID":[[243,127,52,51,2,22,0,0],[308,175,78,69,4,24,0,0],[240,152,85,57,1,9,0,0],[127,79,52,23,2,2,0,0],[101,63,38,18,3,4,0,0],[116,80,53,25,1,1,0,0],[61,43,24,15,0,4,0,0],[24,11,8,3,0,0,0,0],[26,17,12,3,0,2,0,0],[29,12,9,2,1,0,0,0],[28,11,8,3,0,0,0,0],[27,10,6,4,0,0,0,0],[30,11,6,4,0,1,0,0],[7,4,3,1,0,0,0,0]],"MY":[[267,123,48,44,10,21,0,0],[248,149,40,90,6,13,0,0],[181,77,31,33,6,7,0,0],[77,40,17,15,3,5,0,0],[76,46,16,22,5,3,0,0],[110,67,26,24,12,5,0,0],[99,61,19,31,7,4,0,0],[62,41,14,20,4,3,0,0],[75,44,13,23,7,1,0,0],[141,87,21,35,25,6,0,0],[113,76,14,40,17,5,0,0],[126,69,10,30,24,5,0,0],[106,67,14,27,24,2,0,0],[24,14,5,4,4,1,0,0]],"SA":[[79,51,45,2,2,2,0,0],[98,52,45,3,1,3,0,0],[103,53,45,2,1,5,0,0],[35,22,19,1,1,1,0,0],[34,14,12,0,0,2,0,0],[25,7,7,0,0,0,0,0],[66,32,28,3,0,1,0,0],[94,45,41,2,0,2,0,0],[160,84,73,5,0,6,0,0],[113,63,56,5,1,1,0,0],[97,46,38,6,0,2,0,0],[131,73,62,4,2,5,0,0],[143,62,59,1,0,2,0,0],[24,9,9,0,0,0,0,0]],"TH":[[60,38,26,0,3,9,0,0],[85,47,39,0,2,6,0,0],[71,45,36,0,3,6,0,0],[75,46,41,0,3,2,0,0],[54,34,30,0,3,1,0,0],[67,49,35,0,8,6,0,0],[34,19,15,0,3,1,0,0],[9,2,1,0,0,1,0,0],[9,5,5,0,0,0,0,0],[15,7,2,0,5,0,0,0],[11,5,2,0,2,1,0,0],[16,6,4,0,2,0,0,0],[39,20,12,0,6,2,0,0],[1,0,0,0,0,0,0,0]],"KR":[[39,20,3,8,0,2,7,0],[165,34,17,11,0,1,5,0],[150,30,12,13,0,0,5,0],[270,39,15,13,1,1,9,0],[242,37,21,6,0,2,8,0],[248,56,29,1,0,1,25,0],[158,44,22,0,0,0,22,0],[45,15,6,0,0,1,8,0],[63,29,15,0,0,0,14,0],[59,24,10,0,0,0,14,0],[46,28,16,0,0,1,11,0],[75,32,17,0,0,0,15,0],[62,31,15,4,0,0,12,0],[8,5,1,0,0,0,4,0]],"Other":[[36,11,9,1,1,0,0,0],[18,9,7,1,1,0,0,0],[21,12,11,0,0,1,0,0],[17,4,4,0,0,0,0,0],[26,14,8,4,2,0,0,0],[47,22,4,13,3,0,0,2],[87,34,7,22,2,2,0,1],[25,11,6,3,1,0,0,1],[43,11,6,2,1,1,0,1],[23,9,7,0,2,0,0,0],[25,4,3,0,0,1,0,0],[23,9,5,3,1,0,0,0],[32,15,5,4,6,0,0,0],[4,2,1,1,0,0,0,0]]};
-const REG_DAILY=[{"d":"07-10","n":2059,"s":867,"an":1959,"as":792},{"d":"07-11","n":1993,"s":848,"an":1922,"as":794},{"d":"07-12","n":1665,"s":709,"an":1595,"as":662},{"d":"07-13","n":1964,"s":811,"an":1892,"as":770},{"d":"07-14","n":2812,"s":1136,"an":2744,"as":1100},{"d":"07-15","n":2226,"s":926,"an":2153,"as":888},{"d":"07-16","n":2139,"s":1021,"an":2058,"as":961},{"d":"07-17","n":1632,"s":748,"an":1517,"as":671},{"d":"07-18","n":1360,"s":557,"an":1318,"as":525},{"d":"07-19","n":1395,"s":486,"an":1360,"as":464},{"d":"07-20","n":634,"s":315,"an":593,"as":293},{"d":"07-21","n":806,"s":366,"an":771,"as":345},{"d":"07-22","n":948,"s":493,"an":898,"as":463},{"d":"07-23","n":841,"s":406,"an":764,"as":371},{"d":"07-24","n":1070,"s":530,"an":1003,"as":492},{"d":"07-25","n":825,"s":388,"an":768,"as":359},{"d":"07-26","n":640,"s":249,"an":594,"as":224},{"d":"07-27","n":593,"s":231,"an":511,"as":191},{"d":"07-28","n":701,"s":320,"an":576,"as":243},{"d":"07-29","n":567,"s":263,"an":457,"as":198},{"d":"07-30","n":273,"s":131,"an":239,"as":113},{"d":"07-31","n":387,"s":193,"an":339,"as":164},{"d":"08-01","n":395,"s":204,"an":306,"as":144},{"d":"08-02","n":329,"s":174,"an":262,"as":123},{"d":"08-03","n":417,"s":200,"an":311,"as":134},{"d":"08-04","n":423,"s":207,"an":292,"as":132},{"d":"08-05*","n":71,"s":34,"an":54,"as":25}];
+const AUTH_METHOD_DAYS=["07-29","07-30","07-31","08-01","08-02","08-03","08-04","08-05","08-06","08-07","08-08","08-09","08-10","08-11","08-12*"];
+const AUTH_METHOD_DATA={"VN":[[62,30,0,30,0,0,0,0],[14,6,0,6,0,0,0,0],[11,3,0,3,0,0,0,0],[15,2,0,2,0,0,0,0],[9,4,0,4,0,0,0,0],[19,1,0,1,0,0,0,0],[11,1,0,1,0,0,0,0],[40,26,8,18,0,0,0,0],[105,46,24,14,8,0,0,0],[53,18,0,18,0,0,0,0],[34,21,0,21,0,0,0,0],[33,12,1,11,0,0,0,0],[31,19,0,19,0,0,0,0],[47,18,0,18,0,0,0,0],[4,0,0,0,0,0,0,0]],"ID":[[61,43,24,15,0,4,0,0],[24,11,8,3,0,0,0,0],[26,17,12,3,0,2,0,0],[29,12,9,2,1,0,0,0],[28,11,8,3,0,0,0,0],[27,10,6,4,0,0,0,0],[35,14,8,4,1,1,0,0],[52,32,22,8,2,0,0,0],[50,29,19,9,1,0,0,0],[52,31,21,9,1,0,0,0],[42,24,18,4,0,0,0,2],[46,26,19,7,0,0,0,0],[38,16,9,4,0,0,0,3],[56,29,18,8,0,0,0,3],[1,0,0,0,0,0,0,0]],"MY":[[92,54,19,24,7,4,0,0],[58,39,14,18,4,3,0,0],[64,38,13,17,7,1,0,0],[141,87,21,35,25,6,0,0],[113,76,14,40,17,5,0,0],[125,68,10,29,24,5,0,0],[116,76,19,31,24,2,0,0],[111,67,21,24,15,7,0,0],[123,63,27,23,11,0,0,2],[145,83,20,32,20,0,0,11],[166,98,39,33,16,0,0,10],[169,83,36,26,12,0,0,9],[158,70,26,27,10,0,0,7],[156,87,36,31,13,0,0,7],[9,3,0,2,0,0,0,1]],"SA":[[66,32,28,3,0,1,0,0],[94,45,41,2,0,2,0,0],[160,84,73,5,0,6,0,0],[113,63,56,5,1,1,0,0],[97,46,38,6,0,2,0,0],[133,73,62,4,2,5,0,0],[154,77,72,2,0,3,0,0],[226,114,100,5,0,5,0,4],[174,85,75,3,0,0,0,7],[188,121,105,3,3,0,0,10],[197,103,95,0,2,0,0,6],[206,101,88,4,1,0,0,8],[115,59,49,4,4,0,0,2],[131,70,56,4,8,0,0,2],[10,3,1,1,1,0,0,0]],"TH":[[34,19,15,0,3,1,0,0],[9,2,1,0,0,1,0,0],[9,5,5,0,0,0,0,0],[15,7,2,0,5,0,0,0],[11,5,2,0,2,1,0,0],[16,6,4,0,2,0,0,0],[41,24,14,0,7,3,0,0],[25,13,3,0,7,1,0,2],[46,24,14,0,5,0,0,5],[67,42,26,0,12,0,0,4],[73,47,31,0,11,0,0,5],[84,49,33,0,7,0,0,9],[94,53,45,0,6,0,0,2],[117,69,51,0,9,0,0,9],[8,7,7,0,0,0,0,0]],"KR":[[158,44,22,0,0,0,22,0],[45,15,6,0,0,1,8,0],[63,29,15,0,0,0,14,0],[59,24,10,0,0,0,14,0],[46,28,16,0,0,1,11,0],[74,32,17,0,0,0,15,0],[65,34,16,5,0,0,13,0],[58,34,18,0,0,0,15,1],[100,60,25,6,0,0,28,1],[69,41,20,0,0,0,19,2],[72,41,21,3,1,0,16,0],[81,41,22,1,0,0,18,0],[69,35,11,2,0,0,22,0],[84,41,17,0,0,0,23,1],[8,5,3,1,0,0,1,0]],"Other":[[60,10,7,0,2,1,0,0],[21,9,6,1,1,0,0,1],[40,8,6,0,1,0,0,1],[23,9,7,0,2,0,0,0],[25,4,3,0,0,1,0,0],[16,6,5,0,1,0,0,0],[25,10,5,0,5,0,0,0],[17,7,5,1,1,0,0,0],[23,12,8,0,4,0,0,0],[52,13,5,3,4,0,0,1],[13,7,5,0,1,0,0,1],[15,10,10,0,0,0,0,0],[31,4,4,0,0,0,0,0],[24,14,9,1,3,0,0,1],[0,0,0,0,0,0,0,0]]};
+const REG_DAILY=[{"d":"07-10","n":2057,"s":866,"an":1958,"as":792},{"d":"07-11","n":1992,"s":847,"an":1922,"as":794},{"d":"07-12","n":1664,"s":709,"an":1594,"as":662},{"d":"07-13","n":1963,"s":811,"an":1892,"as":770},{"d":"07-14","n":2811,"s":1135,"an":2743,"as":1099},{"d":"07-15","n":2226,"s":926,"an":2153,"as":888},{"d":"07-16","n":2138,"s":1020,"an":2058,"as":961},{"d":"07-17","n":1631,"s":748,"an":1517,"as":671},{"d":"07-18","n":1360,"s":557,"an":1318,"as":525},{"d":"07-19","n":1395,"s":486,"an":1360,"as":464},{"d":"07-20","n":633,"s":314,"an":593,"as":293},{"d":"07-21","n":805,"s":365,"an":771,"as":345},{"d":"07-22","n":947,"s":493,"an":898,"as":463},{"d":"07-23","n":841,"s":406,"an":764,"as":371},{"d":"07-24","n":1070,"s":530,"an":1003,"as":492},{"d":"07-25","n":825,"s":388,"an":768,"as":359},{"d":"07-26","n":640,"s":249,"an":594,"as":224},{"d":"07-27","n":591,"s":230,"an":511,"as":191},{"d":"07-28","n":695,"s":315,"an":576,"as":243},{"d":"07-29","n":533,"s":232,"an":449,"as":191},{"d":"07-30","n":265,"s":127,"an":237,"as":112},{"d":"07-31","n":373,"s":184,"an":337,"as":162},{"d":"08-01","n":395,"s":204,"an":306,"as":144},{"d":"08-02","n":329,"s":174,"an":262,"as":123},{"d":"08-03","n":410,"s":196,"an":311,"as":134},{"d":"08-04","n":447,"s":236,"an":321,"as":155},{"d":"08-05","n":529,"s":293,"an":414,"as":215},{"d":"08-06","n":621,"s":319,"an":436,"as":233},{"d":"08-07","n":626,"s":349,"an":480,"as":258},{"d":"08-08","n":597,"s":341,"an":471,"as":255},{"d":"08-09","n":634,"s":322,"an":531,"as":266},{"d":"08-10","n":536,"s":256,"an":415,"as":190},{"d":"08-11","n":615,"s":328,"an":471,"as":250},{"d":"08-12*","n":40,"s":18,"an":31,"as":14}];
 
 /* ═══════════ 数据(2026-07-10 ~ 07-30 12:28 UTC；07-30* 为滚动部分日) ═══════════ */
 const DAYS=['07-10','07-11','07-12','07-13','07-14','07-15','07-16','07-17','07-18','07-19','07-20','07-21','07-22','07-23','07-24','07-25','07-26','07-27','07-28','07-29','07-30*'];
@@ -1377,34 +1576,9 @@ const HOURLY={
 const OUTAGE={'07-17':[16,23],'07-18':[0,1]}; // 起始小时数组
 
 // 留存:cohort × [D1..D7] 回访人数
-const RET=[
- {d:'07-10',n:1998,r:[251,114,92,66,64,51,43]},
- {d:'07-11',n:1993,r:[231,122,82,69,61,50,51]},
- {d:'07-12',n:1665,r:[226,117,79,58,63,61,54]},
- {d:'07-13',n:1964,r:[280,132,97,87,69,67,60]},
- {d:'07-14',n:2812,r:[299,190,132,112,113,102,97]},
- {d:'07-15',n:2226,r:[274,162,131,120,108,93,101]},
- {d:'07-16',n:2139,r:[380,267,214,128,97,88,107]},
- {d:'07-17',n:1632,r:[385,293,197,115,81,116,108]},
- {d:'07-18',n:1360,r:[356,240,156,92,93,74,74]},
- {d:'07-19',n:1395,r:[274,232,142,101,101,90,66]},
- {d:'07-20',n:634,r:[217,170,136,70,72,55,34]},
- {d:'07-21',n:806,r:[244,210,157,77,63,50,39]},
- {d:'07-22',n:948,r:[344,269,186,110,86,57,58]},
- {d:'07-23',n:841,r:[313,256,140,83,55,58,47]},
- {d:'07-24',n:1070,r:[367,302,187,80,72,64,62]},
- {d:'07-25',n:825,r:[296,240,147,89,73,65,63]},
- {d:'07-26',n:640,r:[187,130,83,41,36,51,43]},
- {d:'07-27',n:593,r:[164,121,87,49,34,32,42]},
- {d:'07-28',n:701,r:[194,138,106,64,58,54,39]},
- {d:'07-29',n:567,r:[159,121,78,30,39,34,null]},
- {d:'07-30',n:273,r:[81,62,50,39,28,null,null]},
- {d:'07-31',n:387,r:[104,91,63,41,null,null,null]},
- {d:'08-01',n:395,r:[118,85,39,null,null,null,null]},
- {d:'08-02',n:329,r:[95,74,null,null,null,null,null]},
- {d:'08-03',n:417,r:[129,null,null,null,null,null,null]}];
-const SEG=[['当日完成首课(trial_lesson_complete 当天)',1416,712],['当日注册·未完课',11214,3486],['当日未注册',15980,1770]];
-const CURVE=[['D1 次日(07-10~08-03 cohort)',28610,5968],['D3 第 3 天(07-10~08-01 cohort)',27864,2781],['D7 第 7 天(07-10~07-28 cohort)',26242,1188]];
+const RET=[{"d":"07-10","n":1996,"r":[183,75,66,43,45,33,27]},{"d":"07-11","n":1992,"r":[185,87,54,49,35,31,34]},{"d":"07-12","n":1664,"r":[171,90,56,39,48,40,34]},{"d":"07-13","n":1963,"r":[189,88,70,61,43,35,37]},{"d":"07-14","n":2811,"r":[232,145,78,77,77,59,53]},{"d":"07-15","n":2226,"r":[218,120,97,75,60,50,55]},{"d":"07-16","n":2138,"r":[248,160,103,69,56,41,51]},{"d":"07-17","n":1631,"r":[178,100,70,60,39,42,40]},{"d":"07-18","n":1360,"r":[177,72,51,37,43,36,35]},{"d":"07-19","n":1395,"r":[105,59,52,34,35,33,27]},{"d":"07-20","n":633,"r":[102,56,40,24,29,28,13]},{"d":"07-21","n":805,"r":[101,63,44,35,29,19,26]},{"d":"07-22","n":947,"r":[151,86,74,57,48,27,29]},{"d":"07-23","n":841,"r":[152,89,46,43,31,30,28]},{"d":"07-24","n":1070,"r":[148,92,55,36,33,31,28]},{"d":"07-25","n":825,"r":[149,81,56,39,34,28,30]},{"d":"07-26","n":640,"r":[82,37,24,14,16,25,17]},{"d":"07-27","n":591,"r":[68,35,34,19,15,18,23]},{"d":"07-28","n":695,"r":[88,47,39,31,31,28,21]},{"d":"07-29","n":533,"r":[64,40,21,18,21,17,18]},{"d":"07-30","n":265,"r":[31,18,16,12,14,11,4]},{"d":"07-31","n":373,"r":[48,24,22,17,8,10,7]},{"d":"08-01","n":395,"r":[62,29,19,23,14,18,11]},{"d":"08-02","n":329,"r":[40,21,20,10,18,14,9]},{"d":"08-03","n":410,"r":[65,41,27,15,23,17,14]},{"d":"08-04","n":447,"r":[86,48,38,19,21,21,13]},{"d":"08-05","n":529,"r":[86,53,38,31,29,15,null]},{"d":"08-06","n":621,"r":[101,61,46,29,24,null,null]},{"d":"08-07","n":626,"r":[93,52,28,30,null,null,null]},{"d":"08-08","n":597,"r":[104,61,41,null,null,null,null]},{"d":"08-09","n":634,"r":[84,45,null,null,null,null,null]},{"d":"08-10","n":536,"r":[103,null,null,null,null,null,null]}];
+const SEG=[["当日完成首课",1675,554],["当日注册·未完课",13031,1934],["当日未注册",17812,1406]];
+const CURVE=[["D1 次日(07-10~08-10 cohort)",32518,3894],["D3 第 3 天(07-10~08-08 cohort)",31348,1425],["D7 第 7 天(07-10~08-04 cohort)",28975,684]];
 
 // Push · Firebase 自动通知事件(2026-07-16~07-30 12:28 UTC；24h 归因截至 07-28)
 const PUSH_DAILY=[
@@ -1464,9 +1638,9 @@ const el=id=>document.getElementById(id);
 (function(){
   const A=AB_TOTAL.a,B=AB_TOTAL.b;
   const metrics=[
-    {label:'登录注册转化率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI +1.4~+13.4pp · p=.016',cls:'hot',status:'初步显著 · 继续实验',statusCls:'up'},
+    {label:'早期注册率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI +2.2~+8.0pp · p=.00049',cls:'',status:'流程位置不同 · 不单独判胜',statusCls:'flat'},
     {label:'付费转化率',a:A.paid,b:B.paid,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:`生产 SUCCESS A ${A.paid} / B ${B.paid}；PENDING A ${A.pending} / B ${B.pending}`,cls:'warn',status:'7d 未成熟 · 不判胜',statusCls:'flat'},
-    {label:'首课完课率',a:A.lessonComplete,b:B.lessonComplete,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:'A 体验课 6 ID · B 新人引导课 1661',cls:'hot',status:'7d 未成熟 · 不判胜',statusCls:'flat'}
+    {label:'首课完课率',a:A.lessonIndependentComplete,b:B.lessonIndependentComplete,aDenom:A.lessonIndependentStart,bDenom:B.lessonIndependentStart,matureA:A.lessonIndependentStart,matureB:B.lessonIndependentStart,window:'独立课程口径',detail:'进组后首次命中 8 节指定课 · p<.00001',cls:'',status:'B +10.9pp · 课程不同',statusCls:'flat'}
   ];
   el('abKpis').innerHTML=metrics.map(m=>{
     const ar=pct(m.a,m.aDenom),br=pct(m.b,m.bDenom),diff=br-ar;
@@ -1476,7 +1650,7 @@ const el=id=>document.getElementById(id);
       `<span class="delta">Δ ${diffText}</span><div class="kn">A ${m.a}/${m.aDenom} · B ${m.b}/${m.bDenom}<br>${m.detail} · ${m.status}</div></div>`;
   }).join('');
 
-  el('abCoreTable').innerHTML='<tr><th>核心指标</th><th>A 组</th><th>B 组</th><th>B−A</th><th>相对提升</th><th>正式成熟样本</th><th>状态</th></tr>'+
+  el('abCoreTable').innerHTML='<tr><th>核心指标</th><th>A 组</th><th>B 组</th><th>B−A</th><th>相对提升</th><th>指标有效样本</th><th>状态</th></tr>'+
     metrics.map(m=>{
       const ar=pct(m.a,m.aDenom),br=pct(m.b,m.bDenom),diff=br-ar;
       const lift=ar?((br/ar-1)*100):null;
@@ -1487,14 +1661,21 @@ const el=id=>document.getElementById(id);
         `<td>${lift===null?'—':(lift>0?'+':'')+lift.toFixed(1)+'%'}</td><td>A ${m.matureA} / B ${m.matureB}</td><td class="${m.statusCls}">${m.status}</td></tr>`;
     }).join('');
 
+  el('abPlatformTable').innerHTML='<tr><th>平台</th><th>A稳定进组</th><th>B稳定进组</th><th>A 24h注册率</th><th>B 24h注册率</th><th>B−A</th><th>95% CI</th><th>p-value</th></tr>'+
+    AB_PLATFORM_TOTAL.map(r=>`<tr><td><b>${r.platform}</b></td><td>${r.a.assigned}</td><td>${r.b.assigned}</td>`+
+      `<td>${fp(pct(r.a.registered,r.a.mature))}<span class="n">${r.a.registered}/${r.a.mature}</span></td>`+
+      `<td>${fp(pct(r.b.registered,r.b.mature))}<span class="n">${r.b.registered}/${r.b.mature}</span></td>`+
+      `<td class="${r.diff>0?'up':r.diff<0?'down':'flat'}">${r.diff>0?'+':''}${r.diff.toFixed(1)}pp</td><td>${r.ci}</td><td>${r.p}</td></tr>`).join('');
+
   function renderFlow(routeId,tableId,rows){
-    el(routeId).innerHTML=rows.map((r,i)=>`${i?'<span class="route-arrow">→</span>':''}<span class="route-node">${r.label} · ${r.count}</span>`).join('');
+    el(routeId).innerHTML=rows.map((r,i)=>`${i?'<span class="route-arrow">→</span>':''}<span class="route-node"><small>${r.phase}</small>${r.label} · ${r.count}</span>`).join('');
     const start=rows[0].count;
-    el(tableId).innerHTML='<tr><th>步骤</th><th>到达设备</th><th>上一步转化</th><th>启动转化</th><th>本步流失</th><th>事件锚点</th></tr>'+
+    el(tableId).innerHTML='<tr><th>页面 / 节点</th><th>阶段</th><th>到达设备</th><th>上一步转化</th><th>启动转化</th><th>本步流失</th><th>事件锚点</th></tr>'+
       rows.map((r,i)=>{
         const prev=i?rows[i-1].count:r.count,stepRate=prev?pct(r.count,prev):null,startRate=start?pct(r.count,start):0,lost=i?prev-r.count:0;
         const hot=stepRate!==null&&stepRate<50?' hot':'';
-        return `<tr><td class="funnel-node"><span class="idx">${i+1}</span>${r.label}</td><td><b>${r.count}</b></td>`+
+        const phaseStart=i>0&&rows[i-1].phase!==r.phase;
+        return `<tr${phaseStart?' class="phase-start"':''}><td class="funnel-node"><span class="idx">${i+1}</span>${r.label}</td><td class="phase-cell">${r.phase}</td><td><b>${r.count}</b></td>`+
           `<td>${i?(stepRate===null?'—':fp(stepRate)):'—'}</td><td><div class="funnel-rate${hot}"><span class="funnel-track"><i style="width:${startRate}%"></i></span><b>${start?fp(startRate):'—'}</b></div></td>`+
           `<td class="${lost?'down':'flat'}">${i?`−${lost}`:'—'}</td><td class="anchor">${r.anchor}</td></tr>`;
       }).join('');
@@ -1518,16 +1699,20 @@ const el=id=>document.getElementById(id);
       (country.key==='all'?'<span class="scope-tag">含其他 / 未知国家</span>':'')+
       (isSmall?'<span class="scope-tag">小样本，仅观察</span>':'');
     el('abFlowKpis').innerHTML=[
-      {label:'A · 启动→体验课 Paywall',value:aStart?pct(a[9],aStart):null,note:`${a[9]} / ${aStart}；体验课开始 ${a[7]}，完成 ${a[8]}`},
-      {label:'B · 启动→新人引导课完成',value:bStart?pct(b[11],bStart):null,note:`${b[11]} / ${bStart}；固定课程 1661 开始 ${b[10]}`,cls:'hot'},
-      {label:'B · 启动→折扣支付发起',value:bStart?pct(b[13],bStart):null,note:`${b[13]} / ${bStart}；仅为 checkout_start，不等于支付成功`,cls:'warn'}
-    ].map(k=>`<div class="kpi ${k.cls||''}"><div class="kl">${country.tab} · ${k.label}</div><div class="kv">${k.value===null?'—':fp(k.value)}</div><div class="kn">${k.note}</div></div>`).join('');
-    el('abFlowASub').textContent=`${country.label}稳定进组 ${country.a.assigned} 台，其中 ${aStart} 台命中 first_open；其余 ${country.a.assigned-aStart} 台不进入新装主链路漏斗`;
-    el('abFlowBSub').textContent=`${country.label}稳定进组 ${country.b.assigned} 台，其中 ${bStart} 台命中 first_open；学习计划、两轮标准 Paywall、新人引导与课程 1661 分开计数`;
+      {label:'同业务状态 · B−A',display:(()=>{const d=pct(b[7],country.b.assigned)-pct(a[7],country.a.assigned);return (d>0?'+':'')+d.toFixed(1)+'pp'})(),note:'注册且完成 Onboarding：A '+a[7]+' / '+country.a.assigned+'（'+fp(pct(a[7],country.a.assigned))+'）· B '+b[7]+' / '+country.b.assigned+'（'+fp(pct(b[7],country.b.assigned))+'）'+(country.key==='all'?' · p=.487':'')},
+      {label:'A · Onboarding 逐题完成',value:a[2]?pct(a[5],a[2]):null,note:`进入 ${a[2]} → 姓名 ${a[3]} → 年龄 ${a[4]} → 水平 ${a[5]}`},
+      {label:'B · Onboarding 逐题完成',value:b[3]?pct(b[7],b[3]):null,note:`进入 ${b[3]} → 姓名 ${b[4]} → 年龄 ${b[5]} → 水平 ${b[6]} → 目标 ${b[7]}`},
+      {label:'B · Hub 六步引导完成',value:b[10]?pct(b[17],b[10]):null,note:`Dino ${b[10]} → Play ${b[11]} → Explore ${b[12]} → Class ${b[13]} → 老师 ${b[15]} → 首课卡 ${b[16]} → 完成 ${b[17]}`},
+      {label:'A · Paywall→支付成功',value:a[14]?pct(a[16],a[14]):null,note:`Paywall ${a[14]} → 发起 ${a[15]} → 生产成功 ${a[16]}`,cls:'hot'},
+      {label:'B · 启动→新人引导课完成',value:bStart?pct(b[20],bStart):null,note:`${b[20]} / ${bStart}；固定课程 1661 开始 ${b[19]}`,cls:'hot'},
+      {label:'B · 折扣发起→支付成功',value:b[23]?pct(b[24],b[23]):null,note:`折扣页 ${b[22]} → 发起 ${b[23]} → 生产成功 ${b[24]}`,cls:'warn'}
+    ].map(k=>`<div class="kpi ${k.cls||''}"><div class="kl">${country.tab} · ${k.label}</div><div class="kv">${k.display??(k.value===null?'—':fp(k.value))}</div><div class="kn">${k.note}</div></div>`).join('');
+    el('abFlowASub').textContent=`${country.label}稳定进组 ${country.a.assigned} 台，其中 ${aStart} 台命中 first_open；17 个页面 / 流转节点，末端串联支付发起与生产成功`;
+    el('abFlowBSub').textContent=`${country.label}稳定进组 ${country.b.assigned} 台，其中 ${bStart} 台命中 first_open；25 个页面 / 流转节点，末端串联折扣支付发起与生产成功`;
     renderFlow('abFlowARoute','abFlowATable',flowRows(AB_FLOW_A_SCHEMA,a));
     renderFlow('abFlowBRoute','abFlowBTable',flowRows(AB_FLOW_B_SCHEMA,b));
-    el('abFlowALegend').innerHTML=`主链路核心断点：体验课开始 ${a[7]} → 完成 ${a[8]}，课内完成率 ${a[7]?fp(pct(a[8],a[7])):'—'}；完成后 ${a[9]} 台进入 trial_report Paywall`;
-    el('abFlowBLegend').innerHTML=`新人引导课开始 ${b[10]} → 完成 ${b[11]}，课内完成率 ${b[10]?fp(pct(b[11],b[10])):'—'}；限时折扣 Paywall ${b[12]} → 支付发起 ${b[13]}。<b>1.4.2 的学习计划 / 第一轮 Paywall 有埋点缺口</b>`;
+    el('abFlowALegend').innerHTML=`问卷：进入 ${a[2]} → 姓名 ${a[3]} → 年龄 ${a[4]} → 水平 ${a[5]}；体验课开始 ${a[10]} → 完成 ${a[11]}；报告 ${a[12]} → 学习计划 ${a[13]} → Paywall ${a[14]} → 支付发起 ${a[15]} → 生产成功 ${a[16]}`;
+    el('abFlowBLegend').innerHTML=`问卷：进入 ${b[3]} → 姓名 ${b[4]} → 年龄 ${b[5]} → 水平 ${b[6]} → 目标 ${b[7]}；新人课开始 ${b[19]} → 完成 ${b[20]}；报告 ${b[21]} → 折扣页 ${b[22]} → 支付发起 ${b[23]} → 生产成功 ${b[24]}。<b>1.4.2 的学习计划 / 第一轮 Paywall 有埋点缺口</b>`;
   }
   el('abCountryTabs').innerHTML=AB_FLOW_COUNTRIES.map((country,i)=>`<button class="segment-tab${i===0?' on':''}" type="button" role="tab" aria-selected="${i===0?'true':'false'}" data-country="${country.key}">${country.tab}</button>`).join('');
   el('abCountryTabs').querySelectorAll('.segment-tab').forEach(tab=>tab.addEventListener('click',()=>renderAbCountry(tab.dataset.country)));
@@ -1558,14 +1743,14 @@ const el=id=>document.getElementById(id);
     ['注册成功 · 滚动',A.registeredRolling,B.registeredRolling,'独立生命周期诊断；正式指标见 24h 成熟行'],
     ['Paywall 曝光',A.paywall,B.paywall,'路径顺序不同，仅诊断'],
     ['发起支付',A.checkout,B.checkout,'checkout_start'],
-    ['首课开始',A.lessonStart,B.lessonStart,'A 体验课 6 ID / B 新人引导课 1661'],
-    ['首课完成',A.lessonComplete,B.lessonComplete,'按组别 Lesson ID 白名单识别'],
+    ['指定首课开始',A.lessonIndependentStart,B.lessonIndependentStart,'进组后首次命中：六节体验课 + 1661 + 1616',A.assigned,B.assigned],
+    ['指定首课完成',A.lessonIndependentComplete,B.lessonIndependentComplete,'开始后完成同一首课；本行比率以指定首课开始为分母',A.lessonIndependentStart,B.lessonIndependentStart],
     ['Google 订单 PENDING',A.pending,B.pending,'不计付费成功'],
     ['Google 订单 SUCCESS',A.paid,B.paid,'付费核心指标分子']
   ];
-  el('abDiagTable').innerHTML='<tr><th>锚点</th><th>A 组</th><th>A 到达率</th><th>B 组</th><th>B 到达率</th><th>用途 / 口径</th></tr>'+
-    diag.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${fp(pct(r[1],A.assigned))}</td>`+
-      `<td>${r[2]}</td><td>${fp(pct(r[2],B.assigned))}</td><td style="text-align:left;white-space:normal;color:var(--ink-soft)">${r[3]}</td></tr>`).join('');
+  el('abDiagTable').innerHTML='<tr><th>锚点</th><th>A 组</th><th>A 比率</th><th>B 组</th><th>B 比率</th><th>用途 / 口径</th></tr>'+
+    diag.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${fp(pct(r[1],r[4]||A.assigned))}</td>`+
+      `<td>${r[2]}</td><td>${fp(pct(r[2],r[5]||B.assigned))}</td><td style="text-align:left;white-space:normal;color:var(--ink-soft)">${r[3]}</td></tr>`).join('');
 
   const totalRows=[
     {d:'全窗合计',g:'A',assigned:A.assigned,mature:A.registeredDenom,registered:A.registered,registeredRolling:A.registeredRolling,lessonComplete:A.lessonComplete,paid:A.paid,pending:A.pending},
@@ -1575,7 +1760,7 @@ const el=id=>document.getElementById(id);
   el('abDayTable').innerHTML='<tr><th>进组日 UTC</th><th>组别</th><th>进组设备</th><th>24h 成熟</th><th>24h 注册</th><th>正式注册率</th><th>滚动注册</th><th>首课完成 · 早期</th><th>支付 SUCCESS · 早期</th><th>PENDING</th></tr>'+
     totalRows.map(r=>`<tr${r.d==='全窗合计'?' style="background:var(--paper-deep);font-weight:700"':''}><td>${r.d}</td><td>${r.g}</td>`+
       `<td>${r.assigned}</td><td>${r.mature}</td><td>${r.registered}</td><td>${r.mature?fp(pct(r.registered,r.mature)):'—'}</td>`+
-      `<td>${r.registeredRolling}<span class="n">${fp(pct(r.registeredRolling,r.assigned))}</span></td><td>${r.lessonComplete}<span class="n">${fp(pct(r.lessonComplete,r.assigned))}</span></td><td>${r.paid}</td><td>${r.pending}</td></tr>`).join('');
+      `<td>${r.registeredRolling}<span class="n">${fp(pct(r.registeredRolling,r.assigned))}</span></td><td>${r.lessonComplete}<span class="n">${fp(pct(r.lessonComplete,r.assigned))}</span></td><td>${r.paid??'—'}</td><td>${r.pending??'—'}</td></tr>`).join('');
 
   el('abHealthTable').innerHTML='<tr><th>检查项</th><th>当前值</th><th>解释</th><th>状态</th></tr>'+
     AB_HEALTH.map(r=>{
@@ -1613,8 +1798,7 @@ const GROUPS=[
  {k:'experiment',label:'A/B 实验',en:'Experiment'},
  {k:'login',label:'登录 / 注册',en:'Signup'},
  {k:'retention',label:'留存',en:'Retention'},
- {k:'payment',label:'支付转化',en:'Monetization'},
- {k:'economy',label:'金币 / 收藏',en:'Economy'}];
+ {k:'payment',label:'支付转化',en:'Monetization'}];
 const secs=[...document.querySelectorAll('.sec')];
 let curGroup='experiment';
 el('groups').innerHTML=GROUPS.map((g,i)=>`<div class="group${i===0?' on':''}" data-k="${g.k}">${g.label}<span class="gn">${g.en}</span></div>`).join('');
@@ -1758,12 +1942,28 @@ verTable(VER,'verTable');verTable(OB4,'ob4Table');
 
 /* ═══════════ 国家 × 注册方式 ═══════════ */
 const AUTH_COUNTRIES=['VN','ID','MY','SA','TH','KR','Other'];
+const AUTH_COUNTRY_FILTERS=['All',...AUTH_COUNTRIES];
 const AUTH_METHOD_COLUMNS=[
- {label:'Google',idx:2},{label:'Phone',idx:3},{label:'Apple',idx:4},
- {label:'Facebook',idx:5},{label:'Kakao',idx:6},{label:'其他',idx:7}
+ {key:'google',label:'Google',idx:2},{key:'phone',label:'Phone',idx:3},{key:'apple',label:'Apple',idx:4},
+ {key:'facebook',label:'Facebook',idx:5},{key:'kakao',label:'Kakao',idx:6},{key:'unknown',label:'其他',idx:7}
 ];
-let currentAuthCountry='VN';
-el('authCountryPills').innerHTML=AUTH_COUNTRIES.map((c,i)=>`<div class="pill${i===0?' on':''}" data-country="${c}">${CN[c]}</div>`).join('');
+const AUTH_METHOD_FILTERS=[{key:'All',label:'全部'},...AUTH_METHOD_COLUMNS];
+const sumAuthRows=(rows,indexes)=>indexes.reduce((sum,i)=>sum.map((v,j)=>v+rows[i][j]),Array(8).fill(0));
+const AUTH_ALL_DATA=AUTH_METHOD_DAYS.map((_,i)=>AUTH_COUNTRIES.reduce(
+  (sum,country)=>sum.map((v,j)=>v+AUTH_METHOD_DATA[country][i][j]),Array(8).fill(0)
+));
+const authCountryLabel=country=>country==='All'?'全部国家':CN[country];
+let currentAuthCountry='All';
+let currentAuthMethod='All';
+el('authCountryPills').innerHTML=AUTH_COUNTRY_FILTERS.map((c,i)=>`<div class="pill${i===0?' on':''}" data-country="${c}">${c==='All'?'全部':CN[c]}</div>`).join('');
+el('authMethodPills').innerHTML=AUTH_METHOD_FILTERS.map((m,i)=>`<div class="pill${i===0?' on':''}" data-method="${m.key}">${m.label}</div>`).join('');
+
+function selectedAuthMethodColumns(){
+  return currentAuthMethod==='All'?AUTH_METHOD_COLUMNS:AUTH_METHOD_COLUMNS.filter(m=>m.key===currentAuthMethod);
+}
+function authRowsForCountry(country){
+  return country==='All'?AUTH_ALL_DATA:AUTH_METHOD_DATA[country];
+}
 
 function authRateCell(count,base,max=65){
   if(!count)return '<td class="flat">—</td>';
@@ -1771,14 +1971,15 @@ function authRateCell(count,base,max=65){
   return `<td class="heat"><span class="v" style="${heat(rate,max)}">${fp(rate)}</span><span class="n">(${count})</span></td>`;
 }
 function renderAuthMethodDaily(){
-  const rows=AUTH_METHOD_DATA[currentAuthCountry];
-  el('authMethodDailyTitle').textContent=`${CN[currentAuthCountry]} · 每日注册率贡献`;
-  let html='<tr><th>UTC 日期</th><th>首启</th><th>总注册率</th>'+AUTH_METHOD_COLUMNS.map(m=>`<th>${m.label}</th>`).join('')+'</tr>';
+  const rows=authRowsForCountry(currentAuthCountry),columns=selectedAuthMethodColumns();
+  const methodLabel=currentAuthMethod==='All'?'全部方式':columns[0].label;
+  el('authMethodDailyTitle').textContent=`${authCountryLabel(currentAuthCountry)} · ${methodLabel} · 每日注册率贡献`;
+  let html='<tr><th>UTC 日期</th><th>首启</th><th>总注册率</th>'+columns.map(m=>`<th>${m.label}</th>`).join('')+'</tr>';
   [...AUTH_METHOD_DAYS].reverse().forEach((day,reverseIndex)=>{
     const i=AUTH_METHOD_DAYS.length-1-reverseIndex,row=rows[i],partial=day.endsWith('*');
     html+=`<tr${partial?' class="warnrow"':''}><td>${day}</td><td>${row[0].toLocaleString()}</td>`+
       `<td><b>${fp(pct(row[1],row[0]))}</b><span class="n">(${row[1]})</span></td>`+
-      AUTH_METHOD_COLUMNS.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
+      columns.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
   });
   el('authMethodDailyTable').innerHTML=html;
 }
@@ -1786,18 +1987,23 @@ el('authCountryPills').querySelectorAll('.pill').forEach(p=>p.addEventListener('
   el('authCountryPills').querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
   p.classList.add('on');currentAuthCountry=p.dataset.country;renderAuthMethodDaily();
 }));
-renderAuthMethodDaily();
+el('authMethodPills').querySelectorAll('.pill').forEach(p=>p.addEventListener('click',()=>{
+  el('authMethodPills').querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+  p.classList.add('on');currentAuthMethod=p.dataset.method;renderAuthMethodDaily();renderAuthMethodCountrySummary();
+}));
 
-(function(){
+function renderAuthMethodCountrySummary(){
   const endedIndexes=[AUTH_METHOD_DAYS.length-4,AUTH_METHOD_DAYS.length-3,AUTH_METHOD_DAYS.length-2];
-  const sumRows=(rows,indexes)=>indexes.reduce((sum,i)=>sum.map((v,j)=>v+rows[i][j]),Array(8).fill(0));
-  el('authMethodCountrySummary').innerHTML='<tr><th>国家</th><th>首启</th><th>总注册率</th>'+AUTH_METHOD_COLUMNS.map(m=>`<th>${m.label}</th>`).join('')+'</tr>'+
+  const columns=selectedAuthMethodColumns();
+  el('authMethodCountrySummary').innerHTML='<tr><th>国家</th><th>首启</th><th>总注册率</th>'+columns.map(m=>`<th>${m.label}</th>`).join('')+'</tr>'+
     AUTH_COUNTRIES.map(country=>{
-      const row=sumRows(AUTH_METHOD_DATA[country],endedIndexes);
+      const row=sumAuthRows(AUTH_METHOD_DATA[country],endedIndexes);
       return `<tr><td>${CN[country]}</td><td>${row[0].toLocaleString()}</td><td><b>${fp(pct(row[1],row[0]))}</b><span class="n">(${row[1]})</span></td>`+
-        AUTH_METHOD_COLUMNS.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
+        columns.map(m=>authRateCell(row[m.idx],row[0])).join('')+'</tr>';
     }).join('');
-})();
+}
+renderAuthMethodDaily();
+renderAuthMethodCountrySummary();
 
 /* ═══════════ TAB4 注册方式 ═══════════ */
 (function(){
@@ -1842,7 +2048,7 @@ renderAuthMethodDaily();
     html+=`<tr><td>${c.d}</td><td>${c.n.toLocaleString()}</td>`+c.r.map(v=>{
       if(v===null)return '<td class="flat">—</td>';
       const r=pct(v,c.n);
-      return `<td class="heat"><span class="v" style="${heat(r,40)}">${fp(r)}</span><span class="n">(${v})</span></td>`;
+      return `<td class="heat"><span class="v" style="${heat(r,20)}">${fp(r)}</span><span class="n">(${v})</span></td>`;
     }).join('')+'</tr>';
   });
   el('retTable').innerHTML=html;
