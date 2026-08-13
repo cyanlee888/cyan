@@ -255,11 +255,6 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
         <div class="note">17,082 / 33,234；下方 A/B 稳定样本按“注册成功 ÷ 首次启动”计算：A 54.7% / B 61.5%</div>
       </div>
       <div class="kpi">
-        <div class="lab">Dino 对话触达(GA4 去重)</div>
-        <div class="val">7,813<small>人</small></div>
-        <div class="note">兼容旧 <span class="src">dino_assistant_progress</span> 与新 <span class="src">dino_session_start</span>，共 25,363 场对话</div>
-      </div>
-      <div class="kpi">
         <div class="lab">D1 次日留存</div>
         <div class="val">12.0<small>%</small></div>
         <div class="note">07-10~08-10 成熟 cohort(32,518→3,894)· 08-09 / 08-10 D1 为 13.2% / 19.2%</div>
@@ -401,7 +396,6 @@ function renderDiagnostics(data){
  document.getElementById('diagnosticKpis').innerHTML=`
   <div class="kpi warn"><div class="lab">${T('First-lesson completion (compatible completion / specified first-lesson start)','首课完成率（兼容完课 / 指定首课开始）')}</div><div class="val">${pct(j.lesson_complete,j.lesson_start)}<small>%</small></div><div class="note"><span class="flag">${T('Primary drop-off','当前主要断点')}</span> ${fmt(j.lesson_complete)} / ${fmt(j.lesson_start)}; ${T('calculated from users who started a specified first lesson and met the compatible completion definition in the selected period','按所选周期内的指定首课开始与兼容完课用户计算')}</div></div>
   <div class="kpi mid"><div class="lab">${T('Sign-up conversion (sign-up / open)','注册转化（注册 / 打开）')}</div><div class="val">${pct(j.signup_success,j.first_open)}<small>%</small></div><div class="note">${fmt(j.signup_success)} / ${fmt(j.first_open)}; ${T('GA4 unique devices, excluding test devices','GA4 去重设备，排除测试设备')}</div></div>
-  <div class="kpi"><div class="lab">${T('Dino conversation reach (GA4 deduplicated)','Dino 对话触达（GA4 去重）')}</div><div class="val">${fmt(j.dino_users)}<small>${T(' users','人')}</small></div><div class="note">${T('Combines legacy','兼容旧')} <span class="src">dino_assistant_progress</span> ${T('and new','与新')} <span class="src">dino_session_start</span>${T(`, totaling ${fmt(j.dino_sessions)} conversations`,`，共 ${fmt(j.dino_sessions)} 场对话`)}</div></div>
   <div class="kpi"><div class="lab">${T('D1 next-day retention','D1 次日留存')}</div><div class="val">${pct(r.d1,r.devices)}<small>%</small></div><div class="note">${T('Mature cohort','成熟 cohort')} ${fmt(r.devices)} → ${fmt(r.d1)}; ${T('rolling weeks include only first-open cohorts with a complete D1 observation window','滚动周仅纳入已满 D1 观察期的首启 cohort')}</div></div>`;
 }
 
@@ -410,7 +404,6 @@ const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07'];
 const diagnosticTrendDefs=[
  {key:'lesson',titleEn:'First-lesson completion',titleZh:'首课完成率',color:'#b3402a',unit:'%',digits:1,get:d=>d.journey.lesson_complete/d.journey.lesson_start*100},
  {key:'signup',titleEn:'Sign-up conversion',titleZh:'注册转化率',color:'#c98a12',unit:'%',digits:1,get:d=>d.journey.signup_success/d.journey.first_open*100},
- {key:'dino',titleEn:'Dino conversation reach',titleZh:'Dino 对话触达',color:'#1d5c3f',unitEn:' users',unitZh:'人',digits:0,get:d=>d.journey.dino_users},
  {key:'retention',titleEn:'D1 next-day retention',titleZh:'D1 次日留存',color:'#2e8b57',unit:'%',digits:1,get:d=>d.retention.d1/d.retention.devices*100}
 ];
 function trendValue(def,value){return def.digits?value.toFixed(def.digits):fmt(Math.round(value))}
@@ -688,7 +681,9 @@ function renderSegments(){document.getElementById('retSeg').innerHTML=seg.map(g=
  return `<div class="lrow"><div class="ll">${g.l}<small>${g.s}</small></div>`+
   `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${g.c}" data-w="${w}"></div></div>`+
   `<div class="lv">${rate.toFixed(1)}%<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${T(`${fmt(g.d1)} of ${fmt(g.n)} users`,`${fmt(g.n)} 人中 ${fmt(g.d1)}`)}</div></div></div>`;
- }).join('');}
+ }).join('');
+ requestAnimationFrame(()=>document.querySelectorAll('#retSeg .lbar-fill').forEach(bar=>{if(bar.dataset.w!==undefined)bar.style.width=bar.dataset.w+'%'}));
+}
 
 const stageDefs=[
  {en:'Warm-up',zh:'热身 Warm-up',s:'warm-up',c:'#2e8b57'},
