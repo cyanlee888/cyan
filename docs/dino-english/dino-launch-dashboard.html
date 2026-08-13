@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dino English · 产品核心链路看板</title>
+<title data-zh="Dino English · 产品核心链路看板">Dino English · Product Core Funnel Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@700;900&display=swap" rel="stylesheet">
@@ -21,6 +21,10 @@ body{background:var(--paper);color:var(--ink);font-family:'Noto Sans SC',sans-se
 .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");}
 .wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:54px 26px 90px}
+.lang-toggle{position:fixed;top:18px;right:20px;z-index:100;display:flex;gap:3px;padding:3px;background:rgba(255,253,248,.94);border:1px solid var(--line);border-radius:999px;box-shadow:0 4px 18px rgba(31,42,36,.08);backdrop-filter:blur(8px)}
+.lang-toggle button{appearance:none;border:0;background:transparent;color:var(--ink-faint);border-radius:999px;padding:5px 10px;font:700 11px/1 'Fraunces','Noto Sans SC',sans-serif;letter-spacing:.05em;cursor:pointer;transition:all .15s}
+.lang-toggle button:hover{color:var(--green)}
+.lang-toggle button.on{background:var(--green);color:#fff}
 
 .kicker{font-family:'Fraunces',serif;text-transform:uppercase;letter-spacing:.3em;font-size:12px;color:var(--green);font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .kicker::before{content:"";width:34px;height:2px;background:var(--green)}
@@ -33,6 +37,12 @@ h1 em{font-style:normal;color:var(--orange)}
 .ctx{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;margin-top:20px;padding:12px 18px;background:#f0eadb;border:1px solid var(--line);border-radius:10px;font-size:12.5px;color:var(--ink-soft)}
 .ctx b{color:var(--green);font-weight:700}
 .ctx .tag{font-family:'Fraunces',serif;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:20px;padding:2px 9px}
+.period-filter{display:flex;align-items:flex-start;gap:12px;margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
+.period-label{flex:0 0 auto;padding-top:7px;font-family:'Fraunces','Noto Serif SC',serif;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
+.period-body{min-width:0;flex:1}
+.period-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.period-status{margin-top:7px;font-size:11px;color:var(--ink-faint)}
+.period-empty{grid-column:1/-1;padding:28px 18px;border:1px dashed var(--line);border-radius:10px;background:var(--card);text-align:center;color:var(--ink-soft)}
 
 .sec{margin-top:50px}
 .sec-h{font-family:'Noto Serif SC',serif;font-weight:700;font-size:22px;display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
@@ -42,6 +52,7 @@ h1 em{font-style:normal;color:var(--orange)}
 
 /* diagnostic KPI */
 .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.diagnostic-kpis{grid-template-columns:repeat(2,1fr)}
 .kpi{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:16px 18px;box-shadow:0 1px 2px rgba(31,42,36,.04)}
 .kpi.warn{border-left-color:var(--red)}
 .kpi.mid{border-left-color:var(--yellow)}
@@ -52,6 +63,28 @@ h1 em{font-style:normal;color:var(--orange)}
 .kpi .note{font-size:11.5px;color:var(--ink-soft);margin-top:8px;line-height:1.5}
 .kpi .note .flag{color:var(--red);font-weight:700}
 .kpi .note .ok{color:var(--green-bright);font-weight:700}
+.trend-panel{margin-top:16px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.trend-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:14px}
+.trend-title{font-size:14px;font-weight:700;color:var(--ink)}
+.trend-sub{font-size:11px;color:var(--ink-faint);margin-top:2px}
+.trend-key{flex:0 0 auto;font-size:10.5px;color:var(--ink-faint);padding-top:2px}
+.trend-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.trend-card{min-width:0;padding:13px 14px 10px;border:1px solid #e8dfcc;border-radius:8px;background:#fffefa}
+.trend-card-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:3px}
+.trend-card-title{font-size:12px;color:var(--ink-soft)}
+.trend-current{font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:var(--ink);white-space:nowrap}
+.trend-svg{display:block;width:100%;height:auto;overflow:visible}
+.trend-axis{stroke:#ddd3bf;stroke-width:1}
+.trend-midline{stroke:#ece4d4;stroke-width:1;stroke-dasharray:3 4}
+.trend-area{opacity:.1}
+.trend-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.trend-dot{stroke:var(--card);stroke-width:2}
+.trend-dot.active{stroke:var(--ink);stroke-width:2.5}
+.trend-active-band{fill:rgba(29,92,63,.07)}
+.trend-rolling-band{fill:none;stroke:#c9bea5;stroke-width:1;stroke-dasharray:3 3}
+.trend-x{font:9px 'Fraunces',serif;fill:var(--ink-faint);text-anchor:middle}
+.trend-point-label{font:700 9.5px 'Fraunces',serif;fill:var(--ink);text-anchor:middle}
+.trend-range{display:flex;justify-content:space-between;gap:8px;margin-top:1px;font-size:10px;color:var(--ink-faint)}
 
 /* funnel */
 .stage-lab{font-family:'Fraunces',serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:600;margin:22px 0 10px}
@@ -67,14 +100,9 @@ h1 em{font-style:normal;color:var(--orange)}
 .frate .of{color:var(--ink-faint);font-size:11px}
 .dropflag{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:700;color:#fff;background:var(--red);border-radius:4px;padding:1px 6px;vertical-align:middle}
 
-.split{display:grid;grid-template-columns:1.35fr 1fr;gap:22px;align-items:start}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px}
 .panel-t{font-size:14px;font-weight:700;margin-bottom:3px}
 .panel-s{font-size:11.5px;color:var(--ink-faint);margin-bottom:16px}
-.minirow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px dashed #e6ddc8;font-size:13px}
-.minirow:last-child{border-bottom:none}
-.minirow .mv{font-family:'Fraunces',serif;font-weight:600}
-.minirow .mv .sub2{color:var(--ink-faint);font-size:11px;font-weight:400;margin-left:5px}
 
 .insight{background:#fbeee8;border:1px dashed var(--red);border-radius:10px;padding:16px 18px;margin-top:16px}
 .insight.pos{background:#e9f1eb;border-color:var(--green-bright)}
@@ -106,13 +134,6 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .rettab td.coh{text-align:left;font-size:12.5px;color:var(--ink);white-space:nowrap;padding-right:8px}
 .rettab td.coh small{display:block;font-family:'Fraunces',serif;font-size:9.5px;color:var(--ink-faint)}
 
-.upstream{background:#f0eadb;border:1px solid var(--line);border-radius:10px;padding:18px 20px}
-.upstream .ut{font-size:12px;letter-spacing:.05em;color:var(--ink-faint);text-transform:uppercase;font-family:'Fraunces',serif;margin-bottom:12px}
-.up-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.up-grid .u{border-left:3px solid var(--line);padding-left:12px}
-.up-grid .u .uv{font-family:'Fraunces',serif;font-weight:700;font-size:22px}
-.up-grid .u .ul{font-size:11px;color:var(--ink-soft);margin-top:2px}
-.upstream .un{font-size:11.5px;color:var(--ink-faint);margin-top:14px}
 
 .foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-faint);line-height:1.8}
 .foot b{color:var(--ink-soft)}
@@ -124,6 +145,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .lvltab .lvn{font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:var(--ink);margin-right:6px}
 .lvltab .lvu{font-size:11px;color:var(--ink-faint)}
 .lvltab:hover{border-color:var(--green-bright)}
+.abtab:disabled{opacity:.45;cursor:not-allowed}
 .lvltab.on{background:var(--green);border-color:var(--green)}
 .lvltab.on .lvn,.lvltab.on .lvu,.lvltab.on{color:#fff}
 
@@ -143,6 +165,10 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .abtab{appearance:none;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink-soft);padding:7px 16px;font:600 12.5px/1.4 'Noto Sans SC',sans-serif;cursor:pointer}
 .abtab:hover:not(.on){border-color:var(--green-bright);color:var(--green)}
 .abtab.on{background:var(--green);border-color:var(--green);color:#fff}
+.abcountry-filter{display:flex;align-items:flex-start;gap:12px;margin:14px 0 8px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
+.abcountry-label{flex:0 0 auto;padding-top:7px;font-family:'Fraunces','Noto Serif SC',serif;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
+.abcountry-body{min-width:0}
+.abcountry-tabs{margin-bottom:0}
 .abflow-meta{display:flex;gap:8px 16px;flex-wrap:wrap;margin-bottom:12px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--paper-deep);font-size:11.5px;color:var(--ink-soft)}
 .abflow-meta b{color:var(--ink)}
 .abflow-list .lrow{grid-template-columns:190px 1fr 150px;padding:7px 0;border-bottom:1px dashed #e6ddc8}
@@ -172,34 +198,52 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 @media(max-width:820px){
-  .kpis{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}.up-grid{grid-template-columns:1fr 1fr}
+  .kpis,.diagnostic-kpis{grid-template-columns:1fr 1fr}
   .mods{grid-template-columns:1fr}
   h1{font-size:29px}.frow{grid-template-columns:96px 1fr;grid-template-rows:auto auto}
   .frow .frate{grid-column:2;text-align:right}
   .lrow{grid-template-columns:92px 1fr 70px}
   .abflow-list .lrow{grid-template-columns:132px 1fr 94px;gap:10px}
+  .abcountry-filter{gap:8px}
+  .period-filter{gap:8px}
+  .trend-head{display:block}.trend-key{margin-top:5px}.trend-grid{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .kpis,.diagnostic-kpis{grid-template-columns:1fr}
+  .period-filter{display:block}.period-label{padding:0 0 7px}
 }
 </style>
 </head>
 <body>
 <div class="grain"></div>
+<div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+  <button type="button" data-lang="en" class="on" aria-pressed="true">EN</button>
+  <button type="button" data-lang="zh" aria-pressed="false">中</button>
+</div>
 <div class="wrap">
 
   <div class="kicker">Dino English · Product Core Funnel</div>
-  <h1>产品核心链路看板 · <em>投放首 34 天</em>观测</h1>
-  <p class="sub">投放把用户送到门口,产品经理真正要盯的是<mark>进门之后的这条链路</mark>:注册 → 选老师 → <b>首课试听(核心体验/aha)</b> → 试听报告 → 学习计划 → 订阅。本看板追踪 7/10 投放放量后,新用户在<b>产品内部每一步的到达与流失</b>,定位阻碍价值兑现的瓶颈。</p>
+  <h1 data-zh="产品核心链路看板">Product Core Funnel Dashboard</h1>
+  <p class="sub" data-zh="本看板追踪 7/10 投放放量后，新用户在<b>产品内部每一步的到达与流失</b>，定位阻碍价值兑现的瓶颈。">This dashboard tracks how new users move through and drop off at <b>each step inside the product</b> after acquisition scaled on July 10, highlighting the bottlenecks that prevent users from realizing value.</p>
 
   <div class="ctx">
-    <span class="tag">上游背景</span>
-    <span>投放 7/10 起 · 统计窗口 <b>07-10~08-12 01:21 UTC（33 个完整日 + 当日滚动）</b> · 期内启动 <b>33,234</b> · 归因安装 <b>31,751</b>(剔网盟假量)· GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
-    <span style="color:var(--ink-faint)">（投放效率由增长同学主盯,详见文末上游小节）</span>
+    <span class="tag" data-zh="上游背景">Acquisition context</span>
+    <span id="dashboardContext">投放 7/10 起 · 统计窗口 <b>07-10~08-12 01:21 UTC（33 个完整日 + 当日滚动）</b> · 期内启动 <b>33,234</b> · GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
+  </div>
+
+  <div class="period-filter" aria-label="Global weekly filter">
+    <div class="period-label" data-zh="时间筛选">Time period</div>
+    <div class="period-body">
+      <div class="period-tabs" id="periodTabs" role="tablist" aria-label="Switch dashboard week"></div>
+      <div class="period-status" id="periodStatus" role="status" aria-live="polite"></div>
+    </div>
   </div>
 
   <!-- 产品诊断 KPI -->
   <section class="sec reveal">
-    <div class="sec-h">核心链路诊断 <span class="en">Diagnostics · 07-10~08-12 01:21 UTC</span></div>
-    <p class="sec-desc">统计窗口 <b>2026-07-10 00:00 → 08-12 01:21(UTC)</b>；07-10~08-10 使用日表，08-11~12 使用 intraday 补数。GA4 任一事件命中 user_type=test 的设备及可映射支付/归因账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
-    <div class="kpis">
+    <div class="sec-h"><span data-zh="核心链路诊断">Core Funnel Diagnostics</span> <span class="en" id="diagnosticsPeriod">Diagnostics · 07-10~08-12 01:21 UTC</span></div>
+    <p class="sec-desc" id="diagnosticsDesc">统计窗口 <b>2026-07-10 00:00 → 08-12 01:21(UTC)</b>；07-10~08-10 使用日表，08-11~12 使用 intraday 补数。GA4 任一事件命中 user_type=test 的设备及可映射支付/归因账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
+    <div class="kpis diagnostic-kpis" id="diagnosticKpis">
       <div class="kpi warn">
         <div class="lab">首课完成率(兼容完课 / 指定首课开始)</div>
         <div class="val">21.1<small>%</small></div>
@@ -208,73 +252,50 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
       <div class="kpi mid">
         <div class="lab">注册转化(注册 / 打开)</div>
         <div class="val">51.4<small>%</small></div>
-        <div class="note">17,082 / 33,234；A/B 早期注册 A 56.4% / B 61.5%，但 Android 对齐到“注册且完成 Onboarding”后仅 +1.1pp，p=.487</div>
-      </div>
-      <div class="kpi warn">
-        <div class="lab">课内最大断点(热身 → 正课导入)</div>
-        <div class="val">59<small>%</small></div>
-        <div class="note"><span class="flag">课内悬崖</span> 六节体验课热身 12,234 → 同课导入 7,221，41% 未触达导入；仅统计指定 lesson_id</div>
+        <div class="note">17,082 / 33,234；下方 A/B 稳定样本按“注册成功 ÷ 首次启动”计算：A 54.7% / B 61.5%</div>
       </div>
       <div class="kpi">
         <div class="lab">Dino 对话触达(GA4 去重)</div>
-        <div class="val">6,239<small>人</small></div>
-        <div class="note">19,233 场对话；游戏入口 4,600、探索入口 3,896(GA4 新旧点击事件合并去重)，模块内深度指标见下方</div>
+        <div class="val">7,813<small>人</small></div>
+        <div class="note">兼容旧 <span class="src">dino_assistant_progress</span> 与新 <span class="src">dino_session_start</span>，共 25,363 场对话</div>
       </div>
       <div class="kpi">
         <div class="lab">D1 次日留存</div>
         <div class="val">12.0<small>%</small></div>
         <div class="note">07-10~08-10 成熟 cohort(32,518→3,894)· 08-09 / 08-10 D1 为 13.2% / 19.2%</div>
       </div>
-      <div class="kpi warn">
-        <div class="lab">早期卸载率(卸载 / 打开)</div>
-        <div class="val">59.2<small>%</small></div>
-        <div class="note"><span class="flag">留存漏水</span> 19,679 台设备窗口内卸载；比例仍约59%，需结合版本和国家排查</div>
-      </div>
     </div>
-  </section>
-
-  <!-- A/B 实验核心结论 -->
-  <section class="sec reveal">
-    <div class="sec-h">转化链路 A/B 实验 <span class="en">Android + iOS · Assigned 08-01~08-12 01:21 UTC</span></div>
-    <p class="sec-desc">只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的 Android / iOS 非测试设备，冲突与 fallback 从效果样本剔除。注册按平台分别读数；首课完课率脱离页面漏斗，取进组后首次命中的 8 节指定课程，直接计算开始 → 完成。iOS 页面 / Onboarding 锚点未完全对齐，因此页面级诊断漏斗仍只看 Android。</p>
-    <div class="kpis">
-      <div class="kpi">
-        <div class="lab">24h 早期注册率 · 次指标</div>
-        <div class="val">+5.1<small>pp</small></div>
-        <div class="note">总体 A 56.4%(1,252/2,219) → B 61.5%(1,391/2,260)，p=.00049；节点处于两条路径的不同阶段，不单独判胜</div>
+    <div class="trend-panel" aria-label="Core funnel diagnostic weekly trends">
+      <div class="trend-head">
+        <div><div class="trend-title" data-zh="核心指标周趋势">Weekly Core Metric Trends</div><div class="trend-sub" data-zh="每项指标使用独立纵轴，比较方向与周间变化；不用于横向比较绝对量级">Each metric uses its own vertical scale to show direction and week-over-week movement; absolute levels are not comparable across charts.</div></div>
+        <div class="trend-key" id="diagnosticTrendStatus">全部周 · 第 5 周为滚动周</div>
       </div>
-      <div class="kpi">
-        <div class="lab">首课完课率 · 独立课程口径</div>
-        <div class="val">+10.9<small>pp</small></div>
-        <div class="note">A 26.2%(283/1,080) → B 37.1%(251/676)，p&lt;.00001；两组课程不同，仅说明整套路径后的首课体验结果不同</div>
-      </div>
-      <div class="kpi mid">
-        <div class="lab">生产付费率 · 7d 早期滚动</div>
-        <div class="val">0.32 → 0.32<small>%</small></div>
-        <div class="note">生产 SUCCESS A 8 / 2,489，B 8 / 2,521；PENDING A 414 / B 719；A 主链路成功 1，B 折扣主链路成功 0</div>
-      </div>
-    </div>
-    <div class="insight">
-      <div class="it">实验建议：暂不能宣布 A 或 B 胜出，继续跑满主指标观察期</div>
-      <p>稳定样本 A 2,489 / B 2,521，分流 49.7% / 50.3%，SRM p=.651。B 的早期注册率更高，但 Android 对齐到相同业务状态“注册且完成 Onboarding”后，A 51.8%(1,015/1,960)、B 52.9%(1,032/1,951)，仅 +1.1pp，p=.487，不显著。首课结果偏向 B，但课程构成不同；生产成功仍为 A / B 各 8 单。fallback 为 385 / 5,395(7.1%)，另有 126 台冲突设备，需继续核对分组真相源并积累 7 日订阅成功样本。</p>
+      <div class="trend-grid" id="diagnosticTrends"></div>
     </div>
   </section>
 
   <!-- 通用总漏斗 + A/B 分路径漏斗 -->
   <section class="sec reveal">
-    <div class="sec-h">首启 → 首课用户旅程漏斗 <span class="en">First Launch → First Lesson Complete · 去重用户</span></div>
-    <p class="sec-desc">线上同时存在旧路径与 A/B 新路径，总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课完成</b>。首课只取设备首次命中的指定课程：L1=732、L2=1615、L3=734、L4=733、L5=1613、L6=1614、新手引导课=1661、足球课=1616。六节体验课完成兼容开始后的历史 <span class="src">trial_lesson_complete</span>，同时接受同一 lesson_id 的 <span class="src">class_lesson_end · result=complete</span>；1661 / 1616 只接受后者。路径差异放在下方 A/B 子 Tab 中。</p>
+    <div class="sec-h"><span data-zh="首启 → 首课用户旅程漏斗">First Launch → First Lesson Funnel</span> <span class="en" data-zh="First Launch → First Lesson Complete · 去重用户">First Launch → First Lesson Complete · Unique users</span></div>
+    <p class="sec-desc" data-zh="随顶部时间筛选展示所选周期内的非测试流量；总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课完成</b>。首课只取设备首次命中的 8 节指定课程；六节体验课完成兼容开始后的历史 <span class='src'>trial_lesson_complete</span>，1661 / 1616 只接受同课 <span class='src'>class_lesson_end · result=complete</span>。">Shows non-test traffic for the selected period. The overview keeps only business milestones shared by every path: <b>first open → sign-up success → first lesson start → first lesson complete</b>. The first lesson is the device's first match among eight specified courses. Six trial lessons support the legacy post-start <span class="src">trial_lesson_complete</span> event; 1661 / 1616 require a same-lesson <span class="src">class_lesson_end · result=complete</span>.</p>
 
-    <div class="stage-lab">① 全量通用主漏斗</div>
     <div class="lbars" id="journeyFunnel"></div>
 
-    <div class="insight">
-      <div class="it">⚠ 指定首课开始 → 完整完成仍是当前最大课内断点，兼容口径完成率 21.1%</div>
-      <p>33,234 人首次启动 → 17,082 人注册成功(<b>51.4%</b>) → 12,764 人开始指定首课(注册后 <b>74.7%</b>) → 2,698 人完整完成首课(<b>21.1%</b>)。兼容旧完课事件只用于六节体验课；退出、进入 Paywall 等其他结束原因不计为完成。具体路径继续看下方 A/B 链路。</p>
-    </div>
+  </section>
 
-    <div class="stage-lab">② A/B 实验分路径漏斗 · Android</div>
-    <div class="abtabs" id="abMainTabs" role="tablist" aria-label="切换 A/B 实验主链路"></div>
+  <!-- A/B 实验核心结论 -->
+  <section class="sec reveal">
+    <div class="sec-h"><span data-zh="转化链路 A/B 实验">Conversion Funnel A/B Test</span> <span class="en" id="abPeriodLabel">Android Page-level + Cross-platform Payment · Assigned 08-01~08-12 01:21 UTC</span></div>
+    <p class="sec-desc" data-zh="只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的非测试设备，冲突与 fallback 从效果样本剔除，国家固定为首次稳定进组事件的 <span class='src'>geo.country</span>。注册、首课和完整分路径漏斗为 Android；生产付费为 Android+iOS。所有指标同时跟随顶部时间与下方国家筛选更新。">Includes only non-test devices <b>first stably assigned after 2026-08-01 00:00 UTC</b>. Conflicts and fallback assignments are excluded from the effect sample, and country is fixed to <span class="src">geo.country</span> on the first stable assignment event. Sign-up, first-lesson, and full path funnels are Android-only; production payment covers Android+iOS. All metrics respond to both the global period and country filters.</p>
+    <div class="abcountry-filter" aria-label="A/B main funnel country filter">
+      <div class="abcountry-label" data-zh="国家筛选">Country</div>
+      <div class="abcountry-body">
+        <div class="abtabs abcountry-tabs" id="abCountryTabs" role="tablist" aria-label="Switch A/B main funnel country"></div>
+      </div>
+    </div>
+    <div class="kpis" id="abSummaryKpis"></div>
+    <div class="stage-lab" data-zh="A/B 实验分路径漏斗 · Android">A/B Experiment Path Funnels · Android</div>
+    <div class="abtabs" id="abMainTabs" role="tablist" aria-label="Switch A/B experiment main path"></div>
     <div class="abflow-meta" id="abMainMeta" role="status" aria-live="polite"></div>
     <div class="lbars abflow-list" id="abMainFlow"></div>
     <p class="abflow-note" id="abMainNote"></p>
@@ -282,11 +303,11 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 体验课内模板触达 -->
   <section class="sec reveal">
-    <div class="sec-h">体验课内模板触达 <span class="en">In-Lesson Template Reach · 分 Level</span></div>
-    <p class="sec-desc">仅统计六节体验课：<b>L1=732、L2=1615、L3=734、L4=733、L5=1613、L6=1614</b>。设备按首次命中的体验课热身归入 L1–2 / L3–4 / L5–6，后续模板必须属于<b>同一个 lesson_id</b>。窗口更新到 2026-08-12 01:21 UTC，并排除测试设备；各模板为独立触达，不把不同教学与练习分支强行解释成严格线性漏斗。</p>
+    <div class="sec-h"><span data-zh="体验课内模板触达">Trial Lesson Template Reach</span> <span class="en" data-zh="In-Lesson Template Reach · 分 Level">In-Lesson Template Reach · By level</span></div>
+    <p class="sec-desc" data-zh="仅统计六节体验课：<b>L1=732、L2=1615、L3=734、L4=733、L5=1613、L6=1614</b>。设备按所选周期内首次命中的体验课热身归入 L1–2 / L3–4 / L5–6，后续模板必须属于<b>同一个 lesson_id</b>；各模板为独立触达，不把不同教学与练习分支强行解释成严格线性漏斗。">Covers six trial lessons only: <b>L1=732, L2=1615, L3=734, L4=733, L5=1613, L6=1614</b>. Devices are grouped into L1–2 / L3–4 / L5–6 by the first trial-lesson warm-up reached in the selected period. Later templates must belong to the <b>same lesson_id</b>. Each template is an independent reach metric, not a forced linear funnel across optional teaching and practice branches.</p>
     <div class="lvltabs" id="lvltabs"></div>
     <div class="lbars" id="lessonStages"></div>
-    <div class="insight">
+    <div class="insight" id="lessonInsight">
       <div class="it">⚠ 限定六节体验课后，热身 → 导入仍是三个 Level 档共同的最大掉量</div>
       <p>同一 lesson_id 内，导入触达率为 L1–2 <b>64%</b> / L3–4 <b>54%</b> / L5–6 <b>43%</b>；收尾模板触达率为 25% / 18% / 11%。不同教学与练习模板可能属于可选分支，因此相邻行只表示各自触达，不能直接当作前后转化。</p>
     </div>
@@ -294,81 +315,30 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 课外核心模块使用 -->
   <section class="sec reveal">
-    <div class="sec-h">核心模块使用 <span class="en">Core Modules · GA4</span></div>
-    <p class="sec-desc">试听课之外的模块在投放期的触达(GA4 埋点 <span class="src">dino_assistant_progress</span> + 首页新旧点击事件,去重用户,07-10~08-12 01:21 UTC)。<b>Dino 对话仍是最强自选抓手(6,239 人)，进课入口与游戏入口随后</b>。</p>
-    <div class="mods">
-      <div class="mod dino">
-        <div class="mh">🦕 Dino 对话</div>
-        <div class="msub">GA4 dino_assistant_progress · 去重用户</div>
-        <div class="mbig">6,239 <small>人</small></div>
-        <div class="mlist">
-          <div class="mi"><span>对话会话</span><b>19,233 场</b></div>
-          <div class="mi"><span>主场景 · 首页聊天</span><b>5,994 人</b></div>
-          <div class="mi"><span>探索口语 / 课程卡入口</span><b>1,168 / 607 人</b></div>
-        </div>
-      </div>
-      <div class="mod play">
-        <div class="mh">🎮 Play 游戏(入口)</div>
-        <div class="msub">home_play 点击 · 去重用户</div>
-        <div class="mbig">4,600 <small>人</small></div>
-        <div class="mlist">
-          <div class="mi"><span>进入游戏中心</span><b>4,600 人</b></div>
-          <div class="mi"><span>渗透 vs 完整首课人数</span><b>1.7×(2,698)</b></div>
-          <div class="mi"><span>对局完成率(盲盒/PK)</span><b class="lo">需生产库·未刷新</b></div>
-        </div>
-      </div>
-      <div class="mod">
-        <div class="mh">🧭 Explore 探索(入口)</div>
-        <div class="msub">home_explore 点击 · 去重用户</div>
-        <div class="mbig">3,896 <small>人</small></div>
-        <div class="mlist">
-          <div class="mi"><span>进入探索(单词/听力)</span><b>3,896 人</b></div>
-          <div class="mi"><span>GA4 无法拆分词/听深度</span><b>合并口径</b></div>
-          <div class="mi"><span>完成次数 / 收听次数</span><b class="lo">需生产库·未刷新</b></div>
-        </div>
-      </div>
-      <div class="mod weak">
-        <div class="mh">📚 进课复访(入口)</div>
-        <div class="msub">home_class / Dino 跳转 · 去重用户</div>
-        <div class="mbig">6,107 <small>人</small></div>
-        <div class="mlist">
-          <div class="mi"><span>首页进课入口点击</span><b>6,107 人</b></div>
-          <div class="mi"><span>从 Dino 对话跳转进课</span><b>3,848 人</b></div>
-          <div class="mi"><span>Dino→课堂是有效衔接</span><b>值得做深</b></div>
-        </div>
-      </div>
-    </div>
-    <div class="insight pos" style="margin-top:16px">
+    <div class="sec-h"><span data-zh="核心模块使用">Core Module Usage</span> <span class="en">Core Modules · GA4</span></div>
+    <p class="sec-desc" data-zh="试听课之外的模块触达，使用 GA4 <span class='src'>dino_assistant_progress</span> 与首页新旧点击事件合并去重；人数、会话及入口触达均随顶部时间筛选更新。">Reach outside the trial lesson. GA4 <span class="src">dino_assistant_progress</span> and legacy/new home click events are merged and deduplicated. Users, sessions, and entry reach all update with the global period filter.</p>
+    <div class="mods" id="coreModules"></div>
+    <div class="insight pos" style="margin-top:16px" id="modulesInsight">
       <div class="it">✓ 亮点 &amp; 待办</div>
-      <p><b>Dino 对话是最强自选模块</b>：6,239 人发起 19,233 场对话，首页聊天触达 5,994 人；Dino 直接跳转进课增至 3,848 人。<b>游戏入口 4,600 人仍显著超过完整首课 2,698 人</b>，可继续用于承接首课流失用户。</p>
+      <p><b>Dino 对话兼容口径触达 7,813 人</b>，合并旧 <span class="src">dino_assistant_progress</span> 与新 <span class="src">dino_session_start</span>；场景拆分仍只来自旧事件，不能与兼容总量直接求占比。</p>
     </div>
   </section>
 
   <!-- 留存 -->
   <section class="sec reveal">
-    <div class="sec-h">留存 <span class="en">Retention · GA4 设备级 Cohort</span></div>
-    <p class="sec-desc">采用常见的 <b>Exact-day / 第 N 日留存</b>：按 first_open 的 UTC 日期分 cohort，同一 GA4 设备在恰好第 N 个自然日产生明确前台活跃事件（session_start / user_engagement / screen_view / page_view）即算回访；notification_receive、app_remove、app_update 等后台或系统事件不计。它不是滚动留存，也不是账号级跨设备留存；D1 可测至 08-10、D3 至 08-08、D7 至 08-04。</p>
+    <div class="sec-h"><span data-zh="留存">Retention</span> <span class="en" data-zh="Retention · GA4 设备级 Cohort">Retention · GA4 device cohort</span></div>
+    <p class="sec-desc" data-zh="采用常见的 <b>Exact-day / 第 N 日留存</b>：按 first_open 的 UTC 日期分 cohort，同一 GA4 设备在恰好第 N 个自然日产生明确前台活跃事件（session_start / user_engagement / screen_view / page_view）即算回访；notification_receive、app_remove、app_update 等后台或系统事件不计。它不是滚动留存，也不是账号级跨设备留存；D1 可测至 08-10、D3 至 08-08、D7 至 08-04。">Uses standard <b>exact-day / day-N retention</b>: cohorts are based on the UTC date of first_open, and a device is counted as returning only when it produces an explicit foreground event (session_start / user_engagement / screen_view / page_view) on exactly day N. Background or system events such as notification_receive, app_remove, and app_update are excluded. This is neither rolling retention nor account-level cross-device retention. D1 is measurable through Aug 10, D3 through Aug 8, and D7 through Aug 4.</p>
 
-    <div class="stage-lab">① 留存三角 · 每个 cohort 在第 1~7 天还回来的比例(颜色越深留存越高)</div>
+    <div class="stage-lab" data-zh="① 留存三角 · 每个 cohort 在第 1~7 天还回来的比例（颜色越深留存越高）">① Retention Triangle · Return rate for each cohort on days 1–7 (darker means higher retention)</div>
     <div class="rettab-wrap"><table class="rettab" id="retTable"></table></div>
 
-    <div class="split" style="margin-top:16px">
-      <div class="panel">
-        <div class="panel-t">D1 分层:首日走多远,决定次日回不回来</div>
-        <div class="panel-s">07-10~08-10 成熟 cohort 合并 · 按用户首日行为分层看 D1</div>
-        <div id="retSeg"></div>
-      </div>
-      <div class="panel">
-        <div class="panel-t">留存曲线 D1 → D3 → D7</div>
-        <div class="panel-s">各观察期内可测 cohort 合并</div>
-        <div class="minirow"><span>D1 次日(07-10~08-10 cohort)</span><span class="mv">12.0%<span class="sub2">3,894 / 32,518</span></span></div>
-        <div class="minirow"><span>D3 第 3 天(07-10~08-08 cohort)</span><span class="mv">4.5%<span class="sub2">1,425 / 31,348</span></span></div>
-        <div class="minirow"><span>D7 第 7 天(07-10~08-04 cohort)</span><span class="mv">2.4%<span class="sub2">684 / 28,975</span></span></div>
-        <div class="minirow"><span style="color:var(--ink-faint)">注:08-09 / 08-10 D1 为 13.2% / 19.2%；晚近 cohort 尚未到 D3/D7 完整观察期</span><span></span></div>
-      </div>
+    <div class="panel" style="margin-top:16px">
+      <div class="panel-t" data-zh="D1 分层：首日走多远，决定次日回不回来">D1 Segments: First-day Progress vs. Next-day Return</div>
+      <div class="panel-s" id="retentionSegmentPeriod">07-10~08-10 成熟 cohort 合并 · 按用户首日行为分层看 D1</div>
+      <div id="retSeg"></div>
     </div>
 
-    <div class="insight pos">
+    <div class="insight pos" id="retentionInsight">
       <div class="it">✓ 前台活跃口径已收紧，08-10 cohort D1 为 19.2%</div>
       <p>合并 D1 为 <b>12.0%</b>，D3 4.5%，D7 2.4%。分层看：<b>首日完成首课用户 D1 33.1%</b>，注册未完课 14.8%，未注册 7.9%。当前已排除通知接收、卸载、更新等非前台回访；若要衡量学习价值，还应并列观察“第 N 日发生学习事件”的学习留存。</p>
     </div>
@@ -376,151 +346,327 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 变现:发起 ≠ 成功 -->
   <section class="sec reveal">
-    <div class="sec-h">变现:发起订阅 ≠ 成功付费 <span class="en">Monetization Reality</span></div>
-    <p class="sec-desc"><b>「发起订单」的埋点量 ≠ 真实成功付费</b>。发起订单对应事件是 <span class="src">subscription_checkout_start</span>(带 order_id,进结算即建一张 payment_order);<span class="src">subscription_purchase_result</span> 无成功标识、且混入续订/恢复购买,不能当成功口径,已不采用。以生产库支付订单为准,投放期发起了大量购买,但几乎没有走完商店支付。</p>
+    <div class="sec-h"><span data-zh="变现：发起订阅 ≠ 成功付费">Monetization: Checkout Started ≠ Payment Success</span> <span class="en">Monetization Reality</span></div>
+    <p class="sec-desc" data-zh="<b>「发起订单」的埋点量 ≠ 真实成功付费</b>。发起订单对应事件是 <span class='src'>subscription_checkout_start</span>（带 order_id，进结算即建一张 payment_order）；<span class='src'>subscription_purchase_result</span> 无成功标识、且混入续订/恢复购买，不能当成功口径，已不采用。以生产库支付订单为准，投放期发起了大量购买，但几乎没有走完商店支付。"><b>Checkout-start events are not the same as successful payments.</b> A checkout start is <span class="src">subscription_checkout_start</span> with an order_id, which creates a payment_order as soon as checkout opens. <span class="src">subscription_purchase_result</span> has no success flag and mixes renewals/restores, so it is no longer used as the success definition. Production payment orders are authoritative: many checkouts started during the campaign, but very few completed store payment.</p>
     <div class="panel">
-      <div class="panel-t">发起订单 → 成功付费 的断层(投放期 07-10~08-12 01:21 UTC)</div>
-      <div class="panel-s">发起=payment_order 创建(GA4 checkout_start 埋点);成功=生产库 payment_* 权威口径</div>
+      <div class="panel-t" id="payPanelTitle">发起订单 → 成功付费 的断层(投放期 07-10~08-12 01:21 UTC)</div>
+      <div class="panel-s" data-zh="发起=payment_order 创建（GA4 checkout_start 埋点）；成功=生产库 payment_* 权威口径">Started = payment_order created (GA4 checkout_start); success = authoritative production payment_* record</div>
       <div id="paygap"></div>
     </div>
-    <div class="insight">
+    <div class="insight" id="paymentInsight">
       <div class="it">⚠ 断层仍在：3,334 笔订单、仅 40 笔生产成功(1.20%)</div>
       <p>排除测试账号后，窗口内 <span class="src">payment_order</span> 创建 3,334 笔(1,714 用户)，其中 <b>3,289 笔停留在 PENDING</b>；生产成功 40 笔(Apple 21 / Google 19，另沙盒 4、失败 1)。成功结构为周卡 22 / 月卡 17 / 年卡 1。<b>PENDING 占 98.7%</b>，支付回执与商店支付流失仍应优先排查。</p>
     </div>
   </section>
 
-  <!-- 上游背景 -->
-  <section class="sec reveal">
-    <div class="sec-h">上游:投放背景 <span class="en">Acquisition Context · 次要</span></div>
-    <p class="sec-desc">仅作产品链路的输入背景。<b>PM 视角关注点:不同渠道/国家送进来的用户,首课完成率与留存是否有系统性差异</b>——若某渠道量大但链路质量差,应反馈增长侧调整,而非在产品内硬转。</p>
-    <div class="upstream">
-      <div class="ut">统计窗口 07-10~08-12 01:21 UTC（Google 花费截至 08-10）</div>
-      <div class="up-grid">
-        <div class="u"><div class="uv">$31,764.01*</div><div class="ul">广告花费(*Google 两账户 07-10~08-10)</div></div>
-        <div class="u"><div class="uv">31,751</div><div class="ul">归因安装(AppsFlyer,剔网盟,最新安装日 08-11，并排除可映射测试账号)</div></div>
-        <div class="u"><div class="uv">$1.79</div><div class="ul">CPI(Google 花费 / 17,704 安装,同截至 08-10)</div></div>
-        <div class="u"><div class="uv">$4.38</div><div class="ul">单注册成本(Google 花费 / 7,256 注册,同截至 08-10)</div></div>
-        <div class="u"><div class="uv">40 单</div><div class="ul">成功付费(生产库,排除测试账号)</div></div>
-      </div>
-      <div class="un">市场(归因安装,剔网盟):越南 6,276 · 印尼 6,802 · 马来 6,472 · 沙特 5,216 · 泰国 2,800 · 韩国 2,960 · 其他 1,225。渠道:Google 17,995 · Facebook 8,179 · 自然量 4,380 · 其他小渠道 1,197 · <b style="color:var(--red)">三方网盟 5,078(12 激活 / 9 注册，仍为假量)</b>。有效归因安装 31,751，激活 29,604，注册 15,580。<b>⚠ 花费口径仍不全:$31,764.01 仅为 Google Ads 两账户；Meta 本窗口仍无可用花费。</b></div>
-    </div>
-  </section>
-
-  <div class="foot">
-    <b>数据源:</b>GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span>(07-10~08-10 日表 + 08-11~12 intraday)· AppsFlyer 宽表 <span class="src">de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class="src">de_ods.payment_order</span> · Google Ads 平台侧花费 <span class="src">google_ads_*.ads_AccountBasicStats</span>。生产库 <span class="src">play_* / vocab_* / fm_*</span> 从库仍未接入。<br>
-    <b>统计窗口:</b>大盘与 A/B 统一更新到 2026-08-12 01:21 UTC；08-11 为最近完整 UTC 日，08-12 为滚动日。<b>GA4 属性时区与生产库均为 UTC</b>；A/B 同时纳入 Android / iOS 稳定进组设备并按平台分层。<br>
-    <b>口径:</b>任一 GA4 事件命中 <span class="src">user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id / AppsFlyer ID 排除可映射支付与归因账号。链路各步为去重用户；注册成功兼容 true / 1 / success；成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day：首启 cohort 在恰好第 N 个 UTC 自然日产生 session_start / user_engagement / screen_view / page_view 之一才算前台回访（D1 可测至 08-10、D3 至 08-08、D7 至 08-04）。CPI/单注册成本截至 Google Ads 最新可用日 08-10。<br>
-    <b>生成:</b>Dino English 产品 · 刷新至 2026-08-12 01:21 UTC（北京时间09:21）
+  <div class="foot" data-zh="<b>数据源：</b>GA4 BigQuery Export <span class='src'>analytics_538991439.events_*</span>（07-10~08-10 日表 + 08-11~12 intraday）· AppsFlyer 宽表 <span class='src'>de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class='src'>de_ods.payment_order</span>。生产库 <span class='src'>play_* / vocab_* / fm_*</span> 从库仍未接入。<br><b>统计窗口：</b>大盘与 A/B 统一更新到 2026-08-12 01:21 UTC；08-11 为最近完整 UTC 日，08-12 为滚动日。<b>GA4 属性时区与生产库均为 UTC</b>；A/B 同时纳入 Android / iOS 稳定进组设备并按平台分层。<br><b>口径：</b>任一 GA4 事件命中 <span class='src'>user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id / AppsFlyer ID 排除可映射支付与归因账号。链路各步为去重用户；注册成功兼容 true / 1 / success；成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day：首启 cohort 在恰好第 N 个 UTC 自然日产生 session_start / user_engagement / screen_view / page_view 之一才算前台回访（D1 可测至 08-10、D3 至 08-08、D7 至 08-04）。<br><b>生成：</b>Dino English 产品 · 刷新至 2026-08-12 01:21 UTC（北京时间 09:21）">
+    <b>Sources:</b> GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span> (daily tables Jul 10–Aug 10 + intraday Aug 11–12) · AppsFlyer wide table <span class="src">de_dwd.product_conversion_funnel_user</span> · production payment table <span class="src">de_ods.payment_order</span>. Production replicas for <span class="src">play_* / vocab_* / fm_*</span> are not yet connected.<br>
+    <b>Reporting window:</b> Overview and A/B data are updated through 2026-08-12 01:21 UTC. Aug 11 is the latest complete UTC day; Aug 12 is rolling. <b>Both the GA4 property and production database use UTC</b>. A/B includes stably assigned Android / iOS devices and is stratified by platform.<br>
+    <b>Definitions:</b> Devices with any GA4 event where <span class="src">user_type=test</span> are excluded from every GA4 metric; mapped payment and attribution accounts are excluded through user_id / AppsFlyer ID. Funnel steps are unique users. Sign-up success accepts true / 1 / success. Successful payment = payment_order status=SUCCESS and env_type=PRODUCTION. Retention is exact-day: a first-open cohort returns only if session_start / user_engagement / screen_view / page_view occurs on exactly the Nth UTC calendar day (D1 through Aug 10, D3 through Aug 8, D7 through Aug 4).<br>
+    <b>Generated:</b> Dino English Product · Refreshed 2026-08-12 01:21 UTC (09:21 Beijing time)
   </div>
 
 </div>
 
 <script>
+const LANGUAGE_KEY='dinoRoadmapLang';
+let pageLang=localStorage.getItem(LANGUAGE_KEY)==='zh'?'zh':'en';
+const T=(en,zh)=>pageLang==='zh'?zh:en;
+const staticLangNodes=[...document.querySelectorAll('[data-zh]')];
+staticLangNodes.forEach(el=>{if(!el.hasAttribute('data-en'))el.setAttribute('data-en',el.innerHTML)});
+const PERIODS=[
+ {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-12 01:21',statusEn:'Full period · 33 complete days + rolling data on Aug 12',statusZh:'全周期 · 33 个完整日 + 08-12 滚动数据'},
+ {key:'w1',tabEn:'07-10~07-16',tabZh:'07-10~07-16',label:'07-10~07-16',statusEn:'Week 1 · Complete UTC week',statusZh:'第 1 周 · UTC 完整周'},
+ {key:'w2',tabEn:'07-17~07-23',tabZh:'07-17~07-23',label:'07-17~07-23',statusEn:'Week 2 · Complete UTC week',statusZh:'第 2 周 · UTC 完整周'},
+ {key:'w3',tabEn:'07-24~07-30',tabZh:'07-24~07-30',label:'07-24~07-30',statusEn:'Week 3 · Complete UTC week',statusZh:'第 3 周 · UTC 完整周'},
+ {key:'w4',tabEn:'07-31~08-06',tabZh:'07-31~08-06',label:'07-31~08-06',statusEn:'Week 4 · A/B calculated from Aug 1',statusZh:'第 4 周 · A/B 从 08-01 起计算'},
+ {key:'w5',tabEn:'08-07~08-12',tabZh:'08-07~08-12',label:'08-07~08-12 01:21',statusEn:'Week 5 · Includes rolling data through Aug 12 01:21 UTC',statusZh:'第 5 周 · 含 08-12 01:21 UTC 前滚动数据'}
+];
+const WEEKLY={
+ w1:{journey:{first_open:14790,signup_success:6669,lesson_start:5206,lesson_complete:647,dino_users:3219,dino_sessions:8323,dino_home_chat:3104,dino_explore_speak:532,dino_class_card:222,home_play:1801,home_explore:1451,home_class:2376,dino_go_class:1002},retention:{devices:14790,d1:1426},segments:[[504,175],[5816,731],[8470,520]],payment:{orders:675,users:426,pending:666,success:6,sandbox:2,failed:1,apple:4,google:2,week:5,month:1,year:0},levels:[[3408,1719,1397,1277,877,598,499,464],[1093,454,351,285,190,155,115,109],[675,200,186,122,63,51,41,30]]},
+ w2:{journey:{first_open:7612,signup_success:3808,lesson_start:3424,lesson_complete:745,dino_users:2149,dino_sessions:6070,dino_home_chat:2039,dino_explore_speak:410,dino_class_card:239,home_play:1210,home_explore:1030,home_class:1698,dino_go_class:1477},retention:{devices:7612,d1:966},segments:[[490,150],[2912,479],[4210,337]],payment:{orders:647,users:333,pending:638,success:9,sandbox:0,failed:0,apple:4,google:5,week:4,month:5,year:0},levels:[[2073,1438,1222,1141,833,677,574,551],[719,413,335,286,213,180,143,142],[424,198,177,136,91,78,63,52]]},
+ w3:{journey:{first_open:4619,signup_success:2640,lesson_start:2450,lesson_complete:556,dino_users:1664,dino_sessions:4557,dino_home_chat:1533,dino_explore_speak:307,dino_class_card:193,home_play:902,home_explore:833,home_class:1295,dino_go_class:1122},retention:{devices:4619,d1:630},segments:[[343,97],[1743,286],[2533,247]],payment:{orders:520,users:278,pending:514,success:5,sandbox:1,failed:0,apple:3,google:2,week:3,month:2,year:0},levels:[[1136,823,713,676,508,423,367,350],[612,357,289,257,183,154,121,121],[436,224,190,151,113,96,78,67]]},
+ w4:{journey:{first_open:3104,signup_success:2036,lesson_start:1452,lesson_complete:390,dino_users:1235,dino_sessions:3057,dino_home_chat:157,dino_explore_speak:26,dino_class_card:11,home_play:646,home_explore:574,home_class:841,dino_go_class:256},retention:{devices:3104,d1:488},segments:[[179,70],[1437,256],[1488,162]],payment:{orders:657,users:375,pending:646,success:10,sandbox:1,failed:0,apple:3,google:7,week:3,month:6,year:1},levels:[[652,492,424,394,311,274,233,218],[288,191,159,138,104,83,70,68],[114,52,47,37,26,25,16,10]]},
+ w5:{journey:{first_open:3015,signup_success:1956,lesson_start:1350,lesson_complete:423,dino_users:1155,dino_sessions:3356,dino_home_chat:22,dino_explore_speak:0,dino_class_card:0,home_play:617,home_explore:564,home_class:811,dino_go_class:249},retention:{devices:2396,d1:386},segments:[[162,65],[1123,183],[1111,138]],payment:{orders:846,users:435,pending:836,success:10,sandbox:0,failed:0,apple:7,google:3,week:7,month:3,year:0},levels:[[593,475,422,398,313,278,245,233],[279,171,143,130,95,87,68,66],[123,70,67,46,33,30,25,20]]}
+};
+const ALL={journey:{first_open:33234,signup_success:17082,lesson_start:12764,lesson_complete:2698,dino_users:7813,dino_sessions:25363,dino_home_chat:5994,dino_explore_speak:1168,dino_class_card:607,home_play:4600,home_explore:3896,home_class:6107,dino_go_class:3848},retention:{devices:32518,d1:3894},segments:[[1675,554],[13031,1934],[17812,1406]],payment:{orders:3334,users:1714,pending:3289,success:40,sandbox:4,failed:1,apple:21,google:19,week:22,month:17,year:1},levels:[[7603,4896,4178,3898,2898,2320,2010,1910],[2903,1583,1287,1113,802,677,537,523],[1728,742,673,498,332,290,236,189]]};
+let selectedPeriod='all';
+const fmt=n=>Number(n||0).toLocaleString(pageLang==='zh'?'zh-CN':'en-US');
+const pct=(n,d,digits=1)=>d?(n/d*100).toFixed(digits):'0.0';
+const currentPeriod=()=>PERIODS.find(p=>p.key===selectedPeriod)||PERIODS[0];
+const currentData=()=>selectedPeriod==='all'?ALL:WEEKLY[selectedPeriod];
+
+function renderDiagnostics(data){
+ const j=data.journey,r=data.retention;
+ document.getElementById('diagnosticKpis').innerHTML=`
+  <div class="kpi warn"><div class="lab">${T('First-lesson completion (compatible completion / specified first-lesson start)','首课完成率（兼容完课 / 指定首课开始）')}</div><div class="val">${pct(j.lesson_complete,j.lesson_start)}<small>%</small></div><div class="note"><span class="flag">${T('Primary drop-off','当前主要断点')}</span> ${fmt(j.lesson_complete)} / ${fmt(j.lesson_start)}; ${T('calculated from users who started a specified first lesson and met the compatible completion definition in the selected period','按所选周期内的指定首课开始与兼容完课用户计算')}</div></div>
+  <div class="kpi mid"><div class="lab">${T('Sign-up conversion (sign-up / open)','注册转化（注册 / 打开）')}</div><div class="val">${pct(j.signup_success,j.first_open)}<small>%</small></div><div class="note">${fmt(j.signup_success)} / ${fmt(j.first_open)}; ${T('GA4 unique devices, excluding test devices','GA4 去重设备，排除测试设备')}</div></div>
+  <div class="kpi"><div class="lab">${T('Dino conversation reach (GA4 deduplicated)','Dino 对话触达（GA4 去重）')}</div><div class="val">${fmt(j.dino_users)}<small>${T(' users','人')}</small></div><div class="note">${T('Combines legacy','兼容旧')} <span class="src">dino_assistant_progress</span> ${T('and new','与新')} <span class="src">dino_session_start</span>${T(`, totaling ${fmt(j.dino_sessions)} conversations`,`，共 ${fmt(j.dino_sessions)} 场对话`)}</div></div>
+  <div class="kpi"><div class="lab">${T('D1 next-day retention','D1 次日留存')}</div><div class="val">${pct(r.d1,r.devices)}<small>%</small></div><div class="note">${T('Mature cohort','成熟 cohort')} ${fmt(r.devices)} → ${fmt(r.d1)}; ${T('rolling weeks include only first-open cohorts with a complete D1 observation window','滚动周仅纳入已满 D1 观察期的首启 cohort')}</div></div>`;
+}
+
+const TREND_WEEKS=['w1','w2','w3','w4','w5'];
+const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07'];
+const diagnosticTrendDefs=[
+ {key:'lesson',titleEn:'First-lesson completion',titleZh:'首课完成率',color:'#b3402a',unit:'%',digits:1,get:d=>d.journey.lesson_complete/d.journey.lesson_start*100},
+ {key:'signup',titleEn:'Sign-up conversion',titleZh:'注册转化率',color:'#c98a12',unit:'%',digits:1,get:d=>d.journey.signup_success/d.journey.first_open*100},
+ {key:'dino',titleEn:'Dino conversation reach',titleZh:'Dino 对话触达',color:'#1d5c3f',unitEn:' users',unitZh:'人',digits:0,get:d=>d.journey.dino_users},
+ {key:'retention',titleEn:'D1 next-day retention',titleZh:'D1 次日留存',color:'#2e8b57',unit:'%',digits:1,get:d=>d.retention.d1/d.retention.devices*100}
+];
+function trendValue(def,value){return def.digits?value.toFixed(def.digits):fmt(Math.round(value))}
+function renderDiagnosticTrends(){
+ const activeIndex=TREND_WEEKS.indexOf(selectedPeriod),allSelected=selectedPeriod==='all';
+ document.getElementById('diagnosticTrendStatus').textContent=allSelected?T('All weeks · Week 5 is rolling','全部周 · 第 5 周为滚动周'):`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}${selectedPeriod==='w5'?T(' · Rolling week',' · 滚动周'):''}`;
+ document.getElementById('diagnosticTrends').innerHTML=diagnosticTrendDefs.map(def=>{
+  const title=T(def.titleEn,def.titleZh),unit=def.unit||T(def.unitEn,def.unitZh);
+  const values=TREND_WEEKS.map(key=>def.get(WEEKLY[key])),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
+  const width=360,height=126,left=22,right=15,top=25,bottom=25,chartW=width-left-right,chartH=height-top-bottom;
+  const points=values.map((value,i)=>({value,x:left+i*chartW/(values.length-1),y:top+(max-value)/span*chartH}));
+  const line=points.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' '),area=`${line} L ${points.at(-1).x.toFixed(1)} ${height-bottom} L ${points[0].x.toFixed(1)} ${height-bottom} Z`;
+  const focus=allSelected?values.at(-1):values[Math.max(0,activeIndex)],focusLabel=`${allSelected?T('Latest ','最新 '):''}${trendValue(def,focus)}${unit}`;
+  const activeBand=activeIndex>=0?`<rect class="trend-active-band" x="${(points[activeIndex].x-25).toFixed(1)}" y="8" width="50" height="${height-bottom-5}" rx="5"/>`:'';
+  return `<div class="trend-card"><div class="trend-card-head"><div class="trend-card-title">${title}</div><div class="trend-current">${focusLabel}</div></div>`+
+   `<svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${title} ${T('five-week trend','五周趋势')}：${values.map((v,i)=>`${TREND_LABELS[i]} ${trendValue(def,v)}${unit}`).join(T(', ','，'))}">`+
+   `${activeBand}<rect class="trend-rolling-band" x="${(points[4].x-25).toFixed(1)}" y="8" width="50" height="${height-bottom-5}" rx="5"/><line class="trend-midline" x1="${left}" x2="${width-right}" y1="${(top+chartH/2).toFixed(1)}" y2="${(top+chartH/2).toFixed(1)}"/><line class="trend-axis" x1="${left}" x2="${width-right}" y1="${height-bottom}" y2="${height-bottom}"/>`+
+   `<path class="trend-area" d="${area}" fill="${def.color}"/><path class="trend-line" d="${line}" stroke="${def.color}"/>`+
+   points.map((p,i)=>`<circle class="trend-dot${i===activeIndex?' active':''}" cx="${p.x}" cy="${p.y}" r="${i===activeIndex?5:4}" fill="${def.color}"/><text class="trend-point-label" x="${p.x}" y="${Math.max(11,p.y-8)}">${trendValue(def,p.value)}</text><text class="trend-x" x="${p.x}" y="${height-6}">${TREND_LABELS[i]}</text>`).join('')+`</svg>`+
+   `<div class="trend-range"><span>${T('Min','最低')} ${trendValue(def,min)}${unit}</span><span>${T('Max','最高')} ${trendValue(def,max)}${unit}</span></div></div>`;
+ }).join('');
+}
+
+function renderCoreModules(j){
+ document.getElementById('coreModules').innerHTML=`
+  <div class="mod dino"><div class="mh">${T('Dino Conversations','Dino 对话')}</div><div class="msub">${T('Legacy/new event compatibility · Deduplicated reach and sessions','新旧事件兼容 · 去重触达与会话')}</div><div class="mbig">${fmt(j.dino_users)}<small>${T(' users',' 人')}</small></div><div class="mlist"><div class="mi"><span>${T('Conversation sessions','对话场次')}</span><b>${fmt(j.dino_sessions)}</b></div><div class="mi"><span>${T('Legacy home_chat detail','旧事件 home_chat 明细')}</span><b>${fmt(j.dino_home_chat)}</b></div></div></div>
+  <div class="mod"><div class="mh">${T('Dino Entry Distribution','Dino 入口分布')}</div><div class="msub">${T('Scene split uses legacy event parameters; direct lesson entry is read separately','场景拆分沿用旧事件参数；直接进课独立读取')}</div><div class="mbig">${fmt(j.dino_explore_speak)}<small>${T(' legacy Explore speaking',' 旧口径探索说一说')}</small></div><div class="mlist"><div class="mi"><span>${T('Legacy course card','旧口径课程卡')}</span><b>${fmt(j.dino_class_card)}</b></div><div class="mi"><span>${T('Direct lesson from Dino','Dino 直接进课')}</span><b>${fmt(j.dino_go_class)}</b></div></div></div>
+  <div class="mod play"><div class="mh">${T('Home Game Entry','首页游戏入口')}</div><div class="msub">Home · Play</div><div class="mbig">${fmt(j.home_play)}<small>${T(' users',' 人')}</small></div><div class="mlist"><div class="mi"><span>${T('As a share of first-lesson completions','相当于完整首课人数')}</span><b>${pct(j.home_play,j.lesson_complete)}%</b></div></div></div>
+  <div class="mod"><div class="mh">${T('Home Learning Entry','首页学习入口')}</div><div class="msub">Home · Explore / Class</div><div class="mbig">${fmt(j.home_class)}<small> Class</small></div><div class="mlist"><div class="mi"><span>Explore</span><b>${fmt(j.home_explore)}</b></div><div class="mi"><span>${T('Direct lesson from Dino','Dino 直接进课')}</span><b>${fmt(j.dino_go_class)}</b></div></div></div>`;
+ document.getElementById('modulesInsight').innerHTML=T(
+  `<div class="it">✓ Module reach in selected period</div><p><b>The compatible Dino conversation definition reached ${fmt(j.dino_users)} users</b> and generated ${fmt(j.dino_sessions)} conversations. It merges legacy <span class="src">dino_assistant_progress</span> with new <span class="src">dino_session_start</span>. Only the legacy event carries scene details, so the scene split cannot be divided by the compatible total. Home Class / Play / Explore entries reached ${fmt(j.home_class)} / ${fmt(j.home_play)} / ${fmt(j.home_explore)} users.</p>`,
+  `<div class="it">✓ 所选周期模块触达</div><p><b>Dino 对话兼容口径触达 ${fmt(j.dino_users)} 人</b>、产生 ${fmt(j.dino_sessions)} 场对话；该指标合并旧 <span class="src">dino_assistant_progress</span> 与新 <span class="src">dino_session_start</span>。场景拆分仍只有旧事件携带，不能与兼容总量直接求占比。首页 Class / Play / Explore 入口分别触达 ${fmt(j.home_class)} / ${fmt(j.home_play)} / ${fmt(j.home_explore)} 人。</p>`);
+}
+
 // 全量通用主漏斗：只保留旧路径与 A/B 新路径共有的业务里程碑。
-const journey=[
+let journey=[
  {l:'首次启动',s:'first_open',v:33234,c:'#1d5c3f'},
  {l:'注册成功',s:'signup_result · success',v:17082,c:'#2e8b57',cliff:true},
  {l:'首课开始',s:'class_lesson_start · 8 个指定课程 ID',v:12764,c:'#c98a12'},
  {l:'首课完成',s:'新旧完课事件兼容 · 指定首课',v:2698,c:'#d9641e'},
 ];
-const jbase=33234, jmax=33234;
-document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
+function renderJourney(){
+ const jbase=journey[0].v,jmax=jbase||1;
+ document.getElementById('journeyFunnel').innerHTML=journey.map((s,i)=>{
   const w=Math.max(3,Math.round(s.v/jmax*100));
-  const startRate=s.v/jbase*100;
-  const stepRate=i===0?100:s.v/journey[i-1].v*100;
-  const rate=i===0?'起点 100%':`环比 ${stepRate.toFixed(1)}% · 启动 ${startRate.toFixed(1)}%`;
+  const startRate=jbase?s.v/jbase*100:0;
+  const stepRate=i===0?100:(journey[i-1].v?s.v/journey[i-1].v*100:0);
+  const rate=i===0?T('Start 100%','起点 100%'):`${T('Step','环比')} ${stepRate.toFixed(1)}% · ${T('vs. open','启动')} ${startRate.toFixed(1)}%`;
   const rcls = s.cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
   return `<div class="lrow${s.cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
    `<div class="lbar-track"><div class="lbar-fill" style="width:${w}%;background:${s.c}"></div></div>`+
-   `<div class="lv">${s.v.toLocaleString()}<div class="cliffmark" style="${rcls}">${rate}</div></div></div>`;
-}).join('');
+   `<div class="lv">${fmt(s.v)}<div class="cliffmark" style="${rcls}">${rate}</div></div></div>`;
+ }).join('');
+}
 
-// A/B Android 页面级主链路：与详细数据工作台使用同一组稳定进组、累计前序节点口径。
-const AB_MAIN_FLOWS={
+// A/B Android 页面级主链路：国家、样本与节点数据和详细数据工作台保持同一口径。
+const AB_MAIN_SCHEMAS={
  A:{
-  tab:'A 组 · 先问后登',title:'先问后登 / 体验课后 Paywall',assigned:1960,
+  tab:'A 组 · 先问后登',title:'先问后登 / 体验课后 Paywall',totalNodes:17,
   steps:[
-   {p:'启动',l:'首次启动',s:'first_open',v:1856},
-   {p:'启动',l:'首期价值页',s:'screen_view · WelcomeActivity',v:1817},
-   {p:'问卷',l:'进入 Onboarding',s:'screen_view · OnboardingSetupActivity',v:1608},
-   {p:'问卷',l:'完成 Onboarding',s:'step_submitted · 4_english_level',v:1354},
-   {p:'账号',l:'登录注册页',s:'page_view · login',v:1346},
-   {p:'账号',l:'注册成功',s:'signup_result · success',v:1015},
-   {p:'选课',l:'进入选老师页',s:'screen_view · teacher select',v:1012},
-   {p:'选课',l:'选老师完成',s:'teacher_selected',v:992},
-   {p:'课堂',l:'体验课开始',s:'class_lesson_start · 6 个体验课 ID',v:814},
-   {p:'课堂',l:'体验课完成',s:'trial_lesson_complete / lesson_end complete',v:184},
-   {p:'报告',l:'体验课报告',s:'page_view · report · course_flow',v:182},
-   {p:'报告',l:'学习计划',s:'page_view · study_plan · trial_report',v:118},
-   {p:'变现',l:'体验课 Paywall',s:'page_view · subscription · trial_report',v:107},
-   {p:'变现',l:'体验课支付发起',s:'subscription_checkout_start · trial_report',v:36},
-   {p:'变现',l:'体验课支付成功',s:'payment_order · SUCCESS · PRODUCTION',v:1}
+   {i:0,p:'启动',l:'首次启动',s:'first_open'},
+   {i:1,p:'启动',l:'首期价值页',s:'screen_view · WelcomeActivity'},
+   {i:2,p:'问卷',l:'进入 Onboarding',s:'screen_view · OnboardingSetupActivity'},
+   {i:3,p:'问卷',l:'完成问题① 姓名',s:'step_submitted · 2_learner_name'},
+   {i:4,p:'问卷',l:'完成问题② 年龄',s:'step_submitted · 3_learner_age'},
+   {i:5,p:'问卷',l:'完成问题③ 英语水平',s:'step_submitted · 4_english_level'},
+   {i:6,p:'账号',l:'登录注册页',s:'page_view · login'},
+   {i:7,p:'账号',l:'注册成功',s:'signup_result · success'},
+   {i:8,p:'选课',l:'进入选老师页',s:'screen_view · teacher select'},
+   {i:9,p:'选课',l:'选老师完成',s:'teacher_selected'},
+   {i:10,p:'课堂',l:'体验课开始',s:'class_lesson_start · 6 个体验课 ID'},
+   {i:11,p:'课堂',l:'体验课完成',s:'trial_lesson_complete / lesson_end complete'},
+   {i:12,p:'报告',l:'体验课报告',s:'page_view · report · course_flow'},
+   {i:13,p:'报告',l:'学习计划',s:'page_view · study_plan · trial_report'},
+   {i:14,p:'变现',l:'体验课 Paywall',s:'page_view · subscription · trial_report'},
+   {i:15,p:'变现',l:'体验课支付发起',s:'subscription_checkout_start · trial_report'},
+   {i:16,p:'变现',l:'体验课支付成功',s:'payment_order · SUCCESS · PRODUCTION'}
   ]
  },
  B:{
-  tab:'B 组 · 先登后问',title:'先登后问 / Hub 引导 / 折扣 Paywall',assigned:1951,
+  tab:'B 组 · 先登后问',title:'先登后问 / Hub 引导 / 折扣 Paywall',totalNodes:25,
   steps:[
-   {p:'启动',l:'首次启动',s:'first_open',v:1848},
-   {p:'账号',l:'登录注册页',s:'page_view · login',v:1776},
-   {p:'账号',l:'注册成功',s:'signup_result · success',v:1137},
-   {p:'问卷',l:'进入 Onboarding',s:'screen_view · OnboardingSetupActivity',v:1134},
-   {p:'问卷',l:'完成 Onboarding',s:'step_submitted · 5_learning_goal',v:1032},
-   {p:'价值',l:'学习计划预览',s:'page_view · study_plan_preview',v:960},
-   {p:'变现',l:'Paywall 第 1 轮',s:'page_view · subscription · study_plan_preview',v:925},
-   {p:'Hub 引导',l:'开始 Hub 引导',s:'onboarding_guide_progress · hub_dino',v:833},
-   {p:'Hub 引导',l:'结束 Hub 引导',s:'onboarding_guide_progress · hub_complete',v:700},
-   {p:'变现',l:'Paywall 第 2 轮',s:'page_view · subscription · onboarding_guide',v:698},
-   {p:'课堂',l:'新人引导课开始',s:'class_lesson_start · lesson_id=1661',v:437},
-   {p:'课堂',l:'新人引导课完成',s:'class_lesson_end · 1661 · complete',v:167},
-   {p:'变现',l:'限时折扣 Paywall',s:'discount_offer · guidance_report',v:59},
-   {p:'变现',l:'折扣支付发起',s:'subscription_checkout_start · guidance_report',v:22},
-   {p:'变现',l:'折扣支付成功',s:'payment_order · SUCCESS · PRODUCTION',v:0}
+   {i:0,p:'启动',l:'首次启动',s:'first_open'},
+   {i:1,p:'账号',l:'登录注册页',s:'page_view · login'},
+   {i:2,p:'账号',l:'注册成功',s:'signup_result · success'},
+   {i:3,p:'问卷',l:'进入 Onboarding',s:'screen_view · OnboardingSetupActivity'},
+   {i:4,p:'问卷',l:'完成问题① 姓名',s:'step_submitted · 2_learner_name'},
+   {i:5,p:'问卷',l:'完成问题② 年龄',s:'step_submitted · 3_learner_age'},
+   {i:6,p:'问卷',l:'完成问题③ 英语水平',s:'step_submitted · 4_english_level'},
+   {i:7,p:'问卷',l:'完成问题④ 学习目标',s:'step_submitted · 5_learning_goal'},
+   {i:8,p:'价值',l:'学习计划预览',s:'page_view · study_plan_preview'},
+   {i:9,p:'变现',l:'Paywall 第 1 轮',s:'page_view · subscription · study_plan_preview'},
+   {i:10,p:'Hub 引导',l:'引导① Dino',s:'onboarding_guide_progress · hub_dino'},
+   {i:11,p:'Hub 引导',l:'引导② Play',s:'onboarding_guide_progress · hub_play'},
+   {i:12,p:'Hub 引导',l:'引导③ Explore',s:'onboarding_guide_progress · hub_explore'},
+   {i:13,p:'Hub 引导',l:'引导④ Class',s:'onboarding_guide_progress · hub_class_intro'},
+   {i:14,p:'Hub 引导',l:'引导⑤ 选老师',s:'onboarding_guide_progress · hub_teacher_select'},
+   {i:15,p:'Hub 引导',l:'进入选老师页',s:'screen_view · DinoClassTeacherSelectActivity'},
+   {i:16,p:'Hub 引导',l:'引导⑥ 首课卡',s:'onboarding_guide_progress · hub_lesson_start'},
+   {i:17,p:'Hub 引导',l:'完成 Hub 引导',s:'onboarding_guide_progress · hub_complete'},
+   {i:18,p:'变现',l:'Paywall 第 2 轮',s:'page_view · subscription · onboarding_guide'},
+   {i:19,p:'课堂',l:'新人引导课开始',s:'class_lesson_start · lesson_id=1661'},
+   {i:20,p:'课堂',l:'新人引导课完成',s:'class_lesson_end · 1661 · complete'},
+   {i:21,p:'报告',l:'新人引导课报告',s:'page_view · report · course_flow'},
+   {i:22,p:'变现',l:'限时折扣 Paywall',s:'discount_offer · guidance_report'},
+   {i:23,p:'变现',l:'折扣支付发起',s:'subscription_checkout_start · guidance_report'},
+   {i:24,p:'变现',l:'折扣支付成功',s:'payment_order · SUCCESS · PRODUCTION'}
   ]
  }
 };
+const AB_EN={
+ A:{tab:'Group A · Ask first, sign up later',title:'Ask first / Paywall after trial lesson',
+  phases:['Launch','Launch','Onboarding','Onboarding','Onboarding','Onboarding','Account','Account','Course selection','Course selection','Lesson','Lesson','Report','Report','Monetization','Monetization','Monetization'],
+  labels:['First open','Initial value page','Enter onboarding','Complete Q1 · Name','Complete Q2 · Age','Complete Q3 · English level','Login / sign-up page','Sign-up success','Open teacher selection','Teacher selected','Trial lesson start','Trial lesson complete','Trial lesson report','Study plan','Trial-lesson Paywall','Trial checkout started','Trial payment success']},
+ B:{tab:'Group B · Sign up first, then answer',title:'Sign up first / Hub guide / Discount Paywall',
+  phases:['Launch','Account','Account','Onboarding','Onboarding','Onboarding','Onboarding','Onboarding','Value','Monetization','Hub guide','Hub guide','Hub guide','Hub guide','Hub guide','Hub guide','Hub guide','Hub guide','Monetization','Lesson','Lesson','Report','Monetization','Monetization','Monetization'],
+  labels:['First open','Login / sign-up page','Sign-up success','Enter onboarding','Complete Q1 · Name','Complete Q2 · Age','Complete Q3 · English level','Complete Q4 · Learning goal','Study plan preview','Paywall · Round 1','Guide 1 · Dino','Guide 2 · Play','Guide 3 · Explore','Guide 4 · Class','Guide 5 · Select teacher','Open teacher selection','Guide 6 · First-lesson card','Complete Hub guide','Paywall · Round 2','New-user guide lesson start','New-user guide lesson complete','New-user guide lesson report','Limited-time discount Paywall','Discount checkout started','Discount payment success']}
+};
+const COUNTRY_EN={
+ all:{tab:'All',label:'All countries'},vn:{tab:'Vietnam',label:'Vietnam'},kr:{tab:'South Korea',label:'South Korea'},
+ sa:{tab:'Saudi',label:'Saudi Arabia'},my:{tab:'Malaysia',label:'Malaysia'},id:{tab:'Indonesia',label:'Indonesia'}
+};
+const countryTab=country=>pageLang==='zh'?country.tab:COUNTRY_EN[country.key].tab;
+const countryLabel=country=>pageLang==='zh'?country.label:COUNTRY_EN[country.key].label;
+const flowTab=(key,flow)=>pageLang==='zh'?flow.tab:AB_EN[key].tab;
+const flowTitle=(key,flow)=>pageLang==='zh'?flow.title:AB_EN[key].title;
+const flowPhase=(key,step,i)=>pageLang==='zh'?step.p:AB_EN[key].phases[i];
+const flowLabel=(key,step,i)=>pageLang==='zh'?step.l:AB_EN[key].labels[i];
+const flowSource=step=>pageLang==='zh'?step.s:step.s.replace('6 个体验课 ID','6 trial-lesson IDs');
+const AB_ALL_COUNTRIES=[
+ {key:'all',tab:'全部',label:'全部国家',a:{assigned:1960,payAssigned:2489,paid:8,pending:414,counts:[1856,1817,1608,1400,1369,1354,1346,1015,1012,992,814,184,182,118,107,36,1]},b:{assigned:1951,payAssigned:2521,paid:8,pending:719,counts:[1848,1776,1137,1134,1068,1058,1045,1032,960,925,833,769,749,743,732,719,716,700,698,437,167,62,59,22,0]}},
+ {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:73,paid:1,counts:[67,63,57,48,48,48,48,27,27,26,25,9,9,6,4,1,0]},b:{assigned:70,paid:0,counts:[67,60,31,31,31,31,31,31,31,31,29,28,28,28,28,28,28,28,28,19,5,1,1,0,0]}},
+ {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:297,paid:1,counts:[295,294,249,206,197,193,193,153,151,148,116,23,23,16,14,2,0]},b:{assigned:312,paid:4,counts:[311,305,197,197,175,173,169,168,160,153,125,109,107,106,104,99,99,96,96,52,24,10,9,2,0]}},
+ {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:651,paid:0,counts:[649,640,589,499,493,486,480,366,366,360,271,43,43,27,27,15,0]},b:{assigned:603,paid:0,counts:[600,581,384,384,358,356,351,345,309,298,274,260,249,246,240,238,237,232,230,149,52,15,14,8,0]}},
+ {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:294,paid:3,counts:[290,285,248,235,232,230,230,168,168,162,145,52,52,31,30,7,0]},b:{assigned:320,paid:2,counts:[319,303,184,184,182,181,180,178,160,153,143,131,129,128,127,125,124,120,120,70,36,23,23,7,0]}},
+ {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:152,paid:1,counts:[145,138,124,109,107,107,106,85,85,84,75,11,11,8,7,4,1]},b:{assigned:137,paid:0,counts:[133,128,86,86,86,85,85,85,79,79,76,73,73,73,73,72,72,72,72,55,16,4,4,1,0]}}
+];
+const makeAbCountry=(key,tab,label,code,aAssigned,aPaid,aPending,aCounts,bAssigned,bPaid,bPending,bCounts)=>({key,tab,label,code,a:{assigned:aAssigned,paid:aPaid,pending:aPending,counts:aCounts},b:{assigned:bAssigned,paid:bPaid,pending:bPending,counts:bCounts}});
+const AB_WEEKLY={
+ w4:[
+  makeAbCountry('all','全部','全部国家',null,890,5,123,[843,827,719,616,599,589,585,443,441,437,351,66,66,43,39,15,2],878,4,254,[826,789,513,513,470,466,457,451,380,368,336,312,305,304,300,294,293,285,285,184,57,22,21,4,0]),
+  makeAbCountry('vn','越南','越南','VN',44,1,4,[39,35,31,26,26,26,26,15,15,15,15,3,3,3,3,1,1],40,0,20,[37,34,19,19,19,19,19,19,19,19,17,16,16,16,16,16,16,16,16,12,4,1,1,0,0]),
+  makeAbCountry('kr','韩国','韩国','KR',181,1,5,[180,180,147,122,115,111,111,90,88,87,72,12,12,8,7,2,0],167,0,33,[167,162,111,111,96,96,93,92,84,80,69,60,59,59,58,55,55,53,53,24,8,3,3,1,0]),
+  makeAbCountry('sa','沙特','沙特阿拉伯','SA',364,0,39,[362,357,321,261,258,254,250,192,192,190,141,19,19,12,11,6,0],338,0,92,[337,324,217,217,198,197,193,189,154,148,137,130,124,123,120,118,118,115,115,71,26,6,5,2,0]),
+  makeAbCountry('my','马来','马来西亚','MY',128,2,52,[126,124,111,108,107,105,105,80,80,79,69,25,25,15,14,4,0],138,2,52,[138,128,78,78,77,77,77,76,58,57,53,48,48,48,48,48,47,45,45,35,13,10,10,1,0]),
+  makeAbCountry('id','印尼','印度尼西亚','ID',75,1,13,[69,64,53,48,46,46,46,36,36,36,29,4,4,3,3,2,1],68,0,18,[64,62,43,43,43,42,42,42,36,36,36,35,35,35,35,35,35,35,35,26,4,1,1,0,0])
+ ],
+ w5:[
+  makeAbCountry('all','全部','全部国家',null,1058,2,219,[1004,986,876,773,759,754,749,566,566,550,453,115,114,72,64,21,0],1064,3,419,[1015,985,626,624,600,594,589,582,581,558,496,457,445,440,433,424,422,414,412,248,104,35,32,14,0]),
+  makeAbCountry('vn','越南','越南','VN',36,0,24,[35,33,31,27,27,27,27,14,14,13,12,7,7,4,2,1,0],37,0,63,[37,31,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,8,1,0,0,0,0]),
+  makeAbCountry('kr','韩国','韩国','KR',156,0,5,[155,154,132,108,104,103,103,77,77,75,52,16,15,10,8,0,0],183,3,34,[182,181,110,110,100,98,97,96,96,90,70,62,60,58,57,52,52,50,50,29,15,5,4,1,0]),
+  makeAbCountry('sa','沙特','沙特阿拉伯','SA',322,0,75,[322,319,302,264,259,256,254,194,194,190,150,27,27,17,16,10,0],318,0,178,[316,308,199,198,189,187,186,184,183,177,163,154,150,148,145,145,144,142,140,93,31,9,9,6,0]),
+  makeAbCountry('my','马来','马来西亚','MY',217,1,61,[215,212,184,174,172,172,171,122,122,115,105,40,40,25,25,4,0],227,0,74,[226,220,135,135,134,133,132,130,130,123,114,107,104,103,101,98,98,94,94,45,28,14,13,5,0]),
+  makeAbCountry('id','印尼','印度尼西亚','ID',96,0,19,[95,92,85,74,74,74,73,61,61,60,55,7,7,5,4,2,0],92,0,26,[92,87,59,59,59,59,59,59,59,59,54,52,52,52,51,50,50,50,50,38,14,3,3,1,0])
+ ]
+};
+let AB_MAIN_COUNTRIES=AB_ALL_COUNTRIES;
 const abMainTabs=document.getElementById('abMainTabs');
-abMainTabs.innerHTML=Object.entries(AB_MAIN_FLOWS).map(([key,flow],i)=>`<button class="abtab${i===0?' on':''}" type="button" role="tab" aria-selected="${i===0?'true':'false'}" data-variant="${key}">${flow.tab}</button>`).join('');
+const abCountryTabs=document.getElementById('abCountryTabs');
+let selectedAbVariant='A',selectedAbCountry='all';
+const abPct=(value,total)=>total?value/total*100:0;
+function renderAbTabs(){
+ abMainTabs.innerHTML=Object.entries(AB_MAIN_SCHEMAS).map(([key,flow])=>`<button class="abtab${key===selectedAbVariant?' on':''}" type="button" role="tab" aria-selected="${key===selectedAbVariant?'true':'false'}" data-variant="${key}">${flowTab(key,flow)}</button>`).join('');
+ abCountryTabs.innerHTML=AB_ALL_COUNTRIES.map(country=>`<button class="abtab${country.key===selectedAbCountry?' on':''}" type="button" role="tab" aria-selected="${country.key===selectedAbCountry?'true':'false'}" data-country="${country.key}">${countryTab(country)}</button>`).join('');
+ abMainTabs.querySelectorAll('.abtab').forEach(tab=>tab.addEventListener('click',()=>renderAbMainFlow(tab.dataset.variant)));
+ abCountryTabs.querySelectorAll('.abtab').forEach(tab=>tab.addEventListener('click',()=>{selectedAbCountry=tab.dataset.country;renderAbMainFlow(selectedAbVariant)}));
+}
+function renderAbCountrySummary(country){
+ if(!country){
+  document.getElementById('abSummaryKpis').innerHTML=`<div class="period-empty">${T('The selected week predates the experiment start (2026-08-01 00:00 UTC), so no stable A/B assignment sample is available.','所选周早于实验开始时间（2026-08-01 00:00 UTC），暂无 A/B 稳定进组样本。')}</div>`;
+  return;
+ }
+ const a=country.a.counts,b=country.b.counts;
+ const registeredARate=abPct(a[7],a[0]),registeredBRate=abPct(b[2],b[0]),registeredDiff=registeredBRate-registeredARate;
+ const lessonARate=abPct(a[11],a[10]),lessonBRate=abPct(b[20],b[19]),lessonDiff=lessonBRate-lessonARate;
+ const hasPayDenom=Number.isFinite(country.a.payAssigned)&&Number.isFinite(country.b.payAssigned);
+ const paidARate=hasPayDenom?abPct(country.a.paid,country.a.payAssigned):null,paidBRate=hasPayDenom?abPct(country.b.paid,country.b.payAssigned):null;
+ abCountryTabs.querySelectorAll('.abtab').forEach(tab=>{
+  const active=tab.dataset.country===country.key;
+  tab.classList.toggle('on',active);tab.setAttribute('aria-selected',active?'true':'false');tab.tabIndex=active?0:-1;
+ });
+ document.getElementById('abSummaryKpis').innerHTML=`
+  <div class="kpi">
+   <div class="lab">${countryTab(country)} · Android ${T('First open → Sign-up completion','首次启动 → 注册完成率')} · B−A</div>
+   <div class="val">${registeredDiff>=0?'+':''}${registeredDiff.toFixed(1)}<small>pp</small></div>
+   <div class="note">${T('Sign-up success after first open','首次启动后注册成功')}：A ${registeredARate.toFixed(1)}% (${fmt(a[7])} / ${fmt(a[0])}) → B ${registeredBRate.toFixed(1)}% (${fmt(b[2])} / ${fmt(b[0])}); ${T('aligned with the first-open denominator in the funnel below; Group B does not need to complete onboarding','与下方漏斗启动口径一致，不要求 B 完成 Onboarding')}</div>
+  </div>
+  <div class="kpi">
+   <div class="lab">${countryTab(country)} · Android ${T('Path-specific first-lesson completion','对应首课完课率')} · B−A</div>
+   <div class="val">${lessonDiff>=0?'+':''}${lessonDiff.toFixed(1)}<small>pp</small></div>
+   <div class="note">${T('A trial lesson','A 体验课')} ${lessonARate.toFixed(1)}% (${fmt(a[11])} / ${fmt(a[10])}) → ${T('B new-user guide lesson','B 新人引导课')} ${lessonBRate.toFixed(1)}% (${fmt(b[20])} / ${fmt(b[19])}); ${T('the lessons differ, so this is path-outcome observation only','课程不同，仅作路径结果观察')}</div>
+  </div>
+  <div class="kpi mid">
+   <div class="lab">${countryTab(country)} · ${T(`Cross-platform overall group production ${hasPayDenom?'payment rate':'paid devices'}`,`跨端分组整体生产${hasPayDenom?'付费率':'成功付费设备'}`)}</div>
+   <div class="val">${hasPayDenom?`${paidARate.toFixed(2)} → ${paidBRate.toFixed(2)}<small>%</small>`:`A ${country.a.paid} · B ${country.b.paid} <small>${T('devices','台')}</small>`}</div>
+   <div class="note">${hasPayDenom?T('Android+iOS production SUCCESS orders on any path','Android+iOS 任意路径生产 SUCCESS 订单'):T('Devices in the selected-week stable-assignment cohort with an Android+iOS production SUCCESS on any path','所选周首次稳定进组 cohort 中命中 Android+iOS 任意路径生产 SUCCESS 的设备')}：A ${country.a.paid}${hasPayDenom?` / ${fmt(country.a.payAssigned)}`:''}; B ${country.b.paid}${hasPayDenom?` / ${fmt(country.b.payAssigned)}`:''}${country.key==='all'?`; PENDING A ${country.a.pending} / B ${country.b.pending}${hasPayDenom?T('; two order accounts are linked to devices in both A and B, so the group total must be deduplicated','；2 笔订单对应的账号同时关联 A、B 组设备，两组合计需去重'):''}`:T('; country-week payment rates are not calculated','；国家周数据不计算付费率')}.</div>
+  </div>`;
+}
 function renderAbMainFlow(key){
- const flow=AB_MAIN_FLOWS[key],base=flow.steps[0].v;
+ const country=AB_MAIN_COUNTRIES.find(item=>item.key===selectedAbCountry)||AB_MAIN_COUNTRIES[0];
+ selectedAbVariant=key;
  abMainTabs.querySelectorAll('.abtab').forEach(tab=>{
   const active=tab.dataset.variant===key;
   tab.classList.toggle('on',active);tab.setAttribute('aria-selected',active?'true':'false');tab.tabIndex=active?0:-1;
  });
- document.getElementById('abMainMeta').innerHTML=`<b>${key} 组 · ${flow.title}</b><span>稳定进组 ${flow.assigned} 台</span><span>首次启动 ${base} 台</span><span>${flow.steps.length} 个累计节点</span>`;
- document.getElementById('abMainFlow').innerHTML=flow.steps.map((step,i)=>{
-  const prev=i?flow.steps[i-1].v:step.v,stepRate=prev?step.v/prev*100:null,startRate=base?step.v/base*100:0;
-  const cliff=i>0&&stepRate<50,phaseStart=i>0&&step.p!==flow.steps[i-1].p;
+ if(!country){
+  renderAbCountrySummary(null);
+  document.getElementById('abMainMeta').innerHTML=`<b>${T('Experiment not started','实验尚未开始')}</b><span>${T('No stably assigned devices this week','本周无稳定进组设备')}</span>`;
+  document.getElementById('abMainFlow').innerHTML=`<div class="period-empty">${T('Switch to 07-31~08-06, 08-07~08-12, or All to view A/B path funnels.','切换至 07-31~08-06、08-07~08-12 或“全部”，查看 A/B 分路径漏斗。')}</div>`;
+  document.getElementById('abMainNote').textContent='';
+  return;
+ }
+ const flow=AB_MAIN_SCHEMAS[key],cohort=country[key.toLowerCase()];
+ const steps=flow.steps.map(step=>({...step,v:cohort.counts[step.i]})),base=steps[0].v;
+ renderAbCountrySummary(country);
+ document.getElementById('abMainMeta').innerHTML=`<b>${countryTab(country)} · ${T(`Group ${key}`,`${key} 组`)} · ${flowTitle(key,flow)}</b><span>${T('Stably assigned','稳定进组')} ${fmt(cohort.assigned)} ${T('devices','台')}</span><span>${T('First opens','首次启动')} ${fmt(base)} ${T('devices','台')}</span><span>${T(`${steps.length} cumulative nodes shown in full`,`完整展示 ${steps.length} 个累计节点`)}</span>`;
+ document.getElementById('abMainFlow').innerHTML=steps.map((step,i)=>{
+  const prev=i?steps[i-1].v:step.v,stepRate=prev?step.v/prev*100:null,startRate=base?step.v/base*100:0;
+  const cliff=i>0&&stepRate!==null&&stepRate<50,phaseStart=i>0&&flowPhase(key,step,i)!==flowPhase(key,steps[i-1],i-1);
   const color=cliff?'var(--red)':stepRate!==null&&stepRate<70?'var(--orange)':'var(--green-bright)';
   const width=step.v?Math.max(2,Math.round(startRate)):0;
-  const rateText=i===0?'起点 100%':`环比 ${stepRate.toFixed(1)}% · 启动 ${startRate.toFixed(1)}%`;
-  return `<div class="lrow${cliff?' cliff':''}${phaseStart?' phase-start':''}"><div class="ll">${i+1}. ${step.l}<small>${step.p} · ${step.s}</small></div>`+
+  const rateText=i===0?T('Start 100%','起点 100%'):`${T('Step','环比')} ${stepRate===null?'—':stepRate.toFixed(1)+'%'} · ${T('vs. open','启动')} ${startRate.toFixed(1)}%`;
+  return `<div class="lrow${cliff?' cliff':''}${phaseStart?' phase-start':''}"><div class="ll">${i+1}. ${flowLabel(key,step,i)}<small>${flowPhase(key,step,i)} · ${flowSource(step)}</small></div>`+
    `<div class="lbar-track"><div class="lbar-fill" style="width:${width}%;background:${color}"></div></div>`+
-   `<div class="lv">${step.v.toLocaleString()}<div class="cliffmark">${rateText}</div></div></div>`;
+   `<div class="lv">${fmt(step.v)}<div class="cliffmark">${rateText}</div></div></div>`;
  }).join('');
- document.getElementById('abMainNote').innerHTML='口径：全国家 Android 稳定进组设备；A 的注册在 Onboarding 后，B 的注册在 Onboarding 前，不能直接比较两个注册节点。对齐到“注册且完成 Onboarding”后，A 1,015 / 1,960（51.8%），B 1,032 / 1,951（52.9%），差 +1.1pp，p=.487。核心页将逐题与 Hub 引导压缩为进入/完成节点，详细值见数据工作台。';
+ const a=country.a.counts,b=country.b.counts,aRate=abPct(a[7],a[0]),bRate=abPct(b[2],b[0]),diff=bRate-aRate;
+ document.getElementById('abMainNote').innerHTML=T(
+  `Definition: stably assigned devices in ${countryLabel(country)}. Sign-up completion reads each group's <span class="src">signup_result · success</span> directly: A ${fmt(a[7])} / ${fmt(a[0])} (${aRate.toFixed(1)}%), B ${fmt(b[2])} / ${fmt(b[0])} (${bRate.toFixed(1)}%), a ${diff>=0?'+':''}${diff.toFixed(1)}pp difference. Group B is not required to complete onboarding afterward. The funnel mirrors the detailed data workbench in full—17 nodes for A and 25 for B—so every step rate uses the true adjacent node as its denominator.`,
+  `口径：${countryLabel(country)}稳定进组设备；注册完成直接读取各组 <span class="src">signup_result · success</span>，A ${fmt(a[7])} / ${fmt(a[0])}（${aRate.toFixed(1)}%），B ${fmt(b[2])} / ${fmt(b[0])}（${bRate.toFixed(1)}%），差 ${diff>=0?'+':''}${diff.toFixed(1)}pp；不要求 B 随后完成 Onboarding。漏斗完整同步详细数据工作台的 A 组 17 节点 / B 组 25 节点，因此环比均以真实相邻节点为分母。`);
 }
-abMainTabs.querySelectorAll('.abtab').forEach(tab=>tab.addEventListener('click',()=>renderAbMainFlow(tab.dataset.variant)));
-renderAbMainFlow('A');
 
 // 变现:发起 vs 成功 断层条
-const pay=[
+let pay=[
  {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:3334,c:'#c98a12',note:'3,289 PENDING + 40 生产成功 + 4 沙盒 + 1 失败 · 1,714 用户'},
  {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:40,c:'#b3402a',note:'生产环境 · 权威口径(Apple 21 / Google 19)',hl:true},
- {l:'周期结构',s:'生产成功订单 billing_period',v:40,c:'#b3402a',note:'周卡 22 / 月卡 17 / 年卡 1',hl:true},
+ {l:'订阅周期分布',s:'40 笔生产成功订单按 billing_period 分布',v:40,c:'#b3402a',note:'周卡 22 / 月卡 17 / 年卡 1',hl:true},
 ];
-const pmax=3334;
-document.getElementById('paygap').innerHTML=pay.map(p=>{
+function renderPay(){
+ const pmax=pay[0].v||1;
+ document.getElementById('paygap').innerHTML=pay.map(p=>{
  const w=Math.max(2,Math.round(p.v/pmax*100));
  return `<div class="lrow${p.hl?' cliff':''}"><div class="ll">${p.l}<small>${p.s}</small></div>`+
   `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${p.c}" data-w="${w}"></div></div>`+
-  `<div class="lv">${p.v}<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${p.note}</div></div></div>`;
-}).join('');
+  `<div class="lv">${fmt(p.v)}<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${p.note}</div></div></div>`;
+ }).join('');
+ requestAnimationFrame(()=>document.querySelectorAll('#paygap .lbar-fill').forEach(b=>{if(b.dataset.w!==undefined)b.style.width=b.dataset.w+'%';}));
+}
 
 // 留存三角:cohort × 第 N 天回访人数(GA4 设备级,活跃=明确前台事件;- = 未到观察期)
-const ret=[{"d":"07-10","n":1996,"r":[183,75,66,43,45,33,27]},{"d":"07-11","n":1992,"r":[185,87,54,49,35,31,34]},{"d":"07-12","n":1664,"r":[171,90,56,39,48,40,34]},{"d":"07-13","n":1963,"r":[189,88,70,61,43,35,37]},{"d":"07-14","n":2811,"r":[232,145,78,77,77,59,53]},{"d":"07-15","n":2226,"r":[218,120,97,75,60,50,55]},{"d":"07-16","n":2138,"r":[248,160,103,69,56,41,51]},{"d":"07-17","n":1631,"r":[178,100,70,60,39,42,40]},{"d":"07-18","n":1360,"r":[177,72,51,37,43,36,35]},{"d":"07-19","n":1395,"r":[105,59,52,34,35,33,27]},{"d":"07-20","n":633,"r":[102,56,40,24,29,28,13]},{"d":"07-21","n":805,"r":[101,63,44,35,29,19,26]},{"d":"07-22","n":947,"r":[151,86,74,57,48,27,29]},{"d":"07-23","n":841,"r":[152,89,46,43,31,30,28]},{"d":"07-24","n":1070,"r":[148,92,55,36,33,31,28]},{"d":"07-25","n":825,"r":[149,81,56,39,34,28,30]},{"d":"07-26","n":640,"r":[82,37,24,14,16,25,17]},{"d":"07-27","n":591,"r":[68,35,34,19,15,18,23]},{"d":"07-28","n":695,"r":[88,47,39,31,31,28,21]},{"d":"07-29","n":533,"r":[64,40,21,18,21,17,18]},{"d":"07-30","n":265,"r":[31,18,16,12,14,11,4]},{"d":"07-31","n":373,"r":[48,24,22,17,8,10,7]},{"d":"08-01","n":395,"r":[62,29,19,23,14,18,11]},{"d":"08-02","n":329,"r":[40,21,20,10,18,14,9]},{"d":"08-03","n":410,"r":[65,41,27,15,23,17,14]},{"d":"08-04","n":447,"r":[86,48,38,19,21,21,13]},{"d":"08-05","n":529,"r":[86,53,38,31,29,15,null]},{"d":"08-06","n":621,"r":[101,61,46,29,24,null,null]},{"d":"08-07","n":626,"r":[93,52,28,30,null,null,null]},{"d":"08-08","n":597,"r":[104,61,41,null,null,null,null]},{"d":"08-09","n":634,"r":[84,45,null,null,null,null,null]},{"d":"08-10","n":536,"r":[103,null,null,null,null,null,null]}];
+const retAll=[{"d":"07-10","n":1996,"r":[183,75,66,43,45,33,27]},{"d":"07-11","n":1992,"r":[185,87,54,49,35,31,34]},{"d":"07-12","n":1664,"r":[171,90,56,39,48,40,34]},{"d":"07-13","n":1963,"r":[189,88,70,61,43,35,37]},{"d":"07-14","n":2811,"r":[232,145,78,77,77,59,53]},{"d":"07-15","n":2226,"r":[218,120,97,75,60,50,55]},{"d":"07-16","n":2138,"r":[248,160,103,69,56,41,51]},{"d":"07-17","n":1631,"r":[178,100,70,60,39,42,40]},{"d":"07-18","n":1360,"r":[177,72,51,37,43,36,35]},{"d":"07-19","n":1395,"r":[105,59,52,34,35,33,27]},{"d":"07-20","n":633,"r":[102,56,40,24,29,28,13]},{"d":"07-21","n":805,"r":[101,63,44,35,29,19,26]},{"d":"07-22","n":947,"r":[151,86,74,57,48,27,29]},{"d":"07-23","n":841,"r":[152,89,46,43,31,30,28]},{"d":"07-24","n":1070,"r":[148,92,55,36,33,31,28]},{"d":"07-25","n":825,"r":[149,81,56,39,34,28,30]},{"d":"07-26","n":640,"r":[82,37,24,14,16,25,17]},{"d":"07-27","n":591,"r":[68,35,34,19,15,18,23]},{"d":"07-28","n":695,"r":[88,47,39,31,31,28,21]},{"d":"07-29","n":533,"r":[64,40,21,18,21,17,18]},{"d":"07-30","n":265,"r":[31,18,16,12,14,11,4]},{"d":"07-31","n":373,"r":[48,24,22,17,8,10,7]},{"d":"08-01","n":395,"r":[62,29,19,23,14,18,11]},{"d":"08-02","n":329,"r":[40,21,20,10,18,14,9]},{"d":"08-03","n":410,"r":[65,41,27,15,23,17,14]},{"d":"08-04","n":447,"r":[86,48,38,19,21,21,13]},{"d":"08-05","n":529,"r":[86,53,38,31,29,15,null]},{"d":"08-06","n":621,"r":[101,61,46,29,24,null,null]},{"d":"08-07","n":626,"r":[93,52,28,30,null,null,null]},{"d":"08-08","n":597,"r":[104,61,41,null,null,null,null]},{"d":"08-09","n":634,"r":[84,45,null,null,null,null,null]},{"d":"08-10","n":536,"r":[103,null,null,null,null,null,null]}];
+let ret=retAll;
+const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-10']};
 const RETPEAK=20; // 上色标尺:当前前台活跃 D1 峰值约 19%
-document.getElementById('retTable').innerHTML=
- '<tr><th>cohort(首启)</th>'+[1,2,3,4,5,6,7].map(i=>`<th>D${i}</th>`).join('')+'</tr>'+
+function renderRetentionTable(){document.getElementById('retTable').innerHTML=
+ `<tr><th>${T('cohort (first open)','cohort（首启）')}</th>`+[1,2,3,4,5,6,7].map(i=>`<th>D${i}</th>`).join('')+'</tr>'+
  ret.map(c=>{
   const cells=c.r.map(v=>{
    if(v===null)return '<td class="na">–</td>';
@@ -529,59 +675,143 @@ document.getElementById('retTable').innerHTML=
    const fg=a>0.42?'#f6f1e3':'#1d3325';
    return `<td><div class="cellv" style="background:${bg};color:${fg}">${p.toFixed(1)}%<small>${v}</small></div></td>`;
   }).join('');
-  return `<tr><td class="coh">${c.d}<small>${c.n.toLocaleString()} 台</small></td>${cells}</tr>`;
- }).join('');
+  return `<tr><td class="coh">${c.d}<small>${fmt(c.n)} ${T('devices','台')}</small></td>${cells}</tr>`;
+ }).join('');}
 // 留存:D1 按首日行为分层(已成熟 cohort 合并至 08-04)
-const seg=[
+let seg=[
  {l:'当日完成首课',s:'trial_lesson_complete 当天',n:1675,d1:554,c:'#1d5c3f'},
  {l:'当日注册·未完课',s:'signup_result success 当天,未完成首课',n:13031,d1:1934,c:'#c98a12'},
  {l:'当日未注册',s:'首启当天无成功注册',n:17812,d1:1406,c:'#b3402a'},
 ];
-document.getElementById('retSeg').innerHTML=seg.map(g=>{
+function renderSegments(){document.getElementById('retSeg').innerHTML=seg.map(g=>{
  const rate=g.d1/g.n*100, w=Math.max(3,Math.round(rate/45*100));
  return `<div class="lrow"><div class="ll">${g.l}<small>${g.s}</small></div>`+
   `<div class="lbar-track"><div class="lbar-fill" style="width:0;background:${g.c}" data-w="${w}"></div></div>`+
-  `<div class="lv">${rate.toFixed(1)}%<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${g.n.toLocaleString()} 人中 ${g.d1.toLocaleString()}</div></div></div>`;
-}).join('');
+  `<div class="lv">${rate.toFixed(1)}%<div class="cliffmark" style="color:var(--ink-faint);font-weight:400">${T(`${fmt(g.d1)} of ${fmt(g.n)} users`,`${fmt(g.n)} 人中 ${fmt(g.d1)}`)}</div></div></div>`;
+ }).join('');}
 
 const stageDefs=[
- {l:'热身 Warm-up',s:'warm-up',c:'#2e8b57'},
- {l:'导入 Lead-in',s:'lead-in',c:'#d9641e'},
- {l:'视频 Video',s:'play-video',c:'#c98a12'},
- {l:'单词教学 Word·Teach',s:'word_teach',c:'#c98a12'},
- {l:'单词练习 Word·Practice',s:'word_practice',c:'#c98a12'},
- {l:'句子教学 Sentence·Teach',s:'sentence_teach',c:'#c98a12'},
- {l:'句子练习 Sentence·Practice',s:'sentence_practice',c:'#c98a12'},
- {l:'收尾/完成 Wrap-up',s:'wrapup',c:'#1d5c3f'},
+ {en:'Warm-up',zh:'热身 Warm-up',s:'warm-up',c:'#2e8b57'},
+ {en:'Lead-in',zh:'导入 Lead-in',s:'lead-in',c:'#d9641e'},
+ {en:'Video',zh:'视频 Video',s:'play-video',c:'#c98a12'},
+ {en:'Word · Teach',zh:'单词教学 Word·Teach',s:'word_teach',c:'#c98a12'},
+ {en:'Word · Practice',zh:'单词练习 Word·Practice',s:'word_practice',c:'#c98a12'},
+ {en:'Sentence · Teach',zh:'句子教学 Sentence·Teach',s:'sentence_teach',c:'#c98a12'},
+ {en:'Sentence · Practice',zh:'句子练习 Sentence·Practice',s:'sentence_practice',c:'#c98a12'},
+ {en:'Wrap-up / Complete',zh:'收尾/完成 Wrap-up',s:'wrapup',c:'#1d5c3f'},
 ];
 // 每档：以设备首次命中的指定体验课归组，后续模板仅统计同一 lesson_id。
-const levels=[
+let levels=[
  {key:'l1l2',name:'L1–L2',ids:'732 / 1615',v:[7603,4896,4178,3898,2898,2320,2010,1910]},
  {key:'l3l4',name:'L3–L4',ids:'734 / 733',v:[2903,1583,1287,1113,802,677,537,523]},
  {key:'l5l6',name:'L5–L6',ids:'1613 / 1614',v:[1728,742,673,498,332,290,236,189]},
 ];
+let selectedLevelIndex=0;
 function renderLevel(lv){
-  const base=lv.v[0];
+  const base=lv.v[0]||1;
   document.getElementById('lessonStages').innerHTML=stageDefs.map((s,i)=>{
     const val=lv.v[i];
     const w=Math.max(3,Math.round(val/base*100));
     const reach=Math.round(val/base*100);
     const cliff = i===1; // 热身→导入 为最大流失环节
-    const rateTxt = i===0 ? '起点(100%)' : `到达 ${reach}%`;
+    const rateTxt = i===0 ? T('Start (100%)','起点（100%）') : `${T('Reach','到达')} ${reach}%`;
     const rcls = cliff ? 'color:var(--red);font-weight:700' : 'color:var(--ink-soft);font-weight:600';
-    return `<div class="lrow${cliff?' cliff':''}"><div class="ll">${s.l}<small>${s.s}</small></div>`+
+    return `<div class="lrow${cliff?' cliff':''}"><div class="ll">${T(s.en,s.zh)}<small>${s.s}</small></div>`+
      `<div class="lbar-track"><div class="lbar-fill" style="width:${w}%;background:${s.c}"></div></div>`+
-     `<div class="lv">${val.toLocaleString()}<div class="cliffmark" style="${rcls}">${rateTxt}</div></div></div>`;
+     `<div class="lv">${fmt(val)}<div class="cliffmark" style="${rcls}">${rateTxt}</div></div></div>`;
   }).join('');
 }
-document.getElementById('lvltabs').innerHTML=levels.map((lv,i)=>
- `<div class="lvltab${i===0?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">${lv.ids} · 起点 ${lv.v[0].toLocaleString()} 人</span></div>`).join('');
-document.querySelectorAll('.lvltab').forEach(t=>t.addEventListener('click',()=>{
-  document.querySelectorAll('.lvltab').forEach(x=>x.classList.remove('on'));
-  t.classList.add('on');
-  renderLevel(levels[+t.dataset.i]);
-}));
-renderLevel(levels[0]);
+function renderLevelTabs(){
+ document.getElementById('lvltabs').innerHTML=levels.map((lv,i)=>
+  `<button type="button" class="lvltab${i===selectedLevelIndex?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">${lv.ids} · ${T('Start','起点')} ${fmt(lv.v[0])} ${T('users','人')}</span></button>`).join('');
+ document.querySelectorAll('.lvltab').forEach(t=>t.addEventListener('click',()=>{
+  selectedLevelIndex=+t.dataset.i;renderLevelTabs();
+ }));
+ renderLevel(levels[selectedLevelIndex]);
+}
+
+function renderRetention(data,period){
+ if(period.key==='all') ret=retAll;
+ else{
+  const [from,to]=RET_RANGES[period.key];ret=retAll.filter(row=>row.d>=from&&row.d<=to);
+ }
+ renderRetentionTable();
+ const labels=[[T('Completed first lesson on day 0','当日完成首课'),T('trial_lesson_complete on day 0','trial_lesson_complete 当天'),'#1d5c3f'],[T('Signed up on day 0 · No lesson completion','当日注册·未完课'),T('signup_result success on day 0, no first-lesson completion','signup_result success 当天，未完成首课'),'#c98a12'],[T('Not signed up on day 0','当日未注册'),T('No successful sign-up on first-open day','首启当天无成功注册'),'#b3402a']];
+ seg=data.segments.map((value,i)=>({l:labels[i][0],s:labels[i][1],n:value[0],d1:value[1],c:labels[i][2]}));
+ renderSegments();
+ document.getElementById('retentionSegmentPeriod').textContent=`${period.label} ${T('mature cohorts · D1 segmented by day-0 behavior','已成熟 cohort · 按用户首日行为分层看 D1')}`;
+ const total=data.retention;
+ document.getElementById('retentionInsight').innerHTML=T(
+  `<div class="it">✓ Foreground-active D1 for ${period.label} is ${pct(total.d1,total.devices)}%</div><p>Combined mature-cohort D1 is <b>${pct(total.d1,total.devices)}%</b> (${fmt(total.d1)} / ${fmt(total.devices)}). By segment: users completing the first lesson on day 0 <b>${pct(seg[0].d1,seg[0].n)}%</b>, signed up but not completed ${pct(seg[1].d1,seg[1].n)}%, and not signed up ${pct(seg[2].d1,seg[2].n)}%. Rolling weeks show only cohorts with the required observation window complete.</p>`,
+  `<div class="it">✓ ${period.label} 的前台活跃 D1 为 ${pct(total.d1,total.devices)}%</div><p>成熟 cohort 合并后 D1 为 <b>${pct(total.d1,total.devices)}%</b>（${fmt(total.d1)} / ${fmt(total.devices)}）。分层看：首日完成首课 <b>${pct(seg[0].d1,seg[0].n)}%</b>，注册未完课 ${pct(seg[1].d1,seg[1].n)}%，未注册 ${pct(seg[2].d1,seg[2].n)}%。滚动周仅展示已完成对应观察期的 cohort。</p>`);
+}
+
+function renderPayment(data,period){
+ const p=data.payment,successRate=pct(p.success,p.orders,2),pendingRate=pct(p.pending,p.orders);
+ pay=[
+  {l:T('Checkout orders started','发起支付订单'),s:T('payment_order created · GA4 checkout_start event','payment_order 创建 · GA4 checkout_start 埋点'),v:p.orders,c:'#c98a12',note:`${fmt(p.pending)} PENDING + ${fmt(p.success)} ${T('production success','生产成功')} + ${fmt(p.sandbox)} ${T('sandbox','沙盒')} + ${fmt(p.failed)} ${T('failed','失败')} · ${fmt(p.users)} ${T('users','用户')}`},
+  {l:T('Successful payment orders','成功付费订单'),s:T('payment_order status=SUCCESS · Production','payment_order status=SUCCESS · 生产'),v:p.success,c:'#b3402a',note:`${T('Production','生产环境')} · Apple ${fmt(p.apple)} / Google ${fmt(p.google)}`,hl:true},
+  {l:T('Billing-period mix','订阅周期分布'),s:T('Production successes by billing_period','生产成功订单按 billing_period 分布'),v:p.success,c:'#b3402a',note:`${T('Weekly','周卡')} ${fmt(p.week)} / ${T('Monthly','月卡')} ${fmt(p.month)} / ${T('Annual','年卡')} ${fmt(p.year)}`,hl:true}
+ ];
+ renderPay();
+ document.getElementById('payPanelTitle').textContent=`${T('Checkout Start → Payment Success Gap','发起订单 → 成功付费 的断层')} (${period.label} UTC)`;
+ document.getElementById('paymentInsight').innerHTML=T(
+  `<div class="it">⚠ ${period.label}: ${fmt(p.orders)} orders, ${fmt(p.success)} production successes (${successRate}%)</div><p>After excluding test accounts, ${fmt(p.orders)} orders were created by ${fmt(p.users)} users in the selected period, and <b>${fmt(p.pending)} remain PENDING</b>. There were ${fmt(p.success)} production successes (Apple ${fmt(p.apple)} / Google ${fmt(p.google)}), plus ${fmt(p.sandbox)} sandbox and ${fmt(p.failed)} failed orders. The success mix is ${fmt(p.week)} weekly / ${fmt(p.month)} monthly / ${fmt(p.year)} annual; PENDING is <b>${pendingRate}%</b>.</p>`,
+  `<div class="it">⚠ ${period.label}：${fmt(p.orders)} 笔订单、${fmt(p.success)} 笔生产成功（${successRate}%）</div><p>排除测试账号后，所选周期创建 ${fmt(p.orders)} 笔订单（${fmt(p.users)} 用户），其中 <b>${fmt(p.pending)} 笔停留在 PENDING</b>；生产成功 ${fmt(p.success)} 笔（Apple ${fmt(p.apple)} / Google ${fmt(p.google)}，另沙盒 ${fmt(p.sandbox)}、失败 ${fmt(p.failed)}）。成功结构为周卡 ${fmt(p.week)} / 月卡 ${fmt(p.month)} / 年卡 ${fmt(p.year)}；PENDING 占 <b>${pendingRate}%</b>。</p>`);
+}
+
+function applyPeriod(key,preserveSubfilters=false){
+ selectedPeriod=key;
+ if(!preserveSubfilters){selectedAbCountry='all';selectedLevelIndex=0}
+ const period=currentPeriod(),data=currentData(),j=data.journey;
+ document.querySelectorAll('#periodTabs .abtab').forEach(tab=>{const on=tab.dataset.period===key;tab.classList.toggle('on',on);tab.setAttribute('aria-selected',on?'true':'false');});
+ document.getElementById('periodStatus').textContent=`${T(period.statusEn,period.statusZh)}; ${T('all dashboard data has been updated. All times are UTC.','页面全部数据已切换。时间均为 UTC。')}`;
+ document.getElementById('dashboardContext').innerHTML=`${T('Reporting window','统计窗口')} <b>${period.label} UTC</b> · ${T('First opens in period','期内启动')} <b>${fmt(j.first_open)}</b> · ${T('GA4 and mapped business data both exclude','GA4 与可映射业务数据均排除')} <b>user_type=test</b>`;
+ document.getElementById('diagnosticsPeriod').textContent=`Diagnostics · ${period.label} UTC`;
+ document.getElementById('diagnosticsDesc').innerHTML=T(
+  `Showing <b>${period.label} UTC</b>. The overall funnel, modules, lessons, retention, payment, and A/B metrics are recalculated for the selected period. Retention includes only cohorts with complete observation windows; A/B data appears only after the experiment started on Aug 1.`,
+  `当前展示 <b>${period.label} UTC</b>；总漏斗、模块、课程、留存、支付与 A/B 均已按所选周期重算。留存仅纳入已完成观察期 cohort；A/B 仅在 08-01 实验开始后展示。`);
+ renderDiagnostics(data);renderDiagnosticTrends();
+ journey=[
+  {l:T('First open','首次启动'),s:'first_open',v:j.first_open,c:'#1d5c3f'},
+  {l:T('Sign-up success','注册成功'),s:'signup_result · success',v:j.signup_success,c:'#2e8b57',cliff:true},
+  {l:T('First lesson start','首课开始'),s:T('class_lesson_start · 8 specified course IDs','class_lesson_start · 8 个指定课程 ID'),v:j.lesson_start,c:'#c98a12'},
+  {l:T('First lesson complete','首课完成'),s:T('Compatible legacy/new completion events · Specified first lesson','新旧完课事件兼容 · 指定首课'),v:j.lesson_complete,c:'#d9641e'}
+ ];
+ renderJourney();renderCoreModules(j);
+ levels=levels.map((lv,i)=>({...lv,v:data.levels[i]}));selectedLevelIndex=Math.min(selectedLevelIndex,levels.length-1);renderLevelTabs();
+ const leadRates=levels.map(l=>pct(l.v[1],l.v[0],0)),wrapRates=levels.map(l=>pct(l.v[7],l.v[0],0));
+ document.getElementById('lessonInsight').innerHTML=T(
+  `<div class="it">⚠ Warm-up → Lead-in is the main shared loss across all three level groups in the selected period</div><p>Within the same lesson_id, lead-in reach is L1–2 <b>${leadRates[0]}%</b> / L3–4 <b>${leadRates[1]}%</b> / L5–6 <b>${leadRates[2]}%</b>; wrap-up template reach is ${wrapRates[0]}% / ${wrapRates[1]}% / ${wrapRates[2]}%. Templates may belong to optional branches, so adjacent rows are not strict conversions.</p>`,
+  `<div class="it">⚠ 所选周期内，热身 → 导入是三个 Level 档共同的主要掉量</div><p>同一 lesson_id 内，导入触达率为 L1–2 <b>${leadRates[0]}%</b> / L3–4 <b>${leadRates[1]}%</b> / L5–6 <b>${leadRates[2]}%</b>；收尾模板触达率为 ${wrapRates[0]}% / ${wrapRates[1]}% / ${wrapRates[2]}%。各模板可能属于可选分支，相邻行不等同严格转化。</p>`);
+ renderRetention(data,period);renderPayment(data,period);
+ AB_MAIN_COUNTRIES=key==='all'?AB_ALL_COUNTRIES:(AB_WEEKLY[key]||[]);
+ if(AB_MAIN_COUNTRIES.length&&!AB_MAIN_COUNTRIES.some(country=>country.key===selectedAbCountry))selectedAbCountry='all';
+ abCountryTabs.querySelectorAll('.abtab').forEach(tab=>{const on=AB_MAIN_COUNTRIES.length>0&&tab.dataset.country===selectedAbCountry;tab.disabled=!AB_MAIN_COUNTRIES.length;tab.classList.toggle('on',on);tab.setAttribute('aria-selected',on?'true':'false');});
+ document.getElementById('abPeriodLabel').textContent=`Android Page-level + Cross-platform Payment · ${period.label} UTC`;
+ renderAbMainFlow(selectedAbVariant);
+}
+
+function renderPeriodTabs(){
+ document.getElementById('periodTabs').innerHTML=PERIODS.map(p=>`<button class="abtab${p.key===selectedPeriod?' on':''}" type="button" role="tab" aria-selected="${p.key===selectedPeriod?'true':'false'}" data-period="${p.key}">${T(p.tabEn,p.tabZh)}</button>`).join('');
+ document.querySelectorAll('#periodTabs .abtab').forEach(tab=>tab.addEventListener('click',()=>applyPeriod(tab.dataset.period)));
+}
+function setLanguage(lang,persist=true){
+ pageLang=lang==='zh'?'zh':'en';
+ document.documentElement.lang=pageLang==='zh'?'zh-CN':'en';
+ staticLangNodes.forEach(el=>{const html=el.getAttribute(pageLang==='zh'?'data-zh':'data-en');if(html!=null)el.innerHTML=html});
+ document.querySelectorAll('#langToggle button').forEach(button=>{const on=button.dataset.lang===pageLang;button.classList.toggle('on',on);button.setAttribute('aria-pressed',on?'true':'false')});
+ document.querySelector('.period-filter').setAttribute('aria-label',T('Global weekly filter','全局周维度筛选'));
+ document.getElementById('periodTabs').setAttribute('aria-label',T('Switch dashboard week','切换看板统计周'));
+ document.querySelector('.trend-panel').setAttribute('aria-label',T('Core funnel diagnostic weekly trends','核心链路诊断周趋势'));
+ document.querySelector('.abcountry-filter').setAttribute('aria-label',T('A/B main funnel country filter','A/B 主链路国家筛选'));
+ document.getElementById('abCountryTabs').setAttribute('aria-label',T('Switch A/B main funnel country','切换 A/B 主链路国家'));
+ document.getElementById('abMainTabs').setAttribute('aria-label',T('Switch A/B experiment main path','切换 A/B 实验主链路'));
+ renderPeriodTabs();renderAbTabs();applyPeriod(selectedPeriod,true);
+ if(persist)localStorage.setItem(LANGUAGE_KEY,pageLang);
+}
+document.querySelectorAll('#langToggle button').forEach(button=>button.addEventListener('click',()=>setLanguage(button.dataset.lang)));
+setLanguage(pageLang,false);
 
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
