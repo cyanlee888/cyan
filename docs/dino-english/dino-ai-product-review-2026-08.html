@@ -172,33 +172,6 @@ h2{font-family:'Noto Serif SC',serif;font-size:clamp(28px,3.8vw,43px);font-weigh
 .r-track span{display:block;height:100%;border-radius:99px;background:currentColor}
 .ret-item small{display:block;margin-top:9px;color:var(--ink-faint);font-size:10px}
 
-.module-payment{margin-top:16px}
-.module-card,.payment-card{padding:22px}
-.coverage-list{display:flex;flex-direction:column;gap:10px}
-.coverage-item{display:grid;grid-template-columns:78px 64px 1fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);font-size:11.5px}
-.coverage-item:last-child{border-bottom:0}
-.coverage-item strong{font-family:'Noto Serif SC',serif;font-size:12.5px}
-.coverage-item span{padding:3px 7px;border-radius:99px;background:#e4efe7;color:var(--green);font-size:10px;text-align:center;white-space:nowrap}
-.coverage-item span.partial{background:var(--yellow-soft);color:#8b600d}
-.coverage-item span.missing{background:var(--red-soft);color:var(--red)}
-.coverage-item p{color:var(--ink-soft);line-height:1.55}
-.module-bars{display:flex;flex-direction:column;gap:11px}
-.m-row{display:grid;grid-template-columns:65px 1fr 52px;gap:10px;align-items:center;font-size:12px}
-.m-track{height:12px;border-radius:99px;background:var(--paper-deep);overflow:hidden}
-.m-track span{display:block;height:100%;border-radius:99px;background:var(--green)}
-.m-row:nth-child(2) span{background:var(--green-bright)}
-.m-row:nth-child(3) span{background:var(--orange)}
-.m-row:nth-child(4) span{background:var(--yellow)}
-.m-val{text-align:right;font:700 12px 'Fraunces',serif}
-.payment-gap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-top:8px}
-.pay-side{padding:14px;border-radius:8px;background:var(--paper-deep);text-align:center}
-.pay-side.danger{background:var(--red-soft)}
-.pay-side b{display:block;font:900 31px 'Fraunces',serif;line-height:1}
-.pay-side.danger b{color:var(--red)}
-.pay-side span{font-size:10.5px;color:var(--ink-soft)}
-.pay-arrow{font:700 24px 'Fraunces',serif;color:var(--orange)}
-.payment-card .small-note{font-size:10.5px;color:var(--ink-faint);margin-top:12px}
-
 /* success failure */
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .review-col{padding:24px}
@@ -233,25 +206,31 @@ h2{font-family:'Noto Serif SC',serif;font-size:clamp(28px,3.8vw,43px);font-weigh
 .opp .target b{color:var(--ink)}
 
 /* roadmap */
-.roadmap{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-.roadmap::before{content:"";position:absolute;left:7%;right:7%;top:31px;height:2px;background:var(--line)}
-.month{position:relative;padding-top:58px}
-.month-dot{position:absolute;top:20px;left:20px;width:23px;height:23px;border-radius:50%;background:var(--green);border:5px solid var(--paper);box-shadow:0 0 0 1px var(--green);z-index:2}
+.roadmap{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.roadmap::before{display:none}
+.month{position:relative}
+.month-dot{display:none}
 .month:nth-child(2) .month-dot{background:var(--green-bright);box-shadow:0 0 0 1px var(--green-bright)}
 .month:nth-child(3) .month-dot{background:var(--yellow);box-shadow:0 0 0 1px var(--yellow)}
 .month:nth-child(4) .month-dot{background:var(--orange);box-shadow:0 0 0 1px var(--orange)}
-.month-card{height:100%;padding:18px 17px;border-top:4px solid var(--green)}
+.month-card{height:100%;padding:20px 19px;border-top:4px solid var(--green)}
 .month:nth-child(2) .month-card{border-top-color:var(--green-bright)}
 .month:nth-child(3) .month-card{border-top-color:var(--yellow)}
 .month:nth-child(4) .month-card{border-top-color:var(--orange)}
-.month-card .month-name{font:900 22px 'Fraunces',serif;color:var(--ink)}
+.month-card .month-name{font:900 20px 'Noto Serif SC','Fraunces',serif;color:var(--ink)}
 .month-card h3{font-family:'Noto Serif SC',serif;font-size:17px;line-height:1.35;margin:5px 0 10px}
 .month-card p{font-size:11px;color:var(--ink-soft);line-height:1.65}
+.core-action{padding:10px 12px;background:var(--paper);border-radius:7px}
+.core-action b{display:block;color:var(--green);font-size:10px;margin-bottom:3px}
 .milestone-metrics{margin-top:13px;padding-top:11px;border-top:1px dashed var(--line)}
-.milestone-metrics b{display:block;color:var(--green);font-size:10.5px;margin-bottom:5px}
+.metric-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}
+.metric-head b{display:block;color:var(--green);font-size:10.5px}
+.metric-head span{color:var(--ink-faint);font-size:9.5px;white-space:nowrap}
 .milestone-metrics ul{list-style:none}
-.milestone-metrics li{position:relative;padding:2px 0 2px 12px;font-size:10.5px;color:var(--ink-faint);line-height:1.5}
-.milestone-metrics li::before{content:"◆";position:absolute;left:0;top:5px;color:var(--yellow);font-size:5px}
+.milestone-metrics li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:12px;padding:6px 0;border-top:1px solid rgba(216,207,186,.55);font-size:10.5px;color:var(--ink-soft);line-height:1.45}
+.milestone-metrics li:first-child{border-top:0}
+.milestone-metrics strong{font-family:'Fraunces','Noto Sans SC',sans-serif;color:var(--ink);font-size:10.5px;text-align:right;white-space:nowrap}
+.milestone-metrics strong i{padding:0 4px;color:var(--orange);font-style:normal}
 
 .roadmap-note{margin-top:18px;padding:17px 20px;border:1px dashed var(--yellow);background:var(--yellow-soft);border-radius:10px;display:grid;grid-template-columns:170px 1fr;gap:18px}
 .roadmap-note strong{font-family:'Noto Serif SC',serif;color:#8b600d}
@@ -282,15 +261,16 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
 @media(max-width:1040px){
   .score-grid{grid-template-columns:repeat(2,1fr)}
   .timeline{grid-template-columns:repeat(3,1fr)}.era:nth-child(3){border-right:0}.era:nth-child(-n+3){border-bottom:1px solid var(--line)}
-  .roadmap{grid-template-columns:repeat(2,1fr)}.roadmap::before{display:none}.month{padding-top:0}.month-dot{display:none}.month:nth-child(3),.month:nth-child(4){margin-top:3px}
+  .roadmap{grid-template-columns:repeat(2,1fr)}
   .decisions{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:820px){
   .wrap{width:min(100% - 32px,1160px)}
   header{padding-top:52px}.verdict-grid,.opps{grid-template-columns:1fr}
+  .roadmap{grid-template-columns:1fr}
   .section-head{grid-template-columns:1fr;gap:4px}.section-no{padding-top:0}
   .map-row{grid-template-columns:1fr 1fr}.map-row::before{display:none}
-  .evidence-grid,.module-payment,.two-col{grid-template-columns:1fr}
+  .evidence-grid,.two-col{grid-template-columns:1fr}
   .truth,.roadmap-note{grid-template-columns:1fr;gap:7px}
   .brand-split{grid-template-columns:1fr}
   .sources{grid-template-columns:1fr}.boundaries ul{grid-template-columns:1fr}
@@ -304,6 +284,7 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
   .f-row{grid-template-columns:80px 1fr}.f-rate{grid-column:2;text-align:right}.f-label{text-align:left}
   .card-title{display:block}.card-title p{text-align:left;margin-top:4px}
   .governance{display:block}.governance .g-num{margin-bottom:5px}
+  .milestone-metrics li{grid-template-columns:1fr;gap:2px}.milestone-metrics strong{text-align:left;white-space:normal}
   .footer-row{display:block}.footer-row p{margin-top:8px}
   .lang-toggle{top:10px;right:10px}.lang-toggle button{padding:5px 11px;font-size:12px}
 }
@@ -315,8 +296,8 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
   .card,.verdict,.opp,.month-card,.review-col,.source{box-shadow:none;break-inside:avoid}
   .score-grid{grid-template-columns:repeat(4,1fr)}.score{min-height:0}
   .timeline{grid-template-columns:repeat(3,1fr)}.map-box{min-height:0}
-  .evidence-grid,.two-col,.module-payment{grid-template-columns:1fr 1fr}
-  .opps{grid-template-columns:repeat(3,1fr)}.roadmap{grid-template-columns:repeat(4,1fr)}.roadmap::before{display:block}.month{padding-top:48px}.month-dot{display:block}
+  .evidence-grid,.two-col{grid-template-columns:1fr 1fr}
+  .opps{grid-template-columns:repeat(3,1fr)}.roadmap{grid-template-columns:repeat(2,1fr)}.roadmap::before{display:none}.month{padding-top:0}.month-dot{display:none}
   a{text-decoration:none}.source i{display:none}
 }
 </style>
@@ -369,9 +350,9 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
       </div>
       <div class="score-grid reveal">
         <article class="score card"><div class="s-label" data-zh="发布迭代版本数">Release iterations</div><div class="s-value">12</div><div class="s-note" data-zh="2026-05-29—08-13 · 约 11 周">2026-05-29—08-13 · about 11 weeks</div></article>
-        <article class="score card"><div class="s-label" data-zh="累计用户数">Cumulative users</div><div class="s-value">18,197</div><div class="s-note" data-zh="生产正常账号 · 排除测试">Production accounts · test users excluded</div></article>
+        <article class="score card"><div class="s-label" data-zh="累计用户数">Cumulative users</div><div class="s-value">18,197</div><div class="s-note" data-zh="产品上线至 2026-08-14 · 排除测试账号">Since launch through 2026-08-14 · test accounts excluded</div></article>
         <article class="score mid card"><div class="s-label" data-zh="完整周首课完课率">Complete-week first-lesson completion</div><div class="s-value">31.5<span class="s-unit">%</span></div><div class="s-note" data-zh="最新完整周">Latest complete week</div></article>
-        <article class="score warn card"><div class="s-label" data-zh="生产成功订单">Successful production orders</div><div class="s-value">43</div><div class="s-note" data-zh="App 内总收入约 US$1.43K">Approx. US$1.43K gross in-app revenue</div></article>
+          <article class="score warn card"><div class="s-label" data-zh="全渠道生产成功订单">All-channel production orders</div><div class="s-value">78</div><div class="s-note" data-zh="总收入约 US$2.33K">Approx. US$2.33K total revenue</div></article>
       </div>
       <div class="truth reveal">
         <strong data-zh="一句话判断">In one sentence</strong>
@@ -458,17 +439,6 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
           <div class="ret-item"><div class="r-label" data-zh="首日未注册用户">Not registered on day 0</div><div class="r-value">8.1%</div><div class="r-track" style="color:var(--red)"><span style="width:24%"></span></div></div>
         </div>
       </article>
-
-      <div class="module-payment">
-        <article class="payment-card card reveal">
-          <div class="card-title"><h3 data-zh="支付结果：发起用户多，成功支付用户少">Payment: many users start, few complete</h3><p data-zh="去重用户<br>截至 08/14 15:08 UTC">Unique users<br>Through 08/14 15:08 UTC</p></div>
-          <div class="payment-gap">
-            <div class="pay-side"><b>1,920</b><span data-zh="发起支付用户">Users who started checkout</span></div>
-            <div class="pay-arrow">→</div>
-            <div class="pay-side danger"><b>42</b><span data-zh="成功支付用户">Users who paid successfully</span></div>
-          </div>
-        </article>
-      </div>
     </div>
   </section>
 
@@ -534,10 +504,45 @@ footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
         <div><h2 data-zh="8—12 月路线图：围绕价值链推进四个里程碑">Aug—Dec roadmap: four milestones along one value chain</h2><p class="section-desc" data-zh="先打磨首次学习核心链路，再建立持续学习与付费价值，随后验证规模化增长，最终以收入目标检验商业闭环。">Start by refining the first-learning journey, then establish continued learning and payment value, validate scalable growth, and finally test the commercial loop against the revenue goal.</p></div>
       </div>
       <div class="roadmap reveal">
-        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">AUG—SEP</div><h3 data-zh="打磨核心产品路线和课程体验">Refine the core product journey and lesson experience</h3><p data-zh="让用户顺利走完从进入产品到完成首次学习的核心链路。">Help users move smoothly from entering the product to completing their first learning experience.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="注册完成率">Registration completion</li><li data-zh="首课开课率">First-lesson start rate</li><li data-zh="开课完课率">Start-to-completion rate</li><li data-zh="技术异常退出率">Technical exit rate</li></ul></div></article></div>
-        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">OCT</div><h3 data-zh="建立价值传递与持续学习">Establish value delivery and continued learning</h3><p data-zh="让孩子愿意继续学，让家长看见效果并愿意支付。">Make children want to continue and help parents see results worth paying for.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="D1 / D3 / D7 注册留存">D1 / D3 / D7 registration retention</li><li data-zh="人均每周有效学习时长">Meaningful learning time per user per week</li><li data-zh="完课支付转化率">Lesson-completion-to-payment conversion</li><li data-zh="续费率">Renewal rate</li></ul></div></article></div>
-        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">NOV</div><h3 data-zh="验证规模化增长与长期价值">Validate scalable growth and long-term value</h3><p data-zh="扩大获客，并验证付费用户能持续学习和续费。">Scale acquisition and validate that paying users continue learning and renew.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="付费用户数">Paying users</li><li data-zh="续费率">Renewal rate</li><li data-zh="付费用户 LTV">Paying-user LTV</li><li data-zh="每周付费用户有效学习时长">Weekly meaningful learning time per paying user</li></ul></div></article></div>
-        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">DEC</div><h3>$1m Revenue</h3><p data-zh="以收入目标倒推付费用户规模、续费表现与长期价值。">Work backward from the revenue goal to paying-user scale, renewal, and long-term value.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="付费用户数">Paying users</li><li data-zh="续费率">Renewal rate</li><li data-zh="付费用户 LTV">Paying-user LTV</li></ul></div></article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card">
+          <div class="month-name" data-zh="8—9 月">AUG—SEP</div><h3 data-zh="打磨核心产品路线和课程体验">Refine the core product journey and lesson experience</h3>
+          <div class="core-action"><b data-zh="核心产品动作">Core product action</b><p data-zh="优化注册登录、新用户引导进课、权限与 Loading 异常恢复，并持续打磨首课节奏与课程反馈。">Reduce registration and login friction, guide newcomers into the first lesson, recover from permission and loading issues, and refine lesson pacing and feedback.</p></div>
+          <div class="milestone-metrics"><div class="metric-head"><b data-zh="核心指标">Core metrics</b><span data-zh="当前值 → 目标值">Current → target</span></div><ul>
+            <li><span data-zh="注册完成率">Registration completion</span><strong>54.40% <i>→</i> 65%</strong></li>
+            <li><span data-zh="首课开课率">First-lesson start rate</span><strong>33.60% <i>→</i> 45%</strong></li>
+            <li><span data-zh="开课完课率">Start-to-completion rate</span><strong>31.50% <i>→</i> 50%</strong></li>
+            <li><span data-zh="技术异常退出率">Technical exit rate</span><strong></strong></li>
+          </ul></div>
+        </article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card">
+          <div class="month-name" data-zh="10 月">OCT</div><h3 data-zh="建立价值传递与持续学习">Establish value delivery and continued learning</h3>
+          <div class="core-action"><b data-zh="核心产品动作">Core product action</b><p data-zh="用首页下一任务、学习计划、报告与周报串联持续学习，并承接完课后的付费转化。">Connect continued learning through the next task, learning plan, reports, and weekly summaries, then carry lesson completion into payment.</p></div>
+          <div class="milestone-metrics"><div class="metric-head"><b data-zh="核心指标">Core metrics</b><span data-zh="当前值 → 目标值">Current → target</span></div><ul>
+            <li><span data-zh="D1 / D3 / D7 注册留存">D1 / D3 / D7 registration retention</span><strong>18.75 / 6.58 / 3.12% <i>→</i> 22 / 12.7 / 7.3%</strong></li>
+            <li><span data-zh="人均每周有效学习时长">Meaningful learning time per user per week</span><strong>12.59 min <i>→</i> 16.5 min</strong></li>
+            <li><span data-zh="完课支付转化率">Lesson-completion-to-payment conversion</span><strong>3.62% <i>→</i> 7%</strong></li>
+            <li><span data-zh="首期续费率">First renewal rate</span><strong>50.00% <i>→</i> 55%</strong></li>
+          </ul></div>
+        </article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card">
+          <div class="month-name" data-zh="11 月">NOV</div><h3 data-zh="验证规模化增长与长期价值">Validate scalable growth and long-term value</h3>
+          <div class="core-action"><b data-zh="核心产品动作">Core product action</b><p data-zh="聚焦灯塔市场扩大获客，围绕付费用户学习时长、续费与 LTV 做精细化运营。">Scale acquisition in the lighthouse market and operate around paying-user learning time, renewal, and LTV.</p></div>
+          <div class="milestone-metrics"><div class="metric-head"><b data-zh="核心指标">Core metrics</b><span data-zh="当前值 → 目标值">Current → target</span></div><ul>
+            <li><span data-zh="累计付费用户数">Cumulative paying users</span><strong>71 <i>→</i> 20,000</strong></li>
+            <li><span data-zh="全量续费率">Overall renewal rate</span><strong>47.37% <i>→</i> 55%</strong></li>
+            <li><span data-zh="付费用户 LTV">Paying-user LTV</span><strong>$16.34 <i>→</i> $25</strong></li>
+            <li><span data-zh="付费用户人均每周有效学习时长">Weekly meaningful learning time per paying user</span><strong>68.18 min <i>→</i> 90 min</strong></li>
+          </ul></div>
+        </article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card">
+          <div class="month-name" data-zh="12 月">DEC</div><h3 data-zh="累计 $1m 收入">$1m cumulative revenue</h3>
+          <div class="core-action"><b data-zh="核心产品动作">Core product action</b><p data-zh="围绕累计 $1m 收入倒排获客投入、付费用户规模、续费表现与长期价值。">Work backward from cumulative $1m revenue to acquisition investment, paying-user scale, renewal, and long-term value.</p></div>
+          <div class="milestone-metrics"><div class="metric-head"><b data-zh="核心指标">Core metrics</b><span data-zh="当前值 → 目标值">Current → target</span></div><ul>
+            <li><span data-zh="累计付费用户数">Cumulative paying users</span><strong>71 <i>→</i> 33,400</strong></li>
+            <li><span data-zh="全量续费率">Overall renewal rate</span><strong>47.37% <i>→</i> 60%</strong></li>
+            <li><span data-zh="付费用户 LTV">Paying-user LTV</span><strong>$16.34 <i>→</i> $30</strong></li>
+          </ul></div>
+        </article></div>
       </div>
     </div>
   </section>
