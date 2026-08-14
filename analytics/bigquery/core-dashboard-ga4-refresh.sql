@@ -1,18 +1,19 @@
 -- Core dashboard GA4 refresh.
--- Daily tables are authoritative through 2026-08-10; intraday fills 08-11~08-12.
+-- Daily tables are authoritative through 2026-08-12; intraday fills 08-13~08-14.
 -- Any device that reports user_properties.user_type=test is excluded from the full window.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-12 01:21:00+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-11';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 09:01:00+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-13';
+DECLARE module_coverage_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-07 00:00:00+00';
 
 WITH raw_base AS (
-  SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
+  SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260810'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260812'
   UNION ALL
-  SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
+  SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260811' AND '20260812'
+  WHERE _TABLE_SUFFIX BETWEEN '20260813' AND '20260814'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -21,7 +22,7 @@ test_devices AS (
     AND LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) = 'test'
 ),
 base AS (
-  SELECT r.event_timestamp, r.event_name, r.user_pseudo_id, r.event_params
+  SELECT r.event_timestamp, r.event_name, r.user_pseudo_id, r.user_id, r.event_params
   FROM raw_base r
   LEFT JOIN test_devices t USING (user_pseudo_id)
   WHERE t.user_pseudo_id IS NULL
@@ -31,6 +32,7 @@ events AS (
     event_timestamp,
     DATE(TIMESTAMP_MICROS(event_timestamp)) AS event_day,
     user_pseudo_id,
+    user_id,
     event_name,
     COALESCE(
       (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'event_id'),
@@ -52,6 +54,8 @@ events AS (
     (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'stage_step') AS stage_step,
     (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'dino_step') AS dino_step,
     (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'dino_scene') AS dino_scene,
+    LOWER((SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'status')) AS status,
+    LOWER((SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'scene')) AS scene,
     LOWER(COALESCE(
       (SELECT ep.value.string_value FROM UNNEST(event_params) ep WHERE ep.key = 'is_success'),
       CAST((SELECT ep.value.int_value FROM UNNEST(event_params) ep WHERE ep.key = 'is_success') AS STRING),
@@ -119,15 +123,34 @@ metrics AS (
   UNION ALL SELECT 'login_meta', COUNT(DISTINCT IF(button_id = 'login_meta' OR anchor = 'login_meta', user_pseudo_id, NULL)) FROM events
   UNION ALL SELECT 'login_kakao', COUNT(DISTINCT IF(button_id = 'login_kakao' OR anchor = 'login_kakao', user_pseudo_id, NULL)) FROM events
   UNION ALL SELECT 'login_apple', COUNT(DISTINCT IF(button_id = 'login_apple' OR anchor = 'login_apple', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'dino_users', COUNT(DISTINCT IF(anchor = 'dino_assistant_progress', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'dino_sessions', COUNTIF(anchor = 'dino_assistant_progress' AND dino_step = 'session_start') FROM events
-  UNION ALL SELECT 'dino_home_chat', COUNT(DISTINCT IF(anchor = 'dino_assistant_progress' AND dino_scene = 'home_chat', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'dino_explore_speak', COUNT(DISTINCT IF(anchor = 'dino_assistant_progress' AND dino_scene = 'explore_speak', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'dino_class_card', COUNT(DISTINCT IF(anchor = 'dino_assistant_progress' AND dino_scene = 'class_card', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'home_play', COUNT(DISTINCT IF(button_id = 'home_play' OR anchor = 'home_play', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'home_explore', COUNT(DISTINCT IF(button_id = 'home_explore' OR anchor = 'home_explore', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'home_class', COUNT(DISTINCT IF(button_id = 'home_class' OR anchor = 'home_class', user_pseudo_id, NULL)) FROM events
-  UNION ALL SELECT 'dino_chat_go_to_class', COUNT(DISTINCT IF(button_id = 'dino_chat_go_to_class' OR anchor = 'dino_chat_go_to_class', user_pseudo_id, NULL)) FROM events
+  -- Core modules use signed-in users (user_id) for both numerator and denominator.
+  -- Entry clicks are excluded; Explore / Play detail events begin on 2026-08-07.
+  UNION ALL SELECT 'core_logged_in_users', COUNT(DISTINCT user_id) FROM events
+  UNION ALL SELECT 'core_class_users', COUNT(DISTINCT IF(
+    anchor = 'class_lesson_start', user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_dino_users', COUNT(DISTINCT IF(
+    (anchor = 'dino_assistant_progress' AND dino_step = 'session_start') OR anchor = 'dino_session_start',
+    user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_explore_users', COUNT(DISTINCT IF(
+    (anchor = 'explore_practice_progress' AND status = 'start')
+      OR (anchor = 'listening_play_progress' AND status = 'play_start'),
+    user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_explore_words_users', COUNT(DISTINCT IF(
+    anchor = 'explore_practice_progress' AND status = 'start', user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_explore_listening_users', COUNT(DISTINCT IF(
+    anchor = 'listening_play_progress' AND status = 'play_start', user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_play_users', COUNT(DISTINCT IF(
+    anchor = 'play_round_progress' AND status = 'round_start'
+    AND scene IN ('blind_box','words_pk','speaking_pk'), user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_play_blind_box_users', COUNT(DISTINCT IF(
+    anchor = 'play_round_progress' AND status = 'round_start' AND scene = 'blind_box',
+    user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_play_words_pk_users', COUNT(DISTINCT IF(
+    anchor = 'play_round_progress' AND status = 'round_start' AND scene = 'words_pk',
+    user_id, NULL)) FROM events
+  UNION ALL SELECT 'core_play_speaking_pk_users', COUNT(DISTINCT IF(
+    anchor = 'play_round_progress' AND status = 'round_start' AND scene = 'speaking_pk',
+    user_id, NULL)) FROM events
 ),
 daily AS (
   SELECT
@@ -214,4 +237,6 @@ UNION ALL
 SELECT 'lead_in_users', CAST(SUM(users) AS STRING) FROM lesson_stage_by_level WHERE stage = 'lead_in'
 UNION ALL
 SELECT 'cutoff', CAST(cutoff AS STRING)
+UNION ALL
+SELECT 'module_coverage_start', CAST(module_coverage_start AS STRING)
 ORDER BY metric;

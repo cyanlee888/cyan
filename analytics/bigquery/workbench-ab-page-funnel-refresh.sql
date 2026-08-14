@@ -2,17 +2,17 @@
 -- 与工作台当前统一截点保持一致；按 Android / iOS 稳定非测试设备、首次进组国家、累计命中前序节点。
 
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-12 01:21:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 09:01:00+00';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260810'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260812'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260811' AND '20260812'
+  WHERE _TABLE_SUFFIX BETWEEN '20260813' AND '20260814'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
@@ -227,10 +227,9 @@ device_steps AS (
         (19, 'paywall_2', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2),
         (20, 'onboarding_lesson_start', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start),
         (21, 'onboarding_lesson_complete', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete),
-        (22, 'guidance_report', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND course_report),
-        (23, 'guidance_discount', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND course_report AND guidance_discount),
-        (24, 'guidance_checkout', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND course_report AND guidance_discount AND guidance_checkout),
-        (25, 'guidance_paid_success', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND course_report AND guidance_discount AND guidance_checkout AND b_paid_success)
+        (22, 'guidance_discount', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND guidance_discount),
+        (23, 'guidance_checkout', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND guidance_discount AND guidance_checkout),
+        (24, 'guidance_paid_success', first_open AND login_page AND registered AND onboarding AND q_name AND q_age AND q_level AND q_goal AND study_plan_preview AND b_paywall_1 AND guide_dino AND guide_play AND guide_explore AND guide_class AND guide_teacher AND teacher_page AND guide_lesson AND guide_complete AND b_paywall_2 AND b_lesson_start AND b_lesson_complete AND guidance_discount AND guidance_checkout AND b_paid_success)
       ]
     END
   ) step

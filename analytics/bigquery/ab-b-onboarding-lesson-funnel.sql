@@ -1,20 +1,20 @@
 -- B 组新人引导课（lesson_id=1661）课内环节漏斗
 -- 口径：Android / iOS 分平台；conv_funnel_v1；首次稳定进组 >= 2026-08-01 00:00 UTC；
---      按 GA4 user_pseudo_id 去重，排除测试账号 / fallback / 多分组冲突；截至 2026-08-12 01:21 UTC。
+--      按 GA4 user_pseudo_id 去重，排除测试账号 / fallback / 多分组冲突；截至 2026-08-14 09:01 UTC。
 -- 新版课中埋点使用 event_name=trigger，具体节点由 event_id 区分。
 
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-12 01:21:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 09:01:00+00';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260810'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260812'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260811' AND '20260812'
+  WHERE _TABLE_SUFFIX BETWEEN '20260813' AND '20260814'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
