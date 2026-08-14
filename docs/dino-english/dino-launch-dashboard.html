@@ -165,10 +165,10 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .abtab{appearance:none;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink-soft);padding:7px 16px;font:600 12.5px/1.4 'Noto Sans SC',sans-serif;cursor:pointer}
 .abtab:hover:not(.on){border-color:var(--green-bright);color:var(--green)}
 .abtab.on{background:var(--green);border-color:var(--green);color:#fff}
-.abcountry-filter{display:flex;align-items:flex-start;gap:12px;margin:14px 0 8px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
-.abcountry-label{flex:0 0 auto;padding-top:7px;font-family:'Fraunces','Noto Serif SC',serif;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
-.abcountry-body{min-width:0}
-.abcountry-tabs{margin-bottom:0}
+.abcountry-filter,.diagnostic-country-filter{display:flex;align-items:flex-start;gap:12px;margin:14px 0 8px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
+.abcountry-label,.diagnostic-country-label{flex:0 0 auto;padding-top:7px;font-family:'Fraunces','Noto Serif SC',serif;font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--green);text-transform:uppercase}
+.abcountry-body,.diagnostic-country-body{min-width:0}
+.abcountry-tabs,.diagnostic-country-tabs{margin-bottom:0}
 .abflow-meta{display:flex;gap:8px 16px;flex-wrap:wrap;margin-bottom:12px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--paper-deep);font-size:11.5px;color:var(--ink-soft)}
 .abflow-meta b{color:var(--ink)}
 .abflow-list .lrow{grid-template-columns:190px 1fr 150px;padding:7px 0;border-bottom:1px dashed #e6ddc8}
@@ -210,13 +210,14 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   .frow .frate{grid-column:2;text-align:right}
   .lrow{grid-template-columns:92px 1fr 70px}
   .abflow-list .lrow{grid-template-columns:132px 1fr 94px;gap:10px}
-  .abcountry-filter{gap:8px}
+  .abcountry-filter,.diagnostic-country-filter{gap:8px}
   .period-filter{gap:8px}
   .trend-head{display:block}.trend-key{margin-top:5px}.trend-grid{grid-template-columns:1fr}
 }
 @media(max-width:520px){
   .kpis,.diagnostic-kpis{grid-template-columns:1fr}
   .period-filter{display:block}.period-label{padding:0 0 7px}
+  .diagnostic-country-filter{display:block}.diagnostic-country-label{padding:0 0 7px}
 }
 </style>
 </head>
@@ -249,6 +250,12 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   <section class="sec reveal">
     <div class="sec-h"><span data-zh="核心链路诊断">Core Funnel Diagnostics</span> <span class="en" id="diagnosticsPeriod">Diagnostics · 07-10~08-14 09:01 UTC</span></div>
     <p class="sec-desc" id="diagnosticsDesc">统计窗口 <b>2026-07-10 00:00 → 08-14 09:01(UTC)</b>；07-10~08-12 使用日表，08-13~14 使用 intraday 补数。GA4 任一事件命中 user_type=test 的设备及可映射支付/归因账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
+    <div class="diagnostic-country-filter" aria-label="Core funnel diagnostics country filter">
+      <div class="diagnostic-country-label" data-zh="国家筛选">Country</div>
+      <div class="diagnostic-country-body">
+        <div class="abtabs diagnostic-country-tabs" id="diagnosticCountryTabs" role="tablist" aria-label="Switch core funnel diagnostics country"></div>
+      </div>
+    </div>
     <div class="kpis diagnostic-kpis" id="diagnosticKpis">
       <div class="kpi warn">
         <div class="lab">首课完成率(兼容完课 / 指定首课开始)</div>
@@ -360,10 +367,10 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     </div>
   </section>
 
-  <div class="foot" data-zh="<b>数据源：</b>GA4 BigQuery Export <span class='src'>analytics_538991439.events_*</span>（07-10~08-12 日表 + 08-13~14 intraday）· AppsFlyer 宽表 <span class='src'>de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class='src'>de_ods.payment_order</span> · 生产 MySQL <span class='src'>play_game_round / vocab_lesson_progress / fm_listen_progress</span>。<br><b>统计窗口：</b>GA4 与 A/B 更新到 2026-08-14 09:01 UTC；08-13 为最近完整 UTC 日，08-14 为滚动日。支付源本次最新记录到 08-14 08:00 UTC。<b>GA4 属性时区与生产库均为 UTC</b>。<br><b>口径：</b>任一 GA4 事件命中 <span class='src'>user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id / AppsFlyer ID 排除可映射支付与归因账号。注册转化仍按 GA4 去重设备；核心模块占比按所选周期内去重登录用户（非空 user_id）计算。Play 为生产开局流水；Explore 为生产进度表可识别的首次 / 最近完成用户，是保守口径。成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day（D1 可测至 08-12、D3 至 08-10、D7 至 08-06）。<br><b>生成：</b>Dino English 产品 · 刷新至 2026-08-14 09:01 UTC（北京时间 17:01）">
-    <b>Sources:</b> GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span> (daily tables Jul 10–Aug 12 + intraday Aug 13–14) · AppsFlyer wide table <span class="src">de_dwd.product_conversion_funnel_user</span> · production payment table <span class="src">de_ods.payment_order</span> · production MySQL <span class="src">play_game_round / vocab_lesson_progress / fm_listen_progress</span>.<br>
+  <div class="foot" data-zh="<b>数据源：</b>GA4 BigQuery Export <span class='src'>analytics_538991439.events_*</span>（核心链路诊断国家切片使用 07-10~08-13 日表 + 08-14 intraday；其余板块保留 09:01 刷新快照）· AppsFlyer 宽表 <span class='src'>de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class='src'>de_ods.payment_order</span> · 生产 MySQL <span class='src'>play_game_round / vocab_lesson_progress / fm_listen_progress</span>。<br><b>统计窗口：</b>GA4 与 A/B 更新到 2026-08-14 09:01 UTC；08-13 为最近完整 UTC 日，08-14 为滚动日。支付源本次最新记录到 08-14 08:00 UTC。<b>GA4 属性时区与生产库均为 UTC</b>。<br><b>口径：</b>任一 GA4 事件命中 <span class='src'>user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id / AppsFlyer ID 排除可映射支付与归因账号。核心链路诊断按所选周期首启 cohort、同设备事件顺序累计，国家取首次启动时的 <span class='src'>geo.country</span>；核心模块占比按所选周期内去重登录用户（非空 user_id）计算。Play 为生产开局流水；Explore 为生产进度表可识别的首次 / 最近完成用户，是保守口径。成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day（D1 可测至 08-12、D3 至 08-10、D7 至 08-06）。<br><b>生成：</b>Dino English 产品 · 刷新至 2026-08-14 09:01 UTC（北京时间 17:01）">
+    <b>Sources:</b> GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span> (country slices in Core Diagnostics use daily tables Jul 10–Aug 13 + intraday Aug 14; other sections retain the 09:01 refresh snapshot) · AppsFlyer wide table <span class="src">de_dwd.product_conversion_funnel_user</span> · production payment table <span class="src">de_ods.payment_order</span> · production MySQL <span class="src">play_game_round / vocab_lesson_progress / fm_listen_progress</span>.<br>
     <b>Reporting window:</b> GA4 and A/B data are updated through 2026-08-14 09:01 UTC. Aug 13 is the latest complete UTC day; Aug 14 is rolling. The latest payment-source record in this refresh is Aug 14 08:00 UTC. <b>Both the GA4 property and production database use UTC.</b><br>
-    <b>Definitions:</b> Devices with any GA4 event where <span class="src">user_type=test</span> are excluded from every GA4 metric; mapped payment and attribution accounts are excluded through user_id / AppsFlyer ID. Sign-up conversion remains GA4 device-based. Core-module rates use distinct signed-in users (non-null user_id) within the selected period. Play uses production round starts; Explore conservatively uses identifiable first/latest completion users from production progress snapshots. Successful payment = payment_order status=SUCCESS and env_type=PRODUCTION. Retention is exact-day (D1 through Aug 12, D3 through Aug 10, D7 through Aug 6).<br>
+    <b>Definitions:</b> Devices with any GA4 event where <span class="src">user_type=test</span> are excluded from every GA4 metric; mapped payment and attribution accounts are excluded through user_id / AppsFlyer ID. Core diagnostics use the selected-period first-open cohort and cumulative same-device event order; country is <span class="src">geo.country</span> at first open. Core-module rates use distinct signed-in users (non-null user_id) within the selected period. Play uses production round starts; Explore conservatively uses identifiable first/latest completion users from production progress snapshots. Successful payment = payment_order status=SUCCESS and env_type=PRODUCTION. Retention is exact-day (D1 through Aug 12, D3 through Aug 10, D7 through Aug 6).<br>
     <b>Generated:</b> Dino English Product · Refreshed 2026-08-14 09:01 UTC (17:01 Beijing time)
   </div>
 
@@ -393,19 +400,86 @@ const WEEKLY={
  w6:{journey:{first_open:199,signup_success:145,lesson_start:121,lesson_complete:26},core:{logged_in_users:596,class_users:123,dino_users:99,explore_users:27,explore_words_users:26,explore_listening_users:5,play_users:43,play_blind_box_users:35,play_words_pk_users:29,play_speaking_pk_users:29},retention:{devices:0,d1:0},segments:[[0,0],[0,0],[0,0]],payment:{orders:50,users:35,pending:49,success:1,sandbox:0,failed:0,apple:0,google:1,week:0,month:1,year:0},levels:[[50,36,36,32,22,13,12,11],[26,10,8,7,6,5,2,2],[6,1,0,0,0,0,0,0]]}
 };
 const ALL={journey:{first_open:34699,signup_success:18009,lesson_start:13338,lesson_complete:2897},core:{logged_in_users:18879,class_users:13254,dino_users:8058,explore_users:1727,explore_words_users:1683,explore_listening_users:322,play_users:3201,play_blind_box_users:2325,play_words_pk_users:2233,play_speaking_pk_users:1927},retention:{devices:33861,d1:4130},segments:[[1777,601],[13663,2049],[18421,1480]],payment:{orders:3695,users:1886,pending:3647,success:43,sandbox:4,failed:1,apple:22,google:21,week:23,month:19,year:1},levels:[[7881,5117,4387,4098,3062,2458,2142,2037],[3049,1680,1367,1183,855,724,574,558],[1784,776,700,522,348,306,246,197]]};
+
+const DIAGNOSTIC_COUNTRIES=[
+ {key:'all',en:'All',zh:'全部'},
+ {key:'vn',en:'Vietnam',zh:'越南'},
+ {key:'kr',en:'South Korea',zh:'韩国'},
+ {key:'sa',en:'Saudi Arabia',zh:'沙特'},
+ {key:'my',en:'Malaysia',zh:'马来'},
+ {key:'id',en:'Indonesia',zh:'印尼'}
+];
+const diagnosticSnapshot=(first_open,signup_success,lesson_start,lesson_complete,devices,d1)=>({
+ journey:{first_open,signup_success,lesson_start,lesson_complete},retention:{devices,d1}
+});
+const DIAGNOSTIC_COUNTRY_DATA={
+ all:{
+  all:diagnosticSnapshot(34651,16661,12782,2717,33866,4135),vn:diagnosticSnapshot(6546,2563,2076,392,6501,648),kr:diagnosticSnapshot(3306,1190,799,136,3207,287),
+  sa:diagnosticSnapshot(5863,2764,1894,302,5790,630),my:diagnosticSnapshot(7309,3926,3080,982,7013,1150),id:diagnosticSnapshot(7116,3933,3293,561,7066,949)
+ },
+ w1:{
+  all:diagnosticSnapshot(14790,6463,5035,610,14790,1426),vn:diagnosticSnapshot(3517,1354,1087,136,3517,268),kr:diagnosticSnapshot(647,240,194,14,647,32),
+  sa:diagnosticSnapshot(2480,966,702,63,2480,174),my:diagnosticSnapshot(2101,1028,804,161,2101,303),id:diagnosticSnapshot(4291,2117,1683,171,4291,495)
+ },
+ w2:{
+  all:diagnosticSnapshot(7612,3485,2792,590,7612,966),vn:diagnosticSnapshot(2068,708,535,86,2068,195),kr:diagnosticSnapshot(317,95,75,12,317,41),
+  sa:diagnosticSnapshot(807,391,263,32,807,77),my:diagnosticSnapshot(2270,1043,888,244,2270,318),id:diagnosticSnapshot(1280,759,673,141,1280,225)
+ },
+ w3:{
+  all:diagnosticSnapshot(4619,2129,1843,421,4619,630),vn:diagnosticSnapshot(469,213,203,63,469,85),kr:diagnosticSnapshot(1278,262,216,16,1278,107),
+  sa:diagnosticSnapshot(455,233,185,30,455,62),my:diagnosticSnapshot(840,482,432,142,840,145),id:diagnosticSnapshot(977,622,538,114,977,157)
+ },
+ w4:{
+  all:diagnosticSnapshot(3103,1639,1035,260,3103,488),vn:diagnosticSnapshot(210,86,61,17,210,36),kr:diagnosticSnapshot(465,245,119,24,465,47),
+  sa:diagnosticSnapshot(1057,547,319,59,1057,142),my:diagnosticSnapshot(793,491,348,117,793,181),id:diagnosticSnapshot(247,128,105,25,247,40)
+ },
+ w5:{
+  all:diagnosticSnapshot(4328,2353,1452,458,3742,625),vn:diagnosticSnapshot(265,123,97,38,237,64),kr:diagnosticSnapshot(569,305,157,50,500,60),
+  sa:diagnosticSnapshot(1052,574,373,98,991,175),my:diagnosticSnapshot(1230,692,414,164,1009,203),id:diagnosticSnapshot(309,168,128,29,271,32)
+ },
+ w6:{
+  all:diagnosticSnapshot(199,113,43,9,0,0),vn:diagnosticSnapshot(17,12,9,0,0,0),kr:diagnosticSnapshot(30,19,4,0,0,0),
+  sa:diagnosticSnapshot(12,7,3,2,0,0),my:diagnosticSnapshot(75,41,17,6,0,0),id:diagnosticSnapshot(12,5,2,0,0,0)
+ }
+};
 let selectedPeriod='all';
+let selectedDiagnosticCountry='all';
 const fmt=n=>Number(n||0).toLocaleString(pageLang==='zh'?'zh-CN':'en-US');
 const pct=(n,d,digits=1)=>d?(n/d*100).toFixed(digits):'0.0';
 const currentPeriod=()=>PERIODS.find(p=>p.key===selectedPeriod)||PERIODS[0];
 const currentData=()=>selectedPeriod==='all'?ALL:WEEKLY[selectedPeriod];
+const currentDiagnosticCountry=()=>DIAGNOSTIC_COUNTRIES.find(country=>country.key===selectedDiagnosticCountry)||DIAGNOSTIC_COUNTRIES[0];
+const diagnosticCountryLabel=country=>pageLang==='zh'?country.zh:country.en;
+const diagnosticData=(periodKey=selectedPeriod,countryKey=selectedDiagnosticCountry)=>DIAGNOSTIC_COUNTRY_DATA[periodKey][countryKey];
+
+function renderDiagnosticCountryTabs(){
+ const tabs=document.getElementById('diagnosticCountryTabs');
+ tabs.innerHTML=DIAGNOSTIC_COUNTRIES.map(country=>`<button class="abtab${country.key===selectedDiagnosticCountry?' on':''}" type="button" role="tab" aria-selected="${country.key===selectedDiagnosticCountry?'true':'false'}" data-country="${country.key}">${diagnosticCountryLabel(country)}</button>`).join('');
+ tabs.querySelectorAll('.abtab').forEach(tab=>tab.addEventListener('click',()=>{
+  selectedDiagnosticCountry=tab.dataset.country;
+  renderDiagnosticSection();
+ }));
+}
+
+function renderDiagnosticSection(){
+ const period=currentPeriod(),country=currentDiagnosticCountry(),countryLabel=diagnosticCountryLabel(country);
+ document.getElementById('diagnosticsPeriod').textContent=`Diagnostics · ${countryLabel} · ${period.label} UTC`;
+ document.getElementById('diagnosticsDesc').innerHTML=T(
+  `Showing <b>${period.label} UTC</b> · <b>${countryLabel}</b>, based on <span class="src">geo.country</span> at the device's first open. Sign-up and first-lesson metrics use the same first-open cohort, preserve event order, and stop at the selected period end. D1 includes only cohorts with a complete next-day observation window.`,
+  `当前展示 <b>${period.label} UTC</b> · <b>${countryLabel}</b>，国家取设备首次启动时的 <span class="src">geo.country</span>。注册与首课使用同一批首启 cohort，按事件顺序累计，并截止到所选周期结束；D1 仅纳入已完成次日观察窗口的 cohort。`);
+ renderDiagnosticCountryTabs();
+ renderDiagnostics(diagnosticData());
+ renderDiagnosticTrends();
+}
 
 function renderDiagnostics(data){
  const j=data.journey,r=data.retention;
+ const countryLabel=diagnosticCountryLabel(currentDiagnosticCountry());
  const retentionValue=r.devices?`${pct(r.d1,r.devices)}<small>%</small>`:'—';
  const retentionNote=r.devices?`${T('Mature cohort','成熟 cohort')} ${fmt(r.devices)} → ${fmt(r.d1)}; ${T('rolling weeks include only first-open cohorts with a complete D1 observation window','滚动周仅纳入已满 D1 观察期的首启 cohort')}`:T('No cohort has completed the D1 observation window yet','尚无完成 D1 观察期的 cohort');
  document.getElementById('diagnosticKpis').innerHTML=`
-  <div class="kpi warn"><div class="lab">${T('First-lesson completion (compatible completion / specified first-lesson start)','首课完成率（兼容完课 / 指定首课开始）')}</div><div class="val">${pct(j.lesson_complete,j.lesson_start)}<small>%</small></div><div class="note"><span class="flag">${T('Primary drop-off','当前主要断点')}</span> ${fmt(j.lesson_complete)} / ${fmt(j.lesson_start)}; ${T('calculated from users who started a specified first lesson and met the compatible completion definition in the selected period','按所选周期内的指定首课开始与兼容完课用户计算')}</div></div>
-  <div class="kpi mid"><div class="lab">${T('Sign-up conversion (sign-up / open)','注册转化（注册 / 打开）')}</div><div class="val">${pct(j.signup_success,j.first_open)}<small>%</small></div><div class="note">${fmt(j.signup_success)} / ${fmt(j.first_open)}; ${T('GA4 unique devices, excluding test devices','GA4 去重设备，排除测试设备')}</div></div>
+  <div class="kpi warn"><div class="lab">${T('First-lesson completion (completion / start)','首课完成率（完成 / 开始）')}</div><div class="val">${pct(j.lesson_complete,j.lesson_start)}<small>%</small></div><div class="note"><span class="flag">${T('Primary drop-off','当前主要断点')}</span> ${fmt(j.lesson_complete)} / ${fmt(j.lesson_start)}; ${T('same first-open cohort, ordered and completed before period end','同一首启 cohort，按顺序开始并在周期结束前完成')}</div></div>
+  <div class="kpi mid"><div class="lab">${T('Sign-up conversion (sign-up / open)','注册转化（注册 / 打开）')}</div><div class="val">${pct(j.signup_success,j.first_open)}<small>%</small></div><div class="note">${fmt(j.signup_success)} / ${fmt(j.first_open)}; ${T(`first-open country: ${countryLabel}; sign-up occurs after first open`,`首启国家：${countryLabel}；注册发生在首次启动之后`)}</div></div>
   <div class="kpi"><div class="lab">${T('D1 next-day retention','D1 次日留存')}</div><div class="val">${retentionValue}</div><div class="note">${retentionNote}</div></div>`;
 }
 
@@ -419,10 +493,12 @@ const diagnosticTrendDefs=[
 function trendValue(def,value){return def.digits?value.toFixed(def.digits):fmt(Math.round(value))}
 function renderDiagnosticTrends(){
  const activeIndex=TREND_WEEKS.indexOf(selectedPeriod),allSelected=selectedPeriod==='all';
- document.getElementById('diagnosticTrendStatus').textContent=allSelected?T('Five complete UTC weeks','5 个 UTC 完整周'):(activeIndex>=0?`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}`:T('Aug 14 is rolling; trends show completed weeks only','08-14 为滚动日，趋势仅展示完整周'));
+ const countryLabel=diagnosticCountryLabel(currentDiagnosticCountry());
+ const trendStatus=allSelected?T('Five complete UTC weeks','5 个 UTC 完整周'):(activeIndex>=0?`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}`:T('Aug 14 is rolling; trends show completed weeks only','08-14 为滚动日，趋势仅展示完整周'));
+ document.getElementById('diagnosticTrendStatus').textContent=`${countryLabel} · ${trendStatus}`;
  document.getElementById('diagnosticTrends').innerHTML=diagnosticTrendDefs.map(def=>{
   const title=T(def.titleEn,def.titleZh),unit=def.unit||T(def.unitEn,def.unitZh);
-  const values=TREND_WEEKS.map(key=>def.get(WEEKLY[key])),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
+  const values=TREND_WEEKS.map(key=>def.get(diagnosticData(key))),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
   const width=360,height=126,left=22,right=15,top=25,bottom=25,chartW=width-left-right,chartH=height-top-bottom;
   const points=values.map((value,i)=>({value,x:left+i*chartW/(values.length-1),y:top+(max-value)/span*chartH}));
   const line=points.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' '),area=`${line} L ${points.at(-1).x.toFixed(1)} ${height-bottom} L ${points[0].x.toFixed(1)} ${height-bottom} Z`;
@@ -808,11 +884,7 @@ function applyPeriod(key,preserveSubfilters=false){
  document.querySelectorAll('#periodTabs .abtab').forEach(tab=>{const on=tab.dataset.period===key;tab.classList.toggle('on',on);tab.setAttribute('aria-selected',on?'true':'false');});
  document.getElementById('periodStatus').textContent=`${T(period.statusEn,period.statusZh)}; ${T('all dashboard data has been updated. All times are UTC.','页面全部数据已切换。时间均为 UTC。')}`;
  document.getElementById('dashboardContext').innerHTML=`${T('Reporting window','统计窗口')} <b>${period.label} UTC</b> · ${T('First opens in period','期内启动')} <b>${fmt(j.first_open)}</b> · ${T('GA4 and mapped business data both exclude','GA4 与可映射业务数据均排除')} <b>user_type=test</b>`;
- document.getElementById('diagnosticsPeriod').textContent=`Diagnostics · ${period.label} UTC`;
- document.getElementById('diagnosticsDesc').innerHTML=T(
-  `Showing <b>${period.label} UTC</b>. The overall funnel, modules, lessons, retention, payment, and A/B metrics are recalculated for the selected period. Retention includes only cohorts with complete observation windows; A/B data appears only after the experiment started on Aug 1.`,
-  `当前展示 <b>${period.label} UTC</b>；总漏斗、模块、课程、留存、支付与 A/B 均已按所选周期重算。留存仅纳入已完成观察期 cohort；A/B 仅在 08-01 实验开始后展示。`);
- renderDiagnostics(data);renderDiagnosticTrends();
+ renderDiagnosticSection();
  journey=[
   {l:T('First open','首次启动'),s:'first_open',v:j.first_open,c:'#1d5c3f'},
   {l:T('Sign-up success','注册成功'),s:'signup_result · success',v:j.signup_success,c:'#2e8b57',cliff:true},
@@ -841,6 +913,8 @@ function setLanguage(lang,persist=true){
  document.querySelector('.period-filter').setAttribute('aria-label',T('Global weekly filter','全局周维度筛选'));
  document.getElementById('periodTabs').setAttribute('aria-label',T('Switch dashboard week','切换看板统计周'));
  document.querySelector('.trend-panel').setAttribute('aria-label',T('Core funnel diagnostic weekly trends','核心链路诊断周趋势'));
+ document.querySelector('.diagnostic-country-filter').setAttribute('aria-label',T('Core funnel diagnostics country filter','核心链路诊断国家筛选'));
+ document.getElementById('diagnosticCountryTabs').setAttribute('aria-label',T('Switch core funnel diagnostics country','切换核心链路诊断国家'));
  document.querySelector('.abcountry-filter').setAttribute('aria-label',T('A/B main funnel country filter','A/B 主链路国家筛选'));
  document.getElementById('abCountryTabs').setAttribute('aria-label',T('Switch A/B main funnel country','切换 A/B 主链路国家'));
  document.getElementById('abMainTabs').setAttribute('aria-label',T('Switch A/B experiment main path','切换 A/B 实验主链路'));
