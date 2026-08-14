@@ -133,6 +133,19 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 .rettab td.na{color:#cfc5ac;font-size:12px}
 .rettab td.coh{text-align:left;font-size:12.5px;color:var(--ink);white-space:nowrap;padding-right:8px}
 .rettab td.coh small{display:block;font-family:'Fraunces',serif;font-size:9.5px;color:var(--ink-faint)}
+.retention-summary-panel{margin-bottom:12px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper-deep)}
+.retention-summary-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--ink-soft);font-size:11.5px}
+.retention-summary-head span{font-weight:700;color:var(--green)}
+.retention-summary-head b{font-family:'Fraunces',serif;font-size:10.5px;font-weight:600;color:var(--ink-faint);text-align:right}
+.retention-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.retention-summary-card{position:relative;min-width:0;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--card);overflow:hidden}
+.retention-summary-card:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--green-bright)}
+.retention-summary-card:nth-child(2):before{background:var(--green)}
+.retention-summary-card:nth-child(3):before{background:var(--yellow)}
+.retention-summary-day{font-family:'Fraunces',serif;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-faint)}
+.retention-summary-value{margin-top:2px;font-family:'Fraunces','Noto Serif SC',serif;font-size:26px;font-weight:900;line-height:1.1;color:var(--ink)}
+.retention-summary-value small{font-size:13px;margin-left:2px;color:var(--ink-soft)}
+.retention-summary-note{margin-top:5px;font-size:10.5px;line-height:1.45;color:var(--ink-faint)}
 
 
 .foot{margin-top:52px;padding-top:20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--ink-faint);line-height:1.8}
@@ -218,6 +231,8 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
   .kpis,.diagnostic-kpis{grid-template-columns:1fr}
   .period-filter{display:block}.period-label{padding:0 0 7px}
   .diagnostic-country-filter{display:block}.diagnostic-country-label{padding:0 0 7px}
+  .retention-summary{grid-template-columns:1fr}
+  .retention-summary-head{display:block}.retention-summary-head b{display:block;margin-top:3px;text-align:left}
 }
 </style>
 </head>
@@ -334,6 +349,10 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <p class="sec-desc" data-zh="采用常见的 <b>Exact-day / 第 N 日留存</b>，并跟随顶部时间与国家筛选；国家取 first_open 时的 <span class='src'>geo.country</span>。按 first_open 的 UTC 日期分 cohort，同一 GA4 设备在恰好第 N 个自然日产生明确前台活跃事件（session_start / user_engagement / screen_view / page_view）即算回访；notification_receive、app_remove、app_update 等后台或系统事件不计。它不是滚动留存，也不是账号级跨设备留存；D1 可测至 08-12、D3 至 08-10、D7 至 08-06。">Uses standard <b>exact-day / day-N retention</b> and follows the global period and country filters; country is <span class="src">geo.country</span> at first open. Cohorts are based on the UTC date of first_open, and a device is counted as returning only when it produces an explicit foreground event (session_start / user_engagement / screen_view / page_view) on exactly day N. Background or system events such as notification_receive, app_remove, and app_update are excluded. This is neither rolling retention nor account-level cross-device retention. D1 is measurable through Aug 12, D3 through Aug 10, and D7 through Aug 6.</p>
 
     <div class="stage-lab" data-zh="① 留存三角 · 每个 cohort 在第 1~7 天还回来的比例（颜色越深留存越高）">① Retention Triangle · Return rate for each cohort on days 1–7 (darker means higher retention)</div>
+    <div class="retention-summary-panel">
+      <div class="retention-summary-head"><span data-zh="当前筛选的 Exact-day 留存">Exact-day retention for current filters</span><b id="retentionMetricScope"></b></div>
+      <div class="retention-summary" id="retentionSummary" aria-live="polite"></div>
+    </div>
     <div class="rettab-wrap"><table class="rettab" id="retTable"></table></div>
 
     <div class="panel" style="margin-top:16px">
@@ -766,6 +785,18 @@ function renderRetentionTable(){document.getElementById('retTable').innerHTML=
   }).join('');
   return `<tr><td class="coh">${c.d}<small>${fmt(c.n)} ${T('devices','台')}</small></td>${cells}</tr>`;
  }).join(''):`<tr><td class="na" colspan="8">${T('No mature retention cohort is available for this rolling period','该滚动周期暂无成熟留存 cohort')}</td></tr>`);}
+const retentionSummaryDays=[{label:'D1',index:0},{label:'D3',index:2},{label:'D7',index:6}];
+function renderRetentionSummary(period){
+ const countryLabel=diagnosticCountryLabel(currentCountry());
+ document.getElementById('retentionMetricScope').textContent=`${countryLabel} · ${period.label} UTC · ${T('mature cohorts only','仅纳入已满对应观察期的 cohort')}`;
+ document.getElementById('retentionSummary').innerHTML=retentionSummaryDays.map(day=>{
+  const matureRows=ret.filter(row=>Number.isFinite(row.r[day.index]));
+  const aggregate=matureRows.reduce((sum,row)=>({devices:sum.devices+row.n,returned:sum.returned+row.r[day.index]}),{devices:0,returned:0});
+  const value=aggregate.devices?`${pct(aggregate.returned,aggregate.devices)}<small>%</small>`:'—';
+  const note=aggregate.devices?T(`${fmt(aggregate.returned)} returned / ${fmt(aggregate.devices)} mature devices`,`${fmt(aggregate.returned)} 回访 / ${fmt(aggregate.devices)} 台成熟设备`):T('No cohort has completed this observation window','暂无完成该观察期的 cohort');
+  return `<div class="retention-summary-card"><div class="retention-summary-day">${day.label}</div><div class="retention-summary-value">${value}</div><div class="retention-summary-note">${note}</div></div>`;
+ }).join('');
+}
 // 留存:D1 按首日行为分层(仅纳入完成次日观察期的 cohort)
 let seg=[
  {l:'当日完成首课',s:'trial_lesson_complete 当天',n:1777,d1:601,c:'#1d5c3f'},
@@ -854,6 +885,7 @@ function renderRetention(data,period){
  else{
   const [from,to]=RET_RANGES[period.key];ret=sourceRows.filter(row=>row.d>=from&&row.d<=to);
  }
+ renderRetentionSummary(period);
  renderRetentionTable();
  const labels=[[T('Completed first lesson on day 0','当日完成首课'),T('trial_lesson_complete on day 0','trial_lesson_complete 当天'),'#1d5c3f'],[T('Signed up on day 0 · No lesson completion','当日注册·未完课'),T('signup_result success on day 0, no first-lesson completion','signup_result success 当天，未完成首课'),'#c98a12'],[T('Not signed up on day 0','当日未注册'),T('No successful sign-up on first-open day','首启当天无成功注册'),'#b3402a']];
  seg=data.segments.map((value,i)=>({l:labels[i][0],s:labels[i][1],n:value[0],d1:value[1],c:labels[i][2]}));
