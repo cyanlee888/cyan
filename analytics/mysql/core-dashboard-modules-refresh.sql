@@ -3,17 +3,17 @@
 -- Explore：进度表只保留首次/最近一次完成时间，按这两个可识别时间点统计完成用户；
 --          这是保守口径，不等同于完整的逐次开始流水。
 -- 测试账号：user_profile.user_type = 1；本查询只纳入 user_type = 0。
--- 时间：UTC；统一截点 2026-08-14 09:01:00。
+-- 时间：UTC；统一截点 2026-08-14 15:08:00。
 
 WITH periods AS (
   SELECT 'all' period_key, CAST('2026-07-10 00:00:00' AS DATETIME) start_ts,
-    CAST('2026-08-14 09:01:00' AS DATETIME) end_ts
+    CAST('2026-08-14 15:08:00' AS DATETIME) end_ts
   UNION ALL SELECT 'w1', '2026-07-10 00:00:00', '2026-07-17 00:00:00'
   UNION ALL SELECT 'w2', '2026-07-17 00:00:00', '2026-07-24 00:00:00'
   UNION ALL SELECT 'w3', '2026-07-24 00:00:00', '2026-07-31 00:00:00'
   UNION ALL SELECT 'w4', '2026-07-31 00:00:00', '2026-08-07 00:00:00'
   UNION ALL SELECT 'w5', '2026-08-07 00:00:00', '2026-08-14 00:00:00'
-  UNION ALL SELECT 'w6', '2026-08-14 00:00:00', '2026-08-14 09:01:00'
+  UNION ALL SELECT 'w6', '2026-08-14 00:00:00', '2026-08-14 15:08:00'
 ),
 play_users AS (
   SELECT DISTINCT p.period_key, r.user_id, r.game_type

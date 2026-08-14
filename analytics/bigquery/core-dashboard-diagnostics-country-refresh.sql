@@ -4,7 +4,7 @@
 -- D1 uses first-open cohorts inside the selected period and observes foreground activity
 -- on the next UTC calendar day; only cohorts with a complete D1 window are included.
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 09:01:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 15:08:00+00';
 DECLARE complete_day DATE DEFAULT DATE '2026-08-13';
 
 WITH periods AS (
@@ -25,7 +25,8 @@ country_targets AS (
     ('kr', 2),
     ('sa', 3),
     ('my', 4),
-    ('id', 5)
+    ('id', 5),
+    ('th', 6)
   ])
 ),
 raw_base AS (
@@ -123,6 +124,7 @@ period_cohort AS (
       WHEN 'Saudi Arabia' THEN 'sa'
       WHEN 'Malaysia' THEN 'my'
       WHEN 'Indonesia' THEN 'id'
+      WHEN 'Thailand' THEN 'th'
       ELSE 'other'
     END AS country_key
   FROM first_opens f
@@ -245,7 +247,7 @@ aggregated AS (
     COUNTIF(d1_eligible) AS d1_devices,
     COUNTIF(d1_eligible AND d1_retained) AS d1_retained
   FROM scoped
-  WHERE country_key IN ('all', 'vn', 'kr', 'sa', 'my', 'id')
+  WHERE country_key IN ('all', 'vn', 'kr', 'sa', 'my', 'id', 'th')
   GROUP BY period_key, country_key
 )
 SELECT

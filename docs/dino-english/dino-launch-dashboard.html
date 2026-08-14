@@ -235,7 +235,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <div class="ctx">
     <span class="tag" data-zh="上游背景">Acquisition context</span>
-    <span id="dashboardContext">投放 7/10 起 · 统计窗口 <b>07-10~08-14 09:01 UTC（35 个完整日 + 当日滚动）</b> · 期内启动 <b>34,699</b> · GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
+    <span id="dashboardContext">投放 7/10 起 · 统计窗口 <b>07-10~08-14 15:08 UTC（35 个完整日 + 当日滚动）</b> · 期内启动 <b>34,880</b> · GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
   </div>
 
   <div class="period-filter" aria-label="Global weekly filter">
@@ -248,8 +248,8 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 产品诊断 KPI -->
   <section class="sec reveal">
-    <div class="sec-h"><span data-zh="核心链路诊断">Core Funnel Diagnostics</span> <span class="en" id="diagnosticsPeriod">Diagnostics · 07-10~08-14 09:01 UTC</span></div>
-    <p class="sec-desc" id="diagnosticsDesc">统计窗口 <b>2026-07-10 00:00 → 08-14 09:01(UTC)</b>；07-10~08-12 使用日表，08-13~14 使用 intraday 补数。GA4 任一事件命中 user_type=test 的设备及可映射支付/归因账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
+    <div class="sec-h"><span data-zh="核心链路诊断">Core Funnel Diagnostics</span> <span class="en" id="diagnosticsPeriod">Diagnostics · 07-10~08-14 15:08 UTC</span></div>
+    <p class="sec-desc" id="diagnosticsDesc">统计窗口 <b>2026-07-10 00:00 → 08-14 15:08(UTC)</b>；07-10~08-13 使用日表，08-14 使用 intraday 滚动数据。GA4 任一事件命中 user_type=test 的设备及可映射支付账号均已排除；留存与 A/B 成熟指标只使用完整观察期 cohort。</p>
     <div class="diagnostic-country-filter" aria-label="Core funnel diagnostics country filter">
       <div class="diagnostic-country-label" data-zh="国家筛选">Country</div>
       <div class="diagnostic-country-body">
@@ -259,18 +259,18 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <div class="kpis diagnostic-kpis" id="diagnosticKpis">
       <div class="kpi warn">
         <div class="lab">首课完成率(兼容完课 / 指定首课开始)</div>
-        <div class="val">21.7<small>%</small></div>
-        <div class="note"><span class="flag">仍是最大瓶颈</span> 2,897 / 13,338；六节体验课兼容历史 <span class="src">trial_lesson_complete</span>，1661 / 1616 只认同课 <span class="src">class_lesson_end · complete</span></div>
+        <div class="val">21.4<small>%</small></div>
+        <div class="note"><span class="flag">仍是最大瓶颈</span> 2,745 / 12,851；同一首启 cohort，按事件顺序开始并在周期结束前完成</div>
       </div>
       <div class="kpi mid">
         <div class="lab">注册转化(注册 / 打开)</div>
-        <div class="val">51.9<small>%</small></div>
-        <div class="note">18,009 / 34,699；GA4 去重设备，排除测试设备</div>
+        <div class="val">48.1<small>%</small></div>
+        <div class="note">16,790 / 34,880；同一周期首启 cohort，注册发生在首次启动之后</div>
       </div>
       <div class="kpi">
         <div class="lab">D1 次日留存</div>
         <div class="val">12.2<small>%</small></div>
-        <div class="note">成熟 cohort 33,861 → 4,130；滚动周期仅纳入已满 D1 观察期的首启 cohort</div>
+        <div class="note">成熟 cohort 33,866 → 4,135；滚动周期仅纳入已满 D1 观察期的首启 cohort</div>
       </div>
     </div>
     <div class="trend-panel" aria-label="Core funnel diagnostic weekly trends">
@@ -284,8 +284,8 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- 通用总漏斗 + A/B 分路径漏斗 -->
   <section class="sec reveal">
-    <div class="sec-h"><span data-zh="首启 → 首课用户旅程漏斗">First Launch → First Lesson Funnel</span> <span class="en" data-zh="First Launch → First Lesson Complete · 去重用户">First Launch → First Lesson Complete · Unique users</span></div>
-    <p class="sec-desc" data-zh="随顶部时间筛选展示所选周期内的非测试流量；总盘只保留各条路径都通用的业务里程碑：<b>首次启动 → 注册成功 → 首课开始 → 首课完成</b>。首课只取设备首次命中的 8 节指定课程；六节体验课完成兼容开始后的历史 <span class='src'>trial_lesson_complete</span>，1661 / 1616 只接受同课 <span class='src'>class_lesson_end · result=complete</span>。">Shows non-test traffic for the selected period. The overview keeps only business milestones shared by every path: <b>first open → sign-up success → first lesson start → first lesson complete</b>. The first lesson is the device's first match among eight specified courses. Six trial lessons support the legacy post-start <span class="src">trial_lesson_complete</span> event; 1661 / 1616 require a same-lesson <span class="src">class_lesson_end · result=complete</span>.</p>
+    <div class="sec-h"><span data-zh="首启 → 首课用户旅程漏斗">First Launch → First Lesson Funnel</span> <span class="en" id="journeyScope" data-zh="全部 · 去重设备">All · Unique devices</span></div>
+    <p class="sec-desc" data-zh="同时跟随顶部时间筛选和核心链路诊断中的国家筛选，国家取设备首次启动时的 <span class='src'>geo.country</span>。漏斗使用同一批周期首启设备，并按顺序累计：<b>首次启动 → 注册成功 → 首课开始 → 首课完成</b>。首课只取设备首次命中的 8 节指定课程；六节体验课完成兼容开始后的历史 <span class='src'>trial_lesson_complete</span>，1661 / 1616 只接受同课 <span class='src'>class_lesson_end · result=complete</span>。">Follows both the global period filter and the country filter in Core Diagnostics; country is <span class="src">geo.country</span> at first open. The funnel uses the same selected-period first-open cohort and accumulates events in order: <b>first open → sign-up success → first lesson start → first lesson complete</b>. The first lesson is the device's first match among eight specified courses. Six trial lessons support the legacy post-start <span class="src">trial_lesson_complete</span> event; 1661 / 1616 require a same-lesson <span class="src">class_lesson_end · result=complete</span>.</p>
 
     <div class="lbars" id="journeyFunnel"></div>
 
@@ -293,7 +293,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
   <!-- A/B 实验核心结论 -->
   <section class="sec reveal">
-    <div class="sec-h"><span data-zh="转化链路 A/B 实验">Conversion Funnel A/B Test</span> <span class="en" id="abPeriodLabel">Android Page-level + Cross-platform Payment · Assigned 08-01~08-14 09:01 UTC</span></div>
+    <div class="sec-h"><span data-zh="转化链路 A/B 实验">Conversion Funnel A/B Test</span> <span class="en" id="abPeriodLabel">Android Page-level + Cross-platform Payment · Assigned 08-01~08-14 15:08 UTC</span></div>
     <p class="sec-desc" data-zh="只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的非测试设备，冲突与 fallback 从效果样本剔除，国家固定为首次稳定进组事件的 <span class='src'>geo.country</span>。注册、首课和完整分路径漏斗为 Android；生产付费为 Android+iOS。所有指标同时跟随顶部时间与下方国家筛选更新。">Includes only non-test devices <b>first stably assigned after 2026-08-01 00:00 UTC</b>. Conflicts and fallback assignments are excluded from the effect sample, and country is fixed to <span class="src">geo.country</span> on the first stable assignment event. Sign-up, first-lesson, and full path funnels are Android-only; production payment covers Android+iOS. All metrics respond to both the global period and country filters.</p>
     <div class="abcountry-filter" aria-label="A/B main funnel country filter">
       <div class="abcountry-label" data-zh="国家筛选">Country</div>
@@ -348,7 +348,7 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
 
     <div class="insight pos" id="retentionInsight">
       <div class="it">✓ 前台活跃 D1 合并为 12.2%</div>
-      <p>成熟 cohort 33,861 台设备中 4,130 台次日回访。分层看：<b>首日完成首课用户 D1 33.8%</b>，注册未完课 15.0%，未注册 8.0%。</p>
+      <p>成熟 cohort 33,866 台设备中 4,135 台次日回访。分层看：<b>首日完成首课用户 D1 33.8%</b>，注册未完课 15.0%，未注册 8.1%。</p>
     </div>
   </section>
 
@@ -357,21 +357,21 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <div class="sec-h"><span data-zh="变现：发起订阅 ≠ 成功付费">Monetization: Checkout Started ≠ Payment Success</span> <span class="en">Monetization Reality</span></div>
     <p class="sec-desc" data-zh="<b>「发起订单」的埋点量 ≠ 真实成功付费</b>。发起订单对应事件是 <span class='src'>subscription_checkout_start</span>（带 order_id，进结算即建一张 payment_order）；<span class='src'>subscription_purchase_result</span> 无成功标识、且混入续订/恢复购买，不能当成功口径，已不采用。以生产库支付订单为准，投放期发起了大量购买，但几乎没有走完商店支付。"><b>Checkout-start events are not the same as successful payments.</b> A checkout start is <span class="src">subscription_checkout_start</span> with an order_id, which creates a payment_order as soon as checkout opens. <span class="src">subscription_purchase_result</span> has no success flag and mixes renewals/restores, so it is no longer used as the success definition. Production payment orders are authoritative: many checkouts started during the campaign, but very few completed store payment.</p>
     <div class="panel">
-      <div class="panel-t" id="payPanelTitle">发起订单 → 成功付费 的断层(投放期 07-10~08-14 09:01 UTC)</div>
+      <div class="panel-t" id="payPanelTitle">发起订单 → 成功付费 的断层(投放期 07-10~08-14 15:08 UTC)</div>
       <div class="panel-s" data-zh="发起=payment_order 创建（GA4 checkout_start 埋点）；成功=生产库 payment_* 权威口径">Started = payment_order created (GA4 checkout_start); success = authoritative production payment_* record</div>
       <div id="paygap"></div>
     </div>
     <div class="insight" id="paymentInsight">
-      <div class="it">⚠ 断层仍在：3,695 笔订单、仅 43 笔生产成功(1.16%)</div>
-      <p>排除测试账号后，窗口内 <span class="src">payment_order</span> 创建 3,695 笔(1,886 用户)，其中 <b>3,647 笔停留在 PENDING</b>；生产成功 43 笔(Apple 22 / Google 21，另沙盒 4、失败 1)。成功结构为周卡 23 / 月卡 19 / 年卡 1。</p>
+      <div class="it">⚠ 断层仍在：3,765 笔订单、仅 43 笔生产成功(1.14%)</div>
+      <p>排除测试账号后，窗口内 <span class="src">payment_order</span> 创建 3,765 笔(1,920 用户)，其中 <b>3,717 笔停留在 PENDING</b>；生产成功 43 笔(Apple 22 / Google 21，另沙盒 4、失败 1)。成功结构为周卡 23 / 月卡 19 / 年卡 1。</p>
     </div>
   </section>
 
-  <div class="foot" data-zh="<b>数据源：</b>GA4 BigQuery Export <span class='src'>analytics_538991439.events_*</span>（核心链路诊断国家切片使用 07-10~08-13 日表 + 08-14 intraday；其余板块保留 09:01 刷新快照）· AppsFlyer 宽表 <span class='src'>de_dwd.product_conversion_funnel_user</span> · 生产库支付 <span class='src'>de_ods.payment_order</span> · 生产 MySQL <span class='src'>play_game_round / vocab_lesson_progress / fm_listen_progress</span>。<br><b>统计窗口：</b>GA4 与 A/B 更新到 2026-08-14 09:01 UTC；08-13 为最近完整 UTC 日，08-14 为滚动日。支付源本次最新记录到 08-14 08:00 UTC。<b>GA4 属性时区与生产库均为 UTC</b>。<br><b>口径：</b>任一 GA4 事件命中 <span class='src'>user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id / AppsFlyer ID 排除可映射支付与归因账号。核心链路诊断按所选周期首启 cohort、同设备事件顺序累计，国家取首次启动时的 <span class='src'>geo.country</span>；核心模块占比按所选周期内去重登录用户（非空 user_id）计算。Play 为生产开局流水；Explore 为生产进度表可识别的首次 / 最近完成用户，是保守口径。成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day（D1 可测至 08-12、D3 至 08-10、D7 至 08-06）。<br><b>生成：</b>Dino English 产品 · 刷新至 2026-08-14 09:01 UTC（北京时间 17:01）">
-    <b>Sources:</b> GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span> (country slices in Core Diagnostics use daily tables Jul 10–Aug 13 + intraday Aug 14; other sections retain the 09:01 refresh snapshot) · AppsFlyer wide table <span class="src">de_dwd.product_conversion_funnel_user</span> · production payment table <span class="src">de_ods.payment_order</span> · production MySQL <span class="src">play_game_round / vocab_lesson_progress / fm_listen_progress</span>.<br>
-    <b>Reporting window:</b> GA4 and A/B data are updated through 2026-08-14 09:01 UTC. Aug 13 is the latest complete UTC day; Aug 14 is rolling. The latest payment-source record in this refresh is Aug 14 08:00 UTC. <b>Both the GA4 property and production database use UTC.</b><br>
-    <b>Definitions:</b> Devices with any GA4 event where <span class="src">user_type=test</span> are excluded from every GA4 metric; mapped payment and attribution accounts are excluded through user_id / AppsFlyer ID. Core diagnostics use the selected-period first-open cohort and cumulative same-device event order; country is <span class="src">geo.country</span> at first open. Core-module rates use distinct signed-in users (non-null user_id) within the selected period. Play uses production round starts; Explore conservatively uses identifiable first/latest completion users from production progress snapshots. Successful payment = payment_order status=SUCCESS and env_type=PRODUCTION. Retention is exact-day (D1 through Aug 12, D3 through Aug 10, D7 through Aug 6).<br>
-    <b>Generated:</b> Dino English Product · Refreshed 2026-08-14 09:01 UTC (17:01 Beijing time)
+  <div class="foot" data-zh="<b>数据源：</b>GA4 BigQuery Export <span class='src'>analytics_538991439.events_*</span>（07-10~08-13 日表 + 08-14 intraday）· 生产库支付 <span class='src'>de_ods.payment_order</span> · 生产 MySQL <span class='src'>play_game_round / vocab_lesson_progress / fm_listen_progress</span>。<br><b>统计窗口：</b>全部板块统一更新到 2026-08-14 15:08 UTC；08-13 为最近完整 UTC 日，08-14 为滚动日。支付源本次最新记录到 08-14 15:00:52 UTC。<b>GA4 属性时区与生产库均为 UTC</b>。<br><b>口径：</b>任一 GA4 事件命中 <span class='src'>user_type=test</span> 的设备从全部 GA4 指标剔除，并通过 user_id 排除可映射支付账号。核心链路诊断按所选周期首启 cohort、同设备事件顺序累计，国家取首次启动时的 <span class='src'>geo.country</span>；核心模块占比按所选周期内去重登录用户（非空 user_id）计算。Play 为生产开局流水；Explore 为生产进度表可识别的首次 / 最近完成用户，是保守口径。成功付费=payment_order status=SUCCESS 且 env_type=PRODUCTION。留存为 exact-day（D1 可测至 08-12、D3 至 08-10、D7 至 08-06）。<br><b>生成：</b>Dino English 产品 · 刷新至 2026-08-14 15:08 UTC（北京时间 23:08）">
+    <b>Sources:</b> GA4 BigQuery Export <span class="src">analytics_538991439.events_*</span> (daily tables Jul 10–Aug 13 + intraday Aug 14) · production payment table <span class="src">de_ods.payment_order</span> · production MySQL <span class="src">play_game_round / vocab_lesson_progress / fm_listen_progress</span>.<br>
+    <b>Reporting window:</b> Every section is updated through 2026-08-14 15:08 UTC. Aug 13 is the latest complete UTC day; Aug 14 is rolling. The latest payment-source record in this refresh is Aug 14 15:00:52 UTC. <b>Both the GA4 property and production database use UTC.</b><br>
+    <b>Definitions:</b> Devices with any GA4 event where <span class="src">user_type=test</span> are excluded from every GA4 metric; mapped payment accounts are excluded through user_id. Core diagnostics use the selected-period first-open cohort and cumulative same-device event order; country is <span class="src">geo.country</span> at first open. Core-module rates use distinct signed-in users (non-null user_id) within the selected period. Play uses production round starts; Explore conservatively uses identifiable first/latest completion users from production progress snapshots. Successful payment = payment_order status=SUCCESS and env_type=PRODUCTION. Retention is exact-day (D1 through Aug 12, D3 through Aug 10, D7 through Aug 6).<br>
+    <b>Generated:</b> Dino English Product · Refreshed 2026-08-14 15:08 UTC (23:08 Beijing time)
   </div>
 
 </div>
@@ -383,23 +383,23 @@ const T=(en,zh)=>pageLang==='zh'?zh:en;
 const staticLangNodes=[...document.querySelectorAll('[data-zh]')];
 staticLangNodes.forEach(el=>{if(!el.hasAttribute('data-en'))el.setAttribute('data-en',el.innerHTML)});
 const PERIODS=[
- {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-14 09:01',statusEn:'Full period · 35 complete days + rolling data on Aug 14',statusZh:'全周期 · 35 个完整日 + 08-14 滚动数据'},
+ {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-14 15:08',statusEn:'Full period · 35 complete days + rolling data on Aug 14',statusZh:'全周期 · 35 个完整日 + 08-14 滚动数据'},
  {key:'w1',tabEn:'07-10~07-16',tabZh:'07-10~07-16',label:'07-10~07-16',statusEn:'Week 1 · Complete UTC week',statusZh:'第 1 周 · UTC 完整周'},
  {key:'w2',tabEn:'07-17~07-23',tabZh:'07-17~07-23',label:'07-17~07-23',statusEn:'Week 2 · Complete UTC week',statusZh:'第 2 周 · UTC 完整周'},
  {key:'w3',tabEn:'07-24~07-30',tabZh:'07-24~07-30',label:'07-24~07-30',statusEn:'Week 3 · Complete UTC week',statusZh:'第 3 周 · UTC 完整周'},
  {key:'w4',tabEn:'07-31~08-06',tabZh:'07-31~08-06',label:'07-31~08-06',statusEn:'Week 4 · A/B calculated from Aug 1',statusZh:'第 4 周 · A/B 从 08-01 起计算'},
  {key:'w5',tabEn:'08-07~08-13',tabZh:'08-07~08-13',label:'08-07~08-13',statusEn:'Week 5 · Complete UTC week',statusZh:'第 5 周 · UTC 完整周'},
- {key:'w6',tabEn:'08-14',tabZh:'08-14',label:'08-14 00:00~09:01',statusEn:'Aug 14 · Rolling data through 09:01 UTC',statusZh:'08-14 · 滚动数据截至 09:01 UTC'}
+ {key:'w6',tabEn:'08-14',tabZh:'08-14',label:'08-14 00:00~15:08',statusEn:'Aug 14 · Rolling data through 15:08 UTC',statusZh:'08-14 · 滚动数据截至 15:08 UTC'}
 ];
 const WEEKLY={
- w1:{journey:{first_open:14790,signup_success:6669,lesson_start:5206,lesson_complete:647},core:{logged_in_users:7027,class_users:5213,dino_users:3185,explore_users:517,explore_words_users:502,explore_listening_users:86,play_users:1157,play_blind_box_users:800,play_words_pk_users:769,play_speaking_pk_users:657},retention:{devices:14790,d1:1426},segments:[[504,175],[5816,731],[8470,520]],payment:{orders:675,users:426,pending:666,success:6,sandbox:2,failed:1,apple:4,google:2,week:5,month:1,year:0},levels:[[3408,1719,1397,1277,877,598,499,464],[1093,454,351,285,190,155,115,109],[675,200,186,122,63,51,41,30]]},
- w2:{journey:{first_open:7612,signup_success:3808,lesson_start:3424,lesson_complete:745},core:{logged_in_users:5567,class_users:3413,dino_users:2116,explore_users:459,explore_words_users:449,explore_listening_users:68,play_users:751,play_blind_box_users:557,play_words_pk_users:518,play_speaking_pk_users:451},retention:{devices:7612,d1:966},segments:[[490,150],[2912,479],[4210,337]],payment:{orders:647,users:333,pending:638,success:9,sandbox:0,failed:0,apple:4,google:5,week:4,month:5,year:0},levels:[[2073,1438,1222,1141,833,677,574,551],[719,413,335,286,213,180,143,142],[424,198,177,136,91,78,63,52]]},
- w3:{journey:{first_open:4619,signup_success:2640,lesson_start:2450,lesson_complete:556},core:{logged_in_users:5176,class_users:2442,dino_users:1642,explore_users:372,explore_words_users:366,explore_listening_users:66,play_users:598,play_blind_box_users:455,play_words_pk_users:428,play_speaking_pk_users:370},retention:{devices:4619,d1:630},segments:[[343,97],[1743,286],[2533,247]],payment:{orders:520,users:278,pending:514,success:5,sandbox:1,failed:0,apple:3,google:2,week:3,month:2,year:0},levels:[[1136,823,713,676,508,423,367,350],[612,357,289,257,183,154,121,121],[436,224,190,151,113,96,78,67]]},
- w4:{journey:{first_open:3103,signup_success:2035,lesson_start:1452,lesson_complete:390},core:{logged_in_users:4531,class_users:1458,dino_users:1219,explore_users:209,explore_words_users:197,explore_listening_users:55,play_users:418,play_blind_box_users:311,play_words_pk_users:292,play_speaking_pk_users:250},retention:{devices:3103,d1:488},segments:[[179,70],[1437,256],[1487,162]],payment:{orders:657,users:375,pending:646,success:10,sandbox:1,failed:0,apple:3,google:7,week:3,month:6,year:1},levels:[[652,492,424,394,311,274,233,218],[288,191,159,138,104,83,70,68],[114,52,47,37,26,25,16,10]]},
- w5:{journey:{first_open:4315,signup_success:2759,lesson_start:1904,lesson_complete:603},core:{logged_in_users:5114,class_users:1899,dino_users:1534,explore_users:334,explore_words_users:313,explore_listening_users:74,play_users:610,play_blind_box_users:423,play_words_pk_users:441,play_speaking_pk_users:393},retention:{devices:3737,d1:620},segments:[[261,109],[1755,297],[1721,214]],payment:{orders:1146,users:580,pending:1134,success:12,sandbox:0,failed:0,apple:8,google:4,week:8,month:4,year:0},levels:[[839,667,599,565,447,390,355,336],[413,263,216,194,141,128,103,99],[176,103,92,67,47,44,33,25]]},
- w6:{journey:{first_open:199,signup_success:145,lesson_start:121,lesson_complete:26},core:{logged_in_users:596,class_users:123,dino_users:99,explore_users:27,explore_words_users:26,explore_listening_users:5,play_users:43,play_blind_box_users:35,play_words_pk_users:29,play_speaking_pk_users:29},retention:{devices:0,d1:0},segments:[[0,0],[0,0],[0,0]],payment:{orders:50,users:35,pending:49,success:1,sandbox:0,failed:0,apple:0,google:1,week:0,month:1,year:0},levels:[[50,36,36,32,22,13,12,11],[26,10,8,7,6,5,2,2],[6,1,0,0,0,0,0,0]]}
+ w1:{journey:{first_open:14790,signup_success:6463,lesson_start:5035,lesson_complete:610},core:{logged_in_users:7027,class_users:5213,dino_users:3185,explore_users:517,explore_words_users:502,explore_listening_users:86,play_users:1157,play_blind_box_users:800,play_words_pk_users:769,play_speaking_pk_users:657},retention:{devices:14790,d1:1426},segments:[[504,175],[5816,731],[8470,520]],payment:{orders:675,users:426,pending:666,success:6,sandbox:2,failed:1,apple:4,google:2,week:5,month:1,year:0},levels:[[3408,1719,1397,1277,877,598,499,464],[1093,454,351,285,190,155,115,109],[675,200,186,122,63,51,41,30]]},
+ w2:{journey:{first_open:7612,signup_success:3485,lesson_start:2792,lesson_complete:590},core:{logged_in_users:5567,class_users:3413,dino_users:2116,explore_users:459,explore_words_users:449,explore_listening_users:68,play_users:751,play_blind_box_users:557,play_words_pk_users:518,play_speaking_pk_users:451},retention:{devices:7612,d1:966},segments:[[490,150],[2912,479],[4210,337]],payment:{orders:647,users:333,pending:638,success:9,sandbox:0,failed:0,apple:4,google:5,week:4,month:5,year:0},levels:[[2073,1438,1222,1141,833,677,574,551],[719,413,335,286,213,180,143,142],[424,198,177,136,91,78,63,52]]},
+ w3:{journey:{first_open:4619,signup_success:2129,lesson_start:1843,lesson_complete:421},core:{logged_in_users:5176,class_users:2442,dino_users:1642,explore_users:372,explore_words_users:366,explore_listening_users:66,play_users:598,play_blind_box_users:455,play_words_pk_users:428,play_speaking_pk_users:370},retention:{devices:4619,d1:630},segments:[[343,97],[1743,286],[2533,247]],payment:{orders:520,users:278,pending:514,success:5,sandbox:1,failed:0,apple:3,google:2,week:3,month:2,year:0},levels:[[1136,823,713,676,508,423,367,350],[612,357,289,257,183,154,121,121],[436,224,190,151,113,96,78,67]]},
+ w4:{journey:{first_open:3103,signup_success:1639,lesson_start:1035,lesson_complete:260},core:{logged_in_users:4531,class_users:1458,dino_users:1219,explore_users:209,explore_words_users:197,explore_listening_users:55,play_users:418,play_blind_box_users:311,play_words_pk_users:292,play_speaking_pk_users:250},retention:{devices:3103,d1:488},segments:[[179,70],[1437,256],[1487,162]],payment:{orders:657,users:375,pending:646,success:10,sandbox:1,failed:0,apple:3,google:7,week:3,month:6,year:1},levels:[[652,492,424,394,311,274,233,218],[288,191,159,138,104,83,70,68],[114,52,47,37,26,25,16,10]]},
+ w5:{journey:{first_open:4327,signup_success:2353,lesson_start:1452,lesson_complete:458},core:{logged_in_users:5114,class_users:1903,dino_users:1535,explore_users:333,explore_words_users:312,explore_listening_users:74,play_users:610,play_blind_box_users:423,play_words_pk_users:441,play_speaking_pk_users:393},retention:{devices:3742,d1:625},segments:[[261,109],[1755,298],[1726,218]],payment:{orders:1146,users:580,pending:1134,success:12,sandbox:0,failed:0,apple:8,google:4,week:8,month:4,year:0},levels:[[842,670,603,568,448,391,356,338],[413,264,217,195,142,129,104,100],[177,104,93,67,47,44,33,25]]},
+ w6:{journey:{first_open:429,signup_success:229,lesson_start:98,lesson_complete:23},core:{logged_in_users:1126,class_users:251,dino_users:222,explore_users:50,explore_words_users:45,explore_listening_users:14,play_users:96,play_blind_box_users:74,play_words_pk_users:67,play_speaking_pk_users:66},retention:{devices:0,d1:0},segments:[[0,0],[0,0],[0,0]],payment:{orders:120,users:75,pending:119,success:1,sandbox:0,failed:0,apple:0,google:1,week:0,month:1,year:0},levels:[[94,75,72,67,47,37,32,32],[55,24,21,19,14,13,9,9],[16,5,2,0,0,0,0,0]]}
 };
-const ALL={journey:{first_open:34699,signup_success:18009,lesson_start:13338,lesson_complete:2897},core:{logged_in_users:18879,class_users:13254,dino_users:8058,explore_users:1727,explore_words_users:1683,explore_listening_users:322,play_users:3201,play_blind_box_users:2325,play_words_pk_users:2233,play_speaking_pk_users:1927},retention:{devices:33861,d1:4130},segments:[[1777,601],[13663,2049],[18421,1480]],payment:{orders:3695,users:1886,pending:3647,success:43,sandbox:4,failed:1,apple:22,google:21,week:23,month:19,year:1},levels:[[7881,5117,4387,4098,3062,2458,2142,2037],[3049,1680,1367,1183,855,724,574,558],[1784,776,700,522,348,306,246,197]]};
+const ALL={journey:{first_open:34880,signup_success:16790,lesson_start:12851,lesson_complete:2745},core:{logged_in_users:19024,class_users:13350,dino_users:8126,explore_users:1744,explore_words_users:1698,explore_listening_users:329,play_users:3239,play_blind_box_users:2354,play_words_pk_users:2260,play_speaking_pk_users:1955},retention:{devices:33866,d1:4135},segments:[[1777,601],[13663,2050],[18426,1484]],payment:{orders:3765,users:1920,pending:3717,success:43,sandbox:4,failed:1,apple:22,google:21,week:23,month:19,year:1},levels:[[7922,5157,4426,4135,3088,2482,2162,2059],[3075,1696,1381,1196,866,734,582,566],[1795,781,703,522,348,306,246,198]]};
 
 const DIAGNOSTIC_COUNTRIES=[
  {key:'all',en:'All',zh:'全部'},
@@ -407,40 +407,20 @@ const DIAGNOSTIC_COUNTRIES=[
  {key:'kr',en:'South Korea',zh:'韩国'},
  {key:'sa',en:'Saudi Arabia',zh:'沙特'},
  {key:'my',en:'Malaysia',zh:'马来'},
- {key:'id',en:'Indonesia',zh:'印尼'}
+ {key:'id',en:'Indonesia',zh:'印尼'},
+ {key:'th',en:'Thailand',zh:'泰国'}
 ];
 const diagnosticSnapshot=(first_open,signup_success,lesson_start,lesson_complete,devices,d1)=>({
  journey:{first_open,signup_success,lesson_start,lesson_complete},retention:{devices,d1}
 });
 const DIAGNOSTIC_COUNTRY_DATA={
- all:{
-  all:diagnosticSnapshot(34651,16661,12782,2717,33866,4135),vn:diagnosticSnapshot(6546,2563,2076,392,6501,648),kr:diagnosticSnapshot(3306,1190,799,136,3207,287),
-  sa:diagnosticSnapshot(5863,2764,1894,302,5790,630),my:diagnosticSnapshot(7309,3926,3080,982,7013,1150),id:diagnosticSnapshot(7116,3933,3293,561,7066,949)
- },
- w1:{
-  all:diagnosticSnapshot(14790,6463,5035,610,14790,1426),vn:diagnosticSnapshot(3517,1354,1087,136,3517,268),kr:diagnosticSnapshot(647,240,194,14,647,32),
-  sa:diagnosticSnapshot(2480,966,702,63,2480,174),my:diagnosticSnapshot(2101,1028,804,161,2101,303),id:diagnosticSnapshot(4291,2117,1683,171,4291,495)
- },
- w2:{
-  all:diagnosticSnapshot(7612,3485,2792,590,7612,966),vn:diagnosticSnapshot(2068,708,535,86,2068,195),kr:diagnosticSnapshot(317,95,75,12,317,41),
-  sa:diagnosticSnapshot(807,391,263,32,807,77),my:diagnosticSnapshot(2270,1043,888,244,2270,318),id:diagnosticSnapshot(1280,759,673,141,1280,225)
- },
- w3:{
-  all:diagnosticSnapshot(4619,2129,1843,421,4619,630),vn:diagnosticSnapshot(469,213,203,63,469,85),kr:diagnosticSnapshot(1278,262,216,16,1278,107),
-  sa:diagnosticSnapshot(455,233,185,30,455,62),my:diagnosticSnapshot(840,482,432,142,840,145),id:diagnosticSnapshot(977,622,538,114,977,157)
- },
- w4:{
-  all:diagnosticSnapshot(3103,1639,1035,260,3103,488),vn:diagnosticSnapshot(210,86,61,17,210,36),kr:diagnosticSnapshot(465,245,119,24,465,47),
-  sa:diagnosticSnapshot(1057,547,319,59,1057,142),my:diagnosticSnapshot(793,491,348,117,793,181),id:diagnosticSnapshot(247,128,105,25,247,40)
- },
- w5:{
-  all:diagnosticSnapshot(4328,2353,1452,458,3742,625),vn:diagnosticSnapshot(265,123,97,38,237,64),kr:diagnosticSnapshot(569,305,157,50,500,60),
-  sa:diagnosticSnapshot(1052,574,373,98,991,175),my:diagnosticSnapshot(1230,692,414,164,1009,203),id:diagnosticSnapshot(309,168,128,29,271,32)
- },
- w6:{
-  all:diagnosticSnapshot(199,113,43,9,0,0),vn:diagnosticSnapshot(17,12,9,0,0,0),kr:diagnosticSnapshot(30,19,4,0,0,0),
-  sa:diagnosticSnapshot(12,7,3,2,0,0),my:diagnosticSnapshot(75,41,17,6,0,0),id:diagnosticSnapshot(12,5,2,0,0,0)
- }
+ all:{all:diagnosticSnapshot(34880,16790,12851,2745,33866,4135),vn:diagnosticSnapshot(6556,2575,2085,395,6501,648),kr:diagnosticSnapshot(3341,1210,812,144,3207,287),sa:diagnosticSnapshot(5925,2788,1905,303,5790,630),my:diagnosticSnapshot(7360,3950,3093,991,7013,1150),id:diagnosticSnapshot(7134,3945,3300,563,7066,949),th:diagnosticSnapshot(3219,1821,1324,285,3042,362)},
+ w1:{all:diagnosticSnapshot(14790,6463,5035,610,14790,1426),vn:diagnosticSnapshot(3517,1354,1087,136,3517,268),kr:diagnosticSnapshot(647,240,194,14,647,32),sa:diagnosticSnapshot(2480,966,702,63,2480,174),my:diagnosticSnapshot(2101,1028,804,161,2101,303),id:diagnosticSnapshot(4291,2117,1683,171,4291,495),th:diagnosticSnapshot(1263,571,445,52,1263,115)},
+ w2:{all:diagnosticSnapshot(7612,3485,2792,590,7612,966),vn:diagnosticSnapshot(2068,708,535,86,2068,195),kr:diagnosticSnapshot(317,95,75,12,317,41),sa:diagnosticSnapshot(807,391,263,32,807,77),my:diagnosticSnapshot(2270,1043,888,244,2270,318),id:diagnosticSnapshot(1280,759,673,141,1280,225),th:diagnosticSnapshot(630,396,288,64,630,84)},
+ w3:{all:diagnosticSnapshot(4619,2129,1843,421,4619,630),vn:diagnosticSnapshot(469,213,203,63,469,85),kr:diagnosticSnapshot(1278,262,216,16,1278,107),sa:diagnosticSnapshot(455,233,185,30,455,62),my:diagnosticSnapshot(840,482,432,142,840,145),id:diagnosticSnapshot(977,622,538,114,977,157),th:diagnosticSnapshot(395,252,225,44,395,62)},
+ w4:{all:diagnosticSnapshot(3103,1639,1035,260,3103,488),vn:diagnosticSnapshot(210,86,61,17,210,36),kr:diagnosticSnapshot(465,245,119,24,465,47),sa:diagnosticSnapshot(1057,547,319,59,1057,142),my:diagnosticSnapshot(793,491,348,117,793,181),id:diagnosticSnapshot(247,128,105,25,247,40),th:diagnosticSnapshot(163,84,51,12,163,21)},
+ w5:{all:diagnosticSnapshot(4327,2353,1452,458,3742,625),vn:diagnosticSnapshot(265,123,97,38,237,64),kr:diagnosticSnapshot(569,305,157,50,500,60),sa:diagnosticSnapshot(1052,574,373,98,991,175),my:diagnosticSnapshot(1230,692,414,164,1009,203),id:diagnosticSnapshot(309,168,128,29,271,32),th:diagnosticSnapshot(686,418,236,67,591,80)},
+ w6:{all:diagnosticSnapshot(429,229,98,23,0,0),vn:diagnosticSnapshot(27,20,15,2,0,0),kr:diagnosticSnapshot(65,39,17,7,0,0),sa:diagnosticSnapshot(74,29,14,3,0,0),my:diagnosticSnapshot(126,61,25,9,0,0),id:diagnosticSnapshot(30,17,6,0,0,0),th:diagnosticSnapshot(82,55,19,2,0,0)}
 };
 let selectedPeriod='all';
 let selectedDiagnosticCountry='all';
@@ -458,6 +438,7 @@ function renderDiagnosticCountryTabs(){
  tabs.querySelectorAll('.abtab').forEach(tab=>tab.addEventListener('click',()=>{
   selectedDiagnosticCountry=tab.dataset.country;
   renderDiagnosticSection();
+  renderJourneyForDiagnosticSelection();
  }));
 }
 
@@ -552,6 +533,18 @@ function renderJourney(){
  }).join('');
 }
 
+function renderJourneyForDiagnosticSelection(){
+ const j=diagnosticData().journey,countryLabel=diagnosticCountryLabel(currentDiagnosticCountry()),period=currentPeriod();
+ document.getElementById('journeyScope').textContent=`${countryLabel} · ${period.label} UTC · ${T('Unique devices','去重设备')}`;
+ journey=[
+  {l:T('First open','首次启动'),s:'first_open · geo.country',v:j.first_open,c:'#1d5c3f'},
+  {l:T('Sign-up success','注册成功'),s:'signup_result · success',v:j.signup_success,c:'#2e8b57',cliff:true},
+  {l:T('First lesson start','首课开始'),s:T('class_lesson_start · 8 specified course IDs','class_lesson_start · 8 个指定课程 ID'),v:j.lesson_start,c:'#c98a12'},
+  {l:T('First lesson complete','首课完成'),s:T('Compatible legacy/new completion events · Specified first lesson','新旧完课事件兼容 · 指定首课'),v:j.lesson_complete,c:'#d9641e'}
+ ];
+ renderJourney();
+}
+
 // A/B Android 页面级主链路：国家、样本与节点数据和详细数据工作台保持同一口径。
 const AB_MAIN_SCHEMAS={
  A:{
@@ -616,7 +609,7 @@ const AB_EN={
 };
 const COUNTRY_EN={
  all:{tab:'All',label:'All countries'},vn:{tab:'Vietnam',label:'Vietnam'},kr:{tab:'South Korea',label:'South Korea'},
- sa:{tab:'Saudi',label:'Saudi Arabia'},my:{tab:'Malaysia',label:'Malaysia'},id:{tab:'Indonesia',label:'Indonesia'}
+ sa:{tab:'Saudi',label:'Saudi Arabia'},my:{tab:'Malaysia',label:'Malaysia'},id:{tab:'Indonesia',label:'Indonesia'},th:{tab:'Thailand',label:'Thailand'}
 };
 const countryTab=country=>pageLang==='zh'?country.tab:COUNTRY_EN[country.key].tab;
 const countryLabel=country=>pageLang==='zh'?country.label:COUNTRY_EN[country.key].label;
@@ -626,33 +619,41 @@ const flowPhase=(key,step,i)=>pageLang==='zh'?step.p:AB_EN[key].phases[i];
 const flowLabel=(key,step,i)=>pageLang==='zh'?step.l:AB_EN[key].labels[i];
 const flowSource=step=>pageLang==='zh'?step.s:step.s.replace('6 个体验课 ID','6 trial-lesson IDs');
 const AB_ALL_COUNTRIES=[
- {key:'all',tab:'全部',label:'全部国家',a:{assigned:2500,payAssigned:3126,paid:9,pending:551,counts:[2368,2322,2071,1826,1789,1768,1755,1312,1310,1289,1059,244,241,155,143,49,2]},b:{assigned:2498,payAssigned:3169,paid:10,pending:898,counts:[2368,2277,1462,1459,1377,1366,1353,1338,1265,1224,1102,1019,995,986,971,951,946,923,921,584,226,173,43,0]}},
- {key:'vn',tab:'越南',label:'越南',code:'VN',a:{assigned:85,payAssigned:183,paid:1,pending:49,counts:[78,74,64,55,55,55,55,29,29,28,28,10,10,7,5,2,0]},b:{assigned:85,payAssigned:189,paid:0,pending:97,counts:[81,71,33,33,33,33,33,33,33,33,31,30,30,30,30,30,30,30,30,21,8,7,1,0]}},
- {key:'kr',tab:'韩国',label:'韩国',code:'KR',a:{assigned:384,payAssigned:398,paid:1,pending:19,counts:[382,380,323,269,257,252,252,194,192,189,148,33,32,24,21,4,0]},b:{assigned:394,payAssigned:402,paid:4,pending:78,counts:[393,385,249,249,221,219,215,213,205,196,163,145,141,138,135,125,125,121,121,61,28,22,4,0]}},
- {key:'sa',tab:'沙特',label:'沙特阿拉伯',code:'SA',a:{assigned:731,payAssigned:775,paid:0,pending:142,counts:[729,719,670,573,564,555,548,415,415,409,318,52,51,33,32,16,0]},b:{assigned:706,payAssigned:745,paid:0,pending:311,counts:[703,681,448,447,416,413,408,402,366,354,328,311,300,297,291,289,288,282,280,185,65,60,20,0]}},
- {key:'my',tab:'马来',label:'马来西亚',code:'MY',a:{assigned:412,payAssigned:693,paid:3,pending:192,counts:[408,402,363,342,339,336,334,249,249,241,218,78,78,46,45,10,0]},b:{assigned:435,payAssigned:742,paid:3,pending:190,counts:[434,416,265,265,262,261,260,257,238,231,215,197,193,192,190,187,186,177,177,105,55,36,10,0]}},
- {key:'id',tab:'印尼',label:'印度尼西亚',code:'ID',a:{assigned:185,payAssigned:204,paid:1,pending:32,counts:[177,170,153,136,134,134,133,109,109,109,97,13,13,10,9,4,1]},b:{assigned:171,payAssigned:183,paid:0,pending:44,counts:[166,159,108,108,108,107,107,107,101,100,95,92,92,92,90,89,89,89,89,66,20,15,1,0]}}
+ {key:"all",tab:"全部",label:"全部国家",a:{assigned:2591,payAssigned:3227,paid:9,pending:556,counts:[2461,2418,2159,1905,1868,1844,1829,1374,1370,1346,1104,260,256,165,153,51,3]},b:{assigned:2585,payAssigned:3268,paid:10,pending:895,counts:[2453,2367,1529,1525,1442,1430,1417,1401,1328,1283,1155,1072,1047,1037,1022,1000,995,971,969,619,237,182,46,0]}},
+ {key:"vn",tab:"越南",label:"越南",code:"VN",a:{assigned:90,payAssigned:195,paid:1,pending:46,counts:[83,79,69,60,60,60,60,34,33,32,31,12,12,7,5,2,1]},b:{assigned:88,payAssigned:200,paid:0,pending:104,counts:[84,74,34,34,34,34,34,34,34,34,32,31,31,31,31,31,31,31,31,22,8,7,2,0]}},
+ {key:"kr",tab:"韩国",label:"韩国",code:"KR",a:{assigned:420,payAssigned:436,paid:1,pending:20,counts:[418,416,353,292,279,273,273,210,208,203,160,34,33,25,21,4,0]},b:{assigned:424,payAssigned:434,paid:4,pending:78,counts:[422,415,266,266,236,234,230,227,219,210,176,158,154,150,147,137,136,132,132,72,32,26,4,0]}},
+ {key:"sa",tab:"沙特",label:"沙特阿拉伯",code:"SA",a:{assigned:748,payAssigned:794,paid:0,pending:152,counts:[746,737,685,585,576,566,559,422,421,415,323,53,52,34,33,17,0]},b:{assigned:724,payAssigned:768,paid:0,pending:316,counts:[721,701,461,460,429,426,421,415,379,365,336,319,308,305,299,297,296,289,287,189,67,62,20,0]}},
+ {key:"my",tab:"马来",label:"马来西亚",code:"MY",a:{assigned:488,payAssigned:777,paid:3,pending:197,counts:[484,475,429,403,399,395,393,289,289,280,250,93,93,58,57,12,0]},b:{assigned:524,payAssigned:846,paid:3,pending:198,counts:[523,498,317,316,313,312,311,307,288,280,255,235,231,229,226,221,219,209,209,127,61,37,10,0]}},
+ {key:"id",tab:"印尼",label:"印度尼西亚",code:"ID",a:{assigned:203,payAssigned:222,paid:1,pending:32,counts:[195,188,170,152,150,149,148,119,119,119,105,16,16,10,9,4,1]},b:{assigned:184,payAssigned:197,paid:0,pending:46,counts:[179,172,116,116,116,115,115,115,109,107,101,98,98,98,96,95,95,95,95,71,22,15,1,0]}},
+ {key:"th",tab:"泰国",label:"泰国",code:"TH",a:{assigned:258,payAssigned:348,paid:1,pending:46,counts:[256,252,207,190,188,187,186,148,148,147,113,27,27,18,15,7,0]},b:{assigned:243,payAssigned:342,paid:1,pending:72,counts:[243,235,168,168,161,158,156,156,155,148,131,114,110,110,110,109,108,106,106,67,26,20,5,0]}}
 ];
-const makeAbCountry=(key,tab,label,code,aAssigned,aPayAssigned,aPaid,aPending,aCounts,bAssigned,bPayAssigned,bPaid,bPending,bCounts)=>({key,tab,label,code,a:{assigned:aAssigned,payAssigned:aPayAssigned,paid:aPaid,pending:aPending,counts:aCounts},b:{assigned:bAssigned,payAssigned:bPayAssigned,paid:bPaid,pending:bPending,counts:bCounts}});
 const AB_WEEKLY={
  w4:[
-  makeAbCountry('all','全部','全部国家',null,890,1153,5,123,[843,827,719,616,599,589,585,443,441,437,351,66,66,43,39,15,2],878,1154,4,254,[826,789,513,513,470,466,457,451,380,368,336,312,305,304,300,294,293,285,285,184,57,47,9,0]),
-  makeAbCountry('vn','越南','越南','VN',44,84,1,4,[39,35,31,26,26,26,26,15,15,15,15,3,3,3,3,1,1],40,84,0,20,[37,34,19,19,19,19,19,19,19,19,17,16,16,16,16,16,16,16,16,12,4,4,0,0]),
-  makeAbCountry('kr','韩国','韩国','KR',181,185,1,5,[180,180,147,122,115,111,111,90,88,87,72,12,12,8,7,2,0],167,170,0,33,[167,162,111,111,96,96,93,92,84,80,69,60,59,59,58,55,55,53,53,24,8,6,2,0]),
-  makeAbCountry('sa','沙特','沙特阿拉伯','SA',364,368,0,39,[362,357,321,261,258,254,250,192,192,190,141,19,19,12,11,6,0],338,346,0,92,[337,324,217,217,198,197,193,189,154,148,137,130,124,123,120,118,118,115,115,71,26,22,6,0]),
-  makeAbCountry('my','马来','马来西亚','MY',128,280,2,52,[126,124,111,108,107,105,105,80,80,79,69,25,25,15,14,4,0],138,301,2,52,[138,128,78,78,77,77,77,76,58,57,53,48,48,48,48,48,47,45,45,35,13,11,1,0]),
-  makeAbCountry('id','印尼','印度尼西亚','ID',75,88,1,13,[69,64,53,48,46,46,46,36,36,36,29,4,4,3,3,2,1],68,80,0,18,[64,62,43,43,43,42,42,42,36,36,36,35,35,35,35,35,35,35,35,26,4,2,0,0])
+  {key:"all",tab:"全部",label:"全部国家",a:{assigned:890,payAssigned:1153,paid:5,pending:123,counts:[843,827,719,616,599,589,585,443,441,437,351,66,66,43,39,15,2]},b:{assigned:878,payAssigned:1154,paid:4,pending:254,counts:[826,789,513,513,470,466,457,451,380,368,336,312,305,304,300,294,293,285,285,184,57,47,9,0]}},
+  {key:"vn",tab:"越南",label:"越南",code:"VN",a:{assigned:44,payAssigned:84,paid:1,pending:4,counts:[39,35,31,26,26,26,26,15,15,15,15,3,3,3,3,1,1]},b:{assigned:40,payAssigned:84,paid:0,pending:20,counts:[37,34,19,19,19,19,19,19,19,19,17,16,16,16,16,16,16,16,16,12,4,4,0,0]}},
+  {key:"kr",tab:"韩国",label:"韩国",code:"KR",a:{assigned:181,payAssigned:185,paid:1,pending:5,counts:[180,180,147,122,115,111,111,90,88,87,72,12,12,8,7,2,0]},b:{assigned:167,payAssigned:170,paid:0,pending:33,counts:[167,162,111,111,96,96,93,92,84,80,69,60,59,59,58,55,55,53,53,24,8,6,2,0]}},
+  {key:"sa",tab:"沙特",label:"沙特阿拉伯",code:"SA",a:{assigned:364,payAssigned:368,paid:0,pending:39,counts:[362,357,321,261,258,254,250,192,192,190,141,19,19,12,11,6,0]},b:{assigned:338,payAssigned:346,paid:0,pending:92,counts:[337,324,217,217,198,197,193,189,154,148,137,130,124,123,120,118,118,115,115,71,26,22,6,0]}},
+  {key:"my",tab:"马来",label:"马来西亚",code:"MY",a:{assigned:128,payAssigned:280,paid:2,pending:52,counts:[126,124,111,108,107,105,105,80,80,79,69,25,25,15,14,4,0]},b:{assigned:138,payAssigned:301,paid:2,pending:52,counts:[138,128,78,78,77,77,77,76,58,57,53,48,48,48,48,48,47,45,45,35,13,11,1,0]}},
+  {key:"id",tab:"印尼",label:"印度尼西亚",code:"ID",a:{assigned:75,payAssigned:88,paid:1,pending:13,counts:[69,64,53,48,46,46,46,36,36,36,29,4,4,3,3,2,1]},b:{assigned:68,payAssigned:80,paid:0,pending:18,counts:[64,62,43,43,43,42,42,42,36,36,36,35,35,35,35,35,35,35,35,26,4,2,0,0]}},
+  {key:"th",tab:"泰国",label:"泰国",code:"TH",a:{assigned:29,payAssigned:58,paid:0,pending:2,counts:[27,27,20,19,19,19,19,12,12,12,8,2,2,2,1,0,0]},b:{assigned:32,payAssigned:61,paid:1,pending:10,counts:[32,28,17,17,16,15,14,14,13,13,12,11,11,11,11,10,10,9,9,8,1,1,0,0]}}
  ],
  w5:[
-  makeAbCountry('all','全部','全部国家',null,1544,1892,3,317,[1465,1435,1285,1145,1125,1114,1105,822,822,805,667,168,166,106,97,31,1],1539,1921,3,544,[1465,1413,895,892,855,848,843,834,832,803,716,662,647,639,629,614,610,597,595,370,152,115,30,0]),
-  makeAbCountry('vn','越南','越南','VN',40,98,0,28,[39,38,33,29,29,29,29,14,14,13,13,7,7,4,2,1,0],45,105,0,72,[44,37,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,9,3,2,1,0]),
-  makeAbCountry('kr','韩国','韩国','KR',203,213,0,10,[202,200,172,143,138,137,137,101,101,99,71,20,19,15,13,2,0],227,232,3,40,[226,221,138,138,124,122,121,120,120,114,93,83,80,77,75,66,66,64,64,34,17,14,2,0]),
-  makeAbCountry('sa','沙特','沙特阿拉伯','SA',367,407,0,94,[367,362,347,308,302,297,294,221,221,217,175,32,31,20,19,10,0],368,399,0,214,[366,356,230,229,217,215,214,212,211,205,190,180,176,174,171,171,170,167,165,113,38,37,14,0]),
-  makeAbCountry('my','马来','马来西亚','MY',284,413,1,78,[282,278,250,234,232,231,229,167,167,160,145,52,52,31,31,6,0],297,441,0,106,[296,288,185,185,183,182,181,179,178,172,160,147,143,142,140,137,137,130,130,68,39,22,7,0]),
-  makeAbCountry('id','印尼','印度尼西亚','ID',110,116,0,19,[108,105,98,87,87,87,86,72,72,72,66,8,8,6,5,2,0],102,102,0,26,[102,97,65,65,65,65,65,65,65,64,59,57,57,57,55,54,54,54,54,40,16,13,1,0])
+  {key:"all",tab:"全部",label:"全部国家",a:{assigned:1547,payAssigned:1895,paid:3,pending:318,counts:[1473,1446,1298,1159,1139,1127,1119,836,835,815,675,169,167,107,98,32,1]},b:{assigned:1544,payAssigned:1926,paid:3,pending:561,counts:[1473,1424,905,903,865,858,853,844,842,813,724,669,654,646,636,621,617,603,601,377,155,117,30,0]}},
+  {key:"vn",tab:"越南",label:"越南",code:"VN",a:{assigned:45,payAssigned:110,paid:0,pending:30,counts:[44,43,38,33,33,33,33,17,17,16,16,9,9,4,2,1,0]},b:{assigned:48,payAssigned:116,paid:0,pending:76,counts:[47,40,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,10,3,2,1,0]}},
+  {key:"kr",tab:"韩国",label:"韩国",code:"KR",a:{assigned:238,payAssigned:250,paid:0,pending:10,counts:[237,235,201,165,159,158,158,117,117,113,83,21,20,16,13,2,0]},b:{assigned:257,payAssigned:264,paid:3,pending:41,counts:[255,251,155,155,139,137,136,134,134,128,106,96,93,89,87,78,77,75,75,45,21,18,2,0]}},
+  {key:"sa",tab:"沙特",label:"沙特阿拉伯",code:"SA",a:{assigned:384,payAssigned:426,paid:0,pending:104,counts:[384,380,361,320,314,308,305,228,227,223,180,33,32,21,20,11,0]},b:{assigned:386,payAssigned:422,paid:0,pending:219,counts:[384,375,241,240,228,226,225,223,222,215,198,188,184,182,179,179,178,174,172,117,40,39,14,0]}},
+  {key:"my",tab:"马来",label:"马来西亚",code:"MY",a:{assigned:360,payAssigned:497,paid:1,pending:86,counts:[358,350,314,293,290,288,286,205,205,196,173,63,63,38,38,7,0]},b:{assigned:386,payAssigned:545,paid:0,pending:118,counts:[385,369,235,234,232,231,230,227,226,218,197,183,179,177,174,169,168,160,160,88,45,23,7,0]}},
+  {key:"id",tab:"印尼",label:"印度尼西亚",code:"ID",a:{assigned:128,payAssigned:134,paid:0,pending:19,counts:[126,123,115,103,103,102,101,82,82,82,74,10,10,6,5,2,0]},b:{assigned:115,payAssigned:116,paid:0,pending:28,counts:[115,110,73,73,73,73,73,73,73,71,65,63,63,63,61,60,60,60,60,44,18,13,1,0]}},
+  {key:"th",tab:"泰国",label:"泰国",code:"TH",a:{assigned:228,payAssigned:289,paid:1,pending:42,counts:[228,223,183,168,166,165,164,133,133,132,103,24,24,15,13,6,0]},b:{assigned:210,payAssigned:280,paid:0,pending:52,counts:[210,204,145,145,139,137,135,135,135,129,113,98,94,94,94,94,93,93,93,56,23,17,4,0]}}
  ],
  w6:[
-  makeAbCountry('all','全部','全部国家',null,66,81,0,4,[60,55,51,49,49,49,49,36,36,36,26,3,3,1,1,1,0],81,94,1,11,[77,68,45,44,42,42,42,42,42,40,38,34,33,33,32,31,31,30,30,20,7,3,1,0])
+  {key:"all",tab:"全部",label:"全部国家",a:{assigned:154,payAssigned:179,paid:0,pending:17,counts:[145,140,124,114,114,112,109,81,81,80,60,13,12,5,5,2,0]},b:{assigned:163,payAssigned:188,paid:1,pending:18,counts:[154,146,98,96,93,92,92,91,91,87,82,79,77,76,75,72,72,71,71,46,15,9,3,0]}},
+  {key:"vn",tab:"越南",label:"越南",code:"VN",a:{assigned:1,payAssigned:1,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},b:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}},
+  {key:"kr",tab:"韩国",label:"韩国",code:"KR",a:{assigned:1,payAssigned:1,paid:0,pending:0,counts:[1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0]},b:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}},
+  {key:"sa",tab:"沙特",label:"沙特阿拉伯",code:"SA",a:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},b:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}},
+  {key:"my",tab:"马来",label:"马来西亚",code:"MY",a:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},b:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}},
+  {key:"id",tab:"印尼",label:"印度尼西亚",code:"ID",a:{assigned:0,payAssigned:0,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},b:{assigned:1,payAssigned:1,paid:0,pending:0,counts:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}},
+  {key:"th",tab:"泰国",label:"泰国",code:"TH",a:{assigned:1,payAssigned:1,paid:0,pending:0,counts:[1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0]},b:{assigned:1,payAssigned:1,paid:0,pending:0,counts:[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0]}}
  ]
 };
 let AB_MAIN_COUNTRIES=AB_ALL_COUNTRIES;
@@ -733,7 +734,7 @@ function renderAbMainFlow(key){
 
 // 变现:发起 vs 成功 断层条
 let pay=[
- {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:3695,c:'#c98a12',note:'3,647 PENDING + 43 生产成功 + 4 沙盒 + 1 失败 · 1,886 用户'},
+ {l:'发起支付订单',s:'payment_order 创建 · GA4 checkout_start 埋点',v:3765,c:'#c98a12',note:'3,717 PENDING + 43 生产成功 + 4 沙盒 + 1 失败 · 1,920 用户'},
  {l:'成功付费订单',s:'payment_order status=SUCCESS · 生产',v:43,c:'#b3402a',note:'生产环境 · 权威口径(Apple 22 / Google 21)',hl:true},
  {l:'订阅周期分布',s:'43 笔生产成功订单按 billing_period 分布',v:43,c:'#b3402a',note:'周卡 23 / 月卡 19 / 年卡 1',hl:true},
 ];
@@ -749,7 +750,7 @@ function renderPay(){
 }
 
 // 留存三角:cohort × 第 N 天回访人数(GA4 设备级,活跃=明确前台事件;- = 未到观察期)
-const retAll=[{"d":"07-10","n":1996,"r":[183,75,66,43,45,33,27]},{"d":"07-11","n":1992,"r":[185,87,54,49,35,31,34]},{"d":"07-12","n":1664,"r":[171,90,56,39,48,40,34]},{"d":"07-13","n":1963,"r":[189,88,70,61,43,35,37]},{"d":"07-14","n":2811,"r":[232,145,78,77,77,59,53]},{"d":"07-15","n":2226,"r":[218,120,97,75,60,50,55]},{"d":"07-16","n":2138,"r":[248,160,103,69,56,41,51]},{"d":"07-17","n":1631,"r":[178,100,70,60,39,42,40]},{"d":"07-18","n":1360,"r":[177,72,51,37,43,36,35]},{"d":"07-19","n":1395,"r":[105,59,52,34,35,33,27]},{"d":"07-20","n":633,"r":[102,56,40,24,29,28,13]},{"d":"07-21","n":805,"r":[101,63,44,35,29,19,26]},{"d":"07-22","n":947,"r":[151,86,74,57,48,27,29]},{"d":"07-23","n":841,"r":[152,89,46,43,31,30,28]},{"d":"07-24","n":1070,"r":[148,92,55,36,33,31,28]},{"d":"07-25","n":825,"r":[149,81,56,39,34,28,30]},{"d":"07-26","n":640,"r":[82,37,24,14,16,25,17]},{"d":"07-27","n":591,"r":[68,35,34,19,15,18,23]},{"d":"07-28","n":695,"r":[88,47,39,31,31,28,21]},{"d":"07-29","n":533,"r":[64,40,21,18,21,17,18]},{"d":"07-30","n":265,"r":[31,18,16,12,14,11,4]},{"d":"07-31","n":373,"r":[48,24,22,17,8,10,7]},{"d":"08-01","n":395,"r":[62,29,19,23,14,18,11]},{"d":"08-02","n":329,"r":[40,21,20,10,18,14,9]},{"d":"08-03","n":410,"r":[65,41,27,15,23,17,14]},{"d":"08-04","n":446,"r":[86,48,38,19,21,22,13]},{"d":"08-05","n":529,"r":[86,53,38,31,29,15,14]},{"d":"08-06","n":621,"r":[101,61,46,29,25,20,15]},{"d":"08-07","n":625,"r":[94,52,29,30,18,23,null]},{"d":"08-08","n":597,"r":[104,61,42,25,21,null,null]},{"d":"08-09","n":635,"r":[85,48,33,23,null,null,null]},{"d":"08-10","n":538,"r":[106,50,37,null,null,null,null]},{"d":"08-11","n":621,"r":[103,56,null,null,null,null,null]},{"d":"08-12","n":721,"r":[128,null,null,null,null,null,null]}];
+const retAll=[{"d":"07-10","n":1996,"r":[183,75,66,43,45,33,27]},{"d":"07-11","n":1992,"r":[185,87,54,49,35,31,34]},{"d":"07-12","n":1664,"r":[171,90,56,39,48,40,34]},{"d":"07-13","n":1963,"r":[189,88,70,61,43,35,37]},{"d":"07-14","n":2811,"r":[232,145,78,77,77,59,53]},{"d":"07-15","n":2226,"r":[218,120,97,75,60,50,55]},{"d":"07-16","n":2138,"r":[248,160,103,69,56,41,51]},{"d":"07-17","n":1631,"r":[178,100,70,60,39,42,40]},{"d":"07-18","n":1360,"r":[177,72,51,37,43,36,35]},{"d":"07-19","n":1395,"r":[105,59,52,34,35,33,27]},{"d":"07-20","n":633,"r":[102,56,40,24,29,28,13]},{"d":"07-21","n":805,"r":[101,63,44,35,29,19,26]},{"d":"07-22","n":947,"r":[151,86,74,57,48,27,29]},{"d":"07-23","n":841,"r":[152,89,46,43,31,30,28]},{"d":"07-24","n":1070,"r":[148,92,55,36,33,31,28]},{"d":"07-25","n":825,"r":[149,81,56,39,34,28,30]},{"d":"07-26","n":640,"r":[82,37,24,14,16,25,17]},{"d":"07-27","n":591,"r":[68,35,34,19,15,18,23]},{"d":"07-28","n":695,"r":[88,47,39,31,31,28,21]},{"d":"07-29","n":533,"r":[64,40,21,18,21,17,18]},{"d":"07-30","n":265,"r":[31,18,16,12,14,11,4]},{"d":"07-31","n":373,"r":[48,24,22,17,8,10,7]},{"d":"08-01","n":395,"r":[62,29,19,23,14,18,11]},{"d":"08-02","n":329,"r":[40,21,20,10,18,14,9]},{"d":"08-03","n":410,"r":[65,41,27,15,23,17,14]},{"d":"08-04","n":446,"r":[86,48,38,19,21,22,13]},{"d":"08-05","n":529,"r":[86,53,38,31,29,15,15]},{"d":"08-06","n":621,"r":[101,61,46,29,25,21,15]},{"d":"08-07","n":625,"r":[94,52,29,30,18,24,null]},{"d":"08-08","n":597,"r":[104,61,42,27,19,null,null]},{"d":"08-09","n":635,"r":[85,48,33,23,null,null,null]},{"d":"08-10","n":538,"r":[106,50,38,null,null,null,null]},{"d":"08-11","n":621,"r":[104,55,null,null,null,null,null]},{"d":"08-12","n":726,"r":[132,null,null,null,null,null,null]}];
 let ret=retAll;
 const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-12'],w6:['08-14','08-14']};
 const RETPEAK=20; // 上色标尺:当前前台活跃 D1 峰值约 19%
@@ -802,13 +803,13 @@ const LEVEL_DEFS=[
  {key:'l6',name:'L6',ids:'1614',lesson:'The Mermaid Rescue',stages:[COMMON.warm,COMMON.intro,ST('Free talk · Images','图片自由对话','free_talk_images'),COMMON.video,ST('Decodable reader','分级阅读','decodable_reader_images'),ST('Reading comprehension','阅读理解练习','discourse_practice'),COMMON.sentenceOral,COMMON.chest1,COMMON.chest2,COMMON.photo,COMMON.chest3]}
 ];
 const LEVEL_VALUES={
- all:[[5537,3839,3622,3137,2911,2720,2107,2049,1685,1654,1468,1439,1374,1361,1271,1255],[2983,1962,1905,1586,1500,1206,1159,1139,1015,994,874,859,820,817,776,760],[1231,797,765,664,608,509,494,491,486,442,438,358,354,350,344,342,328,319],[1865,1024,950,733,602,392,368,315,310,307,242,239,235,231,218,216],[1500,832,784,604,530,373,355,353,353,327,318,313,217,206,204,202,178,175],[299,142,128,109,89,36,35,28,18,15,15]],
+ all:[[5563,3865,3648,3162,2934,2741,2122,2065,1700,1669,1483,1453,1390,1377,1286,1270],[2999,1978,1920,1601,1515,1217,1169,1149,1025,1004,881,866,827,824,783,766],[1248,805,773,670,614,516,501,498,493,448,444,363,359,355,349,347,333,324],[1874,1032,958,741,609,396,372,319,314,311,246,243,239,235,222,220],[1510,837,789,606,530,373,355,353,353,327,318,313,217,207,205,203,179,176],[300,143,129,109,89,36,35,28,18,15,15]],
  w1:[[2331,1282,1173,964,868,789,567,542,375,363,308,298,281,277,258,253],[1643,928,895,720,674,525,501,491,404,395,342,332,302,300,281,276],[392,201,183,154,138,106,101,101,100,89,89,63,62,62,60,60,57,57],[713,304,280,203,152,93,88,71,70,69,57,56,55,52,46,46],[517,216,201,150,123,67,64,63,63,55,54,52,35,32,32,31,28,27],[164,54,44,38,26,7,7,4,3,3,3]],
  w2:[[1487,1122,1060,911,844,785,593,583,489,480,424,412,397,395,369,367],[614,411,399,326,312,251,238,232,213,206,174,169,164,164,154,151],[307,207,197,164,146,129,124,123,122,111,110,91,89,87,87,86,83,80],[416,238,218,173,142,97,85,72,72,71,60,57,57,57,56,56],[362,209,199,148,136,94,91,91,91,82,80,78,54,52,52,52,43,43],[64,38,36,30,26,10,10,9,4,4,4]],
  w3:[[798,622,587,515,488,457,359,348,293,289,259,252,239,239,221,220],[345,247,241,203,193,152,148,145,138,137,119,117,113,113,110,109],[197,132,128,113,103,89,86,86,85,78,76,66,64,63,63,63,62,61],[422,254,236,182,159,102,96,83,81,80,59,59,59,59,57,56],[402,242,228,177,155,120,117,116,116,107,101,100,74,71,70,69,63,62],[38,22,21,17,14,6,6,5,3,2,2]],
  w4:[[460,353,342,301,278,260,212,206,186,184,159,157,147,144,134,132],[194,157,152,125,117,100,98,96,92,91,79,77,75,75,71,68],[148,111,106,96,86,71,68,67,66,57,56,48,48,48,47,46,44,41],[142,94,87,65,54,36,35,29,29,29,22,22,22,22,22,22],[103,57,52,41,37,28,26,26,26,25,25,25,13,10,10,10,9,9],[12,8,7,7,7,4,4,3,3,3,3]],
- w5:[[579,460,445,400,375,361,292,286,255,253,233,230,220,217,197,194],[262,227,223,200,191,156,151,149,140,138,125,126,120,120,117,115],[219,151,146,126,119,95,95,94,93,86,86,75,75,75,74,74,68,64],[203,132,124,95,80,52,51,48,47,47,32,32,29,29,27,26],[149,107,104,79,68,54,48,48,48,46,45,45,28,26,26,26,25,24],[29,19,18,15,14,7,6,5,3,2,2]],
- w6:[[31,22,22,22,21,21,16,13,9,9,9,8,7,7,6,6],[19,14,14,14,11,6,6,6,4,4,4,4,4,4,4,3],[16,5,5,4,4,4,4,4,4,4,4,1,1,1,1,1,0,0],[11,6,6,5,4,3,3,2,2,2,1,1,1,1,1,1],[4,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[2,1,1,1,1,0,0,0,0,0,0]]
+ w5:[[581,462,447,403,377,363,293,287,257,255,235,232,222,219,198,195],[263,228,224,201,192,156,150,148,139,137,125,124,120,120,117,115],[220,152,147,127,120,96,96,95,94,87,87,76,76,76,75,75,69,65],[202,132,124,95,80,52,51,48,47,47,32,32,29,29,27,26],[150,108,105,80,68,54,48,48,48,46,45,45,28,26,26,26,25,24],[29,19,18,15,14,7,6,5,3,2,2]],
+ w6:[[58,47,47,44,42,40,30,28,23,23,23,21,21,21,18,18],[36,29,28,28,25,17,17,17,14,14,12,11,11,11,11,9],[34,12,11,9,9,8,8,8,8,8,8,5,5,5,5,5,4,4],[22,14,14,13,11,7,7,6,6,6,5,5,5,5,5,5],[13,6,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[3,2,2,1,1,0,0,0,0,0,0]]
 };
 const buildLevels=periodKey=>LEVEL_DEFS.map((level,i)=>({...level,v:LEVEL_VALUES[periodKey][i]}));
 let levels=buildLevels('all');
@@ -885,13 +886,7 @@ function applyPeriod(key,preserveSubfilters=false){
  document.getElementById('periodStatus').textContent=`${T(period.statusEn,period.statusZh)}; ${T('all dashboard data has been updated. All times are UTC.','页面全部数据已切换。时间均为 UTC。')}`;
  document.getElementById('dashboardContext').innerHTML=`${T('Reporting window','统计窗口')} <b>${period.label} UTC</b> · ${T('First opens in period','期内启动')} <b>${fmt(j.first_open)}</b> · ${T('GA4 and mapped business data both exclude','GA4 与可映射业务数据均排除')} <b>user_type=test</b>`;
  renderDiagnosticSection();
- journey=[
-  {l:T('First open','首次启动'),s:'first_open',v:j.first_open,c:'#1d5c3f'},
-  {l:T('Sign-up success','注册成功'),s:'signup_result · success',v:j.signup_success,c:'#2e8b57',cliff:true},
-  {l:T('First lesson start','首课开始'),s:T('class_lesson_start · 8 specified course IDs','class_lesson_start · 8 个指定课程 ID'),v:j.lesson_start,c:'#c98a12'},
-  {l:T('First lesson complete','首课完成'),s:T('Compatible legacy/new completion events · Specified first lesson','新旧完课事件兼容 · 指定首课'),v:j.lesson_complete,c:'#d9641e'}
- ];
- renderJourney();renderCoreModules(data);
+ renderJourneyForDiagnosticSelection();renderCoreModules(data);
  levels=buildLevels(key);selectedLevelIndex=Math.min(selectedLevelIndex,levels.length-1);renderLevelTabs();
  renderRetention(data,period);renderPayment(data,period);
  AB_MAIN_COUNTRIES=key==='all'?AB_ALL_COUNTRIES:(AB_WEEKLY[key]||[]);

@@ -2,11 +2,12 @@
 -- A weekly slice means: devices first stably assigned during the interval,
 -- with funnel events and attributed orders observed through the interval end.
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 09:01:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 15:08:00+00';
 
 WITH weeks AS (
   SELECT * FROM UNNEST([
-    STRUCT('w4' AS week_key, TIMESTAMP '2026-08-01 00:00:00+00' AS start_ts, TIMESTAMP '2026-08-07 00:00:00+00' AS end_ts),
+    STRUCT('all' AS week_key, experiment_start AS start_ts, cutoff AS end_ts),
+    ('w4', TIMESTAMP '2026-08-01 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
     ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
     ('w6', TIMESTAMP '2026-08-14 00:00:00+00', cutoff)
   ])
@@ -14,11 +15,11 @@ WITH weeks AS (
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260812'
+  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260813'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260813' AND '20260814'
+  WHERE _TABLE_SUFFIX = '20260814'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
@@ -178,7 +179,7 @@ device_steps AS (
 ),
 scopes AS (
   SELECT week_key, platform, user_pseudo_id, experiment_group,
-    CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' ELSE 'other' END AS country_key,
+    CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' WHEN 'Thailand' THEN 'th' ELSE 'other' END AS country_key,
     step_order, reached, pending
   FROM device_steps
 ),
@@ -196,7 +197,7 @@ flow_json AS (
 ),
 pay_rollup AS (
   SELECT week_key,
-    CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' ELSE 'other' END AS country_key,
+    CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' WHEN 'Thailand' THEN 'th' ELSE 'other' END AS country_key,
     experiment_group, COUNT(DISTINCT CONCAT(platform,':',user_pseudo_id)) AS pay_assigned, COUNTIF(paid) AS paid, SUM(pending) AS pending
   FROM flags GROUP BY 1,2,3
   UNION ALL
@@ -210,5 +211,5 @@ result_rows AS (
 )
 SELECT week_key, TO_JSON_STRING(ARRAY_AGG(STRUCT(country_key,experiment_group,assigned,counts,pay_assigned,paid,pending) ORDER BY country_key,experiment_group)) AS payload
 FROM result_rows
-WHERE country_key IN ('all','vn','kr','sa','my','id')
+WHERE country_key IN ('all','vn','kr','sa','my','id','th')
 GROUP BY week_key ORDER BY week_key;
