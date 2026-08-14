@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title data-zh="Dino AI · 产品回顾 2026.08">Dino AI · Product Review 2026.08</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&amp;family=Noto+Sans+SC:wght@400;500;700&amp;family=Noto+Serif+SC:wght@600;700;900&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f1e7;--paper-deep:#efe7d6;--card:#fffdf8;
+  --ink:#1f2a24;--ink-soft:#4c5a52;--ink-faint:#8a958d;
+  --green:#1d5c3f;--green-bright:#2e8b57;
+  --orange:#d9641e;--orange-soft:#f3e0cf;
+  --red:#b3402a;--red-soft:#f8e8e1;--yellow:#c98a12;--yellow-soft:#f6ecd2;
+  --line:#d8cfba;--shadow:0 8px 30px rgba(31,42,36,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{
+  color:var(--ink);background:var(--paper);font-family:'Noto Sans SC',sans-serif;
+  font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(900px 460px at 102% -4%,rgba(217,100,30,.08),transparent 62%),radial-gradient(900px 520px at -10% 108%,rgba(29,92,63,.07),transparent 58%);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.34;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+a{color:inherit}
+.wrap{width:min(1160px,calc(100% - 48px));margin:0 auto}
+.progress{position:fixed;top:0;left:0;z-index:120;width:0;height:3px;background:var(--orange);box-shadow:0 0 12px rgba(217,100,30,.45)}
+
+/* language toggle — matches the milestone page */
+.lang-toggle{
+  position:fixed;top:14px;right:16px;z-index:1100;display:flex;gap:2px;
+  background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:9999px;
+  padding:3px;box-shadow:0 6px 20px rgba(31,42,36,.14);backdrop-filter:blur(6px)
+}
+.lang-toggle button{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:12.5px;font-weight:600;letter-spacing:.04em;
+  color:var(--ink-soft);background:transparent;border:none;cursor:pointer;
+  padding:5px 13px;border-radius:9999px;line-height:1;transition:all .2s
+}
+.lang-toggle button:hover{color:var(--green)}
+.lang-toggle button.on{background:var(--green);color:#fff}
+
+/* hero */
+header{padding:64px 0 52px;border-bottom:3px double var(--line)}
+.kicker{font-family:'Fraunces',serif;font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--green);font-weight:600;display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.kicker::before{content:"";width:38px;height:1px;background:var(--green)}
+h1{font-family:'Noto Serif SC',serif;font-weight:900;font-size:clamp(38px,6vw,68px);line-height:1.08;letter-spacing:-.02em;max-width:970px}
+h1 em{font-style:normal;color:var(--orange)}
+.hero-lede{margin-top:24px;font-family:'Noto Serif SC',serif;font-size:clamp(18px,2.25vw,27px);line-height:1.65;font-weight:700;max-width:930px}
+.hero-lede mark{background:linear-gradient(transparent 62%,rgba(217,100,30,.28) 62%);color:inherit;padding:0 2px}
+.hero-sub{margin-top:16px;color:var(--ink-soft);max-width:820px;font-size:14.5px}
+.meta{display:flex;gap:10px 22px;flex-wrap:wrap;margin-top:28px;padding-top:20px;border-top:1px dashed var(--line);color:var(--ink-faint);font-size:11.5px}
+.meta b{color:var(--ink-soft);font-weight:600}
+
+.verdict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+.verdict{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--green);border-radius:10px;padding:18px 20px;box-shadow:0 2px 12px rgba(31,42,36,.04)}
+.verdict.partial{border-left-color:var(--yellow)}
+.verdict.risk{border-left-color:var(--red)}
+.verdict .label{font-size:11px;color:var(--ink-faint);letter-spacing:.12em;margin-bottom:7px}
+.verdict h3{font-family:'Noto Serif SC',serif;font-size:20px;line-height:1.3;margin-bottom:8px}
+.verdict p{font-size:12.5px;color:var(--ink-soft);line-height:1.65}
+
+/* general */
+main section{padding:70px 0;border-bottom:1px solid var(--line)}
+.section-head{display:grid;grid-template-columns:170px 1fr;gap:30px;margin-bottom:28px}
+.section-no{font-family:'Fraunces',serif;color:var(--orange);font-size:13px;letter-spacing:.18em;text-transform:uppercase;padding-top:7px}
+h2{font-family:'Noto Serif SC',serif;font-size:clamp(28px,3.8vw,43px);font-weight:900;line-height:1.2}
+.section-desc{color:var(--ink-soft);font-size:14px;max-width:760px;margin-top:9px}
+.section-note{font-size:11px;color:var(--ink-faint);margin-top:8px}
+.eyebrow{font-family:'Fraunces','Noto Serif SC',serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:0 2px 14px rgba(31,42,36,.04)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .65s ease,transform .65s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* scorecard */
+.score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.score{min-height:140px;padding:18px 16px;border-top:4px solid var(--green)}
+.score.warn{border-top-color:var(--red)}
+.score.mid{border-top-color:var(--yellow)}
+.score .s-label{font-size:11px;color:var(--ink-faint);min-height:38px;line-height:1.45}
+.score .s-value{font-family:'Fraunces',serif;font-size:31px;line-height:1;font-weight:900;margin-top:8px}
+.score.warn .s-value{color:var(--red)}
+.score .s-unit{font-size:13px;color:var(--ink-soft);font-weight:600}
+.score .s-note{font-size:10.5px;color:var(--ink-faint);line-height:1.45;margin-top:9px}
+
+.truth{margin-top:18px;padding:18px 22px;border:1px dashed var(--red);background:var(--red-soft);border-radius:10px;display:grid;grid-template-columns:160px 1fr;gap:22px}
+.truth strong{font-family:'Noto Serif SC',serif;color:var(--red);font-size:18px}
+.truth p{font-size:13px;color:var(--ink-soft)}
+
+/* map */
+.product-map{padding:24px}
+.map-row{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;position:relative}
+.map-row::before{content:"";position:absolute;left:8%;right:8%;top:37px;border-top:1px dashed var(--line);z-index:0}
+.map-stage{position:relative;z-index:1}
+.map-index{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--green);color:#fff;font:700 13px 'Fraunces',serif;box-shadow:0 0 0 7px var(--card);margin:0 auto 14px}
+.map-stage:nth-child(4) .map-index{background:var(--orange)}
+.map-box{background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:15px 16px;min-height:158px}
+.map-box h3{font-family:'Noto Serif SC',serif;font-size:17px;margin-bottom:8px;text-align:center}
+.map-box ul{list-style:none}
+.map-box li{position:relative;padding:3px 0 3px 13px;color:var(--ink-soft);font-size:12px}
+.map-box li::before{content:"◆";position:absolute;left:0;top:5px;color:var(--green-bright);font-size:6px}
+.platform{margin-top:18px;padding:15px 18px;border:1px solid var(--line);border-radius:9px;background:var(--paper-deep);display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.platform strong{font-family:'Noto Serif SC',serif;color:var(--green);font-size:15px}
+.platform span{font-size:11.5px;color:var(--ink-soft);padding:3px 9px;border-radius:99px;background:var(--card);border:1px solid var(--line)}
+
+/* version timeline */
+.timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:0;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--card)}
+.era{padding:19px 17px;min-height:190px;border-right:1px solid var(--line);position:relative}
+.era:last-child{border-right:0}
+.era::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--green)}
+.era:nth-child(4)::before,.era:nth-child(5)::before{background:var(--yellow)}
+.era:nth-child(6)::before{background:var(--orange)}
+.era .date{font-family:'Fraunces',serif;font-size:12px;color:var(--ink-faint);margin-bottom:8px}
+.era h3{font-family:'Noto Serif SC',serif;font-size:16px;line-height:1.35;margin-bottom:8px}
+.era p{font-size:11.5px;color:var(--ink-soft);line-height:1.65}
+.era .versions{display:block;margin-top:11px;font-family:'Fraunces',serif;font-size:10.5px;color:var(--green);font-weight:600}
+.brand-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.brand-card{padding:18px 20px;border-left:5px solid var(--green)}
+.brand-card.alt{border-left-color:var(--orange)}
+.brand-card code{display:block;font:600 11px 'Fraunces',monospace;color:var(--ink-faint);margin-bottom:5px}
+.brand-card strong{font-family:'Noto Serif SC',serif;font-size:17px}
+.brand-card p{font-size:12px;color:var(--ink-soft);margin-top:7px}
+
+/* charts and evidence */
+.evidence-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}
+.funnel-card,.trend-card{padding:22px}
+.card-title{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:18px}
+.card-title h3{font-family:'Noto Serif SC',serif;font-size:19px}
+.card-title p{font-size:10.5px;color:var(--ink-faint);text-align:right}
+.funnel{display:flex;flex-direction:column;gap:10px}
+.f-row{display:grid;grid-template-columns:98px 1fr 110px;align-items:center;gap:11px}
+.f-label{text-align:right;font-size:12px;color:var(--ink-soft)}
+.f-track{height:34px;border-radius:6px;background:var(--paper-deep);overflow:hidden}
+.f-bar{height:100%;display:flex;align-items:center;padding-left:10px;border-radius:6px;background:var(--green);color:#fff;font:700 13px 'Fraunces',serif;min-width:42px}
+.f-row:nth-child(2) .f-bar{background:var(--green-bright)}
+.f-row:nth-child(3) .f-bar{background:var(--yellow)}
+.f-row:nth-child(4) .f-bar{background:var(--orange)}
+.f-rate{font-size:11px;color:var(--ink-faint)}
+.f-rate b{display:block;font:700 14px 'Fraunces',serif;color:var(--ink)}
+.f-row:last-child .f-rate b{color:var(--red)}
+
+.trend-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;font-size:10.5px;color:var(--ink-soft)}
+.trend-legend span{display:flex;align-items:center;gap:6px}
+.trend-legend i{width:18px;height:3px;border-radius:2px;background:var(--orange)}
+.trend-legend span:nth-child(2) i{background:var(--green)}
+.trend-legend span:nth-child(3) i{background:var(--yellow)}
+.trend-svg{display:block;width:100%;height:auto}
+.chart-grid{stroke:#dfd6c3;stroke-width:1;stroke-dasharray:3 5}
+.chart-axis{font:10px 'Fraunces',serif;fill:var(--ink-faint)}
+.chart-line{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.chart-point{stroke:var(--card);stroke-width:2}
+.chart-label{font:700 8.5px 'Fraunces',serif;paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}
+.chart-label.orange{fill:var(--orange)}
+.chart-label.green{fill:var(--green)}
+.chart-label.yellow{fill:#9b6807}
+.trend-callout{margin-top:12px;padding:11px 13px;background:var(--yellow-soft);border-radius:7px;color:var(--ink-soft);font-size:11.5px}
+
+.retention-card{margin-top:16px;padding:22px}
+.retention-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.ret-item{padding:16px;border:1px solid var(--line);border-radius:9px;background:var(--paper)}
+.ret-item .r-label{font-size:11px;color:var(--ink-soft);min-height:36px}
+.ret-item .r-value{font:900 31px 'Fraunces',serif;margin:7px 0;color:var(--green)}
+.ret-item:nth-child(2) .r-value{color:var(--yellow)}
+.ret-item:nth-child(3) .r-value{color:var(--red)}
+.r-track{height:7px;background:var(--paper-deep);border-radius:99px;overflow:hidden}
+.r-track span{display:block;height:100%;border-radius:99px;background:currentColor}
+.ret-item small{display:block;margin-top:9px;color:var(--ink-faint);font-size:10px}
+
+.module-payment{margin-top:16px}
+.module-card,.payment-card{padding:22px}
+.coverage-list{display:flex;flex-direction:column;gap:10px}
+.coverage-item{display:grid;grid-template-columns:78px 64px 1fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);font-size:11.5px}
+.coverage-item:last-child{border-bottom:0}
+.coverage-item strong{font-family:'Noto Serif SC',serif;font-size:12.5px}
+.coverage-item span{padding:3px 7px;border-radius:99px;background:#e4efe7;color:var(--green);font-size:10px;text-align:center;white-space:nowrap}
+.coverage-item span.partial{background:var(--yellow-soft);color:#8b600d}
+.coverage-item span.missing{background:var(--red-soft);color:var(--red)}
+.coverage-item p{color:var(--ink-soft);line-height:1.55}
+.module-bars{display:flex;flex-direction:column;gap:11px}
+.m-row{display:grid;grid-template-columns:65px 1fr 52px;gap:10px;align-items:center;font-size:12px}
+.m-track{height:12px;border-radius:99px;background:var(--paper-deep);overflow:hidden}
+.m-track span{display:block;height:100%;border-radius:99px;background:var(--green)}
+.m-row:nth-child(2) span{background:var(--green-bright)}
+.m-row:nth-child(3) span{background:var(--orange)}
+.m-row:nth-child(4) span{background:var(--yellow)}
+.m-val{text-align:right;font:700 12px 'Fraunces',serif}
+.payment-gap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;margin-top:8px}
+.pay-side{padding:14px;border-radius:8px;background:var(--paper-deep);text-align:center}
+.pay-side.danger{background:var(--red-soft)}
+.pay-side b{display:block;font:900 31px 'Fraunces',serif;line-height:1}
+.pay-side.danger b{color:var(--red)}
+.pay-side span{font-size:10.5px;color:var(--ink-soft)}
+.pay-arrow{font:700 24px 'Fraunces',serif;color:var(--orange)}
+.payment-card .small-note{font-size:10.5px;color:var(--ink-faint);margin-top:12px}
+
+/* success failure */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.review-col{padding:24px}
+.review-col.success{border-top:5px solid var(--green)}
+.review-col.failure{border-top:5px solid var(--red)}
+.review-col h3{font-family:'Noto Serif SC',serif;font-size:23px;margin-bottom:18px}
+.review-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.review-list li{position:relative;padding-left:34px}
+.review-list li::before{content:"✓";position:absolute;left:0;top:1px;width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#e4efe7;color:var(--green);font-weight:700}
+.failure .review-list li::before{content:"!";background:var(--red-soft);color:var(--red)}
+.review-list strong{display:block;font-size:13.5px;margin-bottom:3px}
+.review-list p{font-size:11.5px;color:var(--ink-soft);line-height:1.65}
+.governance{margin-top:16px;padding:18px 22px;background:var(--yellow-soft);border:1px dashed var(--yellow);border-radius:10px;display:flex;gap:26px;align-items:center}
+.governance .g-num{font:900 34px 'Fraunces',serif;color:var(--yellow);white-space:nowrap}
+.governance p{font-size:12px;color:var(--ink-soft)}
+
+/* opportunities */
+.opps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:opp}
+.opp{counter-increment:opp;padding:25px 23px;position:relative;overflow:hidden;border-top:5px solid var(--green)}
+.opp:nth-child(2){border-top-color:var(--yellow)}
+.opp:nth-child(3){border-top-color:var(--orange)}
+.opp::after{content:counter(opp);position:absolute;right:-2px;top:-24px;font:900 110px 'Fraunces',serif;color:rgba(29,92,63,.055);line-height:1}
+.opp .opp-kicker{font:600 11px 'Fraunces',serif;color:var(--green);letter-spacing:.14em;text-transform:uppercase}
+.opp:nth-child(2) .opp-kicker{color:var(--yellow)}
+.opp:nth-child(3) .opp-kicker{color:var(--orange)}
+.opp h3{font-family:'Noto Serif SC',serif;font-size:21px;line-height:1.42;margin:10px 0 11px;position:relative;z-index:1}
+.opp .proof{font-size:11.5px;color:var(--ink-soft);padding:10px 12px;border-radius:7px;background:var(--paper);margin-bottom:13px;position:relative;z-index:1}
+.opp ul{list-style:none;position:relative;z-index:1}
+.opp li{position:relative;padding:4px 0 4px 14px;font-size:11.5px;color:var(--ink-soft)}
+.opp li::before{content:"◆";position:absolute;left:0;top:7px;color:var(--green-bright);font-size:6px}
+.opp .target{margin-top:15px;padding-top:12px;border-top:1px dashed var(--line);font-size:11px;color:var(--ink-faint);position:relative;z-index:1}
+.opp .target b{color:var(--ink)}
+
+/* roadmap */
+.roadmap{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.roadmap::before{content:"";position:absolute;left:7%;right:7%;top:31px;height:2px;background:var(--line)}
+.month{position:relative;padding-top:58px}
+.month-dot{position:absolute;top:20px;left:20px;width:23px;height:23px;border-radius:50%;background:var(--green);border:5px solid var(--paper);box-shadow:0 0 0 1px var(--green);z-index:2}
+.month:nth-child(2) .month-dot{background:var(--green-bright);box-shadow:0 0 0 1px var(--green-bright)}
+.month:nth-child(3) .month-dot{background:var(--yellow);box-shadow:0 0 0 1px var(--yellow)}
+.month:nth-child(4) .month-dot{background:var(--orange);box-shadow:0 0 0 1px var(--orange)}
+.month-card{height:100%;padding:18px 17px;border-top:4px solid var(--green)}
+.month:nth-child(2) .month-card{border-top-color:var(--green-bright)}
+.month:nth-child(3) .month-card{border-top-color:var(--yellow)}
+.month:nth-child(4) .month-card{border-top-color:var(--orange)}
+.month-card .month-name{font:900 22px 'Fraunces',serif;color:var(--ink)}
+.month-card h3{font-family:'Noto Serif SC',serif;font-size:17px;line-height:1.35;margin:5px 0 10px}
+.month-card p{font-size:11px;color:var(--ink-soft);line-height:1.65}
+.milestone-metrics{margin-top:13px;padding-top:11px;border-top:1px dashed var(--line)}
+.milestone-metrics b{display:block;color:var(--green);font-size:10.5px;margin-bottom:5px}
+.milestone-metrics ul{list-style:none}
+.milestone-metrics li{position:relative;padding:2px 0 2px 12px;font-size:10.5px;color:var(--ink-faint);line-height:1.5}
+.milestone-metrics li::before{content:"◆";position:absolute;left:0;top:5px;color:var(--yellow);font-size:5px}
+
+.roadmap-note{margin-top:18px;padding:17px 20px;border:1px dashed var(--yellow);background:var(--yellow-soft);border-radius:10px;display:grid;grid-template-columns:170px 1fr;gap:18px}
+.roadmap-note strong{font-family:'Noto Serif SC',serif;color:#8b600d}
+.roadmap-note p{font-size:12px;color:var(--ink-soft)}
+
+/* decisions and sources */
+.decisions{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;counter-reset:decision}
+.decision{counter-increment:decision;padding:20px 18px;min-height:178px}
+.decision::before{content:"0" counter(decision);display:block;font:900 23px 'Fraunces',serif;color:var(--orange);margin-bottom:10px}
+.decision h3{font-family:'Noto Serif SC',serif;font-size:16px;margin-bottom:7px}
+.decision p{font-size:11.5px;color:var(--ink-soft)}
+
+.sources{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.source{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;background:var(--card);border:1px solid var(--line);border-radius:8px;text-decoration:none;transition:.18s}
+.source:hover{border-color:var(--green);transform:translateY(-1px)}
+.source span{font-size:12px}
+.source i{font-style:normal;color:var(--green);font:600 12px 'Fraunces',serif}
+.boundaries{margin-top:18px;padding:18px 20px;background:var(--paper-deep);border-radius:9px}
+.boundaries h3{font-family:'Noto Serif SC',serif;font-size:16px;margin-bottom:8px}
+.boundaries ul{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;list-style:none}
+.boundaries li{position:relative;padding-left:14px;font-size:11.5px;color:var(--ink-soft)}
+.boundaries li::before{content:"◆";position:absolute;left:0;top:6px;color:var(--yellow);font-size:6px}
+
+footer{padding:34px 0 54px;color:var(--ink-faint);font-size:11px}
+.footer-row{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}
+.footer-mark{font-family:'Noto Serif SC',serif;font-size:15px;color:var(--ink-soft)}
+
+@media(max-width:1040px){
+  .score-grid{grid-template-columns:repeat(2,1fr)}
+  .timeline{grid-template-columns:repeat(3,1fr)}.era:nth-child(3){border-right:0}.era:nth-child(-n+3){border-bottom:1px solid var(--line)}
+  .roadmap{grid-template-columns:repeat(2,1fr)}.roadmap::before{display:none}.month{padding-top:0}.month-dot{display:none}.month:nth-child(3),.month:nth-child(4){margin-top:3px}
+  .decisions{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:820px){
+  .wrap{width:min(100% - 32px,1160px)}
+  header{padding-top:52px}.verdict-grid,.opps{grid-template-columns:1fr}
+  .section-head{grid-template-columns:1fr;gap:4px}.section-no{padding-top:0}
+  .map-row{grid-template-columns:1fr 1fr}.map-row::before{display:none}
+  .evidence-grid,.module-payment,.two-col{grid-template-columns:1fr}
+  .truth,.roadmap-note{grid-template-columns:1fr;gap:7px}
+  .brand-split{grid-template-columns:1fr}
+  .sources{grid-template-columns:1fr}.boundaries ul{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  body{font-size:13px}.wrap{width:min(100% - 24px,1160px)}
+  h1{font-size:36px}.hero-lede{font-size:18px}
+  .score-grid,.timeline,.map-row,.retention-grid,.roadmap,.decisions{grid-template-columns:1fr}
+  .coverage-item{grid-template-columns:1fr auto}.coverage-item p{grid-column:1/-1}
+  .era{border-right:0!important;border-bottom:1px solid var(--line)!important}.era:last-child{border-bottom:0!important}
+  .f-row{grid-template-columns:80px 1fr}.f-rate{grid-column:2;text-align:right}.f-label{text-align:left}
+  .card-title{display:block}.card-title p{text-align:left;margin-top:4px}
+  .governance{display:block}.governance .g-num{margin-bottom:5px}
+  .footer-row{display:block}.footer-row p{margin-top:8px}
+  .lang-toggle{top:10px;right:10px}.lang-toggle button{padding:5px 11px;font-size:12px}
+}
+@media print{
+  @page{size:A4;margin:11mm}
+  body{background:#fff;font-size:10px}.lang-toggle,.progress,body::before{display:none!important}
+  .wrap{width:100%;max-width:none}.reveal{opacity:1!important;transform:none!important}
+  header{padding:20px 0}main section{padding:25px 0;break-inside:auto}
+  .card,.verdict,.opp,.month-card,.review-col,.source{box-shadow:none;break-inside:avoid}
+  .score-grid{grid-template-columns:repeat(4,1fr)}.score{min-height:0}
+  .timeline{grid-template-columns:repeat(3,1fr)}.map-box{min-height:0}
+  .evidence-grid,.two-col,.module-payment{grid-template-columns:1fr 1fr}
+  .opps{grid-template-columns:repeat(3,1fr)}.roadmap{grid-template-columns:repeat(4,1fr)}.roadmap::before{display:block}.month{padding-top:48px}.month-dot{display:block}
+  a{text-decoration:none}.source i{display:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+  <button type="button" data-lang="en" class="on">EN</button>
+  <button type="button" data-lang="zh">中</button>
+</div>
+
+<header id="top">
+  <div class="wrap">
+    <div class="kicker" data-zh="产品回顾 · 2026.08">Product Review · 2026.08</div>
+    <h1 data-zh="Dino AI<em>产品回顾</em>">Dino AI <em>Product Review</em></h1>
+    <p class="hero-lede" data-zh="交付能力已经成立，体验指标正在改善；但<mark>学习价值—留存—付费</mark>的结果闭环还没有被证明。">Delivery capability is established and experience metrics are improving, but the <mark>learning value—retention—payment</mark> loop has not yet been proven.</p>
+    <div class="meta">
+      <span data-zh="<b>汇报日期</b> 2026-08-14"><b>Review date</b> 2026-08-14</span>
+      <span data-zh="<b>可审计版本期</b> 2026-05-29—08-14"><b>Auditable release period</b> 2026-05-29—08-14</span>
+      <span data-zh="<b>数据截点</b> GA4 / 支付 2026-08-14 15:08 UTC"><b>Data cutoff</b> GA4 / payment 2026-08-14 15:08 UTC</span>
+      <span data-zh="<b>主产品</b> com.prime.dino.english"><b>Primary product</b> com.prime.dino.english</span>
+    </div>
+    <div class="verdict-grid">
+      <article class="verdict">
+        <div class="label" data-zh="交付">DELIVERY</div>
+        <h3 data-zh="交付成功">Delivery succeeded</h3>
+        <p data-zh="约 11 周形成完整产品面、全球化能力和数据基础，团队具备多线并行落地能力。">In about 11 weeks, the team built a complete product surface, global capabilities, and a data foundation while shipping several workstreams in parallel.</p>
+      </article>
+      <article class="verdict partial">
+        <div class="label" data-zh="体验">EXPERIENCE</div>
+        <h3 data-zh="体验部分成功">Experience partially succeeded</h3>
+        <p data-zh="完整周首课完课率与 D1 持续改善，但流量、版本和路径同时变化，不能直接归因。">First-lesson completion and D1 improved across complete weeks, although traffic, releases, and journeys changed together.</p>
+      </article>
+      <article class="verdict risk">
+        <div class="label" data-zh="结果闭环">BUSINESS LOOP</div>
+        <h3 data-zh="结果闭环未成立">The outcome loop is not yet established</h3>
+        <p data-zh="首启到完课仍低，持续学习尚未形成，付费与续费价值仍待验证。">First open to lesson completion remains low, continued learning is not yet habitual, and payment and renewal value still need validation.</p>
+      </article>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section id="overview">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="01 · 回顾">01 · Review</div>
+        <div><h2 data-zh="我们做了什么">What we built</h2><p class="section-desc" data-zh="从迭代规模、累计用户、学习结果和商业结果，看过去半年的产品进展。">A view of the past six months through release cadence, cumulative users, learning outcomes, and commercial outcomes.</p></div>
+      </div>
+      <div class="score-grid reveal">
+        <article class="score card"><div class="s-label" data-zh="发布迭代版本数">Release iterations</div><div class="s-value">12</div><div class="s-note" data-zh="2026-05-29—08-13 · 约 11 周">2026-05-29—08-13 · about 11 weeks</div></article>
+        <article class="score card"><div class="s-label" data-zh="累计用户数">Cumulative users</div><div class="s-value">18,197</div><div class="s-note" data-zh="生产正常账号 · 排除测试">Production accounts · test users excluded</div></article>
+        <article class="score mid card"><div class="s-label" data-zh="完整周首课完课率">Complete-week first-lesson completion</div><div class="s-value">31.5<span class="s-unit">%</span></div><div class="s-note" data-zh="最新完整周">Latest complete week</div></article>
+        <article class="score warn card"><div class="s-label" data-zh="生产成功订单">Successful production orders</div><div class="s-value">43</div><div class="s-note" data-zh="App 内总收入约 US$1.43K">Approx. US$1.43K gross in-app revenue</div></article>
+      </div>
+      <div class="truth reveal">
+        <strong data-zh="一句话判断">In one sentence</strong>
+        <p data-zh="团队已经证明“能快速做出完整产品”，下一阶段必须证明“孩子真的学完、愿意回来，家长看懂价值并顺利付费”。路线图应从功能扩张切换为结果攻坚。">The team has proven it can build a complete product quickly. The next stage must prove that children complete lessons and return, while parents understand the value and can pay smoothly.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="map">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="02 · 产品地图">02 · Product Map</div>
+        <div><h2 data-zh="产品地图：从一个进课入口，扩成完整学习与商业系统">Product map: from a lesson entry point to a complete learning and commercial system</h2><p class="section-desc" data-zh="过去的主要成果是能力面搭建。现在的问题不是“缺模块”，而是模块之间尚未共同服务同一个学习结果。">The main achievement was building the capability surface. The next challenge is to make every module serve the same learning outcome.</p></div>
+      </div>
+      <div class="product-map card reveal">
+        <div class="map-row">
+          <div class="map-stage"><div class="map-index">1</div><div class="map-box"><h3 data-zh="获客与市场">Acquisition &amp; market</h3><ul><li data-zh="多市场 Landing Page">Multi-market landing pages</li><li>AppsFlyer / promo_code</li><li data-zh="CRM 与人工咨询">CRM &amp; human consultation</li><li data-zh="本地登录与投放">Local login &amp; campaigns</li></ul></div></div>
+          <div class="map-stage"><div class="map-index">2</div><div class="map-box"><h3 data-zh="首次价值传递">First-value delivery</h3><ul><li data-zh="首启价值页与 Onboarding">First-open value page &amp; onboarding</li><li data-zh="模糊定级与选老师">Initial placement &amp; teacher selection</li><li data-zh="体验课与学习报告">Trial lessons &amp; learning reports</li><li data-zh="学习计划">Learning plan</li></ul></div></div>
+          <div class="map-stage"><div class="map-index">3</div><div class="map-box"><h3 data-zh="持续学习闭环">Continued-learning loop</h3><ul><li data-zh="课程学习与课堂互动">Course learning &amp; classroom interaction</li><li data-zh="Dino 对话与任务引导">Dino chat &amp; task guidance</li><li data-zh="Explore 听说读写">Explore listening, speaking, reading &amp; writing</li><li data-zh="Play、金币、签到与 Push">Play, coins, check-ins &amp; push</li></ul></div></div>
+          <div class="map-stage"><div class="map-index">4</div><div class="map-box"><h3 data-zh="家长服务与商业转化">Parent service &amp; conversion</h3><ul><li data-zh="Paywall 与套餐">Paywall &amp; plans</li><li data-zh="折扣与取消挽留">Discounts &amp; cancellation retention</li><li data-zh="国家商品配置">Country-level product configuration</li><li data-zh="本地支付与销售承接">Local payment &amp; sales follow-up</li></ul></div></div>
+        </div>
+        <div class="platform"><strong data-zh="平台与治理">Platform &amp; operations</strong><span>Prompt Forge</span><span data-zh="监课 / 视频标注">Lesson monitoring / video annotation</span><span data-zh="CRM 后台">CRM admin</span><span>GA4 BigQuery</span><span>PostHog</span></div>
+      </div>
+
+      <div class="timeline reveal" style="margin-top:18px">
+        <article class="era"><div class="date">05/29—06/09</div><h3 data-zh="从 0 到 1">From 0 to 1</h3><p data-zh="上线、登录、选老师、课程首页与进课。">Launch, login, teacher selection, class home, and lesson entry.</p><span class="versions">V1.0.0 · V1.1.0</span></article>
+        <article class="era"><div class="date">06/24—06/30</div><h3 data-zh="商业化 MVP">Monetization MVP</h3><p data-zh="Onboarding、定级、体验课、报告、学习计划、Paywall。">Onboarding, placement, trial lessons, reports, learning plan, and paywall.</p><span class="versions">V1.2.0 · V1.3.0</span></article>
+        <article class="era"><div class="date">07/06—07/09</div><h3 data-zh="基建能力补齐">Foundation capabilities</h3><p data-zh="补齐内容生成、投放归因、本地登录、监课与课程标注等基础能力。">Completed core infrastructure for content generation, campaign attribution, local login, lesson monitoring, and course annotation.</p><span class="versions">V1.3.1 · V1.3.2</span></article>
+        <article class="era"><div class="date">07/16—07/17</div><h3 data-zh="核心链路补齐">Core journey completion</h3><p data-zh="多登录方式解决注册问题，Dino 引导帮助新用户上手进课，更多支付触点承接付费。">More login methods addressed registration friction, Dino guidance helped newcomers enter lessons, and additional payment touchpoints supported conversion.</p><span class="versions">V1.4.0 · V1.4.1</span></article>
+        <article class="era"><div class="date">07/29</div><h3 data-zh="转化链路优化">Conversion journey optimization</h3><p data-zh="新人引导课、Landing Page、转化路径与核心数据看板。">New-user guidance lesson, landing pages, conversion paths, and the core metrics dashboard.</p><span class="versions">V1.4.2</span></article>
+        <article class="era"><div class="date">07/31—08/13</div><h3 data-zh="品牌升级与区域适配">Brand &amp; regional readiness</h3><p data-zh="完成更名、签到、课堂优化、国家商品配置与本地支付准备。">Completed the rename, check-ins, class improvements, country product configuration, and local-payment readiness.</p><span class="versions">V1.5.0 · V1.5.1 · V1.5.2</span></article>
+      </div>
+
+      <div class="brand-split reveal">
+        <article class="brand-card card"><code>com.prime.dino.english</code><strong>Dino English → Dino AI</strong><p data-zh="主产品 V1.5.0 完成品牌升级；保留包名、账号、订阅、评分和历史数据。">The primary product completed its rebrand in V1.5.0 while retaining its package name, accounts, subscriptions, ratings, and historical data.</p></article>
+        <article class="brand-card alt card"><code>com.mastar.everyday</code><strong data-zh="原 Dino AI → DinoDaily → Daily Speaking">Former Dino AI → DinoDaily → Daily Speaking</strong><p data-zh="因 Dino English 升级为 Dino AI，为避免原 Dino AI 影响新 Dino AI 后续的应用商店关键词排名与品牌识别，原产品先后更名为 DinoDaily 和 Daily Speaking。">When Dino English became Dino AI, the former Dino AI was renamed DinoDaily and then Daily Speaking to avoid affecting the new Dino AI's future app-store keyword ranking and brand recognition.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="data">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="03 · 数据表现">03 · Performance</div>
+        <div><h2 data-zh="数据表现：最大断点仍然是首课，但方向在变好">Data performance: the first lesson remains the biggest break, while trends improve</h2><p class="section-desc" data-zh="注册完成、首课完课和 D1 在五个完整周内总体改善；但首启到首课完成仅 7.9%，D7 仅 2.4%，持续学习与付费转化仍未形成稳定结果。">Registration completion, first-lesson completion, and D1 improved overall across five complete weeks. Yet first open to lesson completion is only 7.9%, D7 is 2.4%, and continued learning and payment conversion are not yet stable.</p></div>
+      </div>
+
+      <div class="evidence-grid">
+        <article class="funnel-card card reveal">
+          <div class="card-title"><h3 data-zh="首启 → 首课主漏斗">First open → first lesson</h3><p data-zh="设备去重<br>排除测试流量">Deduplicated devices<br>Test traffic excluded</p></div>
+          <div class="funnel">
+            <div class="f-row"><div class="f-label" data-zh="首次启动">First open</div><div class="f-track"><div class="f-bar" style="width:100%">34,880</div></div><div class="f-rate" data-zh="<b>100%</b>起点"><b>100%</b>Start</div></div>
+            <div class="f-row"><div class="f-label" data-zh="注册成功">Registered</div><div class="f-track"><div class="f-bar" style="width:48.1%">16,790</div></div><div class="f-rate" data-zh="<b>48.1%</b>首启转化"><b>48.1%</b>From first open</div></div>
+            <div class="f-row"><div class="f-label" data-zh="首课开始">First lesson started</div><div class="f-track"><div class="f-bar" style="width:36.8%">12,852</div></div><div class="f-rate" data-zh="<b>76.5%</b>注册后"><b>76.5%</b>After registration</div></div>
+            <div class="f-row"><div class="f-label" data-zh="首课完成">First lesson completed</div><div class="f-track"><div class="f-bar" style="width:7.9%">2,745</div></div><div class="f-rate" data-zh="<b>21.4%</b>开始后"><b>21.4%</b>After start</div></div>
+          </div>
+        </article>
+
+        <article class="trend-card card reveal">
+          <div class="card-title"><h3 data-zh="五个完整周趋势">Five complete-week trends</h3><p data-zh="07/10—08/13<br>UTC 完整周">07/10—08/13<br>Complete UTC weeks</p></div>
+          <div class="trend-legend"><span data-zh="<i></i>首课完课率"><i></i>First-lesson completion</span><span><i></i>D1</span><span data-zh="<i></i>注册完成率"><i></i>Registration completion</span></div>
+          <svg class="trend-svg" viewBox="0 0 440 230" role="img" aria-label="Registration completion, first-lesson completion, and D1 across five complete weeks">
+            <line class="chart-grid" x1="42" y1="24" x2="420" y2="24"/><line class="chart-grid" x1="42" y1="72" x2="420" y2="72"/><line class="chart-grid" x1="42" y1="120" x2="420" y2="120"/><line class="chart-grid" x1="42" y1="168" x2="420" y2="168"/>
+            <text class="chart-axis" x="5" y="28">70%</text><text class="chart-axis" x="5" y="76">50%</text><text class="chart-axis" x="5" y="124">30%</text><text class="chart-axis" x="10" y="172">10%</text>
+            <path class="chart-line" stroke="#d9641e" d="M52 163 L140 141 L228 137 L316 132 L404 116"/>
+            <path class="chart-line" stroke="#1d5c3f" d="M52 169 L140 162 L228 159 L316 154 L404 152"/>
+            <path class="chart-line" stroke="#c98a12" d="M52 87 L140 82 L228 81 L316 65 L404 61"/>
+            <g fill="#d9641e"><circle class="chart-point" cx="52" cy="163" r="5"/><circle class="chart-point" cx="140" cy="141" r="5"/><circle class="chart-point" cx="228" cy="137" r="5"/><circle class="chart-point" cx="316" cy="132" r="5"/><circle class="chart-point" cx="404" cy="116" r="5"/></g>
+            <g fill="#1d5c3f"><circle class="chart-point" cx="52" cy="169" r="5"/><circle class="chart-point" cx="140" cy="162" r="5"/><circle class="chart-point" cx="228" cy="159" r="5"/><circle class="chart-point" cx="316" cy="154" r="5"/><circle class="chart-point" cx="404" cy="152" r="5"/></g>
+            <g fill="#c98a12"><circle class="chart-point" cx="52" cy="87" r="5"/><circle class="chart-point" cx="140" cy="82" r="5"/><circle class="chart-point" cx="228" cy="81" r="5"/><circle class="chart-point" cx="316" cy="65" r="5"/><circle class="chart-point" cx="404" cy="61" r="5"/></g>
+            <g text-anchor="middle"><text class="chart-label orange" x="52" y="151">12.1%</text><text class="chart-label orange" x="140" y="130">21.1%</text><text class="chart-label orange" x="228" y="126">22.8%</text><text class="chart-label orange" x="316" y="121">25.1%</text><text class="chart-label orange" x="404" y="105">31.5%</text></g>
+            <g text-anchor="middle"><text class="chart-label green" x="52" y="184">9.6%</text><text class="chart-label green" x="140" y="177">12.7%</text><text class="chart-label green" x="228" y="174">13.6%</text><text class="chart-label green" x="316" y="169">15.7%</text><text class="chart-label green" x="404" y="167">16.7%</text></g>
+            <g text-anchor="middle"><text class="chart-label yellow" x="52" y="77">43.7%</text><text class="chart-label yellow" x="140" y="72">45.8%</text><text class="chart-label yellow" x="228" y="71">46.1%</text><text class="chart-label yellow" x="316" y="55">52.8%</text><text class="chart-label yellow" x="404" y="51">54.4%</text></g>
+            <text class="chart-axis" x="39" y="213">07/10</text><text class="chart-axis" x="127" y="213">07/17</text><text class="chart-axis" x="215" y="213">07/24</text><text class="chart-axis" x="303" y="213">07/31</text><text class="chart-axis" x="391" y="213">08/07</text>
+          </svg>
+        </article>
+      </div>
+
+      <article class="retention-card card reveal">
+        <div class="card-title"><h3 data-zh="首日学习进度不同，次日留存差异明显">Next-day retention varies sharply by day-0 progress</h3><p data-zh="D1 次日留存<br>按首日行为分组">D1 retention<br>Grouped by day-0 behavior</p></div>
+        <div class="retention-grid">
+          <div class="ret-item"><div class="r-label" data-zh="首日完成首课用户">Completed the first lesson on day 0</div><div class="r-value">33.8%</div><div class="r-track" style="color:var(--green)"><span style="width:100%"></span></div></div>
+          <div class="ret-item"><div class="r-label" data-zh="注册但未完成首课用户">Registered but did not complete the first lesson</div><div class="r-value">15.0%</div><div class="r-track" style="color:var(--yellow)"><span style="width:44.4%"></span></div></div>
+          <div class="ret-item"><div class="r-label" data-zh="首日未注册用户">Not registered on day 0</div><div class="r-value">8.1%</div><div class="r-track" style="color:var(--red)"><span style="width:24%"></span></div></div>
+        </div>
+      </article>
+
+      <div class="module-payment">
+        <article class="payment-card card reveal">
+          <div class="card-title"><h3 data-zh="支付结果：发起用户多，成功支付用户少">Payment: many users start, few complete</h3><p data-zh="去重用户<br>截至 08/14 15:08 UTC">Unique users<br>Through 08/14 15:08 UTC</p></div>
+          <div class="payment-gap">
+            <div class="pay-side"><b>1,920</b><span data-zh="发起支付用户">Users who started checkout</span></div>
+            <div class="pay-arrow">→</div>
+            <div class="pay-side danger"><b>42</b><span data-zh="成功支付用户">Users who paid successfully</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="review">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="04 · 成功与突破">04 · Progress &amp; Gaps</div>
+        <div><h2 data-zh="成败判断：成功的是能力建设，仍需突破的是结果收敛">What worked was capability building; the next breakthrough is outcome convergence</h2><p class="section-desc" data-zh="过去半年的成果主要体现在产品能力、关键体验和数据基础；下一阶段需要进一步改善首次学习、持续学习和商业转化。">The past six months strengthened product capabilities, key experiences, and the data foundation. The next stage should improve first learning, continued learning, and commercial conversion.</p></div>
+      </div>
+      <div class="two-col">
+        <article class="review-col success card reveal">
+          <h3 data-zh="什么成功了">What worked</h3>
+          <ul class="review-list">
+            <li><strong data-zh="从 0 到 1 的交付节奏">From-0-to-1 delivery cadence</strong><p data-zh="约 11 周完成完整学习、商业、全球化和数据能力。">Completed learning, commerce, globalization, and data capabilities in about 11 weeks.</p></li>
+            <li><strong data-zh="关键体验指标改善">Key experience metrics improved</strong><p data-zh="完整周首课完课率、D1 与注册完成率总体上升，技术问题开始被量化修复。">First-lesson completion, D1, and registration completion improved overall across complete weeks, while technical issues began to be measured and fixed.</p></li>
+            <li><strong data-zh="全球化与品牌迁移基础正确">Globalization and brand migration foundations</strong><p data-zh="多市场登录、商品配置、归因和本地支付准备已搭建；主产品更名没有造成账号与数据断层。">Multi-market login, product configuration, attribution, and local-payment readiness were established without breaking accounts or historical data during the rebrand.</p></li>
+            <li><strong data-zh="从凭感觉走向能看见问题">From intuition to visible problems</strong><p data-zh="GA4、PostHog、AppsFlyer 与生产订单开始形成组合视图。">GA4, PostHog, AppsFlyer, and production orders now provide a combined operating view.</p></li>
+          </ul>
+        </article>
+        <article class="review-col failure card reveal">
+          <h3 data-zh="仍需突破的部分">Where we still need a breakthrough</h3>
+          <ul class="review-list">
+            <li><strong data-zh="功能面扩张快于核心学习结果">Feature breadth grew faster than learning outcomes</strong><p data-zh="Dino、Explore、Play、金币与多触点同时扩展，但首启到完课仅 7.9%。">Dino, Explore, Play, coins, and multiple touchpoints expanded, while first open to lesson completion remains 7.9%.</p></li>
+            <li><strong data-zh="持续学习路径尚未形成">A continued-learning path is not yet established</strong><p data-zh="D1 为 12.2%、D7 为 2.4%，完成首课之后仍缺稳定的连续学习路径。">D1 is 12.2% and D7 is 2.4%; a stable path after the first lesson has not yet formed.</p></li>
+            <li><strong data-zh="家长价值与商业承接仍弱">Parent value and commercial conversion remain weak</strong><p data-zh="首课报告、学习计划、Paywall 与续费价值尚未形成清晰一致的家长价值表达。">First-lesson reports, learning plans, the paywall, and renewal value do not yet tell one clear and consistent parent-value story.</p></li>
+            <li><strong data-zh="关键结果指标仍不完整">Key outcome metrics remain incomplete</strong><p data-zh="技术异常退出、有效学习时长、续费率和 LTV 尚未形成可靠基线。">Technical exits, meaningful learning time, renewal rate, and LTV still lack reliable baselines.</p></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="opportunities">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="05 · 三个机会">05 · Top Opportunities</div>
+        <div><h2 data-zh="最大的三个机会：不是再加功能，而是让价值连续发生">The three biggest opportunities: make value happen continuously</h2><p class="section-desc" data-zh="三个机会依次解决孩子第一次成功、持续学习、家长付费。它们共同组成下一阶段的唯一主线。">These opportunities address a child's first success, continued learning, and parent payment in sequence—the single value chain for the next stage.</p></div>
+      </div>
+      <div class="opps">
+        <article class="opp card reveal">
+          <div class="opp-kicker">First Lesson Success</div>
+          <h3 data-zh="把“开始首课”变成“完成首个有效学习结果”">Turn “start the first lesson” into “complete the first meaningful learning result”</h3>
+          <ul><li data-zh="权限按功能触发，修复弱网与 Loading">Trigger permissions in context; fix weak-network and loading issues</li><li data-zh="缩短首课并持续呈现进度与报告收益">Shorten the first lesson and continuously show progress and report value</li><li data-zh="修复 ASR / VAD / Prompt / 模板卡点">Resolve ASR / VAD / prompt / template blockers</li></ul>
+        </article>
+        <article class="opp card reveal">
+          <div class="opp-kicker">Seven-day Learning Loop</div>
+          <h3 data-zh="建立“孩子继续学、家长看得懂”的七日循环">Build a seven-day loop children continue and parents understand</h3>
+          <ul><li data-zh="首页只保留一个下一学习任务">Keep one clear next learning task on the home page</li><li data-zh="报告、学习计划与周报使用同一证据">Use the same evidence across reports, learning plans, and weekly summaries</li><li data-zh="Dino / Explore / Play 承接复习与弱项">Use Dino / Explore / Play for review and weak-skill practice</li></ul>
+        </article>
+        <article class="opp card reveal">
+          <div class="opp-kicker">Lighthouse Market</div>
+          <h3 data-zh="在一个灯塔市场跑通“价值证明—支付—续费”">Prove value, payment, and renewal in one lighthouse market</h3>
+          <ul><li data-zh="用学习结果、套餐权益与本地价格建立清晰价值">Clarify value through learning outcomes, plan benefits, and local pricing</li><li data-zh="集中一个市场统一产品、渠道与运营">Align product, channel, and operations in one focused market</li><li data-zh="用真实学习结果改造报告与 Paywall 信任">Use real learning outcomes to strengthen trust in reports and the paywall</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="06 · 8—12 月">06 · Aug—Dec</div>
+        <div><h2 data-zh="8—12 月路线图：围绕价值链推进四个里程碑">Aug—Dec roadmap: four milestones along one value chain</h2><p class="section-desc" data-zh="先打磨首次学习核心链路，再建立持续学习与付费价值，随后验证规模化增长，最终以收入目标检验商业闭环。">Start by refining the first-learning journey, then establish continued learning and payment value, validate scalable growth, and finally test the commercial loop against the revenue goal.</p></div>
+      </div>
+      <div class="roadmap reveal">
+        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">AUG—SEP</div><h3 data-zh="打磨核心产品路线和课程体验">Refine the core product journey and lesson experience</h3><p data-zh="让用户顺利走完从进入产品到完成首次学习的核心链路。">Help users move smoothly from entering the product to completing their first learning experience.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="注册完成率">Registration completion</li><li data-zh="首课开课率">First-lesson start rate</li><li data-zh="开课完课率">Start-to-completion rate</li><li data-zh="技术异常退出率">Technical exit rate</li></ul></div></article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">OCT</div><h3 data-zh="建立价值传递与持续学习">Establish value delivery and continued learning</h3><p data-zh="让孩子愿意继续学，让家长看见效果并愿意支付。">Make children want to continue and help parents see results worth paying for.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="D1 / D3 / D7 注册留存">D1 / D3 / D7 registration retention</li><li data-zh="人均每周有效学习时长">Meaningful learning time per user per week</li><li data-zh="完课支付转化率">Lesson-completion-to-payment conversion</li><li data-zh="续费率">Renewal rate</li></ul></div></article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">NOV</div><h3 data-zh="验证规模化增长与长期价值">Validate scalable growth and long-term value</h3><p data-zh="扩大获客，并验证付费用户能持续学习和续费。">Scale acquisition and validate that paying users continue learning and renew.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="付费用户数">Paying users</li><li data-zh="续费率">Renewal rate</li><li data-zh="付费用户 LTV">Paying-user LTV</li><li data-zh="每周付费用户有效学习时长">Weekly meaningful learning time per paying user</li></ul></div></article></div>
+        <div class="month"><div class="month-dot"></div><article class="month-card card"><div class="month-name">DEC</div><h3>$1m Revenue</h3><p data-zh="以收入目标倒推付费用户规模、续费表现与长期价值。">Work backward from the revenue goal to paying-user scale, renewal, and long-term value.</p><div class="milestone-metrics"><b data-zh="核心指标">Core metrics</b><ul><li data-zh="付费用户数">Paying users</li><li data-zh="续费率">Renewal rate</li><li data-zh="付费用户 LTV">Paying-user LTV</li></ul></div></article></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="decisions">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-no" data-zh="07 · 关键选择">07 · Key Choices</div>
+        <div><h2 data-zh="下一阶段的四项关键选择">Four key choices for the next stage</h2><p class="section-desc" data-zh="明确主力用户、灯塔市场、里程碑节奏与收入目标，让资源持续服务同一条价值链。">Clarify the primary user, lighthouse market, milestone cadence, and revenue target so resources stay focused on one value chain.</p></div>
+      </div>
+      <div class="decisions">
+        <article class="decision card reveal"><h3 data-zh="主力用户">Primary user</h3><p data-zh="先为哪个年龄段、Level 和家长诉求负责，不再同时优化 4—13 岁。">Choose the age band, level, and parent need to serve first instead of optimizing for ages 4–13 at once.</p></article>
+        <article class="decision card reveal"><h3 data-zh="灯塔市场">Lighthouse market</h3><p data-zh="8—12 月只选择一个深度验证市场，其他市场维持基础适配。">Deeply validate one market from August to December while maintaining baseline readiness elsewhere.</p></article>
+        <article class="decision card reveal"><h3 data-zh="里程碑节奏">Milestone cadence</h3><p data-zh="新增需求和版本排期围绕各阶段里程碑与核心指标推进，避免跨阶段分散资源。">Sequence new requirements and releases around each milestone and its core metrics, avoiding cross-stage dilution.</p></article>
+        <article class="decision card reveal"><h3 data-zh="收入目标与投入">Revenue target &amp; investment</h3><p data-zh="确认 12 月 $1m Revenue 目标及对应的获客预算、付费用户规模与续费要求。">Confirm the December $1m revenue target together with the required acquisition budget, paying-user scale, and renewal level.</p></article>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-mark" data-zh="Dino AI · 产品回顾">Dino AI · Product Review</div>
+  </div>
+</footer>
+
+<script>
+const progress=document.getElementById('progress');
+function onScroll(){
+  const root=document.documentElement;
+  const max=root.scrollHeight-root.clientHeight;
+  progress.style.width=(max?root.scrollTop/max*100:0)+'%';
+}
+addEventListener('scroll',onScroll,{passive:true});
+onScroll();
+const io=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  if(entry.isIntersecting){entry.target.classList.add('in');io.unobserve(entry.target)}
+}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+<!-- Page language toggle (top-right EN / 中), matching the milestone page. -->
+<script>
+(function () {
+  var KEY = "dinoRoadmapLang";
+  var saved = localStorage.getItem(KEY);
+  var lang = saved === "zh" ? "zh" : "en";
+  var nodes = document.querySelectorAll("[data-zh]");
+  nodes.forEach(function (el) {
+    if (!el.hasAttribute("data-en")) el.setAttribute("data-en", el.innerHTML);
+  });
+  var btns = document.querySelectorAll("#langToggle button");
+  function apply(l) {
+    lang = l;
+    document.documentElement.lang = l === "zh" ? "zh-CN" : "en";
+    nodes.forEach(function (el) {
+      var html = el.getAttribute(l === "zh" ? "data-zh" : "data-en");
+      if (html != null) el.innerHTML = html;
+    });
+    btns.forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-lang") === l);
+    });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var l = b.getAttribute("data-lang");
+      if (l === lang) return;
+      localStorage.setItem(KEY, l);
+      apply(l);
+    });
+  });
+  apply(lang);
+})();
+</script>
+</body>
+</html>
