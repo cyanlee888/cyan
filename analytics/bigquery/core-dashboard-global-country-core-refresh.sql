@@ -2,7 +2,7 @@
 -- Country for an account is the geo.country of its earliest mapped GA4 device event
 -- in the reporting window. First-open funnel/retention use first_open country separately.
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 15:08:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
@@ -22,11 +22,11 @@ raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260813'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX = '20260814'
+  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id

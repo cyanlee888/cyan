@@ -1,16 +1,16 @@
 -- Production payment truth for the same dashboard window.
 -- Orders belonging to GA4 devices ever marked user_type=test are excluded by user_id mapping.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-14 15:08:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
 
 WITH raw_ga4 AS (
   SELECT event_timestamp, user_pseudo_id, user_id, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260813'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
   UNION ALL
   SELECT event_timestamp, user_pseudo_id, user_id, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX = '20260814'
+  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
