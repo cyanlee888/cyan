@@ -15,7 +15,7 @@ WITH weeks AS (
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260815'
+  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260817'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
@@ -119,6 +119,14 @@ flags AS (
     LOGICAL_OR(e.anchor = 'trial_lesson_complete' OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id IN ('732','1615','734','733','1613','1614'))) AS a_lesson_complete,
     LOGICAL_OR(e.anchor = 'class_lesson_start' AND e.lesson_id = '1661') AS b_lesson_start,
     LOGICAL_OR(e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id = '1661') AS b_lesson_complete,
+    LOGICAL_OR(
+      e.event_timestamp >= s.first_assigned_at
+      AND e.anchor = 'class_lesson_start'
+      AND (
+        (s.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616'))
+        OR (s.experiment_group = 'b' AND e.lesson_id IN ('1661','1616'))
+      )
+    ) AS target_lesson_started,
     LOGICAL_OR(e.event_name = 'page_view' AND e.anchor = 'report' AND e.source = 'course_flow') AS course_report,
     LOGICAL_OR(e.event_name = 'page_view' AND e.anchor = 'study_plan' AND e.source = 'trial_report') AS a_study_plan,
     LOGICAL_OR(e.anchor = 'subscription' AND e.source = 'trial_report') AS a_paywall,
@@ -180,7 +188,7 @@ device_steps AS (
 scopes AS (
   SELECT week_key, platform, user_pseudo_id, experiment_group,
     CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' WHEN 'Thailand' THEN 'th' ELSE 'other' END AS country_key,
-    step_order, reached, pending
+    step_order, reached, pending, target_lesson_started
   FROM device_steps
 ),
 flow_rollup AS (
@@ -204,12 +212,24 @@ pay_rollup AS (
   SELECT week_key, 'all', experiment_group, COUNT(DISTINCT CONCAT(platform,':',user_pseudo_id)), COUNTIF(paid), SUM(pending)
   FROM flags GROUP BY 1,2,3
 ),
+lesson_rollup AS (
+  SELECT week_key,
+    CASE assignment_country WHEN 'Vietnam' THEN 'vn' WHEN 'South Korea' THEN 'kr' WHEN 'Saudi Arabia' THEN 'sa' WHEN 'Malaysia' THEN 'my' WHEN 'Indonesia' THEN 'id' WHEN 'Thailand' THEN 'th' ELSE 'other' END AS country_key,
+    experiment_group, COUNTIF(target_lesson_started) AS lesson_started
+  FROM flags WHERE platform='ANDROID' GROUP BY 1,2,3
+  UNION ALL
+  SELECT week_key, 'all', experiment_group, COUNTIF(target_lesson_started)
+  FROM flags WHERE platform='ANDROID' GROUP BY 1,3
+),
 result_rows AS (
   SELECT f.week_key, f.country_key, f.experiment_group, f.assigned, f.counts,
-    COALESCE(p.pay_assigned,0) AS pay_assigned, COALESCE(p.paid,0) AS paid, COALESCE(p.pending,0) AS pending
-  FROM flow_json f LEFT JOIN pay_rollup p USING (week_key,country_key,experiment_group)
+    COALESCE(p.pay_assigned,0) AS pay_assigned, COALESCE(p.paid,0) AS paid, COALESCE(p.pending,0) AS pending,
+    COALESCE(l.lesson_started,0) AS lesson_started
+  FROM flow_json f
+  LEFT JOIN pay_rollup p USING (week_key,country_key,experiment_group)
+  LEFT JOIN lesson_rollup l USING (week_key,country_key,experiment_group)
 )
-SELECT week_key, TO_JSON_STRING(ARRAY_AGG(STRUCT(country_key,experiment_group,assigned,counts,pay_assigned,paid,pending) ORDER BY country_key,experiment_group)) AS payload
+SELECT week_key, TO_JSON_STRING(ARRAY_AGG(STRUCT(country_key,experiment_group,assigned,counts,pay_assigned,paid,pending,lesson_started) ORDER BY country_key,experiment_group)) AS payload
 FROM result_rows
 WHERE country_key IN ('all','vn','kr','sa','my','id','th')
 GROUP BY week_key ORDER BY week_key;

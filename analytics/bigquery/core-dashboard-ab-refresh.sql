@@ -8,7 +8,7 @@ WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260817'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
@@ -97,7 +97,10 @@ first_lesson_start AS (
    AND e.user_pseudo_id = s.user_pseudo_id
    AND e.event_timestamp >= s.first_assigned_at
   WHERE e.anchor = 'class_lesson_start'
-    AND e.lesson_id IN ('732','1615','734','733','1613','1614','1661','1616')
+    AND (
+      (s.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616'))
+      OR (s.experiment_group = 'b' AND e.lesson_id IN ('1661','1616'))
+    )
   GROUP BY 1,2,3
 ),
 first_lesson_metrics AS (
@@ -250,7 +253,7 @@ lesson_detail_by_platform AS (
     COUNT(DISTINCT IF(e.anchor = 'class_lesson_start', s.user_pseudo_id, NULL)) AS started,
     COUNT(DISTINCT IF(
       (s.experiment_group = 'a' AND (
-        e.anchor = 'trial_lesson_complete'
+        (e.lesson_id IN ('732','1615','734','733','1613','1614') AND e.anchor = 'trial_lesson_complete')
         OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete')
       ))
       OR (s.experiment_group = 'b' AND e.anchor = 'class_lesson_end' AND e.result_value = 'complete'),
@@ -262,8 +265,8 @@ lesson_detail_by_platform AS (
     ON e.user_pseudo_id = s.user_pseudo_id
    AND e.platform = s.platform
    AND e.event_timestamp >= s.first_assigned_at
-  WHERE (s.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614'))
-     OR (s.experiment_group = 'b' AND e.lesson_id = '1661')
+  WHERE (s.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616'))
+     OR (s.experiment_group = 'b' AND e.lesson_id IN ('1661','1616'))
   GROUP BY 1,2,3
 ),
 lesson_detail AS (

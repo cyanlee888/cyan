@@ -11,7 +11,7 @@ WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260817'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
@@ -131,13 +131,13 @@ SELECT
   ) AS a_lesson_complete,
   LOGICAL_OR(e.anchor = 'class_lesson_start' AND e.lesson_id = '1661') AS b_lesson_start,
   LOGICAL_OR(e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id = '1661') AS b_lesson_complete,
-  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_start' AND e.lesson_id IN ('732','1615','734','733','1613','1614')) AS a_metric_lesson_start,
+  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_start' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616')) AS a_metric_lesson_start,
   LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND (
     e.anchor = 'trial_lesson_complete'
-    OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id IN ('732','1615','734','733','1613','1614'))
+    OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616'))
   )) AS a_metric_lesson_complete,
-  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_start' AND e.lesson_id = '1661') AS b_metric_lesson_start,
-  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id = '1661') AS b_metric_lesson_complete
+  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_start' AND e.lesson_id IN ('1661','1616')) AS b_metric_lesson_start,
+  LOGICAL_OR(e.event_timestamp >= s.first_assigned_at AND e.anchor = 'class_lesson_end' AND e.result_value = 'complete' AND e.lesson_id IN ('1661','1616')) AS b_metric_lesson_complete
 FROM stable s
 LEFT JOIN events e USING (user_pseudo_id)
 GROUP BY 1,2,3,4,5;
@@ -221,15 +221,18 @@ SELECT
   e.lesson_id,
   COUNT(DISTINCT IF(e.anchor = 'class_lesson_start', d.user_pseudo_id, NULL)) AS started,
   COUNT(DISTINCT IF(
-    (d.experiment_group = 'a' AND (e.anchor = 'trial_lesson_complete' OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete')))
+    (d.experiment_group = 'a' AND (
+      (e.lesson_id IN ('732','1615','734','733','1613','1614') AND e.anchor = 'trial_lesson_complete')
+      OR (e.anchor = 'class_lesson_end' AND e.result_value = 'complete')
+    ))
     OR (d.experiment_group = 'b' AND e.anchor = 'class_lesson_end' AND e.result_value = 'complete'),
     d.user_pseudo_id,
     NULL
   )) AS completed
 FROM device_flags d
 JOIN events e USING (user_pseudo_id)
-WHERE ((d.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614'))
-    OR (d.experiment_group = 'b' AND e.lesson_id = '1661'))
+WHERE ((d.experiment_group = 'a' AND e.lesson_id IN ('732','1615','734','733','1613','1614','1616'))
+    OR (d.experiment_group = 'b' AND e.lesson_id IN ('1661','1616')))
   AND e.event_timestamp >= d.first_assigned_at
 GROUP BY 1,2;
 

@@ -178,7 +178,7 @@ const makeAbCountries = period => {
     const meta = countryMeta[country];
     const a = payload.find(row => row.country_key === country && row.experiment_group === 'a');
     const b = payload.find(row => row.country_key === country && row.experiment_group === 'b');
-    const side = row => ({assigned:row?.assigned||0,payAssigned:row?.pay_assigned||0,paid:row?.paid||0,pending:row?.pending||0,counts:row?.counts||[]});
+    const side = row => ({assigned:row?.assigned||0,payAssigned:row?.pay_assigned||0,paid:row?.paid||0,pending:row?.pending||0,lessonStart:row?.lesson_started||0,counts:row?.counts||[]});
     return {key:country,tab:meta.tab,label:meta.label,...(meta.code?{code:meta.code}:{}),a:side(a),b:side(b)};
   });
 };
@@ -281,13 +281,13 @@ const abHealth = [
   ['fallback',`${num(allHealth.v2)} / ${num(allHealth.v1).toLocaleString('en-US')} · ${pct(num(allHealth.v2),num(allHealth.v1))}%`,`Android ${pct(num(androidHealth.v2),num(androidHealth.v1))}%，iOS ${pct(num(iosHealth.v2),num(iosHealth.v1))}%；目标 ≤1%`,'阻断'],
   ['分组真相源','experiment_group_assign','首次稳定进组事件；同设备冲突样本已排除','可监控'],
   ['iOS 页面锚点','未对齐','分组/注册/课程结果可读；Onboarding 页面级漏斗暂不跨端合并','阻断'],
-  ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614；B=1661','可监控']
+  ['首课识别','Lesson ID 白名单','A=732/1615/734/733/1613/1614/1616；B=1661/1616','可监控']
 ];
-const lessonLabels={'732':'Level 1','1615':'Level 2','734':'Level 3','733':'Level 4','1613':'Level 5','1614':'Level 6','1661':'—'};
+const lessonLabels={'732':'Level 1','1615':'Level 2','734':'Level 3','733':'Level 4','1613':'Level 5','1614':'Level 6','1661':'—','1616':'—'};
 const abLesson = abCoreRows.filter(row=>row.row_type==='lesson' && row.row_key.startsWith('all-')).map(row=>{
   const [,group,lessonId]=row.row_key.split('-');
-  return {type:group==='a'?'体验课':'新人引导课',level:lessonLabels[lessonId],lessonId,group:group.toUpperCase(),started:num(row.v1),completed:num(row.v2)};
-}).sort((a,b)=>lessonIds.concat('1661').indexOf(a.lessonId)-lessonIds.concat('1661').indexOf(b.lessonId));
+  return {type:lessonId==='1616'?'足球课':group==='a'?'体验课':'新人引导课',level:lessonLabels[lessonId],lessonId,group:group.toUpperCase(),started:num(row.v1),completed:num(row.v2)};
+}).sort((a,b)=>lessonIds.concat('1661','1616').indexOf(a.lessonId)-lessonIds.concat('1661','1616').indexOf(b.lessonId));
 const bLessonRows = readRows('workbench-ab').filter(row=>row.section==='b_lesson');
 const bLessonMap = new Map(bLessonRows.map(row=>[row.dim,{start:num(row.v1),end:num(row.v2)}]));
 const abBLesson = [

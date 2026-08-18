@@ -14,7 +14,7 @@ WITH weeks AS (
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260815'
+  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260817'
   UNION ALL
   SELECT event_timestamp,event_name,user_pseudo_id,user_id,platform,geo.country country,event_params,user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
@@ -53,10 +53,10 @@ flags AS (
     s.user_pseudo_id,
     LOGICAL_OR(e.anchor='first_open') first_open,
     LOGICAL_OR(e.anchor='signup_result' AND e.result_value IN('true','1','success')) registered,
-    LOGICAL_OR(e.anchor='class_lesson_start' AND e.lesson_id IN('732','1615','734','733','1613','1614')) a_start,
-    LOGICAL_OR(e.anchor='trial_lesson_complete' OR (e.anchor='class_lesson_end' AND e.result_value='complete' AND e.lesson_id IN('732','1615','734','733','1613','1614'))) a_complete,
-    LOGICAL_OR(e.anchor='class_lesson_start' AND e.lesson_id='1661') b_start,
-    LOGICAL_OR(e.anchor='class_lesson_end' AND e.result_value='complete' AND e.lesson_id='1661') b_complete
+    LOGICAL_OR(e.event_timestamp>=s.first_assigned_at AND e.anchor='class_lesson_start' AND e.lesson_id IN('732','1615','734','733','1613','1614','1616')) a_start,
+    LOGICAL_OR(e.event_timestamp>=s.first_assigned_at AND ((e.anchor='trial_lesson_complete' AND e.lesson_id IN('732','1615','734','733','1613','1614')) OR (e.anchor='class_lesson_end' AND e.result_value='complete' AND e.lesson_id IN('732','1615','734','733','1613','1614','1616')))) a_complete,
+    LOGICAL_OR(e.event_timestamp>=s.first_assigned_at AND e.anchor='class_lesson_start' AND e.lesson_id IN('1661','1616')) b_start,
+    LOGICAL_OR(e.event_timestamp>=s.first_assigned_at AND e.anchor='class_lesson_end' AND e.result_value='complete' AND e.lesson_id IN('1661','1616')) b_complete
   FROM stable s LEFT JOIN events e ON e.platform=s.platform AND e.user_pseudo_id=s.user_pseudo_id AND e.event_timestamp<UNIX_MICROS(s.end_ts)
   GROUP BY 1,2,3,4
 ),

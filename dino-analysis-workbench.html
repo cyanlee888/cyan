@@ -107,6 +107,7 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 @media(max-width:860px){.grid2{grid-template-columns:1fr}}
 
 .kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 16px}
+#abKpis{grid-template-columns:repeat(4,minmax(0,1fr))}
 .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 14px;min-height:104px}
 .kpi .kl{font-size:11px;color:var(--ink-faint);margin-bottom:3px}
 .kpi .kv{font-family:'Fraunces','Noto Serif SC',serif;font-size:25px;font-weight:700;line-height:1.25;color:var(--green)}
@@ -131,11 +132,13 @@ td.heat span.v{font-family:'Fraunces',serif;font-weight:700;padding:2px 6px;bord
 .dist-val,.dist-pct{text-align:right;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums}
 @media(max-width:860px){
   .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #abKpis{grid-template-columns:repeat(2,minmax(0,1fr))}
   .push-flow{grid-template-columns:1fr 1fr}
   .flow-step:not(:last-child)::after{display:none}
 }
 @media(max-width:520px){
   .kpi-grid,.push-flow{grid-template-columns:1fr}
+  #abKpis{grid-template-columns:1fr}
   .dist-row{grid-template-columns:64px minmax(80px,1fr) 62px 48px;gap:7px}
   .segment-control{align-items:flex-start;gap:8px}
   .segment-tabs{gap:6px}
@@ -176,7 +179,7 @@ svg text{font-family:'Noto Sans SC',sans-serif}
 
   <div class="kicker">Dino English · Analysis Workbench · Internal</div>
   <h1>核心指标<em>观测工作台</em></h1>
-  <div class="meta"><b>四大当前观测域:</b>A/B 实验 · 登录注册 · 留存 · 支付转化 · <b>统一实时截点:</b>2026-08-17 02:15 UTC（马来西亚时间 10:15） · <b>测试账号:</b>GA4 任一事件命中 <b>user_type=test</b> 的设备，以及可映射的 AppsFlyer / 支付账号，均已排除 · <b>完整日:</b>截至 08-16；08-17* 为滚动日 · <b>核心导航:</b>仅保留当前可行动指标；旧渠道、版本、短信事故、活跃时段与 Push 专项已归档 · <b>金币/收藏:</b>生产镜像尚不能按同一测试账号口径过滤，历史快照暂不进入当前导航 · 汇报版看 <b>dino-launch-dashboard.html</b></div>
+  <div class="meta"><b>五大当前观测域:</b>A/B 实验 · 登录注册 · 留存 · 支付转化 · 激励模块 · <b>统一实时截点:</b>2026-08-17 02:15 UTC（马来西亚时间 10:15） · <b>皮肤快照:</b>2026-08-18 06:37 UTC · <b>测试账号:</b>GA4 任一事件命中 <b>user_type=test</b> 的设备，以及可映射的 AppsFlyer / 支付账号，均已排除；皮肤业务表仅纳入 <b>user_profile.user_type=0</b> · <b>完整日:</b>截至 08-16；08-17* 为滚动日 · <b>核心导航:</b>仅保留当前可行动指标；旧渠道、版本、短信事故、活跃时段与 Push 专项已归档 · 汇报版看 <b>dino-launch-dashboard.html</b></div>
 
   <div class="groups" id="groups"></div>
 
@@ -185,11 +188,11 @@ svg text{font-family:'Noto Sans SC',sans-serif}
   <!-- ═══════════ A/B 实验 · 总览 ═══════════ -->
   <section class="sec" data-group="experiment" data-tab="总览">
     <div class="sec-h">转化链路 A/B 实验 <span class="en">Conversion Funnel · Android + iOS</span></div>
-    <p class="sec-desc">实验键 <b>conv_funnel_v1</b>；只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的 Android / iOS 非测试设备，冲突与 fallback 不进入效果样本。24h 注册是早期次指标，但 A / B 的注册节点位于不同流程阶段，需同时看 Android 对齐业务状态“注册且完成 Onboarding”；首课完课率独立于页面漏斗。7 日订阅成功才是主指标，当前仍不作为实验胜负依据。</p>
+    <p class="sec-desc">实验键 <b>conv_funnel_v1</b>；只纳入 <b>2026-08-01 00:00 UTC 后首次稳定进组</b>的 Android / iOS 非测试设备，冲突与 fallback 不进入效果样本。24h 注册是早期次指标，但 A / B 的注册节点位于不同流程阶段，需同时看 Android 对齐业务状态“注册且完成 Onboarding”。首课开课率独立于页面漏斗，分母为稳定进组设备，分子限定为进组后命中本组首课白名单的设备：A 组 732 / 1615 / 734 / 733 / 1613 / 1614 / 1616，B 组 1661 / 1616。7 日订阅成功才是主指标，当前仍不作为实验胜负依据。</p>
     <div class="kpi-grid" id="abKpis"></div>
     <div class="card">
-      <div class="card-t">三项观测指标 · 总体 A vs B</div>
-      <div class="card-s">总体合并 Android + iOS；首课指标不要求命中前序页面，只在真正开始过指定首课的用户中计算完课率</div>
+      <div class="card-t">四项观测指标 · 总体 A vs B</div>
+      <div class="card-s">总体合并 Android + iOS；开课率以稳定进组设备为分母，完课率仅在真正开始过本组白名单首课的用户中计算</div>
       <div class="tbl-scroll"><table id="abCoreTable"></table></div>
     </div>
     <div class="card">
@@ -270,20 +273,20 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="sec-h">实验健康与读数门槛 <span class="en">Data Health</span></div>
     <p class="sec-desc">效果之前先验证分组、归属与事件。分流比例通过 SRM 检查，注册已可读第一批成熟 cohort；fallback、分组真相源与 7d 成熟度仍限制最终发布决策。</p>
     <div class="kpi-grid">
-      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">6,295</div><div class="kn">A 3,126 / B 3,169；49.7% / 50.3%，SRM p=.587</div></div>
-      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">7.0%</div><div class="kn">473 / 6,768；Android 5.7%，iOS 11.5%</div></div>
-      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">149</div><div class="kn">Android 98 / iOS 51；已从效果样本剔除</div></div>
+      <div class="kpi"><div class="kl">稳定 A/B 样本</div><div class="kv">7,852</div><div class="kn">A 3,913 / B 3,939；49.8% / 50.2%，SRM p=.769</div></div>
+      <div class="kpi warn"><div class="kl">出现 fallback 的设备</div><div class="kv">6.8%</div><div class="kn">573 / 8,425；Android 5.4%，iOS 12.4%</div></div>
+      <div class="kpi warn"><div class="kl">冲突分组设备</div><div class="kv">185</div><div class="kn">Android 119 / iOS 66；已从效果样本剔除</div></div>
     </div>
     <div class="card">
       <div class="tbl-scroll"><table id="abHealthTable"></table></div>
     </div>
     <div class="card">
       <div class="card-t">首课 Lesson ID 对照与明细</div>
-      <div class="card-s">A 组只计六个体验课 ID，B 组只计新人引导课 1661；先看总体首课完课率，再用本表定位具体等级</div>
+      <div class="card-s">A 组计六个体验课 ID 与足球课 1616，B 组计新人引导课 1661 与足球课 1616；先看总体开课 / 完课率，再用本表定位具体课程</div>
       <div class="tbl-scroll"><table id="abLessonTable"></table></div>
-      <div class="legend">开始 = class_lesson_start；A 完成 = trial_lesson_complete 或 class_lesson_end(result=complete)，B 完成 = class_lesson_end(result=complete) 且 lesson_id=1661 · 每个 ID 内设备去重，总体再跨 ID 去重</div>
+      <div class="legend">开始 = class_lesson_start；六节体验课完成兼容 trial_lesson_complete，1661 / 1616 完成只计同课 class_lesson_end(result=complete) · 每个 ID 内设备去重，总体以进组后首次白名单首课跨 ID 去重</div>
     </div>
-    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明149台冲突分组与7.0% fallback，尤其是 iOS 11.5%；③ 对齐 iOS 页面 / Onboarding 锚点后再补跨端页面漏斗；④ 继续积累支付样本。生产 SUCCESS A 9 / B 10 单，量级远不足以判断付费差异。</div>
+    <div class="note"><b>发布前仍需满足:</b>① 服务端分组明细表接入当前查询层并与 experiment_group_assign 逐设备核对；② 查明 185 台冲突分组与 6.8% fallback，尤其是 iOS 12.4%；③ 对齐 iOS 页面 / Onboarding 锚点后再补跨端页面漏斗；④ 继续积累支付样本。生产 SUCCESS A 11 / B 12 单，量级远不足以判断付费差异。</div>
   </section>
 
   <!-- ═══════════ 登录注册 · 总览 ═══════════ -->
@@ -1099,123 +1102,152 @@ svg text{font-family:'Noto Sans SC',sans-serif}
     <div class="tip"><b>产品动作:</b>首抽前有 85.3% 用户停在 0~4 题，建议在第 1/3/4 题显性展示“还差 N 题可抽”；首抽后则用系列进度、重复补偿或保底机制承接第 2 抽。当前重复结果占 33.3%，但没有看到重复补偿流水，需确认重复手办是否只增加 quantity、是否提供金币/碎片回收。</div>
   </section>
 
-  <!-- ═══════════ 金币 / 收藏 · 皮肤购买 ═══════════ -->
-  <section class="sec" data-group="economy" data-tab="皮肤购买">
-    <div class="sec-h">皮肤购买:需求成立，价格梯度过陡 <span class="en">Skin Purchase</span></div>
-    <p class="sec-desc">20 个在售非默认皮肤，累计 217 笔库存记录、141 位买家、218 件皮肤；金币流水实际扣除 82,600。买家平均持有 1.55 件已购皮肤，25.5% 买家发生复购。</p>
+  <!-- ═══════════ 激励模块 · 皮肤概览 ═══════════ -->
+  <section class="sec" data-group="incentive" data-tab="皮肤概览">
+    <div class="sec-h">皮肤使用：购买后会穿，奖励皮肤承接偏弱 <span class="en">Skin Adoption</span></div>
+    <p class="sec-desc">生产 MySQL 当前状态快照，时间 <b>2026-08-18 06:37 UTC</b>；仅纳入 <b>user_profile.user_type=0</b>。拥有来自 <b>user_item</b>，当前穿戴来自 <b>user_equip</b>；所有人数均去重，来源之间可能重叠。</p>
     <div class="kpi-grid">
-      <div class="kpi warn"><div class="kl">金币账户→购买</div><div class="kv">2.1%</div><div class="kn">141 / 6,795</div></div>
-      <div class="kpi"><div class="kl">购买后当前穿戴</div><div class="kv">82.3%</div><div class="kn">116 / 141；商品使用价值强</div></div>
-      <div class="kpi"><div class="kl">产生销量的 SKU</div><div class="kv">19 / 20</div><div class="kn">仅 Light Master 暂无购买</div></div>
-      <div class="kpi hot"><div class="kl">300 金币档销量</div><div class="kv">201</div><div class="kn">占全部 218 件的 92.2%</div></div>
-      <div class="kpi"><div class="kl">复购买家</div><div class="kv">36</div><div class="kn">占买家 25.5%</div></div>
-      <div class="kpi"><div class="kl">买家平均实际消耗</div><div class="kv">586</div><div class="kn">82,600 / 141 人</div></div>
+      <div class="kpi"><div class="kl">非默认皮肤拥有者</div><div class="kv">1,223</div><div class="kn">占 19,755 个生产账号 6.2%</div></div>
+      <div class="kpi hot"><div class="kl">当前穿非默认皮肤</div><div class="kv">391</div><div class="kn">占 16,083 个有装备记录用户 2.4%</div></div>
+      <div class="kpi warn"><div class="kl">拥有者当前换装率</div><div class="kv">32.0%</div><div class="kn">391 / 1,223；仍有 68.0% 回到默认皮肤</div></div>
+      <div class="kpi"><div class="kl">购买皮肤后当前穿戴</div><div class="kv">75.4%</div><div class="kn">178 / 236；购买用户使用意愿强</div></div>
+      <div class="kpi warn"><div class="kl">奖励皮肤后当前穿戴</div><div class="kv">19.1%</div><div class="kn">213 / 1,113；比购买低 56.3pp</div></div>
+      <div class="kpi"><div class="kl">金币账户→皮肤购买</div><div class="kv">2.2%</div><div class="kn">236 / 10,527；累计买家口径</div></div>
+    </div>
+    <div class="note"><b>核心判断:</b>皮肤本身有使用价值，但价值主要在用户主动购买后兑现。购买用户当前穿戴率 75.4%，奖励用户仅 19.1%；优先问题不是继续堆奖励量，而是奖励揭晓后缺少“立即穿戴”和后续召回。</div>
+    <div class="grid2">
+      <div class="card">
+        <div class="card-t">GA4 入口触达 · 2026-07-28~08-17 02:15 UTC</div>
+        <div class="card-s">自动 screen_view；入口同时承载皮肤与手办，只作为激励模块访问代理</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>入口</th><th>页面 PV</th><th>设备 UV</th><th>账号 UV</th><th>PV / 设备</th></tr>
+          <tr><td>Shop</td><td>2,370</td><td>907</td><td>886</td><td>2.61</td></tr>
+          <tr><td>Backpack</td><td>1,888</td><td>832</td><td>811</td><td>2.27</td></tr>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-t">跨入口访问</div>
+        <div class="card-s">同一 GA4 设备去重；比例均以 907 台 Shop 设备为分母</div>
+        <div class="minirow"><span>Shop 与 Backpack 均访问</span><span class="mv">59.4%<span class="sub2">539 / 907 台设备</span></span></div>
+        <div class="minirow"><span>首次访问顺序为 Shop → Backpack</span><span class="mv">30.0%<span class="sub2">272 / 907 台设备</span></span></div>
+        <div class="minirow"><span>购买 / 换装业务事件</span><span class="mv">0<span class="sub2">只能看到入口，无法下钻动作</span></span></div>
+      </div>
     </div>
     <div class="grid2">
       <div class="card">
-        <div class="card-t">价格档位表现</div>
+        <div class="card-t">获得来源与当前使用</div>
+        <div class="card-s">“当前穿戴率”= 当前穿着该来源所得皮肤的用户 ÷ 该来源拥有者</div>
         <div class="tbl-scroll"><table>
-          <tr><th>价格</th><th>SKU</th><th>件数</th><th>买家</th><th>目录价值</th><th>件数占比</th></tr>
-          <tr><td>300</td><td>12</td><td>201</td><td>139</td><td>60,300</td><td class="up">92.2%</td></tr>
-          <tr><td>800</td><td>4</td><td>12</td><td>10</td><td>9,600</td><td>5.5%</td></tr>
-          <tr><td>1,500</td><td>2</td><td>1</td><td>1</td><td>1,500</td><td>0.5%</td></tr>
-          <tr><td>3,000</td><td>2</td><td>4</td><td>3</td><td>12,000</td><td>1.8%</td></tr>
+          <tr><th>来源</th><th>拥有者</th><th>库存件数</th><th>当前穿戴</th><th>当前穿戴率</th></tr>
+          <tr><td>SYNC_REWARD</td><td>1,112</td><td>1,235</td><td>213</td><td class="down">19.2%</td></tr>
+          <tr><td>SHOP_PURCHASE</td><td>236</td><td>388</td><td>178</td><td class="up">75.4%</td></tr>
+          <tr><td>WELCOME_GIFT</td><td>3</td><td>3</td><td>0</td><td class="flat">0.0%</td></tr>
         </table></div>
       </div>
+      <div class="card">
+        <div class="card-t">购买价格档表现</div>
+        <div class="card-s">目录价为当前价格；“当前穿戴”按用户当前穿着同一已购 SKU 去重</div>
+        <div class="tbl-scroll"><table>
+          <tr><th>价格</th><th>SKU</th><th>买家</th><th>件数</th><th>当前穿戴</th><th>买家穿戴率</th></tr>
+          <tr><td>300</td><td>12</td><td>233</td><td>362</td><td>164</td><td class="up">70.4%</td></tr>
+          <tr><td>800</td><td>4</td><td>16</td><td>19</td><td>11</td><td>68.8%</td></tr>
+          <tr><td>1,500</td><td>1</td><td>1</td><td>1</td><td>0</td><td class="flat">0.0%</td></tr>
+          <tr><td>3,000</td><td>2</td><td>5</td><td>6</td><td>3</td><td>60.0%</td></tr>
+        </table></div>
+      </div>
+    </div>
+    <div class="grid2">
       <div class="card">
         <div class="card-t">每位买家累计购买</div>
+        <div class="card-s">236 位买家累计 388 件，人均 1.64 件；65 位买过至少 2 件</div>
         <div class="tbl-scroll"><table>
-          <tr><th>购买件数</th><th>买家</th><th>占比</th></tr>
-          <tr><td>1 件</td><td>105</td><td>74.5%</td></tr>
-          <tr><td>2 件</td><td>20</td><td>14.2%</td></tr>
-          <tr><td>3–4 件</td><td>10</td><td>7.1%</td></tr>
-          <tr><td>5+ 件</td><td>6</td><td>4.3%</td></tr>
+          <tr><th>购买件数</th><th>买家</th><th>占买家</th></tr>
+          <tr><td>1 件</td><td>171</td><td>72.5%</td></tr>
+          <tr><td>2 件</td><td>37</td><td>15.7%</td></tr>
+          <tr><td>3–4 件</td><td>18</td><td>7.6%</td></tr>
+          <tr><td>5+ 件</td><td>10</td><td>4.2%</td></tr>
         </table></div>
       </div>
+      <div class="card">
+        <div class="card-t">商业结构读数</div>
+        <div class="minirow"><span>产生销量的在售 SKU</span><span class="mv">19 / 20<span class="sub2">供给不是主要瓶颈</span></span></div>
+        <div class="minirow"><span>300 金币档件数占比</span><span class="mv">93.3%<span class="sub2">362 / 388 件</span></span></div>
+        <div class="minirow"><span>至少复购 1 次</span><span class="mv">27.5%<span class="sub2">65 / 236 位买家</span></span></div>
+        <div class="minirow"><span>全量装备用户仍穿默认皮肤</span><span class="mv">97.6%<span class="sub2">15,692 / 16,083</span></span></div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-t">销量 Top 10</div>
-      <div class="card-s">按 user_item.quantity 汇总；当前均为 BASIC</div>
-      <div class="tbl-scroll"><table>
-        <tr><th style="text-align:left">皮肤</th><th>价格</th><th>件数</th><th>买家</th><th>当前穿已购款</th><th>单品穿戴率</th></tr>
-        <tr><td style="text-align:left">Ping Pong</td><td>300</td><td>32</td><td>32</td><td>15</td><td>46.9%</td></tr>
-        <tr><td style="text-align:left">Skateboard</td><td>300</td><td>31</td><td>30</td><td>16</td><td>53.3%</td></tr>
-        <tr><td style="text-align:left">Soccer</td><td>300</td><td>28</td><td>28</td><td>21</td><td class="up">75.0%</td></tr>
-        <tr><td style="text-align:left">Senior</td><td>300</td><td>21</td><td>21</td><td>11</td><td>52.4%</td></tr>
-        <tr><td style="text-align:left">Inventor</td><td>300</td><td>17</td><td>17</td><td>9</td><td>52.9%</td></tr>
-        <tr><td style="text-align:left">Volleyball</td><td>300</td><td>17</td><td>17</td><td>9</td><td>52.9%</td></tr>
-        <tr><td style="text-align:left">Cowboy</td><td>300</td><td>15</td><td>15</td><td>11</td><td class="up">73.3%</td></tr>
-        <tr><td style="text-align:left">Basketball</td><td>300</td><td>11</td><td>11</td><td>4</td><td>36.4%</td></tr>
-        <tr><td style="text-align:left">Little Painter</td><td>300</td><td>10</td><td>10</td><td>3</td><td>30.0%</td></tr>
-        <tr><td style="text-align:left">Detective</td><td>300</td><td>9</td><td>9</td><td>2</td><td>22.2%</td></tr>
-      </table></div>
-    </div>
-    <div class="note"><b>账实差异 800 金币:</b>ITEM_PURCHASE 流水 217 笔 / 82,600 金币，与库存表 217 行一致，但库存数量为 218 件、按当前目录价计 83,400。定位到两行：① Skateboard quantity=2，但只扣 300；② Space Engineer 当前目录价 800，历史只扣 300。后者可能是调价历史，需结合价格变更记录确认；前者是明确的一单双件。</div>
   </section>
 
-  <!-- ═══════════ 金币 / 收藏 · 换装使用 ═══════════ -->
-  <section class="sec" data-group="economy" data-tab="换装使用">
-    <div class="sec-h">当前换装使用:买家会穿，但全盘渗透仍低 <span class="en">Equip Adoption</span></div>
-    <p class="sec-desc"><b>user_equip 是当前状态表，不是换装事件流水</b>。因此本页能回答“现在穿什么、已购皮肤是否正在用”，不能精确回答“换过几次、何时从 A 换到 B”。</p>
-    <div class="kpi-grid">
-      <div class="kpi"><div class="kl">当前有装备记录用户</div><div class="kv">11,675</div><div class="kn">均为 SKIN 槽位</div></div>
-      <div class="kpi warn"><div class="kl">仍穿默认皮肤</div><div class="kv">98.1%</div><div class="kn">11,451 人</div></div>
-      <div class="kpi hot"><div class="kl">当前穿非默认皮肤</div><div class="kv">224</div><div class="kn">占装备用户 1.9%</div></div>
-      <div class="kpi"><div class="kl">非默认皮肤拥有者换装</div><div class="kv">31.5%</div><div class="kn">224 / 711</div></div>
-      <div class="kpi"><div class="kl">购买皮肤后换装</div><div class="kv">82.3%</div><div class="kn">116 / 141</div></div>
-      <div class="kpi"><div class="kl">记录曾被更新 · 代理</div><div class="kv">241</div><div class="kn">updated_at 晚于 created_at 超 1 秒；非严格事件</div></div>
-    </div>
+  <!-- ═══════════ 激励模块 · 皮肤明细 ═══════════ -->
+  <section class="sec" data-group="incentive" data-tab="皮肤明细">
+    <div class="sec-h">皮肤明细：奖励款拉动规模，购买款拉动深度 <span class="en">Skin Detail</span></div>
+    <p class="sec-desc">当前非默认穿戴共 <b>391</b> 人。World Cup 单款贡献 134 人，占 34.3%；购买 Top SKU 的“穿戴率”是横截面当前状态，不代表历史上从未穿过。</p>
     <div class="grid2">
       <div class="card">
-        <div class="card-t">当前非默认皮肤来源</div>
+        <div class="card-t">当前穿戴 Top 12</div>
+        <div class="card-s">购买 / 奖励列按该用户实际拥有来源拆分</div>
         <div class="tbl-scroll"><table>
-          <tr><th>来源</th><th>当前穿戴用户</th><th>占非默认穿戴</th><th style="text-align:left">判断</th></tr>
-          <tr><td>SHOP_PURCHASE</td><td>116</td><td>51.8%</td><td style="text-align:left">购买皮肤使用充分</td></tr>
-          <tr><td>SYNC_REWARD</td><td>108</td><td>48.2%</td><td style="text-align:left">奖励皮肤也贡献近半</td></tr>
+          <tr><th style="text-align:left">皮肤</th><th>价格</th><th>购买来源</th><th>奖励来源</th><th>当前穿戴</th></tr>
+          <tr><td style="text-align:left">World Cup</td><td>300</td><td>0</td><td>134</td><td class="up">134</td></tr>
+          <tr><td style="text-align:left">Ping Pong</td><td>300</td><td>28</td><td>17</td><td>45</td></tr>
+          <tr><td style="text-align:left">Skateboard</td><td>300</td><td>25</td><td>14</td><td>39</td></tr>
+          <tr><td style="text-align:left">Soccer</td><td>300</td><td>21</td><td>17</td><td>38</td></tr>
+          <tr><td style="text-align:left">Volleyball</td><td>300</td><td>15</td><td>9</td><td>24</td></tr>
+          <tr><td style="text-align:left">Tennis</td><td>300</td><td>7</td><td>14</td><td>21</td></tr>
+          <tr><td style="text-align:left">Basketball</td><td>300</td><td>10</td><td>8</td><td>18</td></tr>
+          <tr><td style="text-align:left">Senior</td><td>300</td><td>17</td><td>0</td><td>17</td></tr>
+          <tr><td style="text-align:left">Cowboy</td><td>300</td><td>13</td><td>0</td><td>13</td></tr>
+          <tr><td style="text-align:left">Inventor</td><td>300</td><td>11</td><td>0</td><td>11</td></tr>
+          <tr><td style="text-align:left">Little Painter</td><td>300</td><td>9</td><td>0</td><td>9</td></tr>
+          <tr><td style="text-align:left">Spacetime Explorer</td><td>800</td><td>7</td><td>0</td><td>7</td></tr>
         </table></div>
       </div>
       <div class="card">
-        <div class="card-t">当前穿戴 Top 皮肤</div>
+        <div class="card-t">购买 Top 10 与当前使用</div>
+        <div class="card-s">按 user_item.quantity 排序；单品穿戴率 = 当前穿着该已购款的买家 ÷ 买家</div>
         <div class="tbl-scroll"><table>
-          <tr><th style="text-align:left">皮肤</th><th>购买来源</th><th>奖励来源</th><th>合计</th></tr>
-          <tr><td style="text-align:left">World Cup</td><td>0</td><td>51</td><td>51</td></tr>
-          <tr><td style="text-align:left">Soccer</td><td>21</td><td>9</td><td>30</td></tr>
-          <tr><td style="text-align:left">Skateboard</td><td>16</td><td>15</td><td>31</td></tr>
-          <tr><td style="text-align:left">Ping Pong</td><td>15</td><td>11</td><td>26</td></tr>
-          <tr><td style="text-align:left">Senior</td><td>11</td><td>0</td><td>11</td></tr>
-          <tr><td style="text-align:left">Cowboy</td><td>11</td><td>0</td><td>11</td></tr>
-          <tr><td style="text-align:left">Tennis</td><td>4</td><td>10</td><td>14</td></tr>
-          <tr><td style="text-align:left">Volleyball</td><td>9</td><td>6</td><td>15</td></tr>
+          <tr><th style="text-align:left">皮肤</th><th>件数</th><th>买家</th><th>当前穿戴</th><th>单品穿戴率</th></tr>
+          <tr><td style="text-align:left">Ping Pong</td><td>64</td><td>63</td><td>28</td><td>44.4%</td></tr>
+          <tr><td style="text-align:left">Skateboard</td><td>50</td><td>50</td><td>25</td><td>50.0%</td></tr>
+          <tr><td style="text-align:left">Soccer</td><td>41</td><td>39</td><td>21</td><td>53.8%</td></tr>
+          <tr><td style="text-align:left">Senior</td><td>36</td><td>36</td><td>17</td><td>47.2%</td></tr>
+          <tr><td style="text-align:left">Volleyball</td><td>28</td><td>27</td><td>15</td><td class="up">55.6%</td></tr>
+          <tr><td style="text-align:left">Inventor</td><td>27</td><td>27</td><td>11</td><td>40.7%</td></tr>
+          <tr><td style="text-align:left">Cowboy</td><td>24</td><td>24</td><td>13</td><td>54.2%</td></tr>
+          <tr><td style="text-align:left">Little Painter</td><td>23</td><td>23</td><td>9</td><td>39.1%</td></tr>
+          <tr><td style="text-align:left">Detective</td><td>21</td><td>21</td><td>6</td><td class="down">28.6%</td></tr>
+          <tr><td style="text-align:left">Basketball</td><td>20</td><td>20</td><td>10</td><td>50.0%</td></tr>
         </table></div>
       </div>
     </div>
-    <div class="tip"><b>产品判断:</b>“买后穿戴 82.3%”证明购买不是仓库收藏，而是真正用于角色表达；但 711 位非默认皮肤拥有者中只有 224 位当前换装，免费/同步奖励皮肤的使用引导仍弱。建议在获得皮肤后直接给「立即穿戴」CTA，并补埋点 <b>skin_equip_result</b>（item_id、source、from_item_id、entry），才能分析首次换装率、换装频次和购买后时延。</div>
+    <div class="tip"><b>产品动作:</b>奖励皮肤领取完成页增加「立即穿戴」主 CTA，并在次日首页用 Dino 实际换装结果回显；针对已拥有但仍穿默认皮肤的用户，在 Backpack 入口展示最近获得款。购买侧保留 300 金币入门档，重点优化 Detective、Little Painter 等低穿戴款的预览表达，而不是只看销量。</div>
   </section>
 
-  <!-- ═══════════ 金币 / 收藏 · 口径 ═══════════ -->
-  <section class="sec" data-group="economy" data-tab="口径(金币)">
-    <div class="sec-h">MySQL 口径与限制 <span class="en">Definitions</span></div>
-    <p class="sec-desc">数据来自生产只读实例，MySQL 会话时区为 <b>UTC</b>。所有查询在 <b>REPEATABLE READ + CONSISTENT SNAPSHOT</b> 中执行；页面只保存聚合数字，不保存 user_id 或连接凭证。</p>
+  <!-- ═══════════ 激励模块 · 数据口径 ═══════════ -->
+  <section class="sec" data-group="incentive" data-tab="数据口径">
+    <div class="sec-h">皮肤数据口径与观测缺口 <span class="en">Definitions & Gaps</span></div>
+    <p class="sec-desc">本模块把业务库的资产真相与 GA4 行为流水分开：业务库回答“拥有和当前穿什么”，GA4 应回答“何时、从哪里、换过几次”。</p>
     <div class="card">
       <div class="card-t">核心表与口径</div>
       <div class="tbl-scroll"><table>
-        <tr><th style="text-align:left">业务域</th><th style="text-align:left">主表</th><th style="text-align:left">指标口径</th><th style="text-align:left">限制</th></tr>
-        <tr><td style="text-align:left">金币</td><td style="text-align:left">dino_coin_account / transaction</td><td style="text-align:left">账户快照 + 正负流水</td><td style="text-align:left">5,000 获得额无对应正向流水</td></tr>
-        <tr><td style="text-align:left">手办</td><td style="text-align:left">play_capsule_progress / draw_record</td><td style="text-align:left">达到门槛、抽取次数、结果</td><td style="text-align:left">user_item CAPSULE 有 26 行历史差异</td></tr>
-        <tr><td style="text-align:left">皮肤购买</td><td style="text-align:left">user_item / item_catalog / coin_transaction</td><td style="text-align:left">SHOP_PURCHASE 库存 + ITEM_PURCHASE 扣币</td><td style="text-align:left">目录价是当前价，不一定等于历史成交价</td></tr>
-        <tr><td style="text-align:left">换装</td><td style="text-align:left">user_equip</td><td style="text-align:left">当前装备快照</td><td style="text-align:left">不是事件流水，无法还原完整换装历史</td></tr>
+        <tr><th style="text-align:left">指标</th><th style="text-align:left">数据源</th><th style="text-align:left">计算口径</th><th style="text-align:left">限制</th></tr>
+        <tr><td style="text-align:left">皮肤拥有</td><td style="text-align:left">user_item + item_catalog</td><td style="text-align:left">非默认 SKIN、quantity&gt;0，按用户去重</td><td style="text-align:left">来源间可能重叠</td></tr>
+        <tr><td style="text-align:left">购买用户</td><td style="text-align:left">user_item</td><td style="text-align:left">source=SHOP_PURCHASE</td><td style="text-align:left">目录价不一定等于历史成交价</td></tr>
+        <tr><td style="text-align:left">奖励用户</td><td style="text-align:left">user_item</td><td style="text-align:left">SYNC_REWARD + WELCOME_GIFT</td><td style="text-align:left">不区分具体奖励场景</td></tr>
+        <tr><td style="text-align:left">当前穿戴</td><td style="text-align:left">user_equip</td><td style="text-align:left">equip_slot=SKIN 的当前 item_id</td><td style="text-align:left">状态表，不是换装流水</td></tr>
+        <tr><td style="text-align:left">测试账号</td><td style="text-align:left">user_profile</td><td style="text-align:left">仅 user_type=0</td><td style="text-align:left">与 GA4 设备排除口径不同表、同目标</td></tr>
       </table></div>
     </div>
-    <div class="tip"><b>查询资产不随 HTML 公开：</b>金币余额、手办抽取与皮肤穿戴的复跑逻辑仅保存在本地分析目录；页面只保留聚合数字、定义与限制。</div>
-    <div class="note"><b>必须补的数据能力:</b>① 新增换装事件流水，避免用 user_equip.updated_at 猜测行为；② 金币账户初始化必须记 opening_balance 流水；③ 皮肤订单保留成交时 price，而不是事后回看 item_catalog 当前价；④ 手办重复抽取需要记录补偿结果，才能衡量重复体验是否伤害第 2 抽。</div>
+    <div class="note"><b>GA4 观测缺口:</b>自动 <b>screen_view</b> 能识别 Shop 与 Backpack 入口，且从 07-28 起有量；但在 2026-07-10~08-17 02:15 UTC 窗口内，<b>shop_purchase_result</b> 与 <b>skin_equip_result</b> 均为 0。当前仍不能计算商品点击→购买、首次穿戴率、换装频次和获得→穿戴时延。</div>
+    <div class="tip"><b>建议补数:</b>新增 <b>skin_equip_result</b>（item_id、acquire_source、entry、from_item_id、is_success）与 Shop / Backpack 页面曝光；购买事件 <b>shop_purchase_result</b> 需确认客户端是否已实现并验收上报。复跑 SQL：<b>analytics/mysql/workbench-incentive-skin-refresh.sql</b> 与 <b>analytics/bigquery/workbench-incentive-skin-refresh.sql</b>。</div>
   </section>
 
 </div>
 
 <script>
 /* ═══════════ A/B 实验（Android + iOS；首次进组 2026-08-01 00:00 ~ 2026-08-17 02:15 UTC；排除测试账号） ═══════════ */
-const AB_TOTAL={"a":{"assigned":3914,"firstOpen":3746,"loginPage":2945,"registered":2046,"registeredDenom":3622,"registeredRolling":2244,"paywall":722,"checkout":276,"lessonStart":1747,"lessonComplete":502,"lessonIndependentStart":1747,"lessonIndependentComplete":502,"pending":729,"paid":11},"b":{"assigned":3938,"firstOpen":3769,"loginPage":3674,"registered":2261,"registeredDenom":3653,"registeredRolling":2473,"paywall":2089,"checkout":561,"lessonStart":1111,"lessonComplete":426,"lessonIndependentStart":1111,"lessonIndependentComplete":426,"pending":1139,"paid":12}};
-const AB_PLATFORM_TOTAL=[{"platform":"全部平台","a":{"assigned":3914,"mature":3622,"registered":2046},"b":{"assigned":3938,"mature":3653,"registered":2261},"diff":5.41,"ci":"+3.2~+7.7pp","p":"<.00001"},{"platform":"Android","a":{"assigned":3213,"mature":2943,"registered":1604},"b":{"assigned":3178,"mature":2923,"registered":1786},"diff":6.6,"ci":"+4.1~+9.1pp","p":"<.00001"},{"platform":"iOS","a":{"assigned":701,"mature":679,"registered":442},"b":{"assigned":760,"mature":730,"registered":475},"diff":-0.03,"ci":"−5.0~+5.0pp","p":".991"}];
+const AB_TOTAL={"a":{"assigned":3913,"firstOpen":3746,"loginPage":2949,"registered":2046,"registeredDenom":3622,"registeredRolling":2246,"paywall":722,"checkout":277,"lessonStart":1799,"lessonComplete":514,"lessonIndependentStart":1799,"lessonIndependentComplete":514,"pending":731,"paid":11},"b":{"assigned":3939,"firstOpen":3771,"loginPage":3679,"registered":2263,"registeredDenom":3656,"registeredRolling":2474,"paywall":2165,"checkout":577,"lessonStart":1008,"lessonComplete":414,"lessonIndependentStart":1008,"lessonIndependentComplete":414,"pending":1142,"paid":12}};
+const AB_PLATFORM_TOTAL=[{"platform":"全部平台","a":{"assigned":3913,"mature":3622,"registered":2046},"b":{"assigned":3939,"mature":3656,"registered":2263},"diff":5.4,"ci":"+3.2~+7.7pp","p":"<.00001"},{"platform":"Android","a":{"assigned":3212,"mature":2943,"registered":1604},"b":{"assigned":3179,"mature":2926,"registered":1788},"diff":6.6,"ci":"+4.1~+9.1pp","p":"<.00001"},{"platform":"iOS","a":{"assigned":701,"mature":679,"registered":442},"b":{"assigned":760,"mature":730,"registered":475},"diff":-0.03,"ci":"−5.0~+5.0pp","p":".991"}];
 const AB_FLOW_A_SCHEMA=[
  {phase:'启动',label:'首次启动',anchor:'first_open'},
  {phase:'启动',label:'首期价值页',anchor:'screen_view · WelcomeActivity'},
@@ -1529,8 +1561,8 @@ const AB_DAY_LEGACY=[
  }
 ];
 const AB_DAY=[{"d":"08-01","g":"A","assigned":136,"mature":136,"registered":77,"registeredRolling":77,"lessonComplete":17,"paid":null,"pending":null},{"d":"08-01","g":"B","assigned":157,"mature":157,"registered":93,"registeredRolling":96,"lessonComplete":7,"paid":null,"pending":null},{"d":"08-02","g":"A","assigned":138,"mature":138,"registered":73,"registeredRolling":76,"lessonComplete":13,"paid":null,"pending":null},{"d":"08-02","g":"B","assigned":139,"mature":139,"registered":91,"registeredRolling":92,"lessonComplete":14,"paid":null,"pending":null},{"d":"08-03","g":"A","assigned":172,"mature":172,"registered":91,"registeredRolling":94,"lessonComplete":18,"paid":null,"pending":null},{"d":"08-03","g":"B","assigned":184,"mature":184,"registered":99,"registeredRolling":102,"lessonComplete":9,"paid":null,"pending":null},{"d":"08-04","g":"A","assigned":192,"mature":192,"registered":107,"registeredRolling":113,"lessonComplete":28,"paid":null,"pending":null},{"d":"08-04","g":"B","assigned":191,"mature":191,"registered":119,"registeredRolling":126,"lessonComplete":17,"paid":null,"pending":null},{"d":"08-05","g":"A","assigned":236,"mature":236,"registered":143,"registeredRolling":144,"lessonComplete":19,"paid":null,"pending":null},{"d":"08-05","g":"B","assigned":224,"mature":224,"registered":152,"registeredRolling":153,"lessonComplete":38,"paid":null,"pending":null},{"d":"08-06","g":"A","assigned":278,"mature":278,"registered":146,"registeredRolling":147,"lessonComplete":32,"paid":null,"pending":null},{"d":"08-06","g":"B","assigned":259,"mature":259,"registered":161,"registeredRolling":163,"lessonComplete":27,"paid":null,"pending":null},{"d":"08-07","g":"A","assigned":265,"mature":265,"registered":161,"registeredRolling":164,"lessonComplete":32,"paid":null,"pending":null},{"d":"08-07","g":"B","assigned":274,"mature":274,"registered":182,"registeredRolling":185,"lessonComplete":36,"paid":null,"pending":null},{"d":"08-08","g":"A","assigned":277,"mature":277,"registered":171,"registeredRolling":177,"lessonComplete":36,"paid":null,"pending":null},{"d":"08-08","g":"B","assigned":276,"mature":276,"registered":171,"registeredRolling":173,"lessonComplete":34,"paid":null,"pending":null},{"d":"08-09","g":"A","assigned":274,"mature":274,"registered":145,"registeredRolling":147,"lessonComplete":41,"paid":null,"pending":null},{"d":"08-09","g":"B","assigned":288,"mature":288,"registered":182,"registeredRolling":190,"lessonComplete":35,"paid":null,"pending":null},{"d":"08-10","g":"A","assigned":226,"mature":226,"registered":128,"registeredRolling":133,"lessonComplete":31,"paid":null,"pending":null},{"d":"08-10","g":"B","assigned":253,"mature":253,"registered":131,"registeredRolling":137,"lessonComplete":26,"paid":null,"pending":null},{"d":"08-11","g":"A","assigned":280,"mature":280,"registered":163,"registeredRolling":166,"lessonComplete":53,"paid":null,"pending":null},{"d":"08-11","g":"B","assigned":265,"mature":265,"registered":164,"registeredRolling":165,"lessonComplete":29,"paid":null,"pending":null},{"d":"08-12","g":"A","assigned":340,"mature":340,"registered":197,"registeredRolling":203,"lessonComplete":40,"paid":null,"pending":null},{"d":"08-12","g":"B","assigned":318,"mature":318,"registered":202,"registeredRolling":209,"lessonComplete":40,"paid":null,"pending":null},{"d":"08-13","g":"A","assigned":233,"mature":233,"registered":122,"registeredRolling":126,"lessonComplete":40,"paid":null,"pending":null},{"d":"08-13","g":"B","assigned":253,"mature":253,"registered":148,"registeredRolling":153,"lessonComplete":24,"paid":null,"pending":null},{"d":"08-14","g":"A","assigned":240,"mature":240,"registered":138,"registeredRolling":140,"lessonComplete":36,"paid":null,"pending":null},{"d":"08-14","g":"B","assigned":245,"mature":245,"registered":158,"registeredRolling":159,"lessonComplete":26,"paid":null,"pending":null},{"d":"08-15","g":"A","assigned":299,"mature":299,"registered":167,"registeredRolling":167,"lessonComplete":41,"paid":null,"pending":null},{"d":"08-15","g":"B","assigned":296,"mature":296,"registered":186,"registeredRolling":186,"lessonComplete":41,"paid":null,"pending":null},{"d":"08-16","g":"A","assigned":289,"mature":36,"registered":17,"registeredRolling":154,"lessonComplete":24,"paid":null,"pending":null},{"d":"08-16","g":"B","assigned":267,"mature":31,"registered":22,"registeredRolling":157,"lessonComplete":22,"paid":null,"pending":null},{"d":"08-17*","g":"A","assigned":39,"mature":0,"registered":0,"registeredRolling":16,"lessonComplete":1,"paid":null,"pending":null},{"d":"08-17*","g":"B","assigned":49,"mature":0,"registered":0,"registeredRolling":27,"lessonComplete":1,"paid":null,"pending":null}];
-const AB_HEALTH=[["正式 A/B 稳定样本","7,852 台","A 3,914 / B 3,938；Android 6,391，iOS 1,461；已排除测试账号","可监控"],["分流均衡性 SRM","p=.787","A/B 49.8% / 50.2%；未见样本比例异常","通过"],["24h 成熟样本","7,275 台","A 3,622 / B 3,653；早期注册 B−A +5.4pp，p=<.00001","显著"],["Android 早期注册","B−A +6.6pp","95% CI +4.1~+9.1pp；p=<.00001","观察"],["iOS 早期注册","B−A -0.0pp","95% CI −5.0~+5.0pp；p=.991","观察"],["生产支付","SUCCESS A 11 / B 12","PENDING A 729 / B 1,139；绝对量仍不足","未成熟"],["分组冲突","185 台","Android 119 / iOS 66；已剔除","阻断"],["fallback","573 / 8,425 · 6.8%","Android 5.4%，iOS 12.4%；目标 ≤1%","阻断"],["分组真相源","experiment_group_assign","首次稳定进组事件；同设备冲突样本已排除","可监控"],["iOS 页面锚点","未对齐","分组/注册/课程结果可读；Onboarding 页面级漏斗暂不跨端合并","阻断"],["首课识别","Lesson ID 白名单","A=732/1615/734/733/1613/1614；B=1661","可监控"]];
-const AB_LESSON=[{"type":"体验课","level":"Level 1","lessonId":"732","group":"A","started":725,"completed":263},{"type":"体验课","level":"Level 2","lessonId":"1615","group":"A","started":322,"completed":127},{"type":"体验课","level":"Level 3","lessonId":"734","group":"A","started":240,"completed":56},{"type":"体验课","level":"Level 4","lessonId":"733","group":"A","started":264,"completed":38},{"type":"体验课","level":"Level 5","lessonId":"1613","group":"A","started":171,"completed":29},{"type":"体验课","level":"Level 6","lessonId":"1614","group":"A","started":27,"completed":2},{"type":"新人引导课","level":"—","lessonId":"1661","group":"B","started":966,"completed":406}];
+const AB_HEALTH=[["正式 A/B 稳定样本","7,852 台","A 3,913 / B 3,939；Android 6,391，iOS 1,461；已排除测试账号","可监控"],["分流均衡性 SRM","p=.769","A/B 49.8% / 50.2%；未见样本比例异常","通过"],["24h 成熟样本","7,278 台","A 3,622 / B 3,656；早期注册 B−A +5.4pp，p=<.00001","显著"],["Android 早期注册","B−A +6.6pp","95% CI +4.1~+9.1pp；p=<.00001","观察"],["iOS 早期注册","B−A -0.0pp","95% CI −5.0~+5.0pp；p=.991","观察"],["生产支付","SUCCESS A 11 / B 12","PENDING A 731 / B 1,142；绝对量仍不足","未成熟"],["分组冲突","185 台","Android 119 / iOS 66；已剔除","阻断"],["fallback","573 / 8,425 · 6.8%","Android 5.4%，iOS 12.4%；目标 ≤1%","阻断"],["分组真相源","experiment_group_assign","首次稳定进组事件；同设备冲突样本已排除","可监控"],["iOS 页面锚点","未对齐","分组/注册/课程结果可读；Onboarding 页面级漏斗暂不跨端合并","阻断"],["首课识别","Lesson ID 白名单","A=732/1615/734/733/1613/1614/1616；B=1661/1616","可监控"]];
+const AB_LESSON=[{"type":"体验课","level":"Level 1","lessonId":"732","group":"A","started":741,"completed":263},{"type":"体验课","level":"Level 2","lessonId":"1615","group":"A","started":329,"completed":127},{"type":"体验课","level":"Level 3","lessonId":"734","group":"A","started":253,"completed":56},{"type":"体验课","level":"Level 4","lessonId":"733","group":"A","started":271,"completed":38},{"type":"体验课","level":"Level 5","lessonId":"1613","group":"A","started":179,"completed":29},{"type":"体验课","level":"Level 6","lessonId":"1614","group":"A","started":29,"completed":2},{"type":"新人引导课","level":"—","lessonId":"1661","group":"B","started":985,"completed":407},{"type":"足球课","level":"—","lessonId":"1616","group":"A","started":293,"completed":97},{"type":"足球课","level":"—","lessonId":"1616","group":"B","started":208,"completed":82}];
 const AB_B_ONBOARDING_LESSON=[{"label":"开始新人引导课","phase":"课程","count":813,"ended":null,"anchor":"class_lesson_start · lesson_id=1661"},{"label":"课堂导入","phase":"课内环节","count":811,"ended":555,"anchor":"class_stage_start/end · lead-in-template_l1l2"},{"label":"视频示范","phase":"课内环节","count":513,"ended":494,"anchor":"class_stage_start/end · play-video-template"},{"label":"单词教学","phase":"课内环节","count":493,"ended":441,"anchor":"class_stage_start/end · word_teach_image_l1l2"},{"label":"单词练习","phase":"课内环节","count":340,"ended":334,"anchor":"class_stage_start/end · word_practice_bubble_image"},{"label":"总结收尾","phase":"课内环节","count":334,"ended":323,"anchor":"class_stage_start/end · wrapup_summary_video_trail"},{"label":"完成新人引导课","phase":"课程","count":319,"ended":null,"anchor":"class_lesson_end · result=complete · lesson_id=1661"}];
 
 /* ═══════════ 登录注册最新数据（统一截点 2026-08-17 02:15 UTC；排除测试账号） ═══════════ */
@@ -1728,8 +1760,9 @@ const PAYMENT_ORDER_PERIODS=[["YEAR",2774,1692,2768,2,3,1],["WEEK",991,694,965,2
   const A=AB_TOTAL.a,B=AB_TOTAL.b;
   const metrics=[
     {label:'早期注册率',a:A.registered,b:B.registered,aDenom:A.registeredDenom,bDenom:B.registeredDenom,matureA:A.registeredDenom,matureB:B.registeredDenom,window:'24h 成熟',detail:'95% CI +3.2~+7.7pp · p=<.00001',cls:'',status:'流程位置不同 · 不单独判胜',statusCls:'flat'},
-    {label:'付费转化率',a:A.paid,b:B.paid,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:`生产 SUCCESS A ${A.paid} / B ${B.paid}；PENDING A ${A.pending} / B ${B.pending}`,cls:'warn',status:'7d 未成熟 · 不判胜',statusCls:'flat'},
-    {label:'首课完课率',a:A.lessonIndependentComplete,b:B.lessonIndependentComplete,aDenom:A.lessonIndependentStart,bDenom:B.lessonIndependentStart,matureA:A.lessonIndependentStart,matureB:B.lessonIndependentStart,window:'独立课程口径',detail:'进组后首次命中 8 节指定课 · p<.00001',cls:'',status:'B +9.6pp · 课程不同',statusCls:'flat'}
+    {label:'首课开课率',a:A.lessonIndependentStart,b:B.lessonIndependentStart,aDenom:A.assigned,bDenom:B.assigned,matureA:A.assigned,matureB:B.assigned,window:'进组后白名单首课',detail:'A=六节体验课/1616；B=1661/1616',cls:'',status:'路径课程不同 · 仅观察',statusCls:'flat'},
+    {label:'首课完课率',a:A.lessonIndependentComplete,b:B.lessonIndependentComplete,aDenom:A.lessonIndependentStart,bDenom:B.lessonIndependentStart,matureA:A.lessonIndependentStart,matureB:B.lessonIndependentStart,window:'已开课设备',detail:'同一白名单首课开始→完成',cls:'',status:'课程不同 · 仅观察',statusCls:'flat'},
+    {label:'付费转化率',a:A.paid,b:B.paid,aDenom:A.assigned,bDenom:B.assigned,matureA:0,matureB:0,window:'7d 早期滚动',detail:`生产 SUCCESS A ${A.paid} / B ${B.paid}；PENDING A ${A.pending} / B ${B.pending}`,cls:'warn',status:'7d 未成熟 · 不判胜',statusCls:'flat'}
   ];
   el('abKpis').innerHTML=metrics.map(m=>{
     const ar=pct(m.a,m.aDenom),br=pct(m.b,m.bDenom),diff=br-ar;
@@ -1832,7 +1865,7 @@ const PAYMENT_ORDER_PERIODS=[["YEAR",2774,1692,2768,2,3,1],["WEEK",991,694,965,2
     ['注册成功 · 滚动',A.registeredRolling,B.registeredRolling,'独立生命周期诊断；正式指标见 24h 成熟行'],
     ['Paywall 曝光',A.paywall,B.paywall,'路径顺序不同，仅诊断'],
     ['发起支付',A.checkout,B.checkout,'checkout_start'],
-    ['指定首课开始',A.lessonIndependentStart,B.lessonIndependentStart,'进组后首次命中：六节体验课 + 1661 + 1616',A.assigned,B.assigned],
+    ['指定首课开始',A.lessonIndependentStart,B.lessonIndependentStart,'进组后首次命中：A=六节体验课/1616；B=1661/1616',A.assigned,B.assigned],
     ['指定首课完成',A.lessonIndependentComplete,B.lessonIndependentComplete,'开始后完成同一首课；本行比率以指定首课开始为分母',A.lessonIndependentStart,B.lessonIndependentStart],
     ['Google 订单 PENDING',A.pending,B.pending,'不计付费成功'],
     ['Google 订单 SUCCESS',A.paid,B.paid,'付费核心指标分子']
@@ -1887,7 +1920,8 @@ const GROUPS=[
  {k:'experiment',label:'A/B 实验',en:'Experiment'},
  {k:'login',label:'登录 / 注册',en:'Signup'},
  {k:'retention',label:'留存',en:'Retention'},
- {k:'payment',label:'支付转化',en:'Monetization'}];
+ {k:'payment',label:'支付转化',en:'Monetization'},
+ {k:'incentive',label:'激励模块',en:'Incentives'}];
 const secs=[...document.querySelectorAll('.sec')];
 let curGroup='experiment';
 el('groups').innerHTML=GROUPS.map((g,i)=>`<div class="group${i===0?' on':''}" data-k="${g.k}">${g.label}<span class="gn">${g.en}</span></div>`).join('');
