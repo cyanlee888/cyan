@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino English V1.5.5 — 转化率提升 Demo</title>
-  <!-- DESIGN.md · V1.5.5 · entry A/B test + localized nicknames + onboarding-result login + trial value promise + contextual permissions + transparent parent paywall -->
+  <title>Dino English V1.5.5 — 转化与 KOL 优惠 Demo</title>
+  <!-- DESIGN.md · V1.5.5 · B-flow default + trial value promise + transparent parent paywall + KR/SA KOL IAP offers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
@@ -1451,10 +1451,13 @@
     .hub-avatar-entry:hover { transform: scale(1.06); }
     .hub-avatar-entry img { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 4px 10px rgba(0,0,0,0.22); }
     .hub-app--profile .hub-avatar-entry { display: none; }
-    /* 转化链路优化：非会员在 hub 所有 tab 常驻的会员入口（右上角，点击进 Paywall）。 */
-    .hub-cx-vip { position: absolute; top: 10px; right: 14px; z-index: 31; display: flex; align-items: center; gap: 6px; border: 0; cursor: pointer; background: linear-gradient(180deg, #ffb45c, #ea6c25); color: #fff; font-family: var(--display); font-weight: 800; font-size: 0.74rem; padding: 8px 13px; border-radius: 999px; box-shadow: 0 8px 20px rgba(234,108,37,0.45); white-space: nowrap; transition: transform 0.14s ease; }
-    .hub-cx-vip:hover { transform: translateY(-1px); }
-    .hub-cx-vip .hcv-crown { font-size: 0.9rem; line-height: 1; }
+    /* Figma 12530:7101：四个主 Tab 共用 60×40 玻璃质感钻石会员入口，点击进入 Paywall。 */
+    .hub-cx-vip { position: absolute; top: 20px; right: 14px; z-index: 31; display: grid; width: 60px; height: 40px; place-items: center; overflow: visible; padding: 0; border: 1px solid rgba(255,255,255,0.95); cursor: pointer; background: linear-gradient(180deg, rgba(247,255,0,0.30), rgba(25,244,208,0.30)); border-radius: var(--radius-pill); box-shadow: 0 7px 16px rgba(10,84,225,0.22); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); transition: transform 0.14s ease, box-shadow 0.14s ease; }
+    .hub-cx-vip:hover { transform: scale(1.05); box-shadow: 0 9px 19px rgba(10,84,225,0.28); }
+    .hub-cx-vip .hcv-diamond { position: relative; z-index: 1; display: block; width: 36px; height: 36px; object-fit: contain; }
+    .hub-cx-vip .hcv-discount { position: absolute; z-index: 2; top: -2px; left: -5px; color: var(--reward-orange); font: 700 0.68rem/1 var(--display); letter-spacing: -0.03em; white-space: nowrap; transform: rotate(-8deg); -webkit-text-stroke: 2px #fff; paint-order: stroke fill; filter: drop-shadow(0 2px 2px rgba(10,44,198,0.28)); pointer-events: none; }
+    .hub-cx-vip .hcv-discount::after { content: ""; position: absolute; z-index: -1; right: -7px; bottom: -4px; left: -5px; height: 5px; border-radius: var(--radius-pill); background: var(--reward-orange); box-shadow: 0 1px 0 rgba(255,255,255,0.85); transform: skewX(-18deg); }
+    .hub-cx-vip .hcv-discount[hidden] { display: none; }
     /* Profile takeover hides it (Profile has its own Membership row) */
     .hub-app--profile .hub-cx-vip { display: none !important; }
     /* On the Dino tab the coin pill sits in the top-right corner — keep it there and move the
@@ -2654,9 +2657,6 @@
     .class-lead-row .class-home-lead { padding-top: 0; min-width: 0; flex: 1; }
     .class-lead-row .class-home-lead-title { overflow: hidden; text-overflow: ellipsis; }
     .class-lead-row .class-week-head { flex-shrink: 0; }
-    /* Non-member: reserve the top-right corner for the "Go Premium" membership pill so
-       "More lessons" sits just to its left instead of underneath it. */
-    .hub-app--cxvip .hub-panel--class .class-lead-row { padding-right: 112px; }
     /* 方案二: "This Week" inline swiper on Class home (replaces the single hero card).
        The lead copy + a header row (title + single Learning Path entry) sit above a
        horizontal, scroll-snapped row of this week's 3 lesson cards. */
@@ -2665,6 +2665,13 @@
       align-items: center;
       justify-content: flex-end;
       gap: 8px;
+    }
+    /* Class 页按 Figma 将钻石入口放进标题行，紧邻 More lessons 左侧。 */
+    .class-week-head > .hub-cx-vip {
+      position: relative;
+      top: auto;
+      right: auto;
+      flex: 0 0 60px;
     }
     /* V1.3.0: the completed trial lesson shows on Class home as a normal lesson card
        (same chrome as a week card) badged "Trial lesson" with a distinct accent. */
@@ -5109,18 +5116,250 @@
     .pw-legal a { color: #2a6db0; }
     .pw-renewal { color: #6f889f; }
 
-    /* ---------- Membership center (V1.2.0) ---------- */
-    .ms-body { flex: 1; padding: 4px 26px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
-    .ms-status-card { border-radius: 18px; padding: 18px 20px; color: #fff; background: linear-gradient(135deg,#19c3b2,#1f7fd0); box-shadow: 0 14px 30px rgba(25,127,208,.3); }
-    .ms-status-card.is-free { background: linear-gradient(135deg,#8aa4be,#5a7a98); }
-    .ms-status-kicker { font-size: 0.74rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; opacity: .85; }
-    .ms-status-title { font-size: 1.3rem; font-weight: 800; margin: 6px 0 4px; }
-    .ms-status-desc { font-size: 0.84rem; opacity: .92; margin: 0; }
-    .ms-benefits-title { font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .4px; color: #5a7a98; margin: 0 0 8px; }
-    .ms-benefits-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-    .ms-benefits-list li { position: relative; padding-left: 24px; font-size: 0.88rem; color: #34506a; }
-    .ms-benefits-list li::before { content: "✓"; position: absolute; left: 0; color: #19c3b2; font-weight: 800; }
+    /* ---------- Membership center · Figma 3747:2768 (V1.5.5) ---------- */
+    .ms-body { flex: 1; padding: 4px 26px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
     .ms-actions { display: flex; flex-direction: column; gap: 10px; }
+    #screen-membership::before,
+    #screen-membership::after { display: none; }
+    #screen-membership .ms-shell {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(43,142,255,.08), rgba(185,165,255,.16)),
+        url("assets/v155/member-center/cosmic-stage-bg.png") center / cover no-repeat;
+    }
+    #screen-membership .ms-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(27,91,255,.04), rgba(162,135,255,.12));
+      backdrop-filter: blur(1px);
+    }
+    #screen-membership .ms-body {
+      position: absolute;
+      z-index: 2;
+      top: 16.95cqh;
+      right: 4.93cqw;
+      bottom: 9.3cqh;
+      left: 4.93cqw;
+      display: grid;
+      grid-template-columns: 324fr 388fr;
+      gap: 2.46cqw;
+      padding: 0;
+      overflow: visible;
+    }
+    .ms-back,
+    .ms-restore {
+      position: absolute;
+      z-index: 4;
+      top: 5.33cqh;
+      border: 0;
+      cursor: pointer;
+      color: #fff;
+      font-family: var(--font);
+    }
+    .ms-back {
+      left: 2.46cqw;
+      width: 4.93cqw;
+      height: 4.93cqw;
+      min-width: 40px;
+      min-height: 40px;
+      max-width: 44px;
+      max-height: 44px;
+      border-radius: var(--radius-pill);
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.95);
+      box-shadow: 0 8px 24px rgba(21,60,150,.16);
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .ms-back:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(21,60,150,.22); }
+    .ms-back img { width: 16px; height: 16px; display: block; transform: rotate(-45deg); }
+    .ms-restore {
+      right: 4.93cqw;
+      min-width: 76px;
+      min-height: 32px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(255,255,255,.18);
+      font-size: .76rem;
+      line-height: 1.4;
+      transition: background .18s ease, transform .18s var(--ease);
+    }
+    .ms-restore:hover { background: rgba(255,255,255,.28); transform: translateY(-1px); }
+    .ms-profile-card,
+    .ms-premium-card {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      border-radius: 4cqh;
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(26,53,137,.2);
+    }
+    .ms-profile-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 3.6cqh 18px 12px;
+      background: linear-gradient(180deg, rgba(255,241,203,.96), rgba(255,255,255,.96) 72%);
+      color: #2f3338;
+    }
+    .ms-avatar-wrap {
+      position: relative;
+      width: 11.2cqh;
+      height: 11.2cqh;
+      min-width: 78px;
+      min-height: 78px;
+      max-width: 96px;
+      max-height: 96px;
+      flex: 0 0 auto;
+    }
+    .ms-avatar {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid transparent;
+      background:
+        linear-gradient(#fff,#fff) padding-box,
+        linear-gradient(135deg,#ffd15c,#35d5ce,#9be970) border-box;
+      box-shadow: 0 8px 18px rgba(42,204,193,.22);
+    }
+    .ms-crown {
+      position: absolute;
+      top: -15%;
+      left: 50%;
+      width: 27%;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 3px 4px rgba(230,150,26,.25));
+    }
+    .ms-profile-name {
+      margin: 6px 0 7px;
+      max-width: 90%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: var(--display);
+      font-size: .98rem;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+    .ms-plan-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 30px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      color: #fff;
+      background: linear-gradient(90deg,#41dbd3,#b0e76d);
+      font-size: .72rem;
+      font-weight: 700;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .ms-plan-pill.is-free { background: linear-gradient(90deg,#8ca7c2,#64809c); }
+    .ms-plan-pill img { width: 20px; height: 20px; object-fit: contain; }
+    .ms-profile-meta {
+      margin-top: 8px;
+      min-height: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1px;
+      color: #959aa3;
+      font-size: .66rem;
+      line-height: 1.3;
+      text-align: center;
+    }
+    .ms-membership-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .ms-membership-line[hidden] { display: none; }
+    .ms-membership-label { color: #959aa3; font-size: .6rem; font-weight: 700; }
+    .ms-membership-value { color: #68717c; font-size: .68rem; font-weight: 700; }
+    .ms-premium-card {
+      padding: 2.65cqh 20px 16px;
+      background: linear-gradient(180deg,#ddecff 0%,#fff 56%);
+      color: #2f3338;
+    }
+    .ms-premium-card .ms-plan-pill { position: relative; z-index: 2; }
+    .ms-premium-title {
+      position: relative;
+      z-index: 2;
+      margin: 14px 0 12px;
+      font-family: var(--display);
+      font-size: 1.42rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: capitalize;
+    }
+    #screen-membership .ms-benefits-list {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 320px);
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+    #screen-membership .ms-benefits-list li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #4b525c;
+      font-size: .82rem;
+      line-height: 1.35;
+    }
+    #screen-membership .ms-benefits-list li::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      flex: 0 0 20px;
+      border-radius: 50%;
+      background:
+        url("assets/v155/member-center/icon-benefit-check.svg") center / 11px 8px no-repeat,
+        linear-gradient(90deg,#42cfae,#99e17e);
+    }
+    .ms-premium-gem {
+      position: absolute;
+      z-index: 1;
+      top: -4.3cqh;
+      right: -1px;
+      width: 15.2cqh;
+      max-width: 128px;
+      filter: drop-shadow(4px 4px 16px rgba(253,206,129,.5));
+      pointer-events: none;
+    }
+    .ms-gem-shadow {
+      position: absolute;
+      top: 22%;
+      right: 10%;
+      width: 45px;
+      opacity: .75;
+    }
+    .ms-gem-star {
+      position: absolute;
+      z-index: 2;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+    }
+    .ms-gem-star--one { top: 8px; right: 105px; }
+    .ms-gem-star--two { top: 58px; right: 2px; }
 
     /* ---------- Profile detail / edit (V1.2.0) ---------- */
     .pd-view { display: flex; flex-direction: column; gap: 10px; }
@@ -7229,7 +7468,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.5.5 · 转化率提升 Demo：首屏 A/B、昵称本地化、登录承接、试听价值、按需权限与支付表达；右上 ⚙︎ States 可切换关键状态</p>
+  <p class="demo-bar">V1.5.5 · 转化与 KOL 优惠 Demo：首启 B 链路、家长支付表达、韩国 / 沙特 KOL Offer；右上 ⚙︎ States 可切换关键状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -7933,16 +8172,13 @@
         <div class="pwpt-scroll" id="pwpt-scroll">
           <div class="pwpt-head">
             <button type="button" class="pwpt-back" id="btn-pwpt-back" aria-label="Close">‹</button>
+            <span class="v155-pro-tag">Dino Pro</span>
           </div>
           <!-- 转化链路优化：常规 Paywall 限时折扣倒计时（15 分钟），滚动时置顶不动（sticky）。 -->
           <div class="pwpt-timer pwpt-timer--sticky">🔥 Limited offer ends in <span id="pwpt-timer-clock">23:59:59</span></div>
           <!-- V1.3.2 (布局调整): title block on top; then Dino left + trust proof right;
                then a full-width benefits list. -->
           <div class="pwpt-hero-card">
-            <div class="pwpt-hero-intro">
-              <span class="pwpt-kicker">Dino Premium</span>
-              <h2 class="pwpt-title" id="pwpt-title">Unlock everything in Dino English</h2>
-            </div>
             <div class="pwpt-hero-top">
               <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
               <div class="pwpt-trust">
@@ -7961,21 +8197,18 @@
           <div class="pwpt-cta-spacer"></div>
         </div>
         <div class="pwpt-cta-bar">
-          <p class="pwpt-cancel-note">Cancel anytime in Google Play</p>
           <button type="button" class="btn btn-primary pwpt-cta" id="btn-pwpt-purchase">Subscribe now</button>
+          <p class="pwpt-cancel-note">Cancel anytime in Google Play</p>
           <p class="pwpt-legal">
-            <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore purchases</button> ·
-            <a href="../legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Use</a> ·
+            <button type="button" class="pwpt-restore" id="btn-pwpt-restore">Restore</button> ·
+            <a href="../legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a> ·
             <a href="../legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a>
           </p>
         </div>
       </section>
 
-      <!-- V1.4.0 转化链路优化: win-back 周卡限时折扣页. Shown when the user cancels the
-           system pay sheet or backs out of the Paywall — governed by a promo frequency
-           cap (≤1/day · lifetime fatigue cap · never for paid users). Reuses pro_weekly
-           ($10.99) FRAMED with a strikethrough original ($15.99) + a REAL, non-resetting
-           15-min countdown that stops at 00:00. It is NOT a new SKU. -->
+      <!-- V1.5.5: win-back 支付页优先展示当前 UID Promo 映射的 SKU；
+           未命中可用 Promo 时展示现有周包挽留 SKU。 -->
       <section class="screen wb" id="screen-winback">
         <div class="wb-scroll">
           <button type="button" class="wb-close" id="btn-wb-close" aria-label="Close">✕</button>
@@ -7987,16 +8220,19 @@
               <span class="wb-timer-label">Offer ends in</span>
               <span class="wb-timer-clock" id="wb-timer-clock">15:00</span>
             </div>
-            <div class="wb-plan">
-              <span class="wb-plan-tag">33% OFF</span>
-              <div class="wb-plan-l">
-                <span class="wb-plan-name">Weekly plan</span>
-                <span class="wb-plan-perday">≈ $1.57 / day</span>
-              </div>
-              <div class="wb-plan-r">
-                <s class="wb-plan-orig">$16.49</s>
-                <span class="wb-plan-now">$10.99<small>/ week</small></span>
-              </div>
+            <div class="wb-plan pwpt-plan is-selected">
+              <span class="wb-plan-tag pwpt-badge">33% OFF</span>
+              <span class="wb-plan-l pwpt-plan-l">
+                <span class="wb-plan-name pwpt-plan-name">Weekly</span>
+                <span class="pwpt-plan-price-row">
+                  <span class="wb-plan-now pwpt-plan-price"><b>$10.99</b><small>/week</small></span>
+                  <s class="wb-plan-orig pwpt-plan-orig">$16.49</s>
+                </span>
+                <span class="wb-plan-renewal v155-kol-renewal" hidden></span>
+              </span>
+              <span class="wb-plan-r pwpt-plan-r">
+                <span class="wb-plan-perday pwpt-plan-daily"><b>≈ $1.57</b><small>/day</small></span>
+              </span>
             </div>
             <button type="button" class="btn btn-primary wb-cta" id="btn-wb-subscribe">Claim my discount</button>
             <p class="wb-legal">
@@ -8180,6 +8416,7 @@
     .wb-plan-orig{font-size:.85rem;color:#9aa5a0;text-decoration:line-through;font-weight:600}
     .wb-plan-now{font-size:1.35rem;font-weight:900;color:#16241c;line-height:1.1;font-family:var(--display,"Sora");white-space:nowrap}
     .wb-plan-now small{font-size:.7rem;font-weight:600;color:#8a958d;margin-left:2px}
+    .wb-plan-renewal{max-width:132px;margin-top:3px;color:#526575;font-size:.66rem;font-weight:700;line-height:1.25}
     .wb-cta{width:100%;max-width:320px;font-size:1rem;padding:15px;margin:14px auto 4px;white-space:nowrap}
     .wb-restore{border:none;background:transparent;color:#8a958d;font-size:.7rem;font-weight:600;font-family:inherit;cursor:pointer;padding:0;text-decoration:underline}
     .wb-legal{margin:6px 0 0;font-size:.7rem;color:#a7b0aa}
@@ -8729,22 +8966,49 @@
 
       <section class="screen app-shell" id="screen-membership">
         <div class="ms-shell">
-          <div class="ms-head">
-            <button type="button" class="btn-back-land" id="btn-membership-back">Back</button>
-            <span class="ms-head-title">Membership</span>
-          </div>
+          <button type="button" class="ms-back" id="btn-membership-back" aria-label="Back">
+            <img src="assets/v155/member-center/icon-back-corner.svg" alt="" />
+          </button>
+          <button type="button" class="ms-restore" id="btn-ms-restore">Restore</button>
           <div class="ms-body">
-            <div class="ms-status-card" id="ms-status-card"></div>
-            <div class="ms-benefits">
-              <p class="ms-benefits-title">Premium includes</p>
+            <article class="ms-profile-card" id="ms-status-card">
+              <div class="ms-avatar-wrap">
+                <img class="ms-avatar" src="assets/v155/member-center/learner-avatar.png" alt="" />
+                <img class="ms-crown" src="assets/v155/member-center/learner-crown.png" alt="" />
+              </div>
+              <p class="ms-profile-name" id="ms-profile-name">Jackson</p>
+              <span class="ms-plan-pill" id="ms-profile-plan">
+                <img src="assets/v155/member-center/premium-gem-small.png" alt="" />
+                <span id="ms-profile-plan-label">Premium</span>
+              </span>
+              <div class="ms-profile-meta">
+                <p class="ms-membership-line" id="ms-access-line">
+                  <span class="ms-membership-label" id="ms-access-label">Premium access:</span>
+                  <span class="ms-membership-value" id="ms-access-status">30 days remaining</span>
+                </p>
+                <p class="ms-membership-line" id="ms-renewal-line" hidden>
+                  <span class="ms-membership-label">Next billing date:</span>
+                  <span class="ms-membership-value" id="ms-renewal-date"></span>
+                </p>
+              </div>
+            </article>
+            <article class="ms-premium-card">
+              <span class="ms-plan-pill">
+                <img src="assets/v155/member-center/premium-gem-small.png" alt="" />
+                <span>Dino Premium</span>
+              </span>
+              <h2 class="ms-premium-title">Premium Access</h2>
               <ul class="ms-benefits-list">
                 <li>All AI speaking lessons</li>
-                <li>All Practice vocabulary</li>
-                <li>All Radio stories</li>
-                <li>All lesson reports</li>
+                <li>Full vocabulary practice</li>
+                <li>All FM stories &amp; songs</li>
+                <li>Progress report after every lesson</li>
               </ul>
-            </div>
-            <div class="ms-actions" id="ms-actions"></div>
+              <img class="ms-premium-gem" src="assets/v155/member-center/premium-gem.png" alt="" />
+              <img class="ms-gem-shadow" src="assets/v155/member-center/gem-shadow.svg" alt="" />
+              <img class="ms-gem-star ms-gem-star--one" src="assets/v155/member-center/decor-star.svg" alt="" />
+              <img class="ms-gem-star ms-gem-star--two" src="assets/v155/member-center/decor-star.svg" alt="" />
+            </article>
           </div>
         </div>
       </section>
@@ -9219,7 +9483,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, selectedPlan: "annual", nextBillingDate: "Jul 8, 2026", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", effectiveAccessEnd: "", autoRenew: false, selectedPlan: "annual", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -9268,19 +9532,15 @@
       forceUpdateLocale: "ko",
       forceUpdateCopyMode: "localized",
       feedbackMarket: "vn",
-      v155LoginContext: "plan",
       v155OnboardingStatus: "incomplete",
       v155Platform: "android",
       v155PaymentResult: "success",
       v155RestoreResult: "none",
+      v155ValueConfig: "region_match",
+      v155KolScenario: "unavailable",
+      v155KolExpiresAt: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
     };
-    // 模拟真实 A/B 分桶：状态面板切换后，刷新仍进入同一实验首页。
-    try {
-      const savedEntryVariant = localStorage.getItem("dino_v155_entry_variant");
-      if (savedEntryVariant === "a" || savedEntryVariant === "b") {
-        demoState.experimentGroup = savedEntryVariant;
-      }
-    } catch (_) {}
+    // Demo 每次加载默认展示业务最终采用的 B 链路；A 链路仅供状态面板对照查看。
     // CEFR ladder by level order (Levels 1–6). Used by the trial report + level-up check.
     const LEVEL_CEFR = ["A1", "A2", "B1", "B2", "C1", "C2"];
     function levelOrderOf(levelId) { return COURSE_LIBRARY.findIndex((l) => l.id === levelId); }
@@ -9297,7 +9557,7 @@
     // (simulates a new account / register). Show Dino's purpose page first,
     // then collect questions only and continue to class.
     let postLoginInfo = false;
-    // True only while authentication was triggered from the shared V1.5.5 entry page.
+    // True only while authentication was triggered from the B-flow value-led login page.
     // The result is then routed by the signed-in account's Onboarding status.
     let v155EntryAuth = false;
 
@@ -9385,36 +9645,47 @@
       updateExperimentStepChrome();
       const foot = document.querySelector("#screen-welcome .welcome-foot");
       if (!foot) return;
-      // V1.5.5: A / B share the same value-led login and registration entry.
-      foot.innerHTML =
-        '<button type="button" class="cx-w-oauth apple" id="cx-w-apple"><img src="assets/login/icon-apple.svg" alt="" />Continue with Apple</button>' +
-        '<button type="button" class="cx-w-oauth" id="cx-w-google"><img src="assets/login/icon-google.svg" alt="" />Continue with Google</button>' +
-        '<div class="cx-w-more">Or continue with</div>' +
-        '<div class="cx-w-icons"><button type="button" class="cx-w-ic" id="cx-w-phone" aria-label="Phone">☎</button>' +
-        '<button type="button" class="cx-w-ic fb" id="cx-w-fb" aria-label="Facebook">f</button>' +
-        '<button type="button" class="cx-w-ic kakao" id="cx-w-kakao" aria-label="Kakao">K</button></div>';
-      const login = (kind) => {
-        profile.skipOnboarding = true;
-        v155EntryAuth = true;
-        if ((kind === "apple" || kind === "google") && typeof window.cxMockOAuth === "function") {
-          window.cxMockOAuth(kind);
-        } else {
-          onLoginSuccess();
-        }
-      };
-      document.getElementById("cx-w-apple")?.addEventListener("click", () => login("apple"));
-      document.getElementById("cx-w-google")?.addEventListener("click", () => login("google"));
-      document.getElementById("cx-w-phone")?.addEventListener("click", () => login("phone"));
-      document.getElementById("cx-w-fb")?.addEventListener("click", () => login("facebook"));
-      document.getElementById("cx-w-kakao")?.addEventListener("click", () => login("kakao"));
+      if (!isB) {
+        foot.innerHTML =
+          '<button type="button" class="btn btn-primary" id="btn-get-started">Get Started</button>' +
+          '<button type="button" class="btn btn-text" id="btn-has-account-welcome">Already have an account? <span class="btn-text-link">Log in</span></button>';
+        document.getElementById("btn-get-started")?.addEventListener("click", () => {
+          profile.skipOnboarding = false;
+          showPortraitScreen("screen-name");
+        });
+        document.getElementById("btn-has-account-welcome")?.addEventListener("click", () => {
+          profile.skipOnboarding = true;
+          fillLogin();
+          showPortraitScreen("screen-login");
+        });
+      } else {
+        foot.innerHTML =
+          '<button type="button" class="cx-w-oauth apple" id="cx-w-apple"><img src="assets/login/icon-apple.svg" alt="" />Continue with Apple</button>' +
+          '<button type="button" class="cx-w-oauth" id="cx-w-google"><img src="assets/login/icon-google.svg" alt="" />Continue with Google</button>' +
+          '<div class="cx-w-more">Or continue with</div>' +
+          '<div class="cx-w-icons"><button type="button" class="cx-w-ic" id="cx-w-phone" aria-label="Phone">☎</button>' +
+          '<button type="button" class="cx-w-ic fb" id="cx-w-fb" aria-label="Facebook">f</button>' +
+          '<button type="button" class="cx-w-ic kakao" id="cx-w-kakao" aria-label="Kakao">K</button></div>';
+        const login = (kind) => {
+          profile.skipOnboarding = true;
+          v155EntryAuth = true;
+          if ((kind === "apple" || kind === "google") && typeof window.cxMockOAuth === "function") {
+            window.cxMockOAuth(kind);
+          } else {
+            onLoginSuccess();
+          }
+        };
+        document.getElementById("cx-w-apple")?.addEventListener("click", () => login("apple"));
+        document.getElementById("cx-w-google")?.addEventListener("click", () => login("google"));
+        document.getElementById("cx-w-phone")?.addEventListener("click", () => login("phone"));
+        document.getElementById("cx-w-fb")?.addEventListener("click", () => login("facebook"));
+        document.getElementById("cx-w-kakao")?.addEventListener("click", () => login("kakao"));
+      }
       initCarousel();
     }
 
-    function setExperimentGroup(group, navigate = true, persist = navigate) {
+    function setExperimentGroup(group, navigate = true) {
       demoState.experimentGroup = group === "a" ? "a" : "b";
-      if (persist) {
-        try { localStorage.setItem("dino_v155_entry_variant", demoState.experimentGroup); } catch (_) {}
-      }
       cxStage = null;
       postLoginInfo = false;
       profile.learner = "child";
@@ -9427,7 +9698,7 @@
       profile.goalLabels = [];
       profile.profileComplete = false;
       profile.hasStartedClass = false;
-      profile.skipOnboarding = true;
+      profile.skipOnboarding = demoState.experimentGroup === "b";
       const nameInput = document.getElementById("input-name");
       if (nameInput) nameInput.value = "";
       document.querySelectorAll("#device-portrait .option-item.is-selected").forEach((item) => item.classList.remove("is-selected"));
@@ -11064,7 +11335,10 @@
       });
       const isProfile = tab === "profile";
       $("#hub-app")?.classList.toggle("hub-app--profile", isProfile);
-      $("#screen-class")?.classList.toggle("app-shell--profile", isProfile);
+      const hubScreen = $("#screen-class");
+      hubScreen?.classList.toggle("app-shell--profile", isProfile);
+      // 底部 Tab 获得焦点时可能触发容器内部滚动；保持顶部会员入口始终可见。
+      if (hubScreen) hubScreen.scrollTop = 0;
       // Dino tab 右上角有金币 pill → 会员入口移到金币左边（其余 tab 贴右上角）。
       $("#hub-app")?.classList.toggle("hub-app--tab-dino", tab === "dino");
       // 会员入口跟随 tab 显示（非会员常驻，已付费隐藏）。
@@ -14773,7 +15047,7 @@
       $("#btn-age-continue")?.addEventListener("click", () => { if (profile.age) startPlacementTest(); });
       $("#btn-pt-continue")?.addEventListener("click", () => { if (ptAnswers[0] != null) applyPlacementResult(); });
 
-      // 转化链路优化：登录注册「前置」到 onboarding 之前（删掉「选身份」步）。
+      // B 链路登录注册前置；A 链路从昵称开始完成 Onboarding 后再进入登录注册。
       // skipOnboarding=true → 登录成功后进入 postLogin 信息采集（昵称→年龄→水平→目标）。
       $("#btn-get-started")?.addEventListener("click", () => {
         if (demoState.experimentGroup === "a") {
@@ -14854,6 +15128,79 @@
     initOnboarding();
 
     // ----- Payment / Paywall / Membership -----
+    const MEMBERSHIP_DAY_MS = 24 * 60 * 60 * 1000;
+    const MEMBERSHIP_PLAN_DAYS = Object.freeze({ weekly: 7, monthly: 30, quarterly: 90, annual: 365 });
+
+    function membershipKind() {
+      if (!profile.premiumUnlocked) return "free";
+      if (profile.membershipSource === "manual") return "manual";
+      if (profile.membershipSource === "one_time") return "one_time";
+      if (profile.membershipSource === "lifetime") return "lifetime";
+      return "subscription";
+    }
+
+    function isPaidMembership() {
+      const kind = membershipKind();
+      return kind === "one_time" || kind === "subscription" || kind === "lifetime";
+    }
+
+    function membershipDateAfter(days) {
+      return new Date(Date.now() + days * MEMBERSHIP_DAY_MS).toISOString();
+    }
+
+    function formatMembershipDate(value) {
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return "";
+      return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    function membershipDaysLeft() {
+      const end = new Date(profile.effectiveAccessEnd).getTime();
+      if (!Number.isFinite(end)) return 0;
+      return Math.max(0, Math.ceil((end - Date.now()) / MEMBERSHIP_DAY_MS));
+    }
+
+    function ensureMembershipTimeline() {
+      if (membershipKind() === "lifetime") return;
+      if (!profile.premiumUnlocked || !Number.isNaN(new Date(profile.effectiveAccessEnd).getTime())) return;
+      profile.effectiveAccessEnd = membershipDateAfter(membershipKind() === "manual" ? 2 : 30);
+    }
+
+    function setMembershipReviewState(kind) {
+      const state = ["manual", "one_time", "subscription", "subscription_cancelled", "lifetime"].includes(kind) ? kind : "free";
+      const cancelledSubscription = state === "subscription_cancelled";
+      profile.membershipSource = cancelledSubscription ? "subscription" : state;
+      profile.premiumUnlocked = state !== "free";
+      profile.autoRenew = state === "subscription";
+      profile.effectiveAccessEnd = state === "manual"
+        ? membershipDateAfter(2)
+        : state === "one_time"
+          ? membershipDateAfter(30)
+          : state === "subscription" || cancelledSubscription
+            ? membershipDateAfter(32)
+            : state === "lifetime"
+              ? "lifetime"
+              : "";
+      profile.nextBillingDate = state === "subscription" ? formatMembershipDate(membershipDateAfter(30)) : "";
+    }
+
+    function addMembershipDays(days) {
+      if (membershipKind() === "lifetime") return;
+      const duration = Math.max(0, Number(days) || 0) * MEMBERSHIP_DAY_MS;
+      const currentEnd = new Date(profile.effectiveAccessEnd).getTime();
+      const base = Number.isFinite(currentEnd) && currentEnd > Date.now() ? currentEnd : Date.now();
+      profile.effectiveAccessEnd = new Date(base + duration).toISOString();
+    }
+
+    function activateSubscription(planId, nextBillingDate) {
+      const days = MEMBERSHIP_PLAN_DAYS[planId] || 30;
+      addMembershipDays(days);
+      profile.premiumUnlocked = true;
+      profile.membershipSource = "subscription";
+      profile.autoRenew = true;
+      profile.nextBillingDate = nextBillingDate || formatMembershipDate(membershipDateAfter(days));
+    }
+
     // T1 (US/EU) sample prices. Configurable per region tier T0–T4.
     // V1.3.0: paywall exposes WEEKLY + MONTHLY + ANNUAL (3 tiers).
     // Annual is the default selection (top, highlighted) and shows a discount
@@ -14877,8 +15224,8 @@
     }
     const PLANS = [
       // 转化链路优化：常规 Paywall 主推「年卡」（折算到天更便宜）；月卡次位、不显示划线价。
-      { id: "annual", name: "Yearly", price: "$229.99", orig: "$329.99", period: "/ year", per: "≈ $19.17/month · cheapest per day", perDay: "≈ $0.63/day", hero: true },
-      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "billed monthly · cancel anytime", perDay: "≈ $1.27/day" },
+      { id: "annual", name: "Yearly", price: "$229.99", orig: "$329.99", period: "/ year", per: "≈ $19.17/month · cheapest per day", perDay: "$0.63/day", hero: true },
+      { id: "monthly", name: "Monthly", price: "$37.99", period: "/ month", per: "billed monthly · cancel anytime", perDay: "$1.27/day" },
       { id: "weekly", name: "Weekly", price: "$10.99", period: "/ week", per: "$10.99/week · billed weekly", perDay: "≈ $1.57/day" },
     ];
 
@@ -15302,20 +15649,18 @@
       continueAfterPaywallClose();
     });
     $("#btn-pwpt-restore")?.addEventListener("click", () => {
-      profile.premiumUnlocked = true;
+      setMembershipReviewState("subscription");
       demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
-      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       closePaywallPortrait();
       showPayToast("Purchase restored ✓");
     });
     $("#btn-pwpt-purchase")?.addEventListener("click", () => {
-      profile.premiumUnlocked = true;
+      activateSubscription(profile.selectedPlan);
       demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       // Free→member landing: current = maxReached = the pre-conversion current pointer
       // (i.e. the last trial placement; onboarding fuzzy level if no trial was taken).
       profile.maxReachedLevelId = profile.currentLevelId;
-      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       // 转化链路优化：付费成功 = 解锁正式课、回首页；不再强制进定级课。体验课(定级课)免费、
       // 首页置顶于正式课之前，付费与否都可进（未定级用户在首页自行进入定级）。
@@ -15325,11 +15670,10 @@
     });
 
     function completePurchase() {
-      profile.premiumUnlocked = true;
+      activateSubscription(profile.selectedPlan);
       demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       // Free→member landing: current = maxReached = the pre-conversion current pointer.
       profile.maxReachedLevelId = profile.currentLevelId;
-      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showLandScreen(paywallReturnScreen);
       showPayToast("Premium unlocked 🎉");
@@ -15377,7 +15721,7 @@
       if (!winbackDeadline || winbackDeadline < Date.now()) {
         winbackDeadline = Date.now() + 15 * 60 * 1000;
       }
-      profile.selectedPlan = "weekly"; // the win-back sells the weekly plan
+      profile.selectedPlan = "weekly"; // 默认挽留 SKU；V1.5.5 命中 Promo 后替换为映射 SKU
       // 文案按入口切换：从课程报告「解锁更多」进来时，用「限时折扣解锁」正向话术；其余保持挽留话术。
       const wbName = (typeof getDisplayName === "function" && getDisplayName()) || "your child";
       // 限时折扣挽留页文案不定制、沿用线上折扣页（各入口共用同一套线上文案）。
@@ -15388,6 +15732,7 @@
       $("#wb-timer")?.classList.remove("is-ended");
       enterPortrait();
       showPortraitScreen("screen-winback");
+      if (window.V155 && window.V155.renderWinback) window.V155.renderWinback();
       startWinbackCountdown();
     }
 
@@ -15396,6 +15741,22 @@
       const timerBox = $("#wb-timer");
       if (!clock) return;
       const tick = () => {
+        const promoAvailable = demoState.v155KolScenario === "available";
+        const promoExpiry = new Date(demoState.v155KolExpiresAt);
+        if (promoAvailable && !Number.isNaN(promoExpiry.getTime())) {
+          const now = new Date();
+          const todayEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+          const secondsToTodayEnd = Math.max(0, Math.floor((todayEnd - now) / 1000));
+          const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          const expiryStart = new Date(promoExpiry.getFullYear(), promoExpiry.getMonth(), promoExpiry.getDate());
+          const remainingDays = Math.max(0, Math.round((expiryStart - todayStart) / 86400000));
+          const hours = Math.floor(secondsToTodayEnd / 3600);
+          const minutes = Math.floor((secondsToTodayEnd % 3600) / 60);
+          const seconds = secondsToTodayEnd % 60;
+          clock.textContent = `${remainingDays} days · ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+          timerBox?.classList.toggle("is-ended", promoExpiry.getTime() <= now.getTime());
+          return;
+        }
         const ms = Math.max(0, (winbackDeadline || 0) - Date.now());
         const m = Math.floor(ms / 60000);
         const s = Math.floor((ms % 60000) / 1000);
@@ -15421,13 +15782,16 @@
       showLandScreen(winbackReturnScreen || "screen-class");
     }
 
-    function winbackSubscribe() { // subscribe the weekly plan
+    function winbackSubscribe() {
       stopWinbackCountdown();
-      profile.premiumUnlocked = true;
+      const selectedWinbackPlan = window.V155 && window.V155.getWinbackPlanId
+        ? window.V155.getWinbackPlanId()
+        : "weekly";
+      activateSubscription(selectedWinbackPlan);
       demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
       profile.maxReachedLevelId = profile.currentLevelId;
-      profile.nextBillingDate = "Jul 8, 2026";
-      profile.selectedPlan = "weekly";
+      profile.selectedPlan = selectedWinbackPlan;
+      if (window.V155 && window.V155.consumeWinbackOffer) window.V155.consumeWinbackOffer();
       refreshUnlockState();
       // 转化链路优化：付费成功 = 解锁正式课、回首页;不再强制进定级课(体验课免费置顶首页可自行进)。
       if (cxStage) { cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); showPayToast("Premium unlocked 🎉"); return; }
@@ -15462,16 +15826,15 @@
     $("#btn-wb-restore")?.addEventListener("click", winbackRestore);
 
     function restorePurchase() {
-      profile.premiumUnlocked = true;
+      setMembershipReviewState("subscription");
       demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
-      profile.nextBillingDate = "Jul 8, 2026";
       refreshUnlockState();
       showPayToast("Purchase restored ✓");
     }
 
     function refreshUnlockState() {
       const mv = $("#profile-membership-value");
-      if (mv) mv.textContent = profile.premiumUnlocked ? "Premium" : "Free";
+      if (mv) mv.textContent = isPaidMembership() ? "Premium" : "Free";
       if ($("#all-courses-list") && $("#all-courses-list").childElementCount) {
         try { renderAllCoursesScreen({ scrollToAnchor: false }); } catch (e) {}
       }
@@ -15481,34 +15844,36 @@
       if ($("#radio-carousel")?.childElementCount) { try { renderRadioCarousel(); } catch (e) {} }
       // Membership change flips the Play daily-limit badges (members = unlimited).
       try { window.GAME?.renderPlayLimits?.(); } catch (e) {}
+      try { window.syncHubVip?.(); } catch (e) {}
       if ($("#ms-status-card")) renderMembership();
     }
 
     function renderMembership() {
-      const card = $("#ms-status-card");
-      const actions = $("#ms-actions");
-      if (card) {
-        if (profile.premiumUnlocked) {
-          card.classList.remove("is-free");
-          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Dino Premium</p><p class="ms-status-desc">Active · renews ${profile.nextBillingDate} · all lessons unlocked.</p>`;
-        } else {
-          card.classList.add("is-free");
-          card.innerHTML = `<p class="ms-status-kicker">Your plan</p><p class="ms-status-title">Free</p><p class="ms-status-desc">First class & samples unlocked. Go Premium for the full path.</p>`;
-        }
-      }
-      if (actions) {
-        // App does NOT manage subscriptions in-app. Subscribed users only see
-        // Restore; Free users only see Subscribe now.
-        actions.innerHTML = profile.premiumUnlocked
-          ? `<button type="button" class="btn btn-text" id="btn-ms-restore">Restore</button>`
-          : `<button type="button" class="btn btn-primary" id="btn-ms-upgrade">Subscribe now</button>`;
-        $("#btn-ms-upgrade")?.addEventListener("click", () => openPaywall("screen-membership", "membership_entry"));
-        $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
-      }
+      ensureMembershipTimeline();
+      const paid = isPaidMembership();
+      const lifetime = membershipKind() === "lifetime";
+      const daysLeft = membershipDaysLeft();
+      const planPill = $("#ms-profile-plan");
+      const planLabel = $("#ms-profile-plan-label");
+      const accessLine = $("#ms-access-line");
+      const accessLabel = $("#ms-access-label");
+      const accessStatus = $("#ms-access-status");
+      const renewalLine = $("#ms-renewal-line");
+      const renewalDate = $("#ms-renewal-date");
+      if ($("#ms-profile-name")) $("#ms-profile-name").textContent = profile.name || "Jackson";
+      if (planPill) planPill.classList.toggle("is-free", !paid);
+      if (planLabel) planLabel.textContent = paid ? "Premium" : "Free";
+      if (accessLine) accessLine.hidden = !paid;
+      if (accessLabel) accessLabel.textContent = "Premium access:";
+      if (accessStatus) accessStatus.textContent = lifetime ? "Lifetime" : `${daysLeft} days remaining`;
+      const showRenewal = paid && membershipKind() === "subscription" && profile.autoRenew && !!profile.nextBillingDate;
+      if (renewalLine) renewalLine.hidden = !showRenewal;
+      if (renewalDate) renewalDate.textContent = showRenewal ? profile.nextBillingDate : "";
+      if ($("#btn-ms-restore")) $("#btn-ms-restore").hidden = !paid;
     }
 
     function openMembership() {
-      if (!profile.premiumUnlocked) {
+      if (!isPaidMembership()) {
         openPaywall(activeLandScreen() || "screen-class", "membership_entry");
         return;
       }
@@ -15573,6 +15938,7 @@
     $("#btn-paywall-purchase")?.addEventListener("click", completePurchase);
     $("#btn-paywall-restore")?.addEventListener("click", () => { restorePurchase(); showLandScreen(paywallReturnScreen); });
     $("#btn-membership-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
+    $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
     $("#btn-profile-membership")?.addEventListener("click", openMembership);
     $("#btn-profile-detail")?.addEventListener("click", openProfileDetail);
     $("#btn-pd-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
@@ -16796,12 +17162,16 @@
       if (key === "experimentGroup") return demoState.experimentGroup;
       if (key === "v155OnboardingStatus") return demoState.v155OnboardingStatus;
       if (key === "v155Platform") return demoState.v155Platform;
-      if (key === "v155PaymentResult") return demoState.v155PaymentResult;
       if (key === "v155RestoreResult") return demoState.v155RestoreResult;
+      if (key === "v155ValueConfig") return demoState.v155ValueConfig;
+      if (key === "v155KolScenario") return demoState.v155KolScenario;
       if (key === "vnConsultPhone") return profile.contactPhone ? "existing" : "missing";
       if (key === "vnConsultHook") return demoState.vnConsultHook;
       if (key === "vnConsultSubmitResult") return demoState.vnConsultSubmitResult;
-      if (key === "membership") return profile.premiumUnlocked ? "premium" : "free";
+      if (key === "membership") {
+        const kind = membershipKind();
+        return kind === "subscription" && !profile.autoRenew ? "subscription_cancelled" : kind;
+      }
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
       if (key === "levelUpResult") return demoState.levelUpResult;
       if (key === "trialResult") return demoState.trialResult;
@@ -16852,7 +17222,7 @@
         if (id === "screen-all-courses") return ctx("课程列表", ["membership", "startLevel"]);
         if (id === "screen-membership")  return ctx("会员中心", ["membership"]);
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
-        if (id === "screen-class")       return ctx("Class 首页", ["membership", "startLevel", "themeActivity", "themeUser"]);
+        if (id === "screen-class")       return ctx("Class 首页", ["membership", "v155KolScenario", "startLevel", "themeActivity", "themeUser"]);
         if (id === "screen-teacher")     return ctx("选择老师", []);
         return ctx("App 内", ["membership"]);
       }
@@ -16861,10 +17231,14 @@
       var pid = pel ? pel.id : null;
       if (pid === "screen-phone-auth")   return ctx("手机号登录/注册", []);
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", []);
-      if (pid === "screen-welcome")      return ctx("V1.5.5 · 首启价值登录合并页", ["experimentGroup", "v155OnboardingStatus"]);
+      if (pid === "screen-welcome")      return ctx(
+        "V1.5.5 · 首屏 A/B 链路对照",
+        ["experimentGroup"].concat(demoState.experimentGroup === "b" ? ["v155OnboardingStatus"] : [])
+      );
       if (pid === "screen-login")        return ctx("登录注册页", ["experimentGroup"]);
       if (pid === "screen-goal-value" && demoState.experimentGroup === "b") return ctx("B 链路 · 学习目标多选", []);
-      if (pid === "screen-paywall-pt")   return ctx("V1.5.5 · 家长支付页", ["v155Platform", "membership", "v155PaymentResult", "v155RestoreResult"]);
+      if (pid === "screen-paywall-pt")   return ctx("V1.5.5 · 家长支付页", ["membership", "v155ValueConfig", "v155KolScenario"]);
+      if (pid === "screen-winback")      return ctx("V1.5.5 · 挽留支付页", ["v155KolScenario"]);
       if (pid === "screen-vn-consult")   return ctx(
         "人工咨询预约",
         ["vnConsultPhone"]
@@ -16889,11 +17263,26 @@
           demoState.v155Platform = v;
           window.V155 && window.V155.renderPaywall();
         } },
-      { key: "v155PaymentResult", label: "支付结果",
-        options: [["success", "成功"], ["fail", "失败可重试"], ["cancel", "用户取消"]],
+      { key: "v155ValueConfig", label: "价值宣传配置",
+        options: [
+          ["region_match", "命中地区配置"],
+          ["global_fallback", "默认兜底"]
+        ],
         apply: function (v) {
-          demoState.v155PaymentResult = v;
+          demoState.v155ValueConfig = v;
           window.V155 && window.V155.renderPaywall();
+        } },
+      { key: "v155KolScenario", label: "KOL 优惠码",
+        options: [["available", "优惠可用"], ["unavailable", "优惠不可用"]],
+        apply: function (v) {
+          demoState.v155KolScenario = v;
+          profile.selectedPlan = v === "available" ? "monthly" : "annual";
+          if (window.V155) {
+            var winbackActive = !!document.querySelector("#screen-winback.active");
+            if (winbackActive) window.V155.renderWinback();
+            else window.V155.renderPaywall();
+          }
+          window.syncHubVip && window.syncHubVip();
         } },
       { key: "v155RestoreResult", label: "Restore 结果",
         options: [["none", "无可恢复订阅"], ["success", "恢复成功"], ["fail", "网络失败"]],
@@ -16901,7 +17290,7 @@
           demoState.v155RestoreResult = v;
         } },
       { key: "experimentGroup", label: "首屏 A/B 实验",
-        options: [["a", "A 组"], ["b", "B 组"]],
+        options: [["b", "B 组"], ["a", "A 组"]],
         apply: function (v) {
           setExperimentGroup(v, true);
         } },
@@ -16932,11 +17321,30 @@
           window.vnRefreshConsult && window.vnRefreshConsult();
         } },
       { key: "membership", label: "会员状态",
-        options: [["free", "Free"], ["premium", "Premium"]],
+        options: [
+          ["free", "Free"],
+          ["manual", "手动会员 · 剩余 2 天"],
+          ["one_time", "一次性付费 · 30 天"],
+          ["subscription", "自动订阅 · 共 32 天"],
+          ["subscription_cancelled", "已取消续订 · 共 32 天"],
+          ["lifetime", "永久会员 · Lifetime"]
+        ],
         apply: function (v) {
-          profile.premiumUnlocked = (v === "premium");
-          if (profile.premiumUnlocked && !profile.nextBillingDate) profile.nextBillingDate = "Jul 8, 2026";
+          setMembershipReviewState(v);
           refreshUnlockState();
+          if (document.querySelector("#screen-paywall-pt")?.classList.contains("active")) {
+            if (isPaidMembership()) {
+              enterLandscape();
+              renderMembership();
+              showLandScreen("screen-membership");
+            } else {
+              window.V155 && window.V155.renderPaywall();
+            }
+          }
+          if (activeLandScreen() === "screen-membership") {
+            if (isPaidMembership()) renderMembership();
+            else openMembership();
+          }
           if (activeLandScreen() === "screen-course-map") renderCourseMap();
           if (document.querySelector("#screen-trial-report")?.classList.contains("active") && trialReportMode === "trial") renderTrialReport();
         } },
@@ -17034,7 +17442,7 @@
       { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
       { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
       { label: "Paywall", run: withReviewProfile(function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { label: "会员中心", run: withReviewProfile(function () { enterLandscape(); showLandScreen("screen-membership"); }) },
+      { label: "会员中心", run: withReviewProfile(function () { enterLandscape(); openMembership(); }) },
       { label: "Feedback 邮件", run: withReviewProfile(function () { openFeedbackMailReview("vn"); }) },
     ],
     legacyJumps: [
@@ -17073,7 +17481,7 @@
           demoState.vnConsultState = VN_CONSULT_STATE.UNSEEN;
           demoState.vnConsultHook = "discount";
           seedReviewProfile();
-          profile.premiumUnlocked = false;
+          setMembershipReviewState("free");
           window.maybeOpenVnConsult && window.maybeOpenVnConsult(
             VN_CONSULT_EVENT.PAYWALL_DECLINED,
             { type: VN_CONSULT_ROUTE.CLASS_HOME }
@@ -17086,7 +17494,7 @@
           demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
           demoState.vnConsultHook = "trial_extension";
           seedReviewProfile();
-          profile.premiumUnlocked = false;
+          setMembershipReviewState("free");
           const eventName = demoState.experimentGroup === "a"
             ? VN_CONSULT_EVENT.PAYWALL_DECLINED
             : VN_CONSULT_EVENT.REPORT_UNLOCK;
@@ -17101,17 +17509,59 @@
           demoState.vnConsultSubmitted = false;
           demoState.vnConsultState = VN_CONSULT_STATE.WAITING_SECOND;
           seedReviewProfile();
-          profile.premiumUnlocked = false;
+          setMembershipReviewState("free");
           window.cxShowReport && window.cxShowReport();
         }) },
       { label: "Dino 升级",   run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); window.GAME && window.GAME.demoLevelUp && window.GAME.demoLevelUp(); }) },
       { label: "盲盒抽取",    run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); window.GAME && window.GAME.openCapsuleDraw && window.GAME.openCapsuleDraw(); }) },
       { label: "Paywall",    run: withReviewProfile(function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { label: "会员中心",    run: withReviewProfile(function () { enterLandscape(); showLandScreen("screen-membership"); }) },
+      { label: "会员中心",    run: withReviewProfile(function () { enterLandscape(); openMembership(); }) },
     ].filter(Boolean),
     jumps131Label: "V1.5.5 · 本版本关键状态",
     jumps131: [
-      { label: "① 家长支付页 · 价值与信任表达", run: function () { window.V155 && window.V155.openPaywall("success"); } },
+      { label: "① 四 Tab 钻石入口 · Promo 10% OFF", run: withReviewProfile(function () {
+          demoState.v155KolScenario = "available";
+          profile.selectedPlan = "monthly";
+          setMembershipReviewState("free");
+          refreshUnlockState();
+          enterLandscape();
+          showClassHome();
+          window.syncHubVip && window.syncHubVip();
+          window.demoStatePanel && window.demoStatePanel.render();
+        }) },
+      { label: "② KOL 优惠可用", run: function () { window.V155 && window.V155.openPaywall("success", {scenario:"available"}); } },
+      { label: "③ KOL 优惠不可用", run: function () { window.V155 && window.V155.openPaywall("success", {scenario:"unavailable"}); } },
+      { label: "④ 挽留页 · Promo SKU", run: function () { window.V155 && window.V155.openWinback("available"); } },
+      { label: "⑤ 手动会员 · 保留付费入口", run: withReviewProfile(function () {
+          setMembershipReviewState("manual");
+          refreshUnlockState();
+          enterLandscape();
+          showClassHome();
+        }) },
+      { label: "⑥ 会员中心 · 一次性付费", run: withReviewProfile(function () {
+          setMembershipReviewState("one_time");
+          refreshUnlockState();
+          enterLandscape();
+          openMembership();
+        }) },
+      { label: "⑦ 会员中心 · 自动订阅", run: withReviewProfile(function () {
+          setMembershipReviewState("subscription");
+          refreshUnlockState();
+          enterLandscape();
+          openMembership();
+        }) },
+      { label: "⑧ 会员中心 · 已取消续订", run: withReviewProfile(function () {
+          setMembershipReviewState("subscription_cancelled");
+          refreshUnlockState();
+          enterLandscape();
+          openMembership();
+        }) },
+      { label: "⑨ 会员中心 · 永久会员", run: withReviewProfile(function () {
+          setMembershipReviewState("lifetime");
+          refreshUnlockState();
+          enterLandscape();
+          openMembership();
+        }) },
     ].filter(Boolean),
     legacyJumpsRewardLabel: "V1.5.1 · 全量用户 8 天签到礼",
     legacyJumpsReward: [
@@ -17746,18 +18196,28 @@
     // 付费成功落点：解锁正式课、回首页；未定级则首页置顶注入体验课(定级课)卡，用户自行进入定级(不再强制)。
     window.cxToUnlockedHome = function(){ try{ profile.premiumUnlocked = true; if(!profile.nextBillingDate) profile.nextBillingDate = "Aug 1, 2026"; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
     // 免费用户退出转化流程 → 常规首页：体验课(定级课)免费置顶于正式课之前，正式课锁；新人引导课卡保留可重进。
-    window.cxToHome = function(){ cxStage = "home"; try{ profile.premiumUnlocked = false; }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
+    window.cxToHome = function(){ cxStage = "home"; try{ setMembershipReviewState("free"); }catch(e){} if(typeof refreshUnlockState==="function") refreshUnlockState(); enterLandscape(); showClassHome(); if(window.cxEnsureFootballCard) window.cxEnsureFootballCard(); if(window.cxEnsurePlacementCard) window.cxEnsurePlacementCard(); };
 
     // Paywall 限时折扣倒计时：当前时间距当天 24:00（次日 00:00）的真实倒计时，时:分:秒；
     // 过 00:00 自然重置为 23:59:59，当天任意时间进入 Paywall 都在倒计时。
     function pwptRenderCountdown(){
       var el = document.getElementById("pwpt-timer-clock");
-      if(!el) return;
+      var benefitEl = document.getElementById("v155-benefit-clock");
+      if(!el && !benefitEl) return;
       var now = new Date();
       var mid = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0, 0, 0, 0);
       var s = Math.max(0, Math.floor((mid - now) / 1000));
       var p = function(n){ return (n<10?"0":"")+n; };
-      el.textContent = p(Math.floor(s/3600)) + ":" + p(Math.floor((s%3600)/60)) + ":" + p(s%60);
+      var clock = p(Math.floor(s/3600)) + ":" + p(Math.floor((s%3600)/60)) + ":" + p(s%60);
+      if(el) el.textContent = clock;
+      if(benefitEl){
+        var kolAvailable = demoState.v155KolScenario === "available";
+        var expiry = new Date(demoState.v155KolExpiresAt);
+        var todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        var expiryStart = new Date(expiry.getFullYear(), expiry.getMonth(), expiry.getDate());
+        var remainingDays = Math.max(0, Math.round((expiryStart - todayStart) / 86400000));
+        benefitEl.textContent = (kolAvailable ? remainingDays + " days · " : "") + clock.replace(/:/g," : ");
+      }
     }
     pwptRenderCountdown();
     setInterval(pwptRenderCountdown, 1000);
@@ -17911,7 +18371,7 @@
       scr.appendChild(pill);
     });
 
-    // ⑦b Hub 会员入口：非会员在所有 tab（Class/Explore/Play/Dino）右上角常驻一个会员入口，点击进 Paywall。
+    // ⑦b Hub 会员入口：非会员在四个主 Tab 常驻钻石入口；Class 紧邻 More lessons，其余沿用顶部位置。
     //     已付费自动隐藏；跟随 setHubTab / 购买状态同步（syncHubVip）。
     (function(){
       var hub = document.getElementById("hub-app");
@@ -17920,14 +18380,38 @@
         vip.type = "button";
         vip.id = "hub-cx-vip";
         vip.className = "hub-cx-vip";
-        vip.innerHTML = '<span class="hcv-crown">👑</span> Go Premium';
-        vip.onclick = function(){ cxStage = "pay-tab"; if(typeof openPaywall==="function") openPaywall("screen-class", "cx_tab"); };
+        vip.innerHTML = '<span class="hcv-discount" aria-hidden="true" hidden></span><img class="hcv-diamond" src="assets/v155/promo-membership-diamond.png" alt="" aria-hidden="true">';
+        vip.onclick = function(){
+          cxStage = "pay-tab";
+          var promoPlanId = typeof window.getV155PromoPlanId === "function" ? window.getV155PromoPlanId() : null;
+          if(typeof openPaywall === "function") openPaywall("screen-class", "cx_tab");
+          if(promoPlanId){
+            profile.selectedPlan = promoPlanId;
+            window.V155 && window.V155.renderPaywall();
+          }
+        };
         hub.appendChild(vip);
       }
       window.syncHubVip = function(){
         var v = document.getElementById("hub-cx-vip"), h = document.getElementById("hub-app");
         if (!v || !h) return;
-        var show = !profile.premiumUnlocked;
+        var classHead = document.querySelector(".class-week-head");
+        var onClassTab = activeHubTab === "class";
+        if (onClassTab && classHead && v.parentElement !== classHead) {
+          classHead.insertBefore(v, classHead.firstChild);
+        } else if (!onClassTab && v.parentElement !== h) {
+          h.appendChild(v);
+        }
+        var show = !isPaidMembership();
+        var discount = typeof window.getV155PromoDiscount === "function" ? Number(window.getV155PromoDiscount()) : NaN;
+        var hasPromoDiscount = show && Number.isFinite(discount) && discount > 0;
+        var badge = v.querySelector(".hcv-discount");
+        if (badge) {
+          badge.textContent = hasPromoDiscount ? discount + "% OFF" : "";
+          badge.hidden = !hasPromoDiscount;
+        }
+        v.classList.toggle("has-promo-discount", hasPromoDiscount);
+        v.setAttribute("aria-label", hasPromoDiscount ? "Open Premium, " + discount + "% off" : "Open Premium");
         v.style.display = show ? "" : "none";
         h.classList.toggle("hub-app--cxvip", show);
       };
@@ -17940,7 +18424,7 @@
 
     // ④ Paywall「Subscribe now」→ 弹「系统订阅确认」抽屉（mock App Store 流程），确认后再完成购买。
     function cxDoPurchase(){
-      try{ profile.premiumUnlocked = true; profile.maxReachedLevelId = profile.currentLevelId; profile.nextBillingDate = "Jul 8, 2026"; }catch(e){}
+      try{ activateSubscription(profile.selectedPlan); profile.maxReachedLevelId = profile.currentLevelId; }catch(e){}
       if(typeof refreshUnlockState==="function") refreshUnlockState();
       // 转化链路优化：付费成功 = 解锁正式课、回首页；不再强制进定级课(体验课免费置顶首页可自行进)。
       if(cxStage){ cxStage = "paid"; window.cxToUnlockedHome && window.cxToUnlockedHome(); }
@@ -18074,101 +18558,122 @@
   <!-- V1.5.5 conversion layer. Existing DOM and navigation remain intact above;
        only the conversion touchpoints below are added. -->
   <style id="v155-conversion-style">
-    /* Onboarding-result login. Existing-account login keeps the standard page. */
-    #screen-login .v155-plan-card{display:none}
-    #screen-login.v155-context-plan{padding:0;overflow:hidden;color:#fff;background:radial-gradient(circle at 16% 10%,rgba(89,140,255,.62),transparent 28%),radial-gradient(circle at 88% 28%,rgba(79,244,220,.2),transparent 25%),linear-gradient(180deg,#0b43c6 0%,#0b5be7 58%,#062d93 100%)}
-    #screen-login.v155-context-plan .top-bar{position:absolute;z-index:9;top:12px;left:14px;right:14px;padding:0}
-    #screen-login.v155-context-plan .btn-back{width:40px;height:40px;justify-content:center;padding:0;overflow:hidden;color:#fff;font-size:0;border:1px solid rgba(255,255,255,.32);border-radius:50%;background:rgba(2,28,112,.32);backdrop-filter:blur(12px)}
-    #screen-login.v155-context-plan .btn-back::before{font-size:1.1rem}
-    #screen-login.v155-context-plan .login-block{display:flex;flex-direction:column;align-items:center;gap:0;width:100%;padding:62px 20px 10px;overflow-y:auto;color:#fff;scrollbar-width:none}
-    #screen-login.v155-context-plan .login-block::-webkit-scrollbar{display:none}
-    #screen-login.v155-context-plan #illo-login,#screen-login.v155-context-plan .login-block>.logo,#screen-login.v155-context-plan #login-chips{display:none!important}
-    #screen-login.v155-context-plan .v155-plan-card{position:relative;display:block;width:100%;max-width:335px;margin:0 0 13px;padding:16px 15px 13px;overflow:hidden;color:#122652;border:1px solid rgba(255,255,255,.82);border-radius:24px;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(230,244,255,.94));box-shadow:0 18px 46px rgba(0,24,105,.3)}
-    .v155-plan-card::after{content:"";position:absolute;right:-20px;top:-24px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(113,255,218,.45),rgba(113,255,218,0) 70%);pointer-events:none}
-    .v155-plan-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .v155-plan-kicker{display:inline-flex;align-items:center;gap:5px;color:#0b8f81;font:800 .65rem var(--font);letter-spacing:.08em;text-transform:uppercase}
-    .v155-plan-free{padding:5px 9px;color:#fff;font:800 .61rem var(--font);border-radius:999px;background:#10a77f}
-    .v155-plan-title{position:relative;z-index:1;margin:8px 0 4px;font:700 1.18rem/1.18 var(--display);color:#10275b}
-    .v155-plan-sub{margin:0;color:#60718b;font-size:.74rem;line-height:1.35}
-    .v155-plan-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:12px 0 10px}
-    .v155-plan-summary span{display:flex;min-height:52px;flex-direction:column;justify-content:center;gap:3px;padding:7px 5px;text-align:center;border:1px solid #dce8f8;border-radius:13px;background:#fff}
-    .v155-plan-summary b{color:#135cc7;font:800 .82rem var(--font)}
-    .v155-plan-summary small{color:#73839a;font-size:.57rem;line-height:1.15}
-    .v155-plan-save{display:flex;align-items:center;gap:7px;margin:0;color:#334d73;font-size:.68rem;font-weight:700}
-    .v155-plan-save::before{content:"✓";display:grid;width:19px;height:19px;place-items:center;flex:0 0 auto;color:#fff;border-radius:50%;background:#11ae82;font-size:.66rem}
-    #screen-login.v155-context-plan .login-dynamic{width:100%;max-width:335px;margin:0 0 12px;color:#fff;font:600 .92rem/1.3 var(--display);text-align:center}
-    #screen-login.v155-context-plan .login-oauth-stack{width:100%;max-width:335px;gap:10px}
-    #screen-login.v155-context-plan .btn-oauth{min-height:48px;border:0;border-radius:22px;color:#101747;background:linear-gradient(180deg,#fff,#dce4ff);box-shadow:0 8px 18px rgba(0,23,104,.2)}
-    #screen-login.v155-context-plan .login-more{margin-top:0}
-    #screen-login.v155-context-plan .login-more-sep{color:rgba(255,255,255,.78)}
-    #screen-login.v155-context-plan .login-more-sep::before,#screen-login.v155-context-plan .login-more-sep::after{background:rgba(255,255,255,.35)}
-    #screen-login.v155-context-plan .login-more-icons{margin-top:9px}
-    #screen-login.v155-context-plan .lg-ic-btn{background:rgba(255,255,255,.82);border-color:rgba(255,255,255,.76)}
-    #screen-login.v155-context-plan>.foot-actions{padding:5px 20px 14px;background:transparent}
-    #screen-login.v155-context-plan .login-portrait-legal{color:rgba(255,255,255,.82);font-size:.61rem}
-    #screen-login.v155-context-plan .login-portrait-legal a{color:#75fff0}
-
-    /* Parent paywall: Figma 12709:2923 structure + three visual value/trust slides. */
+    /* Parent paywall: Figma 12709:2923 structure + configurable value/trust slides. */
     #screen-paywall-pt .pwpt-timer{display:none!important}
-    #screen-paywall-pt{background:radial-gradient(circle at 18% 16%,rgba(133,122,255,.42),transparent 31%),radial-gradient(circle at 91% 25%,rgba(46,226,255,.22),transparent 28%),linear-gradient(180deg,var(--sky-deep,#0a2cc6) 0%,var(--sky-mid,#0a54e1) 31%,#96c8ff 68%,#f7fbff 100%)}
+    #screen-paywall-pt{background:#fff}
     #screen-paywall-pt .pwpt-scroll{padding:0 16px}
-    #screen-paywall-pt .pwpt-head{z-index:10;margin:0 -2px;padding:10px 2px 4px;background:transparent}
-    #screen-paywall-pt .pwpt-back{color:#fff;background:rgba(255,255,255,.17);backdrop-filter:blur(10px)}
-    #screen-paywall-pt .pwpt-hero-card{gap:10px;margin:4px 0 10px;padding:0;border:0;background:transparent;box-shadow:none}
+    #screen-paywall-pt .pwpt-head{z-index:10;justify-content:space-between;min-height:48px;margin:0 -16px -48px;padding:10px 18px 4px;background:linear-gradient(180deg,rgba(10,44,198,.28),transparent)}
+    #screen-paywall-pt .pwpt-back{color:var(--sky-deep,#0a2cc6);background:#edf4ff}
+    .v155-pro-tag{display:inline-flex;min-height:30px;align-items:center;padding:0 12px;color:var(--sky-deep,#0a2cc6);font:700 .72rem/1 var(--display);border-radius:var(--radius-pill,9999px);background:var(--brand-lime,#e2ff5e);box-shadow:0 7px 16px rgba(4,37,147,.18)}
+    #screen-paywall-pt .pwpt-hero-card{gap:0;margin:0 0 10px;padding:0;border:0;background:transparent;box-shadow:none}
     #screen-paywall-pt .pwpt-hero-top{display:none}
     #screen-paywall-pt .pwpt-hero-intro{padding:0 4px}
     #screen-paywall-pt .pwpt-kicker{color:#56310f;letter-spacing:0;text-transform:none;background:linear-gradient(90deg,#ffeed7,#fdffd8)}
     #screen-paywall-pt .pwpt-title{margin-top:8px;color:#fff;font:700 1.28rem/1.17 var(--display);text-shadow:0 3px 12px rgba(4,37,147,.28)}
-    .v155-value-carousel{position:relative;width:100%;height:174px;overflow:hidden;border:1px solid rgba(255,255,255,.54);border-radius:22px;background:rgba(18,57,189,.18);box-shadow:0 15px 34px rgba(7,39,129,.22);backdrop-filter:blur(9px);touch-action:pan-y}
+    .v155-value-carousel{position:relative;width:calc(100% + 32px);height:218px;margin:0 -16px;overflow:hidden;border:0;border-radius:0;background:#1457c4;box-shadow:none;touch-action:pan-y}
     .v155-value-track{position:relative;width:100%;height:100%}
-    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:18px 18px 24px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:54px 18px 24px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
     .v155-value-slide.is-active{z-index:2;opacity:1;transform:none;pointer-events:auto}
     .v155-value-slide--trust{background:radial-gradient(circle at 83% 24%,rgba(255,233,76,.36),transparent 33%),linear-gradient(135deg,rgba(68,59,229,.7),rgba(20,143,243,.38))}
     .v155-value-slide--teacher{background:radial-gradient(circle at 86% 20%,rgba(128,255,237,.4),transparent 34%),linear-gradient(135deg,rgba(14,78,196,.8),rgba(18,183,215,.42))}
     .v155-value-slide--progress{background:radial-gradient(circle at 83% 22%,rgba(255,204,74,.3),transparent 35%),linear-gradient(135deg,rgba(76,63,221,.8),rgba(116,96,246,.45))}
     .v155-value-copy{position:relative;z-index:3;color:#fff}
-    .v155-value-label{display:inline-flex;padding:4px 8px;margin-bottom:8px;color:#153672;font-size:.57rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;background:#e2ff5e}
-    .v155-value-copy h3{margin:0;font:700 1rem/1.18 var(--display)}
-    .v155-value-copy p{margin:6px 0 0;color:rgba(255,255,255,.86);font-size:.66rem;line-height:1.38}
+    .v155-value-copy h3{margin:0;font:700 1.14rem/1.16 var(--display);text-wrap:balance}
     .v155-value-art{position:relative;align-self:stretch;min-width:0}
     .v155-value-art img{position:absolute;right:-6px;bottom:-22px;width:128px;max-height:154px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 14px rgba(5,26,99,.28))}
     .v155-value-slide--teacher .v155-value-art img{right:-4px;width:116px}
-    .v155-value-slide--progress .v155-value-art img{right:0;width:106px}
-    .v155-years-badge{position:absolute;z-index:4;right:3px;top:13px;display:grid;width:61px;height:61px;place-items:center;color:#793d0b;font:900 .72rem/1 var(--display);text-align:center;border:3px solid #fff2a9;border-radius:20px;background:linear-gradient(145deg,#fff95c,#ffb31f);box-shadow:0 8px 18px rgba(82,39,0,.22);transform:rotate(5deg)}
-    .v155-years-badge b{display:block;font-size:1.15rem}
-    .v155-chat-chip{position:absolute;z-index:4;padding:5px 8px;color:#11447c;font-size:.57rem;font-weight:900;border-radius:10px;background:#9efffa;box-shadow:0 6px 14px rgba(4,39,104,.18)}
-    .v155-chat-chip.one{right:68px;top:23px}.v155-chat-chip.two{right:2px;top:65px;color:#17603f;background:#a5ffba}
-    .v155-report-mini{position:absolute;z-index:4;right:64px;top:26px;width:76px;padding:8px;color:#273b6d;border-radius:13px;background:#fff;box-shadow:0 9px 20px rgba(10,33,111,.25);transform:rotate(-4deg)}
-    .v155-report-mini b{display:block;font-size:.59rem}.v155-report-mini span{display:block;height:5px;margin-top:5px;border-radius:5px;background:linear-gradient(90deg,#fe8820 68%,#e4e9f1 68%)}
-    .v155-carousel-btn{position:absolute;z-index:6;top:50%;display:grid;width:28px;height:36px;place-items:center;transform:translateY(-50%);color:#fff;font-size:1rem;border:0;background:transparent;cursor:pointer;opacity:.72}
-    .v155-carousel-btn.prev{left:0}.v155-carousel-btn.next{right:0}
+    .v155-proof-badge{position:absolute;z-index:4;top:18px;right:68px;display:grid;width:58px;height:58px;place-content:center;text-align:center;color:var(--sky-deep,#0a2cc6);border:3px solid rgba(255,255,255,.8);border-radius:18px 18px 18px 5px;background:linear-gradient(155deg,var(--accent-yellow,#fff837),var(--star-gold,#ffc333));box-shadow:0 8px 18px rgba(13,34,112,.28);transform:rotate(-4deg)}
+    .v155-proof-badge b{font:700 20px/.9 var(--display)}
+    .v155-proof-badge small{margin-top:3px;font:700 8px/1 var(--font);letter-spacing:.08em}
+    .v155-speech-bubble{position:absolute;z-index:4;top:23px;right:75px;display:grid;min-width:51px;height:34px;place-items:center;padding:0 9px;color:var(--sky-deep,#0a2cc6);font:700 12px/1 var(--display);border-radius:14px 14px 3px 14px;background:#fff;box-shadow:0 7px 15px rgba(5,26,99,.22);transform:rotate(-4deg)}
+    .v155-voice-wave{position:absolute;z-index:4;right:67px;bottom:23px;display:flex;height:28px;align-items:center;gap:3px;padding:5px 8px;border-radius:var(--radius-pill,9999px);background:var(--chat-you,#9efffa);box-shadow:0 7px 15px rgba(5,26,99,.22)}
+    .v155-voice-wave::before{content:'\1F399';margin-right:2px;font-size:13px}
+    .v155-voice-wave i{display:block;width:3px;border-radius:3px;background:var(--sky-deep,#0a2cc6)}
+    .v155-voice-wave i:nth-child(1),.v155-voice-wave i:nth-child(5){height:7px}.v155-voice-wave i:nth-child(2),.v155-voice-wave i:nth-child(4){height:13px}.v155-voice-wave i:nth-child(3){height:18px}
+    .v155-curriculum-scene{position:absolute;right:-14px;bottom:4px;width:154px;height:112px;overflow:hidden;border:2px solid rgba(255,255,255,.65);border-radius:18px;box-shadow:0 10px 13px rgba(5,26,99,.24)}
+    .v155-value-slide--progress .v155-curriculum-scene img{top:0;right:auto;bottom:auto;left:-32px;width:178px;height:112px;max-height:none;object-fit:cover;object-position:right center;border:0;border-radius:0;filter:none}
+    .v155-ets-seal{position:absolute;z-index:4;top:22px;right:-1px;display:grid;width:50px;height:50px;place-items:center;color:var(--sky-deep,#0a2cc6);font:700 14px/1 var(--display);letter-spacing:.04em;border:3px solid var(--accent-yellow,#fff837);border-radius:50%;background:#fff;box-shadow:0 8px 17px rgba(5,26,99,.26)}
+    .v155-ets-seal::after{content:'\2605';position:absolute;bottom:3px;color:var(--star-gold,#ffc333);font-size:9px}
     .v155-carousel-dots{position:absolute;z-index:7;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px}
     .v155-carousel-dot{width:6px;height:6px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.48);cursor:pointer;transition:.2s}
     .v155-carousel-dot.is-active{width:19px;background:#fff837}
-    #screen-paywall-pt .pwpt-benefits{display:flex;flex-direction:column;gap:0;padding:12px 14px;border-radius:20px;background:#fff;box-shadow:0 12px 28px rgba(17,53,130,.15)}
-    #screen-paywall-pt .pwpt-benefits::before{content:"Everything your child gets";display:block;margin:0 0 5px;color:#10275b;font:700 .82rem var(--display)}
-    #screen-paywall-pt .pwpt-benefits li{min-height:35px;padding:8px 4px 8px 30px;color:#2f3b50;font-size:.68rem;line-height:1.35;border-bottom:1px solid #edf1f6;background:transparent}
-    #screen-paywall-pt .pwpt-benefits li:last-child{border-bottom:0}
-    #screen-paywall-pt .pwpt-benefits li::before{left:4px;top:7px;width:20px;height:20px;background:#eef5ff;color:#1457c4}
-    #screen-paywall-pt .pwpt-plans{gap:9px;margin:12px auto 0}
-    #screen-paywall-pt .pwpt-plan{padding:12px 13px;border-radius:15px}
-    #screen-paywall-pt .pwpt-plan.is-selected{border-color:#fff837;background:linear-gradient(90deg,#ffeed7,#fdffd8);box-shadow:0 8px 18px rgba(20,87,196,.13)}
-    #screen-paywall-pt .pwpt-plan-price{font-size:.9rem}
-    #screen-paywall-pt .pwpt-plan-week{font-size:.68rem;line-height:1.3}
-    #screen-paywall-pt .pwpt-badge{background:linear-gradient(90deg,#ff5313,#fe8820)}
-    #screen-paywall-pt .pwpt-cancel-note{margin-bottom:9px;font-size:.72rem;color:#607269}
+    /* Figma 12709:2923 · benefit card */
+    #screen-paywall-pt .pwpt-benefits{display:flex;flex-direction:column;gap:0;padding:0 12px 9px;overflow:hidden;border-radius:0;background:#fff;box-shadow:none}
+    #screen-paywall-pt .pwpt-benefits::before{display:none}
+    #screen-paywall-pt .pwpt-benefits li{position:relative;display:flex;min-height:48px;align-items:center;gap:9px;padding:5px 4px;color:#2f3338;font:600 13px/1.26 var(--font);border:0;background:transparent}
+    #screen-paywall-pt .pwpt-benefits li::before{display:none}
+    #screen-paywall-pt .pwpt-benefits li strong{font:600 13px/1.26 var(--font);color:#2f3338}
+    #screen-paywall-pt .pwpt-benefits .v155-benefits-offer{min-height:42px;justify-content:center;gap:6px;margin:12px 4px 8px;padding:4px 10px;color:#8c5019;font-size:12px;font-weight:700;border-radius:var(--radius-pill,9999px);background:linear-gradient(90deg,#ffce8d 0%,#fff49e 100%)}
+    .v155-offer-flame{width:29px;height:29px;flex:0 0 auto;object-fit:contain}
+    .v155-offer-clock{color:#ff5313;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .v155-benefit-icon{display:grid;width:32px;height:32px;place-items:center;flex:0 0 auto;overflow:hidden;border-radius:9px;background:#e9f5ff}
+    .v155-benefit-icon>img{display:block;width:29px;height:29px;object-fit:contain}
+    .v155-benefit-sprite{display:block;width:30px;height:30px;background-image:url("assets/v155/paywall-figma/benefit-icons.png");background-repeat:no-repeat;background-size:96px 55px}
+    .v155-benefit-sprite--report{background-position:right top}
+    .v155-benefit-sprite--map{background-position:center top}
+    .v155-benefit-sprite--chat{background-position:right bottom}
+    /* Figma 12709:2923 · product cards */
+    #screen-paywall-pt .pwpt-plans{gap:10px;margin:12px auto 0}
+    #screen-paywall-pt .pwpt-plan{min-height:84px;padding:15px 16px;border:2px solid rgba(26,42,58,.16);border-radius:20px;background:#fafcff;box-shadow:0 7px 18px rgba(31,68,139,.08)}
+    #screen-paywall-pt .pwpt-plan.is-selected{border-color:var(--star-gold,#ffc333);background:linear-gradient(90deg,#ffeed7 0%,#fdffd8 100%);box-shadow:0 8px 18px rgba(20,87,196,.11)}
+    #screen-paywall-pt .pwpt-plan.is-kol{border-color:var(--brand-cyan,#2dace2);background:linear-gradient(100deg,#edfaff 0%,#f8ffd5 100%)}
+    #screen-paywall-pt .pwpt-plan.is-kol.is-selected{border-color:var(--cta-orange,#fe8820);box-shadow:0 9px 20px rgba(10,84,225,.16)}
+    #screen-paywall-pt .pwpt-plan-l{gap:5px}
+    #screen-paywall-pt .pwpt-plan-name{font:700 20px/1.1 var(--font);color:#2f3338}
+    #screen-paywall-pt .pwpt-plan-price-row{display:flex;align-items:baseline;gap:8px;min-height:20px;white-space:nowrap}
+    #screen-paywall-pt .pwpt-plan-daily{display:flex;align-items:baseline;gap:2px;color:#2f3338;white-space:nowrap}
+    #screen-paywall-pt .pwpt-plan-daily b{font:700 16px/1 var(--font)}
+    #screen-paywall-pt .pwpt-plan-daily small{font:700 13px/1 var(--font)}
+    #screen-paywall-pt .pwpt-plan-r{display:flex;min-width:104px;align-items:center;justify-content:flex-end;text-align:right}
+    #screen-paywall-pt .pwpt-plan-price{display:flex;align-items:baseline;gap:3px;color:#2f3338;white-space:nowrap}
+    #screen-paywall-pt .pwpt-plan-price b{font:700 16px/1 var(--font)}
+    #screen-paywall-pt .pwpt-plan-price small{font:700 13px/1 var(--font)}
+    #screen-paywall-pt .pwpt-plan-orig{margin:0;color:#9a9fa6;font:600 14px/1.1 var(--font);text-decoration-thickness:1px}
+    #screen-paywall-pt .pwpt-badge{top:-9px;left:18px;padding:4px 9px;border-radius:7px 7px 7px 0;color:#fff;font:900 11px/1 var(--font);letter-spacing:.015em;background:linear-gradient(90deg,#ff5313,#fe8820);box-shadow:0 4px 8px rgba(203,69,13,.18)}
+    #screen-paywall-pt .pwpt-badge.v155-kol-badge{background:linear-gradient(90deg,var(--sky-deep,#0a2cc6),var(--brand-cyan,#2dace2));box-shadow:0 4px 9px rgba(10,44,198,.2)}
+    /* Win-back uses the same product-card system as the regular Paywall. */
+    #screen-winback .wb-plan{min-height:84px;margin:10px 0 22px;padding:15px 16px;border:2px solid rgba(26,42,58,.16);border-radius:20px;background:#fafcff;box-shadow:0 7px 18px rgba(31,68,139,.08)}
+    #screen-winback .wb-plan.is-selected{border-color:var(--star-gold,#ffc333);background:linear-gradient(90deg,#ffeed7 0%,#fdffd8 100%);box-shadow:0 8px 18px rgba(20,87,196,.11)}
+    #screen-winback .wb-plan.is-kol{border-color:var(--brand-cyan,#2dace2);background:linear-gradient(100deg,#edfaff 0%,#f8ffd5 100%)}
+    #screen-winback .wb-plan.is-kol.is-selected{border-color:var(--cta-orange,#fe8820);box-shadow:0 9px 20px rgba(10,84,225,.16)}
+    #screen-winback .wb-plan-l{align-items:stretch;gap:5px}
+    #screen-winback .wb-plan-name{color:#2f3338;font:700 20px/1.1 var(--font)}
+    #screen-winback .pwpt-plan-price-row{display:flex;min-height:20px;align-items:baseline;gap:8px;white-space:nowrap}
+    #screen-winback .wb-plan-now{display:flex;align-items:baseline;gap:3px;color:#2f3338;font-family:var(--font);white-space:nowrap}
+    #screen-winback .wb-plan-now b{font:700 16px/1 var(--font)}
+    #screen-winback .wb-plan-now small{margin:0;color:#2f3338;font:700 13px/1 var(--font)}
+    #screen-winback .wb-plan-orig{margin:0;color:#9a9fa6;font:600 14px/1.1 var(--font);text-decoration-thickness:1px}
+    #screen-winback .wb-plan-r{min-width:104px;align-items:center;justify-content:flex-end;text-align:right}
+    #screen-winback .wb-plan-perday{display:flex;align-items:baseline;gap:2px;color:#2f3338;white-space:nowrap}
+    #screen-winback .wb-plan-perday b{font:700 16px/1 var(--font)}
+    #screen-winback .wb-plan-perday small{font:700 13px/1 var(--font)}
+    #screen-winback .wb-plan-tag{top:-9px;right:auto;left:18px;padding:4px 9px;border-radius:7px 7px 7px 0;color:#fff;font:900 11px/1 var(--font);letter-spacing:.015em;background:linear-gradient(90deg,#ff5313,#fe8820);box-shadow:0 4px 8px rgba(203,69,13,.18)}
+    #screen-winback .wb-plan-tag.v155-kol-badge{background:linear-gradient(90deg,var(--sky-deep,#0a2cc6),var(--brand-cyan,#2dace2));box-shadow:0 4px 9px rgba(10,44,198,.2)}
+    #screen-winback .wb-plan-renewal{max-width:none;margin-top:3px;color:#526575;text-align:left;font:600 11px/1.25 var(--font)}
+    .v155-kol-renewal{display:block;margin-top:3px;color:#526575;font:600 11px/1.25 var(--font)}
+    .v155-paywall-loading{display:grid;gap:10px;margin:12px auto 0}
+    .v155-plan-skeleton{height:84px;border-radius:20px;background:linear-gradient(100deg,#edf2f7 25%,#f9fbfd 45%,#edf2f7 65%);background-size:220% 100%;animation:v155-shimmer 1.25s linear infinite}
+    .v155-loading-copy{margin:0;text-align:center;color:#607187;font:700 12px/1.4 var(--font)}
+    .v155-paywall-error{display:grid;min-height:174px;place-items:center;align-content:center;gap:8px;margin:12px auto 0;padding:24px;text-align:center;border:2px solid rgba(45,172,226,.28);border-radius:20px;background:#f3fbff}
+    .v155-paywall-error b{color:var(--sky-deep,#0a2cc6);font:700 15px/1.3 var(--display)}
+    .v155-paywall-error span{max-width:260px;color:#607187;font:600 12px/1.45 var(--font)}
+    @keyframes v155-shimmer{to{background-position:-220% 0}}
+    #screen-paywall-pt .pwpt-cta:disabled{cursor:wait;opacity:.62;box-shadow:none}
+    #screen-paywall-pt .pwpt-cancel-note{margin:13px 0 0;font-size:.72rem;color:#607269}
     #screen-paywall-pt .pwpt-cta-spacer{height:154px}
     #screen-paywall-pt .pwpt-cta-bar{background:#fff;border-top:1px solid rgba(16,39,91,.08);box-shadow:0 -10px 24px rgba(16,39,91,.08)}
     #screen-paywall-pt .pwpt-cta{background:#fe8820;box-shadow:0 7px 0 #d85f00}
     #screen-paywall-pt .pwpt-legal{font-size:.62rem;line-height:1.4}
     .v155-footer-links{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px}
-    #screen-paywall-pt .v155-footer-restore{padding:0;color:#6b7a72;border:0;border-radius:0;background:transparent;font:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+    #screen-paywall-pt .v155-footer-restore{padding:0;color:#6b7a72;border:0;border-radius:0;background:transparent;font:inherit;cursor:pointer;text-decoration:none}
     #screen-paywall-pt .v155-footer-restore:disabled{cursor:wait;opacity:.66}
     .v155-restore-status{display:none;max-width:360px;margin:6px auto 0;padding:6px 8px;border-radius:9px;font-size:.61rem;line-height:1.35}
     .v155-restore-status.show{display:block}
     .v155-restore-status.checking{color:#49617b;background:#edf3f8}
     .v155-restore-status.none{color:#705019;background:#fff4d9}
     .v155-restore-status.fail{color:#8f331d;background:#fff1ed}
+    .v155-payment-status{display:none;max-width:360px;margin:8px auto 0;padding:7px 10px;color:#8f331d;border-radius:10px;background:#fff1ed;font:700 .65rem/1.4 var(--font);text-align:center}
+    .v155-payment-status.show{display:block}
     .v155-checkout-overlay{position:absolute;z-index:980;inset:0;display:none;align-items:flex-end;background:rgba(9,19,40,.55);backdrop-filter:blur(5px)}
     .v155-checkout-overlay.show{display:flex}
     .v155-checkout-sheet{width:100%;padding:18px 20px calc(18px + env(safe-area-inset-bottom));color:#162842;border-radius:24px 24px 0 0;background:#fff;box-shadow:0 -20px 50px rgba(0,0,0,.2)}
@@ -18177,6 +18682,8 @@
     .v155-checkout-sheet>p{margin:0 0 13px;color:#6a7a8b;font-size:.72rem;line-height:1.45}
     .v155-checkout-total{display:flex;justify-content:space-between;gap:12px;margin:0 0 14px;padding:12px;border-radius:14px;background:#f2f6fa;font-size:.76rem}
     .v155-checkout-total b{font-size:.86rem}
+    .v155-checkout-offer{display:inline-flex;align-items:center;margin:0 0 10px;padding:6px 10px;color:var(--sky-deep,#0a2cc6);border-radius:var(--radius-pill,9999px);background:var(--brand-lime,#e2ff5e);font:800 .68rem/1 var(--font)}
+    .v155-checkout-renewal{margin:-5px 0 14px!important;padding:0 2px;color:#526575!important;font-size:.68rem!important}
     .v155-checkout-sheet button{width:100%;border:0;border-radius:14px;padding:12px;font:800 .78rem var(--font);cursor:pointer}
     .v155-checkout-confirm{color:#fff;background:#1457c4}
     .v155-checkout-cancel{margin-top:7px;color:#607187;background:#edf1f5}
@@ -18185,81 +18692,183 @@
   (function(){
     var paymentHasResult = false;
     var restoreUiState = "idle";
-    var loginContextLocked = false;
     var carouselIndex = 0;
     var carouselTimer = null;
     var $ = function(sel, root){ return (root || document).querySelector(sel); };
     var $$ = function(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
 
     function reviewName(){ return (profile.name || "").trim() || "Olivia"; }
-    function reviewLevel(){ return (profile.level || "A1").replace(/^Level\s*/i, ""); }
     function refreshPanel(){ window.demoStatePanel && window.demoStatePanel.render(); }
 
-    function ensureLoginPlan(){
-      var block = $("#screen-login .login-block");
-      if(!block || $("#v155-login-plan")) return;
-      var card = document.createElement("div");
-      card.id = "v155-login-plan";
-      card.className = "v155-plan-card";
-      var illo = $("#illo-login", block);
-      if(illo) illo.insertAdjacentElement("afterend", card); else block.prepend(card);
+    var KOL_MARKETS = {
+      kr: {
+        label: "Korea",
+        currency: "KRW",
+        userPromo: {code:"DINO-KR10", planId:"monthly", discount:10},
+        plans: {
+          annual: {name:"Yearly", regular:"₩449,000", offer:"₩359,200", period:"/year", firstPeriod:"/first year", dailyRegular:"₩1,230", dailyOffer:"₩984", cadence:"Billed once a year", renewal:"Then ₩449,000/year", regularCharge:"₩449,000 KRW", offerCharge:"₩359,200 KRW", discount:20},
+          quarterly: {name:"Quarterly", regular:"₩159,000", offer:"₩143,100", period:"/3 months", firstPeriod:"/first 3 months", dailyRegular:"₩1,767", dailyOffer:"₩1,590", cadence:"Billed every 3 months", renewal:"Then ₩159,000 every 3 months", regularCharge:"₩159,000 KRW", offerCharge:"₩143,100 KRW", discount:10},
+          monthly: {name:"Monthly", regular:"₩66,000", offer:"₩59,400", period:"/month", firstPeriod:"/first month", dailyRegular:"₩2,200", dailyOffer:"₩1,980", cadence:"Billed every month", renewal:"Then ₩66,000/month", regularCharge:"₩66,000 KRW", offerCharge:"₩59,400 KRW", discount:10}
+        }
+      },
+      sa: {
+        label: "Saudi Arabia",
+        currency: "SAR",
+        userPromo: {code:"DINO-SA10", planId:"monthly", discount:10},
+        plans: {
+          annual: {name:"Yearly", regular:"SAR 999.99", offer:"SAR 799.99", period:"/year", firstPeriod:"/first year", dailyRegular:"SAR 2.74", dailyOffer:"SAR 2.19", cadence:"Billed once a year", renewal:"Then SAR 999.99/year", regularCharge:"SAR 999.99", offerCharge:"SAR 799.99", discount:20},
+          quarterly: {name:"Quarterly", regular:"SAR 429.99", offer:"SAR 386.99", period:"/3 months", firstPeriod:"/first 3 months", dailyRegular:"SAR 4.78", dailyOffer:"SAR 4.30", cadence:"Billed every 3 months", renewal:"Then SAR 429.99 every 3 months", regularCharge:"SAR 429.99", offerCharge:"SAR 386.99", discount:10},
+          monthly: {name:"Monthly", regular:"SAR 179.99", offer:"SAR 161.99", period:"/month", firstPeriod:"/first month", dailyRegular:"SAR 6.00", dailyOffer:"SAR 5.40", cadence:"Billed every month", renewal:"Then SAR 179.99/month", regularCharge:"SAR 179.99", offerCharge:"SAR 161.99", discount:10}
+        }
+      }
+    };
+    var GLOBAL_VALUE_SLIDES = [
+      {
+        kind: "trust",
+        title: "Trusted by 1.8M families for 13 years",
+        art: '<span class="v155-proof-badge" aria-hidden="true"><b>13</b><small>YEARS</small></span><img src="assets/dino-mascot.png" alt="Dino with a 13 Years trust badge">'
+      },
+      {
+        kind: "teacher",
+        title: "An AI teacher that listens and speaks back",
+        art: '<span class="v155-speech-bubble" aria-hidden="true">Hi!</span><span class="v155-voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><img src="assets/teacher-kim.png" alt="AI teacher with a speech bubble and microphone waveform">'
+      },
+      {
+        kind: "progress",
+        title: "A structured curriculum backed by ETS expertise",
+        art: '<span class="v155-ets-seal" aria-hidden="true">ETS</span><span class="v155-curriculum-scene"><img src="assets/v13fx/ex-reading.png" alt="Structured course learning scene"></span>'
+      }
+    ];
+    function currentValueSlides(){
+      // 地区配置示例复用已确认物料；未命中或配置不可用时回退全局默认配置。
+      if(demoState.v155ValueConfig === "region_match") return [GLOBAL_VALUE_SLIDES[1], GLOBAL_VALUE_SLIDES[0]];
+      return GLOBAL_VALUE_SLIDES.slice();
     }
-    function renderLoginPlan(){
-      ensureLoginPlan();
-      var card = $("#v155-login-plan");
-      if(!card) return;
-      var name = reviewName();
-      var age = profile.age || "9–12";
-      var level = reviewLevel();
-      card.innerHTML = '<div class="v155-plan-head"><span class="v155-plan-kicker">✨ Personalized plan ready</span><span class="v155-plan-free">FREE TO START</span></div>'+
-        '<h2 class="v155-plan-title">'+name+'\'s first lesson is ready</h2>'+
-        '<p class="v155-plan-sub">Built from the answers you just shared — sign in once to keep it.</p>'+
-        '<div class="v155-plan-summary"><span><b>'+level+'</b><small>starting level</small></span><span><b>Ages '+age+'</b><small>age-matched</small></span><span><b>1st lesson</b><small>ready now</small></span></div>'+
-        '<p class="v155-plan-save">Your plan and learning progress will be saved across devices.</p>';
+    function isKolOfferScenario(){
+      return demoState.v155KolScenario === "available";
     }
-    function setLoginContext(context){
-      context = context === "existing" ? "existing" : "plan";
-      demoState.v155LoginContext = context;
-      var screen = $("#screen-login");
+    function currentKolMarket(){
+      return KOL_MARKETS.kr;
+    }
+    function currentUserPromo(){
+      return isKolOfferScenario() ? currentKolMarket().userPromo : null;
+    }
+    function currentPromoDiscount(){
+      if(isPaidMembership()) return null;
+      var promo = currentUserPromo();
+      var discount = Number(promo && promo.discount);
+      return Number.isFinite(discount) && discount > 0 ? discount : null;
+    }
+    function currentPromoPlanId(){
+      var promo = currentUserPromo();
+      return currentPromoDiscount() == null ? null : promo.planId;
+    }
+    function currentPaywallPlans(){
+      if(!isKolOfferScenario()){
+        return [
+          {id:"annual", name:"Yearly", price:"$229.99", comparison:"$329.99", period:"/year", daily:"$0.63", cadence:"Billed once a year", regularCharge:"$229.99 USD", renewal:"Renews at $229.99/year", badge:"LIMITED OFFER · 30% OFF", isKol:false},
+          {id:"monthly", name:"Monthly", price:"$37.99", comparison:"", period:"/month", daily:"$1.27", cadence:"Billed every month", regularCharge:"$37.99 USD", renewal:"Renews at $37.99/month", badge:"", isKol:false}
+        ];
+      }
+      var market = currentKolMarket();
+      var ids = ["annual", "monthly"];
+      return ids.map(function(id){
+        var base = market.plans[id];
+        var isKol = id === "monthly" && !isPaidMembership();
+        return {
+          id:id,
+          name:base.name,
+          price:isKol ? base.offer : base.regular,
+          comparison:"",
+          period:isKol ? base.firstPeriod : base.period,
+          daily:isKol ? base.dailyOffer : base.dailyRegular,
+          cadence:base.cadence,
+          regularCharge:base.regularCharge,
+          chargeToday:isKol ? base.offerCharge : base.regularCharge,
+          renewal:base.renewal,
+          badge:isKol ? "Exclusive "+base.discount+"% Off" : "",
+          isKol:isKol
+        };
+      });
+    }
+    function currentWinbackPlan(){
+      if(!isKolOfferScenario()){
+        return {
+          id:"weekly",
+          name:"Weekly",
+          daily:"≈ $1.57",
+          regular:"$16.49",
+          price:"$10.99",
+          period:"/week",
+          renewal:"",
+          tag:"33% OFF",
+          isKol:false
+        };
+      }
+      var base = currentKolMarket().plans.monthly;
+      return {
+        id:"monthly",
+        name:base.name,
+        daily:"≈ "+base.dailyOffer,
+        regular:"",
+        price:base.offer,
+        period:base.firstPeriod,
+        renewal:base.renewal,
+        tag:"Exclusive "+base.discount+"% Off",
+        isKol:true
+      };
+    }
+    function renderWinback(){
+      var screen = $("#screen-winback");
       if(!screen) return;
-      renderLoginPlan();
-      screen.classList.toggle("v155-context-plan", context === "plan");
-      screen.classList.toggle("v155-context-existing", context === "existing");
-      var lead = $("#login-dynamic");
-      if(lead) lead.textContent = context === "plan" ? "Sign in to save this plan and start the free lesson" : "Log in to continue";
-      var card = $("#v155-login-plan");
-      if(card) card.hidden = context !== "plan";
-      refreshPanel();
-    }
-    function openLogin(context){
-      loginContextLocked = true;
-      setExperimentGroup("a", false);
-      seedReviewProfile();
-      if(context === "plan"){
-        profile.name = profile.name || "Olivia";
-        profile.age = profile.age || "9–12";
-        profile.level = profile.level || "A1";
-        profile.skipOnboarding = false;
-      } else {
-        profile.skipOnboarding = true;
+      var plan = currentWinbackPlan();
+      profile.selectedPlan = plan.id;
+      var badge = $(".wb-badge", screen);
+      var sub = $(".wb-sub", screen);
+      var card = $(".wb-plan", screen);
+      var tag = $(".wb-plan-tag", screen);
+      var name = $(".wb-plan-name", screen);
+      var perDay = $(".wb-plan-perday", screen);
+      var original = $(".wb-plan-orig", screen);
+      var current = $(".wb-plan-now", screen);
+      var renewal = $(".wb-plan-renewal", screen);
+      if(badge) badge.textContent = plan.isKol ? "KOL offer applied" : "One-time offer";
+      if(sub) sub.textContent = plan.isKol
+        ? "Your Promo Code unlocked this plan at a special first-period price."
+        : "A weekly plan at a special price, only while the timer runs.";
+      if(card) card.classList.toggle("is-kol", plan.isKol);
+      if(tag){
+        tag.textContent = plan.tag;
+        tag.classList.toggle("v155-kol-badge", plan.isKol);
       }
-      enterPortrait();
-      fillLogin();
-      showPortraitScreen("screen-login");
-      setLoginContext(context);
-      setTimeout(function(){ loginContextLocked = false; }, 0);
+      if(name) name.textContent = plan.name;
+      if(perDay) perDay.innerHTML = '<b>'+plan.daily+'</b><small>/day</small>';
+      if(original){ original.textContent = plan.regular; original.hidden = !plan.regular; }
+      if(current) current.innerHTML = '<b>'+plan.price+'</b><small>'+plan.period+'</small>';
+      if(renewal){ renewal.textContent = plan.renewal; renewal.hidden = !plan.renewal; }
     }
-    function openEntry(onboardingStatus){
-      demoState.v155OnboardingStatus = onboardingStatus === "complete" ? "complete" : "incomplete";
-      setExperimentGroup("a", true, false);
+    function getWinbackPlanId(){
+      return currentWinbackPlan().id;
+    }
+    function consumeWinbackOffer(){
+      if(!isKolOfferScenario()) return;
+      demoState.v155KolScenario = "unavailable";
       refreshPanel();
     }
-
     function planData(){
-      if(profile.selectedPlan === "monthly"){
-        return {name:"Monthly plan", amount:"$37.99 USD", chargeToday:"$37.99 USD", cadence:"Billed every month", renewal:"Sep 12, 2026", equivalent:"$37.99 / month"};
-      }
-      return {name:"Yearly plan", amount:"$229.99 USD / year", chargeToday:"$229.99 USD", cadence:"Billed once a year", renewal:"Aug 12, 2027", equivalent:"$19.17 / month"};
+      var plans = currentPaywallPlans();
+      var plan = plans.find(function(item){ return item.id === profile.selectedPlan; }) || plans[0];
+      return {
+        id:plan.id,
+        name:plan.name+" plan",
+        amount:plan.price+plan.period,
+        chargeToday:plan.chargeToday || plan.regularCharge,
+        cadence:plan.cadence,
+        renewal:formatMembershipDate(membershipDateAfter(MEMBERSHIP_PLAN_DAYS[plan.id] || 30)),
+        renewalCopy:plan.renewal,
+        isKol:plan.isKol,
+        badge:plan.badge
+      };
     }
     function showCarouselSlide(index, restart){
       var slides = $$("#v155-value-carousel .v155-value-slide");
@@ -18277,6 +18886,7 @@
     }
     function startCarousel(){
       clearInterval(carouselTimer);
+      if($$("#v155-value-carousel .v155-value-slide").length <= 1) return;
       if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       carouselTimer = setInterval(function(){
         if($("#screen-paywall-pt.active")) showCarouselSlide(carouselIndex + 1, false);
@@ -18285,29 +18895,28 @@
     function renderValueCarousel(){
       var carousel = $("#v155-value-carousel");
       if(!carousel) return;
-      var name = reviewName();
-      var level = reviewLevel();
-      carousel.innerHTML = '<div class="v155-value-track">'+
-        '<article class="v155-value-slide v155-value-slide--trust"><div class="v155-value-copy"><span class="v155-value-label">Proven for families</span><h3>Trusted by 1.8M families for 13 years</h3><p>Long-term learning support built for young English learners.</p></div><div class="v155-value-art"><img src="assets/dino-mascot.png" alt="Dino holding a trust badge"><span class="v155-years-badge"><span><b>13</b>YEARS</span></span></div></article>'+
-        '<article class="v155-value-slide v155-value-slide--teacher"><div class="v155-value-copy"><span class="v155-value-label">Real speaking practice</span><h3>An AI teacher that listens and speaks back</h3><p>Every lesson gives '+name+' a safe turn to talk, repeat, and improve.</p></div><div class="v155-value-art"><img src="assets/teacher-kim.png" alt="AI teacher Kim"><span class="v155-chat-chip one">Can you say it?</span><span class="v155-chat-chip two">I can! ✓</span></div></article>'+
-        '<article class="v155-value-slide v155-value-slide--progress"><div class="v155-value-copy"><span class="v155-value-label">Visible learning outcomes</span><h3>A personalized '+level+' path with a report after every lesson</h3><p>Parents see what '+name+' learned, how they spoke, and what comes next.</p></div><div class="v155-value-art"><img src="assets/quiz/quiz-dino.png" alt="Dino beside a progress report"><span class="v155-report-mini"><b>Lesson report</b><span></span><span></span><span></span></span></div></article>'+
-        '</div><button type="button" class="v155-carousel-btn prev" aria-label="Previous value">‹</button><button type="button" class="v155-carousel-btn next" aria-label="Next value">›</button><div class="v155-carousel-dots" role="tablist">'+
-        [0,1,2].map(function(i){ return '<button type="button" class="v155-carousel-dot" data-v155-slide="'+i+'" aria-label="Show value '+(i+1)+'"></button>'; }).join("")+'</div>';
-      $(".v155-carousel-btn.prev", carousel).onclick = function(){ showCarouselSlide(carouselIndex - 1, true); };
-      $(".v155-carousel-btn.next", carousel).onclick = function(){ showCarouselSlide(carouselIndex + 1, true); };
+      var slides = currentValueSlides();
+      var hasMultiple = slides.length > 1;
+      carouselIndex = 0;
+      carousel.innerHTML = '<div class="v155-value-track">'+slides.map(function(slide){
+        return '<article class="v155-value-slide v155-value-slide--'+slide.kind+'"><div class="v155-value-copy"><h3>'+slide.title+'</h3></div><div class="v155-value-art">'+slide.art+'</div></article>';
+      }).join("")+'</div>'+(hasMultiple ? '<div class="v155-carousel-dots" role="tablist">'+slides.map(function(_, i){
+        return '<button type="button" class="v155-carousel-dot" data-v155-slide="'+i+'" aria-label="Show value '+(i+1)+'"></button>';
+      }).join("")+'</div>' : '');
       $$("[data-v155-slide]", carousel).forEach(function(dot){ dot.onclick = function(){ showCarouselSlide(+dot.dataset.v155Slide, true); }; });
       var startX = null;
-      carousel.onpointerdown = function(e){ startX = e.clientX; };
-      carousel.onpointerup = function(e){
+      carousel.onpointerdown = hasMultiple ? function(e){ startX = e.clientX; } : null;
+      carousel.onpointerup = hasMultiple ? function(e){
         if(startX == null) return;
         var dx = e.clientX - startX;
         startX = null;
         if(Math.abs(dx) > 34) showCarouselSlide(carouselIndex + (dx < 0 ? 1 : -1), true);
-      };
-      carousel.onmouseenter = function(){ clearInterval(carouselTimer); };
-      carousel.onmouseleave = startCarousel;
+      } : null;
+      carousel.onmouseenter = hasMultiple ? function(){ clearInterval(carouselTimer); } : null;
+      carousel.onmouseleave = hasMultiple ? startCarousel : null;
       showCarouselSlide(carouselIndex, false);
-      startCarousel();
+      if(hasMultiple) startCarousel();
+      else clearInterval(carouselTimer);
     }
     function ensurePaywallUi(){
       var hero = $("#screen-paywall-pt .pwpt-hero-card");
@@ -18315,7 +18924,7 @@
         var result = document.createElement("div");
         result.id = "v155-value-carousel";
         result.className = "v155-value-carousel";
-        result.setAttribute("aria-label", "Why families choose Dino English");
+        result.setAttribute("aria-label", "Why families choose Dino AI");
         var benefits = $(".pwpt-benefits", hero);
         hero.insertBefore(result, benefits || null);
       }
@@ -18358,7 +18967,7 @@
       var status = $("#v155-restore-status");
       if(button){
         button.disabled = restoreUiState === "checking";
-        button.textContent = restoreUiState === "checking" ? "Checking…" : "Restore purchases";
+        button.textContent = restoreUiState === "checking" ? "Checking…" : "Restore";
       }
       if(!status) return;
       status.className = "v155-restore-status";
@@ -18375,9 +18984,8 @@
       renderRestoreStatus();
       setTimeout(function(){
         if(demoState.v155RestoreResult === "success"){
-          profile.premiumUnlocked = true;
+          setMembershipReviewState("subscription");
           demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
-          profile.nextBillingDate = "Jul 8, 2026";
           if(typeof refreshUnlockState === "function") refreshUnlockState();
           if(typeof showPayToast === "function") showPayToast("Subscription restored ✓");
           if(cxStage){
@@ -18394,33 +19002,68 @@
     }
     function renderPaymentStatus(){
       var cta = $("#btn-pwpt-purchase");
+      var status = $("#v155-payment-status");
+      if(status){ status.classList.remove("show"); status.textContent = ""; }
       if(cta) cta.textContent = "Subscribe now";
-      if(!paymentHasResult || demoState.v155PaymentResult === "success") return;
+      if(!paymentHasResult || demoState.v155PaymentResult !== "fail") return;
       if(cta) cta.textContent = "Try again";
+      if(status){
+        status.textContent = "We couldn’t complete your purchase. Try again.";
+        status.classList.add("show");
+      }
     }
     function renderPaywall(){
       ensurePaywallUi();
       var name = reviewName();
-      var kicker = $("#screen-paywall-pt .pwpt-kicker");
-      var title = $("#pwpt-title");
-      if(kicker) kicker.textContent = "💎 Dino Premium";
-      if(title) title.textContent = "Unlock everything in Dino English";
       renderValueCarousel();
       var benefits = $("#screen-paywall-pt .pwpt-benefits");
-      if(benefits) benefits.innerHTML = '<li><strong>Check '+name+'\'s English level</strong></li><li><strong>Get a personalized plan · 3 lessons a week</strong></li><li><strong>Access 864 CEFR-aligned lessons</strong></li><li><strong>See progress after every lesson</strong></li><li><strong>Speak, practice, and review anytime</strong></li>';
+      var catalog = currentPaywallPlans();
+      var kolPlan = catalog.find(function(plan){ return plan.isKol; });
+      var offerLead = '<li class="v155-benefits-offer"><img class="v155-offer-flame" src="assets/v155/paywall-figma/limited-offer-icon.png" alt=""><span>Limited offer ends in</span><time class="v155-offer-clock" id="v155-benefit-clock">'+(kolPlan ? '-- days · -- : -- : --' : '-- : -- : --')+'</time></li>';
+      if(benefits) benefits.innerHTML = offerLead+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--report"></span></span><strong>Check '+name+'\'s English level</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--map"></span></span><strong>Get a personalized plan · 3 lessons a week</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><img src="assets/v155/paywall-figma/benefit-icon-5.png" alt=""></span><strong>Access 864 CEFR-aligned lessons</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><img src="assets/v155/paywall-figma/benefit-icon-4.png" alt=""></span><strong>See '+name+'\'s progress after every lesson</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--chat"></span></span><strong>Let '+name+' speak, practice, and review anytime</strong></li>';
+      if(typeof pwptRenderCountdown === "function") pwptRenderCountdown();
       var plans = $("#pwpt-plans");
       if(plans){
-        plans.innerHTML = '<div class="pwpt-plan '+(profile.selectedPlan === "annual" ? "is-selected" : "")+'" data-pwpt-plan="annual" role="button" tabindex="0"><span class="pwpt-badge">BEST VALUE</span><span class="pwpt-plan-l"><span class="pwpt-plan-name">Yearly</span><span class="pwpt-plan-price">$229.99 USD / year</span></span><span class="pwpt-plan-week">$19.17 / month<br>Billed yearly</span></div>'+
-          '<div class="pwpt-plan '+(profile.selectedPlan === "monthly" ? "is-selected" : "")+'" data-pwpt-plan="monthly" role="button" tabindex="0"><span class="pwpt-plan-l"><span class="pwpt-plan-name">Monthly</span><span class="pwpt-plan-price">$37.99 USD / month</span></span><span class="pwpt-plan-week">Billed monthly</span></div>';
-        $$("[data-pwpt-plan]", plans).forEach(function(card){ card.onclick = function(){ profile.selectedPlan = card.dataset.pwptPlan; paymentHasResult = false; renderPaywall(); }; });
+        if(!catalog.some(function(plan){ return plan.id === profile.selectedPlan; })) profile.selectedPlan = kolPlan ? kolPlan.id : "annual";
+        plans.innerHTML = catalog.map(function(plan){
+          var selected = profile.selectedPlan === plan.id;
+          return '<div class="pwpt-plan '+(selected ? "is-selected " : "")+(plan.isKol ? "is-kol" : "")+'" data-pwpt-plan="'+plan.id+'" role="button" tabindex="0" aria-pressed="'+selected+'">'+
+            (plan.badge ? '<span class="pwpt-badge '+(plan.isKol ? "v155-kol-badge" : "")+'">'+plan.badge+'</span>' : '')+
+            '<span class="pwpt-plan-l"><span class="pwpt-plan-name">'+plan.name+'</span><span class="pwpt-plan-price-row"><span class="pwpt-plan-price"><b>'+plan.price+'</b><small>'+plan.period+'</small></span>'+
+            (plan.comparison ? '<s class="pwpt-plan-orig">'+plan.comparison+'</s>' : '')+'</span>'+
+            (plan.isKol ? '<span class="v155-kol-renewal">'+plan.renewal+'</span>' : '')+'</span>'+
+            '<span class="pwpt-plan-r"><span class="pwpt-plan-daily"><b>'+plan.daily+'</b><small>/day</small></span></span></div>';
+        }).join("");
+        $$("[data-pwpt-plan]", plans).forEach(function(card){
+          var selectPlan = function(){ profile.selectedPlan = card.dataset.pwptPlan; paymentHasResult = false; renderPaywall(); };
+          card.onclick = selectPlan;
+          card.onkeydown = function(event){ if(event.key === "Enter" || event.key === " "){ event.preventDefault(); selectPlan(); } };
+        });
       }
-      var data = planData();
       var cta = $("#btn-pwpt-purchase");
-      if(cta) cta.textContent = "Subscribe now";
+      if(cta){
+        cta.disabled = false;
+        cta.setAttribute("aria-busy", "false");
+        cta.textContent = "Subscribe now";
+      }
       var cancelNote = $("#screen-paywall-pt .pwpt-cancel-note");
       if(cancelNote) cancelNote.textContent = currentCancelCopy();
+      var paymentStatus = $("#v155-payment-status");
+      if(!paymentStatus && cancelNote){
+        paymentStatus = document.createElement("p");
+        paymentStatus.id = "v155-payment-status";
+        paymentStatus.className = "v155-payment-status";
+        paymentStatus.setAttribute("role", "status");
+        paymentStatus.setAttribute("aria-live", "polite");
+        cancelNote.insertAdjacentElement("afterend", paymentStatus);
+      }
       var legal = $("#screen-paywall-pt .pwpt-legal");
-      if(legal) legal.innerHTML = '<span class="v155-footer-links"><button type="button" class="pwpt-restore v155-footer-restore" id="btn-pwpt-restore">Restore purchases</button><span aria-hidden="true">·</span><a href="../legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Use</a><span aria-hidden="true">·</span><a href="../legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a></span><span class="v155-restore-status" id="v155-restore-status" role="status" aria-live="polite"></span>';
+      if(legal) legal.innerHTML = '<span class="v155-footer-links"><button type="button" class="pwpt-restore v155-footer-restore" id="btn-pwpt-restore">Restore</button><span aria-hidden="true">·</span><a href="../legal/terms-of-service-en.md" target="_blank" rel="noopener">Terms of Service</a><span aria-hidden="true">·</span><a href="../legal/privacy-policy-en.md" target="_blank" rel="noopener">Privacy Policy</a></span><span class="v155-restore-status" id="v155-restore-status" role="status" aria-live="polite"></span>';
       bindRestoreButton();
       renderRestoreStatus();
       renderPaymentStatus();
@@ -18432,7 +19075,11 @@
       var data = planData();
       var storeName = currentStoreName();
       if(!overlay) return;
-      overlay.innerHTML = '<div class="v155-checkout-sheet"><div class="v155-checkout-brand">'+storeName+' · Secure checkout</div><h3>Confirm subscription</h3><p>'+data.name+' for '+reviewName()+"'s Dino English plan. You can manage renewal in "+currentStoreReference()+'.</p><div class="v155-checkout-total"><span>Charge today</span><b>'+data.chargeToday+'</b></div><button type="button" class="v155-checkout-confirm">Confirm subscription</button><button type="button" class="v155-checkout-cancel">Cancel</button></div>';
+      overlay.innerHTML = '<div class="v155-checkout-sheet"><div class="v155-checkout-brand">'+storeName+' · Secure checkout</div>'+
+        (data.isKol ? '<span class="v155-checkout-offer">✓ '+data.badge+'</span>' : '')+
+        '<h3>Confirm subscription</h3><p>'+data.name+' for '+reviewName()+"'s Dino English plan. You can manage renewal in "+currentStoreReference()+'.</p><div class="v155-checkout-total"><span>Charge today</span><b>'+data.chargeToday+'</b></div>'+
+        (data.isKol ? '<p class="v155-checkout-renewal">'+data.renewalCopy+' after the offer period. Cancel anytime.</p>' : '')+
+        '<button type="button" class="v155-checkout-confirm">Confirm subscription</button><button type="button" class="v155-checkout-cancel">Cancel</button></div>';
       $(".v155-checkout-cancel", overlay).onclick = function(){ overlay.classList.remove("show"); demoState.v155PaymentResult = "cancel"; paymentHasResult = true; renderPaywall(); };
       $(".v155-checkout-confirm", overlay).onclick = function(e){
         var btn = e.currentTarget;
@@ -18441,10 +19088,11 @@
         setTimeout(function(){
           overlay.classList.remove("show");
           if(demoState.v155PaymentResult === "success"){
-            profile.premiumUnlocked = true;
-            profile.nextBillingDate = data.renewal;
+            if(data.isKol) demoState.v155KolScenario = "unavailable";
+            activateSubscription(data.id, data.renewal);
             if(typeof refreshUnlockState === "function") refreshUnlockState();
             if(typeof showPayToast === "function") showPayToast("Premium unlocked 🎉");
+            refreshPanel();
             enterLandscape();
             showClassHome();
           } else {
@@ -18456,34 +19104,40 @@
       overlay.classList.add("show");
     }
 
-    function openV155Paywall(result){
+    function openV155Paywall(result, options){
+      options = options || {};
       seedReviewProfile();
       profile.name = profile.name || "Olivia";
-      profile.premiumUnlocked = false;
-      profile.selectedPlan = "annual";
+      setMembershipReviewState("free");
+      demoState.v155KolScenario = options.scenario || "unavailable";
+      var desiredPlan = demoState.v155KolScenario === "available" ? "monthly" : "annual";
+      profile.selectedPlan = desiredPlan;
       demoState.v155PaymentResult = result || "success";
       paymentHasResult = result === "fail" || result === "cancel";
       restoreUiState = "idle";
       enterLandscape();
       openPaywall("screen-class", "v155_review");
+      profile.selectedPlan = desiredPlan;
       setTimeout(renderPaywall, 30);
     }
+    function openV155Kol(){
+      openV155Paywall("success", {scenario:"available"});
+    }
+    function openV155Winback(scenario){
+      seedReviewProfile();
+      profile.name = profile.name || "Olivia";
+      setMembershipReviewState("free");
+      demoState.v155KolScenario = scenario || "available";
+      if(typeof openWinback === "function") openWinback("paywall_close", "v155_review", "screen-class");
+      setTimeout(renderWinback, 30);
+      refreshPanel();
+    }
 
-    ensureLoginPlan();
     ensurePaywallUi();
-
-    document.addEventListener("click", function(e){
-      var id = e.target && e.target.closest ? e.target.closest("button")?.id : "";
-      if(id === "btn-has-account-welcome") demoState.v155LoginContext = "existing";
-      if(id === "btn-get-started") demoState.v155LoginContext = "plan";
-    }, true);
 
     var paywallWasActive = false;
     var observer = new MutationObserver(function(mutations){
       if(!mutations.some(function(m){ return m.target && m.target.classList && m.target.classList.contains("screen"); })) return;
-      if($("#screen-login.active")){
-        if(!loginContextLocked) setLoginContext(demoState.v155LoginContext || (profile.skipOnboarding ? "existing" : "plan"));
-      }
       var paywallActive = !!$("#screen-paywall-pt.active");
       if(paywallActive && !paywallWasActive) restoreUiState = "idle";
       if(paywallActive) renderPaywall();
@@ -18492,15 +19146,21 @@
     [$("#device-portrait"),$("#device-landscape")].forEach(function(node){ if(node) observer.observe(node,{subtree:true,attributes:true,attributeFilter:["class"]}); });
 
     window.V155 = {
-      setLoginContext:setLoginContext,
       renderPaywall:renderPaywall,
       restorePurchases:restorePurchases,
-      openEntry:openEntry,
-      openLogin:openLogin,
-      openPaywall:openV155Paywall
+      openPaywall:openV155Paywall,
+      openKol:openV155Kol,
+      renderWinback:renderWinback,
+      getWinbackPlanId:getWinbackPlanId,
+      consumeWinbackOffer:consumeWinbackOffer,
+      openWinback:openV155Winback
     };
-    // 每次加载都从 A/B 实验首页开始，不恢复上次浏览到的业务子页面。
-    setExperimentGroup(demoState.experimentGroup, true, false);
+    // 四个主 Tab 共用当前 UID Promo Code 的 discount 字段；无可用 Promo 时不展示角标。
+    window.getV155PromoDiscount = currentPromoDiscount;
+    window.getV155PromoPlanId = currentPromoPlanId;
+    window.syncHubVip && window.syncHubVip();
+    // 每次加载默认进入 B 链路首屏；A 链路仅通过 States 切换查看。
+    setExperimentGroup("b", true);
     refreshPanel();
   })();
   </script>
