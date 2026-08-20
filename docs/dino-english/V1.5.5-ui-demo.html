@@ -2656,6 +2656,21 @@
     }
     .class-lead-row .class-home-lead { padding-top: 0; min-width: 0; flex: 1; }
     .class-lead-row .class-home-lead-title { overflow: hidden; text-overflow: ellipsis; }
+    .class-plan-period {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      margin: 5px 0 0;
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.88);
+      font-size: 0.68rem;
+      line-height: 1.2;
+      font-weight: 700;
+      white-space: nowrap;
+    }
     .class-lead-row .class-week-head { flex-shrink: 0; }
     /* 方案二: "This Week" inline swiper on Class home (replaces the single hero card).
        The lead copy + a header row (title + single Learning Path entry) sit above a
@@ -4616,7 +4631,7 @@
     /* Member view: ghost CTA for scheduled (future) lessons — no lock icon */
     .course-cta-scheduled { display: inline-flex; align-items: center; gap: 7px; border: none; border-radius: 999px; padding: 10px 18px; font-size: 0.9rem; font-weight: 700; cursor: pointer; background: rgba(20, 58, 94, 0.08); color: #57738f; box-shadow: none; }
     .all-courses-card-lock { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 700; color: #c47f1d; background: #fff4dd; border-radius: 999px; padding: 3px 9px; }
-    .all-courses-card-lock--scheduled { color: #57738f; background: rgba(20,58,94,0.08); }
+    .all-courses-card-lock--scheduled { color: #315f86; background: rgba(234,244,255,0.92); }
     /* The lock lives on the action button when a card has one (anchored list cards + class-home
        week cards); hide the duplicate meta indicator there. Compact cards (no button) keep it. */
     .all-courses-course-card.is-anchored .all-courses-card-lock,
@@ -5205,8 +5220,22 @@
       align-items: center;
       justify-content: flex-start;
       padding: 3.6cqh 18px 12px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scroll-padding-bottom: 16px;
+      scrollbar-width: thin;
+      scrollbar-color: color-mix(in srgb, var(--brand-cyan) 34%, transparent) transparent;
+      touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
       background: linear-gradient(180deg, rgba(255,241,203,.96), rgba(255,255,255,.96) 72%);
       color: #2f3338;
+    }
+    .ms-profile-card::-webkit-scrollbar { width: 5px; }
+    .ms-profile-card::-webkit-scrollbar-track { background: transparent; }
+    .ms-profile-card::-webkit-scrollbar-thumb {
+      border-radius: var(--radius-pill);
+      background: color-mix(in srgb, var(--brand-cyan) 34%, transparent);
     }
     .ms-avatar-wrap {
       position: relative;
@@ -5267,28 +5296,96 @@
     .ms-plan-pill.is-free { background: linear-gradient(90deg,#8ca7c2,#64809c); }
     .ms-plan-pill img { width: 20px; height: 20px; object-fit: contain; }
     .ms-profile-meta {
-      margin-top: 8px;
-      min-height: 38px;
+      width: min(100%, 260px);
+      min-width: 0;
+      margin-top: 10px;
+      min-height: 72px;
+      padding: 0 4px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      gap: 1px;
+      gap: 4px;
       color: #959aa3;
       font-size: .66rem;
       line-height: 1.3;
       text-align: center;
     }
+    .ms-access-title {
+      margin: 0;
+      color: var(--ink-on-light);
+      font-family: var(--display);
+      font-size: .78rem;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .ms-access-title[hidden] { display: none; }
     .ms-membership-line {
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: center;
-      gap: 5px;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-width: 100%;
+    }
+    #ms-access-line {
+      width: 100%;
+      min-width: 0;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    #ms-renewal-line {
+      width: 100%;
+      margin-top: 1px;
+      padding-top: 5px;
+      border-top: 1px solid rgba(104,113,124,.16);
+      flex-wrap: nowrap;
       white-space: nowrap;
     }
     .ms-membership-line[hidden] { display: none; }
-    .ms-membership-label { color: #959aa3; font-size: .6rem; font-weight: 700; }
-    .ms-membership-value { color: #68717c; font-size: .68rem; font-weight: 700; }
+    .ms-membership-label { color: #959aa3; font-size: .57rem; font-weight: 700; }
+    #ms-access-status {
+      color: #56616f;
+      font-family: var(--display);
+      font-size: .7rem;
+    }
+    .ms-membership-value { color: #68717c; font-size: .64rem; font-weight: 700; }
+    .ms-membership-bonus {
+      flex: 0 0 auto;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      color: var(--sky-mid);
+      background: color-mix(in srgb, var(--brand-cyan) 13%, transparent);
+      font-size: .54rem;
+      font-weight: 700;
+    }
+    .ms-membership-bonus[hidden] { display: none; }
+    .ms-manage-subscription {
+      width: min(100%, 214px);
+      min-height: 44px;
+      margin-top: 9px;
+      padding: 8px 18px;
+      border: 0;
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-on-dark);
+      background: linear-gradient(180deg,var(--cta-orange-top),var(--cta-orange-bottom));
+      box-shadow: 0 9px 18px rgba(254,136,32,.28), inset 0 1px 0 rgba(255,255,255,.36);
+      font-family: var(--display);
+      font-size: .73rem;
+      font-weight: 700;
+      line-height: 1.15;
+      cursor: pointer;
+      transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .ms-manage-subscription[hidden] { display: none; }
+    .ms-manage-subscription:hover { transform: translateY(-1px); box-shadow: 0 11px 22px rgba(254,136,32,.34), inset 0 1px 0 rgba(255,255,255,.42); }
+    .ms-manage-subscription:active { transform: scale(.98); }
     .ms-premium-card {
       padding: 2.65cqh 20px 16px;
       background: linear-gradient(180deg,#ddecff 0%,#fff 56%);
@@ -7184,6 +7281,391 @@
     #screen-class .class-home-lead-title,
     #screen-class .class-hero-kicker{ color:#fff !important; text-shadow:0 2px 6px rgba(20,40,90,.3); }
 
+    /* ---------- CLASS panel — Figma 12530:7101 + V1.5.5 plan date / Promo ---------- */
+    #screen-class #hub-panel-class{
+      padding:0 !important;
+      overflow:hidden;
+    }
+    #screen-class #hub-panel-class .class-hub,
+    #screen-class #hub-panel-class .class-hub-main{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      max-height:none;
+      min-height:0;
+      display:block;
+      overflow:hidden;
+    }
+    #screen-class .hub-avatar-entry{
+      top:20px;
+      left:40px;
+      width:40px;
+      height:40px;
+    }
+    #screen-class #hub-panel-class .class-teacher-card{
+      position:absolute;
+      inset:0;
+      z-index:1;
+      margin:0 !important;
+      padding:0;
+      display:block;
+      pointer-events:none;
+      overflow:visible;
+    }
+    #screen-class #hub-panel-class .class-teacher-visual{
+      position:absolute;
+      left:-33px;
+      bottom:0;
+      width:312px;
+      height:312px;
+      min-height:0;
+      padding:0;
+      background:url(assets/v13fx/teacher.png) bottom center/contain no-repeat !important;
+      filter:drop-shadow(0 8px 18px rgba(44,57,127,.18));
+    }
+    #screen-class #hub-panel-class .class-teacher-visual img,
+    #screen-class #hub-panel-class .class-teacher-copy{
+      display:none;
+    }
+    #screen-class #hub-panel-class .class-teacher-btn{
+      position:absolute;
+      top:20px;
+      left:96px;
+      width:96px;
+      height:40px;
+      min-height:40px;
+      margin:0;
+      padding:4px 10px 4px 8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      pointer-events:auto;
+      color:#fff !important;
+      background:rgba(255,255,255,.2) !important;
+      border:1px solid rgba(255,255,255,.72) !important;
+      box-shadow:none;
+    }
+    #screen-class .class-teacher-stack{
+      display:flex;
+      align-items:center;
+    }
+    #screen-class .class-teacher-stack img{
+      width:24px;
+      height:24px;
+      margin-left:-9px;
+      border:1.4px solid rgba(255,255,255,.92);
+      border-radius:50%;
+      object-fit:cover;
+      object-position:center 18%;
+      background:#dfeeff;
+      box-shadow:0 2px 6px rgba(25,48,112,.2);
+    }
+    #screen-class .class-teacher-stack img:first-child{ margin-left:0; }
+    #screen-class .class-teacher-switch-icon{
+      width:16px;
+      height:16px;
+      flex:0 0 16px;
+      color:#fff;
+    }
+    #screen-class #hub-panel-class .class-home-main{
+      position:absolute;
+      inset:0;
+      min-height:0;
+      max-height:none;
+      display:block;
+      overflow:hidden;
+    }
+    #screen-class #hub-panel-class .class-lead-row{
+      position:static;
+      display:block;
+    }
+    #screen-class #hub-panel-class .class-home-lead{
+      position:absolute;
+      z-index:4;
+      top:20px;
+      left:50%;
+      width:230px;
+      min-width:0;
+      padding:0;
+      transform:translateX(-50%);
+      display:block;
+      text-align:center;
+    }
+    #screen-class #hub-panel-class .class-home-lead-title{
+      overflow:visible;
+      font-family:var(--display);
+      font-size:18px;
+      font-weight:700;
+      line-height:1.25;
+      letter-spacing:0;
+      text-overflow:clip;
+      white-space:nowrap;
+      text-shadow:none;
+    }
+    #screen-class #hub-panel-class .class-plan-period{
+      display:block;
+      width:auto;
+      margin:2px 0 0;
+      padding:0;
+      border:0;
+      border-radius:0;
+      background:none;
+      color:rgba(255,255,255,.88);
+      font-size:11px;
+      font-weight:600;
+      line-height:1.3;
+      text-align:center;
+      white-space:nowrap;
+    }
+    #screen-class #hub-panel-class .class-week-head{
+      position:absolute;
+      z-index:5;
+      top:20px;
+      right:40px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    #screen-class #hub-panel-class .class-week-head > .hub-cx-vip{
+      position:relative;
+      top:auto;
+      right:auto;
+      flex:0 0 60px;
+      width:60px;
+      height:40px;
+      box-shadow:none;
+    }
+    #screen-class #hub-panel-class .class-allcourses-link{
+      height:40px;
+      min-width:170px;
+      padding:4px 12px 4px 7px;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:7px;
+      color:#fff !important;
+      font-size:14px;
+      font-weight:700;
+      background:rgba(255,255,255,.2) !important;
+      border:1px solid rgba(255,255,255,.72) !important;
+      box-shadow:none;
+    }
+    #screen-class .class-allcourses-thumb{
+      position:relative;
+      width:34px;
+      height:28px;
+      flex:0 0 34px;
+    }
+    #screen-class .class-allcourses-thumb img{
+      position:absolute;
+      inset:2px 0 0;
+      width:31px;
+      height:24px;
+      border:1px solid rgba(255,255,255,.9);
+      border-radius:5px;
+      object-fit:cover;
+      box-shadow:1px 1px 2px rgba(28,70,150,.22);
+      transform:rotate(-5deg);
+    }
+    #screen-class .class-allcourses-thumb img:last-child{
+      inset:0 0 auto 4px;
+      transform:rotate(6deg);
+    }
+    #screen-class #hub-panel-class .class-allcourses-link .acl-chevron{
+      margin-left:auto;
+      font-size:18px;
+    }
+    #screen-class #hub-panel-class .class-week-list{
+      position:absolute;
+      z-index:2;
+      top:70px;
+      right:0;
+      bottom:85px;
+      left:27%;
+      min-height:0;
+      padding:0;
+      gap:16px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scroll-padding-left:0;
+      scroll-snap-type:x mandatory;
+    }
+    #screen-class #hub-panel-class .course-bridge-card.class-home-course-card.class-week-card{
+      flex:0 0 68.8%;
+      width:auto;
+      max-width:none;
+      height:100%;
+      min-height:0;
+      padding:16px 16px 10px;
+      gap:0;
+      border:1px solid rgba(255,255,255,.82) !important;
+      border-radius:24px !important;
+      background:linear-gradient(180deg,rgba(103,186,250,.9) 0%,rgba(126,149,255,.9) 111%) !important;
+      box-shadow:0 12px 24px rgba(29,65,150,.24) !important;
+      filter:none;
+      scroll-snap-align:start;
+    }
+    #screen-class #hub-panel-class .class-week-card.is-current{
+      box-shadow:0 12px 24px rgba(29,65,150,.24) !important;
+    }
+    #screen-class #hub-panel-class .class-home-course-scroll{
+      overflow:hidden;
+      gap:8px;
+      margin:0;
+      padding:0;
+    }
+    #screen-class #hub-panel-class .course-card-top{
+      display:flex;
+      flex-direction:row;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+    }
+    #screen-class #hub-panel-class .course-card-topcopy{
+      flex:1;
+      min-width:0;
+    }
+    #screen-class #hub-panel-class .course-card-stage{
+      display:block;
+      margin:0 0 6px;
+      color:#fff !important;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.2;
+      letter-spacing:0;
+      text-transform:none;
+    }
+    #screen-class #hub-panel-class .course-card-title{
+      max-width:none;
+      margin:0;
+      color:#fff !important;
+      font-family:var(--display);
+      font-size:18px;
+      font-weight:700;
+      line-height:1.22;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+    }
+    #screen-class #hub-panel-class .course-card-meta-row{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      margin-top:8px;
+    }
+    #screen-class #hub-panel-class .course-card-meta-row > *{
+      min-height:24px;
+      padding:3px 8px;
+      border:0;
+      border-radius:6px;
+      font-size:12px;
+      font-weight:600;
+      color:#494a53;
+    }
+    #screen-class #hub-panel-class .all-courses-card-duration{
+      order:-1;
+      background:#76e6ff;
+    }
+    #screen-class #hub-panel-class .all-courses-card-status{
+      background:#ffc3fc;
+      color:#494a53;
+    }
+    #screen-class #hub-panel-class .course-card-thumb{
+      width:114px;
+      height:86px;
+      margin:0;
+      flex:0 0 114px;
+      overflow:hidden;
+      border:0;
+      border-radius:20px;
+      background:#5ed4ff;
+      box-shadow:0 6px 14px rgba(37,66,144,.2);
+      transform:rotate(2deg);
+    }
+    #screen-class #hub-panel-class .course-card-thumb::before,
+    #screen-class #hub-panel-class .course-card-thumb::after{
+      display:none;
+    }
+    #screen-class #hub-panel-class .course-card-thumb img{
+      position:static;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    #screen-class #hub-panel-class .course-card-thumb-badge{ display:none; }
+    #screen-class #hub-panel-class .course-card-lines{
+      display:grid;
+      gap:2px;
+      margin-top:2px;
+    }
+    #screen-class #hub-panel-class .course-card-line{
+      grid-template-columns:auto minmax(0,1fr);
+      gap:3px;
+      color:#fff;
+      font-size:14px;
+      line-height:1.4;
+    }
+    #screen-class #hub-panel-class .course-card-line span,
+    #screen-class #hub-panel-class .course-card-line p{
+      color:#fff;
+      font-size:14px;
+      line-height:1.4;
+    }
+    #screen-class #hub-panel-class .course-card-scroll-inner{ display:none; }
+    #screen-class #hub-panel-class .class-home-actions{
+      margin-top:auto;
+      padding:8px 0 0;
+    }
+    #screen-class #hub-panel-class .class-home-actions .course-card-cta-wrap{
+      display:flex;
+      flex-wrap:nowrap;
+      width:100%;
+      gap:8px;
+    }
+    #screen-class #hub-panel-class .class-home-actions .course-card-cta-wrap button{
+      flex:0 0 190px;
+      min-width:190px;
+      min-height:42px;
+      height:42px;
+      padding:0 20px;
+      font-size:16px;
+      font-weight:700;
+      box-shadow:0 2px 0 #ef6a1d !important;
+    }
+    #screen-class #hub-panel-class .class-explore-card{
+      justify-content:center;
+      text-align:center;
+    }
+    #screen-class #hub-panel-class .class-explore-card .class-explore-actions{
+      justify-content:center;
+    }
+    #screen-class .hub-app > .class-bottom-nav--four{
+      bottom:12px !important;
+      width:302px !important;
+      min-height:59px;
+      padding:4px 7px !important;
+      gap:2px !important;
+      box-sizing:border-box;
+      box-shadow:none !important;
+    }
+    #screen-class .class-bottom-item{
+      min-width:72px;
+      padding:2px 8px !important;
+      font-size:10px;
+      font-weight:500;
+    }
+    #screen-class .class-bottom-item.is-active{
+      color:#186acb !important;
+      box-shadow:none;
+    }
+    #screen-class .class-bottom-icon{
+      width:48px;
+      height:36px;
+    }
+
     /* ---------- EXPLORE panel — full-bleed illustrated cards ---------- */
     #screen-class #hub-panel-practice .explore-head,
     #screen-class #hub-panel-play .explore-head{ text-align:center; padding-bottom:10px; }
@@ -8182,7 +8664,7 @@
             <div class="pwpt-hero-top">
               <img class="pwpt-hero-figure" src="assets/dino-mascot.png" alt="" decoding="async" />
               <div class="pwpt-trust">
-                <span class="pwpt-trust-badge">Trusted by 1.8M families for 13 years</span>
+                <span class="pwpt-trust-badge">Trusted by 1.8M families for 13 years of CEFR-aligned teaching</span>
               </div>
             </div>
             <ul class="pwpt-benefits">
@@ -8460,21 +8942,26 @@
                       <h4 id="class-teacher-name">Kim</h4>
                     </div>
                     <button type="button" class="teacher-switch-pill class-teacher-btn" id="btn-change-teacher" aria-label="Change teacher">
-                      Change teacher
+                      <span class="class-teacher-stack" aria-hidden="true">
+                        <img src="assets/teacher-kim.png" alt="" decoding="async" />
+                        <img src="assets/teacher-max.png" alt="" decoding="async" />
+                        <img src="assets/teacher-leo.png" alt="" decoding="async" />
+                      </span>
+                      <svg class="class-teacher-switch-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 7h11m0 0-3-3m3 3-3 3M16 13H5m0 0 3 3m-3-3 3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
                   </aside>
                   <section class="class-home-main">
-                    <!-- 标题与「More lessons」水平对齐（同一行：标题左、入口右）。 -->
                     <div class="class-lead-row">
                       <div class="class-home-lead">
                         <p class="class-hero-kicker" id="class-hero-kicker">Start here first</p>
-                        <h3 class="class-home-lead-title" id="class-home-lead-title">Your current class is ready</h3>
+                        <h3 class="class-home-lead-title" id="class-home-lead-title">Weekly study plan</h3>
+                        <p class="class-plan-period" id="class-plan-period">Aug 19–25, 2026</p>
                       </div>
-                      <!-- 方案二: this week's 3 lessons live ON Class home as a horizontal
-                           swiper (zero clicks). Browsing the full catalog moves to the single
-                           Learning Path entry on the right. -->
                       <div class="class-week-head">
-                        <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">More lessons <span class="acl-chevron" aria-hidden="true">›</span></button>
+                        <button type="button" class="class-allcourses-link" id="btn-open-all-courses" aria-label="View more lessons">
+                          <span class="class-allcourses-thumb" aria-hidden="true"><img src="assets/ip-quiz/q3-school.png" alt="" decoding="async" /><img src="assets/ip-quiz/q1-bicycle.png" alt="" decoding="async" /></span>
+                          <span>More lessons</span><span class="acl-chevron" aria-hidden="true">›</span>
+                        </button>
                       </div>
                     </div>
                     <!-- V1.3.0: the trial lesson (lesson0) is removed from the
@@ -8982,15 +9469,17 @@
                 <span id="ms-profile-plan-label">Premium</span>
               </span>
               <div class="ms-profile-meta">
+                <p class="ms-access-title" id="ms-access-title">Premium access</p>
                 <p class="ms-membership-line" id="ms-access-line">
-                  <span class="ms-membership-label" id="ms-access-label">Premium access:</span>
                   <span class="ms-membership-value" id="ms-access-status">30 days remaining</span>
+                  <span class="ms-membership-bonus" id="ms-access-bonus" hidden></span>
                 </p>
                 <p class="ms-membership-line" id="ms-renewal-line" hidden>
                   <span class="ms-membership-label">Next billing date:</span>
                   <span class="ms-membership-value" id="ms-renewal-date"></span>
                 </p>
               </div>
+              <button type="button" class="ms-manage-subscription" id="btn-ms-manage-subscription" hidden>Manage subscription</button>
             </article>
             <article class="ms-premium-card">
               <span class="ms-plan-pill">
@@ -9483,7 +9972,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", effectiveAccessEnd: "", autoRenew: false, selectedPlan: "annual", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -9538,6 +10027,7 @@
       v155RestoreResult: "none",
       v155ValueConfig: "region_match",
       v155KolScenario: "unavailable",
+      v155CourseProgress: "default",
       v155KolExpiresAt: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
     };
     // Demo 每次加载默认展示业务最终采用的 B 链路；A 链路仅供状态面板对照查看。
@@ -9850,6 +10340,30 @@
       { title: "Show and Tell Day", duration: "12 min live class", words: "show, tell, toy, special", sentence: "This is my special toy.", summary: "Present a favorite object in two or three sentences.", objectives: ["Introduce an object with this is.", "Add one detail about it.", "Listen and respond to a friend's show and tell."] },
     ].forEach((lesson, i) => Object.assign(COURSE_LIBRARY[1].units[0].lessons[i], lesson));
 
+    // V1.5.5 review state: a previously reached Level can contain both fully completed
+    // and partially completed Units. Level 2 demonstrates Unit 1 = 12/12 and Unit 2 = 4/12
+    // while the learner's active plan remains on Level 3.
+    const V155_PARTIAL_HISTORY = Object.freeze({
+      levelId: "level-2",
+      currentLevelId: "level-3",
+      units: Object.freeze({ "unit-1": 12, "unit-2": 4 }),
+    });
+    function historicalUnitDoneCount(levelId, unitId) {
+      if (demoState.v155CourseProgress !== "unit_partial") return null;
+      if (profile.currentLevelId !== V155_PARTIAL_HISTORY.currentLevelId) return null;
+      if (levelId !== V155_PARTIAL_HISTORY.levelId) return null;
+      return V155_PARTIAL_HISTORY.units[unitId] || 0;
+    }
+    function hasHistoricalPartialProgress(levelId) {
+      if (demoState.v155CourseProgress !== "unit_partial") return false;
+      if (profile.currentLevelId !== V155_PARTIAL_HISTORY.currentLevelId) return false;
+      if (levelId !== V155_PARTIAL_HISTORY.levelId) return false;
+      const level = getLevelById(levelId);
+      const done = level.units.reduce((sum, unit) => sum + historicalUnitDoneCount(levelId, unit.id), 0);
+      const total = level.units.reduce((sum, unit) => sum + unit.lessons.length, 0);
+      return done > 0 && done < total;
+    }
+
     // V1.3.0 schedule: the week's 3 lessons all unlock together each 7-day rolling
     // cycle (not bound to any weekday). There
     // is no weekday-specific scheduling any more — learners pace themselves through
@@ -9998,6 +10512,7 @@
 
     function renderCourseActionButtons(course) {
       const rel = levelRel(course);
+      const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       // V1.3.2 one-time 体验课: a level sampled via a trial that isn't part of the
       // formal progression — next-up (level-up / placement trial) or a skipped lower
       // level — can't be re-taken. Its verdict is already folded into the current plan,
@@ -10015,7 +10530,7 @@
       // CURRENT level's Learning Path — cards never carry Try / Switch. Any off-plan
       // level (next-up, a skipped lower, or a higher-locked level) reads as Locked;
       // tapping points the learner back to the stepper.
-      if (rel === "next-up" || rel === "skipped-lower" || rel === "higher-locked") {
+      if (rel === "next-up" || rel === "skipped-lower" || rel === "higher-locked" || (rel === "partial-lower" && state !== "Completed")) {
         const action = VERSION_FEATURES.courseLeveling ? "use-stepper" : "higher-locked";
         return `<button type="button" class="course-cta-scheduled" data-action="${action}">Locked</button>`;
       }
@@ -10023,7 +10538,6 @@
       if (getUnlockState(course) === "scheduled") {
         return `<button type="button" class="course-cta-scheduled" data-action="scheduled">Opens soon</button>`;
       }
-      const state = getLessonState(course.levelId, course.unitId, course.lessonId);
       if (state === "Completed") {
         // V1.3.0: completed lessons can't be retaken — no "Review" / re-enter entry.
         // Only the learning report stays reachable (read-only); the words / sentences
@@ -10090,7 +10604,7 @@
           if (action === "use-stepper") {
             // Cross-level moves live on the adjacent-level banner (upgrade on current+1,
             // downgrade on current-1), not on individual lesson cards.
-            showPayToast("Use the banner at the top of this level to change level");
+            showPayToast("Switch level to unlock this lesson");
             return;
           }
           if (action === "try-level") {
@@ -10131,24 +10645,47 @@
     // Same number drives the Class home swiper and the study-plan "3 lessons a week".
     const WEEK_LESSONS = 3;
     const STUDY_LESSONS_PER_WEEK = WEEK_LESSONS;
+    const PLAN_CYCLE_DAYS = 7;
+    function atLocalDayStart(value) {
+      const date = value instanceof Date ? new Date(value.getTime()) : new Date(value);
+      if (Number.isNaN(date.getTime())) return null;
+      date.setHours(0, 0, 0, 0);
+      return date;
+    }
+    function addPlanDays(value, days) {
+      const date = atLocalDayStart(value);
+      if (!date) return null;
+      date.setDate(date.getDate() + Number(days || 0));
+      return date;
+    }
+    function currentPlanStartDate() {
+      const stored = atLocalDayStart(profile.weekCycleStartAt);
+      if (stored) return stored;
+      const today = atLocalDayStart(new Date());
+      profile.weekCycleStartAt = today.toISOString();
+      return today;
+    }
+    function formatPlanRange(start, end) {
+      if (!start || !end) return "";
+      const startMonth = start.toLocaleDateString("en-US", { month: "short" });
+      const endMonth = end.toLocaleDateString("en-US", { month: "short" });
+      const startDay = start.getDate();
+      const endDay = end.getDate();
+      const startYear = start.getFullYear();
+      const endYear = end.getFullYear();
+      if (startYear !== endYear) return `${startMonth} ${startDay}, ${startYear}–${endMonth} ${endDay}, ${endYear}`;
+      if (startMonth !== endMonth) return `${startMonth} ${startDay}–${endMonth} ${endDay}, ${endYear}`;
+      return `${startMonth} ${startDay}–${endDay}, ${endYear}`;
+    }
+    function currentPlanPeriodLabel() {
+      const start = currentPlanStartDate();
+      return formatPlanRange(start, addPlanDays(start, PLAN_CYCLE_DAYS - 1));
+    }
     function getCourseSequenceIndex(levelId, unitId, lessonId) {
       const key = makeCourseKey(levelId, unitId, lessonId);
       return getCurrentLevelCourseSequence().findIndex(
         (c) => makeCourseKey(c.levelId, c.unitId, c.lessonId) === key
       );
-    }
-    function currentBatchStartIndex() {
-      const idx = getCourseSequenceIndex(profile.currentLevelId, profile.currentUnitId, profile.currentLessonId);
-      if (idx === -1) return 0;
-      return idx - (idx % WEEK_LESSONS);
-    }
-    // How many weekly batches ahead a course sits (0 = this week / already unlocked).
-    function getUnlockWeeksAhead(course) {
-      const idx = getCourseSequenceIndex(course.levelId, course.unitId, course.lessonId);
-      if (idx === -1) return 0;
-      const courseBatch = idx - (idx % WEEK_LESSONS);
-      const weeks = (courseBatch - currentBatchStartIndex()) / WEEK_LESSONS;
-      return Math.max(0, weeks);
     }
     // V1.3.2 weekly unlock budget (by COMPLETED, per 7-day cycle). The promise is
     // "3 lessons of progress per cycle" — counted by completion, so switching level
@@ -10212,6 +10749,12 @@
     }
 
     function getLessonState(levelId, unitId, lessonId) {
+      const historicalDone = historicalUnitDoneCount(levelId, unitId);
+      if (historicalDone !== null) {
+        const unit = getUnitById(levelId, unitId);
+        const lessonIndex = unit.lessons.findIndex((lesson) => lesson.id === lessonId);
+        return lessonIndex >= 0 && lessonIndex < historicalDone ? "Completed" : "NotStarted";
+      }
       // Cross-level comparison first: any lesson in an already-completed (lower)
       // level reads as reviewable ("Completed"); a lesson in a not-yet-reached
       // (higher) level hasn't started. Same-level falls through to the within-level
@@ -10267,7 +10810,10 @@
       const place = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
       const lv = levelOrderOf(course.levelId);
       if (lv === cur) return "current";
-      if (lv < cur) return lv < place ? "skipped-lower" : "completed-lower";
+      if (lv < cur) {
+        if (hasHistoricalPartialProgress(course.levelId)) return "partial-lower";
+        return lv < place ? "skipped-lower" : "completed-lower";
+      }
       return lv === cur + 1 ? "next-up" : "higher-locked";
     }
 
@@ -11525,13 +12071,13 @@
             <div class="class-home-course-scroll">
               <div class="course-card-top">
                 <div class="course-card-topcopy">
-                  <span class="course-card-stage">${course.unitLabel} · ${course.lessonLabel}</span>
+                  <span class="course-card-stage">${course.lessonLabel}</span>
                   <h3 class="course-card-title">${course.title}</h3>
                   ${renderCourseListMeta(course, true)}
                 </div>
                 <div class="course-card-thumb" aria-hidden="true">
                   ${isCurrent ? `<span class="course-card-thumb-badge">Current</span>` : ""}
-                  <img src="assets/dino-mascot.png" alt="" decoding="async" />
+                  <img src="assets/ip-quiz/q3-school.png" alt="" decoding="async" />
                 </div>
               </div>
               <div class="course-card-lines course-content-preview">${renderCourseContentPreview(course)}</div>
@@ -11597,8 +12143,9 @@
       // (the swiper). Per-lesson lock/unlock still lives on each week card.
       const kickerEl = $("#class-hero-kicker");
       if (kickerEl) kickerEl.hidden = true;
-      const leadTitle = name ? `Hi ${name}, here are your lessons this week` : "Hi! Here are your lessons this week";
-      $("#class-home-lead-title").textContent = leadTitle;
+      $("#class-home-lead-title").textContent = "Weekly study plan";
+      const planPeriod = $("#class-plan-period");
+      if (planPeriod) planPeriod.textContent = currentPlanPeriodLabel();
       // 方案二: render this week's lessons as the inline swiper (current lesson centered).
       // renderClassWeek also prepends the completed trial lesson as a "Trial lesson"
       // card (removed from the All-lessons / Level·Unit lists, report stays viewable).
@@ -11670,6 +12217,7 @@
       const order = COURSE_LIBRARY.findIndex((l) => l.id === levelId);
       const curOrder = COURSE_LIBRARY.findIndex((l) => l.id === profile.currentLevelId);
       const placeOrder = COURSE_LIBRARY.findIndex((l) => l.id === (profile.placementLevelId || profile.currentLevelId));
+      if (hasHistoricalPartialProgress(levelId)) return "partial";
       if (order < curOrder) {
         // Levels below the placement level were skipped (never studied) → not started;
         // levels from placement up to the current level are genuinely completed.
@@ -11679,6 +12227,8 @@
       return "next";
     }
     function getUnitDoneCount(levelId, unit) {
+      const historicalDone = historicalUnitDoneCount(levelId, unit.id);
+      if (historicalDone !== null) return Math.min(unit.lessons.length, historicalDone);
       if (levelId !== profile.currentLevelId) {
         return getLevelStatus(levelId) === "done" ? unit.lessons.length : 0;
       }
@@ -11751,12 +12301,14 @@
         // "100% Completed".
         const showProgress = true;
         let cta, tag;
-        if (lvStatus === "done") {
+        if (lvStatus === "done" || (lvStatus === "partial" && done > 0)) {
           // #6: a genuinely completed lower level. Progress is stored, so its units are
-          // reviewable — "View lessons" reopens the lesson list for review (doesn't change
-          // the current plan). Tagged Completed with a full progress bar.
+          // reviewable — "View lessons" reopens the lesson list for review without changing
+          // the current plan. A partially completed historical Unit remains In progress.
           cta = `<button type="button" class="cm-unit-cta" data-unit-id="${unit.id}">View lessons</button>`;
-          tag = `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>`;
+          tag = done === total
+            ? `<span class="cm-unit-tag cm-unit-tag--done">Completed</span>`
+            : `<span class="cm-unit-tag cm-unit-tag--current">In progress</span>`;
         } else if (lvStatus !== "current") {
           // Higher not-yet-unlocked level, or a skipped lower level never studied — not
           // directly enterable from the map. Free → payment gate (Go Premium → Paywall);
@@ -11919,7 +12471,7 @@
       const selOrder = levelOrderOf(level.id);
       const placeOrder = levelOrderOf(profile.placementLevelId || profile.currentLevelId);
       if (selOrder !== curOrder - 1) return ""; // only the adjacent lower level
-      if (curOrder > placeOrder) return ""; // progressed above placement → lower is review
+      if (curOrder > placeOrder && !hasHistoricalPartialProgress(level.id)) return ""; // fully completed lower level is review-only
       if (!profile.premiumUnlocked && isTrialConsumed(level.id)) return "";
       const downLabel = level.label;
       // Identity-aware sub-copy: members have a running plan to switch DOWN; free users
@@ -15148,6 +15700,10 @@
       return new Date(Date.now() + days * MEMBERSHIP_DAY_MS).toISOString();
     }
 
+    function membershipDateBefore(days) {
+      return new Date(Date.now() - days * MEMBERSHIP_DAY_MS).toISOString();
+    }
+
     function formatMembershipDate(value) {
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return "";
@@ -15160,6 +15716,12 @@
       return Math.max(0, Math.ceil((end - Date.now()) / MEMBERSHIP_DAY_MS));
     }
 
+    function membershipBonusDaysRemaining() {
+      const end = new Date(profile.bonusAccessEnd).getTime();
+      if (!Number.isFinite(end)) return 0;
+      return Math.max(0, Math.ceil((end - Date.now()) / MEMBERSHIP_DAY_MS));
+    }
+
     function ensureMembershipTimeline() {
       if (membershipKind() === "lifetime") return;
       if (!profile.premiumUnlocked || !Number.isNaN(new Date(profile.effectiveAccessEnd).getTime())) return;
@@ -15167,10 +15729,12 @@
     }
 
     function setMembershipReviewState(kind) {
-      const state = ["manual", "one_time", "subscription", "subscription_cancelled", "lifetime"].includes(kind) ? kind : "free";
+      const state = ["manual", "one_time", "subscription", "subscription_cancelled", "subscription_expired", "lifetime"].includes(kind) ? kind : "free";
       const cancelledSubscription = state === "subscription_cancelled";
-      profile.membershipSource = cancelledSubscription ? "subscription" : state;
-      profile.premiumUnlocked = state !== "free";
+      const subscriptionOrder = state === "subscription" || cancelledSubscription || state === "subscription_expired";
+      profile.membershipSource = subscriptionOrder ? "subscription" : state;
+      profile.hasSubscriptionOrder = subscriptionOrder;
+      profile.premiumUnlocked = state !== "free" && state !== "subscription_expired";
       profile.autoRenew = state === "subscription";
       profile.effectiveAccessEnd = state === "manual"
         ? membershipDateAfter(2)
@@ -15178,9 +15742,14 @@
           ? membershipDateAfter(30)
           : state === "subscription" || cancelledSubscription
             ? membershipDateAfter(32)
-            : state === "lifetime"
-              ? "lifetime"
-              : "";
+            : state === "subscription_expired"
+              ? membershipDateBefore(5)
+              : state === "lifetime"
+                ? "lifetime"
+                : "";
+      profile.bonusAccessEnd = state === "manual" || state === "subscription" || cancelledSubscription
+        ? membershipDateAfter(2)
+        : "";
       profile.nextBillingDate = state === "subscription" ? formatMembershipDate(membershipDateAfter(30)) : "";
     }
 
@@ -15197,6 +15766,7 @@
       addMembershipDays(days);
       profile.premiumUnlocked = true;
       profile.membershipSource = "subscription";
+      profile.hasSubscriptionOrder = true;
       profile.autoRenew = true;
       profile.nextBillingDate = nextBillingDate || formatMembershipDate(membershipDateAfter(days));
     }
@@ -15853,22 +16423,35 @@
       const paid = isPaidMembership();
       const lifetime = membershipKind() === "lifetime";
       const daysLeft = membershipDaysLeft();
+      const bonusDaysRemaining = membershipBonusDaysRemaining();
       const planPill = $("#ms-profile-plan");
       const planLabel = $("#ms-profile-plan-label");
+      const accessTitle = $("#ms-access-title");
       const accessLine = $("#ms-access-line");
-      const accessLabel = $("#ms-access-label");
       const accessStatus = $("#ms-access-status");
+      const accessBonus = $("#ms-access-bonus");
       const renewalLine = $("#ms-renewal-line");
       const renewalDate = $("#ms-renewal-date");
+      const manageSubscription = $("#btn-ms-manage-subscription");
       if ($("#ms-profile-name")) $("#ms-profile-name").textContent = profile.name || "Jackson";
       if (planPill) planPill.classList.toggle("is-free", !paid);
       if (planLabel) planLabel.textContent = paid ? "Premium" : "Free";
+      if (accessTitle) accessTitle.hidden = !paid;
       if (accessLine) accessLine.hidden = !paid;
-      if (accessLabel) accessLabel.textContent = "Premium access:";
       if (accessStatus) accessStatus.textContent = lifetime ? "Lifetime" : `${daysLeft} days remaining`;
+      if (accessBonus) {
+        accessBonus.hidden = lifetime || bonusDaysRemaining <= 0;
+        accessBonus.textContent = bonusDaysRemaining > 0
+          ? `Includes ${bonusDaysRemaining} bonus ${bonusDaysRemaining === 1 ? "day" : "days"}`
+          : "";
+      }
       const showRenewal = paid && membershipKind() === "subscription" && profile.autoRenew && !!profile.nextBillingDate;
       if (renewalLine) renewalLine.hidden = !showRenewal;
       if (renewalDate) renewalDate.textContent = showRenewal ? profile.nextBillingDate : "";
+      if (manageSubscription) {
+        manageSubscription.hidden = !profile.hasSubscriptionOrder;
+        manageSubscription.setAttribute("aria-label", "Manage subscription");
+      }
       if ($("#btn-ms-restore")) $("#btn-ms-restore").hidden = !paid;
     }
 
@@ -15879,6 +16462,18 @@
       }
       renderMembership();
       showLandScreen("screen-membership");
+    }
+
+    function membershipStoreReference() {
+      return demoState.v155Platform === "ios" ? "the App Store" : "Google Play";
+    }
+
+    function manageSubscription() {
+      const url = demoState.v155Platform === "ios"
+        ? "https://apps.apple.com/account/subscriptions"
+        : "https://play.google.com/store/account/subscriptions";
+      showPayToast(`Opening ${membershipStoreReference()} subscriptions…`);
+      window.open(url, "_blank", "noopener,noreferrer");
     }
 
     // ---------- Profile detail / edit (V1.2.0) ----------
@@ -15939,6 +16534,7 @@
     $("#btn-paywall-restore")?.addEventListener("click", () => { restorePurchase(); showLandScreen(paywallReturnScreen); });
     $("#btn-membership-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
     $("#btn-ms-restore")?.addEventListener("click", restorePurchase);
+    $("#btn-ms-manage-subscription")?.addEventListener("click", manageSubscription);
     $("#btn-profile-membership")?.addEventListener("click", openMembership);
     $("#btn-profile-detail")?.addEventListener("click", openProfileDetail);
     $("#btn-pd-back")?.addEventListener("click", () => { setHubTab("profile"); showLandScreen("screen-class"); });
@@ -17107,6 +17703,38 @@
     refreshUnlockState();
   }
 
+  function applyV155CourseProgressReview(value) {
+    demoState.v155CourseProgress = value === "unit_partial" ? "unit_partial" : "default";
+    setMembershipReviewState("subscription");
+    profile.hasStartedClass = false;
+    profile.trialReportShown = true;
+    profile.trialTakenLevelId = null;
+    profile.trialDoneLevels = [];
+    profile.weekDoneCount = 0;
+    if (demoState.v155CourseProgress === "unit_partial") {
+      profile.placementLevelId = "level-2";
+      profile.maxReachedLevelId = "level-3";
+      profile.currentLevelId = "level-3";
+      profile.currentUnitId = "unit-1";
+      profile.currentLessonId = "lesson-1";
+      profile.level = levelCefrLabel("level-3");
+      courseMapLevelId = "level-2";
+      selectedAllCourseKey = makeCourseKey("level-2", "unit-2", "lesson-1");
+    } else {
+      profile.placementLevelId = "level-2";
+      profile.maxReachedLevelId = "level-2";
+      profile.currentLevelId = "level-2";
+      profile.currentUnitId = "unit-1";
+      profile.currentLessonId = "lesson-1";
+      profile.level = levelCefrLabel("level-2");
+      courseMapLevelId = "level-2";
+      selectedAllCourseKey = makeCourseKey("level-2", "unit-1", "lesson-1");
+    }
+    refreshUnlockState();
+    if (activeLandScreen() === "screen-course-map") renderCourseMap();
+    if (activeLandScreen() === "screen-all-courses") renderAllCoursesScreen({ scrollToAnchor: false });
+  }
+
   function openLevelingRequirement(targetLevelId) {
     prepareLevelingReview(true);
     courseMapLevelId = targetLevelId;
@@ -17165,11 +17793,13 @@
       if (key === "v155RestoreResult") return demoState.v155RestoreResult;
       if (key === "v155ValueConfig") return demoState.v155ValueConfig;
       if (key === "v155KolScenario") return demoState.v155KolScenario;
+      if (key === "v155CourseProgress") return demoState.v155CourseProgress;
       if (key === "vnConsultPhone") return profile.contactPhone ? "existing" : "missing";
       if (key === "vnConsultHook") return demoState.vnConsultHook;
       if (key === "vnConsultSubmitResult") return demoState.vnConsultSubmitResult;
       if (key === "membership") {
         const kind = membershipKind();
+        if (kind === "free" && profile.hasSubscriptionOrder) return "subscription_expired";
         return kind === "subscription" && !profile.autoRenew ? "subscription_cancelled" : kind;
       }
       if (key === "startLevel") return profile.placementLevelId || profile.currentLevelId;
@@ -17184,6 +17814,10 @@
       if (key === "themeActivity") return themeEvent.activity;
       if (key === "themeUser") return themeEvent.user;
       if (key === "themePast") return themeEvent.pastEmpty ? "empty" : "has";
+      if (key === "courseAccess") {
+        if (profile.premiumUnlocked) return "member";
+        return profile.hasSubscriptionOrder ? "expired" : "free";
+      }
       return null;
     },
     context: function () {
@@ -17218,9 +17852,9 @@
         );
         if (id === "screen-theme-course") return ctx("主题课落地页", ["themeActivity", "themeUser", "themePast"]);
         if (id === "screen-wordpk")      return ctx("单词 PK", VERSION_FEATURES.expandedPlayQuiz ? ["quizTypes"] : []);
-        if (id === "screen-course-map")  return ctx("Level·Unit 列表", ["membership", "startLevel"]);
-        if (id === "screen-all-courses") return ctx("课程列表", ["membership", "startLevel"]);
-        if (id === "screen-membership")  return ctx("会员中心", ["membership"]);
+        if (id === "screen-course-map")  return ctx("Level·Unit 列表", ["courseAccess", "v155CourseProgress", "startLevel"]);
+        if (id === "screen-all-courses") return ctx("课程列表", ["membership", "v155CourseProgress", "startLevel"]);
+        if (id === "screen-membership")  return ctx("会员中心", ["membership", "v155Platform"]);
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
         if (id === "screen-class")       return ctx("Class 首页", ["membership", "v155KolScenario", "startLevel", "themeActivity", "themeUser"]);
         if (id === "screen-teacher")     return ctx("选择老师", []);
@@ -17262,11 +17896,12 @@
         apply: function (v) {
           demoState.v155Platform = v;
           window.V155 && window.V155.renderPaywall();
+          if (activeLandScreen() === "screen-membership") renderMembership();
         } },
       { key: "v155ValueConfig", label: "价值宣传配置",
         options: [
-          ["region_match", "命中地区配置"],
-          ["global_fallback", "默认兜底"]
+          ["region_match", "命中地区配置 · 1 页"],
+          ["global_fallback", "默认兜底 · 3 页"]
         ],
         apply: function (v) {
           demoState.v155ValueConfig = v;
@@ -17276,7 +17911,8 @@
         options: [["available", "优惠可用"], ["unavailable", "优惠不可用"]],
         apply: function (v) {
           demoState.v155KolScenario = v;
-          profile.selectedPlan = v === "available" ? "monthly" : "annual";
+          var promoPlanId = typeof window.getV155PromoPlanId === "function" ? window.getV155PromoPlanId() : null;
+          profile.selectedPlan = v === "available" ? (promoPlanId || "annual") : "annual";
           if (window.V155) {
             var winbackActive = !!document.querySelector("#screen-winback.active");
             if (winbackActive) window.V155.renderWinback();
@@ -17288,6 +17924,14 @@
         options: [["none", "无可恢复订阅"], ["success", "恢复成功"], ["fail", "网络失败"]],
         apply: function (v) {
           demoState.v155RestoreResult = v;
+        } },
+      { key: "v155CourseProgress", label: "历史 Unit 学习进度",
+        options: [
+          ["default", "默认学习状态"],
+          ["unit_partial", "L2 · Unit 1 完成 / Unit 2 部分完成"]
+        ],
+        apply: function (v) {
+          applyV155CourseProgressReview(v);
         } },
       { key: "experimentGroup", label: "首屏 A/B 实验",
         options: [["b", "B 组"], ["a", "A 组"]],
@@ -17320,13 +17964,29 @@
           demoState.vnConsultSubmitResult = v === "fail" ? "fail" : "success";
           window.vnRefreshConsult && window.vnRefreshConsult();
         } },
+      { key: "courseAccess", label: "课程权限",
+        options: [
+          ["free", "免费"],
+          ["member", "有效会员"],
+          ["expired", "已过期"]
+        ],
+        apply: function (v) {
+          setMembershipReviewState(v === "member"
+            ? "subscription"
+            : v === "expired"
+              ? "subscription_expired"
+              : "free");
+          refreshUnlockState();
+          if (activeLandScreen() === "screen-course-map") renderCourseMap();
+        } },
       { key: "membership", label: "会员状态",
         options: [
           ["free", "Free"],
           ["manual", "手动会员 · 剩余 2 天"],
           ["one_time", "一次性付费 · 30 天"],
-          ["subscription", "自动订阅 · 共 32 天"],
-          ["subscription_cancelled", "已取消续订 · 共 32 天"],
+          ["subscription", "自动订阅 · 共 32 天（含 2 天赠送）"],
+          ["subscription_cancelled", "已取消续订 · 共 32 天（含 2 天赠送）"],
+          ["subscription_expired", "订阅已到期 · 会员入口进 Paywall"],
           ["lifetime", "永久会员 · Lifetime"]
         ],
         apply: function (v) {
@@ -17351,6 +18011,7 @@
       { key: "startLevel", label: "定级起始 Level（低 Level 显示未学）",
         options: [["level-1", "L1"], ["level-2", "L2"], ["level-3", "L3"]],
         apply: function (v) {
+          demoState.v155CourseProgress = "default";
           profile.placementLevelId = v;
           profile.maxReachedLevelId = v;
           profile.currentLevelId = v;
@@ -17442,7 +18103,14 @@
       { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
       { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
       { label: "Paywall", run: withReviewProfile(function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { label: "会员中心", run: withReviewProfile(function () { enterLandscape(); openMembership(); }) },
+      { label: "会员中心", run: withReviewProfile(function () {
+          if (!isPaidMembership()) {
+            setMembershipReviewState("subscription");
+            refreshUnlockState();
+          }
+          enterLandscape();
+          openMembership();
+        }) },
       { label: "Feedback 邮件", run: withReviewProfile(function () { openFeedbackMailReview("vn"); }) },
     ],
     legacyJumps: [
@@ -17454,6 +18122,7 @@
           // next batch opens (Opens soon → startable). Pointer already sits at the
           // next to-do lesson from the last completion.
           profile.weekDoneCount = 0;
+          profile.weekCycleStartAt = addPlanDays(currentPlanStartDate(), PLAN_CYCLE_DAYS).toISOString();
           refreshUnlockState();
           enterLandscape();
           if (activeLandScreen() === "screen-course-map") { renderCourseMap(); } else { showClassHome(); }
@@ -17532,35 +18201,21 @@
       { label: "② KOL 优惠可用", run: function () { window.V155 && window.V155.openPaywall("success", {scenario:"available"}); } },
       { label: "③ KOL 优惠不可用", run: function () { window.V155 && window.V155.openPaywall("success", {scenario:"unavailable"}); } },
       { label: "④ 挽留页 · Promo SKU", run: function () { window.V155 && window.V155.openWinback("available"); } },
-      { label: "⑤ 手动会员 · 保留付费入口", run: withReviewProfile(function () {
-          setMembershipReviewState("manual");
+      { label: "⑤ 会员中心 · 管理订阅入口", run: withReviewProfile(function () {
+          if (!isPaidMembership() || !profile.hasSubscriptionOrder) {
+            setMembershipReviewState("subscription");
+            refreshUnlockState();
+          }
+          enterLandscape();
+          openMembership();
+        }) },
+      { label: "⑥ Class · Weekly plan 日期", run: withReviewProfile(function () {
+          setMembershipReviewState("subscription");
+          profile.weekDoneCount = 0;
+          profile.weekCycleStartAt = new Date().toISOString();
           refreshUnlockState();
           enterLandscape();
           showClassHome();
-        }) },
-      { label: "⑥ 会员中心 · 一次性付费", run: withReviewProfile(function () {
-          setMembershipReviewState("one_time");
-          refreshUnlockState();
-          enterLandscape();
-          openMembership();
-        }) },
-      { label: "⑦ 会员中心 · 自动订阅", run: withReviewProfile(function () {
-          setMembershipReviewState("subscription");
-          refreshUnlockState();
-          enterLandscape();
-          openMembership();
-        }) },
-      { label: "⑧ 会员中心 · 已取消续订", run: withReviewProfile(function () {
-          setMembershipReviewState("subscription_cancelled");
-          refreshUnlockState();
-          enterLandscape();
-          openMembership();
-        }) },
-      { label: "⑨ 会员中心 · 永久会员", run: withReviewProfile(function () {
-          setMembershipReviewState("lifetime");
-          refreshUnlockState();
-          enterLandscape();
-          openMembership();
         }) },
     ].filter(Boolean),
     legacyJumpsRewardLabel: "V1.5.1 · 全量用户 8 天签到礼",
@@ -18572,28 +19227,30 @@
     #screen-paywall-pt .pwpt-title{margin-top:8px;color:#fff;font:700 1.28rem/1.17 var(--display);text-shadow:0 3px 12px rgba(4,37,147,.28)}
     .v155-value-carousel{position:relative;width:calc(100% + 32px);height:218px;margin:0 -16px;overflow:hidden;border:0;border-radius:0;background:#1457c4;box-shadow:none;touch-action:pan-y}
     .v155-value-track{position:relative;width:100%;height:100%}
-    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:54px 18px 24px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;padding:54px 18px 24px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
     .v155-value-slide.is-active{z-index:2;opacity:1;transform:none;pointer-events:auto}
     .v155-value-slide--trust{background:radial-gradient(circle at 83% 24%,rgba(255,233,76,.36),transparent 33%),linear-gradient(135deg,rgba(68,59,229,.7),rgba(20,143,243,.38))}
+    .v155-value-slide--path{background:radial-gradient(circle at 84% 20%,rgba(255,248,55,.28),transparent 36%),linear-gradient(135deg,rgba(76,63,221,.8),rgba(116,96,246,.45))}
     .v155-value-slide--teacher{background:radial-gradient(circle at 86% 20%,rgba(128,255,237,.4),transparent 34%),linear-gradient(135deg,rgba(14,78,196,.8),rgba(18,183,215,.42))}
-    .v155-value-slide--progress{background:radial-gradient(circle at 83% 22%,rgba(255,204,74,.3),transparent 35%),linear-gradient(135deg,rgba(76,63,221,.8),rgba(116,96,246,.45))}
     .v155-value-copy{position:relative;z-index:3;color:#fff}
-    .v155-value-copy h3{margin:0;font:700 1.14rem/1.16 var(--display);text-wrap:balance}
+    .v155-value-copy h3{margin:0;font:700 1.08rem/1.17 var(--display);text-wrap:balance}
+    .v155-value-slide--trust .v155-value-copy h3,.v155-value-slide--teacher .v155-value-copy h3{font-size:1rem;line-height:1.19}
     .v155-value-art{position:relative;align-self:stretch;min-width:0}
-    .v155-value-art img{position:absolute;right:-6px;bottom:-22px;width:128px;max-height:154px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 14px rgba(5,26,99,.28))}
-    .v155-value-slide--teacher .v155-value-art img{right:-4px;width:116px}
-    .v155-proof-badge{position:absolute;z-index:4;top:18px;right:68px;display:grid;width:58px;height:58px;place-content:center;text-align:center;color:var(--sky-deep,#0a2cc6);border:3px solid rgba(255,255,255,.8);border-radius:18px 18px 18px 5px;background:linear-gradient(155deg,var(--accent-yellow,#fff837),var(--star-gold,#ffc333));box-shadow:0 8px 18px rgba(13,34,112,.28);transform:rotate(-4deg)}
-    .v155-proof-badge b{font:700 20px/.9 var(--display)}
-    .v155-proof-badge small{margin-top:3px;font:700 8px/1 var(--font);letter-spacing:.08em}
-    .v155-speech-bubble{position:absolute;z-index:4;top:23px;right:75px;display:grid;min-width:51px;height:34px;place-items:center;padding:0 9px;color:var(--sky-deep,#0a2cc6);font:700 12px/1 var(--display);border-radius:14px 14px 3px 14px;background:#fff;box-shadow:0 7px 15px rgba(5,26,99,.22);transform:rotate(-4deg)}
-    .v155-voice-wave{position:absolute;z-index:4;right:67px;bottom:23px;display:flex;height:28px;align-items:center;gap:3px;padding:5px 8px;border-radius:var(--radius-pill,9999px);background:var(--chat-you,#9efffa);box-shadow:0 7px 15px rgba(5,26,99,.22)}
-    .v155-voice-wave::before{content:'\1F399';margin-right:2px;font-size:13px}
-    .v155-voice-wave i{display:block;width:3px;border-radius:3px;background:var(--sky-deep,#0a2cc6)}
-    .v155-voice-wave i:nth-child(1),.v155-voice-wave i:nth-child(5){height:7px}.v155-voice-wave i:nth-child(2),.v155-voice-wave i:nth-child(4){height:13px}.v155-voice-wave i:nth-child(3){height:18px}
-    .v155-curriculum-scene{position:absolute;right:-14px;bottom:4px;width:154px;height:112px;overflow:hidden;border:2px solid rgba(255,255,255,.65);border-radius:18px;box-shadow:0 10px 13px rgba(5,26,99,.24)}
-    .v155-value-slide--progress .v155-curriculum-scene img{top:0;right:auto;bottom:auto;left:-32px;width:178px;height:112px;max-height:none;object-fit:cover;object-position:right center;border:0;border-radius:0;filter:none}
-    .v155-ets-seal{position:absolute;z-index:4;top:22px;right:-1px;display:grid;width:50px;height:50px;place-items:center;color:var(--sky-deep,#0a2cc6);font:700 14px/1 var(--display);letter-spacing:.04em;border:3px solid var(--accent-yellow,#fff837);border-radius:50%;background:#fff;box-shadow:0 8px 17px rgba(5,26,99,.26)}
-    .v155-ets-seal::after{content:'\2605';position:absolute;bottom:3px;color:var(--star-gold,#ffc333);font-size:9px}
+    .v155-trust-scene{position:absolute;inset:0}
+    .v155-trust-scene img{position:absolute;right:-24px;bottom:-17px;width:178px;max-width:none;max-height:172px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 14px rgba(5,26,99,.25))}
+    .v155-level-path{position:absolute;right:-2px;bottom:7px;width:164px;height:126px}
+    .v155-level-path-steps{position:absolute;right:0;bottom:18px;display:flex;height:104px;align-items:flex-end;gap:3px}
+    .v155-level-step{display:grid;width:23px;place-items:center;color:var(--sky-deep,#0a2cc6);border:2px solid rgba(255,255,255,.74);border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--brand-lime,#e2ff5e),var(--star-gold,#ffc333));box-shadow:0 7px 13px rgba(5,26,99,.2)}
+    .v155-level-step b{font:700 9px/1 var(--display)}
+    .v155-level-step:nth-child(1){height:34px}.v155-level-step:nth-child(2){height:48px}.v155-level-step:nth-child(3){height:62px}.v155-level-step:nth-child(4){height:76px}.v155-level-step:nth-child(5){height:90px}.v155-level-step:nth-child(6){height:104px}
+    .v155-path-label{position:absolute;color:#fff;font:700 8px/1.1 var(--font);letter-spacing:.01em;text-shadow:0 2px 5px rgba(5,26,99,.32)}
+    .v155-path-label--start{left:1px;bottom:0}.v155-path-label--goal{z-index:3;top:-2px;right:-1px;padding:4px 7px;color:var(--sky-deep,#0a2cc6);border-radius:var(--radius-pill,9999px);background:var(--accent-yellow,#fff837);text-shadow:none}
+    .v155-ai-scene{position:absolute;inset:0}
+    .v155-ai-teacher{position:absolute;right:-4px;bottom:-22px;width:103px;max-height:156px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 14px rgba(5,26,99,.28))}
+    .v155-ai-child{position:absolute;right:78px;bottom:7px;width:62px;height:62px;object-fit:cover;border:3px solid #fff;border-radius:50%;box-shadow:0 8px 16px rgba(5,26,99,.25)}
+    .v155-ai-bubble{position:absolute;z-index:4;display:grid;min-height:27px;place-items:center;padding:5px 8px;color:var(--sky-deep,#0a2cc6);font:700 9px/1.1 var(--display);box-shadow:0 7px 15px rgba(5,26,99,.2)}
+    .v155-ai-bubble--teacher{top:21px;right:73px;border-radius:12px 12px 3px 12px;background:var(--chat-you,#9efffa);transform:rotate(-3deg)}
+    .v155-ai-bubble--child{right:86px;bottom:64px;border-radius:12px 12px 12px 3px;background:var(--chat-kid,#a5ffba);transform:rotate(3deg)}
     .v155-carousel-dots{position:absolute;z-index:7;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px}
     .v155-carousel-dot{width:6px;height:6px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.48);cursor:pointer;transition:.2s}
     .v155-carousel-dot.is-active{width:19px;background:#fff837}
@@ -18704,7 +19361,7 @@
       kr: {
         label: "Korea",
         currency: "KRW",
-        userPromo: {code:"DINO-KR10", planId:"monthly", discount:10},
+        userPromo: {code:"DINO-KR10", planIds:["monthly"], discount:10},
         plans: {
           annual: {name:"Yearly", regular:"₩449,000", offer:"₩359,200", period:"/year", firstPeriod:"/first year", dailyRegular:"₩1,230", dailyOffer:"₩984", cadence:"Billed once a year", renewal:"Then ₩449,000/year", regularCharge:"₩449,000 KRW", offerCharge:"₩359,200 KRW", discount:20},
           quarterly: {name:"Quarterly", regular:"₩159,000", offer:"₩143,100", period:"/3 months", firstPeriod:"/first 3 months", dailyRegular:"₩1,767", dailyOffer:"₩1,590", cadence:"Billed every 3 months", renewal:"Then ₩159,000 every 3 months", regularCharge:"₩159,000 KRW", offerCharge:"₩143,100 KRW", discount:10},
@@ -18714,7 +19371,7 @@
       sa: {
         label: "Saudi Arabia",
         currency: "SAR",
-        userPromo: {code:"DINO-SA10", planId:"monthly", discount:10},
+        userPromo: {code:"DINO-SA10", planIds:["monthly"], discount:10},
         plans: {
           annual: {name:"Yearly", regular:"SAR 999.99", offer:"SAR 799.99", period:"/year", firstPeriod:"/first year", dailyRegular:"SAR 2.74", dailyOffer:"SAR 2.19", cadence:"Billed once a year", renewal:"Then SAR 999.99/year", regularCharge:"SAR 999.99", offerCharge:"SAR 799.99", discount:20},
           quarterly: {name:"Quarterly", regular:"SAR 429.99", offer:"SAR 386.99", period:"/3 months", firstPeriod:"/first 3 months", dailyRegular:"SAR 4.78", dailyOffer:"SAR 4.30", cadence:"Billed every 3 months", renewal:"Then SAR 429.99 every 3 months", regularCharge:"SAR 429.99", offerCharge:"SAR 386.99", discount:10},
@@ -18725,23 +19382,23 @@
     var GLOBAL_VALUE_SLIDES = [
       {
         kind: "trust",
-        title: "Trusted by 1.8M families for 13 years",
-        art: '<span class="v155-proof-badge" aria-hidden="true"><b>13</b><small>YEARS</small></span><img src="assets/dino-mascot.png" alt="Dino with a 13 Years trust badge">'
+        title: "Trusted by 1.8M families for 13 years of CEFR-aligned teaching",
+        art: '<span class="v155-trust-scene"><img src="assets/login/nw-illo-3.png" alt="Children around the world learning with a 13 Years trust badge"></span>'
+      },
+      {
+        kind: "path",
+        title: "A clear path from first words to academic English",
+        art: '<span class="v155-level-path" role="img" aria-label="Six learning levels from first words to academic English"><span class="v155-path-label v155-path-label--start">First words</span><span class="v155-path-label v155-path-label--goal">Academic</span><span class="v155-level-path-steps" aria-hidden="true"><span class="v155-level-step"><b>L1</b></span><span class="v155-level-step"><b>L2</b></span><span class="v155-level-step"><b>L3</b></span><span class="v155-level-step"><b>L4</b></span><span class="v155-level-step"><b>L5</b></span><span class="v155-level-step"><b>L6</b></span></span></span>'
       },
       {
         kind: "teacher",
-        title: "An AI teacher that listens and speaks back",
-        art: '<span class="v155-speech-bubble" aria-hidden="true">Hi!</span><span class="v155-voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><img src="assets/teacher-kim.png" alt="AI teacher with a speech bubble and microphone waveform">'
-      },
-      {
-        kind: "progress",
-        title: "A structured curriculum backed by ETS expertise",
-        art: '<span class="v155-ets-seal" aria-hidden="true">ETS</span><span class="v155-curriculum-scene"><img src="assets/v13fx/ex-reading.png" alt="Structured course learning scene"></span>'
+        title: "An AI teacher that matches each child's pace and remembers how they learn",
+        art: '<span class="v155-ai-scene" role="img" aria-label="AI teacher learning together with a child"><span class="v155-ai-bubble v155-ai-bubble--teacher" aria-hidden="true">I remember!</span><span class="v155-ai-bubble v155-ai-bubble--child" aria-hidden="true">My pace</span><img class="v155-ai-child" src="assets/v155/member-center/learner-avatar.png" alt=""><img class="v155-ai-teacher" src="assets/teacher-kim.png" alt=""></span>'
       }
     ];
     function currentValueSlides(){
       // 地区配置示例复用已确认物料；未命中或配置不可用时回退全局默认配置。
-      if(demoState.v155ValueConfig === "region_match") return [GLOBAL_VALUE_SLIDES[1], GLOBAL_VALUE_SLIDES[0]];
+      if(demoState.v155ValueConfig === "region_match") return [GLOBAL_VALUE_SLIDES[1]];
       return GLOBAL_VALUE_SLIDES.slice();
     }
     function isKolOfferScenario(){
@@ -18753,15 +19410,32 @@
     function currentUserPromo(){
       return isKolOfferScenario() ? currentKolMarket().userPromo : null;
     }
+    function currentPaywallPlanOrder(){
+      return ["annual", "monthly"];
+    }
+    function currentPromoPlanIds(){
+      var promo = currentUserPromo();
+      if(!promo || isPaidMembership()) return [];
+      var ids = Array.isArray(promo.planIds) ? promo.planIds : [promo.planId];
+      var marketPlans = currentKolMarket().plans;
+      return ids.filter(function(id){ return id && marketPlans[id]; });
+    }
     function currentPromoDiscount(){
       if(isPaidMembership()) return null;
       var promo = currentUserPromo();
-      var discount = Number(promo && promo.discount);
-      return Number.isFinite(discount) && discount > 0 ? discount : null;
+      var marketPlans = currentKolMarket().plans;
+      var promoPlanIds = currentPromoPlanIds();
+      if(!promoPlanIds.length) return null;
+      var discounts = promoPlanIds.map(function(id){ return Number(marketPlans[id].discount); })
+        .filter(function(value){ return Number.isFinite(value) && value > 0; });
+      var configuredDiscount = Number(promo && promo.discount);
+      if(Number.isFinite(configuredDiscount) && configuredDiscount > 0) discounts.push(configuredDiscount);
+      return discounts.length ? Math.max.apply(Math, discounts) : null;
     }
     function currentPromoPlanId(){
-      var promo = currentUserPromo();
-      return currentPromoDiscount() == null ? null : promo.planId;
+      if(currentPromoDiscount() == null) return null;
+      var promoPlanIds = currentPromoPlanIds();
+      return currentPaywallPlanOrder().find(function(id){ return promoPlanIds.includes(id); }) || null;
     }
     function currentPaywallPlans(){
       if(!isKolOfferScenario()){
@@ -18771,10 +19445,11 @@
         ];
       }
       var market = currentKolMarket();
-      var ids = ["annual", "monthly"];
+      var ids = currentPaywallPlanOrder();
+      var promoPlanIds = currentPromoPlanIds();
       return ids.map(function(id){
         var base = market.plans[id];
-        var isKol = id === "monthly" && !isPaidMembership();
+        var isKol = promoPlanIds.includes(id) && !isPaidMembership();
         return {
           id:id,
           name:base.name,
@@ -18796,7 +19471,7 @@
         return {
           id:"weekly",
           name:"Weekly",
-          daily:"≈ $1.57",
+          daily:"$1.57",
           regular:"$16.49",
           price:"$10.99",
           period:"/week",
@@ -18809,7 +19484,7 @@
       return {
         id:"monthly",
         name:base.name,
-        daily:"≈ "+base.dailyOffer,
+        daily:base.dailyOffer,
         regular:"",
         price:base.offer,
         period:base.firstPeriod,
@@ -19110,7 +19785,7 @@
       profile.name = profile.name || "Olivia";
       setMembershipReviewState("free");
       demoState.v155KolScenario = options.scenario || "unavailable";
-      var desiredPlan = demoState.v155KolScenario === "available" ? "monthly" : "annual";
+      var desiredPlan = demoState.v155KolScenario === "available" ? (currentPromoPlanId() || "annual") : "annual";
       profile.selectedPlan = desiredPlan;
       demoState.v155PaymentResult = result || "success";
       paymentHasResult = result === "fail" || result === "cancel";
@@ -19139,7 +19814,10 @@
     var observer = new MutationObserver(function(mutations){
       if(!mutations.some(function(m){ return m.target && m.target.classList && m.target.classList.contains("screen"); })) return;
       var paywallActive = !!$("#screen-paywall-pt.active");
-      if(paywallActive && !paywallWasActive) restoreUiState = "idle";
+      if(paywallActive && !paywallWasActive){
+        restoreUiState = "idle";
+        profile.selectedPlan = currentPromoPlanId() || "annual";
+      }
       if(paywallActive) renderPaywall();
       paywallWasActive = paywallActive;
     });
