@@ -392,6 +392,7 @@ const abDay = abCoreRows.filter(row=>row.row_type==='day'&&row.row_key.startsWit
 const signupRows = readRows('signup-method');
 const loginFunnelRows = readRows('login-signup-funnel');
 const loginFailureRows = readRows('login-failure-reasons');
+const milestoneTimeRows = readRows('milestone-time');
 const authPeriods = [
   {key:'all',label:'全部',start:'07-10',end:'08-24',coverage:'mixed'},
   {key:'w1',label:'07-10~07-16',start:'07-10',end:'07-16',coverage:'none'},
@@ -421,6 +422,16 @@ const registrationDaily = [...new Set(signupRows.map(row=>row.cohort_date))].sor
   const rows=signupRows.filter(row=>row.cohort_date===day),sum=key=>rows.reduce((total,row)=>total+num(row[key]),0);
   return {d:`${day.slice(5)}${day==='2026-08-24'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
 });
+const milestoneTime = Object.fromEntries(['all','android','ios'].map(platform=>[platform,
+  Object.fromEntries(['auth_complete','lesson_start','lesson_complete','payment'].map(milestone=>{
+    const summary=milestoneTimeRows.find(row=>row.row_type==='summary'&&row.platform_scope===platform&&row.milestone_key===milestone);
+    if(!summary)throw new Error(`Missing milestone-time summary ${platform}:${milestone}`);
+    const buckets=milestoneTimeRows.filter(row=>row.row_type==='bucket'&&row.platform_scope===platform&&row.milestone_key===milestone)
+      .sort((a,b)=>num(a.bucket_order)-num(b.bucket_order))
+      .map(row=>({key:row.bucket_key,label:row.bucket_label,count:num(row.entities),share:num(row.share_pct)}));
+    return [milestone,{sample:num(summary.entities),population:num(summary.population_entities),source:num(summary.source_entities),p50:num(summary.p50_seconds),p75:num(summary.p75_seconds),p90:num(summary.p90_seconds),buckets}];
+  }))
+]));
 const retentionCurve = retentionRows.filter(row=>row.row_type==='curve');
 const retentionSegments = retentionRows.filter(row=>row.row_type==='segment');
 const ret = allRetention;
@@ -499,7 +510,7 @@ function updateWorkbench(html) {
   html=replaceFrom(html,'const AB_DAY=','const AB_HEALTH=',`const AB_DAY=${compact(abDay)};`);
   html=replaceFrom(html,'const AB_HEALTH=','const AB_LESSON=',`const AB_HEALTH=${compact(abHealth)};`);
   html=replaceFrom(html,'const AB_LESSON=','const AB_B_ONBOARDING_LESSON=',`const AB_LESSON=${compact(abLesson)};`);
-  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-24'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\n\n`);
+  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册与里程碑时长最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-24'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
   html=replaceFrom(html,'const RET=','// Push · Firebase 自动通知事件',`const RET=${compact(ret)};\nconst SEG=${compact(workbenchSeg)};\nconst CURVE=${compact(workbenchCurve)};\n`);
   while (html.includes('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件')) {
     html=html.replace('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件','// Push · Firebase 自动通知事件');
@@ -603,4 +614,4 @@ fs.writeFileSync(launchPath,launch);
 fs.writeFileSync(workbenchPath,workbench);
 fs.writeFileSync(path.join(root,'docs/dino-english/dino-launch-dashboard.html'),launch);
 fs.writeFileSync(path.join(root,'docs/dino-english/dino-analysis-workbench.html'),workbench);
-process.stdout.write(JSON.stringify({cutoff,launch:{firstOpen:allData.journey.first_open,orders:allData.payment.orders,productionSuccess:allData.payment.success},workbench:{abAssigned:abTotal.a.assigned+abTotal.b.assigned,registrationDays:registrationDaily.length,paymentOrders:paymentTotal.orders}},null,2));
+process.stdout.write(JSON.stringify({cutoff,launch:{firstOpen:allData.journey.first_open,orders:allData.payment.orders,productionSuccess:allData.payment.success},workbench:{abAssigned:abTotal.a.assigned+abTotal.b.assigned,registrationDays:registrationDaily.length,paymentOrders:paymentTotal.orders,milestoneTimeSamples:Object.fromEntries(Object.entries(milestoneTime.all).map(([key,value])=>[key,value.sample]))}},null,2));
