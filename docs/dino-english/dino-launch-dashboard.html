@@ -473,8 +473,8 @@ function renderDiagnostics(data){
   <div class="kpi"><div class="lab">${T('D1 next-day retention','D1 次日留存')}</div><div class="val">${retentionValue}</div><div class="note">${retentionNote}</div></div>`;
 }
 
-const TREND_WEEKS=['w1','w2','w3','w4','w5'];
-const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07'];
+const TREND_WEEKS=['w1','w2','w3','w4','w5','w6'];
+const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07','08/14'];
 const diagnosticTrendDefs=[
  {key:'signup',titleEn:'Sign-up conversion',titleZh:'注册转化率',color:'#c98a12',unit:'%',digits:1,get:d=>d.journey.signup_success/d.journey.first_open*100},
  {key:'start',titleEn:'First-lesson start rate',titleZh:'首课开课率',color:'#1d5c3f',unit:'%',digits:1,get:d=>d.journey.lesson_start/d.journey.first_open*100},
@@ -485,7 +485,7 @@ function trendValue(def,value){return def.digits?value.toFixed(def.digits):fmt(M
 function renderDiagnosticTrends(){
  const activeIndex=TREND_WEEKS.indexOf(selectedPeriod),allSelected=selectedPeriod==='all';
  const countryLabel=diagnosticCountryLabel(currentCountry());
- const trendStatus=allSelected?T('Five complete UTC weeks','5 个 UTC 完整周'):(activeIndex>=0?`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}`:T('Aug 14 is rolling; trends show completed weeks only','08-14 为滚动日，趋势仅展示完整周'));
+ const trendStatus=allSelected?T('Six complete UTC weeks','6 个 UTC 完整周'):(activeIndex>=0?`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}`:T('Aug 21–24 is rolling; trends show complete weeks through Aug 20','08-21~08-24 为滚动周期，趋势展示截至 08-20 的完整周'));
  document.getElementById('diagnosticTrendStatus').textContent=`${countryLabel} · ${trendStatus}`;
  document.getElementById('diagnosticTrends').innerHTML=diagnosticTrendDefs.map(def=>{
   const title=T(def.titleEn,def.titleZh),unit=def.unit||T(def.unitEn,def.unitZh);
@@ -496,7 +496,7 @@ function renderDiagnosticTrends(){
   const focus=allSelected||activeIndex<0?values.at(-1):values[activeIndex],focusLabel=`${allSelected||activeIndex<0?T('Latest complete ','最新完整周 '):''}${trendValue(def,focus)}${unit}`;
   const activeBand=activeIndex>=0?`<rect class="trend-active-band" x="${(points[activeIndex].x-25).toFixed(1)}" y="8" width="50" height="${height-bottom-5}" rx="5"/>`:'';
   return `<div class="trend-card"><div class="trend-card-head"><div class="trend-card-title">${title}</div><div class="trend-current">${focusLabel}</div></div>`+
-   `<svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${title} ${T('five-week trend','五周趋势')}：${values.map((v,i)=>`${TREND_LABELS[i]} ${trendValue(def,v)}${unit}`).join(T(', ','，'))}">`+
+   `<svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${title} ${T('six-week trend','六周趋势')}：${values.map((v,i)=>`${TREND_LABELS[i]} ${trendValue(def,v)}${unit}`).join(T(', ','，'))}">`+
    `${activeBand}<line class="trend-midline" x1="${left}" x2="${width-right}" y1="${(top+chartH/2).toFixed(1)}" y2="${(top+chartH/2).toFixed(1)}"/><line class="trend-axis" x1="${left}" x2="${width-right}" y1="${height-bottom}" y2="${height-bottom}"/>`+
    `<path class="trend-area" d="${area}" fill="${def.color}"/><path class="trend-line" d="${line}" stroke="${def.color}"/>`+
    points.map((p,i)=>`<circle class="trend-dot${i===activeIndex?' active':''}" cx="${p.x}" cy="${p.y}" r="${i===activeIndex?5:4}" fill="${def.color}"/><text class="trend-point-label" x="${p.x}" y="${Math.max(11,p.y-8)}">${trendValue(def,p.value)}</text><text class="trend-x" x="${p.x}" y="${height-6}">${TREND_LABELS[i]}</text>`).join('')+`</svg>`+
