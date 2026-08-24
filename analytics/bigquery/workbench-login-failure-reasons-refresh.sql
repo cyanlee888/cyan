@@ -3,23 +3,38 @@
 -- 不把“点击后未见成功”推断为失败；原因只输出脱敏后的可行动分类。
 
 DECLARE start_date DATE DEFAULT DATE '2026-07-10';
-DECLARE end_date DATE DEFAULT DATE '2026-08-21';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE daily_max_suffix STRING DEFAULT (
+  SELECT MAX(REGEXP_EXTRACT(table_name, r'^events_(\d{8})$'))
+  FROM `dino-english-497507.analytics_538991439.INFORMATION_SCHEMA.TABLES`
+  WHERE REGEXP_CONTAINS(table_name, r'^events_\d{8}$')
+);
 
 WITH periods AS (
   SELECT * FROM UNNEST([
-    STRUCT('w1' AS period_key, DATE '2026-07-10' AS start_day, DATE '2026-07-17' AS end_day),
-    ('w2', DATE '2026-07-17', DATE '2026-07-24'),
-    ('w3', DATE '2026-07-24', DATE '2026-07-31'),
-    ('w4', DATE '2026-07-31', DATE '2026-08-07'),
-    ('w5', DATE '2026-08-07', DATE '2026-08-14'),
-    ('w6', DATE '2026-08-14', DATE '2026-08-21')
+    STRUCT('w1' AS period_key, TIMESTAMP '2026-07-10 00:00:00+00' AS start_ts, TIMESTAMP '2026-07-17 00:00:00+00' AS end_ts),
+    ('w2', TIMESTAMP '2026-07-17 00:00:00+00', TIMESTAMP '2026-07-24 00:00:00+00'),
+    ('w3', TIMESTAMP '2026-07-24 00:00:00+00', TIMESTAMP '2026-07-31 00:00:00+00'),
+    ('w4', TIMESTAMP '2026-07-31 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
+    ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 raw_base AS (
   SELECT event_date,event_name,event_timestamp,user_pseudo_id,geo.country AS country,event_params,user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', start_date) AND FORMAT_DATE('%Y%m%d', DATE_SUB(end_date, INTERVAL 1 DAY))
+    AND _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', start_date) AND daily_max_suffix
+    AND event_timestamp < UNIX_MICROS(cutoff)
+
+  UNION ALL
+
+  SELECT event_date,event_name,event_timestamp,user_pseudo_id,geo.country AS country,event_params,user_properties
+  FROM `dino-english-497507.analytics_538991439.events_intraday_*`
+  WHERE _TABLE_SUFFIX > daily_max_suffix
+    AND _TABLE_SUFFIX <= FORMAT_DATE('%Y%m%d', DATE(cutoff))
+    AND event_timestamp < UNIX_MICROS(cutoff)
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -60,7 +75,7 @@ failures AS (
       ELSE '其他失败'
     END AS reason
   FROM events e
-  JOIN periods p ON PARSE_DATE('%Y%m%d',e.event_date)>=p.start_day AND PARSE_DATE('%Y%m%d',e.event_date)<p.end_day
+  JOIN periods p ON e.event_timestamp>=UNIX_MICROS(p.start_ts) AND e.event_timestamp<UNIX_MICROS(p.end_ts)
   LEFT JOIN first_country c ON c.user_pseudo_id=e.user_pseudo_id AND c.rn=1
   WHERE e.anchor='login_result' AND e.success_value IN ('false','0','fail','failure')
 ),
