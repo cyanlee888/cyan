@@ -213,6 +213,8 @@ function normalizeForCurrentCutoff(html) {
     .replaceAll('08-22 为最近完整 UTC 日，08-23 为滚动日','08-23 为最近完整 UTC 日，08-24 为滚动日')
     .replaceAll('Aug 22 is the latest complete UTC day; Aug 23 is rolling','Aug 23 is the latest complete UTC day; Aug 24 is rolling')
     .replaceAll('截至 08-22；08-23* 为滚动日','截至 08-23；08-24* 为滚动日')
+    .replaceAll('截至 08-22；08-24* 为滚动日','截至 08-23；08-24* 为滚动日')
+    .replaceAll('最近三个完整日 08-20~22','最近三个完整日 08-21~23')
     .replaceAll('当前日表到 08-22，08-23 补 intraday','当前日表到 08-22，08-23~24 补 intraday')
     .replaceAll('08-22 及以前使用日表，08-23 补 intraday','08-22 及以前使用日表，08-23~24 补 intraday')
     .replaceAll('07-10~08-22 使用日表，08-23 使用 intraday 数据','07-10~08-22 使用日表，08-23~24 使用 intraday 数据')
