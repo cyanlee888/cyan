@@ -1,19 +1,19 @@
 -- Core dashboard GA4 refresh.
--- Daily tables are authoritative through 2026-08-15; intraday fills 08-16~08-17.
+-- Daily tables are authoritative through 2026-08-22; intraday fills 08-23~24.
 -- Any device that reports user_properties.user_type=test is excluded from the full window.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-16';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-23';
 DECLARE module_coverage_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-07 00:00:00+00';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id

@@ -1,8 +1,8 @@
 -- Core dashboard calendar-week snapshots (UTC).
 -- Week slices use events/orders occurring inside each selected interval.
 -- A/B slices use devices first assigned in the week and observe their events through that week's end.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-16';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-23';
 DECLARE module_coverage_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-07 00:00:00+00';
 
 WITH weeks AS (
@@ -12,18 +12,19 @@ WITH weeks AS (
     ('w3', TIMESTAMP '2026-07-24 00:00:00+00', TIMESTAMP '2026-07-31 00:00:00+00'),
     ('w4', TIMESTAMP '2026-07-31 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
     ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
-    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', cutoff)
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
