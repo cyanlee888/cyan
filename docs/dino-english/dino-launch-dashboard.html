@@ -78,12 +78,15 @@ h1 em{font-style:normal;color:var(--orange)}
 .trend-midline{stroke:#ece4d4;stroke-width:1;stroke-dasharray:3 4}
 .trend-area{opacity:.1}
 .trend-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.trend-line.rolling{stroke-dasharray:5 4;opacity:.82}
 .trend-dot{stroke:var(--card);stroke-width:2}
 .trend-dot.active{stroke:var(--ink);stroke-width:2.5}
+.trend-dot.rolling{fill:var(--card);stroke-width:2.5}
 .trend-active-band{fill:rgba(29,92,63,.07)}
 .trend-rolling-band{fill:none;stroke:#c9bea5;stroke-width:1;stroke-dasharray:3 3}
 .trend-x{font:9px 'Fraunces',serif;fill:var(--ink-faint);text-anchor:middle}
 .trend-point-label{font:700 9.5px 'Fraunces',serif;fill:var(--ink);text-anchor:middle}
+.trend-x.rolling,.trend-point-label.rolling{fill:var(--orange);font-style:italic}
 .trend-range{display:flex;justify-content:space-between;gap:8px;margin-top:1px;font-size:10px;color:var(--ink-faint)}
 
 /* funnel */
@@ -473,8 +476,9 @@ function renderDiagnostics(data){
   <div class="kpi"><div class="lab">${T('D1 next-day retention','D1 次日留存')}</div><div class="val">${retentionValue}</div><div class="note">${retentionNote}</div></div>`;
 }
 
-const TREND_WEEKS=['w1','w2','w3','w4','w5','w6'];
-const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07','08/14'];
+const TREND_WEEKS=['w1','w2','w3','w4','w5','w6','w7'];
+const TREND_LABELS=['07/10','07/17','07/24','07/31','08/07','08/14','08/21*'];
+const TREND_ROLLING_INDEX=TREND_WEEKS.length-1;
 const diagnosticTrendDefs=[
  {key:'signup',titleEn:'Sign-up conversion',titleZh:'注册转化率',color:'#c98a12',unit:'%',digits:1,get:d=>d.journey.signup_success/d.journey.first_open*100},
  {key:'start',titleEn:'First-lesson start rate',titleZh:'首课开课率',color:'#1d5c3f',unit:'%',digits:1,get:d=>d.journey.lesson_start/d.journey.first_open*100},
@@ -485,21 +489,23 @@ function trendValue(def,value){return def.digits?value.toFixed(def.digits):fmt(M
 function renderDiagnosticTrends(){
  const activeIndex=TREND_WEEKS.indexOf(selectedPeriod),allSelected=selectedPeriod==='all';
  const countryLabel=diagnosticCountryLabel(currentCountry());
- const trendStatus=allSelected?T('Six complete UTC weeks','6 个 UTC 完整周'):(activeIndex>=0?`${currentPeriod().label} · ${T('Selected week highlighted','当前周已高亮')}`:T('Aug 21–24 is rolling; trends show complete weeks through Aug 20','08-21~08-24 为滚动周期，趋势展示截至 08-20 的完整周'));
+ const trendStatus=allSelected?T('6 complete UTC weeks + Aug 21–24 rolling through 03:01 UTC','6 个 UTC 完整周 + 08-21~08-24 03:01 UTC 滚动周期'):`${currentPeriod().label} · ${activeIndex===TREND_ROLLING_INDEX?T('Rolling period highlighted','滚动周期已高亮'):T('Selected week highlighted','当前周已高亮')}`;
  document.getElementById('diagnosticTrendStatus').textContent=`${countryLabel} · ${trendStatus}`;
  document.getElementById('diagnosticTrends').innerHTML=diagnosticTrendDefs.map(def=>{
   const title=T(def.titleEn,def.titleZh),unit=def.unit||T(def.unitEn,def.unitZh);
   const values=TREND_WEEKS.map(key=>def.get(diagnosticData(key))),min=Math.min(...values),max=Math.max(...values),span=max-min||1;
   const width=360,height=126,left=22,right=15,top=25,bottom=25,chartW=width-left-right,chartH=height-top-bottom;
   const points=values.map((value,i)=>({value,x:left+i*chartW/(values.length-1),y:top+(max-value)/span*chartH}));
-  const line=points.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' '),area=`${line} L ${points.at(-1).x.toFixed(1)} ${height-bottom} L ${points[0].x.toFixed(1)} ${height-bottom} Z`;
-  const focus=allSelected||activeIndex<0?values.at(-1):values[activeIndex],focusLabel=`${allSelected||activeIndex<0?T('Latest complete ','最新完整周 '):''}${trendValue(def,focus)}${unit}`;
+  const completePoints=points.slice(0,TREND_ROLLING_INDEX),completeLine=completePoints.map((p,i)=>`${i?'L':'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' '),completeArea=`${completeLine} L ${completePoints.at(-1).x.toFixed(1)} ${height-bottom} L ${completePoints[0].x.toFixed(1)} ${height-bottom} Z`;
+  const rollingLine=`M ${points[TREND_ROLLING_INDEX-1].x.toFixed(1)} ${points[TREND_ROLLING_INDEX-1].y.toFixed(1)} L ${points[TREND_ROLLING_INDEX].x.toFixed(1)} ${points[TREND_ROLLING_INDEX].y.toFixed(1)}`;
+  const focusIndex=allSelected?TREND_ROLLING_INDEX:activeIndex,focus=values[focusIndex],focusPrefix=focusIndex===TREND_ROLLING_INDEX?T('Rolling period ','滚动周期 '):'';
+  const focusLabel=`${focusPrefix}${trendValue(def,focus)}${unit}`;
   const activeBand=activeIndex>=0?`<rect class="trend-active-band" x="${(points[activeIndex].x-25).toFixed(1)}" y="8" width="50" height="${height-bottom-5}" rx="5"/>`:'';
   return `<div class="trend-card"><div class="trend-card-head"><div class="trend-card-title">${title}</div><div class="trend-current">${focusLabel}</div></div>`+
-   `<svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${title} ${T('six-week trend','六周趋势')}：${values.map((v,i)=>`${TREND_LABELS[i]} ${trendValue(def,v)}${unit}`).join(T(', ','，'))}">`+
+   `<svg class="trend-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${title} ${T('six complete weeks plus one rolling period','六个完整周加一个滚动周期')}：${values.map((v,i)=>`${TREND_LABELS[i]} ${trendValue(def,v)}${unit}`).join(T(', ','，'))}">`+
    `${activeBand}<line class="trend-midline" x1="${left}" x2="${width-right}" y1="${(top+chartH/2).toFixed(1)}" y2="${(top+chartH/2).toFixed(1)}"/><line class="trend-axis" x1="${left}" x2="${width-right}" y1="${height-bottom}" y2="${height-bottom}"/>`+
-   `<path class="trend-area" d="${area}" fill="${def.color}"/><path class="trend-line" d="${line}" stroke="${def.color}"/>`+
-   points.map((p,i)=>`<circle class="trend-dot${i===activeIndex?' active':''}" cx="${p.x}" cy="${p.y}" r="${i===activeIndex?5:4}" fill="${def.color}"/><text class="trend-point-label" x="${p.x}" y="${Math.max(11,p.y-8)}">${trendValue(def,p.value)}</text><text class="trend-x" x="${p.x}" y="${height-6}">${TREND_LABELS[i]}</text>`).join('')+`</svg>`+
+   `<path class="trend-area" d="${completeArea}" fill="${def.color}"/><path class="trend-line" d="${completeLine}" stroke="${def.color}"/><path class="trend-line rolling" d="${rollingLine}" stroke="${def.color}"/>`+
+   points.map((p,i)=>`<circle class="trend-dot${i===activeIndex?' active':''}${i===TREND_ROLLING_INDEX?' rolling':''}" cx="${p.x}" cy="${p.y}" r="${i===activeIndex?5:4}" fill="${def.color}"${i===TREND_ROLLING_INDEX?` style="stroke:${def.color}"`:''}/><text class="trend-point-label${i===TREND_ROLLING_INDEX?' rolling':''}" x="${p.x}" y="${Math.max(11,p.y-8)}">${trendValue(def,p.value)}</text><text class="trend-x${i===TREND_ROLLING_INDEX?' rolling':''}" x="${p.x}" y="${height-6}">${TREND_LABELS[i]}</text>`).join('')+`</svg>`+
    `<div class="trend-range"><span>${T('Min','最低')} ${trendValue(def,min)}${unit}</span><span>${T('Max','最高')} ${trendValue(def,max)}${unit}</span></div></div>`;
  }).join('');
 }
