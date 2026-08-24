@@ -4,8 +4,8 @@
 -- 并按账号去重；时间统一使用 UTC。新注册账号仅作为单独分析子群。
 -- 当前线上只发现 newcomer_checkin_reward_grant 与 newcomer_visit_reward_entry，
 -- PRD 中 unlock / calendar / claim / continue / close 事件暂未进入 GA4，不能计算完整曝光领取漏斗。
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-16';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-23';
 DECLARE feature_start_day DATE DEFAULT DATE '2026-08-08';
 
 CREATE TEMP TABLE raw_events AS
@@ -16,14 +16,14 @@ WITH raw_base AS (
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260801' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260801' AND '20260822'
   UNION ALL
   SELECT
     event_timestamp, event_name, user_pseudo_id, user_id, platform,
     app_info.version AS app_version, geo.country AS country,
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id

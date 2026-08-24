@@ -1,7 +1,7 @@
 -- Six trial lessons, split by actual lesson/level and template_id.
 -- Each lesson uses its own first warm-up as the denominator; later templates must occur
 -- in the same lesson after that warm-up. This avoids merging levels with different nodes.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
@@ -11,18 +11,19 @@ WITH periods AS (
     ('w3', TIMESTAMP '2026-07-24 00:00:00+00', TIMESTAMP '2026-07-31 00:00:00+00'),
     ('w4', TIMESTAMP '2026-07-31 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
     ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
-    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', cutoff)
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -86,7 +87,7 @@ FROM template_counts
 GROUP BY period_key, lesson_id
 ORDER BY CASE period_key
     WHEN 'all' THEN 0 WHEN 'w1' THEN 1 WHEN 'w2' THEN 2 WHEN 'w3' THEN 3
-    WHEN 'w4' THEN 4 WHEN 'w5' THEN 5 WHEN 'w6' THEN 6 END,
+    WHEN 'w4' THEN 4 WHEN 'w5' THEN 5 WHEN 'w6' THEN 6 WHEN 'w7' THEN 7 END,
   CASE lesson_id
   WHEN '732' THEN 1 WHEN '1615' THEN 2 WHEN '734' THEN 3
   WHEN '733' THEN 4 WHEN '1613' THEN 5 WHEN '1614' THEN 6 END,

@@ -1,7 +1,7 @@
 -- Trial-lesson template reach by global period and device country.
 -- Country is the geo.country of the device's earliest GA4 event in the reporting window.
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
@@ -11,7 +11,8 @@ WITH periods AS (
     ('w3', TIMESTAMP '2026-07-24 00:00:00+00', TIMESTAMP '2026-07-31 00:00:00+00'),
     ('w4', TIMESTAMP '2026-07-31 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
     ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
-    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', cutoff)
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 country_targets AS (
@@ -24,11 +25,11 @@ raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260815'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
@@ -130,6 +131,6 @@ CROSS JOIN country_targets c
 CROSS JOIN lesson_targets l
 LEFT JOIN payloads x USING (period_key, country_key, lesson_id)
 ORDER BY
-  CASE p.period_key WHEN 'all' THEN 0 WHEN 'w1' THEN 1 WHEN 'w2' THEN 2 WHEN 'w3' THEN 3 WHEN 'w4' THEN 4 WHEN 'w5' THEN 5 ELSE 6 END,
+  CASE p.period_key WHEN 'all' THEN 0 WHEN 'w1' THEN 1 WHEN 'w2' THEN 2 WHEN 'w3' THEN 3 WHEN 'w4' THEN 4 WHEN 'w5' THEN 5 WHEN 'w6' THEN 6 ELSE 7 END,
   c.country_key,
   CASE l.lesson_id WHEN '732' THEN 1 WHEN '1615' THEN 2 WHEN '734' THEN 3 WHEN '733' THEN 4 WHEN '1613' THEN 5 ELSE 6 END;

@@ -5,7 +5,7 @@
 -- 任一事件出现 user_properties.user_type=test 的设备从首启分母与注册分子统一排除。
 
 DECLARE start_date DATE DEFAULT DATE '2026-07-10';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
 DECLARE daily_max_suffix STRING DEFAULT (
   SELECT MAX(REGEXP_EXTRACT(table_name, r'^events_(\d{8})$'))
   FROM `dino-english-497507.analytics_538991439.INFORMATION_SCHEMA.TABLES`
@@ -120,7 +120,9 @@ country_daily AS (
     COUNTIF(s.signup_method = 'kakao') AS kakao,
     COUNTIF(s.signup_method = 'unknown') AS unknown,
     COUNTIF(c.platform = 'ANDROID') AS android_first_opens,
-    COUNTIF(c.platform = 'ANDROID' AND s.user_pseudo_id IS NOT NULL) AS android_registered
+    COUNTIF(c.platform = 'ANDROID' AND s.user_pseudo_id IS NOT NULL) AS android_registered,
+    COUNTIF(c.platform = 'IOS') AS ios_first_opens,
+    COUNTIF(c.platform = 'IOS' AND s.user_pseudo_id IS NOT NULL) AS ios_registered
   FROM cohorts c
   LEFT JOIN signup_success s
     ON s.user_pseudo_id = c.user_pseudo_id
@@ -140,6 +142,8 @@ SELECT
   kakao,
   unknown,
   android_first_opens,
-  android_registered
+  android_registered,
+  ios_first_opens,
+  ios_registered
 FROM country_daily
 ORDER BY cohort_date, country_code;

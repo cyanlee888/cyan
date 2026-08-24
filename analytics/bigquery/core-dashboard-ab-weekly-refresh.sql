@@ -2,24 +2,25 @@
 -- A weekly slice means: devices first stably assigned during the interval,
 -- with funnel events and attributed orders observed through the interval end.
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-17 02:15:00+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
 
 WITH weeks AS (
   SELECT * FROM UNNEST([
     STRUCT('all' AS week_key, experiment_start AS start_ts, cutoff AS end_ts),
     ('w4', TIMESTAMP '2026-08-01 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
     ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
-    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', cutoff)
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260817'
+  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260822'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260816' AND '20260817'
+  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
