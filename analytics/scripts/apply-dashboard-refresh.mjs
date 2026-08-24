@@ -213,6 +213,8 @@ function normalizeForCurrentCutoff(html) {
     .replaceAll('08-22 为最近完整 UTC 日，08-23 为滚动日','08-23 为最近完整 UTC 日，08-24 为滚动日')
     .replaceAll('Aug 22 is the latest complete UTC day; Aug 23 is rolling','Aug 23 is the latest complete UTC day; Aug 24 is rolling')
     .replaceAll('截至 08-22；08-23* 为滚动日','截至 08-23；08-24* 为滚动日')
+    .replaceAll('截至 08-22；08-24* 为滚动日','截至 08-23；08-24* 为滚动日')
+    .replaceAll('最近三个完整日 08-20~22','最近三个完整日 08-21~23')
     .replaceAll('当前日表到 08-22，08-23 补 intraday','当前日表到 08-22，08-23~24 补 intraday')
     .replaceAll('08-22 及以前使用日表，08-23 补 intraday','08-22 及以前使用日表，08-23~24 补 intraday')
     .replaceAll('07-10~08-22 使用日表，08-23 使用 intraday 数据','07-10~08-22 使用日表，08-23~24 使用 intraday 数据')
@@ -390,14 +392,16 @@ const abDay = abCoreRows.filter(row=>row.row_type==='day'&&row.row_key.startsWit
 const signupRows = readRows('signup-method');
 const loginFunnelRows = readRows('login-signup-funnel');
 const loginFailureRows = readRows('login-failure-reasons');
+const milestoneTimeRows = readRows('milestone-time');
 const authPeriods = [
-  {key:'all',label:'全部',start:'07-10',end:'08-20',coverage:'mixed'},
+  {key:'all',label:'全部',start:'07-10',end:'08-24',coverage:'mixed'},
   {key:'w1',label:'07-10~07-16',start:'07-10',end:'07-16',coverage:'none'},
   {key:'w2',label:'07-17~07-23',start:'07-17',end:'07-23',coverage:'none'},
   {key:'w3',label:'07-24~07-30',start:'07-24',end:'07-30',coverage:'partial'},
   {key:'w4',label:'07-31~08-06',start:'07-31',end:'08-06',coverage:'full'},
   {key:'w5',label:'08-07~08-13',start:'08-07',end:'08-13',coverage:'full'},
-  {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'}
+  {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'},
+  {key:'w7',label:'08-21~08-24*',start:'08-21',end:'08-24',coverage:'rolling'}
 ];
 const authLoginFunnel = loginFunnelRows.map(row=>({
   period:row.period_key,country:row.country_code,method:row.method_key,
@@ -418,6 +422,16 @@ const registrationDaily = [...new Set(signupRows.map(row=>row.cohort_date))].sor
   const rows=signupRows.filter(row=>row.cohort_date===day),sum=key=>rows.reduce((total,row)=>total+num(row[key]),0);
   return {d:`${day.slice(5)}${day==='2026-08-24'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
 });
+const milestoneTime = Object.fromEntries(['all','android','ios'].map(platform=>[platform,
+  Object.fromEntries(['auth_complete','lesson_start','lesson_complete','payment'].map(milestone=>{
+    const summary=milestoneTimeRows.find(row=>row.row_type==='summary'&&row.platform_scope===platform&&row.milestone_key===milestone);
+    if(!summary)throw new Error(`Missing milestone-time summary ${platform}:${milestone}`);
+    const buckets=milestoneTimeRows.filter(row=>row.row_type==='bucket'&&row.platform_scope===platform&&row.milestone_key===milestone)
+      .sort((a,b)=>num(a.bucket_order)-num(b.bucket_order))
+      .map(row=>({key:row.bucket_key,label:row.bucket_label,count:num(row.entities),share:num(row.share_pct)}));
+    return [milestone,{sample:num(summary.entities),population:num(summary.population_entities),source:num(summary.source_entities),p50:num(summary.p50_seconds),p75:num(summary.p75_seconds),p90:num(summary.p90_seconds),buckets}];
+  }))
+]));
 const retentionCurve = retentionRows.filter(row=>row.row_type==='curve');
 const retentionSegments = retentionRows.filter(row=>row.row_type==='segment');
 const ret = allRetention;
@@ -496,7 +510,7 @@ function updateWorkbench(html) {
   html=replaceFrom(html,'const AB_DAY=','const AB_HEALTH=',`const AB_DAY=${compact(abDay)};`);
   html=replaceFrom(html,'const AB_HEALTH=','const AB_LESSON=',`const AB_HEALTH=${compact(abHealth)};`);
   html=replaceFrom(html,'const AB_LESSON=','const AB_B_ONBOARDING_LESSON=',`const AB_LESSON=${compact(abLesson)};`);
-  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-24'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\n\n`);
+  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册与里程碑时长最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-24'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
   html=replaceFrom(html,'const RET=','// Push · Firebase 自动通知事件',`const RET=${compact(ret)};\nconst SEG=${compact(workbenchSeg)};\nconst CURVE=${compact(workbenchCurve)};\n`);
   while (html.includes('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件')) {
     html=html.replace('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件','// Push · Firebase 自动通知事件');
@@ -600,4 +614,4 @@ fs.writeFileSync(launchPath,launch);
 fs.writeFileSync(workbenchPath,workbench);
 fs.writeFileSync(path.join(root,'docs/dino-english/dino-launch-dashboard.html'),launch);
 fs.writeFileSync(path.join(root,'docs/dino-english/dino-analysis-workbench.html'),workbench);
-process.stdout.write(JSON.stringify({cutoff,launch:{firstOpen:allData.journey.first_open,orders:allData.payment.orders,productionSuccess:allData.payment.success},workbench:{abAssigned:abTotal.a.assigned+abTotal.b.assigned,registrationDays:registrationDaily.length,paymentOrders:paymentTotal.orders}},null,2));
+process.stdout.write(JSON.stringify({cutoff,launch:{firstOpen:allData.journey.first_open,orders:allData.payment.orders,productionSuccess:allData.payment.success},workbench:{abAssigned:abTotal.a.assigned+abTotal.b.assigned,registrationDays:registrationDaily.length,paymentOrders:paymentTotal.orders,milestoneTimeSamples:Object.fromEntries(Object.entries(milestoneTime.all).map(([key,value])=>[key,value.sample]))}},null,2));
