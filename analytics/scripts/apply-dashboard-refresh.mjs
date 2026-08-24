@@ -393,13 +393,14 @@ const signupRows = readRows('signup-method');
 const loginFunnelRows = readRows('login-signup-funnel');
 const loginFailureRows = readRows('login-failure-reasons');
 const authPeriods = [
-  {key:'all',label:'全部',start:'07-10',end:'08-20',coverage:'mixed'},
+  {key:'all',label:'全部',start:'07-10',end:'08-24',coverage:'mixed'},
   {key:'w1',label:'07-10~07-16',start:'07-10',end:'07-16',coverage:'none'},
   {key:'w2',label:'07-17~07-23',start:'07-17',end:'07-23',coverage:'none'},
   {key:'w3',label:'07-24~07-30',start:'07-24',end:'07-30',coverage:'partial'},
   {key:'w4',label:'07-31~08-06',start:'07-31',end:'08-06',coverage:'full'},
   {key:'w5',label:'08-07~08-13',start:'08-07',end:'08-13',coverage:'full'},
-  {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'}
+  {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'},
+  {key:'w7',label:'08-21~08-24*',start:'08-21',end:'08-24',coverage:'rolling'}
 ];
 const authLoginFunnel = loginFunnelRows.map(row=>({
   period:row.period_key,country:row.country_code,method:row.method_key,
