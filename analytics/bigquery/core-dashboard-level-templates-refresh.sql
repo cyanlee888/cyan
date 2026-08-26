@@ -1,7 +1,7 @@
 -- Six trial lessons, split by actual lesson/level and template_id.
 -- Each lesson uses its own first warm-up as the denominator; later templates must occur
 -- in the same lesson after that warm-up. This avoids merging levels with different nodes.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
@@ -19,11 +19,11 @@ raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id

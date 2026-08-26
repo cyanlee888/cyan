@@ -5,7 +5,7 @@
 -- 国家锚定设备首次 first_open 的 geo.country；仅纳入当周新用户；设备级去重；排除 user_type=test。
 
 DECLARE start_date DATE DEFAULT DATE '2026-07-10';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
 DECLARE daily_max_suffix STRING DEFAULT (
   SELECT MAX(REGEXP_EXTRACT(table_name, r'^events_(\d{8})$'))
   FROM `dino-english-497507.analytics_538991439.INFORMATION_SCHEMA.TABLES`

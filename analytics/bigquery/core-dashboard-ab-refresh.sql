@@ -2,17 +2,17 @@
 -- Cohort: first stable assignment from 2026-08-01 00:00 UTC; platform is retained as a reporting dimension.
 -- Any device that reports user_properties.user_type=test is excluded before assignment and effect metrics.
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260823'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, platform, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id

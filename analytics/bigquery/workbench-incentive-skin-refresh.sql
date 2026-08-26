@@ -1,25 +1,25 @@
 -- 详细数据工作台 · 激励模块 · 皮肤行为观测（GA4，只读）。
 -- App：Dino AI / com.prime.dino.english。
 -- 任一事件出现 user_properties.user_type=test 的设备从全窗排除。
--- 时间：UTC；与当前工作台统一截点 2026-08-24 03:01:17。
+-- 时间：UTC；与当前工作台统一截点 2026-08-26 03:01:46。
 --
 -- 业务库的“拥有 / 当前穿戴”快照由 analytics/mysql/workbench-incentive-skin-refresh.sql 查询；
 -- GA4 负责 Shop / Backpack 页面触达，并审计购买、换装业务事件是否有量。
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP('2026-08-24 03:01:17+00');
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP('2026-08-26 03:01:46+00');
 
 WITH raw AS (
   SELECT event_timestamp, event_date, event_name, user_pseudo_id, user_id, platform,
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
     AND event_timestamp < UNIX_MICROS(cutoff)
   UNION ALL
   SELECT event_timestamp, event_date, event_name, user_pseudo_id, user_id, platform,
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
     AND event_timestamp < UNIX_MICROS(cutoff)
 ),
 test_devices AS (

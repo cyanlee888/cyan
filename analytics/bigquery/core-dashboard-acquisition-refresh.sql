@@ -1,16 +1,16 @@
 -- AppsFlyer attribution snapshot through the currently available install date.
 -- Exclude GA4 test accounts by mapping their AppsFlyer user property to funnel_user_id.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
 
 WITH raw_ga4 AS (
   SELECT event_timestamp, user_pseudo_id, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
   UNION ALL
   SELECT event_timestamp, user_pseudo_id, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
 ),
 ga4_ids AS (
   SELECT

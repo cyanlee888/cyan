@@ -1,18 +1,18 @@
 -- 核心指标观测工作台：支付触达、发起与生产订单结算刷新。
 -- SQL 仅保存在本地分析目录，不进入公开 HTML。
 -- GA4 设备和由其映射出的支付账号均排除 user_type=test。
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
 
 CREATE TEMP TABLE ga4_events AS
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -59,12 +59,12 @@ WITH identity_rows AS (
     LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) AS user_type
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260822'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
   UNION ALL
   SELECT event_timestamp, user_pseudo_id, user_id,
     LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) AS user_type
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
 ),
 test_ids AS (
   SELECT DISTINCT user_pseudo_id
