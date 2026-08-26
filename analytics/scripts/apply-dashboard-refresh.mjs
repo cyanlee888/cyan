@@ -309,6 +309,7 @@ function updateLaunch(html) {
   html = replaceFrom(html,'const AB_WEEKLY=','let AB_MAIN_COUNTRIES=',`const AB_WEEKLY=${compact(abWeekly)};`);
   html = replaceLine(html,'const retAll=',`const retAll=${compact(allRetention)};`);
   html = replaceLine(html,'const RET_RANGES=',`const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-13'],w6:['08-14','08-20'],w7:['08-21','08-25']};`);
+  html = replaceLine(html,'const TREND_LABELS=',`const TREND_LABELS=['07/10-07/16','07/17-07/23','07/24-07/30','07/31-08/06','08/07-08/13','08/14-08/20','08/21-08/26*'];`);
   html = html
     .replaceAll('07-10~08-14 15:08','07-10~08-23 04:55')
     .replaceAll('2026-07-10 00:00 → 08-14 15:08(UTC)','2026-07-10 00:00 → 08-23 04:55（UTC）')
