@@ -16,6 +16,7 @@
   --red:#b3402a; --yellow:#c98a12; --line:#d8cfba;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:clip}
 body{background:var(--paper);color:var(--ink);font-family:'Noto Sans SC',sans-serif;font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;
   background-image:radial-gradient(1200px 500px at 100% -5%,rgba(217,100,30,.06),transparent 60%),radial-gradient(900px 500px at -10% 110%,rgba(29,92,63,.06),transparent 55%);}
 .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35;
@@ -43,6 +44,17 @@ h1 em{font-style:normal;color:var(--orange)}
 .period-tabs{display:flex;gap:8px;flex-wrap:wrap}
 .period-status{margin-top:7px;font-size:11px;color:var(--ink-faint)}
 .period-empty{grid-column:1/-1;padding:28px 18px;border:1px dashed var(--line);border-radius:10px;background:var(--card);text-align:center;color:var(--ink-soft)}
+.global-filter-sentinel{height:1px;margin-top:11px}
+.global-filter-dock{position:sticky;top:64px;z-index:80;display:grid;gap:10px;transition:padding .18s ease,background .18s ease,border-color .18s ease,box-shadow .18s ease}
+.global-filter-dock .period-filter{margin-top:0}
+.global-filter-dock .global-country-filter{margin:0}
+.global-filter-dock.is-stuck{padding:8px 10px;border:1px solid rgba(216,207,186,.92);border-radius:14px;background:rgba(246,241,231,.94);box-shadow:0 10px 30px rgba(31,42,36,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.global-filter-dock.is-stuck .period-filter,.global-filter-dock.is-stuck .global-country-filter{display:flex;align-items:center;gap:10px;margin:0;padding:2px 0;border:0;border-radius:0;background:transparent}
+.global-filter-dock.is-stuck .period-label,.global-filter-dock.is-stuck .diagnostic-country-label{min-width:60px;padding:0;font-size:11px}
+.global-filter-dock.is-stuck .period-body,.global-filter-dock.is-stuck .diagnostic-country-body{min-width:0;flex:1}
+.global-filter-dock.is-stuck .period-status{display:none}
+.global-filter-dock.is-stuck .period-tabs,.global-filter-dock.is-stuck .diagnostic-country-tabs{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;margin-bottom:0;padding-bottom:2px}
+.global-filter-dock.is-stuck .abtab{flex:0 0 auto;padding:6px 12px;font-size:11.5px}
 
 .sec{margin-top:50px}
 .sec-h{font-family:'Noto Serif SC',serif;font-weight:700;font-size:22px;display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
@@ -256,19 +268,22 @@ td.num{text-align:right;font-family:'Fraunces',serif;font-weight:600}
     <span id="dashboardContext">投放 7/10 起 · 统计窗口 <b>07-10~08-27 03:02 UTC（48 个完整 UTC 日 + 08-27 滚动）</b> · 期内启动 <b>42,710</b> · GA4 与可映射业务数据均排除 <b>user_type=test</b></span>
   </div>
 
-  <div class="period-filter" aria-label="Global weekly filter">
-    <div class="period-label" data-zh="时间筛选">Time period</div>
-    <div class="period-body">
-      <div class="period-tabs" id="periodTabs" role="tablist" aria-label="Switch dashboard week"></div>
-      <div class="period-status" id="periodStatus" role="status" aria-live="polite"></div>
+  <div class="global-filter-sentinel" id="globalFilterSentinel" aria-hidden="true"></div>
+  <div class="global-filter-dock" id="globalFilterDock" role="region" aria-label="Sticky global filters">
+    <div class="period-filter" aria-label="Global weekly filter">
+      <div class="period-label" data-zh="时间筛选">Time period</div>
+      <div class="period-body">
+        <div class="period-tabs" id="periodTabs" role="tablist" aria-label="Switch dashboard week"></div>
+        <div class="period-status" id="periodStatus" role="status" aria-live="polite"></div>
+      </div>
     </div>
-  </div>
 
-  <div class="diagnostic-country-filter global-country-filter" aria-label="Global country filter">
-    <div class="diagnostic-country-label" data-zh="国家筛选">Country</div>
-    <div class="diagnostic-country-body">
-      <div class="abtabs diagnostic-country-tabs" id="globalCountryTabs" role="tablist" aria-label="Switch dashboard country"></div>
-      <div class="period-status" id="countryStatus" role="status" aria-live="polite"></div>
+    <div class="diagnostic-country-filter global-country-filter" aria-label="Global country filter">
+      <div class="diagnostic-country-label" data-zh="国家筛选">Country</div>
+      <div class="diagnostic-country-body">
+        <div class="abtabs diagnostic-country-tabs" id="globalCountryTabs" role="tablist" aria-label="Switch dashboard country"></div>
+        <div class="period-status" id="countryStatus" role="status" aria-live="polite"></div>
+      </div>
     </div>
   </div>
 
@@ -809,8 +824,8 @@ const LEVEL_VALUES={
  w6:[[58,47,47,44,42,40,30,28,23,23,23,21,21,21,18,18],[36,29,28,28,25,17,17,17,14,14,12,11,11,11,11,9],[34,12,11,9,9,8,8,8,8,8,8,5,5,5,5,5,4,4],[22,14,14,13,11,7,7,6,6,6,5,5,5,5,5,5],[13,6,5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[3,2,2,1,1,0,0,0,0,0,0]]
 };
 const buildLevels=(periodKey,countryKey=selectedCountry)=>{
- const values=countryKey==='all'?LEVEL_VALUES[periodKey]:COUNTRY_LEVEL_VALUES[periodKey][countryKey];
- return LEVEL_DEFS.map((level,i)=>({...level,v:values[i]}));
+ const values=countryKey==='all'?LEVEL_VALUES[periodKey]:COUNTRY_LEVEL_VALUES[periodKey]?.[countryKey];
+ return values?LEVEL_DEFS.map((level,i)=>({...level,v:values[i]})):[];
 };
 let levels=buildLevels('all','all');
 let selectedLevelIndex=0;
@@ -837,6 +852,12 @@ function renderLevel(lv){
    `<div class="it">${countryLabel} · ${lv.name} · ${lv.lesson} · 热身 ${fmt(lv.v[0])} 人</div><p>相邻展示项中最大触达下降为 <b>${T(from.en,from.zh)} → ${T(to.en,to.zh)}</b>（${(biggest.loss*100).toFixed(1)}%）。节点按该课真实模板集合展示；可选分支及重复模板类型不等同严格环比转化。</p>`);
 }
 function renderLevelTabs(){
+ if(!levels.length){
+  document.getElementById('lvltabs').innerHTML=`<div class="period-empty">${T('Detailed all-country Level data is unavailable for this period; no values are inferred. Other sections continue to follow the global filters.','该周期缺少全部国家的详细 Level 数据，不推算或补造；其他模块仍继续跟随全局筛选。')}</div>`;
+  document.getElementById('lessonStages').innerHTML='';
+  document.getElementById('lessonInsight').innerHTML='';
+  return;
+ }
  document.getElementById('lvltabs').innerHTML=levels.map((lv,i)=>
   `<button type="button" class="lvltab${i===selectedLevelIndex?' on':''}" data-i="${i}"><span class="lvn">${lv.name}</span><span class="lvu">${lv.ids} · ${lv.lesson} · ${T('Warm-up','热身')} ${fmt(lv.v[0])}</span></button>`).join('');
  document.querySelectorAll('.lvltab').forEach(t=>t.addEventListener('click',()=>{
@@ -891,7 +912,7 @@ function applyPeriod(key,preserveSubfilters=false){
  document.getElementById('dashboardContext').innerHTML=`${T('Reporting window','统计窗口')} <b>${period.label} UTC</b> · ${T('Country','国家')} <b>${countryLabel}</b> · ${T('First opens in scope','范围内启动')} <b>${fmt(j.first_open)}</b> · ${T('GA4 and mapped business data both exclude','GA4 与可映射业务数据均排除')} <b>user_type=test</b>`;
  renderDiagnosticSection();
  renderJourneyForDiagnosticSelection();renderCoreModules(data);
- levels=buildLevels(key,selectedCountry);selectedLevelIndex=Math.min(selectedLevelIndex,levels.length-1);renderLevelTabs();
+ levels=buildLevels(key,selectedCountry);selectedLevelIndex=levels.length?Math.min(selectedLevelIndex,levels.length-1):0;renderLevelTabs();
  renderRetention(data,period);renderPayment(data,period);
  AB_MAIN_COUNTRIES=key==='all'?AB_ALL_COUNTRIES:(AB_WEEKLY[key]||[]);
  const abPeriodLabel=currentAbPeriodLabel(),hasAbData=key==='all'||Boolean(AB_WEEKLY[key]);
@@ -900,6 +921,22 @@ function applyPeriod(key,preserveSubfilters=false){
   ?`<b>${countryLabel} · ${abPeriodLabel} UTC</b><span>${T('Stable assignments and GA4 path events are both restricted to this window; production payments run from assignment through window end.','稳定进组与 GA4 分路径事件均限制在该窗口；生产支付从进组时刻统计至窗口结束。')}</span>`
   :`<b>${countryLabel} · ${period.label} UTC</b><span>${T('This period predates the experiment start, so no A/B sample is available.','该周期早于实验启动时间，暂无 A/B 样本。')}</span>`;
  renderAbMainFlow(selectedAbVariant);
+ alignActiveGlobalFilters();
+}
+
+function alignActiveGlobalFilters(){
+ const dock=document.getElementById('globalFilterDock');
+ if(!dock.classList.contains('is-stuck'))return;
+ requestAnimationFrame(()=>dock.querySelectorAll('.period-tabs,.diagnostic-country-tabs').forEach(container=>{
+  const tab=container.querySelector('.abtab.on');
+  if(tab){
+   const tabs=[...container.querySelectorAll('.abtab')],tabRect=tab.getBoundingClientRect();
+   const tabIndex=tabs.indexOf(tab);
+   const gap=parseFloat(getComputedStyle(container).columnGap)||0;
+   const tabLeft=tabs.slice(0,tabIndex).reduce((sum,item)=>sum+item.getBoundingClientRect().width+gap,0);
+   container.scrollLeft=tabIndex===0?0:tabIndex===tabs.length-1?container.scrollWidth:tabLeft-(container.clientWidth-tabRect.width)/2;
+  }
+ }));
 }
 
 function renderPeriodTabs(){
@@ -912,6 +949,7 @@ function setLanguage(lang,persist=true){
  staticLangNodes.forEach(el=>{const html=el.getAttribute(pageLang==='zh'?'data-zh':'data-en');if(html!=null)el.innerHTML=html});
  document.querySelectorAll('#langToggle button').forEach(button=>{const on=button.dataset.lang===pageLang;button.classList.toggle('on',on);button.setAttribute('aria-pressed',on?'true':'false')});
  document.querySelector('.period-filter').setAttribute('aria-label',T('Global weekly filter','全局周维度筛选'));
+ document.getElementById('globalFilterDock').setAttribute('aria-label',T('Sticky global filters','吸顶全局筛选'));
  document.getElementById('periodTabs').setAttribute('aria-label',T('Switch dashboard week','切换看板统计周'));
  document.querySelector('.trend-panel').setAttribute('aria-label',T('Core funnel diagnostic weekly trends','核心链路诊断周趋势'));
  document.querySelector('.global-country-filter').setAttribute('aria-label',T('Global country filter','全局国家筛选'));
@@ -922,6 +960,14 @@ function setLanguage(lang,persist=true){
 }
 document.querySelectorAll('#langToggle button').forEach(button=>button.addEventListener('click',()=>setLanguage(button.dataset.lang)));
 setLanguage(pageLang,false);
+
+const globalFilterDock=document.getElementById('globalFilterDock');
+const stickyFilterObserver=new IntersectionObserver(([entry])=>{
+ const stuck=!entry.isIntersecting&&entry.boundingClientRect.top<0;
+ globalFilterDock.classList.toggle('is-stuck',stuck);
+ if(stuck)alignActiveGlobalFilters();
+},{threshold:0});
+stickyFilterObserver.observe(document.getElementById('globalFilterSentinel'));
 
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});
 document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
