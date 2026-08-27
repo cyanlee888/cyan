@@ -1,20 +1,26 @@
--- Dino English 登录 / 注册：完整周 × 首启国家 × 登录方式漏斗。
+-- Dino English 登录 / 注册：周期 × 首启国家 × 登录方式漏斗。
 -- 通用时序口径：到达登录注册页 -> 点击登录方式 -> login_result / signup_result 任一成功。
 -- Phone 细分口径：到达页面 -> 选择 Phone -> 点击获取验证码 -> 提交验证码 -> 任一结果成功。
 -- 页面到达兼容旧 login_page_view 与新版 page_view(event_id=login)；结果节点不强制互相排序。
 -- 国家锚定设备首次 first_open 的 geo.country；仅纳入当周新用户；设备级去重；排除 user_type=test。
 
 DECLARE start_date DATE DEFAULT DATE '2026-07-10';
-DECLARE end_date DATE DEFAULT DATE '2026-08-21';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-27 03:02:06+00';
+DECLARE daily_max_suffix STRING DEFAULT (
+  SELECT MAX(REGEXP_EXTRACT(table_name, r'^events_(\d{8})$'))
+  FROM `dino-english-497507.analytics_538991439.INFORMATION_SCHEMA.TABLES`
+  WHERE REGEXP_CONTAINS(table_name, r'^events_\d{8}$')
+);
 
 WITH periods AS (
   SELECT * FROM UNNEST([
-    STRUCT('w1' AS period_key, DATE '2026-07-10' AS start_day, DATE '2026-07-17' AS end_day),
-    ('w2', DATE '2026-07-17', DATE '2026-07-24'),
-    ('w3', DATE '2026-07-24', DATE '2026-07-31'),
-    ('w4', DATE '2026-07-31', DATE '2026-08-07'),
-    ('w5', DATE '2026-08-07', DATE '2026-08-14'),
-    ('w6', DATE '2026-08-14', DATE '2026-08-21')
+    STRUCT('w1' AS period_key, TIMESTAMP '2026-07-10 00:00:00+00' AS start_ts, TIMESTAMP '2026-07-17 00:00:00+00' AS end_ts),
+    ('w2', TIMESTAMP '2026-07-17 00:00:00+00', TIMESTAMP '2026-07-24 00:00:00+00'),
+    ('w3', TIMESTAMP '2026-07-24 00:00:00+00', TIMESTAMP '2026-07-31 00:00:00+00'),
+    ('w4', TIMESTAMP '2026-07-31 00:00:00+00', TIMESTAMP '2026-08-07 00:00:00+00'),
+    ('w5', TIMESTAMP '2026-08-07 00:00:00+00', TIMESTAMP '2026-08-14 00:00:00+00'),
+    ('w6', TIMESTAMP '2026-08-14 00:00:00+00', TIMESTAMP '2026-08-21 00:00:00+00'),
+    ('w7', TIMESTAMP '2026-08-21 00:00:00+00', cutoff)
   ])
 ),
 methods AS (
@@ -31,7 +37,22 @@ raw_base AS (
     user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', start_date) AND FORMAT_DATE('%Y%m%d', DATE_SUB(end_date, INTERVAL 1 DAY))
+    AND _TABLE_SUFFIX BETWEEN FORMAT_DATE('%Y%m%d', start_date) AND daily_max_suffix
+    AND event_timestamp < UNIX_MICROS(cutoff)
+
+  UNION ALL
+
+  SELECT
+    event_name,
+    event_timestamp,
+    user_pseudo_id,
+    geo.country AS country,
+    event_params,
+    user_properties
+  FROM `dino-english-497507.analytics_538991439.events_intraday_*`
+  WHERE _TABLE_SUFFIX > daily_max_suffix
+    AND _TABLE_SUFFIX <= FORMAT_DATE('%Y%m%d', DATE(cutoff))
+    AND event_timestamp < UNIX_MICROS(cutoff)
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -89,17 +110,17 @@ first_open_ranked AS (
   WHERE event_name = 'first_open'
 ),
 period_cohorts AS (
-  SELECT p.period_key, p.end_day, f.user_pseudo_id, f.first_open_ts, f.country_code
+  SELECT p.period_key, p.end_ts, f.user_pseudo_id, f.first_open_ts, f.country_code
   FROM periods p
   JOIN first_open_ranked f
     ON f.rn = 1
-   AND DATE(TIMESTAMP_MICROS(f.first_open_ts)) >= p.start_day
-   AND DATE(TIMESTAMP_MICROS(f.first_open_ts)) < p.end_day
+   AND f.first_open_ts >= UNIX_MICROS(p.start_ts)
+   AND f.first_open_ts < UNIX_MICROS(p.end_ts)
 ),
 scoped_cohorts AS (
   SELECT * FROM period_cohorts
   UNION ALL
-  SELECT period_key, end_day, user_pseudo_id, first_open_ts, 'All' AS country_code
+  SELECT period_key, end_ts, user_pseudo_id, first_open_ts, 'All' AS country_code
   FROM period_cohorts
 ),
 method_events AS (
@@ -145,14 +166,14 @@ first_page AS (
     c.period_key,
     c.country_code,
     c.user_pseudo_id,
-    c.end_day,
+    c.end_ts,
     MIN(e.event_timestamp) AS page_ts
   FROM scoped_cohorts c
   JOIN method_events e
     ON e.user_pseudo_id = c.user_pseudo_id
    AND e.step_key = 'page'
    AND e.event_timestamp >= c.first_open_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
   GROUP BY 1,2,3,4
 ),
 first_click AS (
@@ -161,14 +182,14 @@ first_click AS (
     c.country_code,
     c.user_pseudo_id,
     e.method_key,
-    c.end_day,
+    c.end_ts,
     MIN(e.event_timestamp) AS click_ts
   FROM first_page c
   JOIN expanded_method_events e
     ON e.user_pseudo_id = c.user_pseudo_id
    AND e.step_key = 'click'
    AND e.event_timestamp >= c.page_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
   GROUP BY 1,2,3,4,5
 ),
 first_phone_code_request AS (
@@ -182,8 +203,8 @@ first_phone_code_request AS (
    AND e.method_key = 'phone'
    AND e.step_key = 'code_request'
    AND e.event_timestamp >= c.click_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
-  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_day,c.click_ts
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
+  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_ts,c.click_ts
 ),
 first_phone_otp_submit AS (
   SELECT
@@ -195,8 +216,8 @@ first_phone_otp_submit AS (
    AND e.method_key = 'phone'
    AND e.step_key = 'otp_submit'
    AND e.event_timestamp >= c.code_request_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
-  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_day,c.click_ts,c.code_request_ts
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
+  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_ts,c.click_ts,c.code_request_ts
 ),
 first_phone_success AS (
   SELECT
@@ -208,8 +229,8 @@ first_phone_success AS (
    AND e.method_key = 'phone'
    AND e.step_key IN ('login','signup')
    AND e.event_timestamp >= c.otp_submit_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
-  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_day,c.click_ts,c.code_request_ts,c.otp_submit_ts
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
+  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_ts,c.click_ts,c.code_request_ts,c.otp_submit_ts
 ),
 first_success AS (
   SELECT
@@ -221,8 +242,8 @@ first_success AS (
    AND e.method_key = c.method_key
    AND e.step_key IN ('login','signup')
    AND e.event_timestamp >= c.click_ts
-   AND e.event_timestamp < UNIX_MICROS(TIMESTAMP(c.end_day))
-  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_day,c.click_ts
+   AND e.event_timestamp < UNIX_MICROS(c.end_ts)
+  GROUP BY c.period_key,c.country_code,c.user_pseudo_id,c.method_key,c.end_ts,c.click_ts
 ),
 page_base AS (
   SELECT period_key, country_code, COUNT(DISTINCT user_pseudo_id) AS page_view_devices
@@ -246,9 +267,9 @@ phone_step_counts AS (
     COUNT(DISTINCT s.user_pseudo_id) AS phone_auth_success_devices
   FROM first_phone_code_request c
   LEFT JOIN first_phone_otp_submit o
-    USING (period_key,country_code,user_pseudo_id,method_key,end_day,click_ts,code_request_ts)
+    USING (period_key,country_code,user_pseudo_id,method_key,end_ts,click_ts,code_request_ts)
   LEFT JOIN first_phone_success s
-    USING (period_key,country_code,user_pseudo_id,method_key,end_day,click_ts,code_request_ts,otp_submit_ts)
+    USING (period_key,country_code,user_pseudo_id,method_key,end_ts,click_ts,code_request_ts,otp_submit_ts)
   GROUP BY 1,2
 )
 SELECT

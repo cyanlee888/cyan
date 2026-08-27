@@ -2,7 +2,7 @@
 -- A weekly slice means: devices first stably assigned during the interval,
 -- with funnel events and attributed orders observed through the interval end.
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-24 03:01:17+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-27 03:02:06+00';
 
 WITH weeks AS (
   SELECT * FROM UNNEST([
@@ -16,11 +16,11 @@ WITH weeks AS (
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
-  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260822'
+  WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$') AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260825'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260823' AND '20260824'
+  WHERE _TABLE_SUFFIX BETWEEN '20260826' AND '20260827'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
@@ -63,7 +63,7 @@ device_groups AS (
 ),
 stable AS (
   SELECT
-    w.week_key, w.end_ts, d.platform, d.user_pseudo_id, d.first_assigned_at,
+    w.week_key, w.start_ts, w.end_ts, d.platform, d.user_pseudo_id, d.first_assigned_at,
     d.first_assignment.channel AS experiment_group,
     d.first_assignment.country AS assignment_country
   FROM device_groups d
@@ -77,6 +77,7 @@ uid_map AS (
     ARRAY_AGG(e.user_id IGNORE NULLS ORDER BY e.event_timestamp DESC LIMIT 1)[SAFE_OFFSET(0)] AS user_id
   FROM stable s
   LEFT JOIN events e ON e.platform = s.platform AND e.user_pseudo_id = s.user_pseudo_id
+    AND e.event_timestamp >= UNIX_MICROS(s.start_ts)
     AND e.event_timestamp < UNIX_MICROS(s.end_ts)
   GROUP BY 1,2,3
 ),
@@ -138,6 +139,7 @@ flags AS (
     MAX(COALESCE(o.pending,0)) AS pending
   FROM stable s
   LEFT JOIN events e ON e.platform = s.platform AND e.user_pseudo_id = s.user_pseudo_id
+    AND e.event_timestamp >= UNIX_MICROS(s.start_ts)
     AND e.event_timestamp < UNIX_MICROS(s.end_ts)
   LEFT JOIN order_flags o ON o.week_key = s.week_key AND o.platform = s.platform AND o.user_pseudo_id = s.user_pseudo_id
   GROUP BY 1,2,3,4,5
