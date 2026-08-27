@@ -157,14 +157,16 @@ const stagePrefixes = {
 const lessonIds = ['732','1615','734','733','1613','1614'];
 const levelRows = readRows('level-global');
 const levelMap = new Map(levelRows.map(row => [`${row.period_key}:${row.country_key}:${row.lesson_id}`, JSON.parse(row.payload)]));
+const levelValuesFor = (period,country) => lessonIds.map(lessonId => {
+  const payload = levelMap.get(`${period}:${country}:${lessonId}`) || [];
+  return stagePrefixes[lessonId].map(prefix => payload.find(item => item.template_id.startsWith(prefix))?.users || 0);
+});
+const levelValues = Object.fromEntries(periods.map(period => [period,levelValuesFor(period,'all')]));
 const countryLevelValues = {};
 for (const period of periods) {
   countryLevelValues[period] = {};
   for (const country of countries) {
-    countryLevelValues[period][country] = lessonIds.map(lessonId => {
-      const payload = levelMap.get(`${period}:${country}:${lessonId}`) || [];
-      return stagePrefixes[lessonId].map(prefix => payload.find(item => item.template_id.startsWith(prefix))?.users || 0);
-    });
+    countryLevelValues[period][country] = levelValuesFor(period,country);
   }
 }
 const countryRetentionRows = Object.fromEntries(countries.map(country => [country,
@@ -333,6 +335,7 @@ function updateLaunch(html) {
   html = replaceLine(html,'const ALL=',`const ALL=${compact(allData)};`);
   html = replaceFrom(html,'const DIAGNOSTIC_COUNTRY_DATA=','const COUNTRY_BUSINESS_DATA=',`const DIAGNOSTIC_COUNTRY_DATA=${compact(diagnosticData)};`);
   html = replaceLine(html,'const COUNTRY_BUSINESS_DATA=',`const COUNTRY_BUSINESS_DATA=${compact(countryBusinessData)};`);
+  html = replaceFrom(html,'const LEVEL_VALUES=','const buildLevels=',`const LEVEL_VALUES=${compact(levelValues)};`);
   html = replaceLine(html,'const COUNTRY_LEVEL_VALUES=',`const COUNTRY_LEVEL_VALUES=${compact(countryLevelValues)};`);
   html = replaceLine(html,'const COUNTRY_RETENTION_ROWS=',`const COUNTRY_RETENTION_ROWS=${compact(countryRetentionRows)};`);
   html = replaceFrom(html,'const AB_ALL_COUNTRIES=','const AB_WEEKLY=',`const AB_ALL_COUNTRIES=${compact(abAllCountries)};`);
