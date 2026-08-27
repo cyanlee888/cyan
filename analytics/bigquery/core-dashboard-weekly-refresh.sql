@@ -1,8 +1,8 @@
 -- Core dashboard calendar-week snapshots (UTC).
 -- Week slices use events/orders occurring inside each selected interval.
 -- A/B slices use devices first assigned in the week and observe their events through that week's end.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-25';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-27 03:02:06+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-26';
 DECLARE module_coverage_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-07 00:00:00+00';
 
 WITH weeks AS (
@@ -20,11 +20,11 @@ raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260825'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
+  WHERE _TABLE_SUFFIX BETWEEN '20260826' AND '20260827'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
