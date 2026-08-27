@@ -1,30 +1,30 @@
 -- Exact-day retention cohorts and D1 day-0 behavior segments by country.
 -- Country is geo.country on the device's first_open event.
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-26 03:01:46+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-25';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-27 03:02:06+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-26';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
-    STRUCT('all' AS period_key, DATE '2026-07-10' AS start_day, DATE '2026-08-25' AS end_day),
+    STRUCT('all' AS period_key, DATE '2026-07-10' AS start_day, DATE '2026-08-26' AS end_day),
     ('w1', DATE '2026-07-10', DATE '2026-07-17'),
     ('w2', DATE '2026-07-17', DATE '2026-07-24'),
     ('w3', DATE '2026-07-24', DATE '2026-07-31'),
     ('w4', DATE '2026-07-31', DATE '2026-08-07'),
     ('w5', DATE '2026-08-07', DATE '2026-08-14'),
     ('w6', DATE '2026-08-14', DATE '2026-08-21'),
-    ('w7', DATE '2026-08-21', DATE '2026-08-26')
+    ('w7', DATE '2026-08-21', DATE '2026-08-27')
   ])
 ),
 raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260823'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260825'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260824' AND '20260826'
+  WHERE _TABLE_SUFFIX BETWEEN '20260826' AND '20260827'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
