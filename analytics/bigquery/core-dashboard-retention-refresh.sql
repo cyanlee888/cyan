@@ -1,19 +1,19 @@
--- Device-level exact-day retention for first-open cohorts. 08-26 is the latest complete UTC day.
+-- Device-level exact-day retention for first-open cohorts. 08-27 is the latest complete UTC day.
 -- A return means the same user_pseudo_id emitted an explicit foreground-active event
 -- (session_start / user_engagement / screen_view / page_view) on exactly cohort day + N.
 -- Any device that reports user_properties.user_type=test is excluded from cohorts and returns.
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-27 03:02:06+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-26';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-29 03:00:53+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-28';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260825'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260827'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260826' AND '20260827'
+  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id

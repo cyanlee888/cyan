@@ -29,8 +29,8 @@ const mapBy = (rows, keyFn) => new Map(rows.map(row => [keyFn(row), row]));
 const metricValue = (metrics, key) => Number(metrics.get(key) || 0);
 const pct = (value, total, digits = 1) => total ? (value / total * 100).toFixed(digits) : '0.0';
 
-const cutoff = '2026-08-27 03:02 UTC';
-const cutoffShort = '08-27 03:02';
+const cutoff = '2026-08-29 03:00 UTC';
+const cutoffShort = '08-29 03:00';
 const periods = ['all', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7'];
 const countries = ['vn', 'kr', 'sa', 'my', 'id', 'th'];
 const countryMeta = {
@@ -193,14 +193,14 @@ const abAllCountries = makeAbCountries('all');
 const abWeekly = {w4:makeAbCountries('w4'),w5:makeAbCountries('w5'),w6:makeAbCountries('w6'),w7:makeAbCountries('w7')};
 
 const periodConfig = [
-  {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-27 03:02',statusEn:'Full period · Complete UTC days through Aug 26 + rolling Aug 27',statusZh:'全周期 · 完整 UTC 日截至 08-26 + 08-27 滚动数据'},
+  {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-29 03:00',statusEn:'Full period · Complete UTC days through Aug 28 + rolling Aug 29',statusZh:'全周期 · 完整 UTC 日截至 08-28 + 08-29 滚动数据'},
   {key:'w1',tabEn:'07-10~07-16',tabZh:'07-10~07-16',label:'07-10~07-16',statusEn:'Week 1 · Complete UTC week',statusZh:'第 1 周 · UTC 完整周'},
   {key:'w2',tabEn:'07-17~07-23',tabZh:'07-17~07-23',label:'07-17~07-23',statusEn:'Week 2 · Complete UTC week',statusZh:'第 2 周 · UTC 完整周'},
   {key:'w3',tabEn:'07-24~07-30',tabZh:'07-24~07-30',label:'07-24~07-30',statusEn:'Week 3 · Complete UTC week',statusZh:'第 3 周 · UTC 完整周'},
   {key:'w4',tabEn:'07-31~08-06',tabZh:'07-31~08-06',label:'07-31~08-06',statusEn:'Week 4 · A/B calculated from Aug 1',statusZh:'第 4 周 · A/B 从 08-01 起计算'},
   {key:'w5',tabEn:'08-07~08-13',tabZh:'08-07~08-13',label:'08-07~08-13',statusEn:'Week 5 · Complete UTC week',statusZh:'第 5 周 · UTC 完整周'},
   {key:'w6',tabEn:'08-14~08-20',tabZh:'08-14~08-20',label:'08-14~08-20',statusEn:'Week 6 · Complete UTC week',statusZh:'第 6 周 · UTC 完整周'},
-  {key:'w7',tabEn:'08-21~08-27',tabZh:'08-21~08-27',label:'08-21~08-27 03:02',statusEn:'Week 7 · Rolling through Aug 27 03:02 UTC',statusZh:'第 7 周 · 截至 08-27 03:02 UTC 的滚动周期'}
+  {key:'w7',tabEn:'08-21~08-29',tabZh:'08-21~08-29',label:'08-21~08-29 03:00',statusEn:'Week 7 · Rolling through Aug 29 03:00 UTC',statusZh:'第 7 周 · 截至 08-29 03:00 UTC 的滚动周期'}
 ];
 
 function normalizeForCurrentCutoff(html) {
@@ -307,7 +307,65 @@ function normalizeForCurrentCutoff(html) {
     .replaceAll('03:01 UTC','03:02 UTC')
     .replaceAll('马来西亚时间 11:01','马来西亚时间 11:02')
     .replaceAll('11:01 Malaysia time','11:02 Malaysia time')
-    .replaceAll('马来西亚 11:01','马来西亚 11:02');
+    .replaceAll('马来西亚 11:01','马来西亚 11:02')
+    .replaceAll('2026-08-27 03:02 UTC','2026-08-28 03:01 UTC')
+    .replaceAll('2026-08-27 03:02','2026-08-28 03:01')
+    .replaceAll('08-27 03:02 UTC','08-28 03:01 UTC')
+    .replaceAll('08-27 03:02','08-28 03:01')
+    .replaceAll('2026-08-27*','2026-08-28*')
+    .replaceAll('08-27*','08-28*')
+    .replaceAll('08-26 是最近完整日','08-27 是最近完整日')
+    .replaceAll('08-26 为最近完整 UTC 日，08-27 为滚动日','08-27 为最近完整 UTC 日，08-28 为滚动日')
+    .replaceAll('Aug 26 is the latest complete UTC day; Aug 27 is rolling','Aug 27 is the latest complete UTC day; Aug 28 is rolling')
+    .replaceAll('截至 08-26；08-27* 为滚动日','截至 08-27；08-28* 为滚动日')
+    .replaceAll('最近三个完整日 08-24~26','最近三个完整日 08-25~27')
+    .replaceAll('当前日表到 08-25，08-26~27 补 intraday','当前日表到 08-26，08-27~28 补 intraday')
+    .replaceAll('08-25 及以前使用日表，08-26~27 补 intraday','08-26 及以前使用日表，08-27~28 补 intraday')
+    .replaceAll('07-10~08-25 使用日表，08-26~27 使用 intraday 数据','07-10~08-26 使用日表，08-27~28 使用 intraday 数据')
+    .replaceAll('07-10~08-25 日表 + 08-26~27 intraday','07-10~08-26 日表 + 08-27~28 intraday')
+    .replaceAll('daily tables Jul 10–Aug 25 + intraday Aug 26–27','daily tables Jul 10–Aug 26 + intraday Aug 27–28')
+    .replaceAll('D1 可测至 08-25、D3 至 08-23、D7 至 08-19','D1 可测至 08-26、D3 至 08-24、D7 至 08-20')
+    .replaceAll('Retention is exact-day (D1 through Aug 25, D3 through Aug 23, D7 through Aug 19).','Retention is exact-day (D1 through Aug 26, D3 through Aug 24, D7 through Aug 20).')
+    .replaceAll('D1 is measurable through Aug 22, D3 through Aug 20, and D7 through Aug 16.','D1 is measurable through Aug 26, D3 through Aug 24, and D7 through Aug 20.')
+    .replaceAll('The latest payment-source record in this refresh is within the Aug 27 03:02 UTC cutoff.','The latest payment-source record in this refresh is within the Aug 28 03:01 UTC cutoff.')
+    .replaceAll('48 个完整 UTC 日 + 08-27 滚动','49 个完整 UTC 日 + 08-28 滚动')
+    .replaceAll('6 complete UTC weeks + Aug 21–27 rolling through 03:02 UTC','6 complete UTC weeks + Aug 21–28 rolling through 03:01 UTC')
+    .replaceAll('UTC 日 07-10~08-26（08-27* 截止 03:02 UTC）','UTC 日 07-10~08-27（08-28* 截止 03:01 UTC）')
+    .replaceAll("row_key==='2026-08-27'","row_key==='2026-08-28'")
+    .replaceAll('完整日:</b>截至 08-26','完整日:</b>截至 08-27')
+    .replaceAll('03:02 UTC','03:01 UTC')
+    .replaceAll('马来西亚时间 11:02','马来西亚时间 11:01')
+    .replaceAll('11:02 Malaysia time','11:01 Malaysia time')
+    .replaceAll('马来西亚 11:02','马来西亚 11:01')
+    .replaceAll('2026-08-28 03:01 UTC','2026-08-29 03:00 UTC')
+    .replaceAll('2026-08-28 03:01','2026-08-29 03:00')
+    .replaceAll('08-28 03:01 UTC','08-29 03:00 UTC')
+    .replaceAll('08-28 03:01','08-29 03:00')
+    .replaceAll('2026-08-28*','2026-08-29*')
+    .replaceAll('08-28*','08-29*')
+    .replaceAll('08-27 是最近完整日','08-28 是最近完整日')
+    .replaceAll('08-27 为最近完整 UTC 日，08-28 为滚动日','08-28 为最近完整 UTC 日，08-29 为滚动日')
+    .replaceAll('Aug 27 is the latest complete UTC day; Aug 28 is rolling','Aug 28 is the latest complete UTC day; Aug 29 is rolling')
+    .replaceAll('截至 08-27；08-28* 为滚动日','截至 08-28；08-29* 为滚动日')
+    .replaceAll('最近三个完整日 08-25~27','最近三个完整日 08-26~28')
+    .replaceAll('当前日表到 08-26，08-27~28 补 intraday','当前日表到 08-27，08-28~29 补 intraday')
+    .replaceAll('08-26 及以前使用日表，08-27~28 补 intraday','08-27 及以前使用日表，08-28~29 补 intraday')
+    .replaceAll('07-10~08-26 使用日表，08-27~28 使用 intraday 数据','07-10~08-27 使用日表，08-28~29 使用 intraday 数据')
+    .replaceAll('07-10~08-26 日表 + 08-27~28 intraday','07-10~08-27 日表 + 08-28~29 intraday')
+    .replaceAll('daily tables Jul 10–Aug 26 + intraday Aug 27–28','daily tables Jul 10–Aug 27 + intraday Aug 28–29')
+    .replaceAll('D1 可测至 08-26、D3 至 08-24、D7 至 08-20','D1 可测至 08-27、D3 至 08-25、D7 至 08-21')
+    .replaceAll('Retention is exact-day (D1 through Aug 26, D3 through Aug 24, D7 through Aug 20).','Retention is exact-day (D1 through Aug 27, D3 through Aug 25, D7 through Aug 21).')
+    .replaceAll('D1 is measurable through Aug 26, D3 through Aug 24, and D7 through Aug 20.','D1 is measurable through Aug 27, D3 through Aug 25, and D7 through Aug 21.')
+    .replaceAll('The latest payment-source record in this refresh is within the Aug 28 03:01 UTC cutoff.','The latest payment-source record in this refresh is within the Aug 29 03:00 UTC cutoff.')
+    .replaceAll('49 个完整 UTC 日 + 08-28 滚动','50 个完整 UTC 日 + 08-29 滚动')
+    .replaceAll('6 complete UTC weeks + Aug 21–28 rolling through 03:01 UTC','6 complete UTC weeks + Aug 21–29 rolling through 03:00 UTC')
+    .replaceAll('UTC 日 07-10~08-27（08-28* 截止 03:01 UTC）','UTC 日 07-10~08-28（08-29* 截止 03:00 UTC）')
+    .replaceAll("row_key==='2026-08-28'","row_key==='2026-08-29'")
+    .replaceAll('完整日:</b>截至 08-27','完整日:</b>截至 08-28')
+    .replaceAll('03:01 UTC','03:00 UTC')
+    .replaceAll('马来西亚时间 11:01','马来西亚时间 11:00')
+    .replaceAll('11:01 Malaysia time','11:00 Malaysia time')
+    .replaceAll('马来西亚 11:01','马来西亚 11:00');
 }
 
 function updateLaunch(html) {
@@ -341,8 +399,8 @@ function updateLaunch(html) {
   html = replaceFrom(html,'const AB_ALL_COUNTRIES=','const AB_WEEKLY=',`const AB_ALL_COUNTRIES=${compact(abAllCountries)};`);
   html = replaceFrom(html,'const AB_WEEKLY=','let AB_MAIN_COUNTRIES=',`const AB_WEEKLY=${compact(abWeekly)};`);
   html = replaceLine(html,'const retAll=',`const retAll=${compact(allRetention)};`);
-  html = replaceLine(html,'const RET_RANGES=',`const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-13'],w6:['08-14','08-20'],w7:['08-21','08-26']};`);
-  html = replaceLine(html,'const TREND_LABELS=',`const TREND_LABELS=['07/10-07/16','07/17-07/23','07/24-07/30','07/31-08/06','08/07-08/13','08/14-08/20','08/21-08/27*'];`);
+  html = replaceLine(html,'const RET_RANGES=',`const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-13'],w6:['08-14','08-20'],w7:['08-21','08-27']};`);
+  html = replaceLine(html,'const TREND_LABELS=',`const TREND_LABELS=['07/10-07/16','07/17-07/23','07/24-07/30','07/31-08/06','08/07-08/13','08/14-08/20','08/21-08/28*'];`);
   html = html
     .replaceAll('07-10~08-14 15:08','07-10~08-23 04:55')
     .replaceAll('2026-07-10 00:00 → 08-14 15:08(UTC)','2026-07-10 00:00 → 08-23 04:55（UTC）')
@@ -467,7 +525,7 @@ const abFlowCountries = ['all','vn','kr','sa','my','id'].map(country=>{
   return {key:country,tab:meta.tab,label:`${meta.label} · Android`,...(meta.code?{code:meta.code}:{}),a:side(a),b:side(b)};
 });
 const abDay = abCoreRows.filter(row=>row.row_type==='day'&&row.row_key.startsWith('all-')).map(row=>{
-  const match=row.row_key.match(/^all-(\d{2}-\d{2})-([ab])$/);return {d:`${match[1]}${match[1]==='08-27'?'*':''}`,g:match[2].toUpperCase(),assigned:num(row.v1),mature:num(row.v2),registered:num(row.v3),registeredRolling:num(row.v4),lessonComplete:num(row.v6),paid:null,pending:null};
+  const match=row.row_key.match(/^all-(\d{2}-\d{2})-([ab])$/);return {d:`${match[1]}${match[1]==='08-29'?'*':''}`,g:match[2].toUpperCase(),assigned:num(row.v1),mature:num(row.v2),registered:num(row.v3),registeredRolling:num(row.v4),lessonComplete:num(row.v6),paid:null,pending:null};
 });
 
 const signupRows = readRows('signup-method');
@@ -475,14 +533,14 @@ const loginFunnelRows = readRows('login-signup-funnel');
 const loginFailureRows = readRows('login-failure-reasons');
 const milestoneTimeRows = readRows('milestone-time');
 const authPeriods = [
-  {key:'all',label:'全部',start:'07-10',end:'08-27',coverage:'mixed'},
+  {key:'all',label:'全部',start:'07-10',end:'08-29',coverage:'mixed'},
   {key:'w1',label:'07-10~07-16',start:'07-10',end:'07-16',coverage:'none'},
   {key:'w2',label:'07-17~07-23',start:'07-17',end:'07-23',coverage:'none'},
   {key:'w3',label:'07-24~07-30',start:'07-24',end:'07-30',coverage:'partial'},
   {key:'w4',label:'07-31~08-06',start:'07-31',end:'08-06',coverage:'full'},
   {key:'w5',label:'08-07~08-13',start:'08-07',end:'08-13',coverage:'full'},
   {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'},
-  {key:'w7',label:'08-21~08-27*',start:'08-21',end:'08-27',coverage:'rolling'}
+  {key:'w7',label:'08-21~08-29*',start:'08-21',end:'08-29',coverage:'rolling'}
 ];
 const authLoginFunnel = loginFunnelRows.map(row=>({
   period:row.period_key,country:row.country_code,method:row.method_key,
@@ -501,7 +559,7 @@ const authData = Object.fromEntries(authCountries.map(country=>[country,authDays
 })]));
 const registrationDaily = [...new Set(signupRows.map(row=>row.cohort_date))].sort().map(day=>{
   const rows=signupRows.filter(row=>row.cohort_date===day),sum=key=>rows.reduce((total,row)=>total+num(row[key]),0);
-  return {d:`${day.slice(5)}${day==='2026-08-27'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
+  return {d:`${day.slice(5)}${day==='2026-08-29'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
 });
 const milestoneTime = Object.fromEntries(['all','android','ios'].map(platform=>[platform,
   Object.fromEntries(['auth_complete','lesson_start','lesson_complete','payment'].map(milestone=>{
@@ -518,7 +576,7 @@ const retentionSegments = retentionRows.filter(row=>row.row_type==='segment');
 const ret = allRetention;
 const segLabels={completed_trial:'当日完成首课',registered_no_trial:'当日注册·未完课',not_registered:'当日未注册'};
 const workbenchSeg = ['completed_trial','registered_no_trial','not_registered'].map(key=>{const row=retentionSegments.find(item=>item.row_key===key);return [segLabels[key],num(row.devices),num(row.v1)];});
-const curveLabels={d1:'D1 次日(07-10~08-25 cohort)',d3:'D3 第 3 天(07-10~08-23 cohort)',d7:'D7 第 7 天(07-10~08-19 cohort)'};
+const curveLabels={d1:'D1 次日(07-10~08-26 cohort)',d3:'D3 第 3 天(07-10~08-24 cohort)',d7:'D7 第 7 天(07-10~08-20 cohort)'};
 const workbenchCurve=['d1','d3','d7'].map(key=>{const row=retentionCurve.find(item=>item.row_key===key);return [curveLabels[key],num(row.devices),num(row.v1)];});
 
 const paymentRows = readRows('workbench-payment');
@@ -563,7 +621,7 @@ const skin={
   wearingTop:skinMysql[5],
   ga4:readRows('skin-ga4')
 };
-const refreshedSnapshot={cutoff,completeDay:'2026-08-26',newcomer,skin,payment:{total:paymentTotal,surfaceTotals,clientFunnel,orderOutcomes,pendingHealth,actionStats,checkoutTotal:checkoutSources.reduce((s,r)=>s+r[1],0)}};
+const refreshedSnapshot={cutoff,completeDay:'2026-08-28',newcomer,skin,payment:{total:paymentTotal,surfaceTotals,clientFunnel,orderOutcomes,pendingHealth,actionStats,checkoutTotal:checkoutSources.reduce((s,r)=>s+r[1],0)}};
 
 function updateWorkbench(html) {
   const previousSnapshot = html.indexOf('\n/* 统一实时快照：');
@@ -591,7 +649,7 @@ function updateWorkbench(html) {
   html=replaceFrom(html,'const AB_DAY=','const AB_HEALTH=',`const AB_DAY=${compact(abDay)};`);
   html=replaceFrom(html,'const AB_HEALTH=','const AB_LESSON=',`const AB_HEALTH=${compact(abHealth)};`);
   html=replaceFrom(html,'const AB_LESSON=','const AB_B_ONBOARDING_LESSON=',`const AB_LESSON=${compact(abLesson)};`);
-  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册与里程碑时长最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-27'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
+  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册与里程碑时长最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-29'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
   html=replaceFrom(html,'const RET=','// Push · Firebase 自动通知事件',`const RET=${compact(ret)};\nconst SEG=${compact(workbenchSeg)};\nconst CURVE=${compact(workbenchCurve)};\n`);
   while (html.includes('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件')) {
     html=html.replace('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件','// Push · Firebase 自动通知事件');
