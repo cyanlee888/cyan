@@ -4,8 +4,8 @@
 -- D1 uses first-open cohorts inside the selected period and observes foreground activity
 -- on the next UTC calendar day; only cohorts with a complete D1 window are included.
 
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-29 03:00:53+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-28';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-31 03:01:24+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-30';
 
 WITH periods AS (
   SELECT * FROM UNNEST([
@@ -41,7 +41,7 @@ raw_base AS (
     user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^[0-9]{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260827'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260829'
 
   UNION ALL
 
@@ -54,7 +54,7 @@ raw_base AS (
     event_params,
     user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
+  WHERE _TABLE_SUFFIX BETWEEN '20260830' AND '20260831'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id

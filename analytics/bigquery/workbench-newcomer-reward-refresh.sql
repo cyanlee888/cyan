@@ -1,12 +1,13 @@
 -- 详细数据工作台：V1.5.1 签到欢迎礼核心数据刷新。
--- 业务口径只纳入五个核心国家（越南、韩国、沙特、马来西亚、印度尼西亚），
--- 活动同时覆盖新注册与既有注册用户；排除 user_type=test、debug_event=1，
--- 并按账号去重；时间统一使用 UTC。新注册账号仅作为单独分析子群。
--- 当前线上只发现 newcomer_checkin_reward_grant 与 newcomer_visit_reward_entry，
--- PRD 中 unlock / calendar / claim / continue / close 事件暂未进入 GA4，不能计算完整曝光领取漏斗。
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-29 03:00:53+00';
-DECLARE complete_day DATE DEFAULT DATE '2026-08-28';
+-- 运营漏斗使用 08-15 起可用的 calendar / claim 新埋点，覆盖实际观测到的全部国家；
+-- 留存影响继续使用越南、韩国、沙特、马来西亚、印度尼西亚五国成功发奖 cohort。
+-- 两层均排除 user_type=test、debug_event=1，时间统一使用 UTC。
+-- 当前可回答面板曝光来源、可领取曝光→点击、点击→成功发奖；
+-- 资格 / unlock、随机 holdout、continue / close 仍缺失，不能计算资格覆盖率或留存因果净提升。
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-31 03:01:24+00';
+DECLARE complete_day DATE DEFAULT DATE '2026-08-30';
 DECLARE feature_start_day DATE DEFAULT DATE '2026-08-08';
+DECLARE panel_start_day DATE DEFAULT DATE '2026-08-15';
 
 CREATE TEMP TABLE raw_events AS
 WITH raw_base AS (
@@ -16,14 +17,14 @@ WITH raw_base AS (
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260801' AND '20260827'
+    AND _TABLE_SUFFIX BETWEEN '20260801' AND '20260829'
   UNION ALL
   SELECT
     event_timestamp, event_name, user_pseudo_id, user_id, platform,
     app_info.version AS app_version, geo.country AS country,
     event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
+  WHERE _TABLE_SUFFIX BETWEEN '20260830' AND '20260831'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -57,7 +58,10 @@ SELECT
     (SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'event_id'),
     r.event_name
   ) AS anchor,
-  (SELECT ep.value.int_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'content_index') AS content_index,
+  COALESCE(
+    (SELECT ep.value.int_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'content_index'),
+    SAFE_CAST((SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'content_index') AS INT64)
+  ) AS content_index,
   COALESCE(
     (SELECT ep.value.int_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'is_success'),
     SAFE_CAST((SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'is_success') AS INT64)
@@ -68,6 +72,7 @@ SELECT
     (SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'result')
   )) AS success_value,
   (SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'source') AS source,
+  (SELECT ep.value.string_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'status') AS status,
   COALESCE((SELECT ep.value.int_value FROM UNNEST(r.event_params) ep WHERE ep.key = 'debug_event'), 0) AS debug_event
 FROM raw_base r
 LEFT JOIN test_devices td USING (user_pseudo_id)
@@ -84,12 +89,48 @@ SELECT *,
   country IN ('Vietnam', 'South Korea', 'Saudi Arabia', 'Malaysia', 'Indonesia') AS is_core_country
 FROM raw_events
 WHERE debug_event = 0
-  AND anchor IN ('newcomer_checkin_reward_grant', 'newcomer_visit_reward_entry');
+  AND anchor IN (
+    'newcomer_checkin_reward_grant',
+    'newcomer_visit_reward_grant',
+    'newcomer_visit_reward_entry',
+    'newcomer_visit_reward_calendar',
+    'newcomer_visit_reward_claim'
+  );
+
+CREATE TEMP TABLE panel_calendar AS
+SELECT *
+FROM reward_events
+WHERE anchor = 'newcomer_visit_reward_calendar'
+  AND event_day >= panel_start_day;
+
+CREATE TEMP TABLE panel_claims AS
+SELECT *
+FROM reward_events
+WHERE anchor = 'newcomer_visit_reward_claim'
+  AND event_day >= panel_start_day;
+
+-- 同设备、同来源、同签到天数、同自然日只保留第一次可领取 / 重试曝光。
+CREATE TEMP TABLE panel_claimable_attempts AS
+SELECT
+  event_day, platform, country, app_version, user_pseudo_id, account_id,
+  COALESCE(source, '__missing__') AS source, content_index,
+  MIN(event_ts) AS exposure_ts
+FROM panel_calendar
+WHERE status IN ('claimable', 'retry')
+GROUP BY event_day, platform, country, app_version, user_pseudo_id, account_id, source, content_index;
+
+CREATE TEMP TABLE panel_claim_attempts AS
+SELECT
+  event_day, platform, user_pseudo_id, account_id,
+  COALESCE(source, '__missing__') AS source, content_index,
+  MIN(event_ts) AS claim_ts
+FROM panel_claims
+GROUP BY event_day, platform, user_pseudo_id, account_id, source, content_index;
 
 CREATE TEMP TABLE grants AS
 SELECT *
 FROM reward_events
-WHERE anchor = 'newcomer_checkin_reward_grant'
+WHERE anchor IN ('newcomer_checkin_reward_grant', 'newcomer_visit_reward_grant')
   AND account_id IS NOT NULL;
 
 CREATE TEMP TABLE successful_core_grants AS
@@ -342,6 +383,153 @@ FROM (
 );
 
 -- 单表输出，便于刷新 HTML。v1 / v2 / v3 的含义由 row_type 决定。
+SELECT
+  'panel_summary' AS row_type,
+  'exposure' AS row_key,
+  '面板曝光事件 / 设备 / 账号' AS label,
+  COUNT(*) AS v1,
+  COUNT(DISTINCT user_pseudo_id) AS v2,
+  COUNT(DISTINCT account_id) AS v3,
+  NULL AS rate
+FROM panel_calendar
+
+UNION ALL
+SELECT
+  'panel_summary', 'claim', '领取点击事件 / 设备 / 账号',
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id), NULL
+FROM panel_claims
+
+UNION ALL
+SELECT
+  'panel_source', COALESCE(source, '__missing__'), COALESCE(source, '缺失'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY source
+
+UNION ALL
+SELECT
+  'panel_claim_source', COALESCE(source, '__missing__'), COALESCE(source, '缺失'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_claims)) * 100
+FROM panel_claims
+GROUP BY source
+
+UNION ALL
+SELECT
+  'panel_platform_source', CONCAT(platform, '|', COALESCE(source, '__missing__')),
+  CONCAT(platform, ' · ', COALESCE(source, '缺失')),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY platform, source
+
+UNION ALL
+SELECT
+  'panel_country', COALESCE(country, '__missing__'), COALESCE(country, '缺失'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY country
+
+UNION ALL
+SELECT
+  'panel_version', COALESCE(app_version, '__missing__'), COALESCE(app_version, '缺失'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY app_version
+
+UNION ALL
+SELECT
+  'panel_scope',
+  IF(is_core_country, 'core5', 'outside_core5'),
+  IF(is_core_country, '原五国范围', '原五国范围外'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY is_core_country
+
+UNION ALL
+SELECT
+  'panel_status', COALESCE(status, '__missing__'), COALESCE(status, '缺失'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY status
+
+UNION ALL
+SELECT
+  'panel_content', CAST(content_index AS STRING), CONCAT('签到第 ', CAST(content_index AS STRING), ' 天'),
+  COUNT(*), COUNT(DISTINCT user_pseudo_id), COUNT(DISTINCT account_id),
+  SAFE_DIVIDE(COUNT(*), (SELECT COUNT(*) FROM panel_calendar)) * 100
+FROM panel_calendar
+GROUP BY content_index
+
+UNION ALL
+SELECT
+  'panel_funnel', e.source, CONCAT(e.source, ' · 可领取曝光→领取点击'),
+  COUNT(*) AS exposure_attempts,
+  COUNTIF(EXISTS (
+    SELECT 1
+    FROM panel_claims c
+    WHERE c.user_pseudo_id = e.user_pseudo_id
+      AND COALESCE(c.source, '__missing__') = e.source
+      AND c.content_index = e.content_index
+      AND c.event_ts BETWEEN e.exposure_ts AND TIMESTAMP_ADD(e.exposure_ts, INTERVAL 30 MINUTE)
+  )) AS matched_claims,
+  COUNT(DISTINCT e.user_pseudo_id) AS exposure_devices,
+  SAFE_DIVIDE(
+    COUNTIF(EXISTS (
+      SELECT 1
+      FROM panel_claims c
+      WHERE c.user_pseudo_id = e.user_pseudo_id
+        AND COALESCE(c.source, '__missing__') = e.source
+        AND c.content_index = e.content_index
+        AND c.event_ts BETWEEN e.exposure_ts AND TIMESTAMP_ADD(e.exposure_ts, INTERVAL 30 MINUTE)
+    )),
+    COUNT(*)
+  ) * 100 AS rate
+FROM panel_claimable_attempts e
+GROUP BY e.source
+
+UNION ALL
+SELECT
+  'panel_grant', c.source, CONCAT(c.source, ' · 点击→成功发奖'),
+  COUNT(*) AS claim_attempts,
+  COUNTIF(EXISTS (
+    SELECT 1
+    FROM reward_events g
+    WHERE g.anchor IN ('newcomer_checkin_reward_grant', 'newcomer_visit_reward_grant')
+      AND (g.user_pseudo_id = c.user_pseudo_id OR (c.account_id IS NOT NULL AND g.account_id = c.account_id))
+      AND g.content_index = c.content_index
+      AND g.event_ts BETWEEN c.claim_ts AND TIMESTAMP_ADD(c.claim_ts, INTERVAL 30 MINUTE)
+      AND g.is_success = 1
+  )) AS matched_success,
+  COUNTIF(EXISTS (
+    SELECT 1
+    FROM reward_events g
+    WHERE g.anchor IN ('newcomer_checkin_reward_grant', 'newcomer_visit_reward_grant')
+      AND (g.user_pseudo_id = c.user_pseudo_id OR (c.account_id IS NOT NULL AND g.account_id = c.account_id))
+      AND g.content_index = c.content_index
+      AND g.event_ts BETWEEN c.claim_ts AND TIMESTAMP_ADD(c.claim_ts, INTERVAL 30 MINUTE)
+  )) AS matched_any_grant,
+  SAFE_DIVIDE(
+    COUNTIF(EXISTS (
+      SELECT 1
+      FROM reward_events g
+      WHERE g.anchor IN ('newcomer_checkin_reward_grant', 'newcomer_visit_reward_grant')
+        AND (g.user_pseudo_id = c.user_pseudo_id OR (c.account_id IS NOT NULL AND g.account_id = c.account_id))
+        AND g.content_index = c.content_index
+        AND g.event_ts BETWEEN c.claim_ts AND TIMESTAMP_ADD(c.claim_ts, INTERVAL 30 MINUTE)
+        AND g.is_success = 1
+    )),
+    COUNT(*)
+  ) * 100 AS rate
+FROM panel_claim_attempts c
+GROUP BY c.source
+
+UNION ALL
 SELECT
   'summary' AS row_type,
   'grant' AS row_key,

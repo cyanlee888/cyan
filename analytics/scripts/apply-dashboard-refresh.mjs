@@ -29,8 +29,8 @@ const mapBy = (rows, keyFn) => new Map(rows.map(row => [keyFn(row), row]));
 const metricValue = (metrics, key) => Number(metrics.get(key) || 0);
 const pct = (value, total, digits = 1) => total ? (value / total * 100).toFixed(digits) : '0.0';
 
-const cutoff = '2026-08-29 03:00 UTC';
-const cutoffShort = '08-29 03:00';
+const cutoff = '2026-08-31 03:01 UTC';
+const cutoffShort = '08-31 03:01';
 const periods = ['all', 'w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7'];
 const countries = ['vn', 'kr', 'sa', 'my', 'id', 'th'];
 const countryMeta = {
@@ -193,14 +193,14 @@ const abAllCountries = makeAbCountries('all');
 const abWeekly = {w4:makeAbCountries('w4'),w5:makeAbCountries('w5'),w6:makeAbCountries('w6'),w7:makeAbCountries('w7')};
 
 const periodConfig = [
-  {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-29 03:00',statusEn:'Full period · Complete UTC days through Aug 28 + rolling Aug 29',statusZh:'全周期 · 完整 UTC 日截至 08-28 + 08-29 滚动数据'},
+  {key:'all',tabEn:'All',tabZh:'全部',label:'07-10~08-31 03:01',statusEn:'Full period · Complete UTC days through Aug 30 + rolling Aug 31',statusZh:'全周期 · 完整 UTC 日截至 08-30 + 08-31 滚动数据'},
   {key:'w1',tabEn:'07-10~07-16',tabZh:'07-10~07-16',label:'07-10~07-16',statusEn:'Week 1 · Complete UTC week',statusZh:'第 1 周 · UTC 完整周'},
   {key:'w2',tabEn:'07-17~07-23',tabZh:'07-17~07-23',label:'07-17~07-23',statusEn:'Week 2 · Complete UTC week',statusZh:'第 2 周 · UTC 完整周'},
   {key:'w3',tabEn:'07-24~07-30',tabZh:'07-24~07-30',label:'07-24~07-30',statusEn:'Week 3 · Complete UTC week',statusZh:'第 3 周 · UTC 完整周'},
   {key:'w4',tabEn:'07-31~08-06',tabZh:'07-31~08-06',label:'07-31~08-06',statusEn:'Week 4 · A/B calculated from Aug 1',statusZh:'第 4 周 · A/B 从 08-01 起计算'},
   {key:'w5',tabEn:'08-07~08-13',tabZh:'08-07~08-13',label:'08-07~08-13',statusEn:'Week 5 · Complete UTC week',statusZh:'第 5 周 · UTC 完整周'},
   {key:'w6',tabEn:'08-14~08-20',tabZh:'08-14~08-20',label:'08-14~08-20',statusEn:'Week 6 · Complete UTC week',statusZh:'第 6 周 · UTC 完整周'},
-  {key:'w7',tabEn:'08-21~08-29',tabZh:'08-21~08-29',label:'08-21~08-29 03:00',statusEn:'Week 7 · Rolling through Aug 29 03:00 UTC',statusZh:'第 7 周 · 截至 08-29 03:00 UTC 的滚动周期'}
+  {key:'w7',tabEn:'08-21~08-31',tabZh:'08-21~08-31',label:'08-21~08-31 03:01',statusEn:'Week 7 · Rolling through Aug 31 03:01 UTC',statusZh:'第 7 周 · 截至 08-31 03:01 UTC 的滚动周期'}
 ];
 
 function normalizeForCurrentCutoff(html) {
@@ -365,7 +365,65 @@ function normalizeForCurrentCutoff(html) {
     .replaceAll('03:01 UTC','03:00 UTC')
     .replaceAll('马来西亚时间 11:01','马来西亚时间 11:00')
     .replaceAll('11:01 Malaysia time','11:00 Malaysia time')
-    .replaceAll('马来西亚 11:01','马来西亚 11:00');
+    .replaceAll('马来西亚 11:01','马来西亚 11:00')
+    .replaceAll('2026-08-29 03:00 UTC','2026-08-30 05:11 UTC')
+    .replaceAll('2026-08-29 03:00','2026-08-30 05:11')
+    .replaceAll('08-29 03:00 UTC','08-30 05:11 UTC')
+    .replaceAll('08-29 03:00','08-30 05:11')
+    .replaceAll('2026-08-29*','2026-08-30*')
+    .replaceAll('08-29*','08-30*')
+    .replaceAll('08-28 是最近完整日','08-29 是最近完整日')
+    .replaceAll('08-28 为最近完整 UTC 日，08-29 为滚动日','08-29 为最近完整 UTC 日，08-30 为滚动日')
+    .replaceAll('Aug 28 is the latest complete UTC day; Aug 29 is rolling','Aug 29 is the latest complete UTC day; Aug 30 is rolling')
+    .replaceAll('截至 08-28；08-29* 为滚动日','截至 08-29；08-30* 为滚动日')
+    .replaceAll('最近三个完整日 08-26~28','最近三个完整日 08-27~29')
+    .replaceAll('当前日表到 08-27，08-28~29 补 intraday','当前日表到 08-28，08-29~30 补 intraday')
+    .replaceAll('08-27 及以前使用日表，08-28~29 补 intraday','08-28 及以前使用日表，08-29~30 补 intraday')
+    .replaceAll('07-10~08-27 使用日表，08-28~29 使用 intraday 数据','07-10~08-28 使用日表，08-29~30 使用 intraday 数据')
+    .replaceAll('07-10~08-27 日表 + 08-28~29 intraday','07-10~08-28 日表 + 08-29~30 intraday')
+    .replaceAll('daily tables Jul 10–Aug 27 + intraday Aug 28–29','daily tables Jul 10–Aug 28 + intraday Aug 29–30')
+    .replaceAll('D1 可测至 08-27、D3 至 08-25、D7 至 08-21','D1 可测至 08-28、D3 至 08-26、D7 至 08-22')
+    .replaceAll('Retention is exact-day (D1 through Aug 27, D3 through Aug 25, D7 through Aug 21).','Retention is exact-day (D1 through Aug 28, D3 through Aug 26, D7 through Aug 22).')
+    .replaceAll('D1 is measurable through Aug 27, D3 through Aug 25, and D7 through Aug 21.','D1 is measurable through Aug 28, D3 through Aug 26, and D7 through Aug 22.')
+    .replaceAll('The latest payment-source record in this refresh is within the Aug 29 03:00 UTC cutoff.','The latest payment-source record in this refresh is within the Aug 30 05:11 UTC cutoff.')
+    .replaceAll('50 个完整 UTC 日 + 08-29 滚动','51 个完整 UTC 日 + 08-30 滚动')
+    .replaceAll('6 complete UTC weeks + Aug 21–29 rolling through 03:00 UTC','6 complete UTC weeks + Aug 21–30 rolling through 05:11 UTC')
+    .replaceAll('UTC 日 07-10~08-28（08-29* 截止 03:00 UTC）','UTC 日 07-10~08-29（08-30* 截止 05:11 UTC）')
+    .replaceAll("row_key==='2026-08-29'","row_key==='2026-08-30'")
+    .replaceAll('完整日:</b>截至 08-28','完整日:</b>截至 08-29')
+    .replaceAll('03:00 UTC','05:11 UTC')
+    .replaceAll('马来西亚时间 11:00','马来西亚时间 13:11')
+    .replaceAll('11:00 Malaysia time','13:11 Malaysia time')
+    .replaceAll('马来西亚 11:00','马来西亚 13:11')
+    .replaceAll('2026-08-30 05:11 UTC','2026-08-31 03:01 UTC')
+    .replaceAll('2026-08-30 05:11','2026-08-31 03:01')
+    .replaceAll('08-30 05:11 UTC','08-31 03:01 UTC')
+    .replaceAll('08-30 05:11','08-31 03:01')
+    .replaceAll('2026-08-30*','2026-08-31*')
+    .replaceAll('08-30*','08-31*')
+    .replaceAll('08-29 是最近完整日','08-30 是最近完整日')
+    .replaceAll('08-29 为最近完整 UTC 日，08-30 为滚动日','08-30 为最近完整 UTC 日，08-31 为滚动日')
+    .replaceAll('Aug 29 is the latest complete UTC day; Aug 30 is rolling','Aug 30 is the latest complete UTC day; Aug 31 is rolling')
+    .replaceAll('截至 08-29；08-30* 为滚动日','截至 08-30；08-31* 为滚动日')
+    .replaceAll('最近三个完整日 08-27~29','最近三个完整日 08-28~30')
+    .replaceAll('当前日表到 08-28，08-29~30 补 intraday','当前日表到 08-29，08-30~31 补 intraday')
+    .replaceAll('08-28 及以前使用日表，08-29~30 补 intraday','08-29 及以前使用日表，08-30~31 补 intraday')
+    .replaceAll('07-10~08-28 使用日表，08-29~30 使用 intraday 数据','07-10~08-29 使用日表，08-30~31 使用 intraday 数据')
+    .replaceAll('07-10~08-28 日表 + 08-29~30 intraday','07-10~08-29 日表 + 08-30~31 intraday')
+    .replaceAll('daily tables Jul 10–Aug 28 + intraday Aug 29–30','daily tables Jul 10–Aug 29 + intraday Aug 30–31')
+    .replaceAll('D1 可测至 08-28、D3 至 08-26、D7 至 08-22','D1 可测至 08-29、D3 至 08-27、D7 至 08-23')
+    .replaceAll('Retention is exact-day (D1 through Aug 28, D3 through Aug 26, D7 through Aug 22).','Retention is exact-day (D1 through Aug 29, D3 through Aug 27, D7 through Aug 23).')
+    .replaceAll('D1 is measurable through Aug 28, D3 through Aug 26, and D7 through Aug 22.','D1 is measurable through Aug 29, D3 through Aug 27, and D7 through Aug 23.')
+    .replaceAll('The latest payment-source record in this refresh is within the Aug 30 05:11 UTC cutoff.','The latest payment-source record in this refresh is within the Aug 31 03:01 UTC cutoff.')
+    .replaceAll('51 个完整 UTC 日 + 08-30 滚动','52 个完整 UTC 日 + 08-31 滚动')
+    .replaceAll('6 complete UTC weeks + Aug 21–30 rolling through 05:11 UTC','6 complete UTC weeks + Aug 21–31 rolling through 03:01 UTC')
+    .replaceAll('UTC 日 07-10~08-29（08-30* 截止 05:11 UTC）','UTC 日 07-10~08-30（08-31* 截止 03:01 UTC）')
+    .replaceAll("row_key==='2026-08-30'","row_key==='2026-08-31'")
+    .replaceAll('完整日:</b>截至 08-29','完整日:</b>截至 08-30')
+    .replaceAll('05:11 UTC','03:01 UTC')
+    .replaceAll('马来西亚时间 13:11','马来西亚时间 11:01')
+    .replaceAll('13:11 Malaysia time','11:01 Malaysia time')
+    .replaceAll('马来西亚 13:11','马来西亚 11:01');
 }
 
 function updateLaunch(html) {
@@ -399,8 +457,8 @@ function updateLaunch(html) {
   html = replaceFrom(html,'const AB_ALL_COUNTRIES=','const AB_WEEKLY=',`const AB_ALL_COUNTRIES=${compact(abAllCountries)};`);
   html = replaceFrom(html,'const AB_WEEKLY=','let AB_MAIN_COUNTRIES=',`const AB_WEEKLY=${compact(abWeekly)};`);
   html = replaceLine(html,'const retAll=',`const retAll=${compact(allRetention)};`);
-  html = replaceLine(html,'const RET_RANGES=',`const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-13'],w6:['08-14','08-20'],w7:['08-21','08-27']};`);
-  html = replaceLine(html,'const TREND_LABELS=',`const TREND_LABELS=['07/10-07/16','07/17-07/23','07/24-07/30','07/31-08/06','08/07-08/13','08/14-08/20','08/21-08/28*'];`);
+  html = replaceLine(html,'const RET_RANGES=',`const RET_RANGES={w1:['07-10','07-16'],w2:['07-17','07-23'],w3:['07-24','07-30'],w4:['07-31','08-06'],w5:['08-07','08-13'],w6:['08-14','08-20'],w7:['08-21','08-28']};`);
+  html = replaceLine(html,'const TREND_LABELS=',`const TREND_LABELS=['07/10-07/16','07/17-07/23','07/24-07/30','07/31-08/06','08/07-08/13','08/14-08/20','08/21-08/30*'];`);
   html = html
     .replaceAll('07-10~08-14 15:08','07-10~08-23 04:55')
     .replaceAll('2026-07-10 00:00 → 08-14 15:08(UTC)','2026-07-10 00:00 → 08-23 04:55（UTC）')
@@ -525,41 +583,28 @@ const abFlowCountries = ['all','vn','kr','sa','my','id'].map(country=>{
   return {key:country,tab:meta.tab,label:`${meta.label} · Android`,...(meta.code?{code:meta.code}:{}),a:side(a),b:side(b)};
 });
 const abDay = abCoreRows.filter(row=>row.row_type==='day'&&row.row_key.startsWith('all-')).map(row=>{
-  const match=row.row_key.match(/^all-(\d{2}-\d{2})-([ab])$/);return {d:`${match[1]}${match[1]==='08-29'?'*':''}`,g:match[2].toUpperCase(),assigned:num(row.v1),mature:num(row.v2),registered:num(row.v3),registeredRolling:num(row.v4),lessonComplete:num(row.v6),paid:null,pending:null};
+  const match=row.row_key.match(/^all-(\d{2}-\d{2})-([ab])$/);return {d:`${match[1]}${match[1]==='08-31'?'*':''}`,g:match[2].toUpperCase(),assigned:num(row.v1),mature:num(row.v2),registered:num(row.v3),registeredRolling:num(row.v4),lessonComplete:num(row.v6),paid:null,pending:null};
 });
 
 const signupRows = readRows('signup-method');
 const loginFunnelRows = readRows('login-signup-funnel');
 const loginFailureRows = readRows('login-failure-reasons');
 const milestoneTimeRows = readRows('milestone-time');
-const authPeriods = [
-  {key:'all',label:'全部',start:'07-10',end:'08-29',coverage:'mixed'},
-  {key:'w1',label:'07-10~07-16',start:'07-10',end:'07-16',coverage:'none'},
-  {key:'w2',label:'07-17~07-23',start:'07-17',end:'07-23',coverage:'none'},
-  {key:'w3',label:'07-24~07-30',start:'07-24',end:'07-30',coverage:'partial'},
-  {key:'w4',label:'07-31~08-06',start:'07-31',end:'08-06',coverage:'full'},
-  {key:'w5',label:'08-07~08-13',start:'08-07',end:'08-13',coverage:'full'},
-  {key:'w6',label:'08-14~08-20',start:'08-14',end:'08-20',coverage:'full'},
-  {key:'w7',label:'08-21~08-29*',start:'08-21',end:'08-29',coverage:'rolling'}
-];
-const authLoginFunnel = loginFunnelRows.map(row=>({
-  period:row.period_key,country:row.country_code,method:row.method_key,
-  pageView:num(row.page_view_devices),click:num(row.method_click_devices),success:num(row.auth_success_devices),
-  codeRequest:num(row.phone_code_request_devices),otpSubmit:num(row.phone_otp_submit_devices),phoneSuccess:num(row.phone_auth_success_devices)
+const authCountryMethodWindow={start:'2026-08-01',cutoff:'2026-08-31 03:01 UTC'};
+const authCountryMethodOutcomes=loginFunnelRows.map(row=>({
+  week:row.week_key,country:row.country_code,method:row.method_key,
+  clicks:num(row.click_events),clickDevices:num(row.click_devices),clickShare:num(row.click_share_pct),
+  loginSuccess:num(row.login_success_events),loginSuccessShare:num(row.login_success_share_pct),signupSuccess:num(row.signup_success_events),
+  outcomes:num(row.outcome_events),outcomeDevices:num(row.outcome_devices),success:num(row.success_outcomes),failure:num(row.failure_outcomes),deferred:num(row.deferred_outcomes),
+  successRate:num(row.success_rate_pct),coverage:num(row.outcome_coverage_pct)
 }));
-const authLoginFailures = loginFailureRows.map(row=>({
-  period:row.period_key,country:row.country_code,method:row.method_key,reason:row.reason,
-  events:num(row.failure_events),devices:num(row.failure_devices),firstDate:row.first_event_date,lastDate:row.last_event_date
+const authCountryMethodFailures=loginFailureRows.map(row=>({
+  week:row.week_key,country:row.country_code,method:row.method_key,type:row.failure_type,reason:row.reason_label,
+  events:num(row.failure_events),devices:num(row.failure_devices),share:num(row.share_within_selection_pct)
 }));
-const authDays = [...new Set(signupRows.filter(row=>row.cohort_date>='2026-07-10').map(row=>row.cohort_date))].sort();
-const authCountries = ['VN','ID','MY','SA','TH','KR','Other'];
-const authData = Object.fromEntries(authCountries.map(country=>[country,authDays.map(day=>{
-  const row=signupRows.find(item=>item.cohort_date===day&&item.country_code===country);
-  return row?[num(row.first_opens),num(row.registered),num(row.google),num(row.phone),num(row.apple),num(row.facebook),num(row.kakao),num(row.unknown)]:Array(8).fill(0);
-})]));
 const registrationDaily = [...new Set(signupRows.map(row=>row.cohort_date))].sort().map(day=>{
   const rows=signupRows.filter(row=>row.cohort_date===day),sum=key=>rows.reduce((total,row)=>total+num(row[key]),0);
-  return {d:`${day.slice(5)}${day==='2026-08-29'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
+  return {d:`${day.slice(5)}${day==='2026-08-31'?'*':''}`,n:sum('first_opens'),s:sum('registered'),an:sum('android_first_opens'),as:sum('android_registered'),iosN:sum('ios_first_opens'),iosS:sum('ios_registered')};
 });
 const milestoneTime = Object.fromEntries(['all','android','ios'].map(platform=>[platform,
   Object.fromEntries(['auth_complete','lesson_start','lesson_complete','payment'].map(milestone=>{
@@ -576,26 +621,45 @@ const retentionSegments = retentionRows.filter(row=>row.row_type==='segment');
 const ret = allRetention;
 const segLabels={completed_trial:'当日完成首课',registered_no_trial:'当日注册·未完课',not_registered:'当日未注册'};
 const workbenchSeg = ['completed_trial','registered_no_trial','not_registered'].map(key=>{const row=retentionSegments.find(item=>item.row_key===key);return [segLabels[key],num(row.devices),num(row.v1)];});
-const curveLabels={d1:'D1 次日(07-10~08-26 cohort)',d3:'D3 第 3 天(07-10~08-24 cohort)',d7:'D7 第 7 天(07-10~08-20 cohort)'};
+const curveLabels={d1:'D1 次日(07-10~08-28 cohort)',d3:'D3 第 3 天(07-10~08-26 cohort)',d7:'D7 第 7 天(07-10~08-22 cohort)'};
 const workbenchCurve=['d1','d3','d7'].map(key=>{const row=retentionCurve.find(item=>item.row_key===key);return [curveLabels[key],num(row.devices),num(row.v1)];});
 
 const paymentRows = readRows('workbench-payment');
-const paymentSection = section => paymentRows.filter(row=>row.section===section);
-const paymentTotalRow=paymentSection('order_total')[0],paymentTotal={orders:num(paymentTotalRow.v1),users:num(paymentTotalRow.v2),pending:num(paymentTotalRow.v3),production:num(paymentTotalRow.v4),sandbox:num(paymentTotalRow.v5),failed:num(paymentTotalRow.v6)};
-const surfaceTotals=Object.fromEntries(paymentSection('surface_total').map(row=>[row.row_key,{events:num(row.v1),users:num(row.v2)}]));
-const clientRow=paymentSection('client_funnel')[0],clientFunnel=[num(clientRow.v1),num(clientRow.v2),num(clientRow.v3),num(clientRow.v4)];
 const sourceName=name=>name==='__missing__'?'来源缺失':name;
-const paywallSources=paymentSection('surface_source').filter(row=>row.row_key.startsWith('paywall|')).map(row=>[row.row_key.split('|')[1],num(row.v1),num(row.v2)]);
-const discountSurface=paymentSection('surface_source').filter(row=>row.row_key.startsWith('discount|'));
-const checkoutSources=paymentSection('checkout_source').map(row=>[sourceName(row.row_key),num(row.v1),num(row.v2)]);
-const orderSources=paymentSection('order_source').map(row=>[sourceName(row.row_key),num(row.v1),num(row.v2),num(row.v3),num(row.v4),num(row.v5),num(row.v6)]);
-const orderSourceMap=new Map(orderSources.map(row=>[row[0],row]));
-const discountSources=discountSurface.map(row=>{const name=row.row_key.split('|')[1],order=orderSourceMap.get(name)||[name,0,0,0,0,0,0];return [name,num(row.v1),num(row.v2),order[1],order[4]];});
-const orderPlatforms=paymentSection('order_platform').map(row=>[row.row_key,num(row.v1),num(row.v2),num(row.v3),num(row.v4),num(row.v5),num(row.v6)]);
-const orderPeriods=paymentSection('order_period').map(row=>[row.row_key,num(row.v1),num(row.v2),num(row.v3),num(row.v4),num(row.v5),num(row.v6)]);
-const orderOutcomes=paymentSection('order_outcome').map(row=>({key:row.row_key,total:num(row.v1),pending:num(row.v2),production:num(row.v3),sandbox:num(row.v4),failed:num(row.v5)}));
-const pendingRow=paymentSection('pending_health')[0],pendingHealth={pending:num(pendingRow.v1),neverUpdated:num(pendingRow.v2),over7d:num(pendingRow.v3),blankPlatform:num(pendingRow.v4)};
-const actionStats=Object.fromEntries(paymentSection('action_stats').map(row=>[row.row_key,{events:num(row.v1),users:num(row.v2)}]));
+const paymentOutcomeKeys=['client_fail_or_cancel','unmatched_checkout_start','checkout_start_no_result','result_missing_is_success','client_success'];
+const buildPaymentWeek=week=>{
+  const section=name=>paymentRows.filter(row=>row.week_key===week&&row.section===name);
+  const totalRow=section('order_total')[0]||{},pendingRow=section('pending_health')[0]||{},retryRow=section('payment_retry_health')[0]||{},clientRow=section('client_funnel')[0]||{};
+  const orderSources=section('order_source').map(row=>[sourceName(row.row_key),num(row.v1)||0,num(row.v2)||0,num(row.v3)||0,num(row.v4)||0,num(row.v5)||0,num(row.v6)||0]);
+  const orderSourceMap=new Map(orderSources.map(row=>[row[0],row]));
+  const discountSources=section('surface_source').filter(row=>row.row_key.startsWith('discount|')).map(row=>{
+    const name=row.row_key.split('|')[1],order=orderSourceMap.get(name)||[name,0,0,0,0,0,0];
+    return [name,num(row.v1)||0,num(row.v2)||0,order[1],order[4]];
+  });
+  const outcomeMap=new Map(section('order_outcome').map(row=>[row.row_key,row]));
+  const totals=Object.fromEntries(section('surface_total').map(row=>[row.row_key,{events:num(row.v1)||0,users:num(row.v2)||0}]));
+  return {
+    total:{orders:num(totalRow.v1)||0,users:num(totalRow.v2)||0,pending:num(totalRow.v3)||0,production:num(totalRow.v4)||0,sandbox:num(totalRow.v5)||0,failed:num(totalRow.v6)||0},
+    surfaceTotals:{any:totals.any||{events:0,users:0},paywall:totals.paywall||{events:0,users:0},discount:totals.discount||{events:0,users:0}},
+    clientFunnel:[num(clientRow.v1)||0,num(clientRow.v2)||0,num(clientRow.v3)||0,num(clientRow.v4)||0],
+    paywallSources:section('surface_source').filter(row=>row.row_key.startsWith('paywall|')).map(row=>[row.row_key.split('|')[1],num(row.v1)||0,num(row.v2)||0]),
+    checkoutSources:section('checkout_source').map(row=>[sourceName(row.row_key),num(row.v1)||0,num(row.v2)||0,num(row.v3)||0]),
+    discountSources,
+    orderSources,
+    orderPlatforms:section('order_platform').map(row=>[row.row_key,num(row.v1)||0,num(row.v2)||0,num(row.v3)||0,num(row.v4)||0,num(row.v5)||0,num(row.v6)||0]),
+    orderPeriods:section('order_period').map(row=>[row.row_key,num(row.v1)||0,num(row.v2)||0,num(row.v3)||0,num(row.v4)||0,num(row.v5)||0,num(row.v6)||0]),
+    orderOutcomes:paymentOutcomeKeys.map(key=>{const row=outcomeMap.get(key)||{};return {key,total:num(row.v1)||0,pending:num(row.v2)||0,production:num(row.v3)||0,sandbox:num(row.v4)||0,failed:num(row.v5)||0,canceled:num(row.v6)||0}}),
+    pendingHealth:{pending:num(pendingRow.v1)||0,neverUpdated:num(pendingRow.v2)||0,over7d:num(pendingRow.v3)||0,blankPlatform:num(pendingRow.v4)||0},
+    retryHealth:{pairs:num(retryRow.v1)||0,retriedPairs:num(retryRow.v2)||0,pendingBefore:num(retryRow.v3)||0},
+    actionStats:Object.fromEntries(section('action_stats').map(row=>[row.row_key,{events:num(row.v1)||0,users:num(row.v2)||0}])),
+    checkoutTotal:section('checkout_source').reduce((sum,row)=>sum+(num(row.v1)||0),0)
+  };
+};
+const paymentWeekKeys=[...new Set(paymentRows.map(row=>row.week_key).filter(Boolean))];
+const paymentByWeek=Object.fromEntries(paymentWeekKeys.map(week=>[week,buildPaymentWeek(week)]));
+const paymentAll=paymentByWeek.all;
+if(!paymentAll)throw new Error('Missing all-window payment data');
+const {total:paymentTotal,surfaceTotals,clientFunnel,paywallSources,checkoutSources,discountSources,orderSources,orderPlatforms,orderPeriods,orderOutcomes,pendingHealth,actionStats}=paymentAll;
 
 const newcomerRows=readRows('workbench-newcomer');
 const newcomerBy=(type,key)=>newcomerRows.find(row=>row.row_type===type&&row.row_key===key);
@@ -621,7 +685,254 @@ const skin={
   wearingTop:skinMysql[5],
   ga4:readRows('skin-ga4')
 };
-const refreshedSnapshot={cutoff,completeDay:'2026-08-28',newcomer,skin,payment:{total:paymentTotal,surfaceTotals,clientFunnel,orderOutcomes,pendingHealth,actionStats,checkoutTotal:checkoutSources.reduce((s,r)=>s+r[1],0)}};
+const refreshedSnapshot={cutoff,completeDay:'2026-08-30',newcomer,skin,payment:paymentAll,paymentByWeek};
+
+const authCountryMethodRuntime='/* ═══════════ 国家 × 注册方式 ═══════════ */\n('+(
+function(){
+  const countries=['All','VN','ID','MY','SA','TH','KR','Other'];
+  const methods=[
+    {key:'google',label:'Google'},
+    {key:'phone',label:'Phone'},
+    {key:'apple',label:'Apple'},
+    {key:'facebook',label:'Facebook'},
+    {key:'kakao',label:'Kakao'}
+  ];
+  const methodFilters=[{key:'All',label:'全部'},...methods];
+  let currentCountry='All';
+  let currentMethod='All';
+  const fmt=value=>Number(value||0).toLocaleString();
+  const countryLabel=country=>country==='All'?'全部国家':CN[country];
+  const methodLabel=method=>methodFilters.find(item=>item.key===method)?.label||method;
+  const currentWeek=()=>globalThis.DASHBOARD_WEEK_KEY||'all';
+  const outcome=(country,method)=>AUTH_COUNTRY_METHOD_OUTCOMES.find(row=>row.week===currentWeek()&&row.country===country&&row.method===method)||{
+    clicks:0,clickDevices:0,clickShare:0,loginSuccess:0,loginSuccessShare:0,signupSuccess:0,
+    outcomes:0,outcomeDevices:0,success:0,failure:0,deferred:0,successRate:0,coverage:0
+  };
+  const outcomeRows=country=>methods.map(method=>({...method,...outcome(country,method.key)}));
+  const rateClass=rate=>rate>=65?'up':rate<50?'down':'flat';
+  const coverageClass=coverage=>coverage<80?'down':coverage>105?'warnrow':'';
+
+  el('authCountryPills').innerHTML=countries.map((country,index)=>
+    `<div class="pill${index===0?' on':''}" data-country="${country}">${country==='All'?'全部':CN[country]}</div>`
+  ).join('');
+  el('authMethodTabs').innerHTML=methodFilters.map((method,index)=>
+    `<button class="segment-tab${index===0?' on':''}" data-method="${method.key}">${method.label}</button>`
+  ).join('');
+
+  function renderKpis(){
+    const row=outcome(currentCountry,'All');
+    el('authOutcomeKpis').innerHTML=`
+      <div class="kpi"><div class="kl">方式选择事件</div><div class="kv">${fmt(row.clicks)}</div><div class="kn">${fmt(row.clickDevices)} 台设备 · 各方式占比的分母</div></div>
+      <div class="kpi"><div class="kl">服务端登录成功</div><div class="kv">${fmt(row.loginSuccess)}</div><div class="kn">login_result 仅上报成功，用于成功量核对</div></div>
+      <div class="kpi"><div class="kl">诊断成功</div><div class="kv">${fmt(row.success)}</div><div class="kn">auth_login_result 终态事件</div></div>
+      <div class="kpi warn"><div class="kl">诊断失败</div><div class="kv">${fmt(row.failure)}</div><div class="kn">用户中止 + 业务拒绝 + 技术失败</div></div>
+      <div class="kpi hot"><div class="kl">诊断成功率</div><div class="kv">${fp(row.successRate)}</div><div class="kn">成功 ÷（成功 + 失败）；不含 deferred</div></div>
+      <div class="kpi${row.coverage<80?' warn':''}"><div class="kl">诊断结果覆盖信号</div><div class="kv">${fp(row.coverage)}</div><div class="kn">终态事件 ÷ 方式点击；用于识别埋点缺口</div></div>`;
+  }
+
+  function renderOutcomeTable(){
+    const rows=outcomeRows(currentCountry);
+    el('authOutcomeTitle').textContent=`${countryLabel(currentCountry)} · 各登录方式成功与失败`;
+    const periodLabel=globalThis.dashboardWeekLabel?.()||`${AUTH_COUNTRY_METHOD_WINDOW.start} 至 ${AUTH_COUNTRY_METHOD_WINDOW.cutoff}`;
+    el('authOutcomeSubtitle').textContent=`${periodLabel}；事件量口径，点击方式可联动下方失败原因`;
+    el('authOutcomeTable').innerHTML='<tr><th>登录方式</th><th>方式选择</th><th>方式占比</th><th>诊断成功</th><th>诊断失败</th><th>成功率</th><th>覆盖信号</th><th>服务端成功</th></tr>'+rows.map(row=>{
+      const noOutcome=row.success+row.failure===0;
+      return `<tr>
+        <td><button class="deep-link auth-method-link" data-method="${row.key}">${row.label}</button></td>
+        <td><b>${fmt(row.clicks)}</b><span class="n">${fmt(row.clickDevices)} 台设备</span></td>
+        <td><b>${fp(row.clickShare)}</b></td>
+        <td class="up"><b>${fmt(row.success)}</b></td>
+        <td class="down"><b>${fmt(row.failure)}</b></td>
+        <td class="${noOutcome?'flat':rateClass(row.successRate)}"><b>${noOutcome?'—':fp(row.successRate)}</b><span class="n">${fmt(row.success+row.failure)} 个有效终态</span></td>
+        <td class="${coverageClass(row.coverage)}"><b>${row.clicks?fp(row.coverage):'—'}</b><span class="n">${fmt(row.outcomes)} 个终态</span></td>
+        <td><b>${fmt(row.loginSuccess)}</b><span class="n">注册成功 ${fmt(row.signupSuccess)}</span></td>
+      </tr>`;
+    }).join('');
+    el('authOutcomeLegend').innerHTML='<span><b>方式占比</b> 当前国家内该方式点击 ÷ 全部方式点击</span><span><b>诊断成功率</b> 成功 ÷（成功 + 失败）</span><span><b>服务端成功</b> 仅作量级校验，不作为成功率分子</span><span><b>覆盖信号</b> 可能因重试或静默回调超过 100%</span>';
+    el('authOutcomeTable').querySelectorAll('.auth-method-link').forEach(button=>button.addEventListener('click',()=>{
+      currentMethod=button.dataset.method;
+      renderMethodTabs();
+      renderFailureReasons();
+      renderNote();
+      el('authFailureTitle').scrollIntoView({behavior:'smooth',block:'center'});
+    }));
+  }
+
+  function renderMethodTabs(){
+    el('authMethodTabs').querySelectorAll('.segment-tab').forEach(tab=>tab.classList.toggle('on',tab.dataset.method===currentMethod));
+  }
+
+  function renderFailureReasons(){
+    const rows=AUTH_COUNTRY_METHOD_FAILURES
+      .filter(row=>row.week===currentWeek()&&row.country===currentCountry&&row.method===currentMethod)
+      .sort((a,b)=>b.events-a.events);
+    const methodName=currentMethod==='All'?'全部方式':methodLabel(currentMethod);
+    const total=rows.reduce((sum,row)=>sum+row.events,0);
+    const totalDevices=rows.reduce((sum,row)=>sum+row.devices,0);
+    el('authFailureTitle').textContent=`${countryLabel(currentCountry)} · ${methodName} · 失败原因`;
+    el('authFailureSubtitle').textContent='仅统计诊断终态中的 user_abort / rejected / tech_fail；同一设备可多次失败，设备列不可跨原因相加去重';
+    if(!rows.length){
+      el('authFailureTable').innerHTML='<tr><th>失败类型</th><th>失败原因</th><th>失败事件</th><th>设备</th><th>原因占比</th></tr><tr><td colspan="5" style="text-align:left;white-space:normal">当前国家与登录方式没有可归类的失败终态；不等同于真实失败为 0，请同时查看上方诊断覆盖信号。</td></tr>';
+      el('authFailureLegend').innerHTML='<span><b>当前筛选</b> 无可归类失败原因</span><span>覆盖不足时不推断失败为 0</span>';
+      return;
+    }
+    el('authFailureTable').innerHTML='<tr><th>失败类型</th><th>失败原因</th><th>失败事件</th><th>设备</th><th>原因占比</th></tr>'+rows.map(row=>
+      `<tr><td>${row.type}</td><td style="text-align:left"><b>${row.reason}</b></td><td class="down"><b>${fmt(row.events)}</b></td><td>${fmt(row.devices)}</td><td><b>${fp(row.share)}</b></td></tr>`
+    ).join('');
+    const byType=[...rows.reduce((groups,row)=>groups.set(row.type,(groups.get(row.type)||0)+row.events),new Map()).entries()].sort((a,b)=>b[1]-a[1]);
+    el('authFailureLegend').innerHTML=`<span><b>失败事件</b> ${fmt(total)} 次</span><span><b>原因行设备数相加</b> ${fmt(totalDevices)}，存在跨原因重复</span>`+byType.map(([type,count])=>`<span><b>${type}</b> ${fmt(count)} · ${fp(pct(count,total))}</span>`).join('');
+  }
+
+  function renderNote(){
+    const eligible=outcomeRows(currentCountry).filter(row=>row.success+row.failure>=50).sort((a,b)=>a.successRate-b.successRate);
+    const weakest=eligible[0];
+    const reasons=AUTH_COUNTRY_METHOD_FAILURES.filter(row=>row.week===currentWeek()&&row.country===currentCountry&&row.method===currentMethod).sort((a,b)=>b.events-a.events);
+    const lowCoverage=outcomeRows(currentCountry).filter(row=>row.clicks>=50&&row.coverage<80).map(row=>row.label);
+    const parts=[];
+    if(weakest)parts.push(`可比较样本中成功率最低的是 <b>${weakest.label} ${fp(weakest.successRate)}</b>（成功 ${fmt(weakest.success)} / 失败 ${fmt(weakest.failure)}）`);
+    if(reasons[0])parts.push(`${currentMethod==='All'?'全部方式':methodLabel(currentMethod)}首要失败原因是 <b>${reasons[0].reason}</b>，占 ${fp(reasons[0].share)}`);
+    if(lowCoverage.length)parts.push(`<b>${lowCoverage.join('、')}</b> 的诊断覆盖低于 80%，成败率需结合埋点缺口谨慎解读`);
+    el('authOutcomeNote').innerHTML=`<b>当前信号：</b>${parts.join('；')||'当前筛选暂无足够的可比较终态样本。'}。`;
+  }
+
+  function renderAll(){
+    renderKpis();
+    renderOutcomeTable();
+    renderMethodTabs();
+    renderFailureReasons();
+    renderNote();
+  }
+
+  el('authCountryPills').querySelectorAll('.pill').forEach(pill=>pill.addEventListener('click',()=>{
+    currentCountry=pill.dataset.country;
+    el('authCountryPills').querySelectorAll('.pill').forEach(item=>item.classList.toggle('on',item===pill));
+    renderAll();
+  }));
+  el('authMethodTabs').querySelectorAll('.segment-tab').forEach(tab=>tab.addEventListener('click',()=>{
+    currentMethod=tab.dataset.method;
+    renderMethodTabs();
+    renderFailureReasons();
+    renderNote();
+  }));
+  window.addEventListener('dashboard-week-change',renderAll);
+  renderAll();
+}
+).toString()+')();\n\n';
+
+const paymentWeekRuntime='/* ═══════════ 支付模块自然周联动 ═══════════ */\n('+(
+function(){
+  const snapshot=REFRESHED_SNAPSHOT;
+  const fmt=value=>Number(value||0).toLocaleString('en-US');
+  const rate=(value,total,digits=1)=>total?(Number(value)/Number(total)*100).toFixed(digits):'0.0';
+  const section=tab=>document.querySelector(`.sec[data-group="payment"][data-tab="${tab}"]`);
+  const card=(sec,title)=>[...(sec?.querySelectorAll('.card')||[])].find(item=>item.querySelector('.card-t')?.textContent.includes(title));
+  const setKpi=(sec,index,value,note)=>{const kpi=sec?.querySelectorAll('.kpi')[index];if(!kpi)return;kpi.querySelector('.kv').textContent=value;kpi.querySelector('.kn').textContent=note};
+  const emptyRow=(columns,message='所选自然周暂无数据。')=>`<tr><td colspan="${columns}" style="text-align:left;white-space:normal">${message}</td></tr>`;
+  const current=()=>snapshot.paymentByWeek?.[globalThis.DASHBOARD_WEEK_KEY||'all']||snapshot.paymentByWeek?.all;
+  const period=()=>globalThis.dashboardWeekLabel?.()||'全部数据周期';
+  const platform=(p,key)=>p.orderPlatforms.find(row=>row[0]===key)||[key,0,0,0,0,0,0];
+  const source=(p,key)=>p.orderSources.find(row=>row[0]===key)||[key,0,0,0,0,0,0];
+
+  function settlementTable(target,rows,label){
+    target.innerHTML=`<tr><th>${label}</th><th>订单</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>`+
+      (rows.length?rows.map(row=>`<tr><td>${row[0]}</td><td>${fmt(row[1])}</td><td>${fmt(row[2])}</td><td>${fmt(row[3])}</td><td${row[4]?' class="up"':''}>${fmt(row[4])}</td><td>${fmt(row[5])}</td><td>${fmt(row[6])}</td><td><b>${rate(row[4],row[1],2)}%</b></td></tr>`).join(''):emptyRow(8));
+  }
+
+  function renderOverview(p){
+    const sec=section('转化总览'),t=p.total,sf=p.surfaceTotals,cf=p.clientFunnel,missing=source(p,'来源缺失'),apple=platform(p,'APPLE'),google=platform(p,'GOOGLE');
+    if(!sec)return;
+    sec.querySelector('.sec-desc').innerHTML=`当前筛选 <b>${period()}</b>。GA4 页面触达与 checkout 按事件发生时间归周，订单按 <b>created_at</b> 归周；订单终态观察截至 ${snapshot.cutoff}。最终成功只认 <b>status=SUCCESS 且 env_type=PRODUCTION</b>。`;
+    setKpi(sec,0,fmt(sf.paywall.users),`${fmt(sf.paywall.events)} 次曝光 · GA4 设备去重`);
+    setKpi(sec,1,fmt(sf.discount.users),`${fmt(sf.discount.events)} 次曝光 · 折扣订阅页`);
+    setKpi(sec,2,fmt(sf.any.users),'Paywall 与折扣页跨页面去重');
+    setKpi(sec,3,`${rate(cf[1],cf[0])}%`,`${fmt(cf[0])} 台曝光设备中 ${fmt(cf[1])} 台在同周随后发起支付`);
+    setKpi(sec,4,`${rate(t.production,t.orders,2)}%`,`${fmt(t.production)} / ${fmt(t.orders)} 笔；PENDING ${fmt(t.pending)} 笔`);
+    setKpi(sec,5,`${rate(missing[1],t.orders)}%`,`${fmt(missing[1])} / ${fmt(t.orders)} 笔 subscription_source 为空`);
+    const flow=sec.querySelectorAll('.push-flow .flow-step'),flowValues=[[cf[0],'Paywall / 折扣页跨页面去重'],[cf[1],`${rate(cf[1],cf[0])}% · 同周可归因 checkout`],[cf[2],`${rate(cf[2],cf[1])}% · 含取消 / 失败 / 成功`],[cf[3],`${rate(cf[3],cf[2])}% · 仅诊断，不作财务口径`]];
+    flow.forEach((node,index)=>{node.querySelector('.flow-num').textContent=fmt(flowValues[index][0]);node.querySelector('.flow-rate').textContent=flowValues[index][1]});
+    const funnel=card(sec,'客户端可串联漏斗');
+    funnel.querySelector('.card-s').textContent=`${period()} · 同设备且后一步晚于前一步，跨周事件不并入所选周`;
+    const checkout=p.actionStats.subscription_checkout_start||{events:0,users:0};
+    funnel.querySelector('.legend').textContent=`全部 checkout：${fmt(checkout.events)} 次 / ${fmt(p.checkoutTotal)} 个 order_id / ${fmt(checkout.users)} 台设备；其中 ${fmt(cf[1])} 台能在同周向前串到已知付费页面。`;
+    const settle=card(sec,'生产订单结算漏斗');
+    settle.querySelector('.card-s').textContent=`${period()} 创建 · de_ods.payment_order · ${fmt(t.orders)} 笔 / ${fmt(t.users)} 个账号`;
+    settle.querySelector('table').innerHTML=`<tr><th>环节 / 状态</th><th>订单</th><th>占全部订单</th><th>说明</th></tr><tr><td>创建订单</td><td><b>${fmt(t.orders)}</b></td><td>${t.orders?'100%':'—'}</td><td>所选周创建的购买意图</td></tr><tr class="warnrow"><td>PENDING</td><td><b>${fmt(t.pending)}</b></td><td class="down">${rate(t.pending,t.orders,2)}%</td><td>截至数据截点仍未确认生产成功</td></tr><tr><td>生产成功</td><td><b>${fmt(t.production)}</b></td><td class="up">${rate(t.production,t.orders,2)}%</td><td>Apple ${fmt(apple[4])} / Google ${fmt(google[4])}</td></tr><tr><td>沙盒成功</td><td>${fmt(t.sandbox)}</td><td>${rate(t.sandbox,t.orders,2)}%</td><td>测试环境，排除商业转化</td></tr><tr><td>失败</td><td>${fmt(t.failed)}</td><td>${rate(t.failed,t.orders,2)}%</td><td>后端显式 FAILED</td></tr>`;
+    sec.querySelector('.note').innerHTML=`<b>当前周信号：</b>订单来源缺失 ${rate(missing[1],t.orders)}%，PENDING ${rate(t.pending,t.orders)}%。该周订单终态按截至 ${snapshot.cutoff} 的最新状态读取。`;
+  }
+
+  function renderDiagnostics(p){
+    const sec=section('支付结果诊断'),t=p.total,ph=p.pendingHealth,retry=p.retryHealth,outcomes=p.orderOutcomes;
+    if(!sec)return;
+    const byKey=Object.fromEntries(outcomes.map(row=>[row.key,row])),unmatched=byKey.unmatched_checkout_start,client=byKey.client_success,matched=t.orders-unmatched.total,explicit=t.production+t.sandbox+t.failed,other=Math.max(0,t.orders-t.pending-explicit);
+    sec.querySelector('.sec-desc').innerHTML=`当前筛选 <b>${period()}</b> 创建的 payment_order，并用同周 GA4 order_id 串联购买意图、商店面板与客户端结果；订单终态观察截至 ${snapshot.cutoff}。`;
+    setKpi(sec,0,fmt(t.orders),`${fmt(t.users)} 个账号 · 所选周创建`);
+    setKpi(sec,1,`${rate(t.pending,t.orders,2)}%`,`${fmt(t.pending)} 笔；截至截点仍为 PENDING`);
+    setKpi(sec,2,fmt(explicit),`生产成功 ${fmt(t.production)} · 沙盒 ${fmt(t.sandbox)} · 失败 ${fmt(t.failed)}`);
+    setKpi(sec,3,`${rate(ph.over7d,ph.pending)}%`,`${fmt(ph.over7d)} / ${fmt(ph.pending)}；按当前截点计算年龄`);
+    setKpi(sec,4,`${rate(matched,t.orders)}%`,`${fmt(matched)} / ${fmt(t.orders)} 可按同周 order_id 串联`);
+    setKpi(sec,5,`${rate(client.production,client.total)}%`,`${fmt(client.production)} / ${fmt(client.total)}；客户端成功仍 Pending ${fmt(client.pending)}`);
+    sec.querySelector('.note').innerHTML=`<b>当前周判断：</b>${fmt(t.pending)} 笔 PENDING 中，${fmt(client.pending)} 笔出现客户端成功但后端未结算；其余分布在失败 / 取消、未拉起、无结果或结果字段缺失。`;
+    const status=card(sec,'后端订单终态');
+    status.querySelector('.card-s').textContent=`${period()} 创建的订单 · 状态观察截至 ${snapshot.cutoff}`;
+    status.querySelector('table').innerHTML=`<tr><th>后端状态</th><th>订单</th><th>占全部订单</th><th>判读</th></tr><tr class="warnrow"><td>PENDING</td><td><b>${fmt(t.pending)}</b></td><td class="down">${rate(t.pending,t.orders,2)}%</td><td>截至截点尚未写入明确终态</td></tr><tr><td>SUCCESS · PRODUCTION</td><td><b>${fmt(t.production)}</b></td><td class="up">${rate(t.production,t.orders,2)}%</td><td>唯一计入商业支付成功</td></tr><tr><td>SUCCESS · SANDBOX</td><td>${fmt(t.sandbox)}</td><td>${rate(t.sandbox,t.orders,2)}%</td><td>测试环境成功</td></tr><tr><td>FAILED</td><td>${fmt(t.failed)}</td><td>${rate(t.failed,t.orders,2)}%</td><td>后端明确失败</td></tr><tr><td>CANCELED / ABANDONED / 其他</td><td>${fmt(other)}</td><td>${rate(other,t.orders,2)}%</td><td>当前订单状态字典中的其他终态</td></tr>`;
+    const outcomeCard=card(sec,'5 类互斥去向'),meta={client_fail_or_cancel:['客户端失败 / 取消','result-fail'],unmatched_checkout_start:['未匹配 checkout_start','result-unmatched'],checkout_start_no_result:['已发起但无结果','result-no-result'],result_missing_is_success:['结果缺 is_success','result-missing'],client_success:['客户端成功','result-success']};
+    outcomeCard.querySelector('.card-s').textContent=`${period()} 创建的订单；只与同周 checkout 事件串联`;
+    outcomeCard.querySelector('.result-stack').innerHTML=outcomes.map(row=>`<span class="${meta[row.key][1]}" style="width:${rate(row.total,t.orders,3)}%" title="${meta[row.key][0]} ${rate(row.total,t.orders)}%"></span>`).join('');
+    outcomeCard.querySelector('.result-keys').innerHTML=outcomes.map(row=>`<div class="result-key"><i class="${meta[row.key][1]}"></i>${meta[row.key][0]}<b>${fmt(row.total)} · ${rate(row.total,t.orders)}%</b></div>`).join('');
+    outcomeCard.querySelector('table').innerHTML='<tr><th>互斥去向</th><th>订单</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th></tr>'+outcomes.map(row=>`<tr${row.pending&&row.key!=='client_success'?' class="warnrow"':''}><td>${meta[row.key][0]}</td><td>${fmt(row.total)}</td><td>${fmt(row.pending)}</td><td>${fmt(row.production)}</td><td>${fmt(row.sandbox)}</td><td>${fmt(row.failed)}</td></tr>`).join('');
+    const health=card(sec,'Pending 状态健康检查').querySelectorAll('.mv');
+    const healthValues=[[`${rate(ph.neverUpdated,ph.pending)}%`,`${fmt(ph.neverUpdated)} / ${fmt(ph.pending)}`],[`${rate(ph.blankPlatform,ph.pending)}%`,`${fmt(ph.blankPlatform)} / ${fmt(ph.pending)}`],[`${rate(ph.over7d,ph.pending)}%`,`${fmt(ph.over7d)} / ${fmt(ph.pending)}`],[fmt(client.pending),'客户端成功但后端未成功']];
+    health.forEach((node,index)=>node.innerHTML=`${healthValues[index][0]}<span class="sub2">${healthValues[index][1]}</span>`);
+    const retryNodes=card(sec,'重复尝试造成的 Pending 膨胀').querySelectorAll('.mv');
+    retryNodes[0].textContent=fmt(retry.pairs);retryNodes[1].innerHTML=`${fmt(retry.retriedPairs)}<span class="sub2">${rate(retry.retriedPairs,retry.pairs)}%</span>`;retryNodes[2].textContent=fmt(retry.pendingBefore);
+  }
+
+  function renderPaywall(p){
+    const sec=section('Paywall 来源'),paywall=p.surfaceTotals.paywall,checkoutTotal=p.checkoutTotal;
+    if(!sec)return;
+    sec.querySelector('.sec-desc').innerHTML=`当前筛选 <b>${period()}</b> 的 Paywall 曝光与 checkout_start；均按 GA4 事件发生时间归周。UV 在来源内去重，同一设备跨来源会重复。`;
+    const sourceCard=card(sec,'Paywall 曝光来源');sourceCard.querySelector('.card-s').textContent=`${period()} · ${fmt(paywall.events)} 次曝光 · ${fmt(paywall.users)} 台去重设备`;
+    sec.querySelector('#paywallSourceTable').innerHTML='<tr><th>subscription_source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th></tr>'+(p.paywallSources.length?p.paywallSources.map(row=>`<tr><td>${row[0]}</td><td>${fmt(row[1])}</td><td><b>${rate(row[1],paywall.events)}%</b></td><td>${fmt(row[2])}</td></tr>`).join(''):emptyRow(4));
+    const checkoutCard=card(sec,'支付发起来源');checkoutCard.querySelector('.card-s').textContent=`${period()} · ${fmt(checkoutTotal)} 个 order_id；source 缺失单列`;
+    sec.querySelector('#checkoutSourceTable').innerHTML='<tr><th>来源</th><th>order_id</th><th>占支付发起</th><th>来源内设备 UV</th></tr>'+(p.checkoutSources.length?p.checkoutSources.map(row=>`<tr${row[0]==='来源缺失'?' class="warnrow"':''}><td>${row[0]}</td><td>${fmt(row[1])}</td><td${row[0]==='来源缺失'?' class="down"':''}>${rate(row[1],checkoutTotal)}%</td><td>${fmt(row[2])}</td></tr>`).join(''):emptyRow(4));
+    const missing=p.checkoutSources.find(row=>row[0]==='来源缺失')||['来源缺失',0,0];
+    sec.querySelector('.tip').innerHTML=`<b>解释边界：</b>曝光来源与支付发起来源不能直接逐行相除；当前周 ${rate(missing[1],checkoutTotal)}% checkout order_id 缺 source。`;
+  }
+
+  function renderDiscount(p){
+    const sec=section('折扣订阅'),discount=p.surfaceTotals.discount,t=p.total;
+    if(!sec)return;
+    sec.querySelector('.sec-desc').innerHTML=`当前筛选 <b>${period()}</b>：折扣曝光按 GA4 事件发生周，订单与生产成功按订单创建周；设备与账号口径不同，不计算“订单 ÷ UV”。`;
+    const main=card(sec,'折扣入口');main.querySelector('.card-s').textContent=`曝光占比按 ${fmt(discount.events)} 次折扣页曝光计算；订单成功率在同周创建订单内计算`;
+    sec.querySelector('#discountSourceTable').innerHTML='<tr><th>source</th><th>曝光次数</th><th>曝光占比</th><th>设备 UV</th><th>订单</th><th>生产成功</th><th>订单成功率</th></tr>'+(p.discountSources.length?p.discountSources.map(row=>`<tr><td>${row[0]}</td><td>${fmt(row[1])}</td><td>${rate(row[1],discount.events)}%</td><td>${fmt(row[2])}</td><td>${fmt(row[3])}</td><td>${fmt(row[4])}</td><td>${rate(row[4],row[3],2)}%</td></tr>`).join(''):emptyRow(7));
+    const groups=[['取消 / 关闭 Paywall 挽留',['winback_paywall_close','winback_payment_cancel']],['每日折扣（两代命名）',['daily_offer','winback_daily_launch']],['留存挽回',['winback_retention']]].map(([label,keys])=>{const rows=keys.map(key=>source(p,key));return [label,rows.reduce((sum,row)=>sum+row[1],0),rows.reduce((sum,row)=>sum+row[4],0)]});
+    const totalOrders=groups.reduce((sum,row)=>sum+row[1],0),totalSuccess=groups.reduce((sum,row)=>sum+row[2],0),contribution=card(sec,'折扣来源生产成功贡献');
+    contribution.querySelector('.card-s').textContent=`${period()} · 成功贡献以 ${fmt(t.production)} 笔生产成功订单为分母`;
+    contribution.querySelector('table').innerHTML='<tr><th>来源集合</th><th>订单</th><th>生产成功</th><th>成功贡献</th></tr>'+groups.map(row=>`<tr><td>${row[0]}</td><td>${fmt(row[1])}</td><td>${fmt(row[2])}</td><td>${rate(row[2],t.production)}%</td></tr>`).join('')+`<tr><td>折扣 / 挽留合计</td><td><b>${fmt(totalOrders)}</b></td><td><b>${fmt(totalSuccess)}</b></td><td><b>${rate(totalSuccess,t.production)}%</b></td></tr>`;
+    const cancel=source(p,'winback_payment_cancel'),close=source(p,'winback_paywall_close'),tips=card(sec,'读数建议').querySelectorAll('.tip');
+    tips[0].innerHTML=`<b>取消支付挽留</b>同周创建订单成功率 ${rate(cancel[4],cancel[1],2)}%（${fmt(cancel[4])} / ${fmt(cancel[1])}）；无随机对照时不作因果解释。`;
+    tips[1].innerHTML=`<b>关闭 Paywall 挽留</b>占当前周折扣曝光 ${rate((p.discountSources.find(row=>row[0]==='winback_paywall_close')||['',0])[1],discount.events)}%，生产成功 ${fmt(close[4])} 单。`;
+  }
+
+  function renderOrders(p){
+    const sec=section('订单来源'),t=p.total,missing=source(p,'来源缺失');
+    if(!sec)return;
+    sec.querySelector('.sec-desc').innerHTML=`当前筛选 <b>${period()}</b> 创建的 ${fmt(t.orders)} 笔生产订单；生产成功率 = 同来源生产成功 ÷ 同来源订单，订单状态观察截至 ${snapshot.cutoff}。`;
+    sec.querySelector('#orderSourceTable').innerHTML='<tr><th>来源</th><th>订单</th><th>订单占比</th><th>账号</th><th>PENDING</th><th>生产成功</th><th>沙盒</th><th>失败</th><th>生产成功率</th></tr>'+(p.orderSources.length?p.orderSources.map(row=>`<tr${row[0]==='来源缺失'?' class="warnrow"':''}><td>${row[0]}</td><td>${fmt(row[1])}</td><td${row[0]==='来源缺失'?' class="down"':''}>${rate(row[1],t.orders)}%</td><td>${fmt(row[2])}</td><td>${fmt(row[3])}</td><td${row[4]?' class="up"':''}>${fmt(row[4])}</td><td>${fmt(row[5])}</td><td>${fmt(row[6])}</td><td>${rate(row[4],row[1],2)}%</td></tr>`).join(''):emptyRow(9));
+    settlementTable(sec.querySelector('#orderPlatformTable'),p.orderPlatforms,'平台');
+    settlementTable(sec.querySelector('#orderPeriodTable'),p.orderPeriods,'周期');
+    const periodMap=Object.fromEntries(p.orderPeriods.map(row=>[row[0],row])),week=periodMap.WEEK||['WEEK',0,0,0,0],month=periodMap.MONTH||['MONTH',0,0,0,0],year=periodMap.YEAR||['YEAR',0,0,0,0];
+    sec.querySelector('.note').innerHTML=`<b>当前周结构：</b>来源缺失 ${rate(missing[1],t.orders)}%；生产成功 ${fmt(t.production)} 单（周卡 ${fmt(week[4])} / 月卡 ${fmt(month[4])} / 年卡 ${fmt(year[4])}）；PENDING ${rate(t.pending,t.orders)}%。`;
+  }
+
+  function renderAll(){
+    const p=current();if(!p)return;
+    renderOverview(p);renderDiagnostics(p);renderPaywall(p);renderDiscount(p);renderOrders(p);
+  }
+  window.addEventListener('dashboard-week-change',renderAll);
+  renderAll();
+}
+).toString()+')();\n\n';
 
 function updateWorkbench(html) {
   const previousSnapshot = html.indexOf('\n/* 统一实时快照：');
@@ -649,8 +960,11 @@ function updateWorkbench(html) {
   html=replaceFrom(html,'const AB_DAY=','const AB_HEALTH=',`const AB_DAY=${compact(abDay)};`);
   html=replaceFrom(html,'const AB_HEALTH=','const AB_LESSON=',`const AB_HEALTH=${compact(abHealth)};`);
   html=replaceFrom(html,'const AB_LESSON=','const AB_B_ONBOARDING_LESSON=',`const AB_LESSON=${compact(abLesson)};`);
-  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册与里程碑时长最新数据（统一截点 ${cutoff}；排除测试账号） ═══════════ */\n// 国家方式数组：[首启,注册,google,phone,apple,facebook,kakao,unknown]\nconst AUTH_METHOD_DAYS=${compact(authDays.map(day=>`${day.slice(5)}${day==='2026-08-29'?'*':''}`))};\nconst AUTH_METHOD_DATA=${compact(authData)};\nconst AUTH_PERIODS=${compact(authPeriods)};\nconst AUTH_LOGIN_FUNNEL=${compact(authLoginFunnel)};\nconst AUTH_LOGIN_FAILURES=${compact(authLoginFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
-  html=replaceFrom(html,'const RET=','// Push · Firebase 自动通知事件',`const RET=${compact(ret)};\nconst SEG=${compact(workbenchSeg)};\nconst CURVE=${compact(workbenchCurve)};\n`);
+  html=replaceFrom(html,'const AB_B_ONBOARDING_LESSON=','/* ═══════════ 数据(2026-07-10',`const AB_B_ONBOARDING_LESSON=${compact(abBLesson)};\n\n/* ═══════════ 登录注册国家 × 方式最新数据（页面独立截点 ${authCountryMethodWindow.cutoff}；排除测试账号） ═══════════ */\nconst AUTH_COUNTRY_METHOD_WINDOW=${compact(authCountryMethodWindow)};\nconst AUTH_COUNTRY_METHOD_OUTCOMES=${compact(authCountryMethodOutcomes)};\nconst AUTH_COUNTRY_METHOD_FAILURES=${compact(authCountryMethodFailures)};\nconst REG_DAILY=${compact(registrationDaily)};\nconst MILESTONE_TIME=${compact(milestoneTime)};\n\n`);
+  html=replaceFrom(html,'/* ═══════════ 国家 × 注册方式 ═══════════ */','/* ═══════════ TAB4 注册方式 ═══════════ */',authCountryMethodRuntime);
+  if(html.includes('const RET=')&&html.includes('// Push · Firebase 自动通知事件')){
+    html=replaceFrom(html,'const RET=','// Push · Firebase 自动通知事件',`const RET=${compact(ret)};\nconst SEG=${compact(workbenchSeg)};\nconst CURVE=${compact(workbenchCurve)};\n`);
+  }
   while (html.includes('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件')) {
     html=html.replace('// Push · Firebase 自动通知事件\n// Push · Firebase 自动通知事件','// Push · Firebase 自动通知事件');
   }
@@ -739,7 +1053,10 @@ function updateWorkbench(html) {
  }
  const diag=sec('payment','支付结果诊断');
  if(diag){const p=snap.payment,t=p.total,client=p.orderOutcomes.find(r=>r.key==='client_success');diag.querySelector('.note').innerHTML='<b>核心判断：</b>PENDING 的主体仍是购买意图创建后没有被写回终态。'+n(t.pending)+' 笔 PENDING 中，仅 '+n(client.pending)+' 笔出现客户端成功但后端未结算；其余集中在失败 / 取消、未拉起支付面板、无结果或结果字段缺失。';findCard(diag,'后端订单终态').querySelector('.card-s').textContent='payment_order 权威状态；统计截止 '+snap.cutoff;}
-})();\n`;
+})();
+${paymentWeekRuntime}
+if(typeof applyDashboardWeekFilters==='function')applyDashboardWeekFilters();
+if(typeof renderWeekFilter==='function')renderWeekFilter();\n`;
   html=html.replace('\n</script>\n</body>\n</html>',`${updater}${updaterExtras}\n</script>\n</body>\n</html>`);
   return normalizeForCurrentCutoff(html);
 }

@@ -1,18 +1,18 @@
 -- 核心指标观测工作台：支付触达、发起与生产订单结算刷新。
 -- SQL 仅保存在本地分析目录，不进入公开 HTML。
 -- GA4 设备和由其映射出的支付账号均排除 user_type=test。
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-29 03:00:53+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-31 03:01:24+00';
 
 CREATE TEMP TABLE ga4_events AS
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260827'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260829'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
+  WHERE _TABLE_SUFFIX BETWEEN '20260830' AND '20260831'
 ),
 test_devices AS (
   SELECT DISTINCT user_pseudo_id
@@ -59,12 +59,12 @@ WITH identity_rows AS (
     LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) AS user_type
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260827'
+    AND _TABLE_SUFFIX BETWEEN '20260710' AND '20260829'
   UNION ALL
   SELECT event_timestamp, user_pseudo_id, user_id,
     LOWER((SELECT up.value.string_value FROM UNNEST(user_properties) up WHERE up.key = 'user_type')) AS user_type
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
+  WHERE _TABLE_SUFFIX BETWEEN '20260830' AND '20260831'
 ),
 test_ids AS (
   SELECT DISTINCT user_pseudo_id
@@ -84,93 +84,120 @@ WHERE o.created_at >= TIMESTAMP '2026-07-10 00:00:00+00'
   AND o.created_at < cutoff
   AND t.user_id IS NULL;
 
-WITH surface_rows AS (
-  SELECT
+WITH ga4_scoped AS (
+  SELECT FORMAT_DATE('%m-%d', DATE_TRUNC(DATE(TIMESTAMP_MICROS(event_timestamp)), WEEK(MONDAY))) AS week_key, g.*
+  FROM ga4_events g
+  UNION ALL
+  SELECT 'all' AS week_key, g.* FROM ga4_events g
+),
+orders_scoped AS (
+  SELECT FORMAT_DATE('%m-%d', DATE_TRUNC(DATE(created_at), WEEK(MONDAY))) AS week_key, o.*
+  FROM orders o
+  UNION ALL
+  SELECT 'all' AS week_key, o.* FROM orders o
+),
+surface_rows AS (
+  SELECT week_key,
     IF(action IN ('subscription', 'subscription_page_view'), 'paywall', 'discount') AS surface,
     COALESCE(NULLIF(source, ''), '__missing__') AS source,
     COUNT(*) AS exposures,
     COUNT(DISTINCT user_pseudo_id) AS users
-  FROM ga4_events
+  FROM ga4_scoped
   WHERE action IN ('subscription', 'subscription_page_view', 'discount_offer', 'discount_offer_view')
-  GROUP BY 1, 2
+  GROUP BY 1, 2, 3
 ),
 surface_totals AS (
-  SELECT
+  SELECT week_key,
     IF(action IN ('subscription', 'subscription_page_view'), 'paywall', 'discount') AS surface,
     COUNT(*) AS exposures,
     COUNT(DISTINCT user_pseudo_id) AS users
-  FROM ga4_events
+  FROM ga4_scoped
+  WHERE action IN ('subscription', 'subscription_page_view', 'discount_offer', 'discount_offer_view')
+  GROUP BY 1, 2
+),
+surface_any AS (
+  SELECT week_key, COUNT(*) AS exposures, COUNT(DISTINCT user_pseudo_id) AS users
+  FROM ga4_scoped
   WHERE action IN ('subscription', 'subscription_page_view', 'discount_offer', 'discount_offer_view')
   GROUP BY 1
 ),
 checkout_rows AS (
-  SELECT
-    COALESCE(NULLIF(source, ''), '__missing__') AS source,
+  SELECT week_key, COALESCE(NULLIF(source, ''), '__missing__') AS source,
     COUNT(DISTINCT order_id) AS order_ids,
     COUNT(DISTINCT user_pseudo_id) AS users,
     COUNT(*) AS events
-  FROM ga4_events
+  FROM ga4_scoped
   WHERE action = 'subscription_checkout_start'
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 action_stats AS (
-  SELECT action AS row_key, COUNT(*) AS events, COUNT(DISTINCT user_pseudo_id) AS users
-  FROM ga4_events
+  SELECT week_key, action AS row_key, COUNT(*) AS events, COUNT(DISTINCT user_pseudo_id) AS users
+  FROM ga4_scoped
   WHERE REGEXP_CONTAINS(LOWER(action), r'(purchase|checkout)')
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 offer_devices AS (
-  SELECT user_pseudo_id, MIN(event_timestamp) AS offer_ts
-  FROM ga4_events
+  SELECT week_key, user_pseudo_id, MIN(event_timestamp) AS offer_ts
+  FROM ga4_scoped
   WHERE action IN ('subscription', 'subscription_page_view', 'discount_offer', 'discount_offer_view')
     AND user_pseudo_id IS NOT NULL
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 checkout_after_offer AS (
-  SELECT o.user_pseudo_id, MIN(e.event_timestamp) AS checkout_ts
+  SELECT o.week_key, o.user_pseudo_id, MIN(e.event_timestamp) AS checkout_ts
   FROM offer_devices o
-  JOIN ga4_events e USING (user_pseudo_id)
+  JOIN ga4_scoped e USING (week_key, user_pseudo_id)
   WHERE e.action = 'subscription_checkout_start'
     AND e.event_timestamp >= o.offer_ts
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 result_after_checkout AS (
-  SELECT c.user_pseudo_id, MIN(e.event_timestamp) AS result_ts
+  SELECT c.week_key, c.user_pseudo_id, MIN(e.event_timestamp) AS result_ts
   FROM checkout_after_offer c
-  JOIN ga4_events e USING (user_pseudo_id)
+  JOIN ga4_scoped e USING (week_key, user_pseudo_id)
   WHERE e.action = 'subscription_checkout_result'
     AND e.event_timestamp >= c.checkout_ts
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 purchase_after_checkout AS (
-  SELECT c.user_pseudo_id, MIN(e.event_timestamp) AS purchase_ts
+  SELECT c.week_key, c.user_pseudo_id, MIN(e.event_timestamp) AS purchase_ts
   FROM checkout_after_offer c
-  JOIN ga4_events e USING (user_pseudo_id)
+  JOIN ga4_scoped e USING (week_key, user_pseudo_id)
   WHERE e.action = 'purchase'
     AND e.event_timestamp >= c.checkout_ts
+  GROUP BY 1, 2
+),
+client_funnel AS (
+  SELECT o.week_key,
+    COUNT(*) AS offer_devices,
+    COUNT(c.user_pseudo_id) AS checkout_devices,
+    COUNT(r.user_pseudo_id) AS result_devices,
+    COUNT(p.user_pseudo_id) AS purchase_devices
+  FROM offer_devices o
+  LEFT JOIN checkout_after_offer c USING (week_key, user_pseudo_id)
+  LEFT JOIN result_after_checkout r USING (week_key, user_pseudo_id)
+  LEFT JOIN purchase_after_checkout p USING (week_key, user_pseudo_id)
   GROUP BY 1
 ),
 checkout_starts AS (
-  SELECT order_id, MIN(event_timestamp) AS start_ts
-  FROM ga4_events
+  SELECT week_key, order_id, MIN(event_timestamp) AS start_ts
+  FROM ga4_scoped
   WHERE action = 'subscription_checkout_start'
     AND order_id IS NOT NULL
-  GROUP BY 1
+  GROUP BY 1, 2
 ),
 latest_checkout_result AS (
-  SELECT
-    s.order_id,
-    e.is_success,
-    e.result_reason
+  SELECT s.week_key, s.order_id, e.is_success, e.result_reason
   FROM checkout_starts s
-  JOIN ga4_events e
-    ON e.order_id = s.order_id
+  JOIN ga4_scoped e
+    ON e.week_key = s.week_key
+   AND e.order_id = s.order_id
    AND e.action = 'subscription_checkout_result'
    AND e.event_timestamp >= s.start_ts
-  QUALIFY ROW_NUMBER() OVER (PARTITION BY s.order_id ORDER BY e.event_timestamp DESC) = 1
+  QUALIFY ROW_NUMBER() OVER (PARTITION BY s.week_key, s.order_id ORDER BY e.event_timestamp DESC) = 1
 ),
 order_outcome AS (
-  SELECT
+  SELECT o.week_key,
     CASE
       WHEN s.order_id IS NULL THEN 'unmatched_checkout_start'
       WHEN r.order_id IS NULL THEN 'checkout_start_no_result'
@@ -184,116 +211,110 @@ order_outcome AS (
     COUNTIF(o.status = 'SUCCESS' AND o.env_type = 'SANDBOX') AS sandbox_success,
     COUNTIF(o.status = 'FAILED') AS failed,
     COUNTIF(o.status IN ('CANCELED', 'ABANDONED')) AS canceled_or_abandoned
-  FROM orders o
-  LEFT JOIN checkout_starts s ON o.order_no = s.order_id
-  LEFT JOIN latest_checkout_result r ON s.order_id = r.order_id
-  GROUP BY 1
+  FROM orders_scoped o
+  LEFT JOIN checkout_starts s ON o.week_key = s.week_key AND o.order_no = s.order_id
+  LEFT JOIN latest_checkout_result r ON s.week_key = r.week_key AND s.order_id = r.order_id
+  GROUP BY 1, 2
 ),
 successful_pairs AS (
-  SELECT user_id, platform, MIN(created_at) AS first_success_at
-  FROM orders
+  SELECT week_key, user_id, platform, MIN(created_at) AS first_success_at
+  FROM orders_scoped
   WHERE status = 'SUCCESS' AND env_type = 'PRODUCTION'
-  GROUP BY 1, 2
+  GROUP BY 1, 2, 3
 ),
 retry_before_success AS (
-  SELECT
-    s.user_id,
-    s.platform,
+  SELECT s.week_key, s.user_id, s.platform,
     COUNTIF(o.status = 'PENDING' AND o.created_at < s.first_success_at) AS pending_before
   FROM successful_pairs s
-  JOIN orders o USING (user_id, platform)
-  GROUP BY 1, 2
+  JOIN orders_scoped o USING (week_key, user_id, platform)
+  GROUP BY 1, 2, 3
+),
+payment_retry_health AS (
+  SELECT week_key, COUNT(*) AS pairs, COUNTIF(pending_before > 0) AS retried_pairs,
+    SUM(pending_before) AS pending_before
+  FROM retry_before_success
+  GROUP BY 1
 ),
 order_source AS (
-  SELECT
-    COALESCE(NULLIF(subscription_source, ''), '__missing__') AS row_key,
-    COUNT(*) AS orders,
-    COUNT(DISTINCT user_id) AS users,
+  SELECT week_key, COALESCE(NULLIF(subscription_source, ''), '__missing__') AS row_key,
+    COUNT(*) AS orders, COUNT(DISTINCT user_id) AS users,
     COUNTIF(status = 'PENDING') AS pending,
     COUNTIF(status = 'SUCCESS' AND env_type = 'PRODUCTION') AS production_success,
     COUNTIF(status = 'SUCCESS' AND env_type = 'SANDBOX') AS sandbox_success,
     COUNTIF(status = 'FAILED') AS failed
-  FROM orders
-  GROUP BY 1
+  FROM orders_scoped
+  GROUP BY 1, 2
 ),
 order_platform AS (
-  SELECT
-    COALESCE(NULLIF(platform, ''), '__missing__') AS row_key,
-    COUNT(*) AS orders,
-    COUNT(DISTINCT user_id) AS users,
+  SELECT week_key, COALESCE(NULLIF(platform, ''), '__missing__') AS row_key,
+    COUNT(*) AS orders, COUNT(DISTINCT user_id) AS users,
     COUNTIF(status = 'PENDING') AS pending,
     COUNTIF(status = 'SUCCESS' AND env_type = 'PRODUCTION') AS production_success,
     COUNTIF(status = 'SUCCESS' AND env_type = 'SANDBOX') AS sandbox_success,
     COUNTIF(status = 'FAILED') AS failed
-  FROM orders
-  GROUP BY 1
+  FROM orders_scoped
+  GROUP BY 1, 2
 ),
 order_period AS (
-  SELECT
-    COALESCE(NULLIF(billing_period, ''), '__missing__') AS row_key,
-    COUNT(*) AS orders,
-    COUNT(DISTINCT user_id) AS users,
+  SELECT week_key, COALESCE(NULLIF(billing_period, ''), '__missing__') AS row_key,
+    COUNT(*) AS orders, COUNT(DISTINCT user_id) AS users,
     COUNTIF(status = 'PENDING') AS pending,
     COUNTIF(status = 'SUCCESS' AND env_type = 'PRODUCTION') AS production_success,
     COUNTIF(status = 'SUCCESS' AND env_type = 'SANDBOX') AS sandbox_success,
     COUNTIF(status = 'FAILED') AS failed
-  FROM orders
+  FROM orders_scoped
+  GROUP BY 1, 2
+),
+pending_health AS (
+  SELECT week_key,
+    COUNTIF(status = 'PENDING') AS pending,
+    COUNTIF(status = 'PENDING' AND updated_at = created_at) AS never_updated,
+    COUNTIF(status = 'PENDING' AND created_at < TIMESTAMP_SUB(cutoff, INTERVAL 7 DAY)) AS over_7d,
+    COUNTIF(status = 'PENDING'
+      AND env_type IS NULL
+      AND subscription_id IS NULL
+      AND payment_event_id IS NULL
+      AND platform_order_id IS NULL
+      AND platform_transaction_id IS NULL
+      AND purchase_token_hash IS NULL
+      AND paid_at IS NULL) AS blank_platform
+  FROM orders_scoped
+  GROUP BY 1
+),
+order_total AS (
+  SELECT week_key, COUNT(*) AS orders, COUNT(DISTINCT user_id) AS users,
+    COUNTIF(status = 'PENDING') AS pending,
+    COUNTIF(status = 'SUCCESS' AND env_type = 'PRODUCTION') AS production_success,
+    COUNTIF(status = 'SUCCESS' AND env_type = 'SANDBOX') AS sandbox_success,
+    COUNTIF(status = 'FAILED') AS failed
+  FROM orders_scoped
   GROUP BY 1
 )
-SELECT 'surface_source' AS section, CONCAT(surface, '|', source) AS row_key,
+SELECT week_key, 'surface_source' AS section, CONCAT(surface, '|', source) AS row_key,
   exposures AS v1, users AS v2, NULL AS v3, NULL AS v4, NULL AS v5, NULL AS v6
 FROM surface_rows
 UNION ALL
-SELECT 'surface_total', surface, exposures, users, NULL, NULL, NULL, NULL
-FROM surface_totals
+SELECT week_key, 'surface_total', surface, exposures, users, NULL, NULL, NULL, NULL FROM surface_totals
 UNION ALL
-SELECT 'surface_total', 'any', COUNT(*), COUNT(DISTINCT user_pseudo_id), NULL, NULL, NULL, NULL
-FROM ga4_events
-WHERE action IN ('subscription', 'subscription_page_view', 'discount_offer', 'discount_offer_view')
+SELECT week_key, 'surface_total', 'any', exposures, users, NULL, NULL, NULL, NULL FROM surface_any
 UNION ALL
-SELECT 'checkout_source', source, order_ids, users, events, NULL, NULL, NULL FROM checkout_rows
+SELECT week_key, 'checkout_source', source, order_ids, users, events, NULL, NULL, NULL FROM checkout_rows
 UNION ALL
-SELECT 'action_stats', row_key, events, users, NULL, NULL, NULL, NULL FROM action_stats
+SELECT week_key, 'action_stats', row_key, events, users, NULL, NULL, NULL, NULL FROM action_stats
 UNION ALL
-SELECT 'client_funnel', 'strict',
-  (SELECT COUNT(*) FROM offer_devices),
-  (SELECT COUNT(*) FROM checkout_after_offer),
-  (SELECT COUNT(*) FROM result_after_checkout),
-  (SELECT COUNT(*) FROM purchase_after_checkout),
-  NULL, NULL
+SELECT week_key, 'client_funnel', 'strict', offer_devices, checkout_devices, result_devices, purchase_devices, NULL, NULL FROM client_funnel
 UNION ALL
-SELECT 'order_outcome', row_key, orders, pending, production_success, sandbox_success, failed, canceled_or_abandoned
-FROM order_outcome
+SELECT week_key, 'order_outcome', row_key, orders, pending, production_success, sandbox_success, failed, canceled_or_abandoned FROM order_outcome
 UNION ALL
-SELECT 'pending_health', 'all',
-  COUNTIF(status = 'PENDING'),
-  COUNTIF(status = 'PENDING' AND updated_at = created_at),
-  COUNTIF(status = 'PENDING' AND created_at < TIMESTAMP_SUB(cutoff, INTERVAL 7 DAY)),
-  COUNTIF(status = 'PENDING'
-    AND env_type IS NULL
-    AND subscription_id IS NULL
-    AND payment_event_id IS NULL
-    AND platform_order_id IS NULL
-    AND platform_transaction_id IS NULL
-    AND purchase_token_hash IS NULL
-    AND paid_at IS NULL),
-  NULL, NULL
-FROM orders
+SELECT week_key, 'pending_health', 'all', pending, never_updated, over_7d, blank_platform, NULL, NULL FROM pending_health
 UNION ALL
-SELECT 'payment_retry_health', 'successful_pairs',
-  COUNT(*), COUNTIF(pending_before > 0), SUM(pending_before), NULL, NULL, NULL
-FROM retry_before_success
+SELECT week_key, 'payment_retry_health', 'successful_pairs', pairs, retried_pairs, pending_before, NULL, NULL, NULL FROM payment_retry_health
 UNION ALL
-SELECT 'order_source', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_source
+SELECT week_key, 'order_source', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_source
 UNION ALL
-SELECT 'order_platform', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_platform
+SELECT week_key, 'order_platform', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_platform
 UNION ALL
-SELECT 'order_period', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_period
+SELECT week_key, 'order_period', row_key, orders, users, pending, production_success, sandbox_success, failed FROM order_period
 UNION ALL
-SELECT 'order_total', 'all', COUNT(*), COUNT(DISTINCT user_id),
-  COUNTIF(status = 'PENDING'),
-  COUNTIF(status = 'SUCCESS' AND env_type = 'PRODUCTION'),
-  COUNTIF(status = 'SUCCESS' AND env_type = 'SANDBOX'),
-  COUNTIF(status = 'FAILED')
-FROM orders
-ORDER BY section, v1 DESC, row_key;
+SELECT week_key, 'order_total', 'all', orders, users, pending, production_success, sandbox_success, failed FROM order_total
+ORDER BY CASE week_key WHEN 'all' THEN 0 ELSE 1 END, week_key, section, v1 DESC, row_key;

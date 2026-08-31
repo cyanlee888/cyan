@@ -1,17 +1,17 @@
 -- Map stable non-test Android + iOS A/B devices to signed-in user_id, then read production payment truth.
--- Daily GA4 export is authoritative through 2026-08-27; intraday fills 2026-08-28~29.
+-- Daily GA4 export is authoritative through 2026-08-29; intraday fills 2026-08-30~31.
 DECLARE experiment_start TIMESTAMP DEFAULT TIMESTAMP '2026-08-01 00:00:00+00';
-DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-29 03:00:53+00';
+DECLARE cutoff TIMESTAMP DEFAULT TIMESTAMP '2026-08-31 03:01:24+00';
 
 WITH raw_base AS (
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_*`
   WHERE REGEXP_CONTAINS(_TABLE_SUFFIX, r'^\d{8}$')
-    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260827'
+    AND _TABLE_SUFFIX BETWEEN '20260730' AND '20260829'
   UNION ALL
   SELECT event_timestamp, event_name, user_pseudo_id, user_id, platform, geo.country AS country, event_params, user_properties
   FROM `dino-english-497507.analytics_538991439.events_intraday_*`
-  WHERE _TABLE_SUFFIX BETWEEN '20260828' AND '20260829'
+  WHERE _TABLE_SUFFIX BETWEEN '20260830' AND '20260831'
 ),
 test_devices AS (
   SELECT DISTINCT platform, user_pseudo_id
