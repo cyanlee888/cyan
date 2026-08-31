@@ -8461,7 +8461,7 @@
                 <span class="sp2-lc-lvl" id="sp2-start-lvl">Level 2</span>
                 <span class="sp2-lc-cefr" id="sp2-start-cefr">CEFR A1</span>
               </div>
-              <span class="sp2-lc-arrow" aria-hidden="true">&uarr;</span>
+              <span class="sp2-lc-arrow" aria-hidden="true">&rarr;</span>
               <div class="sp2-lc-col sp2-lc-col--goal">
                 <span class="sp2-lc-tag" id="sp2-goal-tag">12-month milestone</span>
                 <span class="sp2-lc-lvl" id="sp2-goal-lvl">Level 3</span>
@@ -8660,7 +8660,6 @@
           <div class="tp-cta-bar">
             <button type="button" class="tp-cta-btn" id="btn-trip-start">
               <span class="tp-cta-main" id="trp-cta-main">Get Your Personalized Learning Plan</span>
-              <span class="tp-cta-small" id="trp-cta-sub" hidden>Built from today's trial lesson</span>
             </button>
           </div>
         </div>
@@ -13045,16 +13044,11 @@
       if ($("#trp-overall")) $("#trp-overall").innerHTML =
         `${lead} brought real energy to English today — <span class="tp-hl">clear pronunciation and natural expression</span>! Based on how ${name === "you" ? "you" : name} did in today's trial, ${poss} best-fit level is <span class="tp-hl">CEFR ${cefr} · ${lvlLabel}</span>.`;
       const trialCtaMain = $("#trp-cta-main");
-      const trialCtaSub = $("#trp-cta-sub");
       const hasActiveMembership = !!profile.premiumUnlocked;
       if (trialCtaMain) {
         trialCtaMain.textContent = hasActiveMembership
           ? (name === "you" ? "See the Learning Plan" : `See ${name}'s Learning Plan`)
           : (name === "you" ? "Get Your Personalized Learning Plan" : `Get ${name}'s Personalized Learning Plan`);
-      }
-      if (trialCtaSub) {
-        trialCtaSub.textContent = "Built from today's trial lesson";
-        trialCtaSub.hidden = !hasActiveMembership;
       }
     }
     // Level-up trial report: same layout, but the level recommendation reflects the
@@ -20063,7 +20057,7 @@
     #screen-study-plan .sp2-lc-lvl{font-size:1.35rem;color:#49515a}
     #screen-study-plan .sp2-lc-col--goal .sp2-lc-lvl{color:#fe9027}
     #screen-study-plan .sp2-lc-cefr{color:#697381;font-size:.66rem}
-    #screen-study-plan .sp2-lc-arrow{position:relative;z-index:2;width:0;padding:0;overflow:visible;color:#ffb36a;font-size:1.5rem;transform:translate(-5px,36px)}
+    #screen-study-plan .sp2-lc-arrow{position:relative;z-index:2;width:24px;margin:0 -12px;padding:0;overflow:visible;align-items:center;justify-content:center;color:#ffb36a;font-size:1.5rem;transform:none}
     #screen-study-plan .sp2-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0 0;padding:0;background:transparent;border-radius:0}
     #screen-study-plan .sp2-stat{min-height:68px;display:flex;flex-direction:row;align-items:center;gap:8px;padding:9px;text-align:left;border-radius:14px;background:#fff}
     #screen-study-plan .sp2-stat::before{display:none}
