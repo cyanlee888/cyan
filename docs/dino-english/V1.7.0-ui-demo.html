@@ -18852,7 +18852,7 @@
     ];
     // 模块介绍气泡：只通过 Next 推进，不转发真实页面点击。
     function coachIntroTap(next){ return function(){ coachDing(true); coachGoto(next); }; }
-    // 引导只有「走完」一种结束方式（无 Skip），完成后留在 App 首页。
+    // 引导只有「走完」一种结束方式（无 Skip），完成后留在 Play Tab。
     function coachFinish(){
       window.__cxCoachDot = null;
       closeCoach();
@@ -18860,7 +18860,6 @@
       enterLandscape();
       showClassHome();
       coachHubTab("play");
-      if(typeof showPayToast === "function") showPayToast("Great job! Let's explore Dino AI");
       window.demoStatePanel && window.demoStatePanel.render();
     }
 
@@ -20338,7 +20337,8 @@
       window.__v160GuideStep = 4;
       window.__cxCoachDot = null;
       cxStage = "home";
-      if(typeof showPayToast === "function") showPayToast("Great job! Let's explore Dino AI");
+      showClassHome();
+      setHubTab("play");
       window.demoStatePanel && window.demoStatePanel.render();
     }
     function completeGuideStep(){
