@@ -18860,6 +18860,7 @@
       enterLandscape();
       showClassHome();
       coachHubTab("play");
+      if(typeof showPayToast === "function") showPayToast("Great job! Let's explore Dino AI");
       window.demoStatePanel && window.demoStatePanel.render();
     }
 
@@ -20339,6 +20340,7 @@
       cxStage = "home";
       showClassHome();
       setHubTab("play");
+      if(typeof showPayToast === "function") showPayToast("Great job! Let's explore Dino AI");
       window.demoStatePanel && window.demoStatePanel.render();
     }
     function completeGuideStep(){
