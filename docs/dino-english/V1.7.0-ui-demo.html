@@ -10198,7 +10198,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -10422,6 +10422,7 @@
       profile.trialInProgress = false;
       profile.trialReportShown = false;
       profile.trialTakenLevelId = null;
+      profile.homeGuideShown = false;
       profile.skipOnboarding = demoState.experimentGroup === "b";
       const nameInput = document.getElementById("input-name");
       if (nameInput) nameInput.value = "";
@@ -13079,7 +13080,7 @@
       if (cxStage === "football") { cxStage = "home"; showClassHome(); if (window.cxEnsureFootballCard) window.cxEnsureFootballCard(); return; }
       if (cxStage && cxStage !== "home") { if (window.cxShowReport) { window.cxShowReport(); return; } }
       if (profile.trialInProgress && !profile.trialReportShown) {
-        showClassHome();
+        startV170HomeGuide();
         return;
       }
       showClassHome();
@@ -13233,10 +13234,7 @@
     $("#btn-trip-back")?.addEventListener("click", () => {
       if (trialReportBackMode === "guide") {
         trialReportBackMode = "home";
-        cxStage = "home_guide";
-        const firstIncompleteStep = window.__cxCoachDot == null ? 0 : window.__cxCoachDot;
-        if (window.v160StartHomeGuide) window.v160StartHomeGuide(firstIncompleteStep);
-        else showClassHome();
+        startV170HomeGuide();
         return;
       }
       showClassHome();
@@ -13491,7 +13489,7 @@
     });
     $("#btn-study-plan-a-start")?.addEventListener("click", () => {
       if (profile.premiumUnlocked) {
-        window.v160StartHomeGuide ? window.v160StartHomeGuide(0) : showDinoHome();
+        startV170HomeGuide();
         return;
       }
       cxStage = "v170_post_trial_paywall";
@@ -13502,7 +13500,7 @@
     });
     $("#btn-study-plan-start")?.addEventListener("click", () => {
       if (profile.premiumUnlocked) {
-        window.v160StartHomeGuide ? window.v160StartHomeGuide(0) : showDinoHome();
+        startV170HomeGuide();
         return;
       }
       cxStage = "v170_post_trial_paywall";
@@ -16375,10 +16373,19 @@
       };
     }
     function startV170HomeGuide() {
+      if (profile.homeGuideShown) {
+        cxStage = "home";
+        showDinoHome();
+        return false;
+      }
       cxStage = "home_guide";
-      window.v160StartHomeGuide
-        ? window.v160StartHomeGuide(0)
-        : (enterLandscape(), showClassHome());
+      if (window.v160StartHomeGuide) {
+        profile.homeGuideShown = true;
+        window.v160StartHomeGuide(0);
+        return true;
+      }
+      showDinoHome();
+      return false;
     }
     window.v170StartHomeGuide = startV170HomeGuide;
     function continueAfterPaywallClose() {
@@ -18881,7 +18888,7 @@
       coachBusy = false; coachPhase = i;
       var p = COACH_PHASES[i];
       if(!p){ coachFinish(); return; }
-      window.__cxCoachDot = p.dot;   // 仅记录本次演示中的当前步骤；App 重启不恢复引导。
+      window.__cxCoachDot = p.dot;   // 仅记录当前演示步骤，不作为再次展示或续接依据。
       if(p.skip){ var sk = false; try{ sk = p.skip(); }catch(e){} if(sk){ coachGoto(i + 1); return; } }
       if(p.enter){ try{ p.enter(); }catch(e){} }
       coachSetCopy(p.copy);
@@ -19913,8 +19920,7 @@
           if(typeof refreshUnlockState === "function") refreshUnlockState();
           if(typeof showPayToast === "function") showPayToast("Subscription restored ✓");
           if(cxStage === "v170_post_trial_paywall"){
-            cxStage = "home_guide";
-            window.v160StartHomeGuide ? window.v160StartHomeGuide(0) : (enterLandscape(), showClassHome());
+            startV170HomeGuide();
           } else if(cxStage === "pay1"){
             window.v160OpenTeacher ? window.v160OpenTeacher() : closePaywallPortrait();
           } else if(cxStage){
@@ -20023,8 +20029,7 @@
             if(typeof showPayToast === "function") showPayToast("Premium unlocked 🎉");
             refreshPanel();
             if(cxStage === "v170_post_trial_paywall"){
-              cxStage = "home_guide";
-              window.v160StartHomeGuide ? window.v160StartHomeGuide(0) : (enterLandscape(), showClassHome());
+              startV170HomeGuide();
             } else if(cxStage === "pay1"){
               window.v160OpenTeacher ? window.v160OpenTeacher() : (enterLandscape(), openTeacherPicker("onboarding"));
             } else {
@@ -20458,7 +20463,8 @@
       profile.hasStartedClass = true;
       profile.trialInProgress = false;
       profile.trialReportShown = true;
-      window.v160StartHomeGuide(step || 0);
+      profile.homeGuideShown = false;
+      startV170HomeGuide();
     };
     var oldBeforeJump = window.demoStatePanel && window.demoStatePanel.beforeJump;
     document.addEventListener("click",function(event){
