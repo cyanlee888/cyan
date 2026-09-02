@@ -7474,9 +7474,7 @@
     /* 上面的 display:flex 会盖过 UA 的 [hidden]{display:none}，按本文件惯例显式补一条，
        保证 ended 态卡片真正隐藏不占位（否则会盖住复位后的 Store 按钮） */
     #screen-class .dino-event-card[hidden]{ display:none; }
-    #screen-class .dino-event-card.is-live{ animation:decBreathe 2.6s ease-in-out infinite; }
-    @keyframes decBreathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-    @media (prefers-reduced-motion:reduce){ #screen-class .dino-event-card.is-live{ animation:none; } }
+    #screen-class .dino-event-card.is-live{ animation:none; }
     #screen-class .dino-event-card .dec-badge{
       position:absolute; top:-9px; left:50%; transform:translateX(-50%); white-space:nowrap;
       background:#E8524B; color:#fff; font-size:.56rem; font-weight:800; letter-spacing:.05em;
@@ -8300,7 +8298,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.8.0 · 完整继承 V1.7.0；本版增量展示 Free / Pro / Max、Dino 首页今日学习、周计划与新人签到奖励 · 右上 ⚙︎ States 可切换</p>
+  <p class="demo-bar">V1.8.0 · 完整继承 V1.7.0；本版增量展示 Free / Pro / Max、Dino 首页今日学习、完整计划与新人签到奖励 · 右上 ⚙︎ States 可切换</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8638,7 +8636,7 @@
           <section class="sp2-hero">
             <button type="button" class="sp2-back" id="btn-study-plan-back" aria-label="Back">‹</button>
             <h1 class="sp2-title" id="sp2-title">Leo's plan is ready!</h1>
-            <p class="sp2-sub" id="sp2-sub">A clear path from today to more confident English.</p>
+            <p class="sp2-sub" id="sp2-sub" hidden></p>
             <div class="sp2-chips" id="sp2-chips"></div>
           </section>
 
@@ -8646,14 +8644,16 @@
           <section class="sp2-plan-choice" aria-labelledby="sp2-plan-choice-title">
             <div class="sp2-plan-choice-head">
               <span>Choose a weekly pace</span>
-              <h2 id="sp2-plan-choice-title">Which plan fits your child?</h2>
+              <h2 id="sp2-plan-choice-title">How many lessons a week for Leo?</h2>
             </div>
             <div class="sp2-plan-options" role="radiogroup" aria-label="Weekly learning plan">
               <button type="button" class="sp2-plan-option" data-study-offer-tier="pro" role="radio" aria-checked="true">
-                <strong>3 lessons a week</strong>
+                <span class="sp2-plan-tier">Dino Pro</span>
+                <strong>3 lessons</strong>
               </button>
               <button type="button" class="sp2-plan-option" data-study-offer-tier="max" role="radio" aria-checked="false">
-                <strong>5 lessons a week</strong>
+                <span class="sp2-plan-tier">Dino Max</span>
+                <strong>5 lessons</strong>
               </button>
             </div>
           </section>
@@ -9457,11 +9457,9 @@
                   <b class="dino-id-name" id="dino-hud-name">friend</b>
                 </div>
                 <div class="dino-mini-entries">
-                  <span class="dn-pill dn-pill--coin" aria-label="Dino Coin balance" role="status">
+                  <button type="button" class="dn-pill dn-pill--coin" data-v180-action="utility" data-go-game="screen-shop" aria-label="Open Store. Dino Coin balance">
                     <span class="coin-ico"></span><span class="js-coin">888</span>
-                  </span>
-                  <button type="button" class="dn-pill dn-pill--icon dn-pill--shop" data-go-game="screen-shop" aria-label="Shop">
-                    <img class="v180-side-entry-art" src="assets/v180/store-entry.png" alt="" aria-hidden="true" decoding="async" />
+                    <img class="v180-coin-store-entry" src="assets/v180/store-entry.png" alt="" aria-hidden="true" decoding="async" />
                   </button>
                 </div>
               </div>
@@ -9473,21 +9471,21 @@
                 <span class="dec-label">World Cup</span>
                 <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
               </button>
-              <!-- Backpack entry card (left edge, Figma) -->
-              <button type="button" class="dino-backpack-card" data-go-game="screen-backpack">
-                <img class="dbc-ico v180-side-entry-art" src="assets/v180/backpack-entry.png" alt="" aria-hidden="true" decoding="async" />
-                <span class="dbc-label">Backpack</span>
-              </button>
               <!-- Stage: Dino on the grass + greeting bubble + central voice button -->
               <div class="dino-night-stage">
                 <div class="dino-night-char">
                   <img src="assets/v13fx/dino.png" alt="Dino" id="dino-tab-img" decoding="async" />
-                  <div class="dino-name-tag dino-name-tag--night" id="dino-tab-tag">Dino · Hatchling</div>
-                  <!-- Dino level + XP progress, shown together under the Dino character -->
-                  <span class="dino-id-level dino-id-level--char">
-                    <span class="dino-lv-badge js-lvnum">2</span>
-                    <span class="dino-lv-bar"><i id="dino-xp-fill" style="width:20%"></i></span>
-                  </span>
+                  <button type="button" class="v180-dino-profile-entry" data-v180-action="utility" data-go-game="screen-backpack" aria-label="Open Dino Backpack and outfits">
+                    <span class="v180-dino-profile-top">
+                      <span class="dino-name-tag dino-name-tag--night" id="dino-tab-tag">Dino · Hatchling</span>
+                      <span class="v180-backpack-mini" aria-hidden="true"><img src="assets/v180/backpack-entry.png" alt="" decoding="async" /></span>
+                    </span>
+                    <!-- Dino level + XP progress doubles as the Backpack / outfit entry. -->
+                    <span class="dino-id-level dino-id-level--char">
+                      <span class="dino-lv-badge js-lvnum">2</span>
+                      <span class="dino-lv-bar"><i id="dino-xp-fill" style="width:20%"></i></span>
+                    </span>
+                  </button>
                 </div>
                 <div class="dino-night-right">
                   <!-- State-driven guide: bubble carries Dino's line + an embedded green
@@ -10397,7 +10395,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveExploreTaskIndex: null, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180TodayCompletedTaskIndex: null, v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveLessonTaskIndex: null, v180ActiveExploreTaskIndex: null, v180TaskStates: [], v180TaskTier: "free", v180PlanTier: "free", v180ScheduledPlanTier: "", v180TodayIndex: 0, v180ServedTaskIndex: null, v180TodaySettled: false, v180HomeRewardTaskIndex: null, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -10449,7 +10447,7 @@
       v155Platform: "android",
       v155PaymentResult: "success",
       v155RestoreResult: "none",
-      v155ValueConfig: "region_match",
+      v155ValueConfig: "global_fallback",
       v155KolScenario: "unavailable",
       v155CourseProgress: "default",
       v170PaywallExitRoute: "consult",
@@ -13768,7 +13766,7 @@
 
       // 1 · Figma-aligned hero and personalized summary
       set("#sp2-title", `${poss} plan is ready!`);
-      set("#sp2-sub", "A clear path from today to more confident English.");
+      set("#sp2-sub", "");
       set("#sp2-summary-title", `Personalized for ${dn || "your learner"}`);
       const chips = [
         { label: `${level.label} · ${cefr}`, className: "" },
@@ -18666,7 +18664,10 @@
       if (key === "v155KolScenario") return demoState.v155KolScenario;
       if (key === "v155CourseProgress") return demoState.v155CourseProgress;
       if (key === "v170PaywallExitRoute") return demoState.v170PaywallExitRoute;
-      if (key === "v180Tier") return window.v180GetTier ? window.v180GetTier() : (profile.membershipTier || (profile.premiumUnlocked ? "pro" : "free"));
+      if (key === "v180Tier") {
+        if (!profile.premiumUnlocked && profile.hasSubscriptionOrder) return "expired";
+        return window.v180GetTier ? window.v180GetTier() : (profile.membershipTier || (profile.premiumUnlocked ? "pro" : "free"));
+      }
       if (key === "v180OfferTier") return profile.selectedMembershipTier || "pro";
       if (key === "v180Task") return window.v180GetTaskReviewState ? window.v180GetTaskReviewState() : "lesson_ready";
       if (key === "v180Payment") return demoState.v180PaymentResult || "success";
@@ -18734,8 +18735,8 @@
         if (id === "screen-wordpk")      return ctx("单词 PK", VERSION_FEATURES.expandedPlayQuiz ? ["quizTypes"] : []);
         if (id === "screen-course-map")  return ctx("Level·Unit 列表", ["courseAccess", "v155CourseProgress", "startLevel"]);
         if (id === "screen-all-courses") return ctx("课程列表", ["membership", "v155CourseProgress", "startLevel"]);
-        if (id === "screen-membership")  return ctx("V1.8.0 · 会员中心", ["v180Tier", "membership", "v155Platform"]);
-        if (id === "screen-weekly-plan-v180") return ctx("V1.8.0 · 本周学习冒险", ["v180Tier", "v180Task"]);
+        if (id === "screen-membership")  return ctx("V1.8.0 · 会员中心", ["v180Tier", "v180PlanChange", "membership", "v155Platform"]);
+        if (id === "screen-weekly-plan-v180") return ctx("V1.8.0 · 完整计划", ["v180Tier", "v180Task"]);
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
         if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return ctx("V1.8.0 · Dino 首页今日任务", ["v180Tier", "v180Task", "themeActivity"]);
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
@@ -18762,7 +18763,7 @@
           ? ["v180OfferTier", "v180Payment", "v170PaywallExitRoute", "v155RestoreResult"]
           : ["v180OfferTier", "v180Payment", "v155RestoreResult"]
       );
-      if (pid === "screen-winback")      return ctx("V1.6.0 · 限时优惠挽留页", ["membership", "v155KolScenario"]);
+      if (pid === "screen-winback")      return ctx("V1.8.0 · 同档限时优惠挽留页", ["v180OfferTier", "membership", "v155KolScenario"]);
       if (pid === "screen-vn-consult")   return ctx(
         "人工咨询预约",
         ["vnConsultMarket", "vnConsultPhone"]
@@ -18776,10 +18777,21 @@
       return ctx("Onboarding", []);
     },
     groups: [
-      { key: "v180Tier", label: "V1.8.0 当前会员 / 学习计划",
-        options: [["free", "Free · 3 学 + 4 练"], ["pro", "Pro · 3 学 + 4 练"], ["max", "Max · 5 学 + 天天练"]],
+      { key: "v180Tier", label: "V1.8.0 当前会员 / 当前计划",
+        options: [["free", "Free · 一次性体验计划"], ["pro", "Pro · 3 学 + 4 Explore"], ["max", "Max · 5 学 + 2 Explore"], ["expired", "已到期 · 正式课锁定"]],
         apply: function (v) {
           window.v180SetTier && window.v180SetTier(v, { reveal: false });
+        } },
+      { key: "v180PlanChange", label: "V1.8.0 下个计划周期",
+        options: [["none", "无档位变更"], ["pro_to_max", "Pro → Max"], ["max_to_pro", "Max → Pro"]],
+        apply: function (v) {
+          if (v === "pro_to_max") window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("pro", "max");
+          else if (v === "max_to_pro") window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("max", "pro");
+          else {
+            profile.v180ScheduledPlanTier = "";
+            profile.v180PlanTier = profile.membershipTier === "max" ? "max" : profile.premiumUnlocked ? "pro" : "free";
+            window.v180RenderAll && window.v180RenderAll();
+          }
         } },
       { key: "v180OfferTier", label: "V1.8.0 待购买会员",
         options: [["pro", "Pro"], ["max", "Max"]],
@@ -18788,7 +18800,7 @@
           window.v180RenderPaywall && window.v180RenderPaywall();
         } },
       { key: "v180Task", label: "V1.8.0 当前任务阶段",
-        options: [["lesson_ready", "AI 课待学"], ["after_class", "课后练习 · 剩 3 项"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["week_complete", "本周已完成"]],
+        options: [["lesson_ready", "AI 课待学"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 完整计划补做"], ["reward_ready", "单任务奖励待领取"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
         apply: function (v) {
           window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
         } },
@@ -18809,8 +18821,7 @@
         } },
       { key: "v155ValueConfig", label: "价值宣传配置",
         options: [
-          ["region_match", "命中地区配置 · 1 页"],
-          ["global_fallback", "默认兜底 · 3 页"]
+          ["global_fallback", "Figma 定稿 · 3 页轮播"]
         ],
         apply: function (v) {
           demoState.v155ValueConfig = v;
@@ -19033,10 +19044,13 @@
         } },
     ].filter(Boolean),
     jumps: [
-      { label: "1.8 查看本周课程", run: withReviewProfile(function () { window.v180OpenWeeklyPlan && window.v180OpenWeeklyPlan(); }) },
-      { label: "1.8 首次计划曝光", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
+      { label: "1.8 查看完整计划", run: withReviewProfile(function () { window.v180OpenWeeklyPlan && window.v180OpenWeeklyPlan(); }) },
+      { label: "1.8 新计划曝光", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
       { label: "1.8 学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
-      { label: "1.8 完成任务 · 自动领奖", run: withReviewProfile(function () { window.v180CompleteCurrentMission && window.v180CompleteCurrentMission(); }) },
+      { label: "1.8 完成任务 · 待领取", run: withReviewProfile(function () {
+          profile.v180PlanRevealSeen = true;
+          window.v180CompleteCurrentMission && window.v180CompleteCurrentMission();
+        }) },
       { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
       { label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
       { label: "主题课", run: withReviewProfile(function () { openThemeLanding(); }) },
@@ -19124,30 +19138,33 @@
     ].filter(Boolean),
     jumps131Label: "V1.8.0 · 会员与学习计划关键状态",
     jumps131: [
-      { label: "① Free 首页 · 3 学 + 4 练", run: withReviewProfile(function () {
+      { label: "① Free 首页 · 一次性体验计划", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("free", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
+          profile.v180PlanRevealSeen = true;
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "② Pro 首页 · 3 学 + 4 练", run: withReviewProfile(function () {
+      { label: "② Pro 首页 · 3 学 + 4 Explore", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
+          profile.v180PlanRevealSeen = true;
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "③ Max 首页 · 5 学 + 天天练", run: withReviewProfile(function () {
+      { label: "③ Max 首页 · 5 学 + 2 Explore", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("max", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
+          profile.v180PlanRevealSeen = true;
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
       { label: "④ 学习方案选择 · 每周 3 / 5 节", run: withReviewProfile(function () {
           window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free");
         }) },
-      { label: "⑤ Pro · 本周课程计划", run: withReviewProfile(function () {
+      { label: "⑤ Pro · 计划更新自动曝光", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑥ Max · 本周课程计划", run: withReviewProfile(function () {
+      { label: "⑥ Max · 计划更新自动曝光", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("max", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
@@ -19162,18 +19179,44 @@
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("explore");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑨ 本周完成 · 奖励已发放", run: withReviewProfile(function () {
+      { label: "⑨ Explore 日 · 历史欠课优先", run: withReviewProfile(function () {
+          window.v180SetTier && window.v180SetTier("pro", { reveal: false });
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("overdue_course");
+          enterLandscape(); showClassHome(); setHubTab("dino");
+        }) },
+      { label: "⑩ 历史 Explore · 从完整计划补做", run: withReviewProfile(function () {
+          window.v180SetTier && window.v180SetTier("pro", { reveal: false });
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("historical_explore");
+          window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
+        }) },
+      { label: "⑪ 完整计划 · 奖励待领取", run: withReviewProfile(function () {
+          window.v180SetTier && window.v180SetTier("max", { reveal: false });
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("week_reward_ready");
+          window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
+        }) },
+      { label: "⑫ 完整计划 · 奖励已领取", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("max", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("week_complete");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑩ 会员选择 · Pro", run: withReviewProfile(function () {
+      { label: "⑬ 会员选择 · Pro", run: withReviewProfile(function () {
           profile.selectedMembershipTier = "pro";
           enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry", "pro");
         }) },
-      { label: "⑪ 会员选择 · Max", run: withReviewProfile(function () {
+      { label: "⑭ 会员选择 · Max", run: withReviewProfile(function () {
           profile.selectedMembershipTier = "max";
           enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry", "max");
+        }) },
+      { label: "⑮ Free · 体验计划完成后不更新", run: withReviewProfile(function () {
+          window.v180SetTier && window.v180SetTier("free", { reveal: false });
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("week_complete");
+          window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
+        }) },
+      { label: "⑯ Pro → Max · 下周换计划", run: withReviewProfile(function () {
+          window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("pro", "max");
+        }) },
+      { label: "⑰ Max → Pro · 下周换计划", run: withReviewProfile(function () {
+          window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("max", "pro");
         }) },
     ].filter(Boolean),
     legacyJumpsRewardLabel: "V1.8 · 新人签到奖励",
@@ -19274,7 +19317,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V1.8.0 · V1.7.0 完整基线 + 会员与周计划增量",
+      demo: "V1.8.0 · V1.7.0 完整基线 + 会员与学习计划增量",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";
@@ -20050,15 +20093,18 @@
     #screen-paywall-pt .pwpt-title{margin-top:8px;color:#fff;font:700 1.28rem/1.17 var(--display);text-shadow:0 3px 12px rgba(4,37,147,.28)}
     .v155-value-carousel{position:relative;width:calc(100% + 32px);height:218px;margin:0 -16px;overflow:hidden;border:0;border-radius:0;background:#1457c4;box-shadow:none;touch-action:pan-y}
     .v155-value-track{position:relative;width:100%;height:100%}
-    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;padding:54px 18px 24px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
+    .v155-value-slide{position:absolute;inset:0;display:grid;grid-template-columns:1.04fr .96fr;align-items:center;padding:42px 16px 20px;opacity:0;transform:translateX(10%);transition:opacity .3s ease,transform .3s ease;pointer-events:none}
     .v155-value-slide.is-active{z-index:2;opacity:1;transform:none;pointer-events:auto}
     .v155-value-slide--trust{background:radial-gradient(circle at 83% 24%,rgba(255,233,76,.36),transparent 33%),linear-gradient(135deg,rgba(68,59,229,.7),rgba(20,143,243,.38))}
     .v155-value-slide--path{background:radial-gradient(circle at 84% 20%,rgba(255,248,55,.28),transparent 36%),linear-gradient(135deg,rgba(76,63,221,.8),rgba(116,96,246,.45))}
     .v155-value-slide--teacher{background:radial-gradient(circle at 86% 20%,rgba(128,255,237,.4),transparent 34%),linear-gradient(135deg,rgba(14,78,196,.8),rgba(18,183,215,.42))}
     .v155-value-copy{position:relative;z-index:3;color:#fff}
-    .v155-value-copy h3{margin:0;font:700 1.08rem/1.17 var(--display);text-wrap:balance}
-    .v155-value-slide--trust .v155-value-copy h3,.v155-value-slide--teacher .v155-value-copy h3{font-size:1rem;line-height:1.19}
+    .v155-value-copy h3{margin:0;color:#fff;font:800 1.04rem/1.2 var(--display);letter-spacing:-.015em;text-wrap:balance;text-shadow:0 3px 12px rgba(8,36,126,.22)}
+    .v155-value-slide--trust .v155-value-copy h3,.v155-value-slide--teacher .v155-value-copy h3{font-size:.9rem;line-height:1.2}
     .v155-value-art{position:relative;align-self:stretch;min-width:0}
+    .v155-value-visual{position:absolute;right:-18px;bottom:-20px;width:210px;height:172px;max-width:none;object-fit:contain;object-position:right bottom;filter:drop-shadow(0 10px 14px rgba(7,28,103,.18))}
+    .v155-value-slide--path .v155-value-visual{right:-15px;bottom:-17px;width:205px;height:168px}
+    .v155-value-slide--teacher .v155-value-visual{right:-18px;bottom:-19px;width:212px;height:170px}
     .v155-trust-scene{position:absolute;inset:0}
     .v155-trust-scene img{position:absolute;right:-24px;bottom:-17px;width:178px;max-width:none;max-height:172px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 12px 14px rgba(5,26,99,.25))}
     .v155-level-path{position:absolute;right:-2px;bottom:7px;width:164px;height:126px}
@@ -20074,9 +20120,9 @@
     .v155-ai-bubble{position:absolute;z-index:4;display:grid;min-height:27px;place-items:center;padding:5px 8px;color:var(--sky-deep,#0a2cc6);font:700 9px/1.1 var(--display);box-shadow:0 7px 15px rgba(5,26,99,.2)}
     .v155-ai-bubble--teacher{top:21px;right:73px;border-radius:12px 12px 3px 12px;background:var(--chat-you,#9efffa);transform:rotate(-3deg)}
     .v155-ai-bubble--child{right:86px;bottom:64px;border-radius:12px 12px 12px 3px;background:var(--chat-kid,#a5ffba);transform:rotate(3deg)}
-    .v155-carousel-dots{position:absolute;z-index:7;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px}
+    .v155-carousel-dots{position:absolute;z-index:7;left:17px;bottom:8px;display:flex;gap:6px}
     .v155-carousel-dot{width:6px;height:6px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.48);cursor:pointer;transition:.2s}
-    .v155-carousel-dot.is-active{width:19px;background:#fff837}
+    .v155-carousel-dot.is-active{width:16px;background:#fff}
     /* Figma 12709:2923 · benefit card */
     #screen-paywall-pt .pwpt-benefits{display:flex;flex-direction:column;gap:0;padding:0 12px 9px;overflow:hidden;border-radius:0;background:#fff;box-shadow:none}
     #screen-paywall-pt .pwpt-benefits::before{display:none}
@@ -20206,22 +20252,21 @@
       {
         kind: "trust",
         title: "Trusted by 1.8M families for 13 years of CEFR-aligned teaching",
-        art: '<span class="v155-trust-scene"><img src="assets/login/nw-illo-3.png" alt="Children around the world learning with a 13 Years trust badge"></span>'
+        art: '<img class="v155-value-visual" src="assets/v180/paywall-value-trust.png" alt="A teacher and Dino with families around the world and a 13 Years badge">'
       },
       {
         kind: "path",
         title: "A clear path from first words to academic English",
-        art: '<span class="v155-level-path" role="img" aria-label="Six learning levels from first words to academic English"><span class="v155-path-label v155-path-label--start">First words</span><span class="v155-path-label v155-path-label--goal">Academic</span><span class="v155-level-path-steps" aria-hidden="true"><span class="v155-level-step"><b>L1</b></span><span class="v155-level-step"><b>L2</b></span><span class="v155-level-step"><b>L3</b></span><span class="v155-level-step"><b>L4</b></span><span class="v155-level-step"><b>L5</b></span><span class="v155-level-step"><b>L6</b></span></span></span>'
+        art: '<img class="v155-value-visual" src="assets/v180/paywall-value-path.png" alt="Dino beside a six-level path from first words to academic English">'
       },
       {
         kind: "teacher",
         title: "An AI teacher that matches each child's pace and remembers how they learn",
-        art: '<span class="v155-ai-scene" role="img" aria-label="AI teacher learning together with a child"><span class="v155-ai-bubble v155-ai-bubble--teacher" aria-hidden="true">I remember!</span><span class="v155-ai-bubble v155-ai-bubble--child" aria-hidden="true">My pace</span><img class="v155-ai-child" src="assets/v155/member-center/learner-avatar.png" alt=""><img class="v155-ai-teacher" src="assets/teacher-kim.png" alt=""></span>'
+        art: '<img class="v155-value-visual" src="assets/v180/paywall-value-ai-teacher.png" alt="A child learning with a personal AI teacher">'
       }
     ];
     function currentValueSlides(){
-      // 地区配置示例复用已确认物料；未命中或配置不可用时回退全局默认配置。
-      if(demoState.v155ValueConfig === "region_match") return [GLOBAL_VALUE_SLIDES[1]];
+      // V1.8.0 Paywall uses the three approved Figma value slides for every entry route.
       return GLOBAL_VALUE_SLIDES.slice();
     }
     function isKolOfferScenario(){
@@ -20659,6 +20704,9 @@
     window.V155 = {
       renderPaywall:renderPaywall,
       restorePurchases:restorePurchases,
+      getPaywallPlans:function(){
+        return currentPaywallPlans().map(function(plan){ return Object.assign({}, plan); });
+      },
       openPaywall:openV155Paywall,
       openKol:openV155Kol,
       renderWinback:renderWinback,
@@ -21122,6 +21170,8 @@
     /* V1.8.0 revised first level: one Today card with two independent tasks.
        The full seven-day schedule lives behind the weekly-plan link. */
     .v180-task-count{display:inline-flex;align-items:center;gap:6px;text-transform:none;letter-spacing:0}
+    .v180-task-count.has-reward{position:relative}
+    .v180-task-count.has-reward::after{content:"";position:absolute;right:-2px;top:-2px;width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:#ff4e48;box-shadow:0 2px 5px rgba(129,24,20,.22)}
     .v180-task-count span{color:#60789b;font-size:.58rem}
     .v180-task-count em{font-style:normal;font-size:.8rem;line-height:1}
     .v180-today-card{padding:1px 0 0}
@@ -21135,6 +21185,7 @@
       color:var(--v180-ink);text-align:left;font-family:inherit;cursor:pointer;box-shadow:0 7px 14px rgba(30,74,137,.11);
     }
     .v180-today-task:active{transform:translateY(2px);box-shadow:0 4px 9px rgba(30,74,137,.13)}
+    .v180-today-task:disabled{cursor:default;transform:none;opacity:1}
     .v180-today-task.is-checkin{border-color:#ffd57c;background:linear-gradient(155deg,#fffdf4,#fff3cf)}
     .v180-today-task-icon{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;background:#e7f2ff;font-size:1.32rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.8)}
     .v180-today-task-icon.is-content-art{overflow:hidden;padding:0;background:#e7f2ff}
@@ -21146,13 +21197,13 @@
     .v180-today-task-copy small{display:block;color:#6c83a4;font-size:.48rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
     .v180-today-task-copy strong{display:block;margin-top:2px;font-family:var(--font-display,Quicksand,sans-serif);font-size:.75rem;line-height:1.08;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .v180-today-task-copy span{display:block;margin-top:3px;color:#6a7f9f;font-size:.5rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .v180-task-reward{display:inline-flex;align-items:center;gap:3px;color:#9a5b00;font-style:normal;font-weight:900}
-    .v180-task-reward::before{content:"";width:12px;height:12px;flex:0 0 12px;background:url(assets/v13fx/coin.png) center/contain no-repeat;filter:drop-shadow(0 2px 2px rgba(112,67,0,.18))}
     .v180-today-task-status{min-width:54px;border-radius:999px;background:#eef4fb;padding:6px 8px;color:#315f9f;font-size:.52rem;font-style:normal;font-weight:900;text-align:center}
     .v180-today-task.is-learning .v180-today-task-status{background:linear-gradient(180deg,#ff9e39,var(--v180-orange));color:#fff;box-shadow:0 3px 0 #c85a0b}
     .v180-today-task.is-done{border-color:#8eddb9;background:linear-gradient(155deg,#f7fffb,#dff8ec)}
     .v180-today-task.is-done .v180-today-task-icon{background:#dff8ea}
     .v180-today-task.is-done .v180-today-task-status{background:#d7f6e7;color:#16835b;box-shadow:none}
+    .v180-today-task.v180-check-only{min-height:58px;grid-template-columns:1fr;place-items:center;padding:8px}
+    .v180-today-task.v180-check-only .v180-today-task-status{width:34px;height:34px;min-width:34px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:1rem}
     .v180-mission-reward{
       position:absolute;inset:0;z-index:9900;display:none;align-items:center;justify-content:center;
       background:rgba(5,22,58,.55);backdrop-filter:blur(5px);border-radius:inherit;pointer-events:none
@@ -21231,8 +21282,6 @@
       .v180-today-task-copy small{font-size:.31rem}
       .v180-today-task-copy strong{margin-top:1px;font-size:.48rem}
       .v180-today-task-copy span{margin-top:1px;font-size:.32rem}
-      .v180-task-reward{gap:2px}
-      .v180-task-reward::before{width:8px;height:8px;flex-basis:8px}
       .v180-today-task-status{min-width:36px;padding:4px 5px;font-size:.34rem}
       #screen-class .dino-night-right.v180-home-task .dino-chat-pill{left:-92px;bottom:1px;width:84px;min-height:31px;padding:4px 7px;font-size:.46rem}
       #screen-class .dino-event-card{right:7px;top:63px;width:48px;height:43px;border-radius:12px}
@@ -21271,6 +21320,24 @@
     }
     #screen-class .dino-night-right.v180-home-task .dino-chat-pill .dcp-mic{display:block;width:25px;height:25px}
     #screen-class .dino-mini-entries{align-items:center;gap:8px}
+    #screen-class .dino-mini-entries .dn-pill--coin{cursor:pointer;touch-action:manipulation;padding-right:5px}
+    #screen-class .dino-mini-entries .dn-pill--coin:focus-visible{outline:4px solid var(--accent-yellow,#fff837);outline-offset:3px}
+    #screen-class .v180-coin-store-entry{
+      width:26px;height:26px;object-fit:contain;margin-left:3px;padding-left:6px;border-left:1px solid rgba(31,77,145,.16);
+      filter:drop-shadow(0 2px 3px rgba(92,54,0,.16))
+    }
+    #screen-class .v180-dino-profile-entry{
+      appearance:none;border:0;background:transparent;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:3px;
+      font:inherit;cursor:pointer;border-radius:16px;touch-action:manipulation
+    }
+    #screen-class .v180-dino-profile-entry:focus-visible{outline:4px solid var(--accent-yellow,#fff837);outline-offset:3px}
+    #screen-class .v180-dino-profile-entry .dino-name-tag{margin-top:0}
+    #screen-class .v180-dino-profile-top{display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+    #screen-class .v180-backpack-mini{
+      width:32px;height:32px;display:grid;place-items:center;border:1.5px solid rgba(255,255,255,.84);border-radius:11px;
+      background:rgba(255,255,255,.76);box-shadow:0 6px 13px rgba(20,50,110,.18);flex:0 0 32px
+    }
+    #screen-class .v180-backpack-mini img{display:block;width:27px;height:27px;object-fit:contain;animation:none}
     #screen-class .dino-mini-entries > .hub-cx-vip{
       position:relative !important;left:auto !important;right:auto !important;top:auto !important;bottom:auto !important;
       width:52px;height:36px;min-width:52px;flex:0 0 52px;z-index:1;
@@ -21289,9 +21356,9 @@
     #screen-class .dino-mini-entries > .dino-event-card.v180-event-top .dec-ico{font-size:1rem}
     #screen-class .dino-mini-entries > .dino-event-card.v180-event-top .dec-label{font-size:.6rem;white-space:nowrap}
     #screen-class .dino-mini-entries > .dino-event-card.v180-event-top .dec-cd{font-size:.46rem;padding:1px 5px;white-space:nowrap}
-    /* Store and Backpack return to the character side as large, child-readable
-       destinations. They no longer compete with event, currency and membership
-       status in the top HUD. */
+    /* Legacy standalone Store / Backpack classes are retained for old states only.
+       V1.8.0 reaches Store through the coin balance and Backpack through Dino's
+       title + XP control. */
     #screen-class .dino-night-stage > .v180-side-entry{
       position:absolute !important;left:1.5% !important;right:auto !important;bottom:auto !important;z-index:6;
       width:72px;height:68px;min-width:72px;min-height:68px;padding:7px 6px !important;
@@ -21330,13 +21397,17 @@
     #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.72rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip{
       width:100%;box-sizing:border-box;justify-self:stretch;min-height:50px;margin-top:8px;grid-template-columns:minmax(0,1fr) auto;gap:8px;
-      padding:6px 9px;border-width:1.5px;border-radius:15px;box-shadow:0 5px 10px rgba(159,86,0,.1);
+      padding:6px 9px;border-width:1.5px;border-color:#cfe0f4;border-radius:15px;
+      background:linear-gradient(155deg,#fff,#f1f7ff);box-shadow:0 5px 10px rgba(30,74,137,.1);
     }
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-icon{width:30px;height:30px;border-radius:11px;font-size:.9rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy small{font-size:.42rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy strong{font-size:.61rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy span{margin-top:1px;font-size:.43rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-status{min-width:44px;padding:5px 7px;font-size:.45rem}
+    #screen-class .v180-home-plan-panel .v180-checkin-strip:not(.is-done) .v180-today-task-status{
+      background:linear-gradient(180deg,#ffe783,var(--star-gold,#ffc333));color:#744700;box-shadow:0 3px 0 #d69b00;
+    }
     #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:44px;opacity:.9}
     #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{
       width:30px;height:30px;min-width:30px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:.82rem;
@@ -21345,7 +21416,22 @@
       min-height:96px;grid-template-rows:auto 32px;align-items:center;row-gap:6px
     }
     #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-today-task-status{grid-row:1;grid-column:2}
+    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-task-proof{grid-row:1;grid-column:2}
     #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-learning-progress{grid-column:1 / 3}
+    #screen-class .v180-task-proof{
+      align-self:start;justify-self:end;max-width:88px;padding:4px 7px;border-radius:999px;background:#edf4ff;
+      color:#58739b;font-size:.42rem;font-weight:900;line-height:1.1;text-align:center;white-space:nowrap
+    }
+    #screen-class .v180-home-plan-panel .v180-today-task.is-current-task{
+      border-color:var(--sky-mid,#0a54e1);animation:v180-task-breathe 2.2s ease-in-out infinite;
+    }
+    @keyframes v180-task-breathe{
+      0%,100%{box-shadow:0 7px 14px rgba(30,74,137,.11),0 0 0 0 rgba(10,84,225,.26)}
+      50%{box-shadow:0 9px 18px rgba(30,74,137,.18),0 0 0 5px rgba(10,84,225,.12)}
+    }
+    @media (prefers-reduced-motion:reduce){
+      #screen-class .v180-home-plan-panel .v180-today-task.is-current-task{animation:none}
+    }
     .v180-learning-progress{
       grid-column:2 / 4;grid-row:2;min-width:0;display:grid;grid-template-columns:auto minmax(10px,1fr) auto minmax(10px,1fr) auto;
       align-items:center;gap:4px;color:#71839d
@@ -21374,6 +21460,10 @@
       #screen-class .dino-night-right.v180-home-task .dino-chat-pill{left:auto;bottom:auto;width:78%;min-height:36px;padding:5px 8px;font-size:.5rem;box-shadow:0 3px 0 #ef6a1d,0 7px 12px rgba(228,118,20,.25)}
       #screen-class .dino-night-right.v180-home-task .dino-chat-pill .dcp-mic{width:16px;height:16px}
       #screen-class .dino-mini-entries{gap:4px}
+      #screen-class .v180-coin-store-entry{width:18px;height:18px;margin-left:1px;padding-left:3px}
+      #screen-class .v180-dino-profile-top{gap:3px}
+      #screen-class .v180-backpack-mini{width:21px;height:21px;flex-basis:21px;border-radius:7px}
+      #screen-class .v180-backpack-mini img{width:18px;height:18px}
       #screen-class .dino-mini-entries > .hub-cx-vip{width:38px;height:28px;min-width:38px;flex-basis:38px}
       #screen-class .dino-mini-entries > .hub-cx-vip .hcv-diamond{width:25px;height:25px}
       #screen-class .dino-mini-entries > .dino-event-card.v180-event-top{width:90px;height:28px;min-height:28px;padding:0 6px;gap:3px;border-radius:14px}
@@ -21393,10 +21483,12 @@
       #screen-class .dino-night-stage > .v180-side-entry .v180-side-entry-art{
         width:24px;height:24px;flex-basis:24px;filter:drop-shadow(0 2px 3px rgba(28,55,108,.18));
       }
-      #screen-class .v180-home-plan-panel{left:auto;right:2.5%;top:14%;width:36%;border-width:1.5px;border-radius:17px}
+      #screen-class .v180-home-plan-panel{left:auto;right:2.5%;top:20%;width:36%;border-width:1.5px;border-radius:17px}
       #screen-class .v180-home-plan-panel .v180-home-week{padding:6px 7px 7px}
       #screen-class .v180-home-plan-panel .v180-today-list{gap:4px}
       #screen-class .v180-home-plan-panel .v180-today-task{min-height:43px;grid-template-columns:minmax(0,1fr) auto;column-gap:5px;padding:4px 5px;border-radius:10px}
+      #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only{min-height:36px;grid-template-columns:1fr;padding:3px}
+      #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only .v180-today-task-status{width:23px;height:23px;min-width:23px;font-size:.66rem}
       #screen-class .v180-home-plan-panel .v180-today-task-icon{width:25px;height:25px;border-radius:9px;font-size:.72rem}
       #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.44rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip{min-height:31px;margin-top:4px;grid-template-columns:minmax(0,1fr) auto;gap:4px;padding:3px 5px;border-radius:9px}
@@ -21408,6 +21500,7 @@
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:28px}
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{width:19px;height:19px;min-width:19px;padding:0;font-size:.52rem}
       #screen-class .v180-home-plan-panel .v180-today-task.has-progress{min-height:61px;grid-template-rows:auto 20px;row-gap:2px}
+      #screen-class .v180-task-proof{max-width:58px;padding:2px 4px;font-size:.27rem}
       .v180-learning-progress{gap:2px}
       .v180-progress-step{min-width:20px;gap:1px;font-size:.27rem}
       .v180-progress-step i{width:13px;height:13px;border-width:1px;border-radius:5px;font-size:.36rem}
@@ -21488,6 +21581,8 @@
     }
     .v180-plan-node.is-current .v180-node-day{background:#e35f07;border-color:#fff0bf}
     .v180-plan-node.is-current strong{color:#fff;font-size:.73rem}
+    .v180-plan-node.is-today{border-color:#80adf3;background:rgba(67,124,210,.14)}
+    .v180-plan-node.is-available{cursor:pointer}
     .v180-plan-node.is-future{opacity:.7}
     .v180-plan-node.is-future .v180-node-orb::after{display:none}
     .v180-node-reward{display:inline-flex;align-items:center;gap:3px;color:#ffd66b;font-size:.5rem;font-weight:900}
@@ -21531,9 +21626,11 @@
     .v180-reveal h2{position:relative;margin:10px 0 5px;font-family:var(--font-display,Quicksand,sans-serif);font-size:1.65rem;line-height:1.1}
     .v180-reveal-copy{position:relative;margin:0 auto;max-width:600px;color:#637692;font-size:.72rem;line-height:1.4;font-weight:700}
     .v180-reveal-copy strong{display:block;color:#2459ba;font-family:var(--font-display,Quicksand,sans-serif);font-size:.94rem;line-height:1.25;font-weight:700}
+    .v180-reveal-proof{position:relative;margin:7px auto 0;color:#53739f;font-size:.58rem;font-weight:900}
     .v180-reveal-path{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:start;justify-content:center;gap:8px;width:100%;max-width:720px;margin:20px auto 17px;padding:0 18px}
     .v180-reveal-path::before{content:"";position:absolute;left:6%;right:6%;top:31px;height:6px;border-radius:999px;background:repeating-linear-gradient(90deg,#b6cff2 0 9px,transparent 9px 16px)}
-    .v180-reveal-mini{position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.55rem;font-weight:900;color:#607596}
+    .v180-reveal-mini{appearance:none;position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;border:0;background:transparent;font-family:inherit;font-size:.55rem;font-weight:900;color:#607596;cursor:pointer}
+    .v180-reveal-mini:disabled{cursor:default}
     .v180-reveal-mini i{position:relative;width:100%;max-width:82px;aspect-ratio:4/3;border-radius:16px;display:block;overflow:hidden;background:linear-gradient(160deg,#fff,#e4f1ff);border:2px solid #bcd7fa;box-shadow:0 7px 13px rgba(32,78,142,.13);font-style:normal}
     .v180-reveal-mini i img{display:block;box-sizing:border-box;width:100%;height:100%;object-fit:cover}
     .v180-reveal-mini.is-explore i{background:linear-gradient(160deg,#effff9,#dff6ed);border-color:#9edfc8}
@@ -21542,17 +21639,17 @@
     .v180-weekly-gift-box{font-size:2.15rem;line-height:1;filter:drop-shadow(0 5px 5px rgba(132,75,0,.18))}
     .v180-reveal-mini.is-weekly-gift strong{color:#9a5b00}
     .v180-reveal-mini.is-weekly-gift.is-ready i{border-color:#fe8820;box-shadow:0 0 0 4px rgba(254,136,32,.16),0 9px 18px rgba(183,112,0,.25);animation:v180-current-pulse 1.8s ease-in-out infinite}
-    .v180-reveal-mini:first-child i{background:linear-gradient(160deg,#fff8e8,#ffe0ad);border-color:#ff9a34;box-shadow:0 7px 13px rgba(254,136,32,.2)}
     .v180-reveal-mini > span{font-size:.53rem;letter-spacing:.02em;text-transform:uppercase}
     .v180-reveal-mini strong{max-width:88px;min-height:2.15em;color:#2459b5;font-size:.48rem;line-height:1.08;text-wrap:balance}
     .v180-reveal-mini.is-explore strong{color:#238465}
-    .v180-reveal-mini.is-done i::after,
-    .v180-reveal-mini.is-current i::after{position:absolute;right:4px;top:4px;min-width:19px;height:19px;padding:0 4px;border:2px solid #fff;border-radius:999px;display:grid;place-items:center;color:#fff;font-size:.52rem;font-weight:900;line-height:1;box-shadow:0 3px 7px rgba(24,63,111,.22)}
+    .v180-reveal-mini.is-done i::after{position:absolute;right:4px;top:4px;min-width:19px;height:19px;padding:0 4px;border:2px solid #fff;border-radius:999px;display:grid;place-items:center;color:#fff;font-size:.52rem;font-weight:900;line-height:1;box-shadow:0 3px 7px rgba(24,63,111,.22)}
     .v180-reveal-mini.is-done i::after{content:"✓";background:#22b87c}
-    .v180-reveal-mini.is-current i::after{content:"NOW";background:var(--v180-orange);font-size:.38rem}
     .v180-reveal-mini.is-done i{border-color:#78d8ad;box-shadow:0 0 0 3px rgba(34,184,124,.13),0 7px 13px rgba(32,78,142,.13)}
-    .v180-reveal-mini.is-current i{border-color:var(--v180-orange);box-shadow:0 0 0 4px rgba(254,136,32,.16),0 9px 16px rgba(254,136,32,.22)}
+    .v180-reveal-mini.is-current i{border-color:#ff9b39;box-shadow:0 0 0 4px rgba(254,136,32,.14),0 9px 16px rgba(155,78,7,.2);animation:v180-current-pulse 1.8s ease-in-out infinite}
+    .v180-reveal-mini.is-today i{border-color:#6fa7f1;box-shadow:0 0 0 3px rgba(54,113,211,.12),0 7px 13px rgba(32,78,142,.13)}
+    .v180-reveal-mini.is-available i{border-color:#7aaef1}
     .v180-reveal-mini.is-future{opacity:.62}
+    .v180-reveal-mini.is-weekly-gift.is-done i{background:linear-gradient(155deg,#e0faed,#9de5c6);border-color:#63cf9e;box-shadow:0 7px 16px rgba(20,120,80,.18);animation:none}
     .v180-reveal-actions{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
     .v180-reveal-primary{min-width:250px;min-height:52px;border:0;border-radius:18px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 6px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.92rem;font-weight:900;cursor:pointer}
     .v180-reveal-primary:active{transform:translateY(3px);box-shadow:0 3px 0 #c85a0b}
@@ -21565,6 +21662,7 @@
       .v180-reveal h2{margin:4px 0 2px;font-size:1rem}
       .v180-reveal-copy{max-width:420px;font-size:.45rem;line-height:1.25}
       .v180-reveal-copy strong{font-size:.61rem}
+      .v180-reveal-proof{margin-top:3px;font-size:.36rem}
       .v180-reveal-path{gap:4px;max-width:none;margin:8px auto 6px;padding:0 4px}
       .v180-reveal-path::before{left:4%;right:4%;top:20px;height:4px}
       .v180-reveal-mini{gap:1px;font-size:.4rem}
@@ -21591,21 +21689,29 @@
     #screen-study-plan .sp2-plan-choice-head h2{margin:3px 0 10px;color:#2f3338;font-family:var(--font-display,Quicksand,sans-serif);font-size:.94rem;line-height:1.15}
     #screen-study-plan .sp2-plan-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
     #screen-study-plan .sp2-plan-option{
-      min-width:0;min-height:82px;display:flex;align-items:center;justify-content:center;
+      position:relative;min-width:0;min-height:82px;display:flex;align-items:center;justify-content:center;
       padding:11px 12px;text-align:center;border:2px solid #dbe6f4;border-radius:18px;background:#f7faff;color:#173052;
       font-family:inherit;cursor:pointer;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease
     }
     #screen-study-plan .sp2-plan-option:active{transform:translateY(2px)}
     #screen-study-plan .sp2-plan-option.is-selected{border-color:#2c67c8;background:linear-gradient(145deg,#edf5ff,#fff);box-shadow:0 0 0 4px rgba(44,103,200,.1),0 8px 16px rgba(39,86,148,.12)}
     #screen-study-plan .sp2-plan-option[data-study-offer-tier="max"].is-selected{border-color:var(--cta-orange,#fe8820);background:linear-gradient(145deg,#fff4e7,#fff);box-shadow:0 0 0 4px rgba(254,136,32,.1),0 8px 16px rgba(198,91,15,.12)}
+    #screen-study-plan .sp2-plan-tier{
+      position:absolute;top:8px;right:9px;padding:3px 7px;border-radius:999px;background:#e8f1ff;color:var(--sky-mid);
+      font-size:.46rem;font-weight:900;line-height:1;letter-spacing:.02em
+    }
+    #screen-study-plan .sp2-plan-option[data-study-offer-tier="max"] .sp2-plan-tier{background:#fff0d8;color:#ad520c}
     #screen-study-plan .sp2-plan-option strong{font-family:var(--font-display,Quicksand,sans-serif);font-size:1rem;line-height:1.15}
     #screen-study-plan .sp2-summary{margin:12px 0 0}
+    #screen-study-plan .sp2-summary.is-max{
+      background:linear-gradient(180deg,color-mix(in srgb,var(--cta-orange) 13%,white),color-mix(in srgb,var(--star-gold) 5%,white));
+      box-shadow:0 12px 28px rgba(198,91,15,.16)
+    }
 
     /* Existing portrait Paywall: tier switch and billing cards first, followed by
        one complete three-column Pro / Max benefit comparison. */
     #screen-paywall-pt .v155-value-carousel{height:160px}
-    #screen-paywall-pt .v155-value-slide{padding:38px 18px 16px}
-    #screen-paywall-pt .v155-level-path{transform:scale(.82);transform-origin:right bottom}
+    #screen-paywall-pt .v155-value-slide{padding:39px 16px 17px}
     .v180-paywall-selector{position:relative;z-index:8;max-width:none;margin:0;padding:8px 12px 3px;background:#fff}
     .v180-tier-tabs{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#eaf1fa;border-radius:15px;padding:4px}
     .v180-tier-option{position:relative;z-index:2;min-height:36px;border:0;border-radius:12px;background:transparent;color:#667994;font-family:inherit;font-size:.74rem;font-weight:900;cursor:pointer;pointer-events:auto;touch-action:manipulation}
@@ -21674,6 +21780,8 @@
     .v180-ms-actions{position:relative;z-index:3;display:flex;align-items:center;gap:9px;margin-top:12px}
     .v180-ms-actions .v180-ms-plan-btn{flex:0 0 auto}
     .v180-ms-actions .v180-ms-upgrade{flex:1;width:auto;min-height:42px;margin:0;box-shadow:0 4px 0 #c85a0b;font-size:.66rem;padding:7px 11px}
+    .v180-ms-change-note{margin:10px 0 0;padding:10px 12px;border:1px solid #ffd27b;border-radius:14px;background:#fff8df;color:#815018;font-size:.64rem;font-weight:800;line-height:1.35}
+    .v180-ms-change-note strong{display:block;margin-bottom:2px;color:#d46110;font-size:.7rem}
     #screen-membership .ms-premium-card .ms-premium-title{font-size:1.16rem;line-height:1.08;margin:9px 0 8px;max-width:290px}
     #screen-membership .ms-premium-card .ms-benefits-list{gap:4px}
     #screen-membership .ms-premium-card .ms-benefits-list li{font-size:.7rem}
@@ -21694,34 +21802,28 @@
         { kind: "explore", title: "Explore & discover", icon: "🚀" }
       ],
       pro: [
-        { kind: "lesson", title: "Knock Knock Party", icon: "🚪", cover: "assets/ip-quiz/q1-cake.png" },
+        { kind: "lesson", title: "An Exploratory Adventure at the Forest Lake", icon: "📘", cover: "assets/ip-quiz/q3-school.png" },
         { kind: "explore", title: "Explore & discover", icon: "🪐" },
-        { kind: "lesson", title: "The Tiny Team", icon: "🐞", cover: "assets/ip-quiz/q2-dinosaur-family.jpg" },
+        { kind: "lesson", title: "Meet My School Friends", icon: "📘", cover: "assets/ip-quiz/q2-dinosaur-family.jpg" },
         { kind: "explore", title: "Explore & discover", icon: "🔭" },
-        { kind: "lesson", title: "Helping Hands", icon: "🤝", cover: "assets/ip-quiz/q2-robots.png" },
+        { kind: "lesson", title: "Pack My School Bag", icon: "📘", cover: "assets/ip-quiz/q1-bicycle.png" },
         { kind: "explore", title: "Explore & discover", icon: "🌈" },
         { kind: "explore", title: "Explore & discover", icon: "🚀" }
       ],
       max: [
-        { kind: "lesson", title: "Knock Knock Party", icon: "🚪", cover: "assets/ip-quiz/q1-cake.png" },
-        { kind: "lesson", title: "The Tiny Team", icon: "🐞", cover: "assets/ip-quiz/q2-dinosaur-family.jpg" },
-        { kind: "lesson", title: "Helping Hands", icon: "🤝", cover: "assets/ip-quiz/q2-robots.png" },
-        { kind: "lesson", title: "Animal Neighbors", icon: "🦊", cover: "assets/ip-quiz/q3-under-sea.png" },
-        { kind: "lesson", title: "Around Our Town", icon: "🏘️", cover: "assets/ip-quiz/q3-school.png" },
+        { kind: "lesson", title: "An Exploratory Adventure at the Forest Lake", icon: "📘", cover: "assets/ip-quiz/q3-school.png" },
+        { kind: "lesson", title: "Meet My School Friends", icon: "📘", cover: "assets/ip-quiz/q2-dinosaur-family.jpg" },
+        { kind: "lesson", title: "Pack My School Bag", icon: "📘", cover: "assets/ip-quiz/q1-bicycle.png" },
+        { kind: "lesson", title: "Colors of Our Classroom", icon: "📘", cover: "assets/ip-quiz/q2-robots.png" },
+        { kind: "lesson", title: "My Favorite School Snack", icon: "📘", cover: "assets/ip-quiz/q1-cake.png" },
         { kind: "explore", title: "Explore & discover", icon: "🌈" },
         { kind: "explore", title: "Explore & discover", icon: "🚀" }
       ]
     };
-    var V180_PRICE = {
-      pro: [
-        { id: "annual", name: "Annual", price: "$249.99", period: "/ year", daily: "$0.68", comparison: "$349.99", badge: "BEST VALUE" },
-        { id: "monthly", name: "Monthly", price: "$39.99", period: "/ month", daily: "$1.33" }
-      ],
-      max: [
-        { id: "annual", name: "Annual", price: "$374.99", period: "/ year", daily: "$1.03", comparison: "$524.99", badge: "BEST VALUE" },
-        { id: "monthly", name: "Monthly", price: "$59.99", period: "/ month", daily: "$2.00" }
-      ]
-    };
+    /* Demo only: production receives a separate country/platform catalog for each
+       tier. Max prices are derived here so both tiers still inherit the retained
+       V1.7 product order, Promo Code, IAP offer, renewal and localization fields. */
+    var V180_MAX_PRICE_MULTIPLIER = 1.5;
     var V180_DAILY_REWARD = 20;
     var V180_WEEKLY_REWARD = 100;
     var v180RewardTimer = null;
@@ -21734,103 +21836,252 @@
       if (!profile.premiumUnlocked) return "free";
       return profile.membershipTier === "max" ? "max" : "pro";
     }
+    function planTier() {
+      var value = profile.v180PlanTier;
+      if (value === "free" || value === "pro" || value === "max") return value;
+      return tier();
+    }
     function tierName(value) {
-      return value === "max" ? "Dino Max" : value === "pro" ? "Dino Pro" : "Free Plan";
+      return value === "max" ? "Dino Max" : value === "pro" ? "Dino Pro" : "Free";
+    }
+    function planName(value) {
+      return value === "free" ? "Free starter plan" : tierName(value);
+    }
+    function planEntryLabel(value) {
+      return value === "free" ? "Starter plan" : "Weekly plan";
     }
     function rhythm(value) {
-      if (value === "max") return "5 learning missions · practice every learning day";
-      return "3 learning missions · 4 Explore days";
+      if (value === "max") return "5 learning missions · 2 Explore days";
+      if (value === "pro") return "3 learning missions · 4 Explore days";
+      return "3 free lessons · 4 Explore days";
     }
     function planValueCopy(value) {
       if (value === "max") return "Build English skills faster with 5 guided learning days and 2 Explore days every week.";
       if (value === "pro") return "Build a steady English habit with 3 guided learning days and 4 Explore days every week.";
-      return "Build a steady English habit with 3 guided learning days and 4 Explore days this week.";
+      return "Try Dino’s complete learning rhythm with 3 free lessons and 4 Explore days.";
+    }
+    function taskCompletionProof(index) {
+      var base = planTier() === "max" ? 1860 : planTier() === "pro" ? 1240 : 820;
+      return (base + Math.max(0, Number(index) || 0) * 73).toLocaleString("en-US") + " finished";
+    }
+    function planCompletionProof() {
+      var value = planTier();
+      var count = value === "max" ? 1386 : value === "pro" ? 2184 : 3642;
+      return count.toLocaleString("en-US") + (value === "free" ? " learners started this plan" : " learners joined this week");
     }
     function tasks() {
-      return V180_TASKS[tier()] || V180_TASKS.free;
-    }
-    function completedCount() {
-      var n = Number(profile.v180CompletedTasks);
-      return Math.max(0, Math.min(7, Number.isFinite(n) ? Math.floor(n) : 0));
-    }
-    function currentTask() {
-      var done = completedCount();
-      if (done >= 7) return null;
-      return tasks()[done];
-    }
-    function currentStage() {
-      var task = currentTask();
-      if (!task) return "complete";
-      if (task.kind === "explore") return "explore";
-      return profile.v180TaskStage === "after_class" ? "after_class" : "lesson";
-    }
-    function afterClassRemaining() {
-      var value = Number(profile.v180AfterClassRemaining);
-      return Math.max(1, Math.min(3, Number.isFinite(value) ? Math.floor(value) : 3));
+      return V180_TASKS[planTier()] || V180_TASKS.free;
     }
     var V180_AFTER_CLASS_TYPES = ["Words", "Listening", "Speaking"];
-    function afterClassCompletedItems() {
-      if (!Array.isArray(profile.v180AfterClassCompleted)) profile.v180AfterClassCompleted = [];
-      profile.v180AfterClassCompleted = profile.v180AfterClassCompleted.filter(function (name, index, list) {
-        return V180_AFTER_CLASS_TYPES.indexOf(name) !== -1 && list.indexOf(name) === index;
+    function todayIndex() {
+      var value = Number(profile.v180TodayIndex);
+      return Math.max(0, Math.min(6, Number.isFinite(value) ? Math.floor(value) : 0));
+    }
+    function emptyTaskState(task) {
+      return task && task.kind === "lesson"
+        ? { lessonDone: false, practiceDone: false, practices: [], reward: "locked", closesToday: false }
+        : { exploreDone: false, reward: "locked", closesToday: false };
+    }
+    function taskState(index) {
+      ensureTaskStates();
+      return profile.v180TaskStates[index] || null;
+    }
+    function taskFullyDone(index) {
+      var task = tasks()[index];
+      var state = profile.v180TaskStates[index];
+      if (!task || !state) return false;
+      return task.kind === "lesson" ? !!(state.lessonDone && state.practiceDone) : !!state.exploreDone;
+    }
+    function ensureTaskStates() {
+      var value = planTier();
+      var plan = tasks();
+      if (profile.v180TaskTier !== value || !Array.isArray(profile.v180TaskStates) || profile.v180TaskStates.length !== plan.length) {
+        profile.v180TaskTier = value;
+        profile.v180TaskStates = plan.map(emptyTaskState);
+        profile.v180TodayIndex = 0;
+        profile.v180ServedTaskIndex = null;
+        profile.v180TodaySettled = false;
+        profile.v180HomeRewardTaskIndex = null;
+        profile.v180ActiveLessonTaskIndex = null;
+        profile.v180ActiveExploreTaskIndex = null;
+        profile.v180WeeklyRewardClaimed = false;
+      }
+      profile.v180TaskStates = profile.v180TaskStates.map(function (state, index) {
+        var task = plan[index];
+        var safe = state && typeof state === "object" ? state : emptyTaskState(task);
+        safe.reward = safe.reward === "claimable" || safe.reward === "claimed" ? safe.reward : "locked";
+        safe.closesToday = safe.closesToday === true;
+        if (task.kind === "lesson") {
+          safe.lessonDone = safe.lessonDone === true;
+          safe.practiceDone = safe.practiceDone === true;
+          safe.practices = Array.isArray(safe.practices) ? safe.practices.filter(function (name, position, list) {
+            return V180_AFTER_CLASS_TYPES.indexOf(name) !== -1 && list.indexOf(name) === position;
+          }) : [];
+          if (safe.practices.length >= V180_AFTER_CLASS_TYPES.length) safe.practiceDone = true;
+        } else {
+          safe.exploreDone = safe.exploreDone === true;
+        }
+        return safe;
       });
-      return profile.v180AfterClassCompleted;
+      profile.v180CompletedTasks = profile.v180TaskStates.filter(function (_, index) { return taskFullyDoneUnsafe(index); }).length;
+    }
+    function taskFullyDoneUnsafe(index) {
+      var task = tasks()[index];
+      var state = profile.v180TaskStates[index];
+      return !!(task && state && (task.kind === "lesson" ? state.lessonDone && state.practiceDone : state.exploreDone));
+    }
+    function completedCount() {
+      ensureTaskStates();
+      return profile.v180TaskStates.filter(function (_, index) { return taskFullyDoneUnsafe(index); }).length;
+    }
+    function earliestOverdueCourseIndex() {
+      ensureTaskStates();
+      for (var index = 0; index < todayIndex(); index += 1) {
+        if (tasks()[index].kind === "lesson" && !profile.v180TaskStates[index].lessonDone) return index;
+      }
+      return null;
+    }
+    function servedTaskIndex() {
+      ensureTaskStates();
+      var stored = Number(profile.v180ServedTaskIndex);
+      if (Number.isInteger(stored) && stored >= 0 && stored < tasks().length) return stored;
+      var overdue = earliestOverdueCourseIndex();
+      profile.v180ServedTaskIndex = overdue == null ? todayIndex() : overdue;
+      return profile.v180ServedTaskIndex;
+    }
+    function pendingRewardIndex() {
+      ensureTaskStates();
+      var preferred = Number(profile.v180HomeRewardTaskIndex);
+      if (Number.isInteger(preferred) && profile.v180TaskStates[preferred] && profile.v180TaskStates[preferred].reward === "claimable") return preferred;
+      var served = servedTaskIndex();
+      if (profile.v180TaskStates[served] && profile.v180TaskStates[served].reward === "claimable") return served;
+      for (var index = 0; index < profile.v180TaskStates.length; index += 1) {
+        if (profile.v180TaskStates[index].reward === "claimable") return index;
+      }
+      return null;
+    }
+    function todayCompletedTaskIndex() {
+      ensureTaskStates();
+      var index = servedTaskIndex();
+      return taskFullyDoneUnsafe(index) && profile.v180TaskStates[index].reward === "claimed" ? index : null;
+    }
+    function weeklyRewardClaimed() {
+      return profile.v180WeeklyRewardClaimed === true;
+    }
+    function routeNodeDone(index) {
+      ensureTaskStates();
+      var task = tasks()[index];
+      var state = profile.v180TaskStates[index];
+      return !!(task && state && (task.kind === "lesson" ? state.lessonDone : state.exploreDone));
+    }
+    function completeTask(index, closesToday) {
+      ensureTaskStates();
+      var task = tasks()[index];
+      var state = profile.v180TaskStates[index];
+      if (!task || !state) return false;
+      if (task.kind === "lesson") {
+        state.lessonDone = true;
+        state.practiceDone = true;
+        state.practices = V180_AFTER_CLASS_TYPES.slice();
+      } else {
+        state.exploreDone = true;
+      }
+      if (state.reward !== "claimed") state.reward = "claimable";
+      state.closesToday = closesToday === true;
+      profile.v180HomeRewardTaskIndex = index;
+      profile.v180CompletedTasks = completedCount();
+      if (profile.v180CompletedTasks >= 7) profile.v180WeeklyRewardClaimed = false;
+      return true;
+    }
+    function claimTaskReward() {
+      var index = pendingRewardIndex();
+      if (index == null) return false;
+      var state = taskState(index);
+      if (!state || state.reward !== "claimable") return false;
+      state.reward = "claimed";
+      if (state.closesToday || index === servedTaskIndex()) profile.v180TodaySettled = true;
+      profile.v180HomeRewardTaskIndex = null;
+      if (window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(V180_DAILY_REWARD);
+      renderAll();
+      showMissionReward("mission");
+      return true;
+    }
+    function claimWeeklyReward() {
+      if (completedCount() < 7 || weeklyRewardClaimed()) return false;
+      profile.v180WeeklyRewardClaimed = true;
+      if (window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(V180_WEEKLY_REWARD);
+      renderAll();
+      showMissionReward("weekly");
+      return true;
+    }
+    function currentTask(index) {
+      var taskIndex = index == null ? servedTaskIndex() : Number(index);
+      return Number.isInteger(taskIndex) ? tasks()[taskIndex] || null : null;
+    }
+    function currentStage(index) {
+      var taskIndex = index == null ? servedTaskIndex() : Number(index);
+      var task = currentTask(taskIndex);
+      var state = taskState(taskIndex);
+      if (!task || !state) return "complete";
+      if (taskFullyDoneUnsafe(taskIndex)) return state.reward === "claimable" ? "reward" : "complete";
+      if (task.kind === "explore") return "explore";
+      return state.lessonDone ? "after_class" : "lesson";
+    }
+    function afterClassCompletedItems(index) {
+      var taskIndex = index == null ? Number(profile.v180ActiveLessonTaskIndex) : Number(index);
+      if (!Number.isInteger(taskIndex)) taskIndex = servedTaskIndex();
+      var state = taskState(taskIndex);
+      return state && Array.isArray(state.practices) ? state.practices : [];
+    }
+    function afterClassRemaining(index) {
+      return Math.max(0, V180_AFTER_CLASS_TYPES.length - afterClassCompletedItems(index).length);
+    }
+    function afterClassTaskIndex() {
+      var active = Number(profile.v180ActiveLessonTaskIndex);
+      if (Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson") return active;
+      var served = servedTaskIndex();
+      if (tasks()[served] && tasks()[served].kind === "lesson") return served;
+      for (var index = 0; index < tasks().length; index += 1) {
+        var task = tasks()[index];
+        var state = profile.v180TaskStates[index];
+        if (task.kind === "lesson" && state.lessonDone && !state.practiceDone) return index;
+      }
+      return null;
     }
     function prepareAfterClassMission(courseKey) {
-      var key = String(courseKey || "");
-      var completed = afterClassCompletedItems();
-      var sameCompletedCourse = key && profile.v180AfterClassCourseKey === key && completed.length >= V180_AFTER_CLASS_TYPES.length;
-      if (sameCompletedCourse) return;
-      if (profile.v180AfterClassCourseKey !== key) {
-        profile.v180AfterClassCourseKey = key;
-        profile.v180AfterClassCompleted = [];
-        completed = profile.v180AfterClassCompleted;
-      }
-      var task = currentTask();
-      if (task && task.kind === "lesson" && currentStage() === "lesson") {
-        profile.v180TaskStage = "after_class";
-        profile.v180AfterClassRemaining = 3;
-      }
-      var alreadyDone = currentStage() === "after_class" ? 3 - afterClassRemaining() : 0;
-      while (completed.length < alreadyDone) completed.push(V180_AFTER_CLASS_TYPES[completed.length]);
+      ensureTaskStates();
+      var index = afterClassTaskIndex();
+      if (index == null) return;
+      profile.v180ActiveLessonTaskIndex = index;
+      profile.v180AfterClassCourseKey = String(courseKey || profile.v180AfterClassCourseKey || "");
+      profile.v180AfterClassCompleted = afterClassCompletedItems(index).slice();
+      profile.v180AfterClassRemaining = afterClassRemaining(index);
       renderAll();
     }
     function completeAfterClassPractice(name, courseKey) {
       prepareAfterClassMission(courseKey);
-      var completed = afterClassCompletedItems();
-      var newlyCompleted = completed.indexOf(name) === -1;
-      if (newlyCompleted && V180_AFTER_CLASS_TYPES.indexOf(name) !== -1) completed.push(name);
-      var remaining = Math.max(0, V180_AFTER_CLASS_TYPES.length - completed.length);
-      var task = currentTask();
-      var canAdvanceMission = !!(task && task.kind === "lesson" && currentStage() === "after_class");
-      if (!canAdvanceMission || !newlyCompleted) {
+      var index = afterClassTaskIndex();
+      if (index == null) return { newlyCompleted: false, remaining: 0, missionComplete: false };
+      var state = taskState(index);
+      var newlyCompleted = V180_AFTER_CLASS_TYPES.indexOf(name) !== -1 && state.practices.indexOf(name) === -1;
+      if (newlyCompleted) state.practices.push(name);
+      state.practiceDone = state.practices.length >= V180_AFTER_CLASS_TYPES.length;
+      profile.v180AfterClassCompleted = state.practices.slice();
+      profile.v180AfterClassRemaining = afterClassRemaining(index);
+      if (!state.practiceDone || !newlyCompleted) {
         renderAll();
-        return { newlyCompleted: newlyCompleted, remaining: remaining, missionComplete: false };
+        return { newlyCompleted: newlyCompleted, remaining: profile.v180AfterClassRemaining, missionComplete: false };
       }
-      if (remaining > 0) {
-        profile.v180AfterClassRemaining = remaining;
-        renderAll();
-        return { newlyCompleted: true, remaining: remaining, missionComplete: false };
-      }
-      var nextDone = Math.min(7, completedCount() + 1);
-      var weekly = nextDone >= 7;
-      profile.v180CompletedTasks = nextDone;
-      profile.v180TaskStage = "lesson";
-      profile.v180AfterClassRemaining = 3;
-      profile.v180ActiveExploreTaskIndex = null;
-      if (window.GAME && window.GAME.grantCoins) {
-        window.GAME.grantCoins(V180_DAILY_REWARD);
-        if (weekly) window.GAME.grantCoins(V180_WEEKLY_REWARD);
-      }
-      ensureTaskConsistency();
+      completeTask(index, index === servedTaskIndex());
       renderAll();
-      showMissionReward(weekly);
-      return { newlyCompleted: true, remaining: 0, missionComplete: true, weekly: weekly };
+      showPayToast("Mission complete · gift ready 🎁");
+      return { newlyCompleted: true, remaining: 0, missionComplete: true, rewardReady: true, weekly: completedCount() >= 7 };
     }
-    function scheduleWord(task, stage) {
+    function scheduleWord(task, stage, index) {
       if (!task) return { eyebrow: "Weekly adventure complete", title: "Amazing week!", sub: "Seven stars collected. Dino is proud of you.", cta: "See my adventure", detail: "Weekly reward", icon: "🏆" };
+      if (stage === "reward") return { eyebrow: "Mission complete", title: task.title, sub: "Open your mission gift.", cta: "Claim", detail: "Your mission gift is ready", icon: "🎁" };
       if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start Explore", detail: "Complete any 1 activity", icon: task.icon };
-      if (stage === "after_class") return { eyebrow: "Today’s practice", title: task.title, sub: "Keep going to finish today’s learning mission.", cta: "Continue practice", detail: afterClassRemaining() + " " + (afterClassRemaining() === 1 ? "practice" : "practices") + " left", icon: "✏️" };
+      if (stage === "after_class") return { eyebrow: "Today’s practice", title: task.title, sub: "Keep going to finish today’s learning mission.", cta: "Continue", detail: afterClassRemaining(index) + " " + (afterClassRemaining(index) === 1 ? "practice" : "practices") + " left", icon: "✏️" };
       return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Start today’s lesson and continue with practice.", cta: "Start lesson", detail: "Lesson + practice", icon: task.icon };
     }
     function taskArtwork(task, finished) {
@@ -21843,24 +22094,19 @@
     }
     function lessonProgressHtml(task, stage) {
       if (!task || task.kind !== "lesson") return "";
-      var practiceStage = stage === "after_class";
-      return '<div class="v180-learning-progress" role="img" aria-label="AI lesson, then practice, then earn 20 coins">' +
+      var practiceStage = stage === "after_class" || stage === "reward";
+      var rewardStage = stage === "reward";
+      return '<div class="v180-learning-progress" role="img" aria-label="AI lesson, then practice, then open the mission gift">' +
         '<span class="v180-progress-step ' + (practiceStage ? 'is-done' : 'is-current') + '"><i aria-hidden="true">▶</i><b>Lesson</b></span>' +
         '<span class="v180-progress-rail ' + (practiceStage ? 'is-filled' : '') + '" aria-hidden="true"></span>' +
-        '<span class="v180-progress-step ' + (practiceStage ? 'is-current' : '') + '"><i aria-hidden="true">✎</i><b>Practice</b></span>' +
-        '<span class="v180-progress-rail" aria-hidden="true"></span>' +
-        '<span class="v180-progress-step is-reward"><i aria-hidden="true">🎁</i><b>+20</b></span>' +
+        '<span class="v180-progress-step ' + (rewardStage ? 'is-done' : practiceStage ? 'is-current' : '') + '"><i aria-hidden="true">✎</i><b>Practice</b></span>' +
+        '<span class="v180-progress-rail ' + (rewardStage ? 'is-filled' : '') + '" aria-hidden="true"></span>' +
+        '<span class="v180-progress-step is-reward ' + (rewardStage ? 'is-current' : '') + '"><i aria-hidden="true">🎁</i><b>Gift</b></span>' +
       '</div>';
     }
     function ensureTaskConsistency() {
-      var task = currentTask();
-      if (!task) {
-        profile.v180TaskStage = "complete";
-      } else if (task.kind === "explore") {
-        profile.v180TaskStage = "explore";
-      } else if (profile.v180TaskStage !== "after_class") {
-        profile.v180TaskStage = "lesson";
-      }
+      ensureTaskStates();
+      profile.v180TaskStage = currentStage();
     }
     function ensureMissionReward() {
       var device = document.getElementById("device-landscape");
@@ -21876,14 +22122,14 @@
       }
       return overlay;
     }
-    function showMissionReward(weekly) {
+    function showMissionReward(kind) {
       var overlay = ensureMissionReward();
       if (!overlay) return;
+      var weekly = kind === "weekly";
       overlay.innerHTML = '<div class="v180-mission-reward-card">' +
         '<img src="assets/v13fx/coin.png" alt="" decoding="async" />' +
-        '<h3>' + (weekly ? 'Week complete!' : 'Mission complete!') + '</h3>' +
-        '<div class="v180-mission-reward-lines"><span>Daily mission +' + V180_DAILY_REWARD + ' coins</span>' +
-        (weekly ? '<span>Weekly bonus +' + V180_WEEKLY_REWARD + ' coins</span>' : '') + '</div></div>';
+        '<h3>' + (weekly ? 'Plan gift opened!' : 'Mission gift opened!') + '</h3>' +
+        '<div class="v180-mission-reward-lines"><span>+' + (weekly ? V180_WEEKLY_REWARD : V180_DAILY_REWARD) + ' coins</span></div></div>';
       overlay.classList.remove("show");
       void overlay.offsetWidth;
       overlay.classList.add("show");
@@ -21905,10 +22151,13 @@
       }
       var dinoChar = document.querySelector("#hub-panel-dino .dino-night-char");
       if (dinoChar) {
-        dinoChar.setAttribute("data-v180-action", "chat");
-        dinoChar.setAttribute("role", "button");
-        dinoChar.setAttribute("tabindex", "0");
-        dinoChar.setAttribute("aria-label", "Chat with Dino");
+        var dinoImage = dinoChar.querySelector("#dino-tab-img");
+        if (dinoImage) {
+          dinoImage.setAttribute("data-v180-action", "chat");
+          dinoImage.setAttribute("role", "button");
+          dinoImage.setAttribute("tabindex", "0");
+          dinoImage.setAttribute("aria-label", "Chat with Dino");
+        }
       }
       var chatButton = document.querySelector("#hub-panel-dino .dino-chat-pill");
       var chatLabel = chatButton && chatButton.querySelector("span:last-child");
@@ -21916,30 +22165,20 @@
       if (chatButton) chatButton.setAttribute("aria-label", "Chat with Dino");
       var topUtilities = document.querySelector("#hub-panel-dino .dino-mini-entries");
       var eventEntry = document.getElementById("dino-event-card");
-      var backpackEntry = document.querySelector("#hub-panel-dino .dino-backpack-card");
-      var shopEntry = document.querySelector("#hub-panel-dino .dn-pill--shop");
       if (topUtilities && eventEntry && eventEntry.parentElement !== topUtilities) {
         topUtilities.insertBefore(eventEntry, topUtilities.firstChild);
         eventEntry.classList.add("v180-event-top");
       }
-      if (stageHost && shopEntry && shopEntry.parentElement !== stageHost) {
-        stageHost.appendChild(shopEntry);
-      }
-      if (shopEntry) {
-        shopEntry.classList.add("v180-side-entry", "v180-store-side");
-      }
-      if (stageHost && backpackEntry && backpackEntry.parentElement !== stageHost) {
-        stageHost.appendChild(backpackEntry);
-      }
-      if (backpackEntry) {
-        backpackEntry.classList.remove("v180-backpack-top");
-        backpackEntry.classList.add("v180-side-entry", "v180-backpack-side");
-      }
       ensureTaskConsistency();
-      var task = currentTask();
-      var stage = currentStage();
-      var copy = scheduleWord(task, stage);
-      var finished = !task;
+      var rewardIndex = pendingRewardIndex();
+      var servedIndex = servedTaskIndex();
+      var todayDoneIndex = rewardIndex == null ? todayCompletedTaskIndex() : null;
+      var todayDone = rewardIndex == null && (profile.v180TodaySettled === true || todayDoneIndex != null);
+      var taskIndex = rewardIndex != null ? rewardIndex : servedIndex;
+      var task = currentTask(taskIndex);
+      var stage = rewardIndex != null ? "reward" : todayDone ? "today_complete" : currentStage(taskIndex);
+      var copy = scheduleWord(task, stage, taskIndex);
+      if (!todayDone && taskIndex < todayIndex() && task && task.kind === "lesson") copy.eyebrow = "Continue earlier lesson";
       var rewardState = window.VISIT_REWARD && window.VISIT_REWARD.state;
       var checkinAvailable = !!(rewardState && rewardState.eligible && rewardState.unlocked && rewardState.daysLeft > 0);
       var checkinClaimed = !!(checkinAvailable && rewardState.claimed);
@@ -21950,12 +22189,13 @@
             '<em class="v180-today-task-status" aria-label="' + (checkinClaimed ? 'Claimed' : 'Claim') + '">' + (checkinClaimed ? '✓' : 'Claim') + '</em>' +
           '</button>'
         : '';
-      var learningLabel = finished ? "Learning complete" : copy.eyebrow;
+      var learningLabel = copy.eyebrow;
       var learningTitle = copy.title;
       var learningDetail = copy.detail;
-      var learningReward = finished ? V180_WEEKLY_REWARD : V180_DAILY_REWARD;
-      var learningStatus = finished ? "View" : stage === "after_class" ? "Continue" : "Start";
-      var learningProgress = finished ? "" : lessonProgressHtml(task, stage);
+      var learningStatus = stage === "reward" ? "Claim" : "";
+      var learningProgress = todayDone ? "" : lessonProgressHtml(task, stage);
+      var learningAction = todayDone ? "today-complete" : stage === "reward" ? "claim-task" : "current";
+      var learningMeta = learningProgress || todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
       var childName = (profile.name || "friend").trim() || "friend";
       bubble.classList.add("v180-chat-bubble");
       bubble.classList.remove("v180-task-bubble", "v180-task-done", "is-invite");
@@ -21967,38 +22207,73 @@
         '<span class="v180-chat-copy">Hi, ' + esc(childName) + '! It’s such a beautiful and sunny day today.</span>' +
         '<span class="dgb-tts" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a4 4 0 0 1 0 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>';
       if (!planPanel) return;
-      planPanel.classList.toggle("v180-task-done", finished);
+      planPanel.classList.toggle("v180-task-done", todayDone);
+      var weeklyReady = completedCount() >= 7 && !weeklyRewardClaimed();
+      var learningHtml = todayDone
+        ? '<button type="button" class="v180-today-task is-learning is-done v180-check-only" disabled aria-disabled="true" aria-label="Today’s learning complete"><em class="v180-today-task-status">✓</em></button>'
+        : '<button type="button" class="v180-today-task is-learning' + (stage !== 'reward' ? ' is-current-task' : '') + (learningProgress ? ' has-progress' : '') + '" data-v180-action="' + learningAction + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
+            '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
+            learningProgress +
+            (learningStatus ? '<em class="v180-today-task-status">' + learningStatus + '</em>' : '<span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span>') +
+          '</button>';
       planPanel.innerHTML =
         '<div class="v180-home-week">' +
-          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(tierName(tier())) + '</span><button type="button" class="v180-task-count" data-v180-action="plan" aria-label="View weekly plan"><span>Weekly plan</span><em>›</em></button></div>' +
+          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
           '<div class="v180-today-card" aria-label="Today’s learning and rewards">' +
             '<div class="v180-today-heading"><strong>Today’s learning</strong></div>' +
-            '<div class="v180-today-list has-one">' +
-              '<button type="button" class="v180-today-task is-learning' + (finished ? ' is-done' : '') + (learningProgress ? ' has-progress' : '') + '" data-v180-action="' + (finished ? "plan" : "current") + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
-                '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + (learningProgress ? '' : '<span>' + esc(learningDetail) + ' <i class="v180-task-reward" aria-label="+' + learningReward + ' coins">+' + learningReward + '</i></span>') + '</span>' +
-                learningProgress +
-                '<em class="v180-today-task-status">' + learningStatus + '</em>' +
-              '</button>' +
-            '</div>' +
+            '<div class="v180-today-list has-one">' + learningHtml + '</div>' +
             checkinHtml +
           '</div>' +
         '</div>';
     }
-    function openCurrentTask() {
-      var task = currentTask();
+    function canOpenPlanNode(index) {
+      ensureTaskStates();
+      if (index < 0 || index >= tasks().length || index > todayIndex()) return false;
+      var task = tasks()[index];
+      if (taskFullyDoneUnsafe(index)) return true;
+      if (task.kind === "explore") return true;
+      for (var courseIndex = 0; courseIndex < index; courseIndex += 1) {
+        if (tasks()[courseIndex].kind === "lesson" && !profile.v180TaskStates[courseIndex].lessonDone) return false;
+      }
+      return true;
+    }
+    function openTask(index, source) {
+      ensureTaskStates();
+      var taskIndex = Number(index);
+      var task = currentTask(taskIndex);
       if (!task) {
         openWeeklyPlan();
         return;
       }
+      if (source === "weekly" && !canOpenPlanNode(taskIndex)) {
+        showPayToast(taskIndex > todayIndex() ? "This mission opens later." : "Finish the earlier lesson first.");
+        return;
+      }
+      if (taskFullyDoneUnsafe(taskIndex)) {
+        if (taskState(taskIndex).reward === "claimable") {
+          profile.v180HomeRewardTaskIndex = taskIndex;
+          closePlanReveal();
+          showClassHome();
+          setHubTab("dino");
+          renderAll();
+        } else {
+          showPayToast("Mission complete ✓");
+        }
+        return;
+      }
+      closePlanReveal();
       if (task.kind === "explore") {
-        profile.v180ActiveExploreTaskIndex = completedCount();
+        profile.v180ActiveExploreTaskIndex = taskIndex;
+        profile.v180ActiveLessonTaskIndex = null;
         enterLandscape();
         showClassHome();
         setHubTab("practice");
-        showPayToast("Complete any 1 Explore activity to earn 20 coins ✨");
+        showPayToast(source === "weekly" && taskIndex < todayIndex() ? "Complete any 1 activity to finish this Explore mission." : "Complete any 1 Explore activity to finish today’s mission.");
         return;
       }
-      if (currentStage() === "after_class") {
+      profile.v180ActiveLessonTaskIndex = taskIndex;
+      profile.v180ActiveExploreTaskIndex = null;
+      if (currentStage(taskIndex) === "after_class") {
         var course = getCurrentCourse();
         var trigger = document.createElement("button");
         trigger.dataset.courseKey = profile.v180ActiveLessonCourseKey || makeCourseKey(course.levelId, course.unitId, course.lessonId);
@@ -22012,16 +22287,23 @@
       // The home card is the launch point for the recommended course itself—not a
       // detour to the Class tab. The current course pointer supplies the lesson context.
       var lessonCourse = getCurrentCourse();
-      profile.v180ActiveLessonTaskIndex = completedCount();
       profile.v180ActiveLessonCourseKey = makeCourseKey(lessonCourse.levelId, lessonCourse.unitId, lessonCourse.lessonId);
       profile.v180ActiveLessonTaskTitle = task.title;
       openClassroomDemo("v180-home-plan");
       showPayToast(task.title + " · AI Lesson");
     }
+    function openCurrentTask() {
+      openTask(servedTaskIndex(), "home");
+    }
     function completeCurrentMission(forceComplete) {
-      var task = currentTask();
+      ensureTaskStates();
+      var active = Number(profile.v180ActiveLessonTaskIndex);
+      var index = Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson" ? active : servedTaskIndex();
+      var task = currentTask(index);
       if (!task) return;
-      if (!forceComplete && task.kind === "lesson" && currentStage() === "lesson") {
+      var state = taskState(index);
+      if (!forceComplete && task.kind === "lesson" && currentStage(index) === "lesson") {
+        state.lessonDone = true;
         profile.v180TaskStage = "after_class";
         profile.v180AfterClassRemaining = 3;
         profile.v180AfterClassCompleted = [];
@@ -22030,80 +22312,94 @@
         showPayToast("AI lesson complete · continue practice ✏️");
         return;
       }
-      if (!forceComplete && task.kind === "lesson" && currentStage() === "after_class" && afterClassRemaining() > 1) {
-        profile.v180AfterClassRemaining = afterClassRemaining() - 1;
-        var completedPractice = afterClassCompletedItems();
-        if (completedPractice.length < 3 - profile.v180AfterClassRemaining) completedPractice.push(V180_AFTER_CLASS_TYPES[completedPractice.length]);
-        renderAll();
-        showPayToast(profile.v180AfterClassRemaining + " practice" + (profile.v180AfterClassRemaining === 1 ? "" : "s") + " left");
-        return;
-      }
-      var nextDone = Math.min(7, completedCount() + 1);
-      var weekly = nextDone >= 7;
-      profile.v180CompletedTasks = nextDone;
-      profile.v180TaskStage = "lesson";
-      profile.v180AfterClassRemaining = 3;
-      profile.v180AfterClassCompleted = [];
-      profile.v180AfterClassCourseKey = "";
-      profile.v180ActiveExploreTaskIndex = null;
-      if (window.GAME && window.GAME.grantCoins) {
-        window.GAME.grantCoins(V180_DAILY_REWARD);
-        if (weekly) window.GAME.grantCoins(V180_WEEKLY_REWARD);
-      }
-      ensureTaskConsistency();
+      completeTask(index, index === servedTaskIndex());
       enterLandscape();
       showClassHome();
       setHubTab("dino");
       renderAll();
-      showMissionReward(weekly);
+      showPayToast("Mission complete · claim your gift 🎁");
     }
     function completeExploreActivity() {
-      if (currentStage() !== "explore") return false;
-      if (Number(profile.v180ActiveExploreTaskIndex) !== completedCount()) return false;
-      var nextDone = Math.min(7, completedCount() + 1);
-      var weekly = nextDone >= 7;
-      profile.v180CompletedTasks = nextDone;
-      profile.v180TaskStage = "lesson";
-      profile.v180AfterClassRemaining = 3;
-      profile.v180AfterClassCompleted = [];
-      profile.v180AfterClassCourseKey = "";
+      ensureTaskStates();
+      var index = Number(profile.v180ActiveExploreTaskIndex);
+      if (!Number.isInteger(index) || !tasks()[index] || tasks()[index].kind !== "explore" || taskFullyDoneUnsafe(index)) return false;
+      completeTask(index, index === servedTaskIndex());
       profile.v180ActiveExploreTaskIndex = null;
-      if (window.GAME && window.GAME.grantCoins) {
-        window.GAME.grantCoins(V180_DAILY_REWARD);
-        if (weekly) window.GAME.grantCoins(V180_WEEKLY_REWARD);
-      }
-      ensureTaskConsistency();
       renderAll();
-      showMissionReward(weekly);
+      showPayToast("Explore complete · claim your gift 🎁");
       return true;
     }
     function taskStateForReview() {
-      if (completedCount() >= 7) return "week_complete";
-      if (currentStage() === "after_class") return afterClassRemaining() === 1 ? "after_class_last" : "after_class";
+      if (pendingRewardIndex() != null) return "reward_ready";
+      if (completedCount() >= 7) return weeklyRewardClaimed() ? "week_complete" : "week_reward_ready";
+      if (todayCompletedTaskIndex() != null) return "today_complete";
+      if (earliestOverdueCourseIndex() != null) return "overdue_course";
+      if (currentStage() === "after_class") return afterClassRemaining(servedTaskIndex()) === 1 ? "after_class_last" : "after_class";
       if (currentStage() === "explore") return "explore";
       return "lesson_ready";
     }
     function setTaskReviewState(value) {
-      if (value === "week_complete") {
-        profile.v180CompletedTasks = 7;
-        profile.v180TaskStage = "complete";
-        profile.v180AfterClassCompleted = [];
-        profile.v180AfterClassCourseKey = "";
-        profile.v180ActiveExploreTaskIndex = null;
+      profile.v180PlanRevealSeen = true;
+      profile.v180TaskTier = planTier();
+      profile.v180TaskStates = tasks().map(emptyTaskState);
+      profile.v180TodayIndex = 0;
+      profile.v180ServedTaskIndex = null;
+      profile.v180TodaySettled = false;
+      profile.v180HomeRewardTaskIndex = null;
+      profile.v180WeeklyRewardClaimed = false;
+      profile.v180ActiveLessonTaskIndex = null;
+      profile.v180ActiveExploreTaskIndex = null;
+      var seedDone = function (index, claimed) {
+        var task = tasks()[index];
+        var state = profile.v180TaskStates[index];
+        if (!task || !state) return;
+        if (task.kind === "lesson") {
+          state.lessonDone = true;
+          state.practiceDone = true;
+          state.practices = V180_AFTER_CLASS_TYPES.slice();
+        } else state.exploreDone = true;
+        state.reward = claimed ? "claimed" : "claimable";
+      };
+      if (value === "week_complete" || value === "week_reward_ready") {
+        tasks().forEach(function (_, index) { seedDone(index, true); });
+        profile.v180TodayIndex = 6;
+        profile.v180ServedTaskIndex = 6;
+        profile.v180TodaySettled = true;
+        profile.v180WeeklyRewardClaimed = value === "week_complete";
+      } else if (value === "reward_ready") {
+        seedDone(0, false);
+        profile.v180ServedTaskIndex = 0;
+        profile.v180TaskStates[0].closesToday = true;
+        profile.v180HomeRewardTaskIndex = 0;
+      } else if (value === "today_complete") {
+        seedDone(0, true);
+        profile.v180ServedTaskIndex = 0;
+        profile.v180TodaySettled = true;
       } else if (value === "explore") {
-        profile.v180CompletedTasks = tier() === "max" ? 5 : 1;
-        profile.v180TaskStage = "explore";
-        profile.v180AfterClassCompleted = [];
-        profile.v180AfterClassCourseKey = "";
-        profile.v180ActiveExploreTaskIndex = null;
+        var exploreIndex = planTier() === "max" ? 5 : 1;
+        for (var beforeExplore = 0; beforeExplore < exploreIndex; beforeExplore += 1) seedDone(beforeExplore, true);
+        profile.v180TodayIndex = exploreIndex;
+        profile.v180ServedTaskIndex = exploreIndex;
+      } else if (value === "overdue_course") {
+        profile.v180TodayIndex = 1;
+        profile.v180ServedTaskIndex = null;
+      } else if (value === "historical_explore") {
+        profile.v180TodayIndex = planTier() === "max" ? 6 : 3;
+        tasks().forEach(function (task, index) {
+          if (index < profile.v180TodayIndex && task.kind === "lesson") seedDone(index, true);
+        });
+        profile.v180ServedTaskIndex = profile.v180TodayIndex;
       } else {
-        profile.v180CompletedTasks = 0;
-        profile.v180TaskStage = value === "after_class" || value === "after_class_last" ? "after_class" : "lesson";
-        profile.v180AfterClassRemaining = value === "after_class_last" ? 1 : 3;
-        profile.v180AfterClassCompleted = value === "after_class_last" ? ["Words", "Listening"] : [];
-        profile.v180AfterClassCourseKey = "";
-        profile.v180ActiveExploreTaskIndex = null;
+        profile.v180ServedTaskIndex = 0;
+        if (value === "after_class" || value === "after_class_last") {
+          var first = profile.v180TaskStates[0];
+          first.lessonDone = true;
+          first.practices = value === "after_class_last" ? ["Words", "Listening"] : [];
+          first.practiceDone = false;
+          profile.v180ActiveLessonTaskIndex = 0;
+        }
       }
+      ensureTaskConsistency();
       renderAll();
     }
 
@@ -22130,10 +22426,12 @@
       if (!membership || !membership.parentElement) return;
       membership.insertAdjacentHTML("beforebegin", weeklyScreenHtml());
     }
-    function nodeStatus(index, done) {
-      if (index < done) return "is-done";
-      if (index === done && done < 7) return "is-current";
-      return "is-future";
+    function nodeStatus(index) {
+      if (routeNodeDone(index)) return "is-done";
+      if (index > todayIndex()) return "is-future";
+      if (index === servedTaskIndex()) return "is-current";
+      if (index === todayIndex()) return "is-today";
+      return canOpenPlanNode(index) ? "is-available" : "is-future";
     }
     function renderWeeklyPlan() {
       ensureWeeklyScreen();
@@ -22142,17 +22440,15 @@
       ensureTaskConsistency();
       var plan = tasks();
       var done = completedCount();
-      var stage = currentStage();
-      var value = tier();
-      document.getElementById("v180-plan-sub").textContent = tierName(value) + " · " + rhythm(value);
+      var value = planTier();
+      document.getElementById("v180-plan-sub").textContent = planName(value) + " · " + rhythm(value);
       document.getElementById("v180-plan-progress-copy").textContent = done + " of 7 complete";
       list.innerHTML = plan.map(function (task, index) {
-        var status = nodeStatus(index, done);
-        var currentCopy = index === done && status === "is-current"
-          ? (task.kind === "lesson" && stage === "after_class" ? afterClassRemaining() + " practices left" : task.kind === "lesson" ? "Lesson + practice" : "Complete any 1 activity")
-          : (task.kind === "lesson" ? "Lesson + practice" : "Explore");
+        var status = nodeStatus(index);
+        var currentCopy = task.kind === "lesson" ? "AI lesson" : "Explore";
         var orb = status === "is-done" ? "✓" : task.icon;
-        return '<button type="button" class="v180-plan-node ' + status + '" data-v180-node="' + index + '">' +
+        var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
+        return '<button type="button" class="v180-plan-node ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
           '<span class="v180-node-orb">' + orb + '<span class="v180-node-day">' + (index + 1) + '</span></span>' +
           '<strong>' + esc(task.title) + '</strong><small>' + esc(currentCopy) + '</small>' +
         '</button>';
@@ -22170,6 +22466,7 @@
             '<span class="v180-reveal-badge" id="v180-reveal-badge">★ This week’s plan</span>',
             '<h2 id="v180-reveal-title">Your week is ready!</h2>',
             '<p class="v180-reveal-copy" id="v180-reveal-copy"></p>',
+            '<p class="v180-reveal-proof" id="v180-reveal-proof"></p>',
             '<div class="v180-reveal-path" id="v180-reveal-path"></div>',
             '<div class="v180-reveal-actions">',
               '<button type="button" class="v180-reveal-primary" data-v180-action="reveal-start">Start today’s mission</button>',
@@ -22199,36 +22496,58 @@
         visitReward.classList.remove("show");
         visitReward.setAttribute("aria-hidden", "true");
       }
-      var value = tier();
+      var value = planTier();
       var plan = tasks();
       var valueCopy = planValueCopy(value);
-      document.getElementById("v180-reveal-title").textContent = "Your " + tierName(value) + " week is ready!";
+      document.getElementById("v180-reveal-title").textContent = value === "free"
+        ? "Your free starter plan is ready!"
+        : "Your " + tierName(value) + " week is ready!";
       document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(valueCopy) + '</strong>';
-      document.getElementById("v180-reveal-badge").textContent = "★ This week’s plan";
+      document.getElementById("v180-reveal-proof").textContent = "👥 " + planCompletionProof();
+      document.getElementById("v180-reveal-badge").textContent = value === "free" ? "★ Your starter plan" : "★ This week’s plan";
       var path = document.getElementById("v180-reveal-path");
-      path.setAttribute("aria-label", "Seven-day weekly plan ending in a weekly gift");
+      path.setAttribute("aria-label", value === "free" ? "Seven-day starter plan ending in a plan gift" : "Seven-day weekly plan ending in a weekly gift");
       var done = completedCount();
-      var stage = currentStage();
       path.innerHTML = plan.map(function (task, index) {
         var isExplore = task.kind === "explore";
         var cover = isExplore ? "assets/v13fx/nav3d-explore.png" : (task.cover || "assets/ip-quiz/q3-school.png");
         var label = isExplore ? "Explore" : task.title;
-        var status = index < done ? "is-done" : index === done && done < 7 ? "is-current" : "is-future";
-        return '<span class="v180-reveal-mini ' + (isExplore ? 'is-explore' : 'is-lesson') + ' ' + status + '">' +
+        var status = nodeStatus(index);
+        var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
+        return '<button type="button" class="v180-reveal-mini ' + (isExplore ? 'is-explore' : 'is-lesson') + ' ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
           '<i><img src="' + esc(cover) + '" alt="" decoding="async" /></i>' +
-          '<span>Day ' + (index + 1) + '</span><strong>' + esc(label) + '</strong></span>';
+          '<span>Day ' + (index + 1) + '</span><strong>' + esc(label) + '</strong></button>';
       }).join("") +
-        '<span class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? 'is-ready' : 'is-future') + '" aria-label="' + (done >= 7 ? 'Weekly gift ready to open' : 'Weekly gift unlocks after Day 7') + '">' +
+        '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Weekly gift claimed' : 'Weekly gift ready to open') : 'Weekly gift unlocks after all seven tasks') + '">' +
           '<i><span class="v180-weekly-gift-box" aria-hidden="true">🎁</span></i>' +
-          '<span>All done</span><strong>Weekly gift</strong></span>';
+          '<span>All done</span><strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
       var revealCta = document.querySelector("#v180-plan-reveal .v180-reveal-primary");
-      if (revealCta) revealCta.textContent = done >= 7
-        ? "See completed week"
-        : stage === "after_class"
-          ? "Continue today’s practice"
-          : stage === "explore"
-            ? "Start today’s Explore"
-            : "Start today’s lesson";
+      if (revealCta) {
+        var pendingReward = pendingRewardIndex() != null;
+        var todayComplete = (profile.v180TodaySettled === true || todayCompletedTaskIndex() != null) && !pendingReward;
+        var recommendedIndex = servedTaskIndex();
+        var stage = currentStage(recommendedIndex);
+        var revealAction = "reveal-start";
+        var revealLabel = stage === "after_class" ? "Continue" : stage === "explore" ? "Start Explore" : "Start lesson";
+        if (done >= 7 && !weeklyRewardClaimed()) {
+          revealAction = "claim-weekly";
+          revealLabel = value === "free" ? "Claim plan gift" : "Claim weekly gift";
+        } else if (done >= 7 && planTier() === "free") {
+          revealAction = "unlock-full-plan";
+          revealLabel = "Unlock full learning plan";
+        } else if (done >= 7) {
+          revealAction = "explore-more";
+          revealLabel = "Explore more";
+        } else if (pendingReward) {
+          revealAction = "reveal-home";
+          revealLabel = "Back to today";
+        } else if (todayComplete) {
+          revealAction = "reveal-close";
+          revealLabel = "✓";
+        }
+        revealCta.dataset.v180Action = revealAction;
+        revealCta.textContent = revealLabel;
+      }
       document.getElementById("v180-plan-reveal").classList.add("show");
       profile.v180PlanRevealSeen = true;
       if (window.demoStatePanel) window.demoStatePanel.render();
@@ -22236,21 +22555,57 @@
     function closePlanReveal() {
       document.getElementById("v180-plan-reveal")?.classList.remove("show");
     }
+    function maybeAutoRevealPlan() {
+      if (profile.v180PlanRevealSeen || activeHubTab !== "dino" || activeLandScreen() !== "screen-class") return;
+      window.requestAnimationFrame(function () {
+        if (!profile.v180PlanRevealSeen && activeHubTab === "dino" && activeLandScreen() === "screen-class") openPlanReveal(false);
+      });
+    }
 
     function selectedOfferTier() {
       return profile.selectedMembershipTier === "max" ? "max" : "pro";
     }
+    function scaleCatalogMoney(value, multiplier) {
+      var text = String(value == null ? "" : value);
+      var match = text.match(/\d[\d,]*(?:\.\d+)?/);
+      if (!match) return text;
+      var numeric = Number(match[0].replace(/,/g, ""));
+      if (!Number.isFinite(numeric)) return text;
+      var decimals = (match[0].split(".")[1] || "").length;
+      var scaled = (numeric * multiplier).toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+      return text.slice(0, match.index) + scaled + text.slice(match.index + match[0].length);
+    }
     function availablePrices() {
-      return V180_PRICE[selectedOfferTier()];
+      var catalog = window.V155 && window.V155.getPaywallPlans ? window.V155.getPaywallPlans() : [];
+      var multiplier = selectedOfferTier() === "max" ? V180_MAX_PRICE_MULTIPLIER : 1;
+      return catalog.map(function (item) {
+        var plan = Object.assign({}, item);
+        if (multiplier !== 1) {
+          ["price", "comparison", "daily", "regularCharge", "chargeToday", "renewal"].forEach(function (key) {
+            if (plan[key]) plan[key] = scaleCatalogMoney(plan[key], multiplier);
+          });
+        }
+        return plan;
+      });
     }
     function renderStudyPlanChoice() {
       var value = selectedOfferTier();
       var isMax = value === "max";
+      var learnerName = (getDisplayName() || "your child").trim() || "your child";
       document.querySelectorAll("[data-study-offer-tier]").forEach(function (button) {
         var selected = button.dataset.studyOfferTier === value;
         button.classList.toggle("is-selected", selected);
         button.setAttribute("aria-checked", String(selected));
       });
+      var choiceTitle = document.getElementById("sp2-plan-choice-title");
+      if (choiceTitle) choiceTitle.textContent = "How many lessons a week for " + learnerName + "?";
+      var goalTag = document.getElementById("sp2-goal-tag");
+      if (goalTag) goalTag.textContent = isMax ? "Your 7-month goal" : "Your 12-month goal";
+      var summary = document.querySelector("#screen-study-plan .sp2-summary");
+      if (summary) summary.classList.toggle("is-max", isMax);
       var week = document.getElementById("sp2-stat-week");
       if (week) week.textContent = isMax ? "5×" : "3×";
       var weekLabel = document.getElementById("sp2-stat-week-label");
@@ -22260,7 +22615,10 @@
     renderStudyPlanScreen = function () {
       v170RenderStudyPlanScreen();
       var sub = document.getElementById("sp2-sub");
-      if (sub) sub.textContent = "Choose a weekly pace that fits your child.";
+      if (sub) {
+        sub.textContent = "";
+        sub.hidden = true;
+      }
       renderStudyPlanChoice();
     };
     function selectOfferTier(value, event) {
@@ -22287,20 +22645,12 @@
             '</div>';
       }
       selector.querySelector(".v180-paywall-kicker")?.remove();
-      // Bind once to pointer-up (tap/click) and keyboard activation. Rendering is
-      // deferred until the event completes so the same DOM remains stable.
-      selector.dataset.v180TierBound = "1";
+      // Tier switching is handled by the stable document-level delegated handler.
+      // Keeping these buttons listener-free prevents a render during pointer-up
+      // from swallowing the following click on repeated Pro / Max switches.
       selector.querySelectorAll("[data-v180-offer-tier]").forEach(function (button) {
         button.removeAttribute("onclick");
-        if (button.dataset.v180TierBound === "1") return;
-        button.dataset.v180TierBound = "1";
-        button.addEventListener("pointerup", function (event) {
-          selectOfferTier(button.dataset.v180OfferTier, event);
-        });
-        button.addEventListener("keydown", function (event) {
-          if (event.key !== "Enter" && event.key !== " ") return;
-          selectOfferTier(button.dataset.v180OfferTier, event);
-        });
+        delete button.dataset.v180TierBound;
       });
       var benefits = hero.querySelector(".pwpt-benefits");
       var offerStrip = document.getElementById("v180-offer-strip");
@@ -22325,7 +22675,7 @@
       var value = selectedOfferTier();
       var name = String(profile.name || "").trim() || "your child";
       var prices = availablePrices();
-      if (!prices.some(function (item) { return item.id === profile.selectedPlan; })) profile.selectedPlan = "annual";
+      if (!prices.some(function (item) { return item.id === profile.selectedPlan; })) profile.selectedPlan = prices[0] ? prices[0].id : "";
       document.querySelectorAll("[data-v180-offer-tier]").forEach(function (button) {
         button.classList.toggle("is-selected", button.dataset.v180OfferTier === value);
         button.setAttribute("aria-selected", String(button.dataset.v180OfferTier === value));
@@ -22340,9 +22690,15 @@
             '<span class="v180-benefit-cell is-head is-label" role="columnheader">Benefits</span>' +
             '<span class="v180-benefit-cell is-head" data-v180-column="pro" role="columnheader">Dino Pro</span>' +
             '<span class="v180-benefit-cell is-head" data-v180-column="max" role="columnheader">Dino Max</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">Personalized plan &middot; AI lessons each week</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">AI lessons each week</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="pro" role="cell">3</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="max" role="cell">5</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">Level progress speed</span>' +
+            '<span class="v180-benefit-cell is-value" data-v180-column="pro" role="cell">1×</span>' +
+            '<span class="v180-benefit-cell is-value" data-v180-column="max" role="cell">1.7×</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">Unit assessments each year</span>' +
+            '<span class="v180-benefit-cell is-value" data-v180-column="pro" role="cell">13</span>' +
+            '<span class="v180-benefit-cell is-value" data-v180-column="max" role="cell">21</span>' +
             '<span class="v180-benefit-cell is-label" role="rowheader">Check ' + esc(name) + '\'s English level</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
@@ -22364,11 +22720,11 @@
       var box = document.getElementById("pwpt-plans");
       if (box) box.innerHTML = prices.map(function (item) {
         var selected = item.id === profile.selectedPlan;
-        return '<div class="pwpt-plan ' + (selected ? "is-selected" : "") + '" data-v180-cycle="' + item.id + '" data-pwpt-plan="' + item.id + '" role="button" tabindex="0" aria-pressed="' + selected + '">' +
-          (item.badge ? '<span class="pwpt-badge">' + esc(item.badge) + '</span>' : '') +
+        return '<div class="pwpt-plan ' + (selected ? "is-selected " : "") + (item.isKol ? "is-kol" : "") + '" data-v180-cycle="' + item.id + '" data-pwpt-plan="' + item.id + '" role="button" tabindex="0" aria-pressed="' + selected + '">' +
+          (item.badge ? '<span class="pwpt-badge ' + (item.isKol ? "v155-kol-badge" : "") + '">' + esc(item.badge) + '</span>' : '') +
           '<span class="pwpt-plan-l"><span class="pwpt-plan-name">' + esc(item.name) + '</span><span class="pwpt-plan-price-row"><span class="pwpt-plan-price"><b>' + esc(item.price) + '</b><small>' + esc(item.period) + '</small></span>' +
           (item.comparison ? '<s class="pwpt-plan-orig">' + esc(item.comparison) + '</s>' : '') +
-          '</span></span><span class="pwpt-plan-r"><span class="pwpt-plan-daily"><b>' + esc(item.daily) + '</b><small>/day</small></span></span></div>';
+          '</span>' + (item.isKol && item.renewal ? '<span class="v155-kol-renewal">' + esc(item.renewal) + '</span>' : '') + '</span><span class="pwpt-plan-r"><span class="pwpt-plan-daily"><b>' + esc(item.daily) + '</b><small>/day</small></span></span></div>';
       }).join("");
       var cta = document.getElementById("btn-pwpt-purchase");
       if (cta) cta.textContent = "Subscribe now";
@@ -22381,12 +22737,25 @@
       var storeReference = demoState.v155Platform === "ios" ? "the App Store" : "Google Play";
       overlay.innerHTML =
         '<div class="v155-checkout-sheet"><div class="v155-checkout-brand">' + storeName + ' · Secure checkout</div>' +
+          (selected.isKol && selected.badge ? '<span class="v155-checkout-offer">✓ ' + esc(selected.badge) + '</span>' : '') +
           '<h3>Confirm subscription</h3><p>' + esc(selected.name) + ' ' + esc(tierName(selectedOfferTier())) + ' for your child. You can manage renewal in ' + storeReference + '.</p>' +
-          '<div class="v155-checkout-total"><span>Charge today</span><b>' + esc(selected.price) + '</b></div>' +
+          '<div class="v155-checkout-total"><span>Charge today</span><b>' + esc(selected.chargeToday || selected.regularCharge || selected.price) + '</b></div>' +
+          (selected.isKol && selected.renewal ? '<p class="v155-checkout-renewal">' + esc(selected.renewal) + ' after the offer period. Cancel anytime.</p>' : '') +
           '<button type="button" class="v155-checkout-confirm" data-v180-action="confirm-purchase">Confirm subscription</button>' +
           '<button type="button" class="v155-checkout-cancel" data-v180-action="cancel-purchase">Cancel</button>' +
         '</div>';
       overlay.classList.add("show");
+    }
+    function handleV180PaymentCancel() {
+      profile.v180PurchaseTierPending = selectedOfferTier();
+      profile.v180WinbackReturnsToPaywall = true;
+      if (typeof maybeShowWinback === "function" && maybeShowWinback("cancel")) return;
+      profile.v180WinbackReturnsToPaywall = false;
+      profile.v180PurchaseTierPending = "";
+      enterPortrait();
+      showPortraitScreen("screen-paywall-pt");
+      renderPaywall();
+      showPayToast("Payment cancelled · your plan did not change");
     }
     function activateSelectedMembership() {
       var result = demoState.v180PaymentResult || "success";
@@ -22395,12 +22764,15 @@
         return;
       }
       if (result === "cancel") {
-        showPayToast("Payment cancelled · your plan did not change");
+        handleV180PaymentCancel();
         return;
       }
       var nextTier = selectedOfferTier();
+      var previousTier = tier();
+      var previousPlanTier = planTier();
       var cycle = profile.selectedPlan;
       var normalized = cycle === "half_year" ? "monthly" : cycle;
+      profile.v180PurchaseTierPending = nextTier;
       activateSubscription(normalized);
       if (cycle === "half_year") {
         profile.effectiveAccessEnd = membershipDateAfter(180);
@@ -22408,24 +22780,49 @@
       }
       profile.membershipTier = nextTier;
       profile.selectedMembershipTier = nextTier;
-      profile.v180PlanRevealSeen = false;
+      if (previousTier === "free" || previousPlanTier === nextTier) {
+        profile.v180PlanTier = nextTier;
+        profile.v180ScheduledPlanTier = "";
+        profile.v180PlanRevealSeen = false;
+      } else {
+        profile.v180PlanTier = previousPlanTier;
+        profile.v180ScheduledPlanTier = nextTier;
+        profile.v180PlanRevealSeen = true;
+      }
       profile.maxReachedLevelId = profile.currentLevelId;
       refreshUnlockState();
       enterLandscape();
       showClassHome();
       setHubTab("dino");
       renderAll();
-      showPayToast(tierName(nextTier) + " unlocked 🎉");
-      window.setTimeout(function () { openPlanReveal(true); }, 220);
+      if (profile.v180ScheduledPlanTier) {
+        showPayToast(tierName(nextTier) + " is active · your " + tierName(previousPlanTier) + " plan continues this week");
+      } else {
+        showPayToast(tierName(nextTier) + " unlocked 🎉");
+        window.setTimeout(function () { openPlanReveal(true); }, 220);
+      }
     }
-    function restoreAsPro() {
-      setMembershipReviewState("subscription");
-      profile.membershipTier = "pro";
-      profile.selectedMembershipTier = "pro";
-      refreshUnlockState();
-      closePaywallPortrait();
-      renderAll();
-      showPayToast("Dino Pro restored ✓");
+    function restoreSelectedMembership() {
+      profile.v180RestoreTierPending = selectedOfferTier();
+      if (window.V155 && window.V155.restorePurchases) window.V155.restorePurchases();
+    }
+    var v170V155RenderWinback = window.V155 && window.V155.renderWinback;
+    if (v170V155RenderWinback) {
+      window.V155.renderWinback = function () {
+        v170V155RenderWinback();
+        var offerTier = selectedOfferTier();
+        var multiplier = offerTier === "max" ? V180_MAX_PRICE_MULTIPLIER : 1;
+        var screen = document.getElementById("screen-winback");
+        if (!screen) return;
+        var planName = screen.querySelector(".wb-plan-name");
+        if (planName) planName.textContent = tierName(offerTier) + " · " + planName.textContent;
+        if (multiplier !== 1) {
+          [".wb-plan-now b", ".wb-plan-orig", ".wb-plan-perday b", ".wb-plan-renewal"].forEach(function (selector) {
+            var node = screen.querySelector(selector);
+            if (node && node.textContent) node.textContent = scaleCatalogMoney(node.textContent, multiplier);
+          });
+        }
+      };
     }
 
     function renderMembershipLayer() {
@@ -22451,14 +22848,28 @@
       }
       var upgrade = document.getElementById("v180-ms-upgrade");
       if (upgrade) upgrade.hidden = value !== "pro";
+      var actions = document.getElementById("v180-ms-actions");
+      var changeNote = document.getElementById("v180-ms-change-note");
+      if (!changeNote && actions) {
+        actions.insertAdjacentHTML("afterend", '<div class="v180-ms-change-note" id="v180-ms-change-note" hidden></div>');
+        changeNote = document.getElementById("v180-ms-change-note");
+      }
+      if (changeNote) {
+        var scheduled = profile.v180ScheduledPlanTier;
+        changeNote.hidden = scheduled !== "pro" && scheduled !== "max";
+        if (!changeNote.hidden) changeNote.innerHTML = '<strong>' + esc(tierName(scheduled)) + ' plan starts next week</strong>Your current ' + esc(tierName(planTier())) + ' plan will not be rearranged.';
+      }
       var profileValue = document.getElementById("profile-membership-value");
       if (profileValue) profileValue.textContent = value === "free" ? "Free" : value === "max" ? "Max" : "Pro";
     }
 
     function setTier(value, options) {
-      var next = value === "max" ? "max" : value === "pro" ? "pro" : "free";
+      var next = value === "expired" ? "expired" : value === "max" ? "max" : value === "pro" ? "pro" : "free";
       var previous = tier();
-      if (next === "free") {
+      if (next === "expired") {
+        setMembershipReviewState("subscription_expired");
+        profile.membershipTier = "free";
+      } else if (next === "free") {
         setMembershipReviewState("free");
         profile.membershipTier = "free";
       } else {
@@ -22466,10 +22877,31 @@
         profile.membershipTier = next;
         profile.selectedMembershipTier = next;
       }
+      profile.v180PlanTier = next === "expired" ? "free" : next;
+      profile.v180ScheduledPlanTier = "";
       if (previous !== next) profile.v180PlanRevealSeen = false;
       refreshUnlockState();
       renderAll();
       if (options && options.reveal && next !== "free") openPlanReveal(true);
+      else maybeAutoRevealPlan();
+    }
+    function setScheduledPlanChange(current, next) {
+      setTier(current, { reveal: false });
+      profile.v180PlanTier = current;
+      profile.v180ScheduledPlanTier = next;
+      if (current === "pro" && next === "max") {
+        setMembershipReviewState("subscription");
+        profile.membershipTier = "max";
+      } else {
+        setMembershipReviewState("subscription");
+        profile.membershipTier = current;
+      }
+      profile.selectedMembershipTier = next;
+      profile.v180PlanRevealSeen = true;
+      refreshUnlockState();
+      enterLandscape();
+      openMembership();
+      renderAll();
     }
     function renderAll() {
       renderHomeTask();
@@ -22488,14 +22920,43 @@
        Explicit Max selection is the only way to obtain Max. */
     var v170SetMembershipReviewState = setMembershipReviewState;
     setMembershipReviewState = function (kind) {
+      var restoredTier = profile.v180RestoreTierPending;
       v170SetMembershipReviewState(kind);
       if (!profile.premiumUnlocked) profile.membershipTier = "free";
-      else if (profile.membershipTier !== "max") profile.membershipTier = "pro";
+      else if (restoredTier === "pro" || restoredTier === "max") {
+        profile.membershipTier = restoredTier;
+        profile.selectedMembershipTier = restoredTier;
+        profile.v180RestoreTierPending = "";
+      } else if (profile.membershipTier !== "max") profile.membershipTier = "pro";
     };
     var v170ActivateSubscription = activateSubscription;
     activateSubscription = function (planId, nextBillingDate) {
+      var requestedTier = profile.v180PurchaseTierPending;
       v170ActivateSubscription(planId, nextBillingDate);
-      if (profile.membershipTier !== "max") profile.membershipTier = "pro";
+      if (requestedTier === "pro" || requestedTier === "max") {
+        profile.membershipTier = requestedTier;
+        profile.selectedMembershipTier = requestedTier;
+        profile.v180PurchaseTierPending = "";
+        profile.v180WinbackReturnsToPaywall = false;
+      } else if (profile.membershipTier !== "max") profile.membershipTier = "pro";
+    };
+    var v170OpenWinback = openWinback;
+    openWinback = function (entry, origin, returnScreen) {
+      profile.v180PurchaseTierPending = selectedOfferTier();
+      profile.v180WinbackReturnsToPaywall = entry === "cancel";
+      v170OpenWinback(entry, origin, returnScreen);
+    };
+    var v170DismissWinback = dismissWinback;
+    dismissWinback = function (reason) {
+      if (profile.v180WinbackReturnsToPaywall) {
+        profile.v180WinbackReturnsToPaywall = false;
+        if (typeof stopWinbackCountdown === "function") stopWinbackCountdown();
+        enterPortrait();
+        showPortraitScreen("screen-paywall-pt");
+        renderPaywall();
+        return;
+      }
+      v170DismissWinback(reason);
     };
     var v170RenderMembership = renderMembership;
     renderMembership = function () {
@@ -22533,7 +22994,7 @@
     var v170SetHubTab = setHubTab;
     setHubTab = function (tab) {
       v170SetHubTab(tab);
-      if (tab === "dino") window.requestAnimationFrame(renderHomeTask);
+      if (tab === "dino") window.requestAnimationFrame(function () { renderHomeTask(); maybeAutoRevealPlan(); });
       if (window.demoStatePanel) window.requestAnimationFrame(window.demoStatePanel.render);
     };
     if (window.GAME && window.GAME.syncHud) {
@@ -22566,13 +23027,18 @@
       if (restore) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        restoreAsPro();
+        restoreSelectedMembership();
         return;
       }
       var studyOffer = event.target.closest && event.target.closest("[data-study-offer-tier]");
       if (studyOffer) {
         profile.selectedMembershipTier = studyOffer.dataset.studyOfferTier === "max" ? "max" : "pro";
         renderStudyPlanChoice();
+        return;
+      }
+      var offerTier = event.target.closest && event.target.closest("[data-v180-offer-tier]");
+      if (offerTier) {
+        selectOfferTier(offerTier.dataset.v180OfferTier, event);
         return;
       }
       var cycle = event.target.closest && event.target.closest("[data-v180-cycle]");
@@ -22584,15 +23050,7 @@
       var node = event.target.closest && event.target.closest("[data-v180-node]");
       if (node) {
         var index = Number(node.dataset.v180Node);
-        if (index === completedCount() && completedCount() < 7) openCurrentTask();
-        else if (index < completedCount()) showPayToast("Mission complete ✓");
-        else {
-          var futureTask = tasks()[index];
-          closePlanReveal();
-          enterLandscape();
-          showClassHome();
-          setHubTab(futureTask && futureTask.kind === "explore" ? "practice" : "class");
-        }
+        openTask(index, "weekly");
         return;
       }
       var action = event.target.closest && event.target.closest("[data-v180-action]");
@@ -22604,18 +23062,23 @@
         welcomeReward.open("entry");
       }
       else if (name === "current") openCurrentTask();
+      else if (name === "claim-task") claimTaskReward();
       else if (name === "plan") openWeeklyPlan();
       else if (name === "chat") document.querySelector("#hub-panel-dino .dino-chat-pill")?.click();
       else if (name === "plan-back") { showClassHome(); setHubTab("dino"); }
       else if (name === "reveal-close") closePlanReveal();
       else if (name === "reveal-start") { closePlanReveal(); openCurrentTask(); }
+      else if (name === "reveal-home") { closePlanReveal(); showClassHome(); setHubTab("dino"); }
+      else if (name === "claim-weekly") claimWeeklyReward();
+      else if (name === "unlock-full-plan") { closePlanReveal(); openPaywall("screen-class", "weekly_plan_complete", "pro"); }
+      else if (name === "explore-more") { closePlanReveal(); showClassHome(); setHubTab("practice"); }
       else if (name === "confirm-purchase") {
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
         activateSelectedMembership();
       }
       else if (name === "cancel-purchase") {
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
-        showPayToast("Payment cancelled · your plan did not change");
+        handleV180PaymentCancel();
       }
       else if (name === "upgrade-max") {
         profile.selectedMembershipTier = "max";
@@ -22627,6 +23090,11 @@
       if (chat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
         chat.click();
+        return;
+      }
+      var offerTier = event.target.closest && event.target.closest("[data-v180-offer-tier]");
+      if (offerTier && (event.key === "Enter" || event.key === " ")) {
+        selectOfferTier(offerTier.dataset.v180OfferTier, event);
         return;
       }
       var cycle = event.target.closest && event.target.closest("[data-v180-cycle]");
@@ -22644,7 +23112,9 @@
     }
 
     window.v180GetTier = tier;
+    window.v180GetPlanTier = planTier;
     window.v180SetTier = setTier;
+    window.v180SetScheduledPlanChange = setScheduledPlanChange;
     window.v180GetTaskReviewState = taskStateForReview;
     window.v180SetTaskReviewState = setTaskReviewState;
     window.v180OpenWeeklyPlan = openWeeklyPlan;
@@ -22662,6 +23132,7 @@
     if (!profile.premiumUnlocked) profile.membershipTier = "free";
     else if (profile.membershipTier !== "max") profile.membershipTier = "pro";
     renderAll();
+    maybeAutoRevealPlan();
   })();
   </script>
 </body>
