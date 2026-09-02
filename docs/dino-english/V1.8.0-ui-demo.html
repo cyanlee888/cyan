@@ -22263,6 +22263,15 @@
       if (sub) sub.textContent = "Choose a weekly pace that fits your child.";
       renderStudyPlanChoice();
     };
+    function selectOfferTier(value, event) {
+      if (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+      profile.selectedMembershipTier = value === "max" ? "max" : "pro";
+      window.requestAnimationFrame(renderPaywall);
+      return false;
+    }
     function ensurePaywallLayer() {
       var hero = document.querySelector("#screen-paywall-pt .pwpt-hero-card");
       if (!hero) return;
@@ -22278,20 +22287,21 @@
             '</div>';
       }
       selector.querySelector(".v180-paywall-kicker")?.remove();
-      // Bind once on the stable selector container. The Paywall contents are
-      // re-rendered after every choice, so container delegation keeps repeated
-      // Pro ↔ Max switching reliable across any number of redraws.
-      if (selector.dataset.v180TierBound !== "1") {
-        selector.dataset.v180TierBound = "1";
-        selector.addEventListener("click", function (event) {
-          var button = event.target.closest && event.target.closest("[data-v180-offer-tier]");
-          if (!button || !selector.contains(button)) return;
-          event.preventDefault();
-          event.stopPropagation();
-          profile.selectedMembershipTier = button.dataset.v180OfferTier === "max" ? "max" : "pro";
-          renderPaywall();
+      // Bind once to pointer-up (tap/click) and keyboard activation. Rendering is
+      // deferred until the event completes so the same DOM remains stable.
+      selector.dataset.v180TierBound = "1";
+      selector.querySelectorAll("[data-v180-offer-tier]").forEach(function (button) {
+        button.removeAttribute("onclick");
+        if (button.dataset.v180TierBound === "1") return;
+        button.dataset.v180TierBound = "1";
+        button.addEventListener("pointerup", function (event) {
+          selectOfferTier(button.dataset.v180OfferTier, event);
         });
-      }
+        button.addEventListener("keydown", function (event) {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          selectOfferTier(button.dataset.v180OfferTier, event);
+        });
+      });
       var benefits = hero.querySelector(".pwpt-benefits");
       var offerStrip = document.getElementById("v180-offer-strip");
       if (!offerStrip) {
@@ -22559,12 +22569,6 @@
         restoreAsPro();
         return;
       }
-      var offer = event.target.closest && event.target.closest("[data-v180-offer-tier]");
-      if (offer) {
-        profile.selectedMembershipTier = offer.dataset.v180OfferTier === "max" ? "max" : "pro";
-        renderPaywall();
-        return;
-      }
       var studyOffer = event.target.closest && event.target.closest("[data-study-offer-tier]");
       if (studyOffer) {
         profile.selectedMembershipTier = studyOffer.dataset.studyOfferTier === "max" ? "max" : "pro";
@@ -22651,6 +22655,7 @@
     window.v180CompleteAfterClassPractice = completeAfterClassPractice;
     window.v180CompleteExploreActivity = completeExploreActivity;
     window.v180OpenPlanReveal = openPlanReveal;
+    window.v180SelectOfferTier = selectOfferTier;
     window.v180RenderPaywall = renderPaywall;
     window.v180RenderAll = renderAll;
 
