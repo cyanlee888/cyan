@@ -21606,9 +21606,9 @@
     #screen-paywall-pt .v155-value-carousel{height:160px}
     #screen-paywall-pt .v155-value-slide{padding:38px 18px 16px}
     #screen-paywall-pt .v155-level-path{transform:scale(.82);transform-origin:right bottom}
-    .v180-paywall-selector{max-width:none;margin:0;padding:8px 12px 3px;background:#fff}
-    .v180-tier-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#eaf1fa;border-radius:15px;padding:4px}
-    .v180-tier-option{min-height:36px;border:0;border-radius:12px;background:transparent;color:#667994;font-family:inherit;font-size:.74rem;font-weight:900;cursor:pointer}
+    .v180-paywall-selector{position:relative;z-index:8;max-width:none;margin:0;padding:8px 12px 3px;background:#fff}
+    .v180-tier-tabs{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#eaf1fa;border-radius:15px;padding:4px}
+    .v180-tier-option{position:relative;z-index:2;min-height:36px;border:0;border-radius:12px;background:transparent;color:#667994;font-family:inherit;font-size:.74rem;font-weight:900;cursor:pointer;pointer-events:auto;touch-action:manipulation}
     .v180-tier-option.is-selected{background:#fff;color:#2459b5;box-shadow:0 5px 15px rgba(33,75,137,.14)}
     .v180-tier-option[data-v180-offer-tier="max"].is-selected{color:#a64d07;background:#fff8ed}
     .v180-offer-strip{min-height:34px;display:flex;align-items:center;justify-content:center;gap:5px;margin:5px 16px 2px;padding:3px 9px;color:#8c5019;font-size:.6rem;font-weight:800;border-radius:999px;background:linear-gradient(90deg,#ffce8d 0%,#fff49e 100%)}
@@ -22273,21 +22273,25 @@
         selector.id = "v180-paywall-selector";
         selector.innerHTML =
             '<div class="v180-tier-tabs" role="tablist" aria-label="Membership tier">' +
-              '<button type="button" class="v180-tier-option" data-v180-offer-tier="pro">Dino Pro</button>' +
-              '<button type="button" class="v180-tier-option" data-v180-offer-tier="max">Dino Max</button>' +
+              '<button type="button" role="tab" class="v180-tier-option" data-v180-offer-tier="pro">Dino Pro</button>' +
+              '<button type="button" role="tab" class="v180-tier-option" data-v180-offer-tier="max">Dino Max</button>' +
             '</div>';
       }
       selector.querySelector(".v180-paywall-kicker")?.remove();
-      selector.querySelectorAll("[data-v180-offer-tier]").forEach(function (button) {
-        if (button.dataset.v180TierBound === "1") return;
-        button.dataset.v180TierBound = "1";
-        button.addEventListener("click", function (event) {
+      // Bind once on the stable selector container. The Paywall contents are
+      // re-rendered after every choice, so container delegation keeps repeated
+      // Pro ↔ Max switching reliable across any number of redraws.
+      if (selector.dataset.v180TierBound !== "1") {
+        selector.dataset.v180TierBound = "1";
+        selector.addEventListener("click", function (event) {
+          var button = event.target.closest && event.target.closest("[data-v180-offer-tier]");
+          if (!button || !selector.contains(button)) return;
           event.preventDefault();
           event.stopPropagation();
           profile.selectedMembershipTier = button.dataset.v180OfferTier === "max" ? "max" : "pro";
           renderPaywall();
         });
-      });
+      }
       var benefits = hero.querySelector(".pwpt-benefits");
       var offerStrip = document.getElementById("v180-offer-strip");
       if (!offerStrip) {
