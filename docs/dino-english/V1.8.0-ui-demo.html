@@ -12591,15 +12591,17 @@
       const trial = buildCourse(profile.trialTakenLevelId || profile.placementLevelId, "unit-1", "lesson-1");
       const dur = formatCourseDuration(trial.duration);
       const isContinue = state === "in_progress";
+      const isAvailable = state === "available";
+      const isCompleted = state === "completed";
       return `
-        <article class="course-bridge-card class-home-course-card class-week-card is-trial${isContinue ? " is-current" : ""}" data-trial="1">
+        <article class="course-bridge-card class-home-course-card class-week-card is-trial${isContinue || isAvailable ? " is-current" : ""}" data-trial="1">
           <div class="class-home-course-scroll">
             <div class="course-card-top">
               <div class="course-card-topcopy">
                 <span class="course-card-stage">Trial lesson</span>
                 <h3 class="course-card-title">${trial.unitTheme}</h3>
                 <div class="course-card-meta-row">
-                  <span class="all-courses-card-status">${isContinue ? "In progress" : "Completed"}</span>
+                  <span class="all-courses-card-status">${isContinue ? "In progress" : isCompleted ? "Completed" : "Free"}</span>
                   <span class="all-courses-card-duration">${dur}</span>
                 </div>
               </div>
@@ -12608,12 +12610,14 @@
                 <img src="assets/dino-mascot.png" alt="" decoding="async" />
               </div>
             </div>
-            ${renderCourseMissionBundle(trial, { unlocked: !isContinue, title: trial.unitTheme })}
+            ${renderCourseMissionBundle(trial, { unlocked: isCompleted, title: trial.unitTheme })}
             <div class="course-card-scroll-inner">${renderCourseObjectivesBlock(trial)}</div>
           </div>
           <div class="course-card-actions class-home-actions">
             <div class="course-card-cta-wrap">
-              ${isContinue
+              ${isAvailable
+                ? '<button type="button" class="btn btn-primary" data-action="trial-start">Start AI Lesson</button>'
+                : isContinue
                 ? '<button type="button" class="course-cta-secondary" data-action="trial-continue">Continue trial</button>'
                 : `<button type="button" class="course-cta-secondary" data-action="trial-report">View report</button>
                    <button type="button" class="course-cta-chat" data-action="chat-dino" data-chat-level="${trial.levelId}" data-chat-unit="${trial.unitId}" data-chat-lesson="${trial.lessonId}">Chat with Dino</button>`}
@@ -12661,7 +12665,9 @@
         ? renderClassTrialCard("completed")
         : profile.trialInProgress
           ? renderClassTrialCard("in_progress")
-          : "";
+          : !profile.premiumUnlocked
+            ? renderClassTrialCard("available")
+            : "";
       const weekCardsHtml = weekCourses.map((course, i) => {
         const isCurrent = makeCourseKey(course.levelId, course.unitId, course.lessonId) === curKey;
         return `
@@ -12694,6 +12700,13 @@
       list.querySelector("[data-explore-nudge]")?.addEventListener("click", () => { setHubTab("practice"); });
       list.querySelectorAll(".class-week-card").forEach((card) => {
         if (card.dataset.trial) {
+          card.querySelector("[data-action='trial-start']")?.addEventListener("click", (event) => {
+            event.stopPropagation();
+            profile.hasStartedClass = false;
+            profile.trialInProgress = false;
+            profile.trialReportShown = false;
+            openClassroomDemo("trial-start");
+          });
           card.querySelector("[data-action='trial-continue']")?.addEventListener("click", (event) => {
             event.stopPropagation();
             openClassroomDemo("trial-resume");
@@ -13296,6 +13309,11 @@
         lessonCompleteIsTrial = true;
         showLessonComplete(true);
         return;
+      }
+      // V1.8.0：首页学习计划进入的 AI 课，完课后只推进到同一任务的
+      // After Class 阶段；整项任务要等 Words / Listening / Speaking 完成后才结算。
+      if (inclassEntrySource === "v180-home-plan") {
+        window.v180CompleteLessonStage?.();
       }
       trialReportMode = "trial";
       lessonCompleteIsTrial = inclassIsFirst && !profile.trialReportShown;
@@ -17760,14 +17778,21 @@
     .visit-reward-card{
       width:min(70%,760px);max-width:760px;height:auto;max-height:calc(100% - 34px);aspect-ratio:569/320;
       display:block;padding:0;overflow:visible;border:2px solid #3a71ea;border-radius:32px;
-      background:#1d31af url("assets/v180/welcome-gifts/panel-bg.png") center/cover no-repeat;
+      background:#1d31af;
       box-shadow:0 28px 56px rgba(1,16,80,.58),inset 0 0 0 1px rgba(255,255,255,.16);
     }
     .visit-reward-card::before,.visit-reward-card::after{content:none}
-    .visit-reward-head{
-      position:absolute;z-index:6;left:14%;right:3%;top:3%;height:12%;display:flex;align-items:flex-start;justify-content:space-between;
+    .visit-reward-bg{
+      position:absolute;z-index:0;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;
     }
-    .visit-reward-heading{height:100%;justify-content:center}
+    .visit-reward-bg img{
+      position:absolute;left:-25.74%;top:-6.12%;width:153.93%;height:127.05%;max-width:none;
+      object-fit:fill;pointer-events:none;user-select:none;
+    }
+    .visit-reward-head{
+      position:absolute;z-index:6;left:14%;right:3%;top:3.1%;height:auto;display:flex;align-items:flex-start;justify-content:space-between;
+    }
+    .visit-reward-heading{height:auto;justify-content:flex-start}
     .visit-reward-title{
       display:flex;align-items:center;gap:6px;margin:0;color:#ffef87;font-size:clamp(.72rem,2.7vw,1.25rem);line-height:1;
       text-shadow:0 2px 4px rgba(21,26,130,.34);white-space:nowrap;
@@ -17775,7 +17800,7 @@
     .visit-reward-title::after{content:"★";color:#ffe743;font-size:.7em;filter:drop-shadow(0 2px 3px rgba(114,63,0,.25))}
     .visit-reward-title-icon{width:27px;height:29px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(82,29,109,.28))}
     .visit-reward-countdown{
-      display:flex;align-items:center;gap:5px;margin:0;padding:4px 10px;border-radius:999px;
+      display:flex;align-items:center;gap:5px;margin:6px 0 0;padding:4px 10px;border-radius:999px;
       background:linear-gradient(90deg,rgba(240,158,255,.3),rgba(144,255,255,.3));color:#fff;
       font-family:var(--font);font-size:clamp(.38rem,1.45vw,.66rem);font-weight:700;line-height:1.1;white-space:nowrap;
     }
@@ -17909,6 +17934,7 @@
         ov.setAttribute("aria-hidden","true");
         ov.innerHTML =
           '<main class="visit-reward-card" role="dialog" aria-modal="true" aria-labelledby="vr-title">'
+          +'<span class="visit-reward-bg" aria-hidden="true"><img src="assets/v180/welcome-gifts/panel-bg.png" alt="" decoding="async"/></span>'
           +'<button type="button" class="visit-reward-close" id="vr-close" aria-label="Close welcome gifts">×</button>'
           +'<header class="visit-reward-head">'
           +'<div class="visit-reward-heading"><h2 class="visit-reward-title" id="vr-title"><img class="visit-reward-title-icon" src="assets/v180/welcome-gifts/title-gift.png" alt="" decoding="async"/>Dino Welcome Gifts</h2></div>'
@@ -18370,13 +18396,13 @@
           return;
         }
         var jump = e.target.closest("[data-sp-jump]");
-        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) { beforeJump(); j.run(); } return; }
+        if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) { beforeJump(); j.run(); panel.classList.remove("open"); } return; }
         var jump131 = e.target.closest("[data-sp-jump131]");
-        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) { beforeJump(); j2.run(); } return; }
+        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) { beforeJump(); j2.run(); panel.classList.remove("open"); } return; }
         var jumpReward = e.target.closest("[data-sp-jumpreward]");
-        if (jumpReward) { var jr = jumpsReward[+jumpReward.dataset.spJumpreward]; if (jr && jr.run) { beforeJump(); jr.run(); } return; }
+        if (jumpReward) { var jr = jumpsReward[+jumpReward.dataset.spJumpreward]; if (jr && jr.run) { beforeJump(); jr.run(); panel.classList.remove("open"); } return; }
         var jumpwc = e.target.closest("[data-sp-jumpwc]");
-        if (jumpwc) { var j3 = jumpsWC[+jumpwc.dataset.spJumpwc]; if (j3 && j3.run) { beforeJump(); j3.run(); } }
+        if (jumpwc) { var j3 = jumpsWC[+jumpwc.dataset.spJumpwc]; if (j3 && j3.run) { beforeJump(); j3.run(); panel.classList.remove("open"); } }
       });
 
       var watch = config.watch || ["body"];
@@ -19009,6 +19035,7 @@
     jumps: [
       { label: "1.8 查看本周课程", run: withReviewProfile(function () { window.v180OpenWeeklyPlan && window.v180OpenWeeklyPlan(); }) },
       { label: "1.8 首次计划曝光", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
+      { label: "1.8 学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
       { label: "1.8 完成任务 · 自动领奖", run: withReviewProfile(function () { window.v180CompleteCurrentMission && window.v180CompleteCurrentMission(); }) },
       { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
       { label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
@@ -19026,7 +19053,6 @@
           enterLandscape();
           openMembership();
         }) },
-      { label: "Feedback 邮件", run: withReviewProfile(function () { openFeedbackMailReview("vn"); }) },
     ],
     legacyJumps: [
       { label: "Class 首页",  run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
@@ -19113,36 +19139,39 @@
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "④ Pro · 本周课程计划", run: withReviewProfile(function () {
+      { label: "④ 学习方案选择 · 每周 3 / 5 节", run: withReviewProfile(function () {
+          window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free");
+        }) },
+      { label: "⑤ Pro · 本周课程计划", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑤ Max · 本周课程计划", run: withReviewProfile(function () {
+      { label: "⑥ Max · 本周课程计划", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("max", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑥ 课后练习待完成", run: withReviewProfile(function () {
+      { label: "⑦ 课后练习待完成", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("after_class");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑦ Explore 练习日", run: withReviewProfile(function () {
+      { label: "⑧ Explore 练习日", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("explore");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑧ 本周完成 · 奖励已发放", run: withReviewProfile(function () {
+      { label: "⑨ 本周完成 · 奖励已发放", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("max", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("week_complete");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑨ 会员选择 · Pro", run: withReviewProfile(function () {
+      { label: "⑩ 会员选择 · Pro", run: withReviewProfile(function () {
           profile.selectedMembershipTier = "pro";
           enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry", "pro");
         }) },
-      { label: "⑩ 会员选择 · Max", run: withReviewProfile(function () {
+      { label: "⑪ 会员选择 · Max", run: withReviewProfile(function () {
           profile.selectedMembershipTier = "max";
           enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry", "max");
         }) },
@@ -21296,11 +21325,11 @@
     }
     #screen-class .v180-home-plan-panel .v180-home-week{padding:12px 14px 14px}
     #screen-class .v180-home-plan-panel .v180-today-list{grid-template-columns:1fr;gap:8px}
-    #screen-class .v180-home-plan-panel .v180-today-task{min-height:72px;grid-template-columns:40px minmax(0,1fr) auto;padding:8px 10px;border-radius:17px}
+    #screen-class .v180-home-plan-panel .v180-today-task{min-height:72px;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;padding:8px 10px;border-radius:17px}
     #screen-class .v180-home-plan-panel .v180-today-task-icon{width:38px;height:38px;border-radius:14px;font-size:1.12rem}
     #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.72rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip{
-      width:100%;box-sizing:border-box;justify-self:stretch;min-height:50px;margin-top:8px;grid-template-columns:32px minmax(0,1fr) auto;gap:7px;
+      width:100%;box-sizing:border-box;justify-self:stretch;min-height:50px;margin-top:8px;grid-template-columns:minmax(0,1fr) auto;gap:8px;
       padding:6px 9px;border-width:1.5px;border-radius:15px;box-shadow:0 5px 10px rgba(159,86,0,.1);
     }
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-icon{width:30px;height:30px;border-radius:11px;font-size:.9rem}
@@ -21309,11 +21338,14 @@
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy span{margin-top:1px;font-size:.43rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-status{min-width:44px;padding:5px 7px;font-size:.45rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:44px;opacity:.9}
+    #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{
+      width:30px;height:30px;min-width:30px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:.82rem;
+    }
     #screen-class .v180-home-plan-panel .v180-today-task.has-progress{
       min-height:96px;grid-template-rows:auto 32px;align-items:center;row-gap:6px
     }
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-today-task-icon{grid-row:1 / span 2}
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-today-task-status{grid-row:1;grid-column:3}
+    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-today-task-status{grid-row:1;grid-column:2}
+    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-learning-progress{grid-column:1 / 3}
     .v180-learning-progress{
       grid-column:2 / 4;grid-row:2;min-width:0;display:grid;grid-template-columns:auto minmax(10px,1fr) auto minmax(10px,1fr) auto;
       align-items:center;gap:4px;color:#71839d
@@ -21364,16 +21396,17 @@
       #screen-class .v180-home-plan-panel{left:auto;right:2.5%;top:14%;width:36%;border-width:1.5px;border-radius:17px}
       #screen-class .v180-home-plan-panel .v180-home-week{padding:6px 7px 7px}
       #screen-class .v180-home-plan-panel .v180-today-list{gap:4px}
-      #screen-class .v180-home-plan-panel .v180-today-task{min-height:43px;grid-template-columns:26px minmax(0,1fr) auto;padding:4px 5px;border-radius:10px}
+      #screen-class .v180-home-plan-panel .v180-today-task{min-height:43px;grid-template-columns:minmax(0,1fr) auto;column-gap:5px;padding:4px 5px;border-radius:10px}
       #screen-class .v180-home-plan-panel .v180-today-task-icon{width:25px;height:25px;border-radius:9px;font-size:.72rem}
       #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.44rem}
-      #screen-class .v180-home-plan-panel .v180-checkin-strip{min-height:31px;margin-top:4px;grid-template-columns:20px minmax(0,1fr) auto;gap:3px;padding:3px 5px;border-radius:9px}
+      #screen-class .v180-home-plan-panel .v180-checkin-strip{min-height:31px;margin-top:4px;grid-template-columns:minmax(0,1fr) auto;gap:4px;padding:3px 5px;border-radius:9px}
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-icon{width:19px;height:19px;border-radius:7px;font-size:.58rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy small{font-size:.28rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy strong{font-size:.37rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-copy span{display:none}
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-status{min-width:29px;padding:3px 4px;font-size:.29rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:28px}
+      #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{width:19px;height:19px;min-width:19px;padding:0;font-size:.52rem}
       #screen-class .v180-home-plan-panel .v180-today-task.has-progress{min-height:61px;grid-template-rows:auto 20px;row-gap:2px}
       .v180-learning-progress{gap:2px}
       .v180-progress-step{min-width:20px;gap:1px;font-size:.27rem}
@@ -21913,9 +21946,8 @@
       var checkinDay = rewardState ? Number(rewardState.dayIndex || 0) + 1 : 1;
       var checkinHtml = checkinAvailable
         ? '<button type="button" class="v180-today-task v180-checkin-strip is-checkin' + (checkinClaimed ? ' is-done' : '') + '" data-v180-action="checkin" aria-label="' + (checkinClaimed ? 'Day ' + checkinDay + ' welcome gift claimed. View welcome gifts' : 'Claim Day ' + checkinDay + ' welcome gift') + '">' +
-            '<span class="v180-today-task-icon">' + (checkinClaimed ? '✓' : '🎁') + '</span>' +
-            '<span class="v180-today-task-copy"><small>Today’s gift</small><strong>' + (checkinClaimed ? 'Gift claimed' : 'Day ' + checkinDay + ' welcome gift') + '</strong>' + (checkinClaimed ? '<span>See all welcome gifts</span>' : '') + '</span>' +
-            '<em class="v180-today-task-status">' + (checkinClaimed ? 'View' : 'Claim') + '</em>' +
+            '<span class="v180-today-task-copy"><small>Today’s gift</small><strong>Day ' + checkinDay + ' welcome gift</strong></span>' +
+            '<em class="v180-today-task-status" aria-label="' + (checkinClaimed ? 'Claimed' : 'Claim') + '">' + (checkinClaimed ? '✓' : 'Claim') + '</em>' +
           '</button>'
         : '';
       var learningLabel = finished ? "Learning complete" : copy.eyebrow;
@@ -21943,7 +21975,6 @@
             '<div class="v180-today-heading"><strong>Today’s learning</strong></div>' +
             '<div class="v180-today-list has-one">' +
               '<button type="button" class="v180-today-task is-learning' + (finished ? ' is-done' : '') + (learningProgress ? ' has-progress' : '') + '" data-v180-action="' + (finished ? "plan" : "current") + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
-                taskArtwork(task, finished) +
                 '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + (learningProgress ? '' : '<span>' + esc(learningDetail) + ' <i class="v180-task-reward" aria-label="+' + learningReward + ' coins">+' + learningReward + '</i></span>') + '</span>' +
                 learningProgress +
                 '<em class="v180-today-task-status">' + learningStatus + '</em>' +
@@ -21967,10 +21998,25 @@
         showPayToast("Complete any 1 Explore activity to earn 20 coins ✨");
         return;
       }
-      enterLandscape();
-      showClassHome();
-      setHubTab("class");
-      showPayToast(currentStage() === "after_class" ? "After Class opened ✏️" : "AI lesson opened 📘");
+      if (currentStage() === "after_class") {
+        var course = getCurrentCourse();
+        var trigger = document.createElement("button");
+        trigger.dataset.courseKey = profile.v180ActiveLessonCourseKey || makeCourseKey(course.levelId, course.unitId, course.lessonId);
+        trigger.dataset.courseTitle = encodeURIComponent(profile.v180ActiveLessonTaskTitle || task.title);
+        enterLandscape();
+        showClassHome();
+        setHubTab("class");
+        openAfterClassLayer(trigger);
+        return;
+      }
+      // The home card is the launch point for the recommended course itself—not a
+      // detour to the Class tab. The current course pointer supplies the lesson context.
+      var lessonCourse = getCurrentCourse();
+      profile.v180ActiveLessonTaskIndex = completedCount();
+      profile.v180ActiveLessonCourseKey = makeCourseKey(lessonCourse.levelId, lessonCourse.unitId, lessonCourse.lessonId);
+      profile.v180ActiveLessonTaskTitle = task.title;
+      openClassroomDemo("v180-home-plan");
+      showPayToast(task.title + " · AI Lesson");
     }
     function completeCurrentMission(forceComplete) {
       var task = currentTask();
