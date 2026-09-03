@@ -42,6 +42,32 @@ body::before{
 }
 .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
 
+/* ---------- overview navigation ---------- */
+.overview-nav{
+  position:sticky;top:0;z-index:65;height:52px;background:rgba(246,241,231,.96);
+  border-bottom:1px solid var(--line);box-shadow:0 5px 18px rgba(31,42,36,.06);
+  backdrop-filter:blur(10px)
+}
+.overview-nav .wrap{height:100%;display:flex;align-items:center;gap:24px;padding-right:150px}
+.overview-nav .overview-label{
+  flex:0 0 auto;font-family:'Fraunces','Noto Serif SC',serif;font-size:10.5px;font-weight:600;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--ink-faint)
+}
+.overview-links{display:flex;align-items:center;gap:4px;min-width:0}
+.overview-links a{
+  position:relative;text-decoration:none;color:var(--ink-soft);font-size:13px;font-weight:600;
+  letter-spacing:.04em;padding:7px 16px;border-radius:99px;white-space:nowrap;transition:all .2s
+}
+.overview-links a:hover{color:var(--green);background:var(--paper-deep)}
+.overview-links a.active{color:#fff;background:var(--green);box-shadow:0 3px 10px rgba(29,92,63,.18)}
+@media(max-width:600px){
+  .overview-nav{height:48px}
+  .overview-nav .wrap{gap:0;padding-left:12px;padding-right:108px}
+  .overview-nav .overview-label{display:none}
+  .overview-links{width:100%;gap:2px}
+  .overview-links a{flex:1;text-align:center;font-size:11.5px;padding:6px 5px;letter-spacing:0}
+}
+
 /* ---------- header ---------- */
 header{padding:72px 0 48px;border-bottom:3px double var(--line);position:relative}
 .kicker{
@@ -107,6 +133,72 @@ h1 em{font-style:normal;color:var(--orange);position:relative}
 }
 .northstar b{color:var(--green);font-weight:700}
 
+/* ---------- current core metrics & monthly focus ---------- */
+.core-goals{
+  padding:52px 0 56px;border-bottom:3px double var(--line);position:relative
+}
+.goals-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,440px);gap:42px;align-items:end}
+.goals-kicker{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:12px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--green);font-weight:600;margin-bottom:12px
+}
+.goals-head h2{
+  font-family:'Noto Serif SC',serif;font-size:clamp(27px,3.5vw,42px);font-weight:900;
+  line-height:1.22;letter-spacing:.01em
+}
+.goals-head h2 em{font-style:normal;color:var(--orange)}
+.goals-intro{font-size:14px;color:var(--ink-soft);line-height:1.8;padding-bottom:2px}
+.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+.metric-card{
+  min-height:156px;background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:18px 19px 17px;box-shadow:0 3px 16px rgba(31,42,36,.05);position:relative;overflow:hidden
+}
+.metric-card::before{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--green)}
+.metric-card.revenue::before{background:var(--orange)}
+.metric-step{
+  display:block;font-family:'Fraunces','Noto Serif SC',serif;font-size:10.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:16px
+}
+.metric-name{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:700;line-height:1.45;color:var(--ink)}
+.metric-target{display:flex;align-items:baseline;gap:9px;margin-top:10px}
+.metric-target strong{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:35px;line-height:1;font-weight:900;color:var(--green)
+}
+.metric-card.revenue .metric-target strong{color:var(--orange)}
+.metric-target span{font-size:11px;letter-spacing:.1em;color:var(--ink-faint)}
+.focus-head{
+  display:flex;align-items:center;gap:12px;margin:30px 0 13px;font-size:11.5px;font-weight:700;
+  letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft)
+}
+.focus-head::after{content:"";flex:1;height:1px;background:var(--line)}
+.focus-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:14px}
+.focus-card{
+  display:grid;grid-template-columns:108px minmax(0,1fr);gap:20px;align-items:center;
+  background:rgba(255,253,248,.72);border:1px solid var(--line);border-radius:10px;padding:18px 20px
+}
+.focus-card .period{
+  font-family:'Fraunces','Noto Serif SC',serif;font-size:20px;font-weight:900;color:var(--green);
+  border-right:1px solid var(--line);line-height:1.2;padding-right:18px
+}
+.focus-card.october{border-color:rgba(217,100,30,.55);background:rgba(243,224,207,.38)}
+.focus-card.october .period{color:var(--orange);border-color:rgba(217,100,30,.3)}
+.focus-card h3{font-family:'Noto Serif SC',serif;font-size:15px;font-weight:700;line-height:1.45;margin-bottom:4px}
+.focus-card p{font-size:12.5px;color:var(--ink-soft);line-height:1.7}
+.focus-card p b{color:var(--ink);font-weight:700}
+@media(max-width:920px){
+  .goals-head{grid-template-columns:1fr;gap:12px}
+  .metric-grid{grid-template-columns:repeat(2,1fr)}
+  .focus-grid{grid-template-columns:1fr}
+}
+@media(max-width:540px){
+  .core-goals{padding:40px 0 44px}
+  .metric-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .metric-card{min-height:144px;padding:16px 14px}
+  .metric-target strong{font-size:30px}
+  .focus-card{grid-template-columns:1fr;gap:9px}
+  .focus-card .period{border-right:0;border-bottom:1px solid var(--line);padding:0 0 9px}
+}
+
 /* ---------- demo strip（弱化：小缩略图 + 文字行） ---------- */
 .demo-strip{
   margin-top:22px;display:flex;align-items:center;gap:16px;
@@ -166,7 +258,7 @@ h1 em{font-style:normal;color:var(--orange);position:relative}
 
 /* ---------- timeline nav ---------- */
 nav.tl{
-  position:sticky;top:0;z-index:50;background:rgba(246,241,231,.92);backdrop-filter:blur(8px);
+  position:sticky;top:52px;z-index:50;background:rgba(246,241,231,.92);backdrop-filter:blur(8px);
   border-bottom:1px solid var(--line);
 }
 nav.tl .wrap{display:flex;overflow-x:auto;gap:0}
@@ -181,6 +273,8 @@ nav.tl a:hover{background:var(--paper-deep)}
 nav.tl a.core b{color:var(--orange)}
 nav.tl a.core::after{content:"CORE";position:absolute;top:6px;right:6px;font-size:9px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.1em}
 html[lang="zh-CN"] nav.tl a.core::after{content:"核心"}
+nav.tl a.brand-rename::after{content:"BRAND RENAME";position:absolute;top:6px;right:6px;font-size:8.5px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.04em}
+html[lang="zh-CN"] nav.tl a.brand-rename::after{content:"品牌改名"}
 nav.tl a.active{background:var(--paper-deep);box-shadow:inset 0 -3px 0 var(--green-bright)}
 nav.tl a.active b{color:var(--green)}
 nav.tl a.current{background:var(--ink);box-shadow:inset 0 -3px 0 var(--orange)}
@@ -188,6 +282,7 @@ nav.tl a.current,nav.tl a.current b{color:var(--paper)}
 nav.tl a.current::before{content:"NOW";position:absolute;top:6px;left:6px;font-size:9px;background:var(--orange);color:#fff;padding:1px 5px;border-radius:99px;letter-spacing:.1em}
 html[lang="zh-CN"] nav.tl a.current::before{content:"当前"}
 nav.tl a.current.core::after{background:var(--paper);color:var(--ink)}
+@media(max-width:600px){nav.tl{top:48px}}
 
 /* ---------- sections ---------- */
 main{padding:24px 0 60px}
@@ -240,12 +335,14 @@ section.core .story{border-left-color:var(--orange)}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px}
 @media(max-width:860px){
   .cols{grid-template-columns:1fr}
-  section.node{grid-template-columns:1fr}
+  section.node{grid-template-columns:minmax(0,1fr)}
   section.node::before{display:none}
-  .node-marker{display:flex;gap:14px;align-items:baseline;padding:0 0 14px}
+  .node-marker{display:flex;gap:14px;align-items:baseline;padding:0 0 14px;min-width:0}
   .node-marker .dot{display:none}
   .node-date,.node-sub{width:auto;text-align:left}
-  .node-body{padding-left:0}
+  .node-date{flex:0 0 auto}
+  .node-sub{flex:1;min-width:0}
+  .node-body{padding-left:0;min-width:0}
 }
 .block h4{
   font-size:12px;letter-spacing:.2em;color:var(--green);font-weight:700;margin-bottom:10px;
@@ -286,13 +383,6 @@ section.core .story{border-left-color:var(--orange)}
 .requirement-groups .who{
   display:none
 }
-.taxonomy-note{
-  margin:28px 0 34px;padding:14px 18px;background:var(--card);border:1px solid var(--line);
-  border-left:4px solid var(--orange);border-radius:8px;color:var(--ink-soft);
-  font-size:13px;line-height:1.8
-}
-.taxonomy-note b{color:var(--green);margin-right:10px}
-
 .risk{
   margin-top:22px;padding:14px 20px;background:#fbeee8;border:1px dashed var(--red);
   border-radius:6px;font-size:13.5px;color:#7c3322;line-height:1.8
@@ -414,7 +504,8 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
 /* sticky-nav offset for in-page anchors */
-section[id],.node[id]{scroll-margin-top:64px}
+#positioning,#core-goals,#release-iterations{scroll-margin-top:64px}
+.node[id]{scroll-margin-top:140px}
 </style>
 </head>
 <body>
@@ -424,6 +515,17 @@ section[id],.node[id]{scroll-margin-top:64px}
   <button type="button" data-lang="zh">中</button>
 </div>
 
+<nav class="overview-nav" aria-label="Roadmap sections">
+  <div class="wrap">
+    <span class="overview-label" data-zh="总导航">Overview</span>
+    <div class="overview-links">
+      <a href="#positioning" class="active" data-zh="产品定位">Positioning</a>
+      <a href="#core-goals" data-zh="里程碑目标">Milestone Goals</a>
+      <a href="#release-iterations" data-zh="版本迭代">Releases</a>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
 <header>
   <div class="kicker">Dino English · Product Roadmap</div>
@@ -432,7 +534,7 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="meta-row">
     <span data-zh="来源 <b>AI-里程碑 v2.0 · 需求池</b>">Source <b>AI Milestones v2.0 · Requirement Pool</b></span>
     <span data-zh="整理 <b>李双</b>">Compiled by <b>Li Shuang</b></span>
-    <span data-zh="更新 <b>2026.08.24</b>">Updated <b>2026.08.24</b></span>
+    <span data-zh="更新 <b>2026.09.03</b>">Updated <b>2026.09.03</b></span>
   </div>
 </header>
 
@@ -467,10 +569,60 @@ section[id],.node[id]{scroll-margin-top:64px}
     </div>
   </div>
 </section>
-<div class="taxonomy-note reveal" data-zh="<b>需求分类口径</b>官网 / 投放落地页 → Landing Page；八个业务模块 → Dino English（Onboarding 登录注册链路 / 会员及付费 / Class 课程 / Dino / Explore / Play / 提升活跃及留存 / 个人中心）；CRM 管台、CMS 管台、数据看板、标注与评估平台等 → 管理后台；其余 → 其他。"><b>Requirement taxonomy</b> Website / campaign pages → Landing Page; eight product modules → Dino English (Onboarding & sign-up / Membership & payment / Class / Dino / Explore / Play / Engagement & retention / Profile); CRM/CMS consoles, data dashboards, annotation and evaluation platforms → Admin Backend; everything else → Other.</div>
+
+<!-- ============ 当前产品核心指标与月度重点 ============ -->
+<section class="core-goals reveal" id="core-goals" aria-labelledby="core-goals-title">
+  <div class="goals-head">
+    <div>
+      <div class="goals-kicker" data-zh="Current Focus · 当前产品核心指标">Current Focus · Core Product Metrics</div>
+      <h2 id="core-goals-title" data-zh="围绕一条转化链路，逐段做到<em>目标值</em>">One conversion journey, improved <em>stage by stage</em></h2>
+    </div>
+    <p class="goals-intro" data-zh="版本迭代以「注册 → 首课开课 → 完课 → 完课支付」为当前主线；目标值是阶段工作的统一验收方向。">Current releases follow one shared journey: registration → first lesson started → lesson completed → payment after completion. These targets align how each stage is evaluated.</p>
+  </div>
+  <div class="metric-grid" aria-label="Core metric targets">
+    <article class="metric-card">
+      <span class="metric-step" data-zh="01 · 注册">01 · Register</span>
+      <div class="metric-name" data-zh="注册转化率">Registration conversion</div>
+      <div class="metric-target"><strong>65%</strong><span data-zh="目标值">TARGET</span></div>
+    </article>
+    <article class="metric-card">
+      <span class="metric-step" data-zh="02 · 首课开课">02 · Start first lesson</span>
+      <div class="metric-name" data-zh="首课开课率">First-lesson start rate</div>
+      <div class="metric-target"><strong>50%</strong><span data-zh="目标值">TARGET</span></div>
+    </article>
+    <article class="metric-card">
+      <span class="metric-step" data-zh="03 · 完课">03 · Complete lesson</span>
+      <div class="metric-name" data-zh="完课率">Lesson completion rate</div>
+      <div class="metric-target"><strong>50%</strong><span data-zh="目标值">TARGET</span></div>
+    </article>
+    <article class="metric-card revenue">
+      <span class="metric-step" data-zh="04 · 完课后支付">04 · Pay after completion</span>
+      <div class="metric-name" data-zh="完课支付转化率">Post-completion payment conversion</div>
+      <div class="metric-target"><strong>20%</strong><span data-zh="目标值">TARGET</span></div>
+    </article>
+  </div>
+  <div class="focus-head" data-zh="月度重点工作目标">Monthly priority</div>
+  <div class="focus-grid">
+    <article class="focus-card">
+      <div class="period" data-zh="8—9 月">Aug—Sep</div>
+      <div>
+        <h3 data-zh="优先提升前三个关键转化率">Lift the first three conversion stages</h3>
+        <p data-zh="围绕注册、首课开课、完课集中优化，依次达到 <b>65% / 50% / 50%</b>。">Focus on registration, first-lesson starts, and lesson completion, reaching <b>65% / 50% / 50%</b>.</p>
+      </div>
+    </article>
+    <article class="focus-card october">
+      <div class="period" data-zh="10 月">October</div>
+      <div>
+        <h3 data-zh="核心提升支付转化">Make payment conversion the core focus</h3>
+        <p data-zh="承接已完成课程的高意向用户，将完课支付转化率提升至 <b>20%</b>。">Convert high-intent users after lesson completion and raise post-completion payment conversion to <b>20%</b>.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
 </div>
 
-<nav class="tl">
+<nav class="tl" id="release-iterations" aria-label="Release versions">
   <div class="wrap">
     <a href="#n610" data-date="2026-06-10" data-zh="<b>V1.1.0</b>6/10"><b>V1.1.0</b>6/10</a>
     <a href="#n621" data-date="2026-06-24" data-zh="<b>V1.2.0</b>6/24"><b>V1.2.0</b>6/24</a>
@@ -480,13 +632,15 @@ section[id],.node[id]{scroll-margin-top:64px}
     <a href="#n140" data-date="2026-07-16" data-zh="<b>V1.4.0</b>7/16"><b>V1.4.0</b>7/16</a>
     <a href="#n141" data-date="2026-07-17" data-zh="<b>V1.4.1</b>7/17"><b>V1.4.1</b>7/17</a>
     <a href="#n142" data-date="2026-07-29" data-zh="<b>V1.4.2</b>7/29"><b>V1.4.2</b>7/29</a>
-    <a href="#n150" data-date="2026-07-31" data-zh="<b>V1.5.0</b>7/31"><b>V1.5.0</b>7/31</a>
+    <a href="#n150" class="brand-rename" data-date="2026-07-31" data-zh="<b>V1.5.0</b>7/31"><b>V1.5.0</b>7/31</a>
     <a href="#n151" data-date="2026-08-07" data-zh="<b>V1.5.1</b>8/07"><b>V1.5.1</b>8/07</a>
     <a href="#n152" data-date="2026-08-13" data-zh="<b>V1.5.2</b>8/13"><b>V1.5.2</b>8/13</a>
     <a href="#n153" data-date="2026-08-15" data-zh="<b>V1.5.3</b>8/15"><b>V1.5.3</b>8/15</a>
-    <a href="#n154" data-date="2026-08-21" data-current="true" data-zh="<b>V1.5.4</b>8/21"><b>V1.5.4</b>8/21</a>
-    <a href="#n155" data-date="2026-09-03" data-zh="<b>V1.5.5</b>9/03"><b>V1.5.5</b>9/03</a>
-    <a href="#n160" data-zh="<b>V1.6.0</b>待定"><b>V1.6.0</b>TBD</a>
+    <a href="#n154" data-date="2026-08-21" data-zh="<b>V1.5.4</b>8/21"><b>V1.5.4</b>8/21</a>
+    <a href="#n155" data-date="2026-08-26" data-zh="<b>V1.5.5</b>8/26"><b>V1.5.5</b>8/26</a>
+    <a href="#n160" data-date="2026-09-03" data-current="true" data-zh="<b>V1.6.0</b>9/03"><b>V1.6.0</b>9/03</a>
+    <a href="#n170" data-zh="<b>V1.7.0</b>待定"><b>V1.7.0</b>TBD</a>
+    <a href="#n180" data-zh="<b>V1.8.0</b>待定"><b>V1.8.0</b>TBD</a>
   </div>
 </nav>
 
@@ -1135,61 +1289,67 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.5.4</div>
-    <div class="node-sub" data-zh='增长触达 · 课中 UI · 后台能力<br>08/21 上线'>Growth reach · in-class UI · admin tools<br>Launch 08/21</div>
+    <div class="node-sub" data-zh='投放归因 · 全球支付 · 课中体验<br>08/21 上线'>Attribution · global payments · lesson UX<br>Launch 08/21</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='增长与安全 · 课中体验统一 · 运营能力<span class="tag">16 条 · 08/21 上线</span>'>Growth &amp; safety · unified lesson UX · operations<span class="tag">16 items · 08/21</span></div>
-    <div class="story" data-zh='<span class="lab">需求池 · 16 条 · 08/21 上线</span><b>方向</b>：补齐 Push、短信防刷、版本本地化与运营后台能力；集中优化课程 Prompt、报告引导、课堂 UI 与授权提醒，并推进 Landing Page 四期与 CRM 二期。<br/><b>分类</b>：Dino English 用户端 13 条；官网 1 条；管理后台相关 3 条（含 1 条跨端）。优先级为 P0 2 条 / P1 7 条 / P2 7 条。<br/><b>状态</b>：开发中 7 条、产品设计中 4 条、UI 设计中 4 条、挂起 1 条。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.4 需求表 ↗</a>。'><span class="lab">Pool · 16 items · launch 08/21</span><b>Direction</b>: add push coverage, SMS abuse prevention, localized release copy and admin capabilities; improve lesson prompts, report guidance, classroom UI and permission reminders; and advance Landing Page phase 4 and CRM phase 2.<br/><b>Taxonomy</b>: Dino English App 13; Website 1; Admin-related 3, including 1 cross-platform item. Priority mix: P0 2 / P1 7 / P2 7.<br/><b>Status</b>: 7 in development, 4 in product design, 4 in UI design and 1 on hold. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.4 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='投放与全球支付 · 课中体验 · 增长及运营基础设施<span class="tag">22 条 · 08/21 上线</span>'>Attribution &amp; global payments · lesson UX · growth infrastructure<span class="tag">22 items · 08/21</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 22 条 · 08/21 上线</span><b>方向</b>：补齐 ASA 归因、Push 与短信防刷，集中推进马来西亚、越南、韩国和沙特的支付方式、SKU、优惠码及官网适配；同步优化课程 Prompt、报告引导、课堂 UI、本地化 Onboarding 与运营后台。<br/><b>产品分布</b>：DinoAI 用户端 14 条；网页端 6 条；配套后台相关 3 条（其中 1 条与用户端重复计入）。优先级为 P0 6 条 / P1 8 条 / P2 8 条。<br/><b>状态</b>：开发中 8 条、产品设计中 5 条、UI 设计中 4 条、排期中 4 条、未启动 1 条。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.4 需求表 ↗</a>。'><span class="lab">Pool · 22 items · launch 08/21</span><b>Direction</b>: add ASA attribution, push coverage and SMS abuse prevention; expand payments, SKUs, promo codes and website support across Malaysia, Vietnam, Korea and Saudi Arabia; and improve lesson prompts, report guidance, classroom UI, localized onboarding and admin tooling.<br/><b>Product mix</b>: DinoAI App 14; Web 6; Admin-related 3, including 1 cross-platform item counted in the App total. Priority mix: P0 6 / P1 8 / P2 8.<br/><b>Status</b>: 8 in development, 5 in product design, 4 in UI design, 4 scheduling and 1 not started. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.4 requirement list ↗</a>.</div>
     <div class="cols requirement-groups">
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Dino Agent <span class="count">1</span>'>Dino English · Dino Agent <span class="count">1</span></h4>
+        <h4 data-zh='Dino English · Class 课程 <span class="count">8</span>'>Dino English · Class <span class="count">8</span></h4>
         <ul>
-          <li data-zh='<b>课后 Dino Chat 对话提示词测试</b><span class="p1">P1</span>'><b>Test post-class Dino Chat prompts</b><span class="p1">P1</span></li>
+          <li data-zh='<b>Level 1–6 正课 Unit 1 Word Teach Prompt 删除 [WORD_EVALUATION] Tag</b><span class="p1">P1</span><span class="who">产品设计中</span>'><b>Remove [WORD_EVALUATION] from Level 1–6 Unit 1 Word Teach prompts</b><span class="p1">P1</span><span class="who">Product design</span></li>
+          <li data-zh='<b>课程 Loading 页引导完课领取评估报告</b><span class="p1">P1</span><span class="who">产品设计中</span>'><b>Use the lesson loading page to promote the completion report</b><span class="p1">P1</span><span class="who">Product design</span></li>
+          <li data-zh='<b>口语测评 Template 新增点击按钮引导并调整界面 UI</b><span class="p1">P1</span><span class="who">UI 设计中</span>'><b>Add button guidance and refresh UI in speaking-assessment templates</b><span class="p1">P1</span><span class="who">UI design</span></li>
+          <li data-zh='<b>正课长句子跟读 / 开放问题 Template 交互优化</b><span class="p2">P2</span><span class="who">产品设计中</span>'><b>Improve long-sentence repetition and open-question template UX</b><span class="p2">P2</span><span class="who">Product design</span></li>
+          <li data-zh='<b>新手引导课 UI 优化：下一步按钮、金币位置与学习计划入口</b><span class="p2">P2</span><span class="who">UI 设计中</span>'><b>Improve onboarding-lesson UI: next button, coin placement and study-plan entry</b><span class="p2">P2</span><span class="who">UI design</span></li>
+          <li data-zh='<b>课程列表页课程入口卡片 UI 调整</b><span class="p2">P2</span><span class="who">UI 设计中</span>'><b>Refresh course-entry cards on the lesson list</b><span class="p2">P2</span><span class="who">UI design</span></li>
+          <li data-zh='<b>授权弹窗文案、严肃上课提醒与弹出逻辑调整</b><span class="p2">P2</span><span class="who">产品设计中</span>'><b>Revise permission copy, serious-class reminders and trigger logic</b><span class="p2">P2</span><span class="who">Product design</span></li>
+          <li data-zh='<b>戳泡泡 Template 多种 UI 风格统一与模版调整</b><span class="p2">P2</span><span class="who">UI 设计中</span>'><b>Unify Pop-the-Bubbles template styles and update the template</b><span class="p2">P2</span><span class="who">UI design</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · 登录注册及 Onboarding <span class="count">2</span>'>Dino English · Sign-up &amp; Onboarding <span class="count">2</span></h4>
+        <ul>
+          <li data-zh='<b>短信验证码接入极验人机验证与防刷机制</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Add GeeTest bot detection and abuse prevention to SMS verification</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>Onboarding 推荐昵称按国家本地化</b><span class="p1">P1</span><span class="who">产品设计中</span>'><b>Localize suggested onboarding nicknames by country</b><span class="p1">P1</span><span class="who">Product design</span></li>
         </ul>
       </div>
       <div class="block scope-retention">
         <h4 data-zh='Dino English · 活跃及留存 <span class="count">1</span>'>Dino English · Engagement &amp; Retention <span class="count">1</span></h4>
         <ul>
-          <li data-zh='<b>补充更多 Push 场景，提升完课率、支付及留存</b><span class="p0">P0</span>'><b>Add push scenarios to improve completion, payment and retention</b><span class="p0">P0</span></li>
+          <li data-zh='<b>补充更多 Push 场景，提升完课率、支付及留存</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Add push scenarios to improve completion, payment and retention</b><span class="p0">P0</span><span class="who">In development</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · 登录注册及 Onboarding <span class="count">1</span>'>Dino English · Sign-up &amp; Onboarding <span class="count">1</span></h4>
+        <h4 data-zh='Dino English · App 整体 <span class="count">3</span>'>Dino English · App-wide <span class="count">3</span></h4>
         <ul>
-          <li data-zh='<b>短信验证码接入极验人机验证与防刷机制</b><span class="p1">P1</span>'><b>Add GeeTest bot detection and abuse prevention to SMS verification</b><span class="p1">P1</span></li>
+          <li data-zh='<b>接入 Apple Search Ads（ASA）投放归因能力</b><span class="p0">P0</span><span class="who">未启动</span>'><b>Add Apple Search Ads attribution</b><span class="p0">P0</span><span class="who">Not started</span></li>
+          <li data-zh='<b>选老师页强调完课报告、学习目标多选与首页 Dino 气泡调整</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Highlight completion reports, allow multiple goals and adjust the home Dino bubble</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>版本更新文案支持多语言</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Support multilingual release-update copy</b><span class="p2">P2</span><span class="who">In development</span></li>
         </ul>
       </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · Class 课程 <span class="count">8</span>'>Dino English · Class <span class="count">8</span></h4>
+      <div class="block scope-landing">
+        <h4 data-zh='Dino English 网页端 · 支付落地页 <span class="count">5</span>'>Dino English Web · Payment Landing Pages <span class="count">5</span></h4>
         <ul>
-          <li data-zh='<b>Level 1–6 正课 Unit 1 Word Teach Prompt 删除 [WORD_EVALUATION] Tag</b><span class="p1">P1</span>'><b>Remove [WORD_EVALUATION] from Level 1–6 Unit 1 Word Teach prompts</b><span class="p1">P1</span></li>
-          <li data-zh='<b>课程 Loading 页引导完课领取评估报告</b><span class="p1">P1</span>'><b>Use the lesson loading page to promote the completion report</b><span class="p1">P1</span></li>
-          <li data-zh='<b>口语测评 Template 新增点击按钮引导并调整界面 UI</b><span class="p1">P1</span>'><b>Add button guidance and refresh UI in speaking-assessment templates</b><span class="p1">P1</span></li>
-          <li data-zh='<b>正课长句子跟读 / 开放问题 Template 交互优化</b><span class="p2">P2</span>'><b>Improve long-sentence repetition and open-question template UX</b><span class="p2">P2</span></li>
-          <li data-zh='<b>新手引导课 UI 优化：下一步按钮、金币位置与学习计划入口</b><span class="p2">P2</span>'><b>Improve onboarding-lesson UI: next button, coin placement and study-plan entry</b><span class="p2">P2</span></li>
-          <li data-zh='<b>课程列表页课程入口卡片 UI 调整</b><span class="p2">P2</span>'><b>Refresh course-entry cards on the lesson list</b><span class="p2">P2</span></li>
-          <li data-zh='<b>授权弹窗文案、严肃上课提醒与弹出逻辑调整</b><span class="p2">P2</span>'><b>Revise permission copy, serious-class reminders and trigger logic</b><span class="p2">P2</span></li>
-          <li data-zh='<b>戳泡泡 Template 多种 UI 风格统一与模版调整</b><span class="p2">P2</span>'><b>Unify Pop-the-Bubbles template styles and update the template</b><span class="p2">P2</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · App 整体 <span class="count">2</span>'>Dino English · App-wide <span class="count">2</span></h4>
-        <ul>
-          <li data-zh='<b>版本更新文案支持多语言</b><span class="p2">P2</span>'><b>Support multilingual release-update copy</b><span class="p2">P2</span></li>
-          <li data-zh='<b>选老师页强调完课报告、学习目标多选与首页 Dino 气泡调整</b><span class="p1">P1</span>'><b>Highlight completion reports, allow multiple goals and adjust the home Dino bubble</b><span class="p1">P1</span></li>
+          <li data-zh='<b>马来西亚新增 FPX、TnG 等五种支付方式</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Add five Malaysia payment methods including FPX and TnG</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>越南、韩国、沙特 SKU 与渠道调整，马来西亚 SKU 调价</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Update Vietnam, Korea and Saudi SKUs and channels; adjust Malaysia pricing</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>沙特新增银行转账、分期支付等支付方式</b><span class="p0">P0</span><span class="who">排期中</span>'><b>Add Saudi bank-transfer and installment payment methods</b><span class="p0">P0</span><span class="who">Scheduling</span></li>
+          <li data-zh='<b>支付落地页自动读取并应用 URL 中的 Promo Code</b><span class="p1">P1</span><span class="who">排期中</span>'><b>Auto-apply promo codes from payment-page URLs</b><span class="p1">P1</span><span class="who">Scheduling</span></li>
+          <li data-zh='<b>韩国落地页更换 Naver Blog 分享缩略图</b><span class="p2">P2</span><span class="who">排期中</span>'><b>Replace the Naver Blog share thumbnail for Korea</b><span class="p2">P2</span><span class="who">Scheduling</span></li>
         </ul>
       </div>
       <div class="block scope-landing">
         <h4 data-zh='Dino English 官网 <span class="count">1</span>'>Dino English Website <span class="count">1</span></h4>
         <ul>
-          <li data-zh='<b>Landing Page 四期：支付方式、地区落地页、SKU、AF 归因与看板优化</b><span class="p0">P0</span>'><b>Landing Page phase 4: payments, regional pages, SKU, AF attribution and dashboards</b><span class="p0">P0</span></li>
+          <li data-zh='<b>Dino AI 五国官网 Web 端适配</b><span class="p0">P0</span><span class="who">排期中</span>'><b>Adapt the Dino AI five-country websites for Web</b><span class="p0">P0</span><span class="who">Scheduling</span></li>
         </ul>
       </div>
       <div class="block scope-admin">
         <h4 data-zh='Dino English 管理后台 <span class="count">2</span>'>Dino English Admin <span class="count">2</span></h4>
         <ul>
-          <li data-zh='<b>CRM 二期：系统权限、Leads 分配与外呼</b><span class="p1">P1</span>'><b>CRM phase 2: permissions, lead assignment and outbound calling</b><span class="p1">P1</span></li>
-          <li data-zh='<b>Feedback 按国家增加运营接收邮箱</b><span class="p2">P2</span>'><b>Add country-specific operations recipients for Feedback</b><span class="p2">P2</span></li>
+          <li data-zh='<b>CRM 二期：系统权限、Leads 分配与外呼</b><span class="p1">P1</span><span class="who">开发中</span>'><b>CRM phase 2: permissions, lead assignment and outbound calling</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>Feedback 按国家增加运营接收邮箱</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Add country-specific operations recipients for Feedback</b><span class="p2">P2</span><span class="who">In development</span></li>
         </ul>
       </div>
     </div>
@@ -1198,69 +1358,20 @@ section[id],.node[id]{scroll-margin-top:64px}
 
 
 <!-- ============ V1.5.5 ============ -->
-<section class="node reveal" id="n155">
+<section class="node reveal done" id="n155">
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.5.5</div>
-    <div class="node-sub" data-zh='课程结构 · 内容承接 · 支付转化<br>09/03 上线'>Lesson structure · content continuity · payment conversion<br>Launch 09/03</div>
+    <div class="node-sub" data-zh='Android 专项修复 · Dino Chat TTS<br>08/26 上线'>Android hotfix · Dino Chat TTS<br>Launch 08/26</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='课程结构与 Prompt 稳定性 · Explore / Play 内容承接 · 全球支付转化<span class="tag">25 条 · 09/03 上线</span>'>Lesson structure &amp; prompt stability · Explore / Play content · global payments<span class="tag">25 items · 09/03</span></div>
-    <div class="story" data-zh='<span class="lab">需求池 · 25 条 · 09/03 上线</span><b>方向</b>：集中调整体验课与课中模版，补齐 Prompt 稳定性、授权到课激励、课程路径以及 Explore / Play 内容承接；同步推进分市场支付页、顾问试用转订阅、KOL Promo 与 IAP Offer、越南支付，并完善首页与头像的本地化和个性化。<br/><b>产品分布</b>：DinoAI 用户端 21 条；网页端 4 条；配套后台相关 5 条（均与用户端重复计入）。优先级为 P0 10 条 / P1 9 条 / P2 6 条。<br/><b>状态</b>：产品设计中 6 条、未启动 7 条、产品方案编写中 3 条、待评审 4 条、开发中 1 条、UI 设计中 1 条，另有 3 条未填写状态。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.5 需求表 ↗</a>。'><span class="lab">Pool · 25 items · launch 09/03</span><b>Direction</b>: reshape trial and in-class templates; improve prompt stability, permission and attendance rewards, learning paths, and Explore / Play content continuity; advance market-specific paywalls, advisor-trial conversion, KOL Promo and IAP Offer flows, and Vietnam payments; and add home and avatar localization and personalization.<br/><b>Product mix</b>: DinoAI App 21; Web 4; Admin-related 5, all also counted in the App total. Priority mix: P0 10 / P1 9 / P2 6.<br/><b>Status</b>: 6 in product design, 7 not started, 3 in solution drafting, 4 under review, 1 in development and 1 in UI design; 3 have no status set. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.5.5 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='Dino Chat TTS 稳定性修复<span class="tag">1 项 · 08/26 上线</span>'>Dino Chat TTS stability fix<span class="tag">1 item · 08/26</span></div>
+    <div class="story" data-zh='<span class="lab">Android 专项修复 · 08/26 上线</span><b>方向</b>：修复 Android 端 Dino Chat 的 TTS 问题，恢复聊天语音正常播放。原 V1.5.5 业务需求已整体调整至 V1.6.0，本版仅保留该 P0 修复。'><span class="lab">Android hotfix · launch 08/26</span><b>Direction</b>: fix Dino Chat TTS on Android and restore normal voice playback. The former V1.5.5 business scope moved to V1.6.0; this release keeps only this P0 fix.</div>
     <div class="cols requirement-groups">
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Class 课程与内容准备 <span class="count">11</span>'>Dino English · Class &amp; Content Prep <span class="count">11</span></h4>
+        <h4 data-zh='Dino English · Dino Agent <span class="count">1</span>'>Dino English · Dino Agent <span class="count">1</span></h4>
         <ul>
-          <li data-zh='<b>课程增加多版本能力：Level 1 体验课替换为最新 Word Teach Template</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Add course versions and move the Level 1 trial to the latest Word Teach template</b><span class="p0">P0</span><span class="who">In development</span></li>
-          <li data-zh='<b>Level 1–6 体验课去掉 Warm-up 和大地图页 Template</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Remove Warm-up and world-map templates from Level 1–6 trials</b><span class="p0">P0</span><span class="who">Product design</span></li>
-          <li data-zh='<b>新增授权与到课奖励，提升麦克风授权率与进课率</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Add permission and attendance rewards to improve microphone access and lesson entry</b><span class="p0">P0</span><span class="who">Product design</span></li>
-          <li data-zh='<b>Prompt 稳定性监测</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Monitor prompt stability</b><span class="p0">P0</span><span class="who">Product design</span></li>
-          <li data-zh='<b>课中去掉拍照 Template</b><span class="p0">P0</span><span class="who">未启动</span>'><b>Remove the in-class photo-taking template</b><span class="p0">P0</span><span class="who">Not started</span></li>
-          <li data-zh='<b>Explore 新增动画回顾与绘本阅读两个板块（内容准备）</b><span class="p1">P1</span><span class="who">状态未填写</span>'><b>Prepare content for Explore animation recap and picture-book reading</b><span class="p1">P1</span><span class="who">Status unset</span></li>
-          <li data-zh='<b>Play 游戏板块内容筹备</b><span class="p1">P1</span><span class="who">状态未填写</span>'><b>Prepare content for the Play game section</b><span class="p1">P1</span><span class="who">Status unset</span></li>
-          <li data-zh='<b>Level 1 体验课实验：去掉句子教学与句子练习</b><span class="p1">P1</span><span class="who">未启动</span>'><b>Test removing sentence teaching and practice from the Level 1 trial</b><span class="p1">P1</span><span class="who">Not started</span></li>
-          <li data-zh='<b>正课长句子跟读 / 开放问题 Template 交互优化</b><span class="p2">P2</span><span class="who">产品设计中</span>'><b>Improve long-sentence repetition and open-question template UX</b><span class="p2">P2</span><span class="who">Product design</span></li>
-          <li data-zh='<b>课程列表页课程入口卡片 UI 调整</b><span class="p2">P2</span><span class="who">UI 设计中</span>'><b>Refresh course-entry cards on the lesson list</b><span class="p2">P2</span><span class="who">UI design</span></li>
-          <li data-zh='<b>Level 1–3 Lesson 1–3 Prompt 优化</b><span class="p2">P2</span><span class="who">未启动</span>'><b>Optimize prompts in Level 1–3 Lessons 1–3</b><span class="p2">P2</span><span class="who">Not started</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · 会员支付 <span class="count">3</span>'>Dino English · Membership <span class="count">3</span></h4>
-        <ul>
-          <li data-zh='<b>支付页按国家 / 地区配置核心卖点，并调整价格展示逻辑</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Configure paywall selling points by market and revise price presentation</b><span class="p0">P0</span><span class="who">Product design</span></li>
-          <li data-zh='<b>KOL Promo Code 自动应用至普通 / 挽留 Paywall，并联动 IAP Offer 核销</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Auto-apply KOL promo codes to standard and win-back paywalls with IAP offer redemption</b><span class="p0">P0</span><span class="who">Product design</span></li>
-          <li data-zh='<b>顾问开通试用会员权益用户在 App 内订阅转化</b><span class="p1">P1</span><span class="who">待评审</span>'><b>Convert advisor-granted trial members into in-app subscriptions</b><span class="p1">P1</span><span class="who">Under review</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · App 整体与学习路径 <span class="count">5</span>'>Dino English · App-wide &amp; Learning Paths <span class="count">5</span></h4>
-        <ul>
-          <li data-zh='<b>Explore 单词与句子练习推送逻辑：查漏补缺、复习与拔高</b><span class="p0">P0</span><span class="who">未启动</span>'><b>Sequence Explore word and sentence practice for gaps, review and extension</b><span class="p0">P0</span><span class="who">Not started</span></li>
-          <li data-zh='<b>游戏板块冻结待解锁</b><span class="p0">P0</span><span class="who">未启动</span>'><b>Lock the game section until it is unlocked</b><span class="p0">P0</span><span class="who">Not started</span></li>
-          <li data-zh='<b>课中课程卡片路径设计（UI 设计）</b><span class="p1">P1</span><span class="who">未启动</span>'><b>Design the in-class course-card journey</b><span class="p1">P1</span><span class="who">Not started</span></li>
-          <li data-zh='<b>首页调整设计（UI 设计）</b><span class="p1">P1</span><span class="who">状态未填写</span>'><b>Redesign the home screen</b><span class="p1">P1</span><span class="who">Status unset</span></li>
-          <li data-zh='<b>按国家 / 地区配置首页背景及 Dino 默认装扮</b><span class="p2">P2</span><span class="who">产品方案编写中</span>'><b>Configure home backgrounds and default Dino outfits by country / region</b><span class="p2">P2</span><span class="who">Solution drafting</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · Explore <span class="count">1</span>'>Dino English · Explore <span class="count">1</span></h4>
-        <ul>
-          <li data-zh='<b>单词与句子练习：生产与课程内容匹配的游戏化练习</b><span class="p1">P1</span><span class="who">未启动</span>'><b>Produce gamified word and sentence practice aligned with course content</b><span class="p1">P1</span><span class="who">Not started</span></li>
-        </ul>
-      </div>
-      <div class="block scope-dino">
-        <h4 data-zh='Dino English · 个人中心 <span class="count">1</span>'>Dino English · Profile <span class="count">1</span></h4>
-        <ul>
-          <li data-zh='<b>用户头像可自定义：提供性别 / 年龄段多款形象</b><span class="p2">P2</span><span class="who">待评审</span>'><b>Let users choose avatars by gender and age group</b><span class="p2">P2</span><span class="who">Under review</span></li>
-        </ul>
-      </div>
-      <div class="block scope-landing">
-        <h4 data-zh='Dino English 网页端 <span class="count">4</span>'>Dino English Web <span class="count">4</span></h4>
-        <ul>
-          <li data-zh='<b>支付落地页｜越南新增银行转账、扫码支付等支付方式</b><span class="p0">P0</span><span class="who">产品方案编写中</span>'><b>Payment landing page | Add bank-transfer and QR payment methods in Vietnam</b><span class="p0">P0</span><span class="who">Solution drafting</span></li>
-          <li data-zh='<b>收集线索｜韩国 KOL 线索页：Promo Code 联动 App Paywall 折扣</b><span class="p1">P1</span><span class="who">待评审</span>'><b>Lead capture | Add a Korea KOL lead page linking promo codes to App paywall discounts</b><span class="p1">P1</span><span class="who">Under review</span></li>
-          <li data-zh='<b>数据看板｜埋点与 Web-to-App 全生命周期数据校验、看板优化</b><span class="p1">P1</span><span class="who">产品方案编写中</span>'><b>Data dashboard | Validate analytics across the Web-to-App lifecycle and improve dashboards</b><span class="p1">P1</span><span class="who">Solution drafting</span></li>
-          <li data-zh='<b>收集线索｜沙特 KOL 线索页：Promo Code 联动 App Paywall 折扣</b><span class="p2">P2</span><span class="who">待评审</span>'><b>Lead capture | Add a Saudi KOL lead page linking promo codes to App paywall discounts</b><span class="p2">P2</span><span class="who">Under review</span></li>
+          <li data-zh='<b>Android 修复 Dino Chat TTS 问题</b><span class="p0">P0</span><span class="who">已上线</span>'><b>Fix Dino Chat TTS on Android</b><span class="p0">P0</span><span class="who">Released</span></li>
         </ul>
       </div>
     </div>
@@ -1273,48 +1384,196 @@ section[id],.node[id]{scroll-margin-top:64px}
   <div class="node-marker">
     <div class="dot"></div>
     <div class="node-date">1.6.0</div>
-    <div class="node-sub" data-zh='Dino Agent · 课程留存 · 运营平台<br>时间待定'>Dino Agent · retention · ops platforms<br>Date TBD</div>
+    <div class="node-sub" data-zh='课程实验 · Max / Prompt · 全球支付增长<br>09/03 上线'>Lesson experiments · Max / Prompt · global payment growth<br>Launch 09/03</div>
   </div>
   <div class="node-body">
-    <div class="node-title" data-zh='Dino Agent 与课程留存 · 家庭账号 · 运营平台<span class="tag">12 条 · 时间待定</span>'>Dino Agent & lesson retention · family accounts · operations platforms<span class="tag">12 items · TBD</span></div>
-    <div class="story" data-zh='<span class="lab">需求池 · 12 条 · 时间待定</span><b>方向</b>：推进 Dino Agent 召回与实时转写、课程留存和教学模版，完善家庭账号与设备管理，并继续建设 CRM、标注和多语言评审平台。<br/><b>分类</b>：Dino English 用户端 9 条；管理后台 3 条。优先级为 P1 6 条 / P2 6 条。<br/><b>状态</b>：产品设计中 4 条、未启动 3 条、待评审 2 条、产品方案编写中 1 条、UI 设计中 1 条、开发中 1 条。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a>。'><span class="lab">Pool · 12 items · date TBD</span><b>Direction</b>: advance Dino Agent recall and real-time transcription, lesson retention and teaching templates; improve family accounts and device management; and continue CRM, annotation and multilingual-review platforms.<br/><b>Taxonomy</b>: Dino English App 9; Admin Backend 3. Priority mix: P1 6 / P2 6.<br/><b>Status</b>: 4 in product design, 3 not started, 2 under review, 1 in solution drafting, 1 in UI design and 1 in development. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a>.</div>
+    <div class="node-title" data-zh='课程实验与课中稳定性 · 全球获客支付 · CRM 闭环<span class="tag">35 条 · 09/03 上线</span>'>Lesson experiments &amp; in-class stability · global acquisition &amp; payments · CRM loop<span class="tag">35 items · 09/03</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 35 条 · 09/03 上线</span><b>方向</b>：集中推进课程多版本与体验课实验、Max / Prompt 稳定性、授权到课和答题反馈；同步落地 KOL 获客、优惠券与多市场支付能力，并补齐 CRM 回传、首页本地化和账号个性化。<br/><b>产品分布</b>：DinoAI 用户端 21 条；网页端 11 条；配套后台相关 8 条（其中 5 条与用户端重叠）。优先级为 P0 17 条 / P1 10 条 / P2 7 条 / 未定级 1 条。<br/><b>状态</b>：开发中 20 条、已完成 4 条、待评审 4 条、产品设计中 3 条、未启动 3 条，另有 1 条未填写状态。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 需求表 ↗</a> 与 <a href="https://cyanlee888.github.io/cyan/dino-english/V1.6.0-ui-demo.html" target="_blank" rel="noopener">转化与 KOL 优惠 Demo ↗</a>。'><span class="lab">Pool · 35 items · launch 09/03</span><b>Direction</b>: advance course versioning and trial experiments, Max / Prompt stability, permission and attendance rewards, and answer feedback; deliver KOL acquisition, vouchers and multi-market payments; and complete CRM callbacks, home localization and account personalization.<br/><b>Product mix</b>: DinoAI App 21; Web 11; Admin-related 8, including 5 also counted in App. Priority mix: P0 17 / P1 10 / P2 7 / 1 unprioritized.<br/><b>Status</b>: 20 in development, 4 completed, 4 under review, 3 in product design and 3 not started; 1 has no status set. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&view=vewH2FXkRM" target="_blank" rel="noopener">V1.6.0 requirement list ↗</a> and the <a href="https://cyanlee888.github.io/cyan/dino-english/V1.6.0-ui-demo.html" target="_blank" rel="noopener">conversion and KOL offer demo ↗</a>.</div>
     <div class="cols requirement-groups">
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Dino Agent <span class="count">3</span>'>Dino English · Dino Agent <span class="count">3</span></h4>
+        <h4 data-zh='Dino English · Class 课程与教学 <span class="count">10</span>'>Dino English · Class &amp; Teaching <span class="count">10</span></h4>
         <ul>
-          <li data-zh='<b>学习经验值排行榜</b><span class="p1">P1</span><span class="who">未启动 · 李双</span>'><b>Learning-XP leaderboard</b><span class="p1">P1</span><span class="who">Not started · Li Shuang</span></li>
-          <li data-zh='<b>Dino Agent 召回机制与课后 Dino Prompt 设计</b><span class="p1">P1</span><span class="who">产品方案编写中 · 易可可 Coco</span>'><b>Dino Agent recall and post-class Dino prompt design</b><span class="p1">P1</span><span class="who">Solution drafting · Coco Yi</span></li>
-          <li data-zh='<b>用户侧 ASR Real-time Text 录音实时转写</b><span class="p2">P2</span><span class="who">待评审 · 李淑怡</span>'><b>Real-time ASR transcription for user recordings</b><span class="p2">P2</span><span class="who">Under review · Li Shuyi</span></li>
+          <li data-zh='<b>课程增加多版本与 A/B Test 能力</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Add course versioning and A/B Test capability</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>新增授权与到课奖励，提升麦克风授权率与进课率</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Add permission and attendance rewards to improve microphone access and lesson entry</b><span class="p0">P0</span><span class="who">Product design</span></li>
+          <li data-zh='<b>Prompt 稳定性监测</b><span class="p0">P0</span><span class="who">产品设计中</span>'><b>Monitor prompt stability</b><span class="p0">P0</span><span class="who">Product design</span></li>
+          <li data-zh='<b>课中拍照 Template 调整 Prompt</b><span class="p0">P0</span><span class="who">已完成</span>'><b>Adjust prompts for the in-class photo template</b><span class="p0">P0</span><span class="who">Completed</span></li>
+          <li data-zh='<b>Level 1 体验课新增版本：调整单词教学环节</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Add a Level 1 trial version with a revised word-teaching segment</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>部署晓宇老师的 Max 到测试环境（08/28）</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Deploy Max for Teacher Xiaoyu to the test environment on 08/28</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>Level 1 体验课实验：去掉句子教学与句子练习</b><span class="p1">P1</span><span class="who">未启动</span>'><b>Test removing sentence teaching and practice from the Level 1 trial</b><span class="p1">P1</span><span class="who">Not started</span></li>
+          <li data-zh='<b>Max 练习环节统一更换老师音色</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Unify the teacher voice used in Max practice</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>Level 1–3 Lesson 1–3 Prompt 优化</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Optimize prompts in Level 1–3 Lessons 1–3</b><span class="p2">P2</span><span class="who">In development</span></li>
+          <li data-zh='<b>连续答错退出后展示正确答案</b><span class="who">产品设计中 · 未定级</span>'><b>Show the correct answer after repeated errors end a question</b><span class="who">Product design · Unprioritized</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · Class 课程 <span class="count">4</span>'>Dino English · Class <span class="count">4</span></h4>
+        <h4 data-zh='Dino English · 会员与个性化 <span class="count">6</span>'>Dino English · Membership &amp; Personalization <span class="count">6</span></h4>
         <ul>
-          <li data-zh='<b>单词教学模版优化</b><span class="p1">P1</span><span class="who">产品设计中 · 申璐迪</span>'><b>Optimize the Word Teach template</b><span class="p1">P1</span><span class="who">Product design · Shen Ludi</span></li>
-          <li data-zh='<b>留存提升策略：7 次任务打卡</b><span class="p1">P1</span><span class="who">产品设计中 · 毕燕晨 Rosa</span>'><b>Retention strategy: seven-task check-in</b><span class="p1">P1</span><span class="who">Product design · Rosa Bi</span></li>
-          <li data-zh='<b>体验课 Song Time 增加老师舞动动作</b><span class="p2">P2</span><span class="who">UI 设计中 · 陈庆顺</span>'><b>Add teacher dance motion to trial-lesson Song Time</b><span class="p2">P2</span><span class="who">UI design · Chen Qingshun</span></li>
-          <li data-zh='<b>新增 Level 1 / 2 单词游戏模版</b><span class="p2">P2</span><span class="who">未启动 · 赵琬雪</span>'><b>Add Level 1 / 2 word-game templates</b><span class="p2">P2</span><span class="who">Not started · Zhao Wanxue</span></li>
+          <li data-zh='<b>支付页按国家 / 地区配置核心卖点并调整价格展示</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Configure paywall selling points by market and revise price presentation</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>KOL Promo Code 自动应用至普通 / 挽留 Paywall，并联动 IAP Offer 核销</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Auto-apply KOL promo codes to standard and win-back paywalls with IAP Offer redemption</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>顾问开通试用会员权益用户在 App 内订阅转化</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Convert advisor-granted trial members into in-app subscriptions</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>用户头像可自定义：按性别 / 年龄段提供多款形象</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Offer customizable avatars by gender and age group</b><span class="p2">P2</span><span class="who">In development</span></li>
+          <li data-zh='<b>按国家 / 地区配置首页背景及 Dino 默认装扮</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Configure home backgrounds and default Dino outfits by market</b><span class="p2">P2</span><span class="who">In development</span></li>
+          <li data-zh='<b>语言切换列表优先展示当前投放国家语言</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Prioritize the active acquisition-market language in the language list</b><span class="p2">P2</span><span class="who">In development</span></li>
         </ul>
       </div>
       <div class="block scope-dino">
-        <h4 data-zh='Dino English · 账号与设备 <span class="count">2</span>'>Dino English · Account & Devices <span class="count">2</span></h4>
+        <h4 data-zh='Dino English · App 整体与内容承接 <span class="count">5</span>'>Dino English · App-wide &amp; Content Continuity <span class="count">5</span></h4>
         <ul>
-          <li data-zh='<b>家庭账号：一个手机号关联多个孩子学习档案</b><span class="p2">P2</span><span class="who">产品设计中 · 李双</span>'><b>Family accounts: link multiple child profiles to one phone number</b><span class="p2">P2</span><span class="who">Product design · Li Shuang</span></li>
-          <li data-zh='<b>限制单账号最多绑定 2–3 个设备</b><span class="p2">P2</span><span class="who">待评审 · 李双</span>'><b>Limit each account to two or three devices</b><span class="p2">P2</span><span class="who">Under review · Li Shuang</span></li>
+          <li data-zh='<b>Explore 单词与句子练习推送：查漏补缺、复习与拔高</b><span class="p0">P0</span><span class="who">未启动</span>'><b>Sequence Explore word and sentence practice for gaps, review and extension</b><span class="p0">P0</span><span class="who">Not started</span></li>
+          <li data-zh='<b>Play 不冻结，改为过滤过难题目</b><span class="p0">P0</span><span class="who">已完成</span>'><b>Keep Play open and filter questions that are too difficult</b><span class="p0">P0</span><span class="who">Completed</span></li>
+          <li data-zh='<b>课中课程卡片路径设计（UI 设计）</b><span class="p1">P1</span><span class="who">未启动</span>'><b>Design the in-class course-card journey</b><span class="p1">P1</span><span class="who">Not started</span></li>
+          <li data-zh='<b>首页调整设计（UI 设计）</b><span class="p1">P1</span><span class="who">状态未填写</span>'><b>Redesign the home screen</b><span class="p1">P1</span><span class="who">Status unset</span></li>
+          <li data-zh='<b>2D Dino 增加动作</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Add motions to 2D Dino</b><span class="p2">P2</span><span class="who">In development</span></li>
+        </ul>
+      </div>
+      <div class="block scope-landing">
+        <h4 data-zh='Dino English · Web 获客与支付 <span class="count">11</span>'>Dino English · Web Acquisition &amp; Payments <span class="count">11</span></h4>
+        <ul>
+          <li data-zh='<b>韩国 KOL 线索页：Promo Code 联动 App Paywall 折扣</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Link Korea KOL lead-page promo codes to App paywall discounts</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>沙特 KOL 线索页：Promo Code 联动 App Paywall 折扣</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Link Saudi KOL lead-page promo codes to App paywall discounts</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>Dino AI 五国官网 Web 端适配</b><span class="p0">P0</span><span class="who">已完成</span>'><b>Adapt the Dino AI five-country websites for Web</b><span class="p0">P0</span><span class="who">Completed</span></li>
+          <li data-zh='<b>越南新增半年包、折扣券 / Promo Code 并调整 SKU 价格</b><span class="p0">P0</span><span class="who">待评审</span>'><b>Add a Vietnam six-month plan, vouchers and promo codes, and revise SKU pricing</b><span class="p0">P0</span><span class="who">Under review</span></li>
+          <li data-zh='<b>支持通用优惠券：单个 Voucher / Promo Code 绑定多个 SKU</b><span class="p0">P0</span><span class="who">待评审</span>'><b>Let one voucher or promo code bind multiple SKUs</b><span class="p0">P0</span><span class="who">Under review</span></li>
+          <li data-zh='<b>新增越南 Sales / KOL 渠道并调整韩国 KOL 套餐</b><span class="p0">P0</span><span class="who">待评审</span>'><b>Add Vietnam Sales and KOL channels and revise Korea KOL plans</b><span class="p0">P0</span><span class="who">Under review</span></li>
+          <li data-zh='<b>马来新增 FPX、TnG 等本地支付方式</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Add FPX, TnG and other local payment methods in Malaysia</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>支付链接含 Promo Code 时自动进入输入页并应用</b><span class="p1">P1</span><span class="who">已完成</span>'><b>Auto-open and apply promo codes from payment links</b><span class="p1">P1</span><span class="who">Completed</span></li>
+          <li data-zh='<b>沙特新增银行转账、分期支付等方式</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Add bank transfer, installments and other Saudi payment methods</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>韩国落地页更换 Naver Blog 分享缩略图</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Replace the Naver Blog share thumbnail on the Korea landing page</b><span class="p2">P2</span><span class="who">In development</span></li>
+          <li data-zh='<b>支付 / 线索收集落地页 Web 端适配</b><span class="p2">P2</span><span class="who">开发中</span>'><b>Adapt payment and lead-capture landing pages for Web</b><span class="p2">P2</span><span class="who">In development</span></li>
         </ul>
       </div>
       <div class="block scope-admin">
-        <h4 data-zh='Dino English 管理后台 <span class="count">3</span>'>Dino English Admin <span class="count">3</span></h4>
+        <h4 data-zh='Dino English · CRM 三期 <span class="count">3</span>'>Dino English · CRM Phase 3 <span class="count">3</span></h4>
         <ul>
-          <li data-zh='<b>CRM 三期：渠道体系与商业化配置能力</b><span class="p1">P1</span><span class="who">产品设计中 · 姜双</span>'><b>CRM phase 3: channel system and commercialization configuration</b><span class="p1">P1</span><span class="who">Product design · Jiang Shuang</span></li>
-          <li data-zh='<b>多语言文案评审平台与流程 SOP</b><span class="p1">P1</span><span class="who">未启动 · 易可可 Coco</span>'><b>Multilingual copy-review platform and SOP</b><span class="p1">P1</span><span class="who">Not started · Coco Yi</span></li>
-          <li data-zh='<b>Video Annotator 标注平台优化：支持实习生标注问题</b><span class="p2">P2</span><span class="who">开发中 · 易可可 Coco</span>'><b>Improve Video Annotator for intern annotation issues</b><span class="p2">P2</span><span class="who">In development · Coco Yi</span></li>
+          <li data-zh='<b>Facebook Lead Form 自动回传</b><span class="p0">P0</span><span class="who">开发中</span>'><b>Automatically send back Facebook Lead Form events</b><span class="p0">P0</span><span class="who">In development</span></li>
+          <li data-zh='<b>支持手动调整试听课级别</b><span class="p1">P1</span><span class="who">开发中</span>'><b>Support manual trial-level adjustments</b><span class="p1">P1</span><span class="who">In development</span></li>
+          <li data-zh='<b>销售链路节点标记（越南）</b><span class="p1">P1</span><span class="who">待评审</span>'><b>Mark Vietnam sales-funnel stages</b><span class="p1">P1</span><span class="who">Under review</span></li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
+
+<!-- ============ V1.7.0 ============ -->
+<section class="node reveal" id="n170">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">1.7.0</div>
+    <div class="node-sub" data-zh='主链路治理 · Agent 质量 · 全球增长<br>时间待定'>Mainline governance · Agent quality · global growth<br>Date TBD</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title" data-zh='主链路与登录治理 · Dino Agent 质量闭环 · 多市场支付增长<span class="tag">18 条 · 时间待定</span>'>Mainline &amp; sign-in governance · Dino Agent quality loop · multi-market payment growth<span class="tag">18 items · TBD</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 18 条有效需求 · 时间待定</span><b>版本核心</b>：结合 A/B Test 收敛新用户主链路并治理登录注册，补强 Dino Agent 记忆、引导、评测与数据能力；同步推进马来、越南、沙特支付，落地页事件回传、Web-to-App 数据校准与本地化评审。<br/><b>产品分布</b>：DinoAI 用户端 5 条；网页端 8 条；配套后台 2 条；另有 3 条暂未填写产品。优先级为 P0 6 条 / P1 5 条 / P2 7 条。<br/><b>状态</b>：开发中 6 条、待评审 6 条、未启动 4 条、产品方案编写中 1 条、产品设计中 1 条。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener">V1.7.0 需求表 ↗</a> 与 <a href="https://cyanlee888.github.io/cyan/dino-english/V1.7.0-ui-demo.html" target="_blank" rel="noopener">主链路 Demo ↗</a>。'><span class="lab">Pool · 18 valid items · date TBD</span><b>Release core</b>: converge the new-user mainline using A/B Test findings, improve sign-in and sign-up reliability, strengthen Dino Agent memory, guidance, evaluation and analytics, and advance payments and growth measurement across Malaysia, Vietnam and Saudi Arabia.<br/><b>Product mix</b>: DinoAI App 5; Web 8; Admin 2; 3 items have no product set. Priority mix: P0 6 / P1 5 / P2 7.<br/><b>Status</b>: 6 in development, 6 under review, 4 not started, 1 in solution drafting and 1 in product design. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener">V1.7.0 requirement list ↗</a> and <a href="https://cyanlee888.github.io/cyan/dino-english/V1.7.0-ui-demo.html" target="_blank" rel="noopener">mainline demo ↗</a>.</div>
+    <div class="cols requirement-groups">
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · 主链路与学习价值 <span class="count">3</span>'>Dino English · Mainline &amp; Learning Value <span class="count">3</span></h4>
+        <ul>
+          <li data-zh='<b>结合 A/B Test 数据做主链路调整</b><span class="p0">P0</span><span class="who">产品设计中 · 李双</span>'><b>Converge the mainline using A/B Test findings</b><span class="p0">P0</span><span class="who">Product design · Li Shuang</span></li>
+          <li data-zh='<b>登录注册链路技术治理及产品方案优化</b><span class="p0">P0</span><span class="who">未启动 · 李双</span>'><b>Improve sign-in and sign-up architecture and product flow</b><span class="p0">P0</span><span class="who">Not started · Li Shuang</span></li>
+          <li data-zh='<b>学习计划页增加课程体系图</b><span class="p2">P2</span><span class="who">未启动 · 李双</span>'><b>Add a curriculum map to the learning-plan page</b><span class="p2">P2</span><span class="who">Not started · Li Shuang</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Dino Agent 与数据 <span class="count">5</span>'>Dino English · Dino Agent &amp; Data <span class="count">5</span></h4>
+        <ul>
+          <li data-zh='<b>Dino Agent 召回机制与课后 Dino Prompt 设计</b><span class="p1">P1</span><span class="who">产品方案编写中 · 易可可 Coco</span>'><b>Design Dino Agent recall and post-class prompts</b><span class="p1">P1</span><span class="who">Solution drafting · Coco Yi</span></li>
+          <li data-zh='<b>Dino Chat Eval Loop 半自动化与闭环</b><span class="p2">P2</span><span class="who">开发中 · 李淑怡</span>'><b>Semi-automate the Dino Chat evaluation loop</b><span class="p2">P2</span><span class="who">In development · Li Shuyi</span></li>
+          <li data-zh='<b>Dino 对话数据看板</b><span class="p2">P2</span><span class="who">开发中 · 李淑怡</span>'><b>Build a Dino conversation dashboard</b><span class="p2">P2</span><span class="who">In development · Li Shuyi</span></li>
+          <li data-zh='<b>首页常驻气泡引导话术优化</b><span class="p2">P2</span><span class="who">开发中 · 李淑怡</span>'><b>Improve persistent home-bubble guidance copy</b><span class="p2">P2</span><span class="who">In development · Li Shuyi</span></li>
+          <li data-zh='<b>首页 Dino 的 Informative AI Tool 定位</b><span class="p2">P2</span><span class="who">未启动 · 李淑怡</span>'><b>Define Dino on Home as an informative AI tool</b><span class="p2">P2</span><span class="who">Not started · Li Shuyi</span></li>
+        </ul>
+      </div>
+      <div class="block scope-landing">
+        <h4 data-zh='Dino English · Web 支付与增长 <span class="count">8</span>'>Dino English · Web Payments &amp; Growth <span class="count">8</span></h4>
+        <ul>
+          <li data-zh='<b>马来新增 FPX、TnG 等本地支付方式</b><span class="p0">P0</span><span class="who">开发中 · 易可可 Coco</span>'><b>Add FPX, TnG and other local payment methods in Malaysia</b><span class="p0">P0</span><span class="who">In development · Coco Yi</span></li>
+          <li data-zh='<b>越南新增银行转账与扫码支付</b><span class="p0">P0</span><span class="who">待评审 · 易可可 Coco</span>'><b>Add bank-transfer and QR payments in Vietnam</b><span class="p0">P0</span><span class="who">Under review · Coco Yi</span></li>
+          <li data-zh='<b>沙特通过 GCCPay 接入银行转账与分期支付</b><span class="p0">P0</span><span class="who">开发中 · 易可可 Coco</span>'><b>Add Saudi bank-transfer and installment payments through GCCPay</b><span class="p0">P0</span><span class="who">In development · Coco Yi</span></li>
+          <li data-zh='<b>马来 / 越南线索页升级并接入 CRM</b><span class="p0">P0</span><span class="who">待评审 · 易可可 Coco / Jonathan</span>'><b>Upgrade Malaysia and Vietnam lead pages and connect them to CRM</b><span class="p0">P0</span><span class="who">Under review · Coco Yi / Jonathan</span></li>
+          <li data-zh='<b>逐 Campaign / Ad Set / Ad 追踪并校准 Web-to-App 看板</b><span class="p1">P1</span><span class="who">待评审 · 易可可 Coco</span>'><b>Track Campaign, Ad Set and Ad traffic and calibrate Web-to-App dashboards</b><span class="p1">P1</span><span class="who">Under review · Coco Yi</span></li>
+          <li data-zh='<b>五国落地页支持 Meta Pixel、Google Tag 更多事件回传</b><span class="p1">P1</span><span class="who">待评审 · 易可可 Coco</span>'><b>Send more Meta Pixel and Google Tag events from five-country landing pages</b><span class="p1">P1</span><span class="who">Under review · Coco Yi</span></li>
+          <li data-zh='<b>五国官网二期：移动适配、韩国达人页与马来域名调整</b><span class="p2">P2</span><span class="who">待评审 · 易可可 Coco</span>'><b>Deliver phase two of the five-country websites</b><span class="p2">P2</span><span class="who">Under review · Coco Yi</span></li>
+          <li data-zh='<b>韩国达人落地页小优化</b><span class="p2">P2</span><span class="who">待评审 · 易可可 Coco</span>'><b>Make small improvements to the Korea creator landing page</b><span class="p2">P2</span><span class="who">Under review · Coco Yi</span></li>
+        </ul>
+      </div>
+      <div class="block scope-admin">
+        <h4 data-zh='Dino English · 管理与本地化 <span class="count">2</span>'>Dino English · Admin &amp; Localization <span class="count">2</span></h4>
+        <ul>
+          <li data-zh='<b>多语言文案评审平台与流程 SOP</b><span class="p1">P1</span><span class="who">未启动 · 易可可 Coco</span>'><b>Build a multilingual copy-review platform and SOP</b><span class="p1">P1</span><span class="who">Not started · Coco Yi</span></li>
+          <li data-zh='<b>CRM 三期：越南销售链路节点标记</b><span class="p1">P1</span><span class="who">开发中 · 周蕴倩</span>'><b>CRM phase three: mark Vietnam sales-funnel stages</b><span class="p1">P1</span><span class="who">In development · Zhou Yunqian</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ V1.8.0 ============ -->
+<section class="node reveal" id="n180">
+  <div class="node-marker">
+    <div class="dot"></div>
+    <div class="node-date">1.8.0</div>
+    <div class="node-sub" data-zh='学习计划 · 课程闭环 · Play 与商业化<br>时间待定'>Plans · lessons · Play · growth<br>Date TBD</div>
+  </div>
+  <div class="node-body">
+    <div class="node-title" data-zh='会员学习计划与今日任务 · 课程体系重构 · Play / Explore 扩展<span class="tag">26 条 · 时间待定</span>'>Membership learning plans &amp; today task · lesson-system redesign · Play / Explore expansion<span class="tag">26 items · TBD</span></div>
+    <div class="story" data-zh='<span class="lab">需求池 · 26 条有效需求 · 时间待定</span><b>版本核心</b>：用 Free / Pro / Max 学习计划把会员承诺转成每日任务，重构课程、课后练习、Dino 对话、FM 与报告的学习闭环；扩展 Explore 与 Play 内容和激励，并同步推进多档会员、Web 路线图、五国官网及 CRM 四期。<br/><b>产品分布</b>：DinoAI 用户端相关 18 条；网页端 2 条；配套后台相关 15 条（其中 9 条与用户端重叠）。优先级为 P0 4 条 / P1 18 条 / P2 4 条。<br/><b>状态</b>：未启动 7 条、产品设计中 3 条、产品方案编写中 1 条、挂起 3 条，另有 12 条未填写状态。详见 <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener">V1.8.0 需求表 ↗</a> 与 <a href="https://cyanlee888.github.io/cyan/dino-english/V1.8.0-ui-demo.html" target="_blank" rel="noopener">会员与学习计划 Demo ↗</a>。'><span class="lab">Pool · 26 valid items · date TBD</span><b>Release core</b>: turn Free / Pro / Max membership promises into daily learning plans, reconnect lessons, after-class practice, Dino conversations, FM and reports, expand Explore and Play, and advance membership, Web and CRM foundations.<br/><b>Product mix</b>: 18 App-related items; 2 Web items; 15 Admin-related items, including 9 overlapping with App. Priority mix: P0 4 / P1 18 / P2 4.<br/><b>Status</b>: 7 not started, 3 in product design, 1 in solution drafting and 3 on hold; 12 have no status set. See the <a href="https://qjphu5vphyf4.jp.larksuite.com/wiki/BKLQwRXEDiKnYSk7bNZjoRW0paf?table=tblEseBtSdW7ayWB&amp;view=vewH2FXkRM" target="_blank" rel="noopener">V1.8.0 requirement list ↗</a> and <a href="https://cyanlee888.github.io/cyan/dino-english/V1.8.0-ui-demo.html" target="_blank" rel="noopener">membership and learning-plan demo ↗</a>.</div>
+    <div class="cols requirement-groups">
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Class 与学习计划 <span class="count">5</span>'>Dino English · Class &amp; Learning Plans <span class="count">5</span></h4>
+        <ul>
+          <li data-zh='<b>Class 路径与课程任务改造：课程、练习、Dino、FM、报告</b><span class="p0">P0</span><span class="who">未启动 · 孔丽莉 / Rosa / 赵琬雪</span>'><b>Restructure Class across lessons, practice, Dino, FM and reports</b><span class="p0">P0</span><span class="who">Not started · Kong Lili / Rosa / Zhao Wanxue</span></li>
+          <li data-zh='<b>新增授权与到课奖励，提升麦克风授权率与进课率</b><span class="p0">P0</span><span class="who">产品设计中 · 赵琬雪</span>'><b>Add permission and attendance rewards to improve microphone opt-in and lesson starts</b><span class="p0">P0</span><span class="who">Product design · Zhao Wanxue</span></li>
+          <li data-zh='<b>云月数字人口型升级方案</b><span class="p0">P0</span><span class="who">未启动 · 张帝</span>'><b>Upgrade the YunYue digital-human mouth system</b><span class="p0">P0</span><span class="who">Not started · Zhang Di</span></li>
+          <li data-zh='<b>按 Free / Pro / Max 生成学习计划并形成今日任务闭环</b><span class="p1">P1</span><span class="who">产品设计中 · 李双</span>'><b>Generate Free / Pro / Max learning plans and close the today-task loop</b><span class="p1">P1</span><span class="who">Product design · Li Shuang</span></li>
+          <li data-zh='<b>单独的 BYOM 个性化课堂</b><span class="p1">P1</span><span class="who">未启动 · 易可可 Coco</span>'><b>Create a standalone BYOM personalized lesson</b><span class="p1">P1</span><span class="who">Not started · Coco Yi</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · 会员、身份与 Dino <span class="count">5</span>'>Dino English · Membership, Identity &amp; Dino <span class="count">5</span></h4>
+        <ul>
+          <li data-zh='<b>App 上线按排课需求区分的多档会员套餐</b><span class="p1">P1</span><span class="who">未启动 · 李双</span>'><b>Launch app membership tiers by learning-plan need</b><span class="p1">P1</span><span class="who">Not started · Li Shuang</span></li>
+          <li data-zh='<b>三方快捷登录按已验证邮箱归一账号</b><span class="p1">P1</span><span class="who">挂起 · 李双</span>'><b>Unify third-party sign-ins by verified email</b><span class="p1">P1</span><span class="who">On hold · Li Shuang</span></li>
+          <li data-zh='<b>课后 Dino Chat 对话提示词测试</b><span class="p1">P1</span><span class="who">挂起 · 李淑怡</span>'><b>Test post-class Dino Chat prompts</b><span class="p1">P1</span><span class="who">On hold · Li Shuyi</span></li>
+          <li data-zh='<b>统一 Explore 与课中 Dino，并继承课内学习记忆</b><span class="p1">P1</span><span class="who">未启动 · 孔丽莉</span>'><b>Unify Explore and in-class Dino with shared learning memory</b><span class="p1">P1</span><span class="who">Not started · Kong Lili</span></li>
+          <li data-zh='<b>设置家长中心</b><span class="p2">P2</span><span class="who">状态未填写 · 赵琬雪</span>'><b>Create a parent center</b><span class="p2">P2</span><span class="who">Status unset · Zhao Wanxue</span></li>
+        </ul>
+      </div>
+      <div class="block scope-dino">
+        <h4 data-zh='Dino English · Explore 与 Play <span class="count">8</span>'>Dino English · Explore &amp; Play <span class="count">8</span></h4>
+        <ul>
+          <li data-zh='<b>Explore 新增动画回顾与绘本阅读</b><span class="p1">P1</span><span class="who">状态未填写 · 赵琬雪</span>'><b>Add animation recap and picture-book reading to Explore</b><span class="p1">P1</span><span class="who">Status unset · Zhao Wanxue</span></li>
+          <li data-zh='<b>Explore FM 新增课程相关歌曲</b><span class="p1">P1</span><span class="who">状态未填写 · 申璐迪</span>'><b>Add course-related songs to Explore FM</b><span class="p1">P1</span><span class="who">Status unset · Shen Ludi</span></li>
+          <li data-zh='<b>Play 游戏板块内容筹备</b><span class="p1">P1</span><span class="who">状态未填写 · 孔丽莉</span>'><b>Prepare content for Play</b><span class="p1">P1</span><span class="who">Status unset · Kong Lili</span></li>
+          <li data-zh='<b>Play 游戏板块新游戏开发</b><span class="p1">P1</span><span class="who">状态未填写 · 申璐迪</span>'><b>Develop new games for Play</b><span class="p1">P1</span><span class="who">Status unset · Shen Ludi</span></li>
+          <li data-zh='<b>Play 游戏模板设计</b><span class="p1">P1</span><span class="who">状态未填写 · 申璐迪</span>'><b>Design reusable Play game templates</b><span class="p1">P1</span><span class="who">Status unset · Shen Ludi</span></li>
+          <li data-zh='<b>拍照环节移动到游戏板块</b><span class="p2">P2</span><span class="who">状态未填写 · 赵琬雪</span>'><b>Move the photo activity into Play</b><span class="p2">P2</span><span class="who">Status unset · Zhao Wanxue</span></li>
+          <li data-zh='<b>Play 游戏激励体系设计</b><span class="p2">P2</span><span class="who">状态未填写 · 赵琬雪</span>'><b>Design the Play reward system</b><span class="p2">P2</span><span class="who">Status unset · Zhao Wanxue</span></li>
+          <li data-zh='<b>Play 盲盒：Dino 的宠物</b><span class="p2">P2</span><span class="who">状态未填写 · 赵琬雪</span>'><b>Add Dino-pet blind boxes to Play</b><span class="p2">P2</span><span class="who">Status unset · Zhao Wanxue</span></li>
+        </ul>
+      </div>
+      <div class="block scope-landing">
+        <h4 data-zh='Dino English · Web 路线图与官网 <span class="count">2</span>'>Dino English · Web Roadmap &amp; Websites <span class="count">2</span></h4>
+        <ul>
+          <li data-zh='<b>制定 PC / Web 端 Dino AI Roadmap 与排期</b><span class="p0">P0</span><span class="who">未启动 · 易可可 Coco</span>'><b>Plan the Dino AI PC and Web roadmap and schedule</b><span class="p0">P0</span><span class="who">Not started · Coco Yi</span></li>
+          <li data-zh='<b>五国官网三期：马来、越南官网融合支付与留资能力</b><span class="p1">P1</span><span class="who">产品方案编写中 · 易可可 Coco</span>'><b>Website phase three: connect Malaysia and Vietnam sites with payment and lead capture</b><span class="p1">P1</span><span class="who">Solution drafting · Coco Yi</span></li>
+        </ul>
+      </div>
+      <div class="block scope-admin">
+        <h4 data-zh='Dino English · CRM 三期 / 四期 <span class="count">6</span>'>Dino English · CRM Phases 3 / 4 <span class="count">6</span></h4>
+        <ul>
+          <li data-zh='<b>CRM 三期：销售谈单支持上课记录、报告、回放与订单详情</b><span class="p1">P1</span><span class="who">挂起 · 姜双 / 周蕴倩</span>'><b>CRM phase three: add lessons, reports, replays and order details to sales support</b><span class="p1">P1</span><span class="who">On hold · Jiang Shuang / Zhou Yunqian</span></li>
+          <li data-zh='<b>CRM 四期：渠道体系与商业化配置能力</b><span class="p1">P1</span><span class="who">未启动 · 周蕴倩</span>'><b>CRM phase four: channel and commercialization configuration</b><span class="p1">P1</span><span class="who">Not started · Zhou Yunqian</span></li>
+          <li data-zh='<b>CRM 四期：回传 Meta Lead Form 深度事件</b><span class="p1">P1</span><span class="who">产品设计中 · 周蕴倩</span>'><b>CRM phase four: send Meta Lead Form deep events</b><span class="p1">P1</span><span class="who">Product design · Zhou Yunqian</span></li>
+          <li data-zh='<b>CRM 四期：销售中心条件筛选与外呼 CC 汇总</b><span class="p1">P1</span><span class="who">状态未填写 · 周蕴倩</span>'><b>CRM phase four: sales filters and outbound-call CC summaries</b><span class="p1">P1</span><span class="who">Status unset · Zhou Yunqian</span></li>
+          <li data-zh='<b>CRM 四期：Landing Page 外显预约外呼时间</b><span class="p1">P1</span><span class="who">状态未填写 · 周蕴倩</span>'><b>CRM phase four: expose callback appointment times on landing pages</b><span class="p1">P1</span><span class="who">Status unset · Zhou Yunqian</span></li>
+          <li data-zh='<b>CRM 四期：接入 WhatsApp 来源 Leads</b><span class="p1">P1</span><span class="who">状态未填写 · 周蕴倩</span>'><b>CRM phase four: ingest WhatsApp-sourced leads</b><span class="p1">P1</span><span class="who">Status unset · Zhou Yunqian</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer>
@@ -1407,6 +1666,47 @@ const io=new IntersectionObserver(es=>{
 },{threshold:.08});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
+/* 总导航：三大页面区块锚点 + 滚动高亮 */
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.overview-links a[href^="#"]'));
+  if(!links.length)return;
+  var targets=links.map(function(link){return document.querySelector(link.getAttribute('href'));});
+  function setOverviewActive(index){
+    links.forEach(function(link,i){link.classList.toggle('active',i===index);});
+  }
+  links.forEach(function(link,index){
+    link.addEventListener('click',function(e){
+      var requestedHash=link.getAttribute('href');
+      var target=targets[index];
+      if(requestedHash==='#release-iterations'){
+        var currentVersionLink=document.querySelector('nav.tl a[data-current="true"]');
+        var currentVersionTarget=currentVersionLink&&document.querySelector(currentVersionLink.getAttribute('href'));
+        if(currentVersionTarget)target=currentVersionTarget;
+      }
+      if(!target)return;
+      e.preventDefault();
+      setOverviewActive(index);
+      target.scrollIntoView({behavior:'smooth',block:'start'});
+      history.replaceState(null,'',target.id?'#'+target.id:requestedHash);
+    });
+  });
+  function syncOverviewNav(){
+    var line=(document.querySelector('.overview-nav')||{}).offsetHeight||52;
+    var active=0;
+    targets.forEach(function(target,index){
+      if(target&&target.getBoundingClientRect().top<=line+24)active=index;
+    });
+    setOverviewActive(active);
+  }
+  var overviewTicking=false;
+  window.addEventListener('scroll',function(){
+    if(overviewTicking)return;
+    overviewTicking=true;
+    requestAnimationFrame(function(){syncOverviewNav();overviewTicking=false;});
+  },{passive:true});
+  syncOverviewNav();
+})();
+
 /* 迭代里程碑导航：NOW 徽标固定在当前版本；选中态可点击 / 随滚动切换 */
 (function(){
   var allLinks=[].slice.call(document.querySelectorAll('nav.tl a[href^="#"]'));
@@ -1471,9 +1771,10 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   if(location.hash){
     initial=allLinks.filter(function(a){return a.getAttribute('href')===location.hash;})[0];
   }
+  var hasOverviewHash=!!location.hash&&!initial;
   var initialLink=initial||current;
   setActive(initialLink);
-  if(initialLink){
+  if(initialLink&&!hasOverviewHash){
     var t=document.querySelector(initialLink.getAttribute('href'));
     if(t){
       // 用户一旦自己滚动就不再自动定位，避免抢焦点
