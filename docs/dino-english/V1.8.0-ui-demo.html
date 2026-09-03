@@ -18800,7 +18800,7 @@
           window.v180RenderPaywall && window.v180RenderPaywall();
         } },
       { key: "v180Task", label: "V1.8.0 当前任务阶段",
-        options: [["lesson_ready", "AI 课待学"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 完整计划补做"], ["reward_ready", "单任务奖励待领取"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
+        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 完整计划补做"], ["reward_ready", "单任务奖励待领取"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
         apply: function (v) {
           window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
         } },
@@ -21182,10 +21182,11 @@
     .v180-today-task{
       appearance:none;min-width:0;min-height:92px;display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:9px;
       border:2px solid #cfe0f4;border-radius:19px;background:linear-gradient(155deg,#fff,#f1f7ff);padding:10px 11px;
-      color:var(--v180-ink);text-align:left;font-family:inherit;cursor:pointer;box-shadow:0 7px 14px rgba(30,74,137,.11);
+      color:var(--v180-ink);text-align:left;font-family:inherit;box-shadow:0 7px 14px rgba(30,74,137,.11);
     }
-    .v180-today-task:active{transform:translateY(2px);box-shadow:0 4px 9px rgba(30,74,137,.13)}
-    .v180-today-task:disabled{cursor:default;transform:none;opacity:1}
+    button.v180-today-task{cursor:pointer}
+    button.v180-today-task:active{transform:translateY(2px);box-shadow:0 4px 9px rgba(30,74,137,.13)}
+    button.v180-today-task:disabled{cursor:default;transform:none;opacity:1}
     .v180-today-task.is-checkin{border-color:#ffd57c;background:linear-gradient(155deg,#fffdf4,#fff3cf)}
     .v180-today-task-icon{width:44px;height:44px;border-radius:16px;display:grid;place-items:center;background:#e7f2ff;font-size:1.32rem;box-shadow:inset 0 2px 0 rgba(255,255,255,.8)}
     .v180-today-task-icon.is-content-art{overflow:hidden;padding:0;background:#e7f2ff}
@@ -21197,6 +21198,9 @@
     .v180-today-task-copy small{display:block;color:#6c83a4;font-size:.48rem;font-weight:900;letter-spacing:.04em;text-transform:uppercase}
     .v180-today-task-copy strong{display:block;margin-top:2px;font-family:var(--font-display,Quicksand,sans-serif);font-size:.75rem;line-height:1.08;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .v180-today-task-copy span{display:block;margin-top:3px;color:#6a7f9f;font-size:.5rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .v180-task-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px}
+    button.v180-today-task-status{appearance:none;border:0;font-family:inherit;cursor:pointer}
+    button.v180-today-task-status:active{transform:translateY(2px)}
     .v180-today-task-status{min-width:54px;border-radius:999px;background:#eef4fb;padding:6px 8px;color:#315f9f;font-size:.52rem;font-style:normal;font-weight:900;text-align:center}
     .v180-today-task.is-learning .v180-today-task-status{background:linear-gradient(180deg,#ff9e39,var(--v180-orange));color:#fff;box-shadow:0 3px 0 #c85a0b}
     .v180-today-task.is-done{border-color:#8eddb9;background:linear-gradient(155deg,#f7fffb,#dff8ec)}
@@ -21415,8 +21419,7 @@
     #screen-class .v180-home-plan-panel .v180-today-task.has-progress{
       min-height:96px;grid-template-rows:auto 32px;align-items:center;row-gap:6px
     }
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-today-task-status{grid-row:1;grid-column:2}
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-task-proof{grid-row:1;grid-column:2}
+    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-task-side{grid-row:1;grid-column:2}
     #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-learning-progress{grid-column:1 / 3}
     #screen-class .v180-task-proof{
       align-self:start;justify-self:end;max-width:88px;padding:4px 7px;border-radius:999px;background:#edf4ff;
@@ -21500,6 +21503,7 @@
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:28px}
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{width:19px;height:19px;min-width:19px;padding:0;font-size:.52rem}
       #screen-class .v180-home-plan-panel .v180-today-task.has-progress{min-height:61px;grid-template-rows:auto 20px;row-gap:2px}
+      #screen-class .v180-task-side{gap:2px}
       #screen-class .v180-task-proof{max-width:58px;padding:2px 4px;font-size:.27rem}
       .v180-learning-progress{gap:2px}
       .v180-progress-step{min-width:20px;gap:1px;font-size:.27rem}
@@ -21879,7 +21883,7 @@
     }
     function emptyTaskState(task) {
       return task && task.kind === "lesson"
-        ? { lessonDone: false, practiceDone: false, practices: [], reward: "locked", closesToday: false }
+        ? { lessonStarted: false, lessonDone: false, practiceDone: false, practices: [], reward: "locked", closesToday: false }
         : { exploreDone: false, reward: "locked", closesToday: false };
     }
     function taskState(index) {
@@ -21912,6 +21916,7 @@
         safe.reward = safe.reward === "claimable" || safe.reward === "claimed" ? safe.reward : "locked";
         safe.closesToday = safe.closesToday === true;
         if (task.kind === "lesson") {
+          safe.lessonStarted = safe.lessonStarted === true || safe.lessonDone === true;
           safe.lessonDone = safe.lessonDone === true;
           safe.practiceDone = safe.practiceDone === true;
           safe.practices = Array.isArray(safe.practices) ? safe.practices.filter(function (name, position, list) {
@@ -21980,6 +21985,7 @@
       var state = profile.v180TaskStates[index];
       if (!task || !state) return false;
       if (task.kind === "lesson") {
+        state.lessonStarted = true;
         state.lessonDone = true;
         state.practiceDone = true;
         state.practices = V180_AFTER_CLASS_TYPES.slice();
@@ -22080,9 +22086,9 @@
     function scheduleWord(task, stage, index) {
       if (!task) return { eyebrow: "Weekly adventure complete", title: "Amazing week!", sub: "Seven stars collected. Dino is proud of you.", cta: "See my adventure", detail: "Weekly reward", icon: "🏆" };
       if (stage === "reward") return { eyebrow: "Mission complete", title: task.title, sub: "Open your mission gift.", cta: "Claim", detail: "Your mission gift is ready", icon: "🎁" };
-      if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start Explore", detail: "Complete any 1 activity", icon: task.icon };
+      if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start", detail: "Complete any 1 activity", icon: task.icon };
       if (stage === "after_class") return { eyebrow: "Today’s practice", title: task.title, sub: "Keep going to finish today’s learning mission.", cta: "Continue", detail: afterClassRemaining(index) + " " + (afterClassRemaining(index) === 1 ? "practice" : "practices") + " left", icon: "✏️" };
-      return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Start today’s lesson and continue with practice.", cta: "Start lesson", detail: "Lesson + practice", icon: task.icon };
+      return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Start today’s lesson and continue with practice.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "Lesson + practice", icon: task.icon };
     }
     function taskArtwork(task, finished) {
       if (finished || !task) return '<span class="v180-today-task-icon">🏆</span>';
@@ -22192,7 +22198,7 @@
       var learningLabel = copy.eyebrow;
       var learningTitle = copy.title;
       var learningDetail = copy.detail;
-      var learningStatus = stage === "reward" ? "Claim" : "";
+      var learningStatus = copy.cta;
       var learningProgress = todayDone ? "" : lessonProgressHtml(task, stage);
       var learningAction = todayDone ? "today-complete" : stage === "reward" ? "claim-task" : "current";
       var learningMeta = learningProgress || todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
@@ -22211,11 +22217,11 @@
       var weeklyReady = completedCount() >= 7 && !weeklyRewardClaimed();
       var learningHtml = todayDone
         ? '<button type="button" class="v180-today-task is-learning is-done v180-check-only" disabled aria-disabled="true" aria-label="Today’s learning complete"><em class="v180-today-task-status">✓</em></button>'
-        : '<button type="button" class="v180-today-task is-learning' + (stage !== 'reward' ? ' is-current-task' : '') + (learningProgress ? ' has-progress' : '') + '" data-v180-action="' + learningAction + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
+        : '<article class="v180-today-task is-learning' + (stage !== 'reward' ? ' is-current-task' : '') + (learningProgress ? ' has-progress' : '') + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
             '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
             learningProgress +
-            (learningStatus ? '<em class="v180-today-task-status">' + learningStatus + '</em>' : '<span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span>') +
-          '</button>';
+            '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="' + learningAction + '" aria-label="' + esc(learningStatus + ' ' + learningTitle) + '">' + esc(learningStatus) + '</button><span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span></span>' +
+          '</article>';
       planPanel.innerHTML =
         '<div class="v180-home-week">' +
           '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
@@ -22284,6 +22290,8 @@
         openAfterClassLayer(trigger);
         return;
       }
+      taskState(taskIndex).lessonStarted = true;
+      renderAll();
       // The home card is the launch point for the recommended course itself—not a
       // detour to the Class tab. The current course pointer supplies the lesson context.
       var lessonCourse = getCurrentCourse();
@@ -22303,6 +22311,7 @@
       if (!task) return;
       var state = taskState(index);
       if (!forceComplete && task.kind === "lesson" && currentStage(index) === "lesson") {
+        state.lessonStarted = true;
         state.lessonDone = true;
         profile.v180TaskStage = "after_class";
         profile.v180AfterClassRemaining = 3;
@@ -22336,6 +22345,7 @@
       if (earliestOverdueCourseIndex() != null) return "overdue_course";
       if (currentStage() === "after_class") return afterClassRemaining(servedTaskIndex()) === 1 ? "after_class_last" : "after_class";
       if (currentStage() === "explore") return "explore";
+      if (taskState(servedTaskIndex())?.lessonStarted) return "lesson_in_progress";
       return "lesson_ready";
     }
     function setTaskReviewState(value) {
@@ -22391,8 +22401,10 @@
         profile.v180ServedTaskIndex = profile.v180TodayIndex;
       } else {
         profile.v180ServedTaskIndex = 0;
+        if (value === "lesson_in_progress") profile.v180TaskStates[0].lessonStarted = true;
         if (value === "after_class" || value === "after_class_last") {
           var first = profile.v180TaskStates[0];
+          first.lessonStarted = true;
           first.lessonDone = true;
           first.practices = value === "after_class_last" ? ["Words", "Listening"] : [];
           first.practiceDone = false;
@@ -22540,10 +22552,10 @@
           revealLabel = "Explore more";
         } else if (pendingReward) {
           revealAction = "reveal-home";
-          revealLabel = "Back to today";
+          revealLabel = "Back to Dino Home";
         } else if (todayComplete) {
           revealAction = "reveal-close";
-          revealLabel = "✓";
+          revealLabel = "Done";
         }
         revealCta.dataset.v180Action = revealAction;
         revealCta.textContent = revealLabel;
