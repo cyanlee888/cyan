@@ -18391,6 +18391,7 @@
           var g = groupByKey(seg.dataset.spGroup);
           if (g && g.apply) g.apply(seg.dataset.spVal);
           sync();
+          panel.classList.remove("open");
           return;
         }
         var jump = e.target.closest("[data-sp-jump]");
@@ -18401,6 +18402,9 @@
         if (jumpReward) { var jr = jumpsReward[+jumpReward.dataset.spJumpreward]; if (jr && jr.run) { beforeJump(); jr.run(); panel.classList.remove("open"); } return; }
         var jumpwc = e.target.closest("[data-sp-jumpwc]");
         if (jumpwc) { var j3 = jumpsWC[+jumpwc.dataset.spJumpwc]; if (j3 && j3.run) { beforeJump(); j3.run(); panel.classList.remove("open"); } }
+      });
+      document.addEventListener("click", function (e) {
+        if (panel.classList.contains("open") && !panel.contains(e.target)) panel.classList.remove("open");
       });
 
       var watch = config.watch || ["body"];
@@ -22636,10 +22640,12 @@
     function selectOfferTier(value, event) {
       if (event) {
         event.preventDefault();
-        event.stopImmediatePropagation();
+        event.stopPropagation();
       }
-      profile.selectedMembershipTier = value === "max" ? "max" : "pro";
-      window.requestAnimationFrame(renderPaywall);
+      var nextTier = value === "max" ? "max" : "pro";
+      if (profile.selectedMembershipTier === nextTier) return false;
+      profile.selectedMembershipTier = nextTier;
+      renderPaywall();
       return false;
     }
     function ensurePaywallLayer() {
@@ -22657,13 +22663,19 @@
             '</div>';
       }
       selector.querySelector(".v180-paywall-kicker")?.remove();
-      // Tier switching is handled by the stable document-level delegated handler.
-      // Keeping these buttons listener-free prevents a render during pointer-up
-      // from swallowing the following click on repeated Pro / Max switches.
-      selector.querySelectorAll("[data-v180-offer-tier]").forEach(function (button) {
-        button.removeAttribute("onclick");
-        delete button.dataset.v180TierBound;
-      });
+      if (!selector.dataset.v180TierBound) {
+        selector.dataset.v180TierBound = "true";
+        selector.addEventListener("click", function (event) {
+          var button = event.target.closest("[data-v180-offer-tier]");
+          if (!button || !selector.contains(button)) return;
+          selectOfferTier(button.dataset.v180OfferTier, event);
+        });
+        selector.addEventListener("keydown", function (event) {
+          var button = event.target.closest("[data-v180-offer-tier]");
+          if (!button || !selector.contains(button) || (event.key !== "Enter" && event.key !== " ")) return;
+          selectOfferTier(button.dataset.v180OfferTier, event);
+        });
+      }
       var benefits = hero.querySelector(".pwpt-benefits");
       var offerStrip = document.getElementById("v180-offer-strip");
       if (!offerStrip) {
@@ -23048,11 +23060,6 @@
         renderStudyPlanChoice();
         return;
       }
-      var offerTier = event.target.closest && event.target.closest("[data-v180-offer-tier]");
-      if (offerTier) {
-        selectOfferTier(offerTier.dataset.v180OfferTier, event);
-        return;
-      }
       var cycle = event.target.closest && event.target.closest("[data-v180-cycle]");
       if (cycle) {
         profile.selectedPlan = cycle.dataset.v180Cycle;
@@ -23102,11 +23109,6 @@
       if (chat && (event.key === "Enter" || event.key === " ")) {
         event.preventDefault();
         chat.click();
-        return;
-      }
-      var offerTier = event.target.closest && event.target.closest("[data-v180-offer-tier]");
-      if (offerTier && (event.key === "Enter" || event.key === " ")) {
-        selectOfferTier(offerTier.dataset.v180OfferTier, event);
         return;
       }
       var cycle = event.target.closest && event.target.closest("[data-v180-cycle]");
