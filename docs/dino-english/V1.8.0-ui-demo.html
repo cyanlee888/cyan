@@ -23127,11 +23127,18 @@
       renderPaywall();
     }, true);
 
-    var portrait = document.getElementById("wrap-portrait");
-    if (portrait) {
+    /* Refresh once when the Paywall becomes active. Do not observe the whole portrait
+       subtree: renderPaywall itself updates classes and replaces plan-card markup, so a
+       subtree observer creates an endless render loop. Real pointer/touch clicks then lose
+       their original target between pointerdown and pointerup. */
+    var paywallScreen = document.getElementById("screen-paywall-pt");
+    if (paywallScreen) {
+      var paywallWasActive = paywallScreen.classList.contains("active");
       new MutationObserver(function () {
-        if (document.getElementById("screen-paywall-pt")?.classList.contains("active")) window.requestAnimationFrame(renderPaywall);
-      }).observe(portrait, { subtree: true, attributes: true, attributeFilter: ["class", "style"] });
+        var paywallIsActive = paywallScreen.classList.contains("active");
+        if (paywallIsActive && !paywallWasActive) window.requestAnimationFrame(renderPaywall);
+        paywallWasActive = paywallIsActive;
+      }).observe(paywallScreen, { attributes: true, attributeFilter: ["class"] });
     }
 
     window.v180GetTier = tier;
