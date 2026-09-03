@@ -21721,7 +21721,7 @@
     #screen-paywall-pt .v155-value-carousel{height:160px}
     #screen-paywall-pt .v155-value-slide{padding:39px 16px 17px}
     .v180-paywall-selector{position:relative;z-index:8;max-width:none;margin:0;padding:8px 12px 3px;background:#fff}
-    .v180-tier-tabs{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;background:#eaf1fa;border-radius:15px;padding:4px}
+    .v180-tier-tabs{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;background:#eaf1fa;border-radius:15px;padding:4px}
     .v180-tier-option{position:relative;z-index:2;min-height:36px;border:0;border-radius:12px;background:transparent;color:#667994;font-family:inherit;font-size:.74rem;font-weight:900;cursor:pointer;pointer-events:auto;touch-action:manipulation}
     .v180-tier-option.is-selected{background:#fff;color:#2459b5;box-shadow:0 5px 15px rgba(33,75,137,.14)}
     .v180-tier-option[data-v180-offer-tier="max"].is-selected{color:#a64d07;background:#fff8ed}
@@ -22667,8 +22667,17 @@
         selector.dataset.v180TierBound = "true";
         selector.addEventListener("click", function (event) {
           var button = event.target.closest("[data-v180-offer-tier]");
-          if (!button || !selector.contains(button)) return;
-          selectOfferTier(button.dataset.v180OfferTier, event);
+          if (button && selector.contains(button)) {
+            selectOfferTier(button.dataset.v180OfferTier, event);
+            return;
+          }
+          // 将 Tab 背景、中缝与内边距也纳入左右两个可点击热区，避免窄屏点击
+          // 命中 tablist 容器后无响应。
+          var tabs = event.target.closest(".v180-tier-tabs");
+          if (tabs && selector.contains(tabs)) {
+            var rect = tabs.getBoundingClientRect();
+            selectOfferTier(event.clientX < rect.left + rect.width / 2 ? "pro" : "max", event);
+          }
         });
         selector.addEventListener("keydown", function (event) {
           var button = event.target.closest("[data-v180-offer-tier]");
