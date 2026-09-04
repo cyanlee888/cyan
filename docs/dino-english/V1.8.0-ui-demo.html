@@ -9457,20 +9457,19 @@
                   <b class="dino-id-name" id="dino-hud-name">friend</b>
                 </div>
                 <div class="dino-mini-entries">
+                  <button type="button" id="dino-event-card" class="dino-event-card v180-event-top is-live" onclick="openThemeLanding()" aria-label="Open current theme class">
+                    <span class="dec-badge" id="dec-badge">LIMITED</span>
+                    <span class="dec-medal" id="dec-medal" hidden>🏅</span>
+                    <span class="dec-ico" aria-hidden="true">⚽</span>
+                    <span class="dec-label">World Cup</span>
+                    <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
+                  </button>
                   <button type="button" class="dn-pill dn-pill--coin" data-v180-action="utility" data-go-game="screen-shop" aria-label="Open Store. Dino Coin balance">
                     <span class="coin-ico"></span><span class="js-coin">888</span>
                     <img class="v180-coin-store-entry" src="assets/v180/store-entry.png" alt="" aria-hidden="true" decoding="async" />
                   </button>
                 </div>
               </div>
-              <!-- ⚽ 世界杯主题课运营入口：无活动时隐藏，不改变 Dino 首页原有模块结构 -->
-              <button type="button" class="dino-event-card" id="dino-event-card" hidden onclick="openThemeLanding()">
-                <span class="dec-badge" id="dec-badge">LIMITED</span>
-                <span class="dec-medal" id="dec-medal" hidden>🏅</span>
-                <span class="dec-ico" aria-hidden="true">⚽</span>
-                <span class="dec-label">World Cup</span>
-                <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
-              </button>
               <!-- Stage: Dino on the grass + greeting bubble + central voice button -->
               <div class="dino-night-stage">
                 <div class="dino-night-char">
@@ -9892,12 +9891,15 @@
                 <img src="assets/v155/member-center/premium-gem-small.png" alt="" />
                 <span>Dino Pro</span>
               </span>
-              <h2 class="ms-premium-title">Your Premium benefits</h2>
+              <h2 class="ms-premium-title">My benefits</h2>
               <ul class="ms-benefits-list">
-                <li>All AI speaking lessons</li>
-                <li>Full vocabulary practice</li>
-                <li>All FM stories &amp; songs</li>
-                <li>Progress report after every lesson</li>
+                <li>3 AI lessons each week</li>
+                <li>1× level progress speed</li>
+                <li>13 unit assessments each year</li>
+                <li>Check Ethan's English level</li>
+                <li>Access 864 CEFR-aligned lessons</li>
+                <li>See Ethan's progress after every lesson</li>
+                <li>Let Ethan speak, practice, and review anytime</li>
               </ul>
               <img class="ms-premium-gem" src="assets/v155/member-center/premium-gem.png" alt="" />
               <img class="ms-gem-shadow" src="assets/v155/member-center/gem-shadow.svg" alt="" />
@@ -10395,7 +10397,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180TodayCompletedTaskIndex: null, v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveLessonTaskIndex: null, v180ActiveExploreTaskIndex: null, v180TaskStates: [], v180TaskTier: "free", v180PlanTier: "free", v180ScheduledPlanTier: "", v180TodayIndex: 0, v180ServedTaskIndex: null, v180TodaySettled: false, v180HomeRewardTaskIndex: null, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180TodayCompletedTaskIndex: null, v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveLessonTaskIndex: null, v180ActiveExploreTaskIndex: null, v180TaskStates: [], v180TaskTier: "free", v180PlanTier: "free", v180ScheduledPlanTier: "", v180TodayIndex: 0, v180ServedTaskIndex: null, v180TodaySettled: false, v180PlanEnded: false, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -18391,6 +18393,7 @@
           var g = groupByKey(seg.dataset.spGroup);
           if (g && g.apply) g.apply(seg.dataset.spVal);
           sync();
+          // 状态切换完成后收起评审面板，避免窄视口下遮挡 Demo 的真实操作区。
           panel.classList.remove("open");
           return;
         }
@@ -18742,7 +18745,7 @@
         if (id === "screen-membership")  return ctx("V1.8.0 · 会员中心", ["v180Tier", "v180PlanChange", "membership", "v155Platform"]);
         if (id === "screen-weekly-plan-v180") return ctx("V1.8.0 · 完整计划", ["v180Tier", "v180Task"]);
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
-        if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return ctx("V1.8.0 · Dino 首页今日任务", ["v180Tier", "v180Task", "themeActivity"]);
+        if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return ctx("V1.8.0 · Dino 首页今日任务", ["v180Tier", "v180Task"]);
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
         if (id === "screen-teacher")     return ctx("选择老师", []);
         return ctx("App 内", ["membership"]);
@@ -18767,7 +18770,7 @@
           ? ["v180OfferTier", "v180Payment", "v170PaywallExitRoute", "v155RestoreResult"]
           : ["v180OfferTier", "v180Payment", "v155RestoreResult"]
       );
-      if (pid === "screen-winback")      return ctx("V1.8.0 · 同档限时优惠挽留页", ["v180OfferTier", "membership", "v155KolScenario"]);
+      if (pid === "screen-winback")      return ctx("V1.8.0 · 限时优惠挽留页", ["v180OfferTier", "membership", "v155KolScenario"]);
       if (pid === "screen-vn-consult")   return ctx(
         "人工咨询预约",
         ["vnConsultMarket", "vnConsultPhone"]
@@ -18786,8 +18789,8 @@
         apply: function (v) {
           window.v180SetTier && window.v180SetTier(v, { reveal: false });
         } },
-      { key: "v180PlanChange", label: "V1.8.0 下个计划周期",
-        options: [["none", "无档位变更"], ["pro_to_max", "Pro → Max"], ["max_to_pro", "Max → Pro"]],
+      { key: "v180PlanChange", label: "V1.8.0 会员档位变更",
+        options: [["none", "无档位变更"], ["pro_to_max", "Pro → Max · 立即生效"], ["max_to_pro", "Max → Pro · 续费日生效"]],
         apply: function (v) {
           if (v === "pro_to_max") window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("pro", "max");
           else if (v === "max_to_pro") window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("max", "pro");
@@ -18804,7 +18807,7 @@
           window.v180RenderPaywall && window.v180RenderPaywall();
         } },
       { key: "v180Task", label: "V1.8.0 当前任务阶段",
-        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 完整计划补做"], ["reward_ready", "单任务奖励待领取"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
+        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 任意入口补做"], ["starter_carryover", "Free · 第 8 天继续原计划"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
         apply: function (v) {
           window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
         } },
@@ -19051,13 +19054,12 @@
       { label: "1.8 查看完整计划", run: withReviewProfile(function () { window.v180OpenWeeklyPlan && window.v180OpenWeeklyPlan(); }) },
       { label: "1.8 新计划曝光", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
       { label: "1.8 学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
-      { label: "1.8 完成任务 · 待领取", run: withReviewProfile(function () {
+      { label: "1.8 完成今日任务", run: withReviewProfile(function () {
           profile.v180PlanRevealSeen = true;
           window.v180CompleteCurrentMission && window.v180CompleteCurrentMission();
         }) },
       { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
       { label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
-      { label: "主题课", run: withReviewProfile(function () { openThemeLanding(); }) },
       { label: "Explore", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("explore"); }) },
       { label: "Play", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); }) },
       { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
@@ -19188,7 +19190,7 @@
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("overdue_course");
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "⑩ 历史 Explore · 从完整计划补做", run: withReviewProfile(function () {
+      { label: "⑩ 历史 Explore · 任意入口补做", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("historical_explore");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
@@ -19215,11 +19217,16 @@
           window.v180SetTier && window.v180SetTier("free", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("week_complete");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
+      }) },
+      { label: "⑯ Free · 第 8 天继续 5/7 原计划", run: withReviewProfile(function () {
+          window.v180SetTier && window.v180SetTier("free", { reveal: false });
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("starter_carryover");
+          enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "⑯ Pro → Max · 下周换计划", run: withReviewProfile(function () {
+      { label: "⑰ Pro → Max · 立即生成新计划", run: withReviewProfile(function () {
           window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("pro", "max");
         }) },
-      { label: "⑰ Max → Pro · 下周换计划", run: withReviewProfile(function () {
+      { label: "⑱ Max → Pro · 续费日生效", run: withReviewProfile(function () {
           window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("max", "pro");
         }) },
     ].filter(Boolean),
@@ -21210,6 +21217,10 @@
     .v180-today-task.is-done{border-color:#8eddb9;background:linear-gradient(155deg,#f7fffb,#dff8ec)}
     .v180-today-task.is-done .v180-today-task-icon{background:#dff8ea}
     .v180-today-task.is-done .v180-today-task-status{background:#d7f6e7;color:#16835b;box-shadow:none}
+    .v180-today-task.is-plan-locked{border-color:#c8d2df;background:linear-gradient(155deg,#f8fafc,#e8edf4);box-shadow:none}
+    .v180-today-task.is-plan-locked .v180-today-task-copy small::before{content:"🔒 ";letter-spacing:0}
+    .v180-today-task.is-plan-locked .v180-today-task-status{background:linear-gradient(180deg,#ff9e39,var(--v180-orange));color:#fff;box-shadow:0 3px 0 #c85a0b}
+    .v180-plan-expired{margin-left:5px;padding:2px 6px;border-radius:999px;background:#eef1f5;color:#7a8798;font-size:.48rem;letter-spacing:.03em}
     .v180-today-task.v180-check-only{min-height:58px;grid-template-columns:1fr;place-items:center;padding:8px}
     .v180-today-task.v180-check-only .v180-today-task-status{width:34px;height:34px;min-width:34px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:1rem}
     .v180-mission-reward{
@@ -21401,6 +21412,9 @@
     #screen-class .v180-home-plan-panel .v180-home-week{padding:12px 14px 14px}
     #screen-class .v180-home-plan-panel .v180-today-list{grid-template-columns:1fr;gap:8px}
     #screen-class .v180-home-plan-panel .v180-today-task{min-height:72px;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;padding:8px 10px;border-radius:17px}
+    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete{grid-template-columns:1fr;gap:7px}
+    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete .v180-task-side{width:100%;align-items:stretch}
+    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete .v180-today-task-status{width:100%;white-space:nowrap}
     #screen-class .v180-home-plan-panel .v180-today-task-icon{width:38px;height:38px;border-radius:14px;font-size:1.12rem}
     #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.72rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip{
@@ -21439,8 +21453,10 @@
     @media (prefers-reduced-motion:reduce){
       #screen-class .v180-home-plan-panel .v180-today-task.is-current-task{animation:none}
     }
+    /* A daily learning task only tracks Lesson → Practice. Rewards settle at the
+       weekly-plan gift, so no per-task gift node is reserved here. */
     .v180-learning-progress{
-      grid-column:2 / 4;grid-row:2;min-width:0;display:grid;grid-template-columns:auto minmax(10px,1fr) auto minmax(10px,1fr) auto;
+      grid-column:2 / 4;grid-row:2;min-width:0;display:grid;grid-template-columns:auto minmax(10px,1fr) auto;
       align-items:center;gap:4px;color:#71839d
     }
     .v180-progress-step{min-width:32px;display:flex;flex-direction:column;align-items:center;gap:2px;font-style:normal;font-size:.42rem;font-weight:900;line-height:1}
@@ -21451,9 +21467,6 @@
     .v180-progress-step.is-done i{border-color:#63cf9e;background:#dff8ea;color:#147451}
     .v180-progress-rail{height:4px;border-radius:999px;background:#dce6f3;box-shadow:inset 0 1px 2px rgba(31,73,132,.1)}
     .v180-progress-rail.is-filled{background:linear-gradient(90deg,#4fd49b,#7be0ba)}
-    .v180-progress-step.is-reward{min-width:28px;color:#9a5b00}
-    .v180-progress-step.is-reward i{border-color:#ffd15e;background:linear-gradient(155deg,#fff7bd,#ffc333);font-size:.72rem;filter:drop-shadow(0 3px 4px rgba(151,89,0,.16))}
-    .v180-progress-step.is-reward b{font-size:.4rem}
     /* The welcome-gift calendar is reached through today's reward strip on Dino home,
        not through a second floating global entry. */
     #screen-class .visit-reward-entry{display:none !important}
@@ -21494,6 +21507,7 @@
       #screen-class .v180-home-plan-panel .v180-home-week{padding:6px 7px 7px}
       #screen-class .v180-home-plan-panel .v180-today-list{gap:4px}
       #screen-class .v180-home-plan-panel .v180-today-task{min-height:43px;grid-template-columns:minmax(0,1fr) auto;column-gap:5px;padding:4px 5px;border-radius:10px}
+      #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete{grid-template-columns:1fr;gap:3px}
       #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only{min-height:36px;grid-template-columns:1fr;padding:3px}
       #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only .v180-today-task-status{width:23px;height:23px;min-width:23px;font-size:.66rem}
       #screen-class .v180-home-plan-panel .v180-today-task-icon{width:25px;height:25px;border-radius:9px;font-size:.72rem}
@@ -21514,9 +21528,6 @@
       .v180-progress-step i{width:13px;height:13px;border-width:1px;border-radius:5px;font-size:.36rem}
       .v180-progress-step.is-current i{box-shadow:0 0 0 2px rgba(254,136,32,.12)}
       .v180-progress-rail{height:2px}
-      .v180-progress-step.is-reward{min-width:18px}
-      .v180-progress-step.is-reward i{font-size:.45rem}
-      .v180-progress-step.is-reward b{font-size:.25rem}
       .v180-mission-reward-card{min-width:190px;padding:13px 17px 12px;border-width:3px;border-radius:20px}
       .v180-mission-reward-card img{width:43px;height:43px;margin-bottom:4px}
       .v180-mission-reward-card h3{font-size:.92rem}
@@ -21593,6 +21604,8 @@
     .v180-plan-node.is-available{cursor:pointer}
     .v180-plan-node.is-future{opacity:.7}
     .v180-plan-node.is-future .v180-node-orb::after{display:none}
+    .v180-plan-node.is-locked{opacity:.76;cursor:pointer;border-color:#70829d;background:rgba(48,65,91,.3);box-shadow:none}
+    .v180-plan-node.is-locked .v180-node-orb::after{content:"🔒";position:absolute;right:-5px;top:-6px;width:19px;height:19px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:#69778a;font-size:.48rem;box-shadow:0 3px 7px rgba(0,0,0,.24)}
     .v180-node-reward{display:inline-flex;align-items:center;gap:3px;color:#ffd66b;font-size:.5rem;font-weight:900}
     @keyframes v180-current-pulse{50%{transform:translateY(-3px) scale(1.025)}}
     .v180-plan-dino{position:absolute;left:7px;bottom:6px;width:92px;filter:drop-shadow(0 14px 14px rgba(0,0,0,.28));pointer-events:none}
@@ -21657,6 +21670,10 @@
     .v180-reveal-mini.is-today i{border-color:#6fa7f1;box-shadow:0 0 0 3px rgba(54,113,211,.12),0 7px 13px rgba(32,78,142,.13)}
     .v180-reveal-mini.is-available i{border-color:#7aaef1}
     .v180-reveal-mini.is-future{opacity:.62}
+    .v180-reveal-mini.is-locked{opacity:.72;cursor:pointer}
+    .v180-reveal-mini.is-locked i{border-color:#aeb9c8;filter:grayscale(.45);box-shadow:0 5px 10px rgba(50,68,92,.12);animation:none}
+    .v180-reveal-mini.is-locked i::before{content:"🔒";position:absolute;z-index:2;right:4px;top:4px;width:20px;height:20px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:#68778b;font-size:.52rem;box-shadow:0 3px 7px rgba(45,58,77,.25)}
+    .v180-reveal-mini.is-done.is-locked i::after{right:auto;left:4px}
     .v180-reveal-mini.is-weekly-gift.is-done i{background:linear-gradient(155deg,#e0faed,#9de5c6);border-color:#63cf9e;box-shadow:0 7px 16px rgba(20,120,80,.18);animation:none}
     .v180-reveal-actions{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
     .v180-reveal-primary{min-width:250px;min-height:52px;border:0;border-radius:18px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 6px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.92rem;font-weight:900;cursor:pointer}
@@ -21785,15 +21802,11 @@
     .v180-ms-plan-btn{min-height:42px;border:0;border-radius:14px;background:#2c67c8;color:#fff;padding:8px 13px;font-family:inherit;font-size:.65rem;font-weight:900;cursor:pointer}
     .v180-ms-upgrade{display:block;width:100%;min-height:48px;margin-top:12px;border:0;border-radius:17px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 5px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.78rem;font-weight:900;cursor:pointer}
     .v180-ms-upgrade[hidden]{display:none}
-    .v180-ms-actions{position:relative;z-index:3;display:flex;align-items:center;gap:9px;margin-top:12px}
-    .v180-ms-actions .v180-ms-plan-btn{flex:0 0 auto}
-    .v180-ms-actions .v180-ms-upgrade{flex:1;width:auto;min-height:42px;margin:0;box-shadow:0 4px 0 #c85a0b;font-size:.66rem;padding:7px 11px}
     .v180-ms-change-note{margin:10px 0 0;padding:10px 12px;border:1px solid #ffd27b;border-radius:14px;background:#fff8df;color:#815018;font-size:.64rem;font-weight:800;line-height:1.35}
     .v180-ms-change-note strong{display:block;margin-bottom:2px;color:#d46110;font-size:.7rem}
     #screen-membership .ms-premium-card .ms-premium-title{font-size:1.16rem;line-height:1.08;margin:9px 0 8px;max-width:290px}
     #screen-membership .ms-premium-card .ms-benefits-list{gap:4px}
     #screen-membership .ms-premium-card .ms-benefits-list li{font-size:.7rem}
-    #screen-membership .ms-premium-card .v180-ms-actions{margin-top:8px}
   </style>
   <script id="v180-incremental-logic">
   (function () {
@@ -21832,9 +21845,13 @@
        tier. Max prices are derived here so both tiers still inherit the retained
        V1.7 product order, Promo Code, IAP offer, renewal and localization fields. */
     var V180_MAX_PRICE_MULTIPLIER = 1.5;
-    var V180_DAILY_REWARD = 20;
-    var V180_WEEKLY_REWARD = 100;
     var v180RewardTimer = null;
+    var V180_SOCIAL_PROOF_RANGES = {
+      task: [30000, 80000],
+      plan: [8000, 20000],
+      planDaily: [800, 1500]
+    };
+    var V180_SOCIAL_PROOF_START_DAY = Math.floor(Date.UTC(2026, 8, 1) / 86400000);
 
     function esc(value) {
       return String(value == null ? "" : value)
@@ -21843,6 +21860,9 @@
     function tier() {
       if (!profile.premiumUnlocked) return "free";
       return profile.membershipTier === "max" ? "max" : "pro";
+    }
+    function planExpired() {
+      return !profile.premiumUnlocked && profile.hasSubscriptionOrder && (profile.v180PlanTier === "pro" || profile.v180PlanTier === "max");
     }
     function planTier() {
       var value = profile.v180PlanTier;
@@ -21853,10 +21873,10 @@
       return value === "max" ? "Dino Max" : value === "pro" ? "Dino Pro" : "Free";
     }
     function planName(value) {
-      return value === "free" ? "Free starter plan" : tierName(value);
+      return value === "max" ? "Max plan" : value === "pro" ? "Pro plan" : "Free plan";
     }
     function planEntryLabel(value) {
-      return value === "free" ? "Starter plan" : "Weekly plan";
+      return "Full plan";
     }
     function rhythm(value) {
       if (value === "max") return "5 learning missions · 2 Explore days";
@@ -21868,14 +21888,40 @@
       if (value === "pro") return "Build a steady English habit with 3 guided learning days and 4 Explore days every week.";
       return "Try Dino’s complete learning rhythm with 3 free lessons and 4 Explore days.";
     }
+    function stableSocialProof(range, key) {
+      var min = Number(range && range[0]);
+      var max = Number(range && range[1]);
+      if (!Number.isFinite(min) || !Number.isFinite(max) || max < min) return 0;
+      var hash = 0;
+      String(key).split("").forEach(function (char) {
+        hash = ((hash << 5) - hash + char.charCodeAt(0)) | 0;
+      });
+      return Math.floor(min + (Math.abs(hash) % (max - min + 1)));
+    }
+    function compactSocialProof(value) {
+      var count = Math.max(0, Math.floor(Number(value) || 0));
+      if (count >= 1000) {
+        var compact = Math.floor(count / 100) / 10;
+        return compact.toFixed(compact % 1 ? 1 : 0) + "K+";
+      }
+      if (count >= 100) return Math.floor(count / 100) * 100 + "+";
+      return "";
+    }
     function taskCompletionProof(index) {
-      var base = planTier() === "max" ? 1860 : planTier() === "pro" ? 1240 : 820;
-      return (base + Math.max(0, Number(index) || 0) * 73).toLocaleString("en-US") + " finished";
+      var taskIndex = Math.max(0, Math.min(6, Number(index) || 0));
+      var count = stableSocialProof(V180_SOCIAL_PROOF_RANGES.task, [planTier(), "task", taskIndex].join("-"));
+      return compactSocialProof(count) + " completed";
     }
     function planCompletionProof() {
       var value = planTier();
-      var count = value === "max" ? 1386 : value === "pro" ? 2184 : 3642;
-      return count.toLocaleString("en-US") + (value === "free" ? " learners started this plan" : " learners joined this week");
+      var count = stableSocialProof(V180_SOCIAL_PROOF_RANGES.plan, [value, "plan", "base"].join("-"));
+      var now = new Date();
+      var currentDay = Math.floor(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000);
+      var elapsedDays = Math.max(0, Math.min(3650, currentDay - V180_SOCIAL_PROOF_START_DAY));
+      for (var day = 1; day <= elapsedDays; day += 1) {
+        count += stableSocialProof(V180_SOCIAL_PROOF_RANGES.planDaily, [value, "plan", "daily", day].join("-"));
+      }
+      return compactSocialProof(count) + " learners completed this plan";
     }
     function tasks() {
       return V180_TASKS[planTier()] || V180_TASKS.free;
@@ -21887,8 +21933,8 @@
     }
     function emptyTaskState(task) {
       return task && task.kind === "lesson"
-        ? { lessonStarted: false, lessonDone: false, practiceDone: false, practices: [], reward: "locked", closesToday: false }
-        : { exploreDone: false, reward: "locked", closesToday: false };
+        ? { lessonStarted: false, lessonDone: false, practiceDone: false, practices: [] }
+        : { exploreDone: false };
     }
     function taskState(index) {
       ensureTaskStates();
@@ -21909,7 +21955,7 @@
         profile.v180TodayIndex = 0;
         profile.v180ServedTaskIndex = null;
         profile.v180TodaySettled = false;
-        profile.v180HomeRewardTaskIndex = null;
+        profile.v180PlanEnded = false;
         profile.v180ActiveLessonTaskIndex = null;
         profile.v180ActiveExploreTaskIndex = null;
         profile.v180WeeklyRewardClaimed = false;
@@ -21917,8 +21963,6 @@
       profile.v180TaskStates = profile.v180TaskStates.map(function (state, index) {
         var task = plan[index];
         var safe = state && typeof state === "object" ? state : emptyTaskState(task);
-        safe.reward = safe.reward === "claimable" || safe.reward === "claimed" ? safe.reward : "locked";
-        safe.closesToday = safe.closesToday === true;
         if (task.kind === "lesson") {
           safe.lessonStarted = safe.lessonStarted === true || safe.lessonDone === true;
           safe.lessonDone = safe.lessonDone === true;
@@ -21932,16 +21976,21 @@
         }
         return safe;
       });
-      profile.v180CompletedTasks = profile.v180TaskStates.filter(function (_, index) { return taskFullyDoneUnsafe(index); }).length;
+      profile.v180CompletedTasks = profile.v180TaskStates.filter(function (_, index) { return routeNodeDoneUnsafe(index); }).length;
     }
     function taskFullyDoneUnsafe(index) {
       var task = tasks()[index];
       var state = profile.v180TaskStates[index];
       return !!(task && state && (task.kind === "lesson" ? state.lessonDone && state.practiceDone : state.exploreDone));
     }
+    function routeNodeDoneUnsafe(index) {
+      var task = tasks()[index];
+      var state = profile.v180TaskStates[index];
+      return !!(task && state && (task.kind === "lesson" ? state.lessonDone : state.exploreDone));
+    }
     function completedCount() {
       ensureTaskStates();
-      return profile.v180TaskStates.filter(function (_, index) { return taskFullyDoneUnsafe(index); }).length;
+      return profile.v180TaskStates.filter(function (_, index) { return routeNodeDoneUnsafe(index); }).length;
     }
     function earliestOverdueCourseIndex() {
       ensureTaskStates();
@@ -21950,38 +21999,34 @@
       }
       return null;
     }
-    function servedTaskIndex() {
+    function earliestOpenedIncompleteTaskIndex() {
       ensureTaskStates();
-      var stored = Number(profile.v180ServedTaskIndex);
-      if (Number.isInteger(stored) && stored >= 0 && stored < tasks().length) return stored;
-      var overdue = earliestOverdueCourseIndex();
-      profile.v180ServedTaskIndex = overdue == null ? todayIndex() : overdue;
-      return profile.v180ServedTaskIndex;
-    }
-    function pendingRewardIndex() {
-      ensureTaskStates();
-      var preferred = Number(profile.v180HomeRewardTaskIndex);
-      if (Number.isInteger(preferred) && profile.v180TaskStates[preferred] && profile.v180TaskStates[preferred].reward === "claimable") return preferred;
-      var served = servedTaskIndex();
-      if (profile.v180TaskStates[served] && profile.v180TaskStates[served].reward === "claimable") return served;
-      for (var index = 0; index < profile.v180TaskStates.length; index += 1) {
-        if (profile.v180TaskStates[index].reward === "claimable") return index;
+      for (var index = 0; index <= todayIndex(); index += 1) {
+        if (!routeNodeDoneUnsafe(index)) return index;
       }
       return null;
+    }
+    function servedTaskIndex() {
+      ensureTaskStates();
+      var rawStored = profile.v180ServedTaskIndex;
+      var stored = Number(rawStored);
+      if (rawStored != null && rawStored !== "" && Number.isInteger(stored) && stored >= 0 && stored < tasks().length) return stored;
+      var overdue = earliestOverdueCourseIndex();
+      var fallback = profile.v180PlanEnded === true ? earliestOpenedIncompleteTaskIndex() : todayIndex();
+      profile.v180ServedTaskIndex = overdue == null ? fallback : overdue;
+      return profile.v180ServedTaskIndex;
     }
     function todayCompletedTaskIndex() {
       ensureTaskStates();
       var index = servedTaskIndex();
-      return taskFullyDoneUnsafe(index) && profile.v180TaskStates[index].reward === "claimed" ? index : null;
+      return taskFullyDoneUnsafe(index) ? index : null;
     }
     function weeklyRewardClaimed() {
       return profile.v180WeeklyRewardClaimed === true;
     }
     function routeNodeDone(index) {
       ensureTaskStates();
-      var task = tasks()[index];
-      var state = profile.v180TaskStates[index];
-      return !!(task && state && (task.kind === "lesson" ? state.lessonDone : state.exploreDone));
+      return routeNodeDoneUnsafe(index);
     }
     function completeTask(index, closesToday) {
       ensureTaskStates();
@@ -21996,32 +22041,16 @@
       } else {
         state.exploreDone = true;
       }
-      if (state.reward !== "claimed") state.reward = "claimable";
-      state.closesToday = closesToday === true;
-      profile.v180HomeRewardTaskIndex = index;
+      if (closesToday === true || index === servedTaskIndex()) profile.v180TodaySettled = true;
       profile.v180CompletedTasks = completedCount();
       if (profile.v180CompletedTasks >= 7) profile.v180WeeklyRewardClaimed = false;
-      return true;
-    }
-    function claimTaskReward() {
-      var index = pendingRewardIndex();
-      if (index == null) return false;
-      var state = taskState(index);
-      if (!state || state.reward !== "claimable") return false;
-      state.reward = "claimed";
-      if (state.closesToday || index === servedTaskIndex()) profile.v180TodaySettled = true;
-      profile.v180HomeRewardTaskIndex = null;
-      if (window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(V180_DAILY_REWARD);
-      renderAll();
-      showMissionReward("mission");
       return true;
     }
     function claimWeeklyReward() {
       if (completedCount() < 7 || weeklyRewardClaimed()) return false;
       profile.v180WeeklyRewardClaimed = true;
-      if (window.GAME && window.GAME.grantCoins) window.GAME.grantCoins(V180_WEEKLY_REWARD);
       renderAll();
-      showMissionReward("weekly");
+      showMissionReward();
       return true;
     }
     function currentTask(index) {
@@ -22033,7 +22062,7 @@
       var task = currentTask(taskIndex);
       var state = taskState(taskIndex);
       if (!task || !state) return "complete";
-      if (taskFullyDoneUnsafe(taskIndex)) return state.reward === "claimable" ? "reward" : "complete";
+      if (taskFullyDoneUnsafe(taskIndex)) return "complete";
       if (task.kind === "explore") return "explore";
       return state.lessonDone ? "after_class" : "lesson";
     }
@@ -22084,12 +22113,11 @@
       }
       completeTask(index, index === servedTaskIndex());
       renderAll();
-      showPayToast("Mission complete · gift ready 🎁");
-      return { newlyCompleted: true, remaining: 0, missionComplete: true, rewardReady: true, weekly: completedCount() >= 7 };
+      showPayToast("✓");
+      return { newlyCompleted: true, remaining: 0, missionComplete: true, weekly: completedCount() >= 7 };
     }
     function scheduleWord(task, stage, index) {
       if (!task) return { eyebrow: "Weekly adventure complete", title: "Amazing week!", sub: "Seven stars collected. Dino is proud of you.", cta: "See my adventure", detail: "Weekly reward", icon: "🏆" };
-      if (stage === "reward") return { eyebrow: "Mission complete", title: task.title, sub: "Open your mission gift.", cta: "Claim", detail: "Your mission gift is ready", icon: "🎁" };
       if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start", detail: "Complete any 1 activity", icon: task.icon };
       if (stage === "after_class") return { eyebrow: "Today’s practice", title: task.title, sub: "Keep going to finish today’s learning mission.", cta: "Continue", detail: afterClassRemaining(index) + " " + (afterClassRemaining(index) === 1 ? "practice" : "practices") + " left", icon: "✏️" };
       return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Start today’s lesson and continue with practice.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "Lesson + practice", icon: task.icon };
@@ -22104,14 +22132,11 @@
     }
     function lessonProgressHtml(task, stage) {
       if (!task || task.kind !== "lesson") return "";
-      var practiceStage = stage === "after_class" || stage === "reward";
-      var rewardStage = stage === "reward";
-      return '<div class="v180-learning-progress" role="img" aria-label="AI lesson, then practice, then open the mission gift">' +
+      var practiceStage = stage === "after_class";
+      return '<div class="v180-learning-progress" role="img" aria-label="AI lesson, then practice">' +
         '<span class="v180-progress-step ' + (practiceStage ? 'is-done' : 'is-current') + '"><i aria-hidden="true">▶</i><b>Lesson</b></span>' +
         '<span class="v180-progress-rail ' + (practiceStage ? 'is-filled' : '') + '" aria-hidden="true"></span>' +
-        '<span class="v180-progress-step ' + (rewardStage ? 'is-done' : practiceStage ? 'is-current' : '') + '"><i aria-hidden="true">✎</i><b>Practice</b></span>' +
-        '<span class="v180-progress-rail ' + (rewardStage ? 'is-filled' : '') + '" aria-hidden="true"></span>' +
-        '<span class="v180-progress-step is-reward ' + (rewardStage ? 'is-current' : '') + '"><i aria-hidden="true">🎁</i><b>Gift</b></span>' +
+        '<span class="v180-progress-step ' + (practiceStage ? 'is-current' : '') + '"><i aria-hidden="true">✎</i><b>Practice</b></span>' +
       '</div>';
     }
     function ensureTaskConsistency() {
@@ -22132,14 +22157,13 @@
       }
       return overlay;
     }
-    function showMissionReward(kind) {
+    function showMissionReward() {
       var overlay = ensureMissionReward();
       if (!overlay) return;
-      var weekly = kind === "weekly";
       overlay.innerHTML = '<div class="v180-mission-reward-card">' +
-        '<img src="assets/v13fx/coin.png" alt="" decoding="async" />' +
-        '<h3>' + (weekly ? 'Plan gift opened!' : 'Mission gift opened!') + '</h3>' +
-        '<div class="v180-mission-reward-lines"><span>+' + (weekly ? V180_WEEKLY_REWARD : V180_DAILY_REWARD) + ' coins</span></div></div>';
+        '<img src="assets/v180/welcome-gifts/final-box.png" alt="" decoding="async" />' +
+        '<h3>Plan gift opened!</h3>' +
+        '<div class="v180-mission-reward-lines"><span>Reward added to your account</span></div></div>';
       overlay.classList.remove("show");
       void overlay.offsetWidth;
       overlay.classList.add("show");
@@ -22173,29 +22197,21 @@
       var chatLabel = chatButton && chatButton.querySelector("span:last-child");
       if (chatLabel) chatLabel.textContent = "Chat with Dino";
       if (chatButton) chatButton.setAttribute("aria-label", "Chat with Dino");
-      var topUtilities = document.querySelector("#hub-panel-dino .dino-mini-entries");
-      var eventEntry = document.getElementById("dino-event-card");
-      if (topUtilities && eventEntry && eventEntry.parentElement !== topUtilities) {
-        topUtilities.insertBefore(eventEntry, topUtilities.firstChild);
-        eventEntry.classList.add("v180-event-top");
-      }
       ensureTaskConsistency();
-      var rewardIndex = pendingRewardIndex();
       var servedIndex = servedTaskIndex();
-      var todayDoneIndex = rewardIndex == null ? todayCompletedTaskIndex() : null;
-      var todayDone = rewardIndex == null && (profile.v180TodaySettled === true || todayDoneIndex != null);
-      var taskIndex = rewardIndex != null ? rewardIndex : servedIndex;
+      var todayDoneIndex = todayCompletedTaskIndex();
+      var todayDone = profile.v180TodaySettled === true || todayDoneIndex != null;
+      var taskIndex = servedIndex;
       var task = currentTask(taskIndex);
-      var stage = rewardIndex != null ? "reward" : todayDone ? "today_complete" : currentStage(taskIndex);
+      var stage = todayDone ? "today_complete" : currentStage(taskIndex);
       var copy = scheduleWord(task, stage, taskIndex);
       if (!todayDone && taskIndex < todayIndex() && task && task.kind === "lesson") copy.eyebrow = "Continue earlier lesson";
       var rewardState = window.VISIT_REWARD && window.VISIT_REWARD.state;
       var checkinAvailable = !!(rewardState && rewardState.eligible && rewardState.unlocked && rewardState.daysLeft > 0);
       var checkinClaimed = !!(checkinAvailable && rewardState.claimed);
-      var checkinDay = rewardState ? Number(rewardState.dayIndex || 0) + 1 : 1;
       var checkinHtml = checkinAvailable
-        ? '<button type="button" class="v180-today-task v180-checkin-strip is-checkin' + (checkinClaimed ? ' is-done' : '') + '" data-v180-action="checkin" aria-label="' + (checkinClaimed ? 'Day ' + checkinDay + ' welcome gift claimed. View welcome gifts' : 'Claim Day ' + checkinDay + ' welcome gift') + '">' +
-            '<span class="v180-today-task-copy"><small>Today’s gift</small><strong>Day ' + checkinDay + ' welcome gift</strong></span>' +
+        ? '<button type="button" class="v180-today-task v180-checkin-strip is-checkin' + (checkinClaimed ? ' is-done' : '') + '" data-v180-action="checkin" aria-label="' + (checkinClaimed ? 'Welcome gift claimed. View welcome gifts' : 'Claim welcome gift') + '">' +
+            '<span class="v180-today-task-copy"><strong>Welcome gift</strong></span>' +
             '<em class="v180-today-task-status" aria-label="' + (checkinClaimed ? 'Claimed' : 'Claim') + '">' + (checkinClaimed ? '✓' : 'Claim') + '</em>' +
           '</button>'
         : '';
@@ -22204,7 +22220,7 @@
       var learningDetail = copy.detail;
       var learningStatus = copy.cta;
       var learningProgress = todayDone ? "" : lessonProgressHtml(task, stage);
-      var learningAction = todayDone ? "today-complete" : stage === "reward" ? "claim-task" : "current";
+      var learningAction = todayDone ? "today-complete" : "current";
       var learningMeta = learningProgress || todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
       var childName = (profile.name || "friend").trim() || "friend";
       bubble.classList.add("v180-chat-bubble");
@@ -22219,17 +22235,31 @@
       if (!planPanel) return;
       planPanel.classList.toggle("v180-task-done", todayDone);
       var weeklyReady = completedCount() >= 7 && !weeklyRewardClaimed();
-      var learningHtml = todayDone
-        ? '<button type="button" class="v180-today-task is-learning is-done v180-check-only" disabled aria-disabled="true" aria-label="Today’s learning complete"><em class="v180-today-task-status">✓</em></button>'
-        : '<article class="v180-today-task is-learning' + (stage !== 'reward' ? ' is-current-task' : '') + (learningProgress ? ' has-progress' : '') + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
+      var starterComplete = planTier() === "free" && completedCount() >= 7 && weeklyRewardClaimed();
+      var learningHtml = planExpired()
+        ? '<article class="v180-today-task is-learning is-plan-locked" aria-label="' + esc(learningTitle + ' locked') + '">' +
+            '<span class="v180-today-task-copy"><small>Plan expired</small><strong>' + esc(learningTitle) + '</strong></span>' +
+            '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="unlock-expired">Unlock</button></span>' +
+          '</article>'
+        : starterComplete
+        ? '<article class="v180-today-task is-learning is-starter-complete" aria-label="Starter plan complete">' +
+            '<span class="v180-today-task-copy"><small>Starter plan</small><strong>Starter plan complete</strong></span>' +
+            '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="unlock-full-plan">Unlock full learning plan</button></span>' +
+          '</article>'
+        : todayDone
+        ? '<article class="v180-today-task is-learning is-done" aria-label="' + esc(learningTitle + ' complete') + '">' +
+            '<span class="v180-today-task-copy"><strong>' + esc(learningTitle) + '</strong></span>' +
+            '<em class="v180-today-task-status" aria-label="Complete">✓</em>' +
+          '</article>'
+        : '<article class="v180-today-task is-learning is-current-task' + (learningProgress ? ' has-progress' : '') + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
             '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
             learningProgress +
             '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="' + learningAction + '" aria-label="' + esc(learningStatus + ' ' + learningTitle) + '">' + esc(learningStatus) + '</button><span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span></span>' +
           '</article>';
       planPanel.innerHTML =
         '<div class="v180-home-week">' +
-          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
-          '<div class="v180-today-card" aria-label="Today’s learning and rewards">' +
+          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + (planExpired() ? '<em class="v180-plan-expired">Expired</em>' : '') + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
+          '<div class="v180-today-card" aria-label="Today’s learning and welcome gift">' +
             '<div class="v180-today-heading"><strong>Today’s learning</strong></div>' +
             '<div class="v180-today-list has-one">' + learningHtml + '</div>' +
             checkinHtml +
@@ -22238,6 +22268,7 @@
     }
     function canOpenPlanNode(index) {
       ensureTaskStates();
+      if (planExpired()) return index >= 0 && index < tasks().length;
       if (index < 0 || index >= tasks().length || index > todayIndex()) return false;
       var task = tasks()[index];
       if (taskFullyDoneUnsafe(index)) return true;
@@ -22255,20 +22286,17 @@
         openWeeklyPlan();
         return;
       }
+      if (planExpired()) {
+        closePlanReveal();
+        openPaywall("screen-class", "expired_plan_node", planTier());
+        return;
+      }
       if (source === "weekly" && !canOpenPlanNode(taskIndex)) {
         showPayToast(taskIndex > todayIndex() ? "This mission opens later." : "Finish the earlier lesson first.");
         return;
       }
       if (taskFullyDoneUnsafe(taskIndex)) {
-        if (taskState(taskIndex).reward === "claimable") {
-          profile.v180HomeRewardTaskIndex = taskIndex;
-          closePlanReveal();
-          showClassHome();
-          setHubTab("dino");
-          renderAll();
-        } else {
-          showPayToast("Mission complete ✓");
-        }
+        showPayToast("Mission complete ✓");
         return;
       }
       closePlanReveal();
@@ -22330,22 +22358,28 @@
       showClassHome();
       setHubTab("dino");
       renderAll();
-      showPayToast("Mission complete · claim your gift 🎁");
+      showPayToast("✓");
     }
     function completeExploreActivity() {
       ensureTaskStates();
-      var index = Number(profile.v180ActiveExploreTaskIndex);
-      if (!Number.isInteger(index) || !tasks()[index] || tasks()[index].kind !== "explore" || taskFullyDoneUnsafe(index)) return false;
+      var index = null;
+      for (var taskIndex = 0; taskIndex <= todayIndex(); taskIndex += 1) {
+        if (tasks()[taskIndex] && tasks()[taskIndex].kind === "explore" && !taskFullyDoneUnsafe(taskIndex)) {
+          index = taskIndex;
+          break;
+        }
+      }
+      if (index == null) return false;
       completeTask(index, index === servedTaskIndex());
       profile.v180ActiveExploreTaskIndex = null;
       renderAll();
-      showPayToast("Explore complete · claim your gift 🎁");
+      showPayToast("✓");
       return true;
     }
     function taskStateForReview() {
-      if (pendingRewardIndex() != null) return "reward_ready";
       if (completedCount() >= 7) return weeklyRewardClaimed() ? "week_complete" : "week_reward_ready";
       if (todayCompletedTaskIndex() != null) return "today_complete";
+      if (planTier() === "free" && profile.v180PlanEnded === true) return "starter_carryover";
       if (earliestOverdueCourseIndex() != null) return "overdue_course";
       if (currentStage() === "after_class") return afterClassRemaining(servedTaskIndex()) === 1 ? "after_class_last" : "after_class";
       if (currentStage() === "explore") return "explore";
@@ -22353,17 +22387,18 @@
       return "lesson_ready";
     }
     function setTaskReviewState(value) {
+      if (value === "starter_carryover" && planTier() !== "free") setTier("free", { reveal: false });
       profile.v180PlanRevealSeen = true;
       profile.v180TaskTier = planTier();
       profile.v180TaskStates = tasks().map(emptyTaskState);
       profile.v180TodayIndex = 0;
       profile.v180ServedTaskIndex = null;
       profile.v180TodaySettled = false;
-      profile.v180HomeRewardTaskIndex = null;
+      profile.v180PlanEnded = false;
       profile.v180WeeklyRewardClaimed = false;
       profile.v180ActiveLessonTaskIndex = null;
       profile.v180ActiveExploreTaskIndex = null;
-      var seedDone = function (index, claimed) {
+      var seedDone = function (index) {
         var task = tasks()[index];
         var state = profile.v180TaskStates[index];
         if (!task || !state) return;
@@ -22372,26 +22407,20 @@
           state.practiceDone = true;
           state.practices = V180_AFTER_CLASS_TYPES.slice();
         } else state.exploreDone = true;
-        state.reward = claimed ? "claimed" : "claimable";
       };
       if (value === "week_complete" || value === "week_reward_ready") {
-        tasks().forEach(function (_, index) { seedDone(index, true); });
+        tasks().forEach(function (_, index) { seedDone(index); });
         profile.v180TodayIndex = 6;
         profile.v180ServedTaskIndex = 6;
         profile.v180TodaySettled = true;
         profile.v180WeeklyRewardClaimed = value === "week_complete";
-      } else if (value === "reward_ready") {
-        seedDone(0, false);
-        profile.v180ServedTaskIndex = 0;
-        profile.v180TaskStates[0].closesToday = true;
-        profile.v180HomeRewardTaskIndex = 0;
       } else if (value === "today_complete") {
-        seedDone(0, true);
+        seedDone(0);
         profile.v180ServedTaskIndex = 0;
         profile.v180TodaySettled = true;
       } else if (value === "explore") {
         var exploreIndex = planTier() === "max" ? 5 : 1;
-        for (var beforeExplore = 0; beforeExplore < exploreIndex; beforeExplore += 1) seedDone(beforeExplore, true);
+        for (var beforeExplore = 0; beforeExplore < exploreIndex; beforeExplore += 1) seedDone(beforeExplore);
         profile.v180TodayIndex = exploreIndex;
         profile.v180ServedTaskIndex = exploreIndex;
       } else if (value === "overdue_course") {
@@ -22400,9 +22429,14 @@
       } else if (value === "historical_explore") {
         profile.v180TodayIndex = planTier() === "max" ? 6 : 3;
         tasks().forEach(function (task, index) {
-          if (index < profile.v180TodayIndex && task.kind === "lesson") seedDone(index, true);
+          if (index < profile.v180TodayIndex && task.kind === "lesson") seedDone(index);
         });
         profile.v180ServedTaskIndex = profile.v180TodayIndex;
+      } else if (value === "starter_carryover") {
+        for (var carriedIndex = 0; carriedIndex < 5; carriedIndex += 1) seedDone(carriedIndex);
+        profile.v180TodayIndex = 6;
+        profile.v180ServedTaskIndex = null;
+        profile.v180PlanEnded = true;
       } else {
         profile.v180ServedTaskIndex = 0;
         if (value === "lesson_in_progress") profile.v180TaskStates[0].lessonStarted = true;
@@ -22443,6 +22477,7 @@
       membership.insertAdjacentHTML("beforebegin", weeklyScreenHtml());
     }
     function nodeStatus(index) {
+      if (planExpired()) return (routeNodeDone(index) ? "is-done " : "") + "is-locked";
       if (routeNodeDone(index)) return "is-done";
       if (index > todayIndex()) return "is-future";
       if (index === servedTaskIndex()) return "is-current";
@@ -22457,7 +22492,7 @@
       var plan = tasks();
       var done = completedCount();
       var value = planTier();
-      document.getElementById("v180-plan-sub").textContent = planName(value) + " · " + rhythm(value);
+      document.getElementById("v180-plan-sub").textContent = planName(value) + (planExpired() ? " · Expired" : " · " + rhythm(value));
       document.getElementById("v180-plan-progress-copy").textContent = done + " of 7 complete";
       list.innerHTML = plan.map(function (task, index) {
         var status = nodeStatus(index);
@@ -22515,12 +22550,14 @@
       var value = planTier();
       var plan = tasks();
       var valueCopy = planValueCopy(value);
-      document.getElementById("v180-reveal-title").textContent = value === "free"
-        ? "Your free starter plan is ready!"
-        : "Your " + tierName(value) + " week is ready!";
-      document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(valueCopy) + '</strong>';
+      document.getElementById("v180-reveal-title").textContent = planExpired()
+        ? "Your " + planName(value) + " is locked"
+        : value === "free"
+          ? "Your free starter plan is ready!"
+          : "Your " + tierName(value) + " week is ready!";
+      document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(planExpired() ? "Unlock your plan to keep learning from where you left off." : valueCopy) + '</strong>';
       document.getElementById("v180-reveal-proof").textContent = "👥 " + planCompletionProof();
-      document.getElementById("v180-reveal-badge").textContent = value === "free" ? "★ Your starter plan" : "★ This week’s plan";
+      document.getElementById("v180-reveal-badge").textContent = planExpired() ? "🔒 Plan expired" : value === "free" ? "★ Your starter plan" : "★ This week’s plan";
       var path = document.getElementById("v180-reveal-path");
       path.setAttribute("aria-label", value === "free" ? "Seven-day starter plan ending in a plan gift" : "Seven-day weekly plan ending in a weekly gift");
       var done = completedCount();
@@ -22532,15 +22569,14 @@
         var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
         return '<button type="button" class="v180-reveal-mini ' + (isExplore ? 'is-explore' : 'is-lesson') + ' ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
           '<i><img src="' + esc(cover) + '" alt="" decoding="async" /></i>' +
-          '<span>Day ' + (index + 1) + '</span><strong>' + esc(label) + '</strong></button>';
+          '<strong>' + esc(label) + '</strong></button>';
       }).join("") +
         '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Weekly gift claimed' : 'Weekly gift ready to open') : 'Weekly gift unlocks after all seven tasks') + '">' +
           '<i><span class="v180-weekly-gift-box" aria-hidden="true">🎁</span></i>' +
           '<span>All done</span><strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
       var revealCta = document.querySelector("#v180-plan-reveal .v180-reveal-primary");
       if (revealCta) {
-        var pendingReward = pendingRewardIndex() != null;
-        var todayComplete = (profile.v180TodaySettled === true || todayCompletedTaskIndex() != null) && !pendingReward;
+        var todayComplete = profile.v180TodaySettled === true || todayCompletedTaskIndex() != null;
         var recommendedIndex = servedTaskIndex();
         var stage = currentStage(recommendedIndex);
         var revealAction = "reveal-start";
@@ -22548,18 +22584,18 @@
         if (done >= 7 && !weeklyRewardClaimed()) {
           revealAction = "claim-weekly";
           revealLabel = value === "free" ? "Claim plan gift" : "Claim weekly gift";
+        } else if (planExpired()) {
+          revealAction = "unlock-expired";
+          revealLabel = "Unlock plan";
         } else if (done >= 7 && planTier() === "free") {
           revealAction = "unlock-full-plan";
           revealLabel = "Unlock full learning plan";
         } else if (done >= 7) {
           revealAction = "explore-more";
           revealLabel = "Explore more";
-        } else if (pendingReward) {
-          revealAction = "reveal-home";
-          revealLabel = "Back to Dino Home";
         } else if (todayComplete) {
-          revealAction = "reveal-close";
-          revealLabel = "Done";
+          revealAction = "reveal-home";
+          revealLabel = "Back to Dino";
         }
         revealCta.dataset.v180Action = revealAction;
         revealCta.textContent = revealLabel;
@@ -22645,6 +22681,7 @@
       var nextTier = value === "max" ? "max" : "pro";
       if (profile.selectedMembershipTier === nextTier) return false;
       profile.selectedMembershipTier = nextTier;
+      // 同步刷新，确保连续点击和触摸往返切换不会被下一帧重排吞掉。
       renderPaywall();
       return false;
     }
@@ -22663,27 +22700,29 @@
             '</div>';
       }
       selector.querySelector(".v180-paywall-kicker")?.remove();
+      // 会员 Tab 由自身容器稳定监听；Paywall 重绘只更新内容，不重复绑定。
       if (!selector.dataset.v180TierBound) {
-        selector.dataset.v180TierBound = "true";
         selector.addEventListener("click", function (event) {
           var button = event.target.closest("[data-v180-offer-tier]");
-          if (button && selector.contains(button)) {
+          if (button) {
             selectOfferTier(button.dataset.v180OfferTier, event);
             return;
           }
           // 将 Tab 背景、中缝与内边距也纳入左右两个可点击热区，避免窄屏点击
           // 命中 tablist 容器后无响应。
           var tabs = event.target.closest(".v180-tier-tabs");
-          if (tabs && selector.contains(tabs)) {
+          if (tabs) {
             var rect = tabs.getBoundingClientRect();
             selectOfferTier(event.clientX < rect.left + rect.width / 2 ? "pro" : "max", event);
           }
         });
         selector.addEventListener("keydown", function (event) {
           var button = event.target.closest("[data-v180-offer-tier]");
-          if (!button || !selector.contains(button) || (event.key !== "Enter" && event.key !== " ")) return;
-          selectOfferTier(button.dataset.v180OfferTier, event);
+          if (button && (event.key === "Enter" || event.key === " ")) {
+            selectOfferTier(button.dataset.v180OfferTier, event);
+          }
         });
+        selector.dataset.v180TierBound = "true";
       }
       var benefits = hero.querySelector(".pwpt-benefits");
       var offerStrip = document.getElementById("v180-offer-strip");
@@ -22801,8 +22840,6 @@
         return;
       }
       var nextTier = selectedOfferTier();
-      var previousTier = tier();
-      var previousPlanTier = planTier();
       var cycle = profile.selectedPlan;
       var normalized = cycle === "half_year" ? "monthly" : cycle;
       profile.v180PurchaseTierPending = nextTier;
@@ -22813,27 +22850,17 @@
       }
       profile.membershipTier = nextTier;
       profile.selectedMembershipTier = nextTier;
-      if (previousTier === "free" || previousPlanTier === nextTier) {
-        profile.v180PlanTier = nextTier;
-        profile.v180ScheduledPlanTier = "";
-        profile.v180PlanRevealSeen = false;
-      } else {
-        profile.v180PlanTier = previousPlanTier;
-        profile.v180ScheduledPlanTier = nextTier;
-        profile.v180PlanRevealSeen = true;
-      }
+      profile.v180PlanTier = nextTier;
+      profile.v180ScheduledPlanTier = "";
+      profile.v180PlanRevealSeen = false;
       profile.maxReachedLevelId = profile.currentLevelId;
       refreshUnlockState();
       enterLandscape();
       showClassHome();
       setHubTab("dino");
       renderAll();
-      if (profile.v180ScheduledPlanTier) {
-        showPayToast(tierName(nextTier) + " is active · your " + tierName(previousPlanTier) + " plan continues this week");
-      } else {
-        showPayToast(tierName(nextTier) + " unlocked 🎉");
-        window.setTimeout(function () { openPlanReveal(true); }, 220);
-      }
+      showPayToast(tierName(nextTier) + " unlocked 🎉");
+      window.setTimeout(function () { openPlanReveal(true); }, 220);
     }
     function restoreSelectedMembership() {
       profile.v180RestoreTierPending = selectedOfferTier();
@@ -22863,35 +22890,25 @@
       var pill = document.querySelector("#screen-membership .ms-plan-pill span");
       if (pill) pill.textContent = tierName(value);
       var title = document.querySelector("#screen-membership .ms-premium-title");
-      if (title) title.textContent = rhythm(value);
+      if (title) title.textContent = "My benefits";
       var list = document.querySelector("#screen-membership .ms-benefits-list");
       if (list) {
-        var benefits = ["Every AI lesson includes After Class Words, Listening and Speaking"];
+        var childName = String(profile.name || "your child").trim() || "your child";
+        var benefits = [
+          (value === "max" ? "5" : "3") + " AI lessons each week",
+          (value === "max" ? "1.7×" : "1×") + " level progress speed",
+          (value === "max" ? "21" : "13") + " unit assessments each year",
+          "Check " + childName + "'s English level",
+          "Access 864 CEFR-aligned lessons",
+          "See " + childName + "'s progress after every lesson",
+          "Let " + childName + " speak, practice, and review anytime"
+        ];
         list.innerHTML = benefits.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
       }
-      var premium = document.querySelector("#screen-membership .ms-premium-card");
       document.getElementById("v180-ms-rhythm")?.remove();
-      if (premium && !document.getElementById("v180-ms-actions")) {
-        var benefitsList = premium.querySelector(".ms-benefits-list");
-        if (benefitsList) benefitsList.insertAdjacentHTML("afterend",
-          '<div class="v180-ms-actions" id="v180-ms-actions">' +
-            '<button type="button" class="v180-ms-plan-btn" data-v180-action="plan">View weekly plan</button>' +
-            '<button type="button" class="v180-ms-upgrade" id="v180-ms-upgrade" data-v180-action="upgrade-max">Upgrade to Max · 5 lessons</button>' +
-          '</div>');
-      }
-      var upgrade = document.getElementById("v180-ms-upgrade");
-      if (upgrade) upgrade.hidden = value !== "pro";
-      var actions = document.getElementById("v180-ms-actions");
-      var changeNote = document.getElementById("v180-ms-change-note");
-      if (!changeNote && actions) {
-        actions.insertAdjacentHTML("afterend", '<div class="v180-ms-change-note" id="v180-ms-change-note" hidden></div>');
-        changeNote = document.getElementById("v180-ms-change-note");
-      }
-      if (changeNote) {
-        var scheduled = profile.v180ScheduledPlanTier;
-        changeNote.hidden = scheduled !== "pro" && scheduled !== "max";
-        if (!changeNote.hidden) changeNote.innerHTML = '<strong>' + esc(tierName(scheduled)) + ' plan starts next week</strong>Your current ' + esc(tierName(planTier())) + ' plan will not be rearranged.';
-      }
+      document.getElementById("v180-ms-upgrade")?.remove();
+      document.getElementById("v180-ms-actions")?.remove();
+      document.getElementById("v180-ms-change-note")?.remove();
       var profileValue = document.getElementById("profile-membership-value");
       if (profileValue) profileValue.textContent = value === "free" ? "Free" : value === "max" ? "Max" : "Pro";
     }
@@ -22900,8 +22917,10 @@
       var next = value === "expired" ? "expired" : value === "max" ? "max" : value === "pro" ? "pro" : "free";
       var previous = tier();
       if (next === "expired") {
+        var expiredPlanTier = profile.v180PlanTier === "max" || profile.membershipTier === "max" ? "max" : "pro";
         setMembershipReviewState("subscription_expired");
-        profile.membershipTier = "free";
+        profile.membershipTier = expiredPlanTier;
+        profile.selectedMembershipTier = expiredPlanTier;
       } else if (next === "free") {
         setMembershipReviewState("free");
         profile.membershipTier = "free";
@@ -22910,7 +22929,7 @@
         profile.membershipTier = next;
         profile.selectedMembershipTier = next;
       }
-      profile.v180PlanTier = next === "expired" ? "free" : next;
+      profile.v180PlanTier = next === "expired" ? profile.membershipTier : next;
       profile.v180ScheduledPlanTier = "";
       if (previous !== next) profile.v180PlanRevealSeen = false;
       refreshUnlockState();
@@ -22919,18 +22938,15 @@
       else maybeAutoRevealPlan();
     }
     function setScheduledPlanChange(current, next) {
-      setTier(current, { reveal: false });
-      profile.v180PlanTier = current;
-      profile.v180ScheduledPlanTier = next;
       if (current === "pro" && next === "max") {
-        setMembershipReviewState("subscription");
-        profile.membershipTier = "max";
+        setTier("max", { reveal: false });
+        profile.v180ScheduledPlanTier = "";
       } else {
-        setMembershipReviewState("subscription");
-        profile.membershipTier = current;
+        setTier("max", { reveal: false });
+        profile.v180PlanTier = "max";
+        profile.v180ScheduledPlanTier = "pro";
       }
       profile.selectedMembershipTier = next;
-      profile.v180PlanRevealSeen = true;
       refreshUnlockState();
       enterLandscape();
       openMembership();
@@ -23006,8 +23022,6 @@
     openPaywall = function (returnScreen, triggerSource, presetTier) {
       if (presetTier === "pro" || presetTier === "max") {
         profile.selectedMembershipTier = presetTier;
-      } else if (triggerSource === "membership_upgrade") {
-        profile.selectedMembershipTier = "max";
       } else if (triggerSource !== "study_plan") {
         // A generic membership entry has no upstream plan choice, so it always
         // opens on Pro. Study-plan entry preserves the choice made one screen back.
@@ -23090,7 +23104,6 @@
         welcomeReward.open("entry");
       }
       else if (name === "current") openCurrentTask();
-      else if (name === "claim-task") claimTaskReward();
       else if (name === "plan") openWeeklyPlan();
       else if (name === "chat") document.querySelector("#hub-panel-dino .dino-chat-pill")?.click();
       else if (name === "plan-back") { showClassHome(); setHubTab("dino"); }
@@ -23099,6 +23112,7 @@
       else if (name === "reveal-home") { closePlanReveal(); showClassHome(); setHubTab("dino"); }
       else if (name === "claim-weekly") claimWeeklyReward();
       else if (name === "unlock-full-plan") { closePlanReveal(); openPaywall("screen-class", "weekly_plan_complete", "pro"); }
+      else if (name === "unlock-expired") { closePlanReveal(); openPaywall("screen-class", "expired_plan", planTier()); }
       else if (name === "explore-more") { closePlanReveal(); showClassHome(); setHubTab("practice"); }
       else if (name === "confirm-purchase") {
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
@@ -23107,10 +23121,6 @@
       else if (name === "cancel-purchase") {
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
         handleV180PaymentCancel();
-      }
-      else if (name === "upgrade-max") {
-        profile.selectedMembershipTier = "max";
-        openPaywall("screen-membership", "membership_upgrade", "max");
       }
     }, true);
     document.addEventListener("keydown", function (event) {
