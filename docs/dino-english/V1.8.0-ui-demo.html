@@ -18392,6 +18392,17 @@
         sync();
       }
 
+      function openCorePage(key) {
+        for (var i = 0; i < corePages.length; i++) {
+          if (corePages[i].key !== key) continue;
+          beforeJump();
+          if (corePages[i].run) corePages[i].run();
+          setTimeout(render, 60);
+          return true;
+        }
+        return false;
+      }
+
       toggleBtn.addEventListener("click", function () { panel.classList.toggle("open"); });
       body.addEventListener("click", function (e) {
         var seg = e.target.closest("[data-sp-group]");
@@ -18408,11 +18419,7 @@
         var core = e.target.closest("[data-sp-core]");
         if (core) {
           var corePage = corePages[+core.dataset.spCore];
-          if (corePage && corePage.run) {
-            beforeJump();
-            corePage.run();
-            setTimeout(render, 60);
-          }
+          if (corePage) openCorePage(corePage.key);
           return;
         }
         var jumpReward = e.target.closest("[data-sp-jumpreward]");
@@ -18435,7 +18442,7 @@
       });
 
       render();
-      return { render: render, sync: sync, panel: panel };
+      return { render: render, sync: sync, panel: panel, openCorePage: openCorePage };
     }
     global.mountStatePanel = mountStatePanel;
   })(window);
@@ -23205,10 +23212,41 @@
     window.v180RenderPaywall = renderPaywall;
     window.v180RenderAll = renderAll;
 
+    function openLinkedV180Page() {
+      var params = new URLSearchParams(window.location.search);
+      var pageKey = params.get("v180Page");
+      var supportedPages = ["study_plan", "membership_choice", "membership", "dino_home", "full_plan"];
+      if (supportedPages.indexOf(pageKey) === -1 || !window.demoStatePanel?.openCorePage) return false;
+
+      var requestedTier = params.get("v180Tier");
+      var tierValue = ["free", "pro", "max", "expired"].indexOf(requestedTier) !== -1 ? requestedTier : "pro";
+      var requestedState = params.get("v180State");
+      var supportedStates = ["lesson_ready", "lesson_in_progress", "lesson_complete_practice", "practice_available", "day4_backlog", "explore", "historical_explore", "starter_carryover", "today_complete", "week_reward_ready", "week_complete"];
+      var stateValue = supportedStates.indexOf(requestedState) !== -1 ? requestedState : "lesson_ready";
+
+      if (pageKey === "study_plan") return window.demoStatePanel.openCorePage(pageKey);
+
+      if (pageKey === "membership_choice") {
+        window.demoStatePanel.openCorePage(pageKey);
+        profile.selectedMembershipTier = tierValue === "max" ? "max" : "pro";
+        window.requestAnimationFrame(renderPaywall);
+        return true;
+      }
+
+      setTier(tierValue, { reveal: false });
+      profile.v180PlanRevealSeen = true;
+      document.getElementById("v180-plan-reveal")?.classList.remove("show");
+      if (pageKey === "dino_home" || pageKey === "full_plan") setTaskReviewState(stateValue);
+      if (pageKey !== "full_plan") document.getElementById("v180-plan-reveal")?.classList.remove("show");
+      return window.demoStatePanel.openCorePage(pageKey);
+    }
+    window.v180OpenLinkedPage = openLinkedV180Page;
+
     if (!profile.premiumUnlocked) profile.membershipTier = "free";
     else if (profile.membershipTier !== "max") profile.membershipTier = "pro";
     renderAll();
     maybeAutoRevealPlan();
+    window.requestAnimationFrame(openLinkedV180Page);
   })();
   </script>
 </body>
