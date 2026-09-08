@@ -10397,7 +10397,7 @@
     // placementLevelId = the level the learner was originally placed into. Levels
     // BELOW it were skipped at placement (never studied) so they read as "not started",
     // not "completed". currentLevelId moves up as the learner progresses / levels up.
-    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180TodayCompletedTaskIndex: null, v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveLessonTaskIndex: null, v180ActiveExploreTaskIndex: null, v180TaskStates: [], v180TaskTier: "free", v180PlanTier: "free", v180ScheduledPlanTier: "", v180TodayIndex: 0, v180ServedTaskIndex: null, v180TodaySettled: false, v180PlanEnded: false, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
+    const profile = { learner: "child", name: "", age: "", ageDataValue: "", avatarSrc: "assets/profile/avatar.png", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [], teacherId: "kim", teacherChosen: false, hasStartedClass: false, trialInProgress: false, trialReportShown: false, trialTakenLevelId: null, trialDoneLevels: [], homeGuideShown: false, skipOnboarding: false, profileComplete: false, premiumUnlocked: false, membershipSource: "free", membershipTier: "free", hasSubscriptionOrder: false, effectiveAccessEnd: "", bonusAccessEnd: "", autoRenew: false, selectedPlan: "annual", selectedMembershipTier: "pro", nextBillingDate: "", placementLevelId: "level-2", maxReachedLevelId: "level-2", currentLevelId: "level-2", currentUnitId: "unit-1", currentLessonId: "lesson-1", weekDoneCount: 0, weekCycleStartAt: new Date().toISOString(), v180CompletedTasks: 0, v180TaskStage: "lesson", v180AfterClassRemaining: 3, v180AfterClassCompleted: [], v180AfterClassCourseKey: "", v180ActiveLessonTaskIndex: null, v180ActiveExploreTaskIndex: null, v180TaskStates: [], v180TaskTier: "free", v180PlanTier: "free", v180ScheduledPlanTier: "", v180TodayIndex: 0, v180PlanEnded: false, v180PlanRevealSeen: false, contactPhone: "", phoneVerificationStatus: "none" };
     // Version boundary: V1.5.1 owns active course level-up/down and the expanded
     // Play question types. The V1.4.2 A-flow build uses this same stable baseline
     // with both capabilities disabled, so the two demos cannot drift logically.
@@ -13310,8 +13310,8 @@
         showLessonComplete(true);
         return;
       }
-      // V1.8.0：首页学习计划进入的 AI 课，完课后只推进到同一任务的
-      // After Class 阶段；整项任务要等 Words / Listening / Speaking 完成后才结算。
+      // V1.8.0：首页学习计划进入的 AI 课完课即结算计划节点；
+      // Words / Listening / Speaking 作为课后 Practice 单独记录。
       if (inclassEntrySource === "v180-home-plan") {
         window.v180CompleteLessonStage?.();
       }
@@ -18806,8 +18806,8 @@
           profile.selectedMembershipTier = v === "max" ? "max" : "pro";
           window.v180RenderPaywall && window.v180RenderPaywall();
         } },
-      { key: "v180Task", label: "V1.8.0 当前任务阶段",
-        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "Explore 日 · 历史欠课优先"], ["after_class", "课后练习 · Continue"], ["after_class_last", "课后练习 · 剩 1 项"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 任意入口补做"], ["starter_carryover", "Free · 第 8 天继续原计划"], ["today_complete", "今日任务已完成"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
+      { key: "v180Task", label: "V1.8.0 学习任务池",
+        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "第 2 天 · 历史课程优先"], ["day4_backlog", "第 4 天 · 课程优先队列"], ["practice_available", "Lesson 完成 · 课程内 Practice"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 按日期推荐"], ["starter_carryover", "Free · 第 8 天继续原计划"], ["today_complete", "到期任务完成 · 保留最后一项"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
         apply: function (v) {
           window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
         } },
@@ -19175,22 +19175,22 @@
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑦ 课后练习待完成", run: withReviewProfile(function () {
+      { label: "⑦ Lesson 已完成 · 课程内 Practice", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
-          window.v180SetTaskReviewState && window.v180SetTaskReviewState("after_class");
-          window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("practice_available");
+          enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
       { label: "⑧ Explore 练习日", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("explore");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑨ Explore 日 · 历史欠课优先", run: withReviewProfile(function () {
+      { label: "⑨ Pro 第 4 天 · 课程优先队列", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
-          window.v180SetTaskReviewState && window.v180SetTaskReviewState("overdue_course");
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState("day4_backlog");
           enterLandscape(); showClassHome(); setHubTab("dino");
         }) },
-      { label: "⑩ 历史 Explore · 任意入口补做", run: withReviewProfile(function () {
+      { label: "⑩ 历史 Explore · 按日期推荐", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("historical_explore");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
@@ -21178,8 +21178,8 @@
     .v180-task-main-copy small{display:block;font-size:.54rem;opacity:.86;margin-top:1px}
     .v180-task-chevron{font-size:1.15rem;line-height:1}
     .v180-task-done .v180-task-main{background:linear-gradient(180deg,#54dba7,#25b77d);box-shadow:0 5px 0 #11835a}
-    /* V1.8.0 revised first level: one Today card with two independent tasks.
-       The full seven-day schedule lives behind the weekly-plan link. */
+    /* V1.8.0 first level: one highlighted plan task in Today’s learning.
+       A completed course can keep Lesson and Practice as actions on one card. */
     .v180-task-count{display:inline-flex;align-items:center;gap:6px;text-transform:none;letter-spacing:0}
     .v180-task-count.has-reward{position:relative}
     .v180-task-count.has-reward::after{content:"";position:absolute;right:-2px;top:-2px;width:8px;height:8px;border:2px solid #fff;border-radius:50%;background:#ff4e48;box-shadow:0 2px 5px rgba(129,24,20,.22)}
@@ -21220,7 +21220,6 @@
     .v180-today-task.is-plan-locked{border-color:#c8d2df;background:linear-gradient(155deg,#f8fafc,#e8edf4);box-shadow:none}
     .v180-today-task.is-plan-locked .v180-today-task-copy small::before{content:"🔒 ";letter-spacing:0}
     .v180-today-task.is-plan-locked .v180-today-task-status{background:linear-gradient(180deg,#ff9e39,var(--v180-orange));color:#fff;box-shadow:0 3px 0 #c85a0b}
-    .v180-plan-expired{margin-left:5px;padding:2px 6px;border-radius:999px;background:#eef1f5;color:#7a8798;font-size:.48rem;letter-spacing:.03em}
     .v180-today-task.v180-check-only{min-height:58px;grid-template-columns:1fr;place-items:center;padding:8px}
     .v180-today-task.v180-check-only .v180-today-task-status{width:34px;height:34px;min-width:34px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:1rem}
     .v180-mission-reward{
@@ -21412,9 +21411,6 @@
     #screen-class .v180-home-plan-panel .v180-home-week{padding:12px 14px 14px}
     #screen-class .v180-home-plan-panel .v180-today-list{grid-template-columns:1fr;gap:8px}
     #screen-class .v180-home-plan-panel .v180-today-task{min-height:72px;grid-template-columns:minmax(0,1fr) auto;column-gap:10px;padding:8px 10px;border-radius:17px}
-    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete{grid-template-columns:1fr;gap:7px}
-    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete .v180-task-side{width:100%;align-items:stretch}
-    #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete .v180-today-task-status{width:100%;white-space:nowrap}
     #screen-class .v180-home-plan-panel .v180-today-task-icon{width:38px;height:38px;border-radius:14px;font-size:1.12rem}
     #screen-class .v180-home-plan-panel .v180-today-task-copy strong{font-size:.72rem}
     #screen-class .v180-home-plan-panel .v180-checkin-strip{
@@ -21434,11 +21430,19 @@
     #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{
       width:30px;height:30px;min-width:30px;padding:0;display:grid;place-items:center;border-radius:50%;font-size:.82rem;
     }
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress{
-      min-height:96px;grid-template-rows:auto 32px;align-items:center;row-gap:6px
+    #screen-class .v180-home-plan-panel .v180-today-task.has-course-practice{row-gap:7px}
+    #screen-class .v180-home-plan-panel .v180-course-followup{border-color:#8eddb9;background:linear-gradient(155deg,#f7fffb,#e8f8f0)}
+    .v180-course-practice{
+      grid-column:1/-1;min-height:39px;display:grid;grid-template-columns:27px minmax(0,1fr) auto;align-items:center;gap:7px;
+      padding:5px 7px;border:1px solid #bcd7fa;border-radius:12px;background:#edf5ff;color:#294d84;text-align:left;
     }
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-task-side{grid-row:1;grid-column:2}
-    #screen-class .v180-home-plan-panel .v180-today-task.has-progress > .v180-learning-progress{grid-column:1 / 3}
+    button.v180-course-practice{appearance:none;width:100%;font-family:inherit;cursor:pointer;box-shadow:0 3px 7px rgba(30,74,137,.08)}
+    button.v180-course-practice:active{transform:translateY(2px);box-shadow:0 1px 4px rgba(30,74,137,.1)}
+    .v180-course-practice-icon{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:rgba(255,255,255,.85);font-size:.7rem;box-shadow:inset 0 0 0 1px rgba(83,115,164,.13)}
+    .v180-course-practice-copy{min-width:0}
+    .v180-course-practice-copy strong{display:block;font-size:.5rem;line-height:1.05}
+    .v180-course-practice-copy small{display:block;margin-top:2px;font-size:.38rem;font-weight:800;line-height:1.05;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.78}
+    .v180-course-practice-action{width:27px;height:27px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#2459b5;font-size:.72rem;font-weight:900;box-shadow:inset 0 0 0 1px #bcd7fa}
     #screen-class .v180-task-proof{
       align-self:start;justify-self:end;max-width:88px;padding:4px 7px;border-radius:999px;background:#edf4ff;
       color:#58739b;font-size:.42rem;font-weight:900;line-height:1.1;text-align:center;white-space:nowrap
@@ -21453,20 +21457,6 @@
     @media (prefers-reduced-motion:reduce){
       #screen-class .v180-home-plan-panel .v180-today-task.is-current-task{animation:none}
     }
-    /* A daily learning task only tracks Lesson → Practice. Rewards settle at the
-       weekly-plan gift, so no per-task gift node is reserved here. */
-    .v180-learning-progress{
-      grid-column:2 / 4;grid-row:2;min-width:0;display:grid;grid-template-columns:auto minmax(10px,1fr) auto;
-      align-items:center;gap:4px;color:#71839d
-    }
-    .v180-progress-step{min-width:32px;display:flex;flex-direction:column;align-items:center;gap:2px;font-style:normal;font-size:.42rem;font-weight:900;line-height:1}
-    .v180-progress-step i{width:20px;height:20px;display:grid;place-items:center;border:2px solid #cbd9eb;border-radius:8px;background:#edf3fb;color:#6f83a2;font-size:.58rem;font-style:normal;box-shadow:inset 0 2px 0 rgba(255,255,255,.82)}
-    .v180-progress-step.is-current{color:#b65d0d}
-    .v180-progress-step.is-current i{border-color:#ff9b39;background:linear-gradient(155deg,#fff4ce,#ffc95c);color:#8f4a08;box-shadow:0 0 0 3px rgba(254,136,32,.12)}
-    .v180-progress-step.is-done{color:#16835b}
-    .v180-progress-step.is-done i{border-color:#63cf9e;background:#dff8ea;color:#147451}
-    .v180-progress-rail{height:4px;border-radius:999px;background:#dce6f3;box-shadow:inset 0 1px 2px rgba(31,73,132,.1)}
-    .v180-progress-rail.is-filled{background:linear-gradient(90deg,#4fd49b,#7be0ba)}
     /* The welcome-gift calendar is reached through today's reward strip on Dino home,
        not through a second floating global entry. */
     #screen-class .visit-reward-entry{display:none !important}
@@ -21507,7 +21497,6 @@
       #screen-class .v180-home-plan-panel .v180-home-week{padding:6px 7px 7px}
       #screen-class .v180-home-plan-panel .v180-today-list{gap:4px}
       #screen-class .v180-home-plan-panel .v180-today-task{min-height:43px;grid-template-columns:minmax(0,1fr) auto;column-gap:5px;padding:4px 5px;border-radius:10px}
-      #screen-class .v180-home-plan-panel .v180-today-task.is-starter-complete{grid-template-columns:1fr;gap:3px}
       #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only{min-height:36px;grid-template-columns:1fr;padding:3px}
       #screen-class .v180-home-plan-panel .v180-today-task.v180-check-only .v180-today-task-status{width:23px;height:23px;min-width:23px;font-size:.66rem}
       #screen-class .v180-home-plan-panel .v180-today-task-icon{width:25px;height:25px;border-radius:9px;font-size:.72rem}
@@ -21520,14 +21509,14 @@
       #screen-class .v180-home-plan-panel .v180-checkin-strip .v180-today-task-status{min-width:29px;padding:3px 4px;font-size:.29rem}
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done{min-height:28px}
       #screen-class .v180-home-plan-panel .v180-checkin-strip.is-done .v180-today-task-status{width:19px;height:19px;min-width:19px;padding:0;font-size:.52rem}
-      #screen-class .v180-home-plan-panel .v180-today-task.has-progress{min-height:61px;grid-template-rows:auto 20px;row-gap:2px}
+      #screen-class .v180-home-plan-panel .v180-today-task.has-course-practice{row-gap:4px}
+      .v180-course-practice{min-height:25px;grid-template-columns:17px minmax(0,1fr) auto;gap:4px;padding:3px 4px;border-radius:8px}
+      .v180-course-practice-icon{width:17px;height:17px;border-radius:6px;font-size:.42rem}
+      .v180-course-practice-copy strong{font-size:.31rem}
+      .v180-course-practice-copy small{margin-top:1px;font-size:.23rem}
+      .v180-course-practice-action{width:17px;height:17px;font-size:.46rem}
       #screen-class .v180-task-side{gap:2px}
       #screen-class .v180-task-proof{max-width:58px;padding:2px 4px;font-size:.27rem}
-      .v180-learning-progress{gap:2px}
-      .v180-progress-step{min-width:20px;gap:1px;font-size:.27rem}
-      .v180-progress-step i{width:13px;height:13px;border-width:1px;border-radius:5px;font-size:.36rem}
-      .v180-progress-step.is-current i{box-shadow:0 0 0 2px rgba(254,136,32,.12)}
-      .v180-progress-rail{height:2px}
       .v180-mission-reward-card{min-width:190px;padding:13px 17px 12px;border-width:3px;border-radius:20px}
       .v180-mission-reward-card img{width:43px;height:43px;margin-bottom:4px}
       .v180-mission-reward-card h3{font-size:.92rem}
@@ -21562,9 +21551,6 @@
     }
     .v180-plan-heading h1{margin:0;font-family:var(--font-display,Quicksand,sans-serif);font-size:1.45rem;font-weight:900}
     .v180-plan-heading p{margin:3px 0 0;color:#c9dcff;font-size:.76rem;font-weight:700}
-    .v180-plan-progress{display:flex;align-items:center;gap:10px;background:rgba(6,22,56,.52);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:8px 12px}
-    .v180-progress-stars{color:#ffd66b;font-size:.9rem;letter-spacing:1px}
-    .v180-plan-progress b{font-size:.76rem}
     .v180-route-wrap{position:relative;flex:1;min-height:0;margin-top:8px;padding:8px 6px 8px 112px}
     .v180-route-svg{display:none}
     .v180-route-line{fill:none;stroke:rgba(160,203,255,.35);stroke-width:15;stroke-linecap:round;stroke-dasharray:2 27}
@@ -21615,9 +21601,6 @@
       .v180-plan-back{width:38px;height:38px;border-radius:13px;font-size:1.2rem}
       .v180-plan-heading h1{font-size:1rem;line-height:1.05}
       .v180-plan-heading p{font-size:.56rem;line-height:1.15;margin-top:2px;white-space:nowrap}
-      .v180-plan-progress{gap:5px;padding:6px 9px}
-      .v180-progress-stars{display:none}
-      .v180-plan-progress b{font-size:.58rem;white-space:nowrap}
       .v180-route-wrap{margin-top:2px;padding:4px 0 3px}
       #v180-plan-nodes{gap:5px}
       .v180-plan-node{min-height:0;height:100%;grid-template-columns:34px minmax(0,1fr);gap:1px 5px;border-width:1.5px;border-radius:13px;padding:4px 6px}
@@ -21638,17 +21621,17 @@
     }
     .v180-reveal.show{display:flex}
     .v180-reveal-card{
-      box-sizing:border-box;width:min(780px,calc(100% - 28px));max-height:calc(100% - 8px);border-radius:34px;padding:25px 30px 22px;text-align:center;position:relative;overflow:hidden;
+      box-sizing:border-box;width:min(780px,calc(100% - 28px));max-height:calc(100% - 8px);border-radius:34px;padding:18px 26px 15px;text-align:center;position:relative;overflow:hidden;
       background:linear-gradient(165deg,#fff 0%,#f2f8ff 62%,#eef3ff 100%);color:var(--v180-ink);
       border:4px solid rgba(255,255,255,.92);box-shadow:0 30px 80px rgba(0,0,0,.34),inset 0 -5px 0 #dbe7f7;
     }
     .v180-reveal-card::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:#dff5ff;right:-90px;top:-95px}
     .v180-reveal-badge{position:relative;display:inline-flex;align-items:center;gap:7px;background:#e7f1ff;color:#215bb7;border-radius:999px;padding:6px 11px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
-    .v180-reveal h2{position:relative;margin:10px 0 5px;font-family:var(--font-display,Quicksand,sans-serif);font-size:1.65rem;line-height:1.1}
+    .v180-reveal h2{position:relative;margin:7px 0 4px;font-family:var(--font-display,Quicksand,sans-serif);font-size:1.45rem;line-height:1.1}
     .v180-reveal-copy{position:relative;margin:0 auto;max-width:600px;color:#637692;font-size:.72rem;line-height:1.4;font-weight:700}
     .v180-reveal-copy strong{display:block;color:#2459ba;font-family:var(--font-display,Quicksand,sans-serif);font-size:.94rem;line-height:1.25;font-weight:700}
     .v180-reveal-proof{position:relative;margin:7px auto 0;color:#53739f;font-size:.58rem;font-weight:900}
-    .v180-reveal-path{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:start;justify-content:center;gap:8px;width:100%;max-width:720px;margin:20px auto 17px;padding:0 18px}
+    .v180-reveal-path{position:relative;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:start;justify-content:center;gap:8px;width:100%;max-width:720px;margin:12px auto 11px;padding:0 18px}
     .v180-reveal-path::before{content:"";position:absolute;left:6%;right:6%;top:31px;height:6px;border-radius:999px;background:repeating-linear-gradient(90deg,#b6cff2 0 9px,transparent 9px 16px)}
     .v180-reveal-mini{appearance:none;position:relative;z-index:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;border:0;background:transparent;font-family:inherit;font-size:.55rem;font-weight:900;color:#607596;cursor:pointer}
     .v180-reveal-mini:disabled{cursor:default}
@@ -21666,7 +21649,12 @@
     .v180-reveal-mini.is-done i::after{position:absolute;right:4px;top:4px;min-width:19px;height:19px;padding:0 4px;border:2px solid #fff;border-radius:999px;display:grid;place-items:center;color:#fff;font-size:.52rem;font-weight:900;line-height:1;box-shadow:0 3px 7px rgba(24,63,111,.22)}
     .v180-reveal-mini.is-done i::after{content:"✓";background:#22b87c}
     .v180-reveal-mini.is-done i{border-color:#78d8ad;box-shadow:0 0 0 3px rgba(34,184,124,.13),0 7px 13px rgba(32,78,142,.13)}
+    .v180-reveal-mini > .v180-reveal-practice{
+      min-height:auto;margin-top:-1px;padding:2px 6px;border-radius:999px;background:#e7f1ff;color:#2459b5;
+      font-size:.4rem;font-weight:900;line-height:1.1;text-transform:none;letter-spacing:0;box-shadow:inset 0 0 0 1px #bcd7fa;
+    }
     .v180-reveal-mini.is-current i{border-color:#ff9b39;box-shadow:0 0 0 4px rgba(254,136,32,.14),0 9px 16px rgba(155,78,7,.2);animation:v180-current-pulse 1.8s ease-in-out infinite}
+    @media (prefers-reduced-motion:reduce){.v180-reveal-mini.is-current i{animation:none}}
     .v180-reveal-mini.is-today i{border-color:#6fa7f1;box-shadow:0 0 0 3px rgba(54,113,211,.12),0 7px 13px rgba(32,78,142,.13)}
     .v180-reveal-mini.is-available i{border-color:#7aaef1}
     .v180-reveal-mini.is-future{opacity:.62}
@@ -21676,7 +21664,7 @@
     .v180-reveal-mini.is-done.is-locked i::after{right:auto;left:4px}
     .v180-reveal-mini.is-weekly-gift.is-done i{background:linear-gradient(155deg,#e0faed,#9de5c6);border-color:#63cf9e;box-shadow:0 7px 16px rgba(20,120,80,.18);animation:none}
     .v180-reveal-actions{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
-    .v180-reveal-primary{min-width:250px;min-height:52px;border:0;border-radius:18px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 6px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.92rem;font-weight:900;cursor:pointer}
+    .v180-reveal-primary{min-width:250px;min-height:46px;border:0;border-radius:18px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 6px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.92rem;font-weight:900;cursor:pointer}
     .v180-reveal-primary:active{transform:translateY(3px);box-shadow:0 3px 0 #c85a0b}
     .v180-reveal-close{position:absolute;right:16px;top:14px;z-index:2;width:42px;height:42px;border:0;border-radius:15px;background:#edf3fb;color:#5b6d87;font-size:1.2rem;font-weight:900;cursor:pointer}
     @container iphone16 (max-width:700px){
@@ -21696,6 +21684,7 @@
       .v180-weekly-gift-box{font-size:1.35rem}
       .v180-reveal-mini.is-done i::after,
       .v180-reveal-mini.is-current i::after{right:2px;top:2px;min-width:13px;height:13px;padding:0 2px;border-width:1px;font-size:.35rem}
+      .v180-reveal-mini > .v180-reveal-practice{padding:1px 4px;font-size:.27rem}
       .v180-reveal-mini.is-current i::after{font-size:.25rem}
       .v180-reveal-mini > span{font-size:.35rem}
       .v180-reveal-mini strong{max-width:58px;min-height:2.1em;font-size:.32rem;line-height:1}
@@ -21884,9 +21873,9 @@
       return "3 free lessons · 4 Explore days";
     }
     function planValueCopy(value) {
-      if (value === "max") return "Build English skills faster with 5 guided learning days and 2 Explore days every week.";
-      if (value === "pro") return "Build a steady English habit with 3 guided learning days and 4 Explore days every week.";
-      return "Try Dino’s complete learning rhythm with 3 free lessons and 4 Explore days.";
+      if (value === "max") return "Learn 5 days · Practice every day · Progress every week";
+      if (value === "pro") return "Learn 3 days · Practice 4 days · Progress every week";
+      return "Free this week. English every day. Start speaking now!";
     }
     function stableSocialProof(range, key) {
       var min = Number(range && range[0]);
@@ -21933,18 +21922,12 @@
     }
     function emptyTaskState(task) {
       return task && task.kind === "lesson"
-        ? { lessonStarted: false, lessonDone: false, practiceDone: false, practices: [] }
-        : { exploreDone: false };
+        ? { lessonStarted: false, lessonDone: false, lessonCompletedAt: 0, practiceDone: false, practices: [] }
+        : { exploreDone: false, exploreCompletedAt: 0 };
     }
     function taskState(index) {
       ensureTaskStates();
       return profile.v180TaskStates[index] || null;
-    }
-    function taskFullyDone(index) {
-      var task = tasks()[index];
-      var state = profile.v180TaskStates[index];
-      if (!task || !state) return false;
-      return task.kind === "lesson" ? !!(state.lessonDone && state.practiceDone) : !!state.exploreDone;
     }
     function ensureTaskStates() {
       var value = planTier();
@@ -21953,8 +21936,6 @@
         profile.v180TaskTier = value;
         profile.v180TaskStates = plan.map(emptyTaskState);
         profile.v180TodayIndex = 0;
-        profile.v180ServedTaskIndex = null;
-        profile.v180TodaySettled = false;
         profile.v180PlanEnded = false;
         profile.v180ActiveLessonTaskIndex = null;
         profile.v180ActiveExploreTaskIndex = null;
@@ -21966,6 +21947,7 @@
         if (task.kind === "lesson") {
           safe.lessonStarted = safe.lessonStarted === true || safe.lessonDone === true;
           safe.lessonDone = safe.lessonDone === true;
+          safe.lessonCompletedAt = Math.max(0, Number(safe.lessonCompletedAt) || 0);
           safe.practiceDone = safe.practiceDone === true;
           safe.practices = Array.isArray(safe.practices) ? safe.practices.filter(function (name, position, list) {
             return V180_AFTER_CLASS_TYPES.indexOf(name) !== -1 && list.indexOf(name) === position;
@@ -21973,6 +21955,7 @@
           if (safe.practices.length >= V180_AFTER_CLASS_TYPES.length) safe.practiceDone = true;
         } else {
           safe.exploreDone = safe.exploreDone === true;
+          safe.exploreCompletedAt = Math.max(0, Number(safe.exploreCompletedAt) || 0);
         }
         return safe;
       });
@@ -21981,7 +21964,7 @@
     function taskFullyDoneUnsafe(index) {
       var task = tasks()[index];
       var state = profile.v180TaskStates[index];
-      return !!(task && state && (task.kind === "lesson" ? state.lessonDone && state.practiceDone : state.exploreDone));
+      return !!(task && state && (task.kind === "lesson" ? state.lessonDone : state.exploreDone));
     }
     function routeNodeDoneUnsafe(index) {
       var task = tasks()[index];
@@ -21992,34 +21975,41 @@
       ensureTaskStates();
       return profile.v180TaskStates.filter(function (_, index) { return routeNodeDoneUnsafe(index); }).length;
     }
-    function earliestOverdueCourseIndex() {
+    function earliestDueCourseIndex() {
       ensureTaskStates();
-      for (var index = 0; index < todayIndex(); index += 1) {
+      for (var index = 0; index <= todayIndex(); index += 1) {
         if (tasks()[index].kind === "lesson" && !profile.v180TaskStates[index].lessonDone) return index;
       }
       return null;
     }
-    function earliestOpenedIncompleteTaskIndex() {
+    function earliestDueExploreIndex() {
       ensureTaskStates();
       for (var index = 0; index <= todayIndex(); index += 1) {
-        if (!routeNodeDoneUnsafe(index)) return index;
+        if (tasks()[index].kind === "explore" && !profile.v180TaskStates[index].exploreDone) return index;
       }
       return null;
     }
     function servedTaskIndex() {
       ensureTaskStates();
-      var rawStored = profile.v180ServedTaskIndex;
-      var stored = Number(rawStored);
-      if (rawStored != null && rawStored !== "" && Number.isInteger(stored) && stored >= 0 && stored < tasks().length) return stored;
-      var overdue = earliestOverdueCourseIndex();
-      var fallback = profile.v180PlanEnded === true ? earliestOpenedIncompleteTaskIndex() : todayIndex();
-      profile.v180ServedTaskIndex = overdue == null ? fallback : overdue;
-      return profile.v180ServedTaskIndex;
+      var course = earliestDueCourseIndex();
+      if (course != null) return course;
+      return earliestDueExploreIndex();
     }
-    function todayCompletedTaskIndex() {
+    function latestCompletedDueTaskIndex() {
       ensureTaskStates();
-      var index = servedTaskIndex();
-      return taskFullyDoneUnsafe(index) ? index : null;
+      var selected = null;
+      var selectedAt = -1;
+      for (var index = 0; index <= todayIndex(); index += 1) {
+        if (!routeNodeDoneUnsafe(index)) continue;
+        var task = tasks()[index];
+        var state = profile.v180TaskStates[index];
+        var completedAt = Number(task.kind === "lesson" ? state.lessonCompletedAt : state.exploreCompletedAt) || index + 1;
+        if (selected == null || completedAt > selectedAt || (completedAt === selectedAt && index > selected)) {
+          selected = index;
+          selectedAt = completedAt;
+        }
+      }
+      return selected;
     }
     function weeklyRewardClaimed() {
       return profile.v180WeeklyRewardClaimed === true;
@@ -22028,7 +22018,7 @@
       ensureTaskStates();
       return routeNodeDoneUnsafe(index);
     }
-    function completeTask(index, closesToday) {
+    function completeTask(index) {
       ensureTaskStates();
       var task = tasks()[index];
       var state = profile.v180TaskStates[index];
@@ -22036,12 +22026,12 @@
       if (task.kind === "lesson") {
         state.lessonStarted = true;
         state.lessonDone = true;
-        state.practiceDone = true;
-        state.practices = V180_AFTER_CLASS_TYPES.slice();
+        state.lessonCompletedAt = state.lessonCompletedAt || Date.now();
+        if (Number(profile.v180ActiveLessonTaskIndex) === index) profile.v180ActiveLessonTaskIndex = null;
       } else {
         state.exploreDone = true;
+        state.exploreCompletedAt = state.exploreCompletedAt || Date.now();
       }
-      if (closesToday === true || index === servedTaskIndex()) profile.v180TodaySettled = true;
       profile.v180CompletedTasks = completedCount();
       if (profile.v180CompletedTasks >= 7) profile.v180WeeklyRewardClaimed = false;
       return true;
@@ -22064,7 +22054,7 @@
       if (!task || !state) return "complete";
       if (taskFullyDoneUnsafe(taskIndex)) return "complete";
       if (task.kind === "explore") return "explore";
-      return state.lessonDone ? "after_class" : "lesson";
+      return "lesson";
     }
     function afterClassCompletedItems(index) {
       var taskIndex = index == null ? Number(profile.v180ActiveLessonTaskIndex) : Number(index);
@@ -22075,17 +22065,29 @@
     function afterClassRemaining(index) {
       return Math.max(0, V180_AFTER_CLASS_TYPES.length - afterClassCompletedItems(index).length);
     }
-    function afterClassTaskIndex() {
-      var active = Number(profile.v180ActiveLessonTaskIndex);
-      if (Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson") return active;
-      var served = servedTaskIndex();
-      if (tasks()[served] && tasks()[served].kind === "lesson") return served;
+    function latestPendingPracticeIndex() {
+      ensureTaskStates();
+      var selected = null;
+      var selectedAt = -1;
       for (var index = 0; index < tasks().length; index += 1) {
         var task = tasks()[index];
         var state = profile.v180TaskStates[index];
-        if (task.kind === "lesson" && state.lessonDone && !state.practiceDone) return index;
+        if (task.kind !== "lesson" || !state.lessonDone || state.practiceDone) continue;
+        var completedAt = Number(state.lessonCompletedAt) || index + 1;
+        if (selected == null || completedAt > selectedAt || (completedAt === selectedAt && index > selected)) {
+          selected = index;
+          selectedAt = completedAt;
+        }
       }
-      return null;
+      return selected;
+    }
+    function afterClassTaskIndex() {
+      var active = Number(profile.v180ActiveLessonTaskIndex);
+      if (Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson") {
+        var activeState = profile.v180TaskStates[active];
+        if (activeState.lessonDone && !activeState.practiceDone) return active;
+      }
+      return latestPendingPracticeIndex();
     }
     function prepareAfterClassMission(courseKey) {
       ensureTaskStates();
@@ -22111,16 +22113,15 @@
         renderAll();
         return { newlyCompleted: newlyCompleted, remaining: profile.v180AfterClassRemaining, missionComplete: false };
       }
-      completeTask(index, index === servedTaskIndex());
+      profile.v180ActiveLessonTaskIndex = null;
       renderAll();
-      showPayToast("✓");
+      showPayToast("Practice complete ✓");
       return { newlyCompleted: true, remaining: 0, missionComplete: true, weekly: completedCount() >= 7 };
     }
     function scheduleWord(task, stage, index) {
-      if (!task) return { eyebrow: "Weekly adventure complete", title: "Amazing week!", sub: "Seven stars collected. Dino is proud of you.", cta: "See my adventure", detail: "Weekly reward", icon: "🏆" };
+      if (!task) return { eyebrow: "Today’s learning", title: "Learning plan", sub: "", cta: "✓", detail: "Complete", icon: "🏆" };
       if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start", detail: "Complete any 1 activity", icon: task.icon };
-      if (stage === "after_class") return { eyebrow: "Today’s practice", title: task.title, sub: "Keep going to finish today’s learning mission.", cta: "Continue", detail: afterClassRemaining(index) + " " + (afterClassRemaining(index) === 1 ? "practice" : "practices") + " left", icon: "✏️" };
-      return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Start today’s lesson and continue with practice.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "Lesson + practice", icon: task.icon };
+      return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Complete this AI lesson for your plan.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "AI lesson", icon: task.icon };
     }
     function taskArtwork(task, finished) {
       if (finished || !task) return '<span class="v180-today-task-icon">🏆</span>';
@@ -22129,15 +22130,6 @@
       return '<span class="v180-today-task-icon is-content-art ' + (isExplore ? 'is-explore-art' : 'is-lesson-art') + '">' +
         '<img src="' + esc(source) + '" alt="" decoding="async" />' +
       '</span>';
-    }
-    function lessonProgressHtml(task, stage) {
-      if (!task || task.kind !== "lesson") return "";
-      var practiceStage = stage === "after_class";
-      return '<div class="v180-learning-progress" role="img" aria-label="AI lesson, then practice">' +
-        '<span class="v180-progress-step ' + (practiceStage ? 'is-done' : 'is-current') + '"><i aria-hidden="true">▶</i><b>Lesson</b></span>' +
-        '<span class="v180-progress-rail ' + (practiceStage ? 'is-filled' : '') + '" aria-hidden="true"></span>' +
-        '<span class="v180-progress-step ' + (practiceStage ? 'is-current' : '') + '"><i aria-hidden="true">✎</i><b>Practice</b></span>' +
-      '</div>';
     }
     function ensureTaskConsistency() {
       ensureTaskStates();
@@ -22170,6 +22162,13 @@
       clearTimeout(v180RewardTimer);
       v180RewardTimer = window.setTimeout(function () { overlay.classList.remove("show"); }, 1900);
     }
+    function coursePracticeEntryHtml(index) {
+      return '<button type="button" class="v180-course-practice" data-v180-action="practice" data-v180-practice-index="' + index + '" aria-label="Open Practice">' +
+        '<span class="v180-course-practice-icon" aria-hidden="true">✎</span>' +
+        '<span class="v180-course-practice-copy"><strong>Practice</strong><small>Words · Listening · Speaking</small></span>' +
+        '<span class="v180-course-practice-action" aria-hidden="true">›</span>' +
+      '</button>';
+    }
     function renderHomeTask() {
       var bubble = document.getElementById("dino-greet-bubble");
       if (!bubble) return;
@@ -22199,13 +22198,12 @@
       if (chatButton) chatButton.setAttribute("aria-label", "Chat with Dino");
       ensureTaskConsistency();
       var servedIndex = servedTaskIndex();
-      var todayDoneIndex = todayCompletedTaskIndex();
-      var todayDone = profile.v180TodaySettled === true || todayDoneIndex != null;
+      var todayDone = servedIndex == null;
       var taskIndex = servedIndex;
       var task = currentTask(taskIndex);
       var stage = todayDone ? "today_complete" : currentStage(taskIndex);
       var copy = scheduleWord(task, stage, taskIndex);
-      if (!todayDone && taskIndex < todayIndex() && task && task.kind === "lesson") copy.eyebrow = "Continue earlier lesson";
+      if (!todayDone && taskIndex < todayIndex() && task) copy.eyebrow = task.kind === "lesson" ? "Earlier AI lesson" : "Earlier Explore";
       var rewardState = window.VISIT_REWARD && window.VISIT_REWARD.state;
       var checkinAvailable = !!(rewardState && rewardState.eligible && rewardState.unlocked && rewardState.daysLeft > 0);
       var checkinClaimed = !!(checkinAvailable && rewardState.claimed);
@@ -22219,9 +22217,8 @@
       var learningTitle = copy.title;
       var learningDetail = copy.detail;
       var learningStatus = copy.cta;
-      var learningProgress = todayDone ? "" : lessonProgressHtml(task, stage);
-      var learningAction = todayDone ? "today-complete" : "current";
-      var learningMeta = learningProgress || todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
+      var learningAction = "current";
+      var learningMeta = todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
       var childName = (profile.name || "friend").trim() || "friend";
       bubble.classList.add("v180-chat-bubble");
       bubble.classList.remove("v180-task-bubble", "v180-task-done", "is-invite");
@@ -22235,33 +22232,43 @@
       if (!planPanel) return;
       planPanel.classList.toggle("v180-task-done", todayDone);
       var weeklyReady = completedCount() >= 7 && !weeklyRewardClaimed();
-      var starterComplete = planTier() === "free" && completedCount() >= 7 && weeklyRewardClaimed();
+      var lastCompletedIndex = todayDone ? latestCompletedDueTaskIndex() : null;
+      var lastCompletedTask = lastCompletedIndex == null ? null : tasks()[lastCompletedIndex];
+      var lastCompletedState = lastCompletedIndex == null ? null : taskState(lastCompletedIndex);
+      var lastCompletedHasPractice = !!(!planExpired() && lastCompletedTask && lastCompletedTask.kind === "lesson" && lastCompletedState && !lastCompletedState.practiceDone);
+      var lastCompletedHtml = lastCompletedTask
+        ? '<article class="v180-today-task is-learning is-done' + (lastCompletedHasPractice ? ' v180-course-followup has-course-practice' : '') + '" aria-label="' + esc(lastCompletedTask.title + '. ' + (lastCompletedTask.kind === "lesson" ? 'Lesson' : 'Explore') + ' complete.') + '">' +
+            '<span class="v180-today-task-copy"><small>' + (lastCompletedTask.kind === "lesson" ? 'Lesson complete' : 'Explore complete') + '</small><strong>' + esc(lastCompletedTask.title) + '</strong></span>' +
+            '<em class="v180-today-task-status" aria-label="Complete">✓</em>' +
+            (lastCompletedHasPractice ? coursePracticeEntryHtml(lastCompletedIndex) : '') +
+          '</article>'
+        : '';
+      var practiceIndex = !todayDone && !planExpired() ? latestPendingPracticeIndex() : null;
+      var practiceTask = practiceIndex == null ? null : tasks()[practiceIndex];
+      var practiceHtml = practiceTask
+        ? '<article class="v180-today-task v180-course-followup is-done has-course-practice" aria-label="' + esc(practiceTask.title) + '. Lesson complete. Practice available.">' +
+            '<span class="v180-today-task-copy"><small>Lesson complete</small><strong>' + esc(practiceTask.title) + '</strong></span>' +
+            '<em class="v180-today-task-status" aria-label="Lesson complete">✓</em>' +
+            coursePracticeEntryHtml(practiceIndex) +
+          '</article>'
+        : '';
       var learningHtml = planExpired()
         ? '<article class="v180-today-task is-learning is-plan-locked" aria-label="' + esc(learningTitle + ' locked') + '">' +
-            '<span class="v180-today-task-copy"><small>Plan expired</small><strong>' + esc(learningTitle) + '</strong></span>' +
+            '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong></span>' +
             '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="unlock-expired">Unlock</button></span>' +
           '</article>'
-        : starterComplete
-        ? '<article class="v180-today-task is-learning is-starter-complete" aria-label="Starter plan complete">' +
-            '<span class="v180-today-task-copy"><small>Starter plan</small><strong>Starter plan complete</strong></span>' +
-            '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="unlock-full-plan">Unlock full learning plan</button></span>' +
-          '</article>'
         : todayDone
-        ? '<article class="v180-today-task is-learning is-done" aria-label="' + esc(learningTitle + ' complete') + '">' +
-            '<span class="v180-today-task-copy"><strong>' + esc(learningTitle) + '</strong></span>' +
-            '<em class="v180-today-task-status" aria-label="Complete">✓</em>' +
-          '</article>'
-        : '<article class="v180-today-task is-learning is-current-task' + (learningProgress ? ' has-progress' : '') + '" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
+        ? lastCompletedHtml
+        : '<article class="v180-today-task is-learning is-current-task" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
             '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
-            learningProgress +
             '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="' + learningAction + '" aria-label="' + esc(learningStatus + ' ' + learningTitle) + '">' + esc(learningStatus) + '</button><span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span></span>' +
           '</article>';
       planPanel.innerHTML =
         '<div class="v180-home-week">' +
-          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + (planExpired() ? '<em class="v180-plan-expired">Expired</em>' : '') + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
+          '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
           '<div class="v180-today-card" aria-label="Today’s learning and welcome gift">' +
             '<div class="v180-today-heading"><strong>Today’s learning</strong></div>' +
-            '<div class="v180-today-list has-one">' + learningHtml + '</div>' +
+            '<div class="v180-today-list has-one">' + learningHtml + practiceHtml + '</div>' +
             checkinHtml +
           '</div>' +
         '</div>';
@@ -22271,7 +22278,9 @@
       if (planExpired()) return index >= 0 && index < tasks().length;
       if (index < 0 || index >= tasks().length || index > todayIndex()) return false;
       var task = tasks()[index];
-      if (taskFullyDoneUnsafe(index)) return true;
+      if (taskFullyDoneUnsafe(index)) {
+        return task.kind === "explore" || (task.kind === "lesson" && !profile.v180TaskStates[index].practiceDone);
+      }
       if (task.kind === "explore") return true;
       for (var courseIndex = 0; courseIndex < index; courseIndex += 1) {
         if (tasks()[courseIndex].kind === "lesson" && !profile.v180TaskStates[courseIndex].lessonDone) return false;
@@ -22295,8 +22304,20 @@
         showPayToast(taskIndex > todayIndex() ? "This mission opens later." : "Finish the earlier lesson first.");
         return;
       }
-      if (taskFullyDoneUnsafe(taskIndex)) {
-        showPayToast("Mission complete ✓");
+      if (routeNodeDoneUnsafe(taskIndex)) {
+        if (task.kind === "lesson" && !taskState(taskIndex).practiceDone) {
+          openPracticeTask(taskIndex);
+          return;
+        }
+        closePlanReveal();
+        if (task.kind === "explore") {
+          enterLandscape();
+          showClassHome();
+          setHubTab("practice");
+          showPayToast("Explore mission complete ✓");
+          return;
+        }
+        showPayToast("Lesson complete ✓");
         return;
       }
       closePlanReveal();
@@ -22306,22 +22327,11 @@
         enterLandscape();
         showClassHome();
         setHubTab("practice");
-        showPayToast(source === "weekly" && taskIndex < todayIndex() ? "Complete any 1 activity to finish this Explore mission." : "Complete any 1 Explore activity to finish today’s mission.");
+        showPayToast("Complete any 1 activity for your next Explore mission.");
         return;
       }
       profile.v180ActiveLessonTaskIndex = taskIndex;
       profile.v180ActiveExploreTaskIndex = null;
-      if (currentStage(taskIndex) === "after_class") {
-        var course = getCurrentCourse();
-        var trigger = document.createElement("button");
-        trigger.dataset.courseKey = profile.v180ActiveLessonCourseKey || makeCourseKey(course.levelId, course.unitId, course.lessonId);
-        trigger.dataset.courseTitle = encodeURIComponent(profile.v180ActiveLessonTaskTitle || task.title);
-        enterLandscape();
-        showClassHome();
-        setHubTab("class");
-        openAfterClassLayer(trigger);
-        return;
-      }
       taskState(taskIndex).lessonStarted = true;
       renderAll();
       // The home card is the launch point for the recommended course itself—not a
@@ -22335,25 +22345,51 @@
     function openCurrentTask() {
       openTask(servedTaskIndex(), "home");
     }
+    function openPracticeTask(index) {
+      ensureTaskStates();
+      var taskIndex = Number(index);
+      var task = tasks()[taskIndex];
+      var state = profile.v180TaskStates[taskIndex];
+      if (!task || task.kind !== "lesson" || !state || !state.lessonDone || state.practiceDone) return;
+      if (planExpired()) {
+        openPaywall("screen-class", "expired_plan_practice", planTier());
+        return;
+      }
+      profile.v180ActiveLessonTaskIndex = taskIndex;
+      profile.v180ActiveExploreTaskIndex = null;
+      profile.v180ActiveLessonTaskTitle = task.title;
+      var course = getCurrentCourse();
+      var trigger = document.createElement("button");
+      trigger.dataset.courseKey = profile.v180ActiveLessonCourseKey || makeCourseKey(course.levelId, course.unitId, course.lessonId);
+      trigger.dataset.courseTitle = encodeURIComponent(task.title);
+      enterLandscape();
+      showClassHome();
+      setHubTab("class");
+      openAfterClassLayer(trigger);
+    }
     function completeCurrentMission(forceComplete) {
       ensureTaskStates();
       var active = Number(profile.v180ActiveLessonTaskIndex);
-      var index = Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson" ? active : servedTaskIndex();
+      var index = Number.isInteger(active) && tasks()[active] && tasks()[active].kind === "lesson" && !routeNodeDoneUnsafe(active) ? active : servedTaskIndex();
       var task = currentTask(index);
       if (!task) return;
       var state = taskState(index);
       if (!forceComplete && task.kind === "lesson" && currentStage(index) === "lesson") {
         state.lessonStarted = true;
         state.lessonDone = true;
-        profile.v180TaskStage = "after_class";
+        state.lessonCompletedAt = state.lessonCompletedAt || Date.now();
+        profile.v180ActiveLessonTaskIndex = null;
+        profile.v180TaskStage = currentStage();
         profile.v180AfterClassRemaining = 3;
         profile.v180AfterClassCompleted = [];
         profile.v180AfterClassCourseKey = "";
+        profile.v180CompletedTasks = completedCount();
+        if (profile.v180CompletedTasks >= 7) profile.v180WeeklyRewardClaimed = false;
         renderAll();
-        showPayToast("AI lesson complete · continue practice ✏️");
+        showPayToast("Lesson complete ✓ · Practice is optional");
         return;
       }
-      completeTask(index, index === servedTaskIndex());
+      completeTask(index);
       enterLandscape();
       showClassHome();
       setHubTab("dino");
@@ -22362,15 +22398,9 @@
     }
     function completeExploreActivity() {
       ensureTaskStates();
-      var index = null;
-      for (var taskIndex = 0; taskIndex <= todayIndex(); taskIndex += 1) {
-        if (tasks()[taskIndex] && tasks()[taskIndex].kind === "explore" && !taskFullyDoneUnsafe(taskIndex)) {
-          index = taskIndex;
-          break;
-        }
-      }
+      var index = earliestDueExploreIndex();
       if (index == null) return false;
-      completeTask(index, index === servedTaskIndex());
+      completeTask(index);
       profile.v180ActiveExploreTaskIndex = null;
       renderAll();
       showPayToast("✓");
@@ -22378,12 +22408,15 @@
     }
     function taskStateForReview() {
       if (completedCount() >= 7) return weeklyRewardClaimed() ? "week_complete" : "week_reward_ready";
-      if (todayCompletedTaskIndex() != null) return "today_complete";
       if (planTier() === "free" && profile.v180PlanEnded === true) return "starter_carryover";
-      if (earliestOverdueCourseIndex() != null) return "overdue_course";
-      if (currentStage() === "after_class") return afterClassRemaining(servedTaskIndex()) === 1 ? "after_class_last" : "after_class";
-      if (currentStage() === "explore") return "explore";
-      if (taskState(servedTaskIndex())?.lessonStarted) return "lesson_in_progress";
+      var served = servedTaskIndex();
+      if (served == null) return "today_complete";
+      if (todayIndex() === 3 && served === 0 && tasks().slice(0, 4).filter(function (_, index) { return !routeNodeDoneUnsafe(index); }).length === 4) return "day4_backlog";
+      if (latestPendingPracticeIndex() != null) return "practice_available";
+      if (served < todayIndex() && tasks()[served].kind === "lesson") return "overdue_course";
+      if (served < todayIndex() && tasks()[served].kind === "explore") return "historical_explore";
+      if (currentStage(served) === "explore") return "explore";
+      if (taskState(served)?.lessonStarted) return "lesson_in_progress";
       return "lesson_ready";
     }
     function setTaskReviewState(value) {
@@ -22392,8 +22425,6 @@
       profile.v180TaskTier = planTier();
       profile.v180TaskStates = tasks().map(emptyTaskState);
       profile.v180TodayIndex = 0;
-      profile.v180ServedTaskIndex = null;
-      profile.v180TodaySettled = false;
       profile.v180PlanEnded = false;
       profile.v180WeeklyRewardClaimed = false;
       profile.v180ActiveLessonTaskIndex = null;
@@ -22404,50 +22435,48 @@
         if (!task || !state) return;
         if (task.kind === "lesson") {
           state.lessonDone = true;
+          state.lessonCompletedAt = Date.now() + index;
           state.practiceDone = true;
           state.practices = V180_AFTER_CLASS_TYPES.slice();
-        } else state.exploreDone = true;
+        } else {
+          state.exploreDone = true;
+          state.exploreCompletedAt = Date.now() + index;
+        }
       };
       if (value === "week_complete" || value === "week_reward_ready") {
         tasks().forEach(function (_, index) { seedDone(index); });
         profile.v180TodayIndex = 6;
-        profile.v180ServedTaskIndex = 6;
-        profile.v180TodaySettled = true;
         profile.v180WeeklyRewardClaimed = value === "week_complete";
       } else if (value === "today_complete") {
         seedDone(0);
-        profile.v180ServedTaskIndex = 0;
-        profile.v180TodaySettled = true;
       } else if (value === "explore") {
         var exploreIndex = planTier() === "max" ? 5 : 1;
         for (var beforeExplore = 0; beforeExplore < exploreIndex; beforeExplore += 1) seedDone(beforeExplore);
         profile.v180TodayIndex = exploreIndex;
-        profile.v180ServedTaskIndex = exploreIndex;
       } else if (value === "overdue_course") {
         profile.v180TodayIndex = 1;
-        profile.v180ServedTaskIndex = null;
+      } else if (value === "day4_backlog") {
+        profile.v180TodayIndex = 3;
+      } else if (value === "practice_available" || value === "after_class" || value === "after_class_last") {
+        profile.v180TodayIndex = 1;
+        var practiceCourse = profile.v180TaskStates[0];
+        practiceCourse.lessonStarted = true;
+        practiceCourse.lessonDone = true;
+        practiceCourse.lessonCompletedAt = Date.now();
+        practiceCourse.practices = value === "after_class_last" ? ["Words", "Listening"] : [];
+        practiceCourse.practiceDone = false;
+        profile.v180ActiveLessonTaskIndex = 0;
       } else if (value === "historical_explore") {
         profile.v180TodayIndex = planTier() === "max" ? 6 : 3;
         tasks().forEach(function (task, index) {
-          if (index < profile.v180TodayIndex && task.kind === "lesson") seedDone(index);
+          if (index <= profile.v180TodayIndex && task.kind === "lesson") seedDone(index);
         });
-        profile.v180ServedTaskIndex = profile.v180TodayIndex;
       } else if (value === "starter_carryover") {
         for (var carriedIndex = 0; carriedIndex < 5; carriedIndex += 1) seedDone(carriedIndex);
         profile.v180TodayIndex = 6;
-        profile.v180ServedTaskIndex = null;
         profile.v180PlanEnded = true;
       } else {
-        profile.v180ServedTaskIndex = 0;
         if (value === "lesson_in_progress") profile.v180TaskStates[0].lessonStarted = true;
-        if (value === "after_class" || value === "after_class_last") {
-          var first = profile.v180TaskStates[0];
-          first.lessonStarted = true;
-          first.lessonDone = true;
-          first.practices = value === "after_class_last" ? ["Words", "Listening"] : [];
-          first.practiceDone = false;
-          profile.v180ActiveLessonTaskIndex = 0;
-        }
       }
       ensureTaskConsistency();
       renderAll();
@@ -22460,7 +22489,6 @@
             '<header class="v180-plan-head">',
               '<button type="button" class="v180-plan-back" data-v180-action="plan-back" aria-label="Back">‹</button>',
               '<div class="v180-plan-heading"><h1 id="v180-plan-title">This week’s adventure</h1><p id="v180-plan-sub"></p></div>',
-              '<div class="v180-plan-progress"><span class="v180-progress-stars">★ ★ ★</span><b id="v180-plan-progress-copy">0 of 7</b></div>',
             '</header>',
             '<div class="v180-route-wrap" id="v180-route-wrap">',
               '<div id="v180-plan-nodes"></div>',
@@ -22481,7 +22509,6 @@
       if (routeNodeDone(index)) return "is-done";
       if (index > todayIndex()) return "is-future";
       if (index === servedTaskIndex()) return "is-current";
-      if (index === todayIndex()) return "is-today";
       return canOpenPlanNode(index) ? "is-available" : "is-future";
     }
     function renderWeeklyPlan() {
@@ -22490,14 +22517,14 @@
       if (!list) return;
       ensureTaskConsistency();
       var plan = tasks();
-      var done = completedCount();
       var value = planTier();
-      document.getElementById("v180-plan-sub").textContent = planName(value) + (planExpired() ? " · Expired" : " · " + rhythm(value));
-      document.getElementById("v180-plan-progress-copy").textContent = done + " of 7 complete";
+      document.getElementById("v180-plan-sub").textContent = planName(value) + " · " + rhythm(value);
       list.innerHTML = plan.map(function (task, index) {
         var status = nodeStatus(index);
-        var currentCopy = task.kind === "lesson" ? "AI lesson" : "Explore";
-        var orb = status === "is-done" ? "✓" : task.icon;
+        var state = taskState(index);
+        var hasPractice = !planExpired() && task.kind === "lesson" && state.lessonDone && !state.practiceDone;
+        var currentCopy = task.kind === "lesson" ? (hasPractice ? "Practice" : "AI lesson") : "Explore";
+        var orb = status.indexOf("is-done") !== -1 ? "✓" : task.icon;
         var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
         return '<button type="button" class="v180-plan-node ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
           '<span class="v180-node-orb">' + orb + '<span class="v180-node-day">' + (index + 1) + '</span></span>' +
@@ -22550,37 +22577,38 @@
       var value = planTier();
       var plan = tasks();
       var valueCopy = planValueCopy(value);
-      document.getElementById("v180-reveal-title").textContent = planExpired()
-        ? "Your " + planName(value) + " is locked"
-        : value === "free"
-          ? "Your free starter plan is ready!"
-          : "Your " + tierName(value) + " week is ready!";
-      document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(planExpired() ? "Unlock your plan to keep learning from where you left off." : valueCopy) + '</strong>';
+      var done = completedCount();
+      document.getElementById("v180-reveal-title").textContent = value === "free"
+        ? "Free This Week"
+        : "Your " + tierName(value) + " week is ready!";
+      document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(valueCopy) + '</strong>';
       document.getElementById("v180-reveal-proof").textContent = "👥 " + planCompletionProof();
-      document.getElementById("v180-reveal-badge").textContent = planExpired() ? "🔒 Plan expired" : value === "free" ? "★ Your starter plan" : "★ This week’s plan";
+      document.getElementById("v180-reveal-badge").textContent = value === "free" ? "★ Your starter plan" : "★ This week’s plan";
       var path = document.getElementById("v180-reveal-path");
       path.setAttribute("aria-label", value === "free" ? "Seven-day starter plan ending in a plan gift" : "Seven-day weekly plan ending in a weekly gift");
-      var done = completedCount();
       path.innerHTML = plan.map(function (task, index) {
         var isExplore = task.kind === "explore";
+        var state = taskState(index);
+        var hasPractice = !planExpired() && task.kind === "lesson" && state.lessonDone && !state.practiceDone;
         var cover = isExplore ? "assets/v13fx/nav3d-explore.png" : (task.cover || "assets/ip-quiz/q3-school.png");
         var label = isExplore ? "Explore" : task.title;
         var status = nodeStatus(index);
         var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
-        return '<button type="button" class="v180-reveal-mini ' + (isExplore ? 'is-explore' : 'is-lesson') + ' ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
+        return '<button type="button" class="v180-reveal-mini ' + (isExplore ? 'is-explore' : 'is-lesson') + ' ' + status + '" data-v180-node="' + index + '"' + disabled + ' aria-label="' + esc(label + (hasPractice ? '. Practice available' : '')) + '">' +
           '<i><img src="' + esc(cover) + '" alt="" decoding="async" /></i>' +
-          '<strong>' + esc(label) + '</strong></button>';
+          '<strong>' + esc(label) + '</strong>' + (hasPractice ? '<span class="v180-reveal-practice">Practice</span>' : '') + '</button>';
       }).join("") +
         '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Weekly gift claimed' : 'Weekly gift ready to open') : 'Weekly gift unlocks after all seven tasks') + '">' +
           '<i><span class="v180-weekly-gift-box" aria-hidden="true">🎁</span></i>' +
           '<span>All done</span><strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
       var revealCta = document.querySelector("#v180-plan-reveal .v180-reveal-primary");
       if (revealCta) {
-        var todayComplete = profile.v180TodaySettled === true || todayCompletedTaskIndex() != null;
         var recommendedIndex = servedTaskIndex();
+        var todayComplete = recommendedIndex == null;
         var stage = currentStage(recommendedIndex);
         var revealAction = "reveal-start";
-        var revealLabel = stage === "after_class" ? "Continue" : stage === "explore" ? "Start Explore" : "Start lesson";
+        var recommendedState = recommendedIndex == null ? null : taskState(recommendedIndex);
+        var revealLabel = stage === "explore" ? "Start Explore" : recommendedState && recommendedState.lessonStarted ? "Continue lesson" : "Start lesson";
         if (done >= 7 && !weeklyRewardClaimed()) {
           revealAction = "claim-weekly";
           revealLabel = value === "free" ? "Claim plan gift" : "Claim weekly gift";
@@ -23104,6 +23132,7 @@
         welcomeReward.open("entry");
       }
       else if (name === "current") openCurrentTask();
+      else if (name === "practice") openPracticeTask(action.dataset.v180PracticeIndex);
       else if (name === "plan") openWeeklyPlan();
       else if (name === "chat") document.querySelector("#hub-panel-dino .dino-chat-pill")?.click();
       else if (name === "plan-back") { showClassHome(); setHubTab("dino"); }
