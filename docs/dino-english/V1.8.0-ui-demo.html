@@ -9896,10 +9896,10 @@
                 <li>3 AI lessons each week</li>
                 <li>1× level progress speed</li>
                 <li>13 unit assessments each year</li>
-                <li>Check Ethan's English level</li>
+                <li>Check your child's English level</li>
                 <li>Access 864 CEFR-aligned lessons</li>
-                <li>See Ethan's progress after every lesson</li>
-                <li>Let Ethan speak, practice, and review anytime</li>
+                <li>See your child's progress after every lesson</li>
+                <li>Let your child speak, practice, and review anytime</li>
               </ul>
               <img class="ms-premium-gem" src="assets/v155/member-center/premium-gem.png" alt="" />
               <img class="ms-gem-shadow" src="assets/v155/member-center/gem-shadow.svg" alt="" />
@@ -18276,8 +18276,9 @@
       config = config || {};
       var groups = config.groups || [];
       var jumps = config.jumps || [];
-      var jumps131 = config.jumps131 || [];
-      var jumps131Label = config.jumps131Label || "1.3.2 变更";
+      var mainPagesLabel = config.mainPagesLabel || "Demo 主页面";
+      var corePages = config.corePages || [];
+      var corePagesLabel = config.corePagesLabel || "当前版本核心页面";
       var jumpsReward = config.jumpsReward || [];
       var jumpsRewardLabel = config.jumpsRewardLabel || "签到奖励";
       // ⚽ 世界杯主题课快捷跳转组（绿色高亮，与 jumps131 橙色区分）
@@ -18306,16 +18307,18 @@
           ".sp-seg{display:flex;flex-wrap:wrap;gap:5px}",
           ".sp-seg button{flex:1 1 auto;min-width:58px;border:1px solid #cdddea;background:#f3f8fc;color:#355;border-radius:8px;padding:6px 8px;font-size:.7rem;font-weight:600;cursor:pointer}",
           ".sp-seg button.on{background:#FE8820;border-color:#FE8820;color:#fff}",
-          ".sp-jumps-wrap{margin-top:4px;padding-top:10px;border-top:1px solid #eef3f7}",
+          ".sp-jumps-wrap{margin-top:0}",
           ".sp-jumps-label{margin:0 0 6px;font-size:.72rem;font-weight:700;color:#143a5e}",
           ".sp-jumps{display:flex;flex-wrap:wrap;gap:6px}",
           ".sp-jump{flex:1 1 auto;min-width:64px;border:1px dashed #cdddea;background:#fff;color:#143a5e;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
           ".sp-jump:hover{background:#f3f8fc}",
-          ".sp-jumps131-wrap{margin-top:10px;padding:10px;border-radius:10px;background:#fff6ee;border:1px solid #e6c3a0}",
-          ".sp-jumps131-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#a8521b;display:flex;align-items:center;gap:6px}",
-          ".sp-jumps131-label::before{content:'NEW';font-size:.58rem;font-weight:800;letter-spacing:.06em;background:#d9641e;color:#fff;border-radius:4px;padding:1px 5px}",
-          ".sp-jump131{flex:1 1 auto;min-width:64px;border:1px solid #e6b894;background:#fff;color:#a8521b;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
-          ".sp-jump131:hover{background:#fdeede}",
+          ".sp-core-wrap{margin-top:11px;padding-top:10px;border-top:1px solid #eef3f7}",
+          ".sp-core-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#a8521b}",
+          ".sp-core-page{flex:1 1 auto;min-width:64px;border:1px solid #e6b894;background:#fff;color:#a8521b;border-radius:8px;padding:7px 8px;font-size:.72rem;font-weight:700;cursor:pointer}",
+          ".sp-core-page:hover{background:#fdeede}",
+          ".sp-core-page.on{background:#FE8820;border-color:#FE8820;color:#fff}",
+          ".sp-state-wrap{margin-top:11px;padding-top:10px;border-top:1px solid #eef3f7}",
+          ".sp-state-title{margin:0 0 7px;font-size:.72rem;font-weight:800;color:#143a5e}",
           ".sp-jumpsreward-wrap{margin-top:10px;padding:10px;border-radius:10px;background:#eff7ff;border:1px solid #9dc8ee}",
           ".sp-jumpsreward-label{margin:0 0 6px;font-size:.72rem;font-weight:800;color:#185b91;display:flex;align-items:center;gap:6px}",
           ".sp-jumpsreward-label::before{content:'REWARD';font-size:.56rem;font-weight:800;letter-spacing:.05em;background:#176ca8;color:#fff;border-radius:4px;padding:1px 5px}",
@@ -18349,28 +18352,31 @@
       function render() {
         var ctx = getContext() || { label: "", keys: [] };
         var keys = ctx.keys || [];
-        var visible = keys.map(function (k) { return groupByKey(k); }).filter(Boolean);
-        toggleBtn.textContent = ctx.label ? ("⚙︎ " + title + " · " + ctx.label) : ("⚙︎ " + title);
-        var html = ctx.label ? ('<p class="sp-ctx">当前页面：<b>' + esc(ctx.label) + "</b></p>") : "";
-        if (visible.length) {
-          html += '<p class="sp-note">仅展示与当前页面相关的状态分支；切换后停留在本页查看效果。仅 demo 生效。</p>';
-          html += visible.map(function (g) {
-            return '<div class="sp-group"><p>' + esc(g.label) + '</p><div class="sp-seg">' +
-              g.options.map(function (o) { return '<button type="button" data-sp-group="' + g.key + '" data-sp-val="' + esc(o[0]) + '">' + esc(o[1]) + "</button>"; }).join("") +
-              "</div></div>";
-          }).join("");
-        } else {
-          html += '<p class="sp-empty">本页面没有可切换的状态分支，可用下方快捷跳转到其他页面。</p>';
-        }
+        var visible = ctx.isCore ? keys.map(function (k) { return groupByKey(k); }).filter(Boolean) : [];
+        toggleBtn.textContent = "⚙︎ " + title;
+        var html = "";
         if (jumps.length) {
-          html += '<div class="sp-jumps-wrap"><p class="sp-jumps-label">快捷跳转</p><div class="sp-jumps">' +
+          html += '<div class="sp-jumps-wrap"><p class="sp-jumps-label">' + esc(mainPagesLabel) + '</p><div class="sp-jumps">' +
             jumps.map(function (j, i) { return '<button type="button" class="sp-jump" data-sp-jump="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
         }
-        if (jumps131.length) {
-          html += '<div class="sp-jumps131-wrap"><p class="sp-jumps131-label">' + esc(jumps131Label) + '</p><div class="sp-jumps">' +
-            jumps131.map(function (j, i) { return '<button type="button" class="sp-jump131" data-sp-jump131="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
+        if (corePages.length) {
+          html += '<div class="sp-core-wrap"><p class="sp-core-label">' + esc(corePagesLabel) + '</p><div class="sp-jumps">' +
+            corePages.map(function (j, i) { return '<button type="button" class="sp-core-page' + (ctx.pageKey === j.key ? ' on' : '') + '" data-sp-core="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
+        }
+        if (ctx.isCore) {
+          html += '<div class="sp-state-wrap"><p class="sp-state-title">当前页面状态 · ' + esc(ctx.label) + '</p>';
+          if (visible.length) {
+            html += visible.map(function (g) {
+              return '<div class="sp-group"><p>' + esc(g.label) + '</p><div class="sp-seg">' +
+                g.options.map(function (o) { return '<button type="button" data-sp-group="' + g.key + '" data-sp-val="' + esc(o[0]) + '">' + esc(o[1]) + "</button>"; }).join("") +
+                "</div></div>";
+            }).join("");
+          } else {
+            html += '<p class="sp-empty">本页面没有额外状态。</p>';
+          }
+          html += '</div>';
         }
         if (jumpsReward.length) {
           html += '<div class="sp-jumpsreward-wrap"><p class="sp-jumpsreward-label">' + esc(jumpsRewardLabel) + '</p><div class="sp-jumps">' +
@@ -18399,8 +18405,16 @@
         }
         var jump = e.target.closest("[data-sp-jump]");
         if (jump) { var j = jumps[+jump.dataset.spJump]; if (j && j.run) { beforeJump(); j.run(); panel.classList.remove("open"); } return; }
-        var jump131 = e.target.closest("[data-sp-jump131]");
-        if (jump131) { var j2 = jumps131[+jump131.dataset.spJump131]; if (j2 && j2.run) { beforeJump(); j2.run(); panel.classList.remove("open"); } return; }
+        var core = e.target.closest("[data-sp-core]");
+        if (core) {
+          var corePage = corePages[+core.dataset.spCore];
+          if (corePage && corePage.run) {
+            beforeJump();
+            corePage.run();
+            setTimeout(render, 60);
+          }
+          return;
+        }
         var jumpReward = e.target.closest("[data-sp-jumpreward]");
         if (jumpReward) { var jr = jumpsReward[+jumpReward.dataset.spJumpreward]; if (jr && jr.run) { beforeJump(); jr.run(); panel.classList.remove("open"); } return; }
         var jumpwc = e.target.closest("[data-sp-jumpwc]");
@@ -18645,9 +18659,9 @@
     else window.GAME?.startCapsuleQuiz?.();
   }
 
-  // ----- V1.3.2 config -----
+  // ----- Demo review navigation and current-page states -----
   window.demoStatePanel = mountStatePanel({
-    title: "States",
+    title: "Demo 导航",
     watch: ["#device-landscape", "#device-portrait", "#wrap-landscape", "#wrap-portrait"],
     // 任意快捷跳转前重置主题课标志位：经「⚽ 主题课课堂（进课）」进课后若用通用跳转中途离开，
     // themeCourseRun 残留会误劫持下一节普通课/漏斗课的完课分支（themeReportOpen 同理）。
@@ -18676,7 +18690,7 @@
         return window.v180GetTier ? window.v180GetTier() : (profile.membershipTier || (profile.premiumUnlocked ? "pro" : "free"));
       }
       if (key === "v180OfferTier") return profile.selectedMembershipTier || "pro";
-      if (key === "v180Task") return window.v180GetTaskReviewState ? window.v180GetTaskReviewState() : "lesson_ready";
+      if (key === "v180HomeTask" || key === "v180PlanState") return window.v180GetTaskReviewState ? window.v180GetTaskReviewState() : "lesson_ready";
       if (key === "v180Payment") return demoState.v180PaymentResult || "success";
       if (key === "vnConsultMarket") return demoState.marketRoute;
       if (key === "vnConsultPhone") return profile.contactPhone ? "existing" : "missing";
@@ -18728,7 +18742,7 @@
       var landscapeOn = lw && getComputedStyle(lw).display !== "none";
       if (landscapeOn) {
         if (document.querySelector("#v180-plan-reveal.show")) {
-          return { label: "V1.8.0 · 本周课程计划", keys: ["v180Tier", "v180Task"] };
+          return { label: "完整计划", pageKey: "full_plan", isCore: true, keys: ["v180Tier", "v180PlanState"] };
         }
         if (document.querySelector("#visit-reward-overlay.show")) {
           return { label: "新人签到奖励", keys: [] };
@@ -18742,10 +18756,10 @@
         if (id === "screen-wordpk")      return ctx("单词 PK", VERSION_FEATURES.expandedPlayQuiz ? ["quizTypes"] : []);
         if (id === "screen-course-map")  return ctx("Level·Unit 列表", ["courseAccess", "v155CourseProgress", "startLevel"]);
         if (id === "screen-all-courses") return ctx("课程列表", ["membership", "v155CourseProgress", "startLevel"]);
-        if (id === "screen-membership")  return ctx("V1.8.0 · 会员中心", ["v180Tier", "v180PlanChange", "membership", "v155Platform"]);
-        if (id === "screen-weekly-plan-v180") return ctx("V1.8.0 · 完整计划", ["v180Tier", "v180Task"]);
+        if (id === "screen-membership")  return { label: "会员中心", pageKey: "membership", isCore: true, keys: ["v180Tier", "v180PlanChange"] };
+        if (id === "screen-weekly-plan-v180") return { label: "完整计划", pageKey: "full_plan", isCore: true, keys: ["v180Tier", "v180PlanState"] };
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
-        if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return ctx("V1.8.0 · Dino 首页今日任务", ["v180Tier", "v180Task"]);
+        if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return { label: "Dino 首页", pageKey: "dino_home", isCore: true, keys: ["v180Tier", "v180HomeTask"] };
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
         if (id === "screen-teacher")     return ctx("选择老师", []);
         return ctx("App 内", ["membership"]);
@@ -18762,14 +18776,7 @@
       if (pid === "screen-login")        return ctx("登录注册页", []);
       if (pid === "screen-goal-value" && demoState.experimentGroup === "b") return ctx("Onboarding · 学习目标多选", []);
       if (pid === "screen-loading" && demoState.experimentGroup === "b") return ctx("Onboarding 加载页", []);
-      if (pid === "screen-paywall-pt")   return ctx(
-        cxStage === "v170_post_trial_paywall"
-          ? "V1.8.0 · 报告后会员选择"
-          : "V1.8.0 · 会员选择",
-        cxStage === "v170_post_trial_paywall"
-          ? ["v180OfferTier", "v180Payment", "v170PaywallExitRoute", "v155RestoreResult"]
-          : ["v180OfferTier", "v180Payment", "v155RestoreResult"]
-      );
+      if (pid === "screen-paywall-pt") return { label: "会员选择", pageKey: "membership_choice", isCore: true, keys: ["v180OfferTier", "v180Payment"] };
       if (pid === "screen-winback")      return ctx("V1.8.0 · 限时优惠挽留页", ["v180OfferTier", "membership", "v155KolScenario"]);
       if (pid === "screen-vn-consult")   return ctx(
         "人工咨询预约",
@@ -18777,19 +18784,19 @@
           .concat(["vnConsultHook", "vnConsultSubmitResult"])
       );
       if (pid === "screen-study-plan-a") return ctx("历史 A 链路学习计划", ["membership", "startLevel"]);
-      if (pid === "screen-study-plan")   return ctx("V1.8.0 · 学习方案选择", ["membership", "startLevel"]);
+      if (pid === "screen-study-plan") return { label: "学习方案选择", pageKey: "study_plan", isCore: true, keys: [] };
       if (pid === "screen-trial-report") return ctx("V1.7.0 · Level 体验课报告", ["membership", "startLevel", "trialResult"]);
       if (pid === "screen-levelup-report" && VERSION_FEATURES.courseLeveling) return ctx("定级报告（升级尝试）", ["levelUpResult"]);
       if (pid === "screen-lesson-report") return ctx("正价课报告", ["startLevel"]);
       return ctx("Onboarding", []);
     },
     groups: [
-      { key: "v180Tier", label: "V1.8.0 当前会员 / 当前计划",
+      { key: "v180Tier", label: "会员 / 计划",
         options: [["free", "Free · 一次性体验计划"], ["pro", "Pro · 3 学 + 4 Explore"], ["max", "Max · 5 学 + 2 Explore"], ["expired", "已到期 · 正式课锁定"]],
         apply: function (v) {
           window.v180SetTier && window.v180SetTier(v, { reveal: false });
         } },
-      { key: "v180PlanChange", label: "V1.8.0 会员档位变更",
+      { key: "v180PlanChange", label: "会员档位变更",
         options: [["none", "无档位变更"], ["pro_to_max", "Pro → Max · 立即生效"], ["max_to_pro", "Max → Pro · 续费日生效"]],
         apply: function (v) {
           if (v === "pro_to_max") window.v180SetScheduledPlanChange && window.v180SetScheduledPlanChange("pro", "max");
@@ -18800,18 +18807,23 @@
             window.v180RenderAll && window.v180RenderAll();
           }
         } },
-      { key: "v180OfferTier", label: "V1.8.0 待购买会员",
+      { key: "v180OfferTier", label: "待购买档位",
         options: [["pro", "Pro"], ["max", "Max"]],
         apply: function (v) {
           profile.selectedMembershipTier = v === "max" ? "max" : "pro";
           window.v180RenderPaywall && window.v180RenderPaywall();
         } },
-      { key: "v180Task", label: "V1.8.0 学习任务池",
-        options: [["lesson_ready", "AI 课待学 · Start"], ["lesson_in_progress", "AI 课进行中 · Continue"], ["overdue_course", "第 2 天 · 历史课程优先"], ["day4_backlog", "第 4 天 · 课程优先队列"], ["practice_available", "Lesson 完成 · 课程内 Practice"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore · 按日期推荐"], ["starter_carryover", "Free · 第 8 天继续原计划"], ["today_complete", "到期任务完成 · 保留最后一项"], ["week_reward_ready", "计划奖励待领取"], ["week_complete", "计划奖励已领取"]],
+      { key: "v180HomeTask", label: "首页任务状态",
+        options: [["lesson_ready", "课程待开始"], ["lesson_in_progress", "课程进行中"], ["lesson_complete_practice", "课程已完成 · Practice 未完成"], ["day4_backlog", "历史课程队列"], ["explore", "今日 Explore"], ["historical_explore", "历史 Explore"], ["starter_carryover", "Free 第 8 天"], ["today_complete", "任务已完成"]],
         apply: function (v) {
           window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
         } },
-      { key: "v180Payment", label: "V1.8.0 支付结果",
+      { key: "v180PlanState", label: "完整计划状态",
+        options: [["lesson_ready", "课程待开始"], ["practice_available", "课程完成 · Practice"], ["explore", "Explore 待完成"], ["historical_explore", "历史 Explore"], ["starter_carryover", "Free 第 8 天"], ["week_reward_ready", "奖励待领取"], ["week_complete", "奖励已领取"]],
+        apply: function (v) {
+          window.v180SetTaskReviewState && window.v180SetTaskReviewState(v);
+        } },
+      { key: "v180Payment", label: "支付结果",
         options: [["success", "成功"], ["fail", "失败 · 可重试"], ["cancel", "取消 · 权益不变"]],
         apply: function (v) { demoState.v180PaymentResult = v; } },
       { key: "v155OnboardingStatus", label: "登录账号 Onboarding",
@@ -19050,22 +19062,22 @@
           if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
         } },
     ].filter(Boolean),
+    mainPagesLabel: "Demo 主页面快捷跳转",
     jumps: [
-      { label: "1.8 查看完整计划", run: withReviewProfile(function () { window.v180OpenWeeklyPlan && window.v180OpenWeeklyPlan(); }) },
-      { label: "1.8 新计划曝光", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
-      { label: "1.8 学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
-      { label: "1.8 完成今日任务", run: withReviewProfile(function () {
-          profile.v180PlanRevealSeen = true;
-          window.v180CompleteCurrentMission && window.v180CompleteCurrentMission();
-        }) },
-      { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
-      { label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
-      { label: "Explore", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("explore"); }) },
-      { label: "Play", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); }) },
+      { label: "首启 / 登录", run: withReviewProfile(function () { enterPortrait(); showPortraitScreen("screen-welcome"); }) },
+      { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("class"); }) },
       { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
       { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
-      { label: "Paywall", run: withReviewProfile(function () { enterLandscape(); openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { label: "会员中心", run: withReviewProfile(function () {
+      { label: "Explore", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("explore"); }) },
+      { label: "Play", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); }) },
+      { label: "体验课报告", run: withReviewProfile(function () { trialReportMode = "trial"; profile.trialTakenLevelId = null; showTrialReport(); }) },
+      { label: "正价课报告", run: withReviewProfile(function () { showLessonReport(); }) },
+    ],
+    corePagesLabel: "V1.8.0 核心页面",
+    corePages: [
+      { key: "study_plan", label: "学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
+      { key: "membership_choice", label: "会员选择", run: withReviewProfile(function () { openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
+      { key: "membership", label: "会员中心", run: withReviewProfile(function () {
           if (!isPaidMembership()) {
             setMembershipReviewState("subscription");
             refreshUnlockState();
@@ -19073,6 +19085,8 @@
           enterLandscape();
           openMembership();
         }) },
+      { key: "dino_home", label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
+      { key: "full_plan", label: "完整计划", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
     ],
     legacyJumps: [
       { label: "Class 首页",  run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
@@ -19175,7 +19189,7 @@
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("lesson_ready");
           window.v180OpenPlanReveal && window.v180OpenPlanReveal(true);
         }) },
-      { label: "⑦ Lesson 已完成 · 课程内 Practice", run: withReviewProfile(function () {
+      { label: "⑦ Lesson 已完成 · 推荐下一任务", run: withReviewProfile(function () {
           window.v180SetTier && window.v180SetTier("pro", { reveal: false });
           window.v180SetTaskReviewState && window.v180SetTaskReviewState("practice_available");
           enterLandscape(); showClassHome(); setHubTab("dino");
@@ -20579,11 +20593,11 @@
       var kolPlan = catalog.find(function(plan){ return plan.isKol; });
       var offerLead = '<li class="v155-benefits-offer"><img class="v155-offer-flame" src="assets/v155/paywall-figma/limited-offer-icon.png" alt=""><span>Limited offer ends in</span><time class="v155-offer-clock" id="v155-benefit-clock">'+(kolPlan ? '-- days · -- : -- : --' : '-- : -- : --')+'</time></li>';
       if(benefits) benefits.innerHTML = offerLead+
-        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--report"></span></span><strong>Check '+name+'\'s English level</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--report"></span></span><strong>Check your child\'s English level</strong></li>'+
         '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--map"></span></span><strong>Get a personalized plan · 3 lessons a week</strong></li>'+
         '<li><span class="v155-benefit-icon" aria-hidden="true"><img src="assets/v155/paywall-figma/benefit-icon-5.png" alt=""></span><strong>Access 864 CEFR-aligned lessons</strong></li>'+
-        '<li><span class="v155-benefit-icon" aria-hidden="true"><img src="assets/v155/paywall-figma/benefit-icon-4.png" alt=""></span><strong>See '+name+'\'s progress after every lesson</strong></li>'+
-        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--chat"></span></span><strong>Let '+name+' speak, practice, and review anytime</strong></li>';
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><img src="assets/v155/paywall-figma/benefit-icon-4.png" alt=""></span><strong>See your child\'s progress after every lesson</strong></li>'+
+        '<li><span class="v155-benefit-icon" aria-hidden="true"><span class="v155-benefit-sprite v155-benefit-sprite--chat"></span></span><strong>Let your child speak, practice, and review anytime</strong></li>';
       if(typeof pwptRenderCountdown === "function") pwptRenderCountdown();
       var plans = $("#pwpt-plans");
       if(plans){
@@ -21626,7 +21640,7 @@
       border:4px solid rgba(255,255,255,.92);box-shadow:0 30px 80px rgba(0,0,0,.34),inset 0 -5px 0 #dbe7f7;
     }
     .v180-reveal-card::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:#dff5ff;right:-90px;top:-95px}
-    .v180-reveal-badge{position:relative;display:inline-flex;align-items:center;gap:7px;background:#e7f1ff;color:#215bb7;border-radius:999px;padding:6px 11px;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+    .v180-reveal-badge{position:relative;display:inline-flex;align-items:center;gap:7px;background:#e7f1ff;color:#215bb7;border-radius:999px;padding:6px 11px;font-size:.68rem;font-weight:900;letter-spacing:.06em}
     .v180-reveal h2{position:relative;margin:7px 0 4px;font-family:var(--font-display,Quicksand,sans-serif);font-size:1.45rem;line-height:1.1}
     .v180-reveal-copy{position:relative;margin:0 auto;max-width:600px;color:#637692;font-size:.72rem;line-height:1.4;font-weight:700}
     .v180-reveal-copy strong{display:block;color:#2459ba;font-family:var(--font-display,Quicksand,sans-serif);font-size:.94rem;line-height:1.25;font-weight:700}
@@ -21661,7 +21675,7 @@
     .v180-reveal-mini.is-locked{opacity:.72;cursor:pointer}
     .v180-reveal-mini.is-locked i{border-color:#aeb9c8;filter:grayscale(.45);box-shadow:0 5px 10px rgba(50,68,92,.12);animation:none}
     .v180-reveal-mini.is-locked i::before{content:"🔒";position:absolute;z-index:2;right:4px;top:4px;width:20px;height:20px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;background:#68778b;font-size:.52rem;box-shadow:0 3px 7px rgba(45,58,77,.25)}
-    .v180-reveal-mini.is-done.is-locked i::after{right:auto;left:4px}
+    .v180-reveal-mini.is-done.is-locked i::after{display:none}
     .v180-reveal-mini.is-weekly-gift.is-done i{background:linear-gradient(155deg,#e0faed,#9de5c6);border-color:#63cf9e;box-shadow:0 7px 16px rgba(20,120,80,.18);animation:none}
     .v180-reveal-actions{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px}
     .v180-reveal-primary{min-width:250px;min-height:46px;border:0;border-radius:18px;background:linear-gradient(180deg,#ff9e39,#fe7b17);box-shadow:0 6px 0 #c85a0b;color:#fff;font-family:var(--font-display,Quicksand,sans-serif);font-size:.92rem;font-weight:900;cursor:pointer}
@@ -21803,7 +21817,7 @@
 
     var V180_TASKS = {
       free: [
-        { kind: "lesson", title: "Level X · Placement Test", icon: "🎯", cover: "assets/ip-quiz/q2-one-dinosaur.png" },
+        { kind: "lesson", title: "Farm Animals", icon: "🎯", cover: "assets/ip-quiz/q2-one-dinosaur.png" },
         { kind: "explore", title: "Explore & discover", icon: "🪐" },
         { kind: "lesson", title: "Knock Knock Party", icon: "🚪", cover: "assets/ip-quiz/q1-cake.png" },
         { kind: "explore", title: "Explore & discover", icon: "🔭" },
@@ -22120,8 +22134,8 @@
     }
     function scheduleWord(task, stage, index) {
       if (!task) return { eyebrow: "Today’s learning", title: "Learning plan", sub: "", cta: "✓", detail: "Complete", icon: "🏆" };
-      if (task.kind === "explore") return { eyebrow: "Today’s Explore", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start", detail: "Complete any 1 activity", icon: task.icon };
-      return { eyebrow: "Today’s AI lesson", title: task.title, sub: "Complete this AI lesson for your plan.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "AI lesson", icon: task.icon };
+      if (task.kind === "explore") return { eyebrow: "", title: "Explore", sub: "Complete any one activity to finish today’s mission.", cta: "Start", detail: "Complete any 1 activity", icon: task.icon };
+      return { eyebrow: "", title: task.title, sub: "Complete this lesson for your plan.", cta: taskState(index)?.lessonStarted ? "Continue" : "Start", detail: "Complete this lesson", icon: task.icon };
     }
     function taskArtwork(task, finished) {
       if (finished || !task) return '<span class="v180-today-task-icon">🏆</span>';
@@ -22199,11 +22213,10 @@
       ensureTaskConsistency();
       var servedIndex = servedTaskIndex();
       var todayDone = servedIndex == null;
-      var taskIndex = servedIndex;
+      var taskIndex = planExpired() && todayDone ? latestCompletedDueTaskIndex() : servedIndex;
       var task = currentTask(taskIndex);
       var stage = todayDone ? "today_complete" : currentStage(taskIndex);
       var copy = scheduleWord(task, stage, taskIndex);
-      if (!todayDone && taskIndex < todayIndex() && task) copy.eyebrow = task.kind === "lesson" ? "Earlier AI lesson" : "Earlier Explore";
       var rewardState = window.VISIT_REWARD && window.VISIT_REWARD.state;
       var checkinAvailable = !!(rewardState && rewardState.eligible && rewardState.unlocked && rewardState.daysLeft > 0);
       var checkinClaimed = !!(checkinAvailable && rewardState.claimed);
@@ -22218,7 +22231,9 @@
       var learningDetail = copy.detail;
       var learningStatus = copy.cta;
       var learningAction = "current";
-      var learningMeta = todayDone ? "" : '<span>' + esc(learningDetail) + '</span>';
+      var learningMeta = task ? '<span>' + esc(learningDetail) + '</span>' : '';
+      var learningEyebrowHtml = learningLabel ? '<small>' + esc(learningLabel) + '</small>' : '';
+      var learningAriaLabel = learningLabel ? learningLabel + '. ' + learningTitle : learningTitle;
       var childName = (profile.name || "friend").trim() || "friend";
       bubble.classList.add("v180-chat-bubble");
       bubble.classList.remove("v180-task-bubble", "v180-task-done", "is-invite");
@@ -22236,31 +22251,24 @@
       var lastCompletedTask = lastCompletedIndex == null ? null : tasks()[lastCompletedIndex];
       var lastCompletedState = lastCompletedIndex == null ? null : taskState(lastCompletedIndex);
       var lastCompletedHasPractice = !!(!planExpired() && lastCompletedTask && lastCompletedTask.kind === "lesson" && lastCompletedState && !lastCompletedState.practiceDone);
+      var lastCompletedTitle = lastCompletedTask && lastCompletedTask.kind === "lesson" ? lastCompletedTask.title : "Explore";
+      var lastCompletedDetail = lastCompletedTask && lastCompletedTask.kind === "lesson" ? "Complete this lesson" : "Complete any 1 activity";
       var lastCompletedHtml = lastCompletedTask
         ? '<article class="v180-today-task is-learning is-done' + (lastCompletedHasPractice ? ' v180-course-followup has-course-practice' : '') + '" aria-label="' + esc(lastCompletedTask.title + '. ' + (lastCompletedTask.kind === "lesson" ? 'Lesson' : 'Explore') + ' complete.') + '">' +
-            '<span class="v180-today-task-copy"><small>' + (lastCompletedTask.kind === "lesson" ? 'Lesson complete' : 'Explore complete') + '</small><strong>' + esc(lastCompletedTask.title) + '</strong></span>' +
+            '<span class="v180-today-task-copy"><strong>' + esc(lastCompletedTitle) + '</strong><span>' + esc(lastCompletedDetail) + '</span></span>' +
             '<em class="v180-today-task-status" aria-label="Complete">✓</em>' +
             (lastCompletedHasPractice ? coursePracticeEntryHtml(lastCompletedIndex) : '') +
           '</article>'
         : '';
-      var practiceIndex = !todayDone && !planExpired() ? latestPendingPracticeIndex() : null;
-      var practiceTask = practiceIndex == null ? null : tasks()[practiceIndex];
-      var practiceHtml = practiceTask
-        ? '<article class="v180-today-task v180-course-followup is-done has-course-practice" aria-label="' + esc(practiceTask.title) + '. Lesson complete. Practice available.">' +
-            '<span class="v180-today-task-copy"><small>Lesson complete</small><strong>' + esc(practiceTask.title) + '</strong></span>' +
-            '<em class="v180-today-task-status" aria-label="Lesson complete">✓</em>' +
-            coursePracticeEntryHtml(practiceIndex) +
-          '</article>'
-        : '';
       var learningHtml = planExpired()
         ? '<article class="v180-today-task is-learning is-plan-locked" aria-label="' + esc(learningTitle + ' locked') + '">' +
-            '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong></span>' +
+            '<span class="v180-today-task-copy">' + learningEyebrowHtml + '<strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
             '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="unlock-expired">Unlock</button></span>' +
           '</article>'
         : todayDone
         ? lastCompletedHtml
-        : '<article class="v180-today-task is-learning is-current-task" aria-label="' + esc(learningLabel + '. ' + learningTitle) + '">' +
-            '<span class="v180-today-task-copy"><small>' + esc(learningLabel) + '</small><strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
+        : '<article class="v180-today-task is-learning is-current-task" aria-label="' + esc(learningAriaLabel) + '">' +
+            '<span class="v180-today-task-copy">' + learningEyebrowHtml + '<strong>' + esc(learningTitle) + '</strong>' + learningMeta + '</span>' +
             '<span class="v180-task-side"><button type="button" class="v180-today-task-status" data-v180-action="' + learningAction + '" aria-label="' + esc(learningStatus + ' ' + learningTitle) + '">' + esc(learningStatus) + '</button><span class="v180-task-proof">👥 ' + esc(taskCompletionProof(taskIndex)) + '</span></span>' +
           '</article>';
       planPanel.innerHTML =
@@ -22268,7 +22276,7 @@
           '<div class="v180-task-top"><span class="v180-task-plan">' + esc(planName(planTier())) + '</span><button type="button" class="v180-task-count' + (weeklyReady ? ' has-reward' : '') + '" data-v180-action="plan" aria-label="View ' + esc(planEntryLabel(planTier()).toLowerCase()) + '"><span>' + esc(planEntryLabel(planTier())) + '</span><em>›</em></button></div>' +
           '<div class="v180-today-card" aria-label="Today’s learning and welcome gift">' +
             '<div class="v180-today-heading"><strong>Today’s learning</strong></div>' +
-            '<div class="v180-today-list has-one">' + learningHtml + practiceHtml + '</div>' +
+            '<div class="v180-today-list has-one">' + learningHtml + '</div>' +
             checkinHtml +
           '</div>' +
         '</div>';
@@ -22410,7 +22418,7 @@
       if (completedCount() >= 7) return weeklyRewardClaimed() ? "week_complete" : "week_reward_ready";
       if (planTier() === "free" && profile.v180PlanEnded === true) return "starter_carryover";
       var served = servedTaskIndex();
-      if (served == null) return "today_complete";
+      if (served == null) return latestPendingPracticeIndex() != null ? "lesson_complete_practice" : "today_complete";
       if (todayIndex() === 3 && served === 0 && tasks().slice(0, 4).filter(function (_, index) { return !routeNodeDoneUnsafe(index); }).length === 4) return "day4_backlog";
       if (latestPendingPracticeIndex() != null) return "practice_available";
       if (served < todayIndex() && tasks()[served].kind === "lesson") return "overdue_course";
@@ -22457,8 +22465,8 @@
         profile.v180TodayIndex = 1;
       } else if (value === "day4_backlog") {
         profile.v180TodayIndex = 3;
-      } else if (value === "practice_available" || value === "after_class" || value === "after_class_last") {
-        profile.v180TodayIndex = 1;
+      } else if (value === "lesson_complete_practice" || value === "practice_available" || value === "after_class" || value === "after_class_last") {
+        profile.v180TodayIndex = value === "lesson_complete_practice" ? 0 : 1;
         var practiceCourse = profile.v180TaskStates[0];
         practiceCourse.lessonStarted = true;
         practiceCourse.lessonDone = true;
@@ -22541,7 +22549,7 @@
         '<div class="v180-reveal" id="v180-plan-reveal" role="dialog" aria-modal="true" aria-labelledby="v180-reveal-title">',
           '<div class="v180-reveal-card">',
             '<button type="button" class="v180-reveal-close" data-v180-action="reveal-close" aria-label="Close">×</button>',
-            '<span class="v180-reveal-badge" id="v180-reveal-badge">★ This week’s plan</span>',
+            '<span class="v180-reveal-badge" id="v180-reveal-badge">Pro Plan</span>',
             '<h2 id="v180-reveal-title">Your week is ready!</h2>',
             '<p class="v180-reveal-copy" id="v180-reveal-copy"></p>',
             '<p class="v180-reveal-proof" id="v180-reveal-proof"></p>',
@@ -22583,7 +22591,7 @@
         : "Your " + tierName(value) + " week is ready!";
       document.getElementById("v180-reveal-copy").innerHTML = '<strong>' + esc(valueCopy) + '</strong>';
       document.getElementById("v180-reveal-proof").textContent = "👥 " + planCompletionProof();
-      document.getElementById("v180-reveal-badge").textContent = value === "free" ? "★ Your starter plan" : "★ This week’s plan";
+      document.getElementById("v180-reveal-badge").textContent = value === "free" ? "Free Plan" : value === "max" ? "Max Plan" : "Pro Plan";
       var path = document.getElementById("v180-reveal-path");
       path.setAttribute("aria-label", value === "free" ? "Seven-day starter plan ending in a plan gift" : "Seven-day weekly plan ending in a weekly gift");
       path.innerHTML = plan.map(function (task, index) {
@@ -22598,9 +22606,9 @@
           '<i><img src="' + esc(cover) + '" alt="" decoding="async" /></i>' +
           '<strong>' + esc(label) + '</strong>' + (hasPractice ? '<span class="v180-reveal-practice">Practice</span>' : '') + '</button>';
       }).join("") +
-        '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Weekly gift claimed' : 'Weekly gift ready to open') : 'Weekly gift unlocks after all seven tasks') + '">' +
+        '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift ready to open' : 'Weekly gift ready to open') : value === 'free' ? 'Plan gift unlocks after all seven tasks' : 'Weekly gift unlocks after all seven tasks') + '">' +
           '<i><span class="v180-weekly-gift-box" aria-hidden="true">🎁</span></i>' +
-          '<span>All done</span><strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
+          '<strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
       var revealCta = document.querySelector("#v180-plan-reveal .v180-reveal-primary");
       if (revealCta) {
         var recommendedIndex = servedTaskIndex();
@@ -22799,16 +22807,16 @@
             '<span class="v180-benefit-cell is-label" role="rowheader">Unit assessments each year</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="pro" role="cell">13</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="max" role="cell">21</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">Check ' + esc(name) + '\'s English level</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">Check your child\'s English level</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-label" role="rowheader">Access 864 CEFR-aligned lessons</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">See ' + esc(name) + '\'s progress after every lesson</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">See your child\'s progress after every lesson</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">Let ' + esc(name) + ' speak, practice, and review anytime</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">Let your child speak, practice, and review anytime</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
           '</div>' +
@@ -22921,15 +22929,14 @@
       if (title) title.textContent = "My benefits";
       var list = document.querySelector("#screen-membership .ms-benefits-list");
       if (list) {
-        var childName = String(profile.name || "your child").trim() || "your child";
         var benefits = [
           (value === "max" ? "5" : "3") + " AI lessons each week",
           (value === "max" ? "1.7×" : "1×") + " level progress speed",
           (value === "max" ? "21" : "13") + " unit assessments each year",
-          "Check " + childName + "'s English level",
+          "Check your child's English level",
           "Access 864 CEFR-aligned lessons",
-          "See " + childName + "'s progress after every lesson",
-          "Let " + childName + " speak, practice, and review anytime"
+          "See your child's progress after every lesson",
+          "Let your child speak, practice, and review anytime"
         ];
         list.innerHTML = benefits.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
       }
