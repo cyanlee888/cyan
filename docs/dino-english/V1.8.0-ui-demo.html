@@ -22600,7 +22600,7 @@
       document.getElementById("v180-reveal-proof").textContent = "👥 " + planCompletionProof();
       document.getElementById("v180-reveal-badge").textContent = value === "free" ? "Free Plan" : value === "max" ? "Max Plan" : "Pro Plan";
       var path = document.getElementById("v180-reveal-path");
-      path.setAttribute("aria-label", value === "free" ? "Seven-day starter plan ending in a plan gift" : "Seven-day weekly plan ending in a weekly gift");
+      path.setAttribute("aria-label", "Seven-day plan ending in a plan gift");
       path.innerHTML = plan.map(function (task, index) {
         var isExplore = task.kind === "explore";
         var state = taskState(index);
@@ -22613,9 +22613,9 @@
           '<i><img src="' + esc(cover) + '" alt="" decoding="async" /></i>' +
           '<strong>' + esc(label) + '</strong>' + (hasPractice ? '<span class="v180-reveal-practice">Practice</span>' : '') + '</button>';
       }).join("") +
-        '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift ready to open' : 'Weekly gift ready to open') : value === 'free' ? 'Plan gift unlocks after all seven tasks' : 'Weekly gift unlocks after all seven tasks') + '">' +
+        '<button type="button" class="v180-reveal-mini is-weekly-gift ' + (done >= 7 ? (weeklyRewardClaimed() ? 'is-done' : 'is-ready') : 'is-future') + '" ' + (done >= 7 && !weeklyRewardClaimed() ? 'data-v180-action="claim-weekly"' : 'disabled aria-disabled="true"') + ' aria-label="' + (done >= 7 ? (weeklyRewardClaimed() ? 'Gift claimed' : 'Plan gift ready to open') : 'Plan gift unlocks after all seven tasks') + '">' +
           '<i><span class="v180-weekly-gift-box" aria-hidden="true">🎁</span></i>' +
-          '<strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : value === 'free' ? 'Plan gift' : 'Weekly gift') + '</strong></button>';
+          '<strong>' + (weeklyRewardClaimed() ? 'Gift claimed' : 'Plan gift') + '</strong></button>';
       var revealCta = document.querySelector("#v180-plan-reveal .v180-reveal-primary");
       if (revealCta) {
         var recommendedIndex = servedTaskIndex();
@@ -22626,7 +22626,7 @@
         var revealLabel = stage === "explore" ? "Start Explore" : recommendedState && recommendedState.lessonStarted ? "Continue lesson" : "Start lesson";
         if (done >= 7 && !weeklyRewardClaimed()) {
           revealAction = "claim-weekly";
-          revealLabel = value === "free" ? "Claim plan gift" : "Claim weekly gift";
+          revealLabel = "Claim gift";
         } else if (planExpired()) {
           revealAction = "unlock-expired";
           revealLabel = "Unlock plan";
