@@ -23572,7 +23572,7 @@
     function flowLog(message){journey.events.push(message);if(journey.events.length>12)journey.events.shift()}
     function flowSnapshot(){return {homeReached:journey.homeReached,onboardingComplete:journey.onboardingComplete,onboardingScreen:journey.onboardingScreen,scheme:journey.scheme,route:journey.route,account:journey.account,membership:journey.membership,phase:journey.phase,pendingTransaction:journey.pendingTransaction?.kind||null,currentId:auth.currentId,teacherId:sourceProfile().teacherId,teacherChosen:!!sourceProfile().teacherChosen,courseInProgress:!!sourceProfile().trialInProgress,reportShown:!!sourceProfile().trialReportShown,authMandatory:!!authReturn?.mandatory,events:[...journey.events]}}
     function reviewPanelContext(){
-      if(mode==='auth')return {label:auth.phase==='confirmation'?'会员游客切换账号确认':auth.scene==='pre'?'前置登录':'后置登录',pageKey:auth.scene==='pre'?'v190_pre_login':'v190_post_login',keys:auth.scene==='post'?['target']:[]};
+      if(mode==='auth')return {label:auth.phase==='confirmation'?'会员游客切换账号确认':auth.scene==='pre'?'前置登录':'后置登录',pageKey:auth.scene==='pre'?'v190_pre_login':'v190_post_login',keys:auth.scene==='post'?['paid','target']:[]};
       if(flowActive()){
         const screen=activeScreen();
         if(screen==='screen-paywall-pt')return {label:'购买页（本地模拟）',pageKey:'v190_purchase',keys:['payResult','restoreResult']};
@@ -23935,6 +23935,11 @@
       reset:()=>{if(ready){if(flowActive())openFlowReview(flowMode());else if(mode==='auth')showAuthLogin(true);else seedInterruptedSample()}}
     };
     const featureGroups=[
+      {key:'paid',label:'当前游客会员状态',options:[['no','非会员游客'],['yes','有效会员游客']],apply:value=>{
+        setFlowTier(value==='yes');
+        if(authReturn)authReturn.mandatory=auth.scene==='pre'||value==='yes';
+        showAuthLogin(false);
+      }},
       {key:'target',label:'后置登录账号',options:[['new','登录新账号'],['existing','登录旧账号']],apply:value=>{auth.target=value;showAuthLogin(!authReturn)}},
       {key:'payResult',label:'下次模拟购买 / 核验',options:[['success','成功'],['pending','结果待定'],['cancel','取消'],['fail','失败']],apply:value=>{journey.payResult=value}},
       {key:'restoreResult',label:'下次模拟恢复',options:[['success','游客订阅'],['none','无有效订阅'],['bound','已关联正式账号'],['fail','核验失败']],apply:value=>{journey.restoreResult=value}}
