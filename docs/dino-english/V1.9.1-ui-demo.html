@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V1.9.1 — 课中按需授权 / Explore UI Demo</title>
-  <!-- DESIGN.md · V1.9.1 · Classroom permissions and Explore UI, on the V1.8.0 baseline. -->
+  <title>Dino AI V1.9.1 — 课中按需授权 Demo</title>
+  <!-- DESIGN.md · V1.9.1 · Classroom permissions, on the V1.8.0 baseline. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
@@ -8356,7 +8356,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V1.9.1 · 课中按需授权 / Explore UI · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V1.9.1 · 课中按需授权 · 右上 ⚙︎ States 切换页面与关键状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -19447,7 +19447,6 @@
       { key: "permission_settings", label: "麦克风 · 设置确认弹窗", run: function () { window.CLASS_PERMISSIONS.jump("settings-confirm"); } },
       { key: "permission_returning", label: "老用户 · 麦克风权限关闭", run: function () { window.CLASS_PERMISSIONS.jump("returning-revoked"); } },
       { key: "permission_camera", label: "相机授权", run: function () { window.CLASS_PERMISSIONS.jump("camera-restore-on"); } },
-      { key: "v200_explore", label: "Explore · 新布局", run: function () { window.v200OpenPage("explore"); } },
       { key: "study_plan", auxiliary: true, label: "学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
       { key: "membership_choice", auxiliary: true, label: "会员选择", run: withReviewProfile(function () { openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
       { key: "membership", auxiliary: true, label: "会员中心", run: withReviewProfile(function () {
@@ -19715,7 +19714,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V1.9.1 · 课中按需授权 / Explore UI",
+      demo: "V1.9.1 · 课中按需授权",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";
@@ -23649,37 +23648,9 @@
   })();
   </script>
   <!-- V1.9.1 Explore UI. Existing Play navigation and game routes use the baseline. -->
-  <style id="v200-page-optimizations">
-#device-landscape #screen-class #hub-panel-practice .explore-entries{display:flex!important;flex-direction:row!important;flex:1;min-height:0;gap:18px!important;padding:1px 0 0;justify-content:center;align-items:center;overflow:visible}
-#device-landscape #screen-class #hub-panel-practice .explore-entry{position:relative;display:flex!important;flex:0 1 220px;width:220px;height:235px;min-height:0;flex-direction:column!important;align-items:center!important;justify-content:flex-start;gap:0;overflow:visible;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;color:var(--ink-on-dark)!important;text-align:center;font-family:var(--font);cursor:pointer;transition:transform 180ms var(--ease)}
-#device-landscape #screen-class #hub-panel-practice .explore-entry::before,#device-landscape #screen-class #hub-panel-practice .explore-entry::after{display:none!important;content:none!important}
-#device-landscape #screen-class #hub-panel-practice .explore-entry:hover{transform:translateY(-4px)}
-#device-landscape #screen-class #hub-panel-practice .explore-entry:focus-visible{outline:3px solid var(--brand-lime);outline-offset:3px;border-radius:20px!important}
-.v200-activity-art{display:block;width:160px;height:160px;flex:0 0 160px;background-image:url("assets/v190/activity-atlas.png");background-size:300% 200%;background-repeat:no-repeat;filter:drop-shadow(0 10px 10px rgba(6,21,87,.26));pointer-events:none}
-.v200-art-story{background-position:0% 0%;transform:rotate(-4deg)}.v200-art-radio{background-position:50% 0%;transform:rotate(3deg);clip-path:inset(0 0 0 7%)}.v200-art-speaking{background-position:100% 0%;transform:rotate(-3deg)}
-#device-landscape #screen-class #hub-panel-practice .ee-info{flex:0 0 auto;gap:4px;width:100%;margin-top:-2px}
-#device-landscape #screen-class #hub-panel-practice .ee-info b{font:700 16px/1.2 var(--display);padding:0;color:var(--ink-on-dark);text-shadow:0 2px 3px rgba(10,44,198,.18)}
-#device-landscape #screen-class #hub-panel-practice .ee-info span{font:400 11px/1.4 var(--font);opacity:.8}
-@media(max-width:872px){body[data-v200-view="explore"] #wrap-landscape{height:calc(393px * var(--v200-landscape-scale,1));overflow:hidden}body[data-v200-view="explore"] #wrap-landscape #device-landscape{width:852px;height:393px;max-height:none;aspect-ratio:852/393;transform:scale(var(--v200-landscape-scale,1));transform-origin:top left}}
-@media(max-width:600px){body[data-v200-view="explore"] :is(#dfb-fab,#dfb-panel,#dfb-toast){display:none!important}}
-@media(prefers-reduced-motion:reduce){#hub-panel-practice .explore-entry{animation:none!important;transition:none!important}}
-</style>
-<script id="v200-explore-art">[['#explore-open-story','story'],['#explore-open-radio','radio'],['#explore-open-speaking','speaking']].forEach(([selector,type])=>{const entry=document.querySelector(selector),art=document.createElement('span');art.className='v200-activity-art v200-art-'+type;art.setAttribute('aria-hidden','true');entry.prepend(art);});</script>
-<script id="v200-explore-navigation">
-(function(){
-  function view(){return getComputedStyle(document.getElementById('wrap-portrait')).display==='none'&&document.querySelector('#screen-class.active')&&activeHubTab==='practice'?'explore':'';}
-  function sync(){document.body.dataset.v200View=view();}
-  window.v200SyncPage=sync;
-  window.v200BeforeJump=function(){profile.v180PlanRevealSeen=true;document.getElementById('v180-plan-reveal')?.classList.remove('show');window.VISIT_REWARD?.resetVisuals();window.cxCoachHide?.();if(typeof forceUpdateHide==='function')forceUpdateHide();if(typeof gt4Close==='function')gt4Close(true);};
-  window.v200Context=function(){return view()==='explore'?{label:'Explore',pageKey:'v200_explore',isCore:true,keys:['v180Tier']}:null;};
-  window.v200OpenPage=function(page){window.v200BeforeJump();seedReviewProfile();enterLandscape();showClassHome();setHubTab(page==='play'?'play':'practice');sync();window.demoStatePanel?.panel.classList.remove('open');window.demoStatePanel?.render();};
-  const observer=new MutationObserver(sync);['wrap-landscape','wrap-portrait'].forEach(id=>observer.observe(document.getElementById(id),{subtree:true,attributes:true,attributeFilter:['class','style']}));
-  const wrap=document.getElementById('wrap-landscape');
-  function fit(){if(!matchMedia('(max-width:872px)').matches){wrap.style.removeProperty('--v200-landscape-scale');return;}const scale=String(Math.min(1,(wrap.clientWidth||Math.max(1,document.documentElement.clientWidth-20))/852));if(wrap.style.getPropertyValue('--v200-landscape-scale')!==scale)wrap.style.setProperty('--v200-landscape-scale',scale);}
-  new ResizeObserver(fit).observe(wrap);addEventListener('resize',fit);fit();
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{const p=new URLSearchParams(location.search);if(!p.has('v191Page')&&!p.has('v200Page')&&p.has('v180Page'))return;const page=p.get('v191Page')||p.get('v200Page');if(page==='permissions'){window.CLASS_PERMISSIONS.jump(p.get('permissionState')||'first');return;}window.v200OpenPage(page==='play'?'play':'explore');}));
-})();
-</script>
+  
+
+
 
 
   
@@ -23923,5 +23894,12 @@
 
 
 
+<script id="v191-review-entry">
+requestAnimationFrame(function () { requestAnimationFrame(function () {
+  var p = new URLSearchParams(location.search);
+  if (p.has('v180Page') && !p.has('v191Page')) return;
+  window.CLASS_PERMISSIONS.jump(p.get('permissionState') || 'first');
+}); });
+</script>
 </body>
 </html>

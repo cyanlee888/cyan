@@ -5850,6 +5850,8 @@
     /* ---------- Purchase toast (V1.2.0) ---------- */
     .pay-toast { position: absolute; left: 50%; bottom: 30px; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #143a5e; color: #fff; font-size: 0.86rem; font-weight: 700; padding: 12px 20px; border-radius: 999px; box-shadow: 0 14px 30px rgba(20,58,94,.4); transition: .3s ease; z-index: 50; }
     .pay-toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .pay-toast.pay-toast-middle-lower { top: 65%; bottom: auto; transform: translate(-50%, calc(-50% + 12px)); }
+    .pay-toast.pay-toast-middle-lower.show { transform: translate(-50%, -50%); }
 
     /* ===================== V1.3.0 Gamification ===================== */
     :root {
@@ -16815,11 +16817,12 @@
       return el ? el.id : null;
     }
 
-    function showPayToast(msg) {
+    function showPayToast(msg, placement = 'bottom') {
       const portraitVisible = $("#wrap-portrait")?.style.display !== "none";
       const t = portraitVisible ? $("#portrait-toast") : $("#pay-toast");
       if (!t) return;
       t.textContent = msg;
+      t.classList.toggle("pay-toast-middle-lower", placement === 'middle-lower');
       t.classList.add("show");
       setTimeout(() => t.classList.remove("show"), 2200);
     }
@@ -23661,9 +23664,7 @@
   .promo-ticket::before,.promo-ticket::after {content:"";position:absolute;top:calc(50% - 12px);width:24px;height:24px;border-radius:50%;background:var(--surface-card)}
   .promo-ticket::before {left:-12px}.promo-ticket::after {right:-12px}
   .promo-ticket strong {font:700 clamp(30px,5vw,44px)/1.1 var(--display);letter-spacing:-.04em}
-  .promo-ticket span {font:700 12px/1.3 var(--font);color:var(--ink-on-light)}
   .promo-ticket-inner {width:calc(100% - 52px);padding:16px 6px;border-left:2px dashed color-mix(in srgb,var(--cta-orange) 55%,transparent);border-right:2px dashed color-mix(in srgb,var(--cta-orange) 55%,transparent)}
-  .promo-ticket-inner span {display:block;margin-top:6px}
   .promo-paywall-entry {display:block;width:100%;min-height:44px;margin:2px 0 8px;padding:10px 8px;border:0;background:transparent;color:var(--ink-muted);font:600 13px var(--font);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
   .promo-products-state {display:grid;place-items:center;gap:12px;min-height:150px;margin:12px 0;padding:20px;border-radius:var(--radius-md);background:color-mix(in srgb,var(--sky-light) 12%,white);text-align:center;color:var(--ink-on-light);font:600 14px/1.4 var(--font)}
   .promo-products-state button {min-height:44px;padding:10px 22px;border:1px solid var(--brand-cyan);border-radius:var(--radius-pill);background:var(--surface-card);color:var(--sky-deep);font:700 14px var(--font);cursor:pointer}
@@ -23690,8 +23691,8 @@
   const usedCodes = new Set();
   const m = {account:null,locale:'en',result:'auto',refreshResult:'success',products:'ready',source:'profile',view:0,refresh:0,dialog:null,returnFocus:null};
   const copy = {
-    en:{entry:'Have a Promo Code?',placeholder:'Enter Promo Code',claim:'Claim',claiming:'Claiming…',success:'Offer claimed!',view:'View offer',close:'Close',invalid:'This Promo Code isn’t valid.',expired:'This Promo Code has expired.',used:'This Promo Code has already been used.',ineligible:'This Promo Code isn’t available for your account.',network:'Couldn’t claim this offer. Please try again.',loading:'Loading offers…',loadError:'Couldn’t load offers. Try again.',retry:'Retry',empty:'No offers are available for these plans.'},
-    zh:{entry:'有 Promo Code？',placeholder:'输入 Promo Code',claim:'领取',claiming:'领取中…',success:'优惠领取成功',view:'查看优惠套餐',close:'关闭',invalid:'此 Promo Code 无效',expired:'此 Promo Code 已过期',used:'此 Promo Code 已使用',ineligible:'当前账号无法领取此优惠',network:'暂时无法领取，请重试',loading:'优惠套餐加载中…',loadError:'优惠套餐加载失败，请重试',retry:'重试',empty:'当前套餐暂无适用优惠'}
+    en:{title:'Claim a special offer',entry:'Have a Promo Code?',placeholder:'Enter Promo Code',claim:'Claim',claiming:'Claiming…',success:'Offer claimed!',view:'View offer',close:'Close',invalid:'This Promo Code isn’t valid.',expired:'This Promo Code has expired.',used:'This Promo Code has already been used.',ineligible:'This Promo Code isn’t available for your account.',network:'Couldn’t claim this offer. Please try again.',loading:'Loading offers…',loadError:'Couldn’t load offers. Try again.',retry:'Retry',empty:'No offers are available for these plans.'},
+    zh:{title:'领取一个特殊优惠',entry:'有 Promo Code？',placeholder:'输入 Promo Code',claim:'领取',claiming:'领取中…',success:'优惠领取成功',view:'查看优惠套餐',close:'关闭',invalid:'此 Promo Code 无效',expired:'此 Promo Code 已过期',used:'此 Promo Code 已使用',ineligible:'当前账号无法领取此优惠',network:'暂时无法领取，请重试',loading:'优惠套餐加载中…',loadError:'优惠套餐加载失败，请重试',retry:'重试',empty:'当前套餐暂无适用优惠'}
   };
   const t = key => copy[m.locale][key];
   const panel = () => window.demoStatePanel?.render();
@@ -23724,7 +23725,7 @@
     const host=q(getComputedStyle(q('#wrap-portrait')).display!=='none'?'#device-portrait':'#device-landscape');
     m.returnFocus=document.activeElement;
     const overlay=document.createElement('div');overlay.className='promo-overlay';overlay.id='promo-overlay';
-    overlay.innerHTML='<section class="promo-dialog" role="dialog" aria-modal="true" aria-labelledby="promo-title" tabindex="-1"><button type="button" class="promo-close" aria-label="'+t('close')+'">×</button><h2 id="promo-title">'+(success?t('success'):'Promo Code')+'</h2><div class="promo-content"></div></section>';
+    overlay.innerHTML='<section class="promo-dialog" role="dialog" aria-modal="true" aria-labelledby="promo-title" tabindex="-1"><button type="button" class="promo-close" aria-label="'+t('close')+'">×</button><h2 id="promo-title">'+(success?t('success'):t('title'))+'</h2><div class="promo-content"></div></section>';
     host.append(overlay);m.dialog=overlay;m.view++;
     overlay.querySelector('.promo-close').onclick=close;
     overlay.addEventListener('click',e=>{if(e.target===overlay)close();});
@@ -23741,7 +23742,7 @@
   function showSuccess() {
     m.dialog?.remove();m.dialog=null;
     const content=makeDialog(true),discount=m.account?.discount||20;
-    content.innerHTML='<div class="promo-ticket"><div class="promo-ticket-inner"><strong>'+discount+(m.locale==='zh'?'% 优惠':'% OFF')+'</strong><span>Promo Code</span></div></div><button type="button" class="promo-cta" id="promo-view-offer">'+t('view')+'</button>';
+    content.innerHTML='<div class="promo-ticket"><div class="promo-ticket-inner"><strong>'+discount+(m.locale==='zh'?'% 优惠':'% OFF')+'</strong></div></div><button type="button" class="promo-cta" id="promo-view-offer">'+t('view')+'</button>';
     q('#promo-view-offer').onclick=()=>{close();openPaywall('screen-class','promo_code');refreshProducts();};
     q('#promo-view-offer').focus({preventScroll:true});
   }
@@ -23765,7 +23766,7 @@
           input.setAttribute('aria-invalid','true');error.textContent=t(outcome);input.focus();return;
         }
         if(origin==='profile')showSuccess();
-        else {close();showPayToast(t('success'));refreshProducts();}
+        else {close();showPayToast(t('success'),'middle-lower');refreshProducts();}
       },650);
     };
     input.focus({preventScroll:true});
