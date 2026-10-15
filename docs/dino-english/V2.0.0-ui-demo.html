@@ -8356,6 +8356,41 @@
     .class-path-open:focus-visible,.class-path-practice:focus-visible { outline:3px solid var(--brand-lime) !important; outline-offset:3px; border-radius:var(--radius-sm); }
     @media(prefers-reduced-motion:reduce) { .class-path-art { transition:none; } }
   </style>
+
+  <style id="v200-teacher-flow-style">
+    #screen-teacher { position: relative; overflow: clip; }
+    #screen-teacher [hidden] { display: none !important; }
+    #screen-teacher .teacher-pick {
+      overflow: clip;
+      background: radial-gradient(ellipse at 20% 20%, color-mix(in srgb,var(--brand-cyan) 32%,transparent), transparent 50%), linear-gradient(135deg,var(--sky-deep),var(--sky-mid));
+    }
+    #screen-teacher .teacher-intro { max-width: 650px; padding: 0 34px; }
+    #screen-teacher .teacher-intro h2 { font-weight: 600; }
+    #screen-teacher.is-first-lesson .teacher-grid { grid-template-columns: minmax(0,1fr); width: 240px; max-width: 50%; }
+    #screen-teacher.is-first-lesson .teacher-card { cursor: default; transform: none; }
+    #screen-teacher.is-first-lesson .teacher-card-shell,
+    #screen-teacher.is-first-lesson .teacher-card-inner { clip-path: none; border-radius: var(--radius-md); }
+    #screen-teacher.is-first-lesson .teacher-card-shell { background: var(--glass-border); }
+    #screen-teacher.is-first-lesson .teacher-card-inner { background: linear-gradient(180deg,var(--brand-cyan),var(--sky-light)); }
+    #screen-teacher.is-first-lesson .teacher-card-meta { padding: 10px; background: var(--surface-glass); }
+    #screen-teacher.is-first-lesson .teacher-card-portrait { height: 100%; padding-bottom: 30px; }
+    #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: auto; max-height: 190px; }
+    #screen-teacher .teacher-back { position: absolute; top: 10px; left: 14px; z-index: 2; width: 44px; height: 44px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font-size: 24px; cursor: pointer; }
+    #screen-teacher .btn-primary:disabled { opacity: .5; cursor: default; }
+    #screen-teacher .teacher-card:focus-visible { outline: 3px solid var(--accent-yellow); outline-offset: 3px; }
+    .teacher-switch-overlay { position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; background: color-mix(in srgb,var(--sky-deep) 65%,transparent); backdrop-filter: blur(6px); }
+    .teacher-switch-dialog { width: min(360px,80%); padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); background: var(--sky-deep); color: var(--ink-on-dark); text-align: center; display: grid; justify-items: center; gap: 16px; }
+    .teacher-switch-dialog p { margin: 0; font: 600 20px/1.35 var(--display); }
+    .teacher-switch-dialog .btn-primary { min-width: 148px; min-height: 44px; }
+    .teacher-switch-dialog p:focus { outline: none; }
+    .teacher-switch-icon { width: 44px; height: 44px; border: 4px solid var(--surface-glass); border-top-color: var(--glass-border); border-radius: 50%; animation: teacher-resource-spin .8s linear infinite; }
+    .teacher-switch-overlay[data-state="success"] .teacher-switch-icon,
+    .teacher-switch-overlay[data-state="error"] .teacher-switch-icon { animation: none; border: none; display: grid; place-items: center; font: 700 34px/1 var(--display); color: var(--brand-lime); }
+    .teacher-switch-overlay[data-state="error"] .teacher-switch-icon { color: var(--accent-yellow); }
+    .teacher-switch-cancel { border: none; border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); min-height: 44px; padding: 10px 20px; font: 700 14px var(--font); cursor: pointer; }
+    @keyframes teacher-resource-spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion:reduce) { .teacher-switch-icon { animation: none; } }
+  </style>
 </head>
 <body class="is-group-b">
   <p class="demo-bar">V2.0.0 · 优惠码 / Play 调整 / Explore UI · 右上 ⚙︎ States 切换页面与关键状态</p>
@@ -9394,13 +9429,22 @@
            (#screen-login). The landscape device now opens on the teacher picker / class. -->
       <section class="screen" id="screen-teacher">
         <div class="land-body teacher-pick">
+          <button type="button" class="teacher-back" id="btn-teacher-back" aria-label="Back to Class" hidden>←</button>
           <div class="teacher-intro">
-            <h2 id="teacher-guide-h1">Your first lesson is ready</h2>
-            <p id="teacher-guide-h2">Choose a teacher to get started.</p>
+            <h2 id="teacher-guide-h1">Your first lesson is ready!</h2>
+            <p id="teacher-guide-h2">Let's start learning!</p>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
           <div class="teacher-actions">
-            <button type="button" class="btn btn-primary" id="btn-confirm-teacher">Continue</button>
+            <button type="button" class="btn btn-primary" id="btn-confirm-teacher">Start Lesson</button>
+          </div>
+        </div>
+        <div class="teacher-switch-overlay" id="teacher-switch-overlay" role="dialog" aria-modal="true" aria-labelledby="teacher-switch-title" hidden>
+          <div class="teacher-switch-dialog">
+            <div class="teacher-switch-icon" id="teacher-switch-icon" aria-hidden="true"></div>
+            <p id="teacher-switch-title" role="status" aria-live="polite" tabindex="-1"></p>
+            <button type="button" class="btn btn-primary" id="btn-teacher-retry" hidden>Retry</button>
+            <button type="button" class="teacher-switch-cancel" id="btn-teacher-cancel">Back to Class</button>
           </div>
         </div>
       </section>
@@ -10553,6 +10597,7 @@
       vnConsultOutboundPhone: "",
       levelUpResult: "up",
       trialResult: "same",
+      teacherLoadResult: "success",
       capsuleOutcome: "random",
       quizTypes: "mixed",
       deviceCount: 3,
@@ -10596,6 +10641,10 @@
     let paywallReturnScreen = "screen-class";
     let paywallTrigger = "course";
     let teacherFlowMode = "onboarding";
+    let pendingTeacherId = "max";
+    let teacherSwitchState = "idle";
+    let teacherSwitchTimer = null;
+    let teacherSwitchRequest = 0;
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
     // (simulates a new account / register). Show Dino's purpose page first,
@@ -11711,61 +11760,113 @@
 
     function renderTeacherCards() {
       const grid = $("#teacher-grid");
-      grid.innerHTML = TEACHERS.map((teacher) => `
-        <button type="button" class="teacher-card ${teacher.theme} ${teacher.id === profile.teacherId ? "selected" : ""}" data-teacher-id="${teacher.id}">
+      const switching = teacherFlowMode === "app";
+      const teachers = switching ? TEACHERS : TEACHERS.filter((teacher) => teacher.id === "max");
+      $("#screen-teacher").classList.toggle("is-first-lesson", !switching);
+      grid.innerHTML = teachers.map((teacher) => {
+        const tag = switching ? "button" : "div";
+        const selected = switching && teacher.id === pendingTeacherId;
+        return `<${tag} ${switching ? `type="button" aria-pressed="${selected}"` : ""} class="teacher-card ${teacher.theme} ${selected ? "selected" : ""}" data-teacher-id="${teacher.id}">
           <div class="teacher-card-shell">
             <div class="teacher-card-inner">
-              <div class="teacher-card-sound" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 14h4l5 4V6L8 10H4z"/>
-                  <path d="M16 9a5 5 0 0 1 0 6"/>
-                  <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11"/>
-                </svg>
-              </div>
+              ${switching ? `<div class="teacher-card-sound" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h4l5 4V6L8 10H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6.5a8.5 8.5 0 0 1 0 11"/></svg></div>` : ""}
               <div class="teacher-card-portrait"><img src="${teacher.image}" alt="" decoding="async" /></div>
               <div class="teacher-card-meta">
                 <strong>${teacher.name}</strong>
-                <span>${teacher.short}</span>
+                ${switching ? `<span>${teacher.short}</span>` : ""}
               </div>
             </div>
           </div>
-        </button>
-      `).join("");
-      grid.querySelectorAll(".teacher-card").forEach((card) => {
+        </${tag}>`;
+      }).join("");
+      grid.querySelectorAll("button.teacher-card").forEach((card) => {
         card.addEventListener("click", () => {
-          profile.teacherId = card.dataset.teacherId;
+          if (teacherSwitchState !== "idle") return;
+          pendingTeacherId = card.dataset.teacherId;
           renderTeacherCards();
-          renderClassTeacherVisual();
+          grid.querySelector(`[data-teacher-id="${pendingTeacherId}"]`)?.focus({ preventScroll: true });
         });
       });
+      $("#btn-confirm-teacher").disabled = switching && (pendingTeacherId === profile.teacherId || teacherSwitchState !== "idle");
+    }
+
+    function resetTeacherSwitch() {
+      clearTimeout(teacherSwitchTimer);
+      teacherSwitchTimer = null;
+      teacherSwitchRequest += 1;
+      teacherSwitchState = "idle";
+      const screen = $("#screen-teacher");
+      screen.querySelector(".teacher-pick").inert = false;
+      screen.removeAttribute("aria-busy");
+      $("#teacher-switch-overlay").hidden = true;
+    }
+    function renderTeacherSwitch(state) {
+      teacherSwitchState = state;
+      const overlay = $("#teacher-switch-overlay");
+      overlay.hidden = false;
+      overlay.dataset.state = state;
+      $("#screen-teacher .teacher-pick").inert = true;
+      $("#screen-teacher").setAttribute("aria-busy", String(state === "loading"));
+      $("#teacher-switch-icon").textContent = state === "success" ? "✓" : state === "error" ? "!" : "";
+      $("#teacher-switch-title").textContent = state === "success" ? "Teacher selected!" : state === "error" ? "Couldn't load resources. Please try again." : "Loading resources…";
+      $("#btn-teacher-retry").hidden = state !== "error";
+      $("#btn-teacher-cancel").hidden = state === "success";
+      $("#teacher-switch-title").focus({ preventScroll: true });
+      window.demoStatePanel?.render();
+    }
+    function startTeacherSwitch() {
+      if (teacherFlowMode !== "app" || !["idle", "error"].includes(teacherSwitchState) || pendingTeacherId === profile.teacherId) return;
+      clearTimeout(teacherSwitchTimer);
+      const request = ++teacherSwitchRequest;
+      const selectedId = pendingTeacherId;
+      const outcome = demoState.teacherLoadResult;
+      renderTeacherSwitch("loading");
+      // Demo-only resource response; production completes after resources are ready.
+      teacherSwitchTimer = setTimeout(() => {
+        if (request !== teacherSwitchRequest || activeLandScreen() !== "screen-teacher") return;
+        if (outcome === "fail") { renderTeacherSwitch("error"); return; }
+        profile.teacherId = selectedId;
+        profile.teacherChosen = true;
+        renderClassTeacherVisual();
+        renderTeacherSwitch("success");
+        teacherSwitchTimer = setTimeout(() => {
+          if (request !== teacherSwitchRequest || activeLandScreen() !== "screen-teacher") return;
+          showClassHome();
+          $("#btn-change-teacher").focus({ preventScroll: true });
+        }, 1000);
+      }, outcome === "slow" ? 7000 : 1500);
+    }
+    function openTeacherReview(mode) {
+      window.v200BeforeJump?.();
+      seedReviewProfile();
+      demoState.teacherLoadResult = "success";
+      if (mode === "onboarding") {
+        profile.hasStartedClass = false;
+        profile.trialInProgress = false;
+        profile.teacherChosen = false;
+      }
+      enterLandscape();
+      openTeacherPicker(mode);
+      window.demoStatePanel?.panel.classList.remove("open");
+      window.demoStatePanel?.render();
     }
 
     renderClassTeacherVisual();
     renderTeacherCards();
     fillClassTab();
     function showLandScreen(id) {
+      if (id !== "screen-teacher") resetTeacherSwitch();
       dismissDeviceLimitNotice();
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
       if (window.VISIT_REWARD) window.VISIT_REWARD.onScreen(id);
       window.CLASS_PERMISSIONS?.onNavigate(id);
     }
     function fillTeacherGuide() {
-      const name = getDisplayName();
       const isAppMode = teacherFlowMode === "app";
-      const showPlacementReportBenefit = !isAppMode;
-      const teacherGuideSubtitle = $("#teacher-guide-h2");
-      teacherGuideSubtitle.classList.toggle("is-report-benefit", showPlacementReportBenefit);
-      if (isAppMode) {
-        $("#teacher-guide-h1").textContent = "Switch teacher";
-        teacherGuideSubtitle.textContent = "Pick the teacher you'd like to keep learning with.";
-      } else if (showPlacementReportBenefit) {
-        $("#teacher-guide-h1").textContent = name ? `${name}, your free first lesson is ready` : "Your free first lesson is ready";
-        teacherGuideSubtitle.innerHTML = 'Finish it to get your <strong>placement report</strong>.';
-      } else {
-        $("#teacher-guide-h1").textContent = name ? `${name}, your first lesson is ready` : "Your first lesson is ready";
-        teacherGuideSubtitle.textContent = "Choose a teacher to get started.";
-      }
+      $("#teacher-guide-h1").textContent = isAppMode ? "Switch teacher" : "Your first lesson is ready!";
+      $("#teacher-guide-h2").textContent = isAppMode ? "Pick the teacher you'd like to keep learning with." : "Let's start learning!";
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Lesson";
+      $("#btn-teacher-back").hidden = !isAppMode;
       renderTeacherCards();
     }
     // V1.3.2: dismiss the device-limit modal whenever we navigate / switch demo states,
@@ -11781,6 +11882,7 @@
       if (landscape) landscape.style.display = "";
     }
     function enterPortrait() {
+      resetTeacherSwitch();
       dismissDeviceLimitNotice();
       window.CLASS_PERMISSIONS?.cancel();
       const portrait = $("#wrap-portrait");
@@ -12976,9 +13078,13 @@
       renderClassTeacherVisual();
     }
     function openTeacherPicker(mode = "onboarding") {
+      resetTeacherSwitch();
       teacherFlowMode = mode;
+      pendingTeacherId = mode === "app" ? getTeacher().id : "max";
       fillTeacherGuide();
       showLandScreen("screen-teacher");
+      $("#screen-teacher").scrollTop = 0;
+      $("#screen-teacher .teacher-pick").scrollTop = 0;
     }
     function showClassHome() {
       enterLandscape();
@@ -14097,15 +14203,26 @@
       openPaywall("screen-class", "study_plan");
     });
     $("#btn-confirm-teacher").addEventListener("click", () => {
-      // 确认即视为「已选过老师」：新手引导 Class 步重入时据此跳过选老师子步（coachTeacherDone）。
-      profile.teacherChosen = true;
       if (teacherFlowMode === "app") {
-        showClassHome();
+        startTeacherSwitch();
       } else {
+        profile.teacherId = "max";
+        profile.teacherChosen = true;
         openClassroomDemo("teacher-onboarding");
       }
     });
     $("#btn-change-teacher").addEventListener("click", () => openTeacherPicker("app"));
+    $("#btn-teacher-back").addEventListener("click", showClassHome);
+    $("#btn-teacher-cancel").addEventListener("click", showClassHome);
+    $("#btn-teacher-retry").addEventListener("click", startTeacherSwitch);
+    $("#teacher-switch-overlay").addEventListener("keydown", (event) => {
+      if (event.key !== "Tab") return;
+      const buttons = [...event.currentTarget.querySelectorAll("button")].filter((button) => !button.hidden);
+      const first = buttons[0], last = buttons[buttons.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (event.shiftKey && document.activeElement !== last) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
     // V1.3.0 nav (Req1): Class home's "All courses" entry opens the specific Unit's
     // lesson list FIRST (All Courses). The "All courses" button there opens the map.
     //  • From Class → All Courses, Back returns to Class.
@@ -16304,7 +16421,7 @@
     const LOADING_LINES = [
       (p) => `Hi ${p.name || "there"}, setting up your first lessons…`,
       (p) => `Finding the right starting point for ${p.name || (isParentVoice() ? "your child" : "you")}…`,
-      () => "Choosing the AI teacher…",
+      () => "Getting your first lesson ready…",
       (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
     ];
     // Login-screen lead line. Returning users (entered via "Log in") see a sign-in
@@ -19080,6 +19197,8 @@
       if (window.VISIT_REWARD) window.VISIT_REWARD.resetVisuals();
     },
     getValue: function (key) {
+      if (key === "teacherEntry") return teacherFlowMode;
+      if (key === "teacherLoadResult") return demoState.teacherLoadResult;
       if (key.indexOf("promo") === 0) return window.PROMO_CODE?.getValue(key);
       if (key.indexOf("gp") === 0) return window.CLASS_PERMISSIONS?.getValue(key);
       if (key.indexOf("ip") === 0 && window.IP_ANIMATION) return window.IP_ANIMATION.getValue(key);
@@ -19174,7 +19293,7 @@
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
         if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return { label: "Dino 首页", pageKey: "dino_home", isCore: true, keys: ["v180Tier", "v180HomeTask"] };
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
-        if (id === "screen-teacher")     return ctx("选择老师", []);
+        if (id === "screen-teacher") return { label: teacherFlowMode === "app" ? "切换老师" : "首次开课", pageKey: teacherFlowMode === "app" ? "teacher_switch" : "teacher_first", isCore: true, keys: teacherFlowMode === "app" ? ["teacherEntry", "teacherLoadResult"] : ["teacherEntry"] };
         return ctx("App 内", ["membership"]);
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -19204,6 +19323,8 @@
       return ctx("Onboarding", []);
     },
     groups: [
+      { key: "teacherEntry", label: "进入场景", options: [["onboarding", "首次开课 · 仅 Max"], ["app", "Class · 切换老师"]], apply: function (value) { openTeacherPicker(value); } },
+      { key: "teacherLoadResult", label: "下次保存 / 重试结果", options: [["success", "加载成功"], ["slow", "慢速加载"], ["fail", "加载失败"]], apply: function (value) { demoState.teacherLoadResult = value; } },
       { key: "v200Audience", label: "Play 模拟总人数，仅供评审", options: [["shown", "展示模拟人数"], ["hidden", "不展示人数"]], apply: function (v) { window.v200SetAudience(v); } },
       { key: "v200ParkScene", label: "乐园场景", options: [["ready", "已加载"], ["loading", "加载中"], ["error", "网络异常"]], apply: function (v) { window.v200SetParkScene(v); } },
       { key: "v200PlayLimit", label: "今日游戏次数", options: [["available", "Free · 剩余 1 次"], ["empty", "Free · 次数用尽"], ["member", "会员 · 不限次数"]], apply: function (v) { window.v200SetPlayLimit(v); } },
@@ -19503,6 +19624,8 @@
     ],
     corePagesLabel: "V2.0.0 核心页面",
     corePages: [
+      { key: "teacher_first", label: "首次开课 · Max", run: function () { openTeacherReview("onboarding"); } },
+      { key: "teacher_switch", label: "Class · 切换老师", run: function () { openTeacherReview("app"); } },
       { key: "promo_profile", label: "Promo Code · 我的入口", run: function () { window.PROMO_CODE.jump("profile"); } },
       { key: "promo_success", label: "Promo Code · 折扣券弹窗", run: function () { window.PROMO_CODE.jump("success"); } },
       { key: "promo_paywall", label: "Promo Code · 支付页入口", run: function () { window.PROMO_CODE.jump("paywall"); } },
@@ -24024,6 +24147,7 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         var params = new URLSearchParams(location.search);
+        if (['first', 'switch'].includes(params.get('teacherPage'))) { openTeacherReview(params.get('teacherPage') === 'first' ? 'onboarding' : 'app'); return; }
         if (params.has('promoPage') || (!params.has('v200Page') && params.has('v180Page'))) { syncPage(); return; }
         var page = params.get('v200Page');
         if (['promo','profile','success','paywall'].includes(page)) { window.PROMO_CODE.jump(page === 'promo' ? 'profile' : page); return; }
