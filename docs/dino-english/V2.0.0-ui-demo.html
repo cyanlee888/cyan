@@ -9431,8 +9431,8 @@
         <div class="land-body teacher-pick">
           <button type="button" class="teacher-back" id="btn-teacher-back" aria-label="Back to Class" hidden>←</button>
           <div class="teacher-intro">
-            <h2 id="teacher-guide-h1">Your first lesson is ready!</h2>
-            <p id="teacher-guide-h2">Let's start learning!</p>
+            <h2 id="teacher-guide-h1">Your free first lesson is ready</h2>
+            <p id="teacher-guide-h2" class="is-report-benefit">Finish it to get your <strong>placement report</strong>.</p>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
           <div class="teacher-actions">
@@ -11862,9 +11862,17 @@
       window.CLASS_PERMISSIONS?.onNavigate(id);
     }
     function fillTeacherGuide() {
+      const name = getDisplayName();
       const isAppMode = teacherFlowMode === "app";
-      $("#teacher-guide-h1").textContent = isAppMode ? "Switch teacher" : "Your first lesson is ready!";
-      $("#teacher-guide-h2").textContent = isAppMode ? "Pick the teacher you'd like to keep learning with." : "Let's start learning!";
+      const teacherGuideSubtitle = $("#teacher-guide-h2");
+      teacherGuideSubtitle.classList.toggle("is-report-benefit", !isAppMode);
+      if (isAppMode) {
+        $("#teacher-guide-h1").textContent = "Switch teacher";
+        teacherGuideSubtitle.textContent = "Pick the teacher you'd like to keep learning with.";
+      } else {
+        $("#teacher-guide-h1").textContent = name ? `${name}, your free first lesson is ready` : "Your free first lesson is ready";
+        teacherGuideSubtitle.innerHTML = 'Finish it to get your <strong>placement report</strong>.';
+      }
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Lesson";
       $("#btn-teacher-back").hidden = !isAppMode;
       renderTeacherCards();
