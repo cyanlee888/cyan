@@ -1,0 +1,15 @@
+Word Guardians local speech integration — 2026-09-20
+
+The bundled vosk-browser 0.0.8 JavaScript is modified by
+scripts/patch-vosk.mjs to make Model.terminate() call Worker.terminate().
+This releases the worker even if model loading failed before a model existed.
+The recognition model, inference algorithm and recognition output are unchanged.
+
+The Vosk small English US 0.15 model is redistributed from the official archive:
+https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+Original ZIP SHA-256:
+30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498
+
+The model is repackaged as USTAR + gzip for vosk-browser, retaining its top-level
+directory and all directory entries (0755) and files (0644). Model file contents
+are unchanged. See Apache-2.0.txt and vosk-NOTICE.txt for licenses and notices.

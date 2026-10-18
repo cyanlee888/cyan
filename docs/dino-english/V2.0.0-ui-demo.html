@@ -8366,15 +8366,30 @@
     }
     #screen-teacher .teacher-intro { max-width: 650px; padding: 0 34px; }
     #screen-teacher .teacher-intro h2 { font-weight: 600; }
-    #screen-teacher.is-first-lesson .teacher-grid { grid-template-columns: minmax(0,1fr); width: 240px; max-width: 50%; }
+    #screen-teacher.is-first-lesson .land-body.teacher-pick { display: grid; grid-template-columns: 280px minmax(0, 1fr); grid-template-rows: auto auto; grid-template-areas: "teacher welcome" "teacher action"; align-content: center; align-items: center; gap: 18px 32px; padding: 28px 40px; }
+    #screen-teacher.is-first-lesson .teacher-intro { grid-area: welcome; align-self: end; width: 100%; max-width: none; margin: 0; padding: 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--surface-glass); text-align: left; }
+    #screen-teacher.is-first-lesson .teacher-intro::after { content: ""; position: absolute; left: -9px; top: calc(50% - 8px); width: 16px; height: 16px; background: color-mix(in srgb, var(--sky-mid) 88%, white); border-left: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); transform: rotate(45deg); }
+    #screen-teacher.is-first-lesson #teacher-guide-ready { margin-bottom: 14px; padding-right: 44px; color: var(--ink-on-dark); font-family: var(--display); font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+    #screen-teacher.is-first-lesson #teacher-guide-h2 { font-size: 17px; font-weight: 400; line-height: 1.5; }
+    #screen-teacher.is-first-lesson .teacher-greeting-audio { top: 16px; right: 16px; }
+    #screen-teacher.is-first-lesson .teacher-actions { grid-area: action; align-self: start; align-items: flex-start; padding-left: 24px; }
+    #screen-teacher.is-first-lesson .teacher-actions .btn-primary { min-width: 240px; min-height: 52px; font-size: 18px; background: var(--cta-grad); }
+    .teacher-greeting-audio { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); color: var(--ink-on-dark); background: var(--surface-glass); cursor: pointer; }
+    .teacher-greeting-audio svg { width: 22px; height: 22px; }
+    .teacher-greeting-audio[aria-pressed="true"] { color: var(--accent-yellow); border-color: var(--accent-yellow); }
+    .teacher-greeting-audio:focus-visible { outline: 3px solid var(--accent-yellow); outline-offset: 2px; }
+    @media (max-width: 872px) {
+      #wrap-landscape:has(#screen-teacher.is-first-lesson.active) { height: calc(393px * var(--v200-landscape-scale, 1)); overflow: hidden; }
+      #wrap-landscape:has(#screen-teacher.is-first-lesson.active) #device-landscape { width: 852px; height: 393px; max-height: none; aspect-ratio: 852 / 393; transform: scale(var(--v200-landscape-scale, 1)); transform-origin: top left; }
+    }
+    #screen-teacher.is-first-lesson .teacher-grid { grid-area: teacher; grid-template-columns: minmax(0,1fr); width: 100%; max-width: none; height: 320px; margin: 0; }
     #screen-teacher.is-first-lesson .teacher-card { cursor: default; transform: none; }
     #screen-teacher.is-first-lesson .teacher-card-shell,
-    #screen-teacher.is-first-lesson .teacher-card-inner { clip-path: none; border-radius: var(--radius-md); }
-    #screen-teacher.is-first-lesson .teacher-card-shell { background: var(--glass-border); }
-    #screen-teacher.is-first-lesson .teacher-card-inner { background: linear-gradient(180deg,var(--brand-cyan),var(--sky-light)); }
-    #screen-teacher.is-first-lesson .teacher-card-meta { padding: 10px; background: var(--surface-glass); }
-    #screen-teacher.is-first-lesson .teacher-card-portrait { height: 100%; padding-bottom: 30px; }
-    #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: auto; max-height: 190px; }
+    #screen-teacher.is-first-lesson .teacher-card-inner { clip-path: none; border-radius: 0; background: none; overflow: visible; }
+    #screen-teacher.is-first-lesson .teacher-card-shell { padding: 0; filter: none; }
+    #screen-teacher.is-first-lesson .teacher-card-meta { left: 50%; right: auto; bottom: 0; transform: translateX(-50%); min-width: 112px; padding: 8px 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); }
+    #screen-teacher.is-first-lesson .teacher-card-portrait { height: 100%; min-height: 0; padding: 0 0 20px; }
+    #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: 100%; max-height: none; }
     #screen-teacher .teacher-back { position: absolute; top: 10px; left: 14px; z-index: 2; width: 44px; height: 44px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font-size: 24px; cursor: pointer; }
     #screen-teacher .btn-primary:disabled { opacity: .5; cursor: default; }
     #screen-teacher .teacher-card:focus-visible { outline: 3px solid var(--accent-yellow); outline-offset: 3px; }
@@ -8393,7 +8408,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V2.0.0 · 优惠码 / Play 调整 / Explore UI · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V2.0.0 · 曲线游乐园：滑动探索、入口数量与资料可配置 · ⚙︎ States 可切换 4 / 6 / 8 个入口</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -9431,8 +9446,12 @@
         <div class="land-body teacher-pick">
           <button type="button" class="teacher-back" id="btn-teacher-back" aria-label="Back to Class" hidden>←</button>
           <div class="teacher-intro">
-            <h2 id="teacher-guide-h1">Your free first lesson is ready</h2>
-            <p id="teacher-guide-h2" class="is-report-benefit">Finish it to get your <strong>placement report</strong>.</p>
+            <h2 id="teacher-guide-h1" hidden>Switch teacher</h2>
+            <p id="teacher-guide-ready" role="heading" aria-level="2">Your child's free first lesson is ready.</p>
+            <p id="teacher-guide-h2" class="is-report-benefit">After the lesson, you'll get a <strong>report</strong> on your child's English level.</p>
+            <button type="button" id="btn-teacher-greeting" class="teacher-greeting-audio" aria-label="Hear Max's welcome" aria-pressed="false" title="Hear Max's welcome">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z"/><path d="M16 9a5 5 0 0 1 0 6M19 6a9 9 0 0 1 0 12"/></svg>
+            </button>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
           <div class="teacher-actions">
@@ -9607,34 +9626,17 @@
             </div>
             <div class="hub-panel hub-panel--play" id="hub-panel-play" data-hub-panel="play">
               <div class="v200-park-scene" id="v200-park-scene">
-                <img class="v200-park-world" id="v200-park-world" src="assets/v200/play-park-world.png" alt="" decoding="async" fetchpriority="high" />
+                <div class="v200-park-sky" id="v200-park-landscape" aria-hidden="true"><div class="v200-park-landscape-track" id="v200-park-landscape-track"></div></div>
                 <div class="v200-park-vignette" aria-hidden="true"></div>
                 <header class="v200-park-heading">
                   <h2 class="explore-title">Dino Park<span aria-hidden="true">✦</span></h2>
-                  <p class="v200-play-audience" id="v200-play-audience">12.8K playing in Play</p>
+                  <p class="v200-play-audience" id="v200-play-audience" aria-live="polite" hidden></p>
                 </header>
-                <div class="v200-park-zones" aria-label="Explore our new worlds">
-                  <button type="button" class="v200-park-zone v200-zone-dino" data-park-zone="dino" aria-label="Discover Dino's Adventure, coming soon">
-                    <span class="v200-park-sign"><b>Dino's Adventure</b><small>Coming soon <span aria-hidden="true">✦</span></small></span>
-                  </button>
-                  <button type="button" class="v200-park-zone v200-zone-emma" data-park-zone="emma" aria-label="Discover Emma's Studio, coming soon">
-                    <span class="v200-park-sign"><b>Emma's Studio</b><small>Coming soon <span aria-hidden="true">✦</span></small></span>
-                  </button>
-                  <button type="button" class="v200-park-zone v200-zone-bruce" data-park-zone="bruce" aria-label="Discover Bruce's Workshop, coming soon">
-                    <span class="v200-park-sign"><b>Bruce's Workshop</b><small>Coming soon <span aria-hidden="true">✦</span></small></span>
-                  </button>
-                  <button type="button" class="v200-park-zone v200-zone-bob" data-park-zone="bob" aria-label="Discover Bob's Playhouse, coming soon">
-                    <span class="v200-park-sign"><b>Bob's Playhouse</b><small>Coming soon <span aria-hidden="true">✦</span></small></span>
-                  </button>
-                  <button type="button" class="v200-park-zone v200-zone-hena" data-park-zone="hena" aria-label="Discover Hena's Kitchen, coming soon">
-                    <span class="v200-park-sign"><b>Hena's Kitchen</b><small>Coming soon <span aria-hidden="true">✦</span></small></span>
-                  </button>
+                <div class="v200-park-viewport" id="v200-park-viewport" role="region" aria-label="Games in Dino Park. Swipe or use arrow keys to explore." tabindex="0">
+                  <div class="v200-park-zones" id="v200-park-zones" role="list"></div>
                 </div>
-                <div class="v200-park-guide">
-                  <img src="assets/v13fx/dino.png" alt="Dino" width="102" height="126" />
-                  <span class="v200-park-hello">Come play!</span>
-                </div>
-                <button type="button" class="v200-park-primary" id="v200-open-arcade"><span aria-hidden="true">▶</span> Play games</button>
+                <div class="v200-park-empty" id="v200-park-empty" role="status" hidden><span aria-hidden="true">✦</span><p>New games are on the way!</p></div>
+                <p class="v200-park-toast" id="v200-park-toast" role="status" aria-live="polite" hidden></p>
               </div>
               <div class="v200-park-status" id="v200-park-status" hidden>
                 <div class="v200-park-status-card" role="status" aria-live="polite">
@@ -9644,43 +9646,6 @@
                   <button type="button" class="v200-park-primary" id="v200-park-retry" hidden>Try again</button>
                   <button type="button" class="v200-park-secondary" id="v200-park-ready">Back to park</button>
                 </div>
-              </div>
-              <div class="v200-park-overlay" id="v200-park-preview" hidden>
-                <section class="v200-park-dialog v200-park-preview-card" role="dialog" aria-modal="true" aria-labelledby="v200-park-preview-title" aria-describedby="v200-park-preview-copy" tabindex="-1">
-                  <button type="button" class="v200-park-close" data-park-close aria-label="Close theme preview">×</button>
-                  <div class="v200-park-preview-art" id="v200-park-preview-art" aria-hidden="true"><span>Coming soon</span></div>
-                  <div class="v200-park-preview-copy">
-                    <p class="v200-park-eyebrow" id="v200-park-preview-name">Meet Dino</p>
-                    <h3 id="v200-park-preview-title">Dino's Adventure</h3>
-                    <p id="v200-park-preview-copy">A new adventure is on the way!</p>
-                    <div class="v200-park-tags" id="v200-park-preview-tags"></div>
-                    <button type="button" class="v200-park-secondary" data-park-close>Back to park</button>
-                  </div>
-                </section>
-              </div>
-              <div class="v200-park-overlay" id="v200-park-arcade" hidden>
-                <section class="v200-park-dialog v200-park-arcade-card" role="dialog" aria-modal="true" aria-labelledby="v200-park-arcade-title" tabindex="-1">
-                  <button type="button" class="v200-park-close" data-park-close aria-label="Close game arcade">×</button>
-                  <h3 id="v200-park-arcade-title">Let's play!</h3>
-                  <p class="v200-park-arcade-lead">Pick a game. Win XP &amp; Dino Coins.</p>
-                  <div class="play-grid">
-                    <div class="play-card pc-capsule" data-go-game="screen-capsule-intro">
-                      <span class="pc-limit" id="pc-limit-capsule" hidden></span>
-                      <div class="pc-emoji">🎰</div>
-                      <div><div class="pc-title">Dino Blind Box</div><div class="pc-desc">Answer to open a Dino Figure</div></div>
-                    </div>
-                    <div class="play-card pc-word" data-go-game="screen-wordpk">
-                      <span class="pc-limit" id="pc-limit-wordpk" hidden></span>
-                      <div class="pc-emoji">🔤</div>
-                      <div><div class="pc-title">Word PK</div><div class="pc-desc">Battle a rival on vocabulary</div></div>
-                    </div>
-                    <div class="play-card pc-speak" data-go-game="screen-speakpk">
-                      <span class="pc-limit" id="pc-limit-speakpk" hidden></span>
-                      <div class="pc-emoji">🎤</div>
-                      <div><div class="pc-title">Speaking PK</div><div class="pc-desc">Battle a rival on pronunciation</div></div>
-                    </div>
-                  </div>
-                </section>
               </div>
             </div>
             <div class="hub-panel hub-panel--profile" id="hub-panel-profile" data-hub-panel="profile">
@@ -10645,6 +10610,7 @@
     let teacherSwitchState = "idle";
     let teacherSwitchTimer = null;
     let teacherSwitchRequest = 0;
+    let teacherGreetingUtterance = null;
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
     // (simulates a new account / register). Show Dino's purpose page first,
@@ -11791,6 +11757,7 @@
     }
 
     function resetTeacherSwitch() {
+      stopTeacherGreeting();
       clearTimeout(teacherSwitchTimer);
       teacherSwitchTimer = null;
       teacherSwitchRequest += 1;
@@ -11856,26 +11823,67 @@
     fillClassTab();
     function showLandScreen(id) {
       if (id !== "screen-teacher") resetTeacherSwitch();
+      window.v200CloseParkGame?.(false);
       dismissDeviceLimitNotice();
       $$("#device-landscape .screen").forEach((el) => el.classList.toggle("active", el.id === id));
       if (window.VISIT_REWARD) window.VISIT_REWARD.onScreen(id);
       window.CLASS_PERMISSIONS?.onNavigate(id);
     }
     function fillTeacherGuide() {
+      stopTeacherGreeting();
       const name = getDisplayName();
       const isAppMode = teacherFlowMode === "app";
       const teacherGuideSubtitle = $("#teacher-guide-h2");
       teacherGuideSubtitle.classList.toggle("is-report-benefit", !isAppMode);
+      $("#teacher-guide-h1").hidden = !isAppMode;
+      $("#teacher-guide-ready").hidden = isAppMode;
+      $("#btn-teacher-greeting").hidden = isAppMode || !("speechSynthesis" in window);
       if (isAppMode) {
         $("#teacher-guide-h1").textContent = "Switch teacher";
         teacherGuideSubtitle.textContent = "Pick the teacher you'd like to keep learning with.";
       } else {
-        $("#teacher-guide-h1").textContent = name ? `${name}, your free first lesson is ready` : "Your free first lesson is ready";
-        teacherGuideSubtitle.innerHTML = 'Finish it to get your <strong>placement report</strong>.';
+        $("#teacher-guide-ready").textContent = name ? `${name}'s free first lesson is ready.` : "Your child's free first lesson is ready.";
+        teacherGuideSubtitle.innerHTML = "After the lesson, you'll get a <strong>report</strong> on your child's English level.";
       }
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Lesson";
       $("#btn-teacher-back").hidden = !isAppMode;
       renderTeacherCards();
+    }
+    function stopTeacherGreeting() {
+      if (teacherGreetingUtterance) {
+        teacherGreetingUtterance.onend = null;
+        teacherGreetingUtterance.onerror = null;
+        window.speechSynthesis?.cancel();
+        teacherGreetingUtterance = null;
+      }
+      const button = $("#btn-teacher-greeting");
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute("aria-label", "Hear Max's welcome");
+      button.title = "Hear Max's welcome";
+    }
+    function playTeacherGreeting() {
+      if (teacherFlowMode !== "onboarding" || !("speechSynthesis" in window)) return;
+      if (teacherGreetingUtterance) { stopTeacherGreeting(); return; }
+      // Demo preview uses browser speech; this is not Max's production voice.
+      const text = ["Hi, I'm Max!", $("#teacher-guide-ready").textContent, $("#teacher-guide-h2").textContent].join(" ");
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = 0.95;
+      const voice = speechSynthesis.getVoices().find(item => item.lang === "en-US") || speechSynthesis.getVoices().find(item => item.lang.startsWith("en"));
+      if (voice) utterance.voice = voice;
+      teacherGreetingUtterance = utterance;
+      const button = $("#btn-teacher-greeting");
+      button.setAttribute("aria-pressed", "true");
+      button.setAttribute("aria-label", "Stop Max's welcome");
+      button.title = "Stop Max's welcome";
+      utterance.onend = () => { if (teacherGreetingUtterance === utterance) stopTeacherGreeting(); };
+      utterance.onerror = () => {
+        if (teacherGreetingUtterance !== utterance) return;
+        stopTeacherGreeting();
+        showPayToast("Audio unavailable. You can read Max's welcome above.");
+      };
+      try { speechSynthesis.cancel(); speechSynthesis.speak(utterance); }
+      catch { utterance.onerror(); }
     }
     // V1.3.2: dismiss the device-limit modal whenever we navigate / switch demo states,
     // so it never lingers over a different screen after a States-panel jump.
@@ -11891,6 +11899,7 @@
     }
     function enterPortrait() {
       resetTeacherSwitch();
+      window.v200CloseParkGame?.(false);
       dismissDeviceLimitNotice();
       window.CLASS_PERMISSIONS?.cancel();
       const portrait = $("#wrap-portrait");
@@ -12719,7 +12728,7 @@
     // profile page (opened via the top-left avatar) can navigate back.
     let lastHubTab = "class";
     function setHubTab(tab) {
-      if (tab !== "play") window.v200CloseParkOverlays?.(false);
+      if (tab !== "play") { window.v200CloseParkOverlays?.(false); window.v200CloseParkGame?.(false); }
       if (tab !== "profile") lastHubTab = tab;
       activeHubTab = tab;
       // V1.4.1 全局播放器：切 Tab 不再断音 —— 播放由悬浮窗承接；只有进入自带音频的
@@ -14210,7 +14219,10 @@
       cxStage = "v170_post_trial_paywall";
       openPaywall("screen-class", "study_plan");
     });
+    $("#btn-teacher-greeting").addEventListener("click", playTeacherGreeting);
+    window.addEventListener("pagehide", stopTeacherGreeting);
     $("#btn-confirm-teacher").addEventListener("click", () => {
+      stopTeacherGreeting();
       if (teacherFlowMode === "app") {
         startTeacherSwitch();
       } else {
@@ -19333,7 +19345,10 @@
     groups: [
       { key: "teacherEntry", label: "进入场景", options: [["onboarding", "首次开课 · 仅 Max"], ["app", "Class · 切换老师"]], apply: function (value) { openTeacherPicker(value); } },
       { key: "teacherLoadResult", label: "下次保存 / 重试结果", options: [["success", "加载成功"], ["slow", "慢速加载"], ["fail", "加载失败"]], apply: function (value) { demoState.teacherLoadResult = value; } },
-      { key: "v200Audience", label: "Play 模拟总人数，仅供评审", options: [["shown", "展示模拟人数"], ["hidden", "不展示人数"]], apply: function (v) { window.v200SetAudience(v); } },
+      { key: "v200Audience", label: "在园人数 · 模拟配置", options: [["1286", "1,286 人"], ["2468", "2,468 人"], ["missing", "人数缺失"]], apply: function (v) { window.v200SetAudience(v); } },
+      { key: "v200ParkSize", label: "入口规模 · 模拟配置", options: [["4", "4 个入口"], ["6", "6 个入口"], ["8", "8 个入口"], ["empty", "空列表"]], apply: function (v) { window.v200SetParkSize(v); } },
+      { key: "v200ParkEntries", label: "入口开放状态 · 模拟配置", options: [["launch", "盲盒 + 单词守卫战"], ["all-closed", "全部未开放"]], apply: function (v) { window.v200SetParkEntries(v); } },
+      { key: "v200ParkContent", label: "入口资料 · 模拟配置", options: [["default", "默认资料"], ["alternate", "替换图片、名称、简介"]], apply: function (v) { window.v200SetParkContent(v); } },
       { key: "v200ParkScene", label: "乐园场景", options: [["ready", "已加载"], ["loading", "加载中"], ["error", "网络异常"]], apply: function (v) { window.v200SetParkScene(v); } },
       { key: "v200PlayLimit", label: "今日游戏次数", options: [["available", "Free · 剩余 1 次"], ["empty", "Free · 次数用尽"], ["member", "会员 · 不限次数"]], apply: function (v) { window.v200SetPlayLimit(v); } },
       { key: "v180Tier", label: "会员 / 计划",
@@ -21496,7 +21511,7 @@
       if(guideStep === 0) return document.querySelector("#hub-panel-dino .dino-chat-pill");
       if(guideStep === 1) return document.querySelector("#hub-panel-class .class-week-card.is-current") || document.querySelector("#hub-panel-class .class-week-card");
       if(guideStep === 2) return document.getElementById("explore-open-story") || document.querySelector("#hub-panel-practice .explore-entry");
-      return document.getElementById("v200-open-arcade") || document.querySelector("#hub-panel-play .play-card:not(.is-soon)");
+      return document.querySelector('#hub-panel-play .v200-park-zone[data-park-open="true"]') || document.querySelector("#hub-panel-play .v200-park-zone");
     }
     function guideTab(step){
       if(step === 0) return "dino";
@@ -23877,66 +23892,68 @@
     #device-landscape #screen-class #hub-panel-play.has-park-overlay { z-index: 70; }
     #device-landscape #screen-class .hub-panels:has(> #hub-panel-play.has-park-overlay) { z-index: 70; }
     #hub-panel-play .v200-park-scene { position: absolute; inset: 0; }
-    #hub-panel-play .v200-park-world { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    #hub-panel-play .v200-park-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(10,44,198,.42), transparent 28%, transparent 75%, rgba(10,44,198,.48)); }
-    #hub-panel-play .v200-park-heading { position: absolute; top: 13px; left: 100px; z-index: 2; color: var(--ink-on-dark); }
+    #hub-panel-play .v200-park-sky { position: absolute; inset: 0; overflow: hidden; pointer-events: none; background: var(--sky-deep); }
+    #hub-panel-play .v200-park-landscape-track { position: absolute; top: 0; left: 0; height: 393px; pointer-events: none; will-change: transform; }
+    #hub-panel-play .v200-park-landscape-segment { position: absolute; top: 0; width: 852px; height: 393px; background: url("assets/v200/play-park-world-focus-v5.png") center / cover no-repeat; pointer-events: none; }
+    #hub-panel-play .v200-park-landscape-segment:nth-child(even) { transform: scaleX(-1); }
+    #hub-panel-play .v200-park-vignette { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, color-mix(in srgb, var(--sky-deep) 7%, transparent), transparent 28%, transparent 78%, color-mix(in srgb, var(--sky-deep) 8%, transparent)); }
+    #hub-panel-play .v200-park-heading { position: absolute; top: 15px; left: 101px; z-index: 3; color: var(--ink-on-dark); pointer-events: none; }
     #device-landscape #screen-class #hub-panel-play .explore-title { margin: 0; font: 700 27px/1.05 var(--display); letter-spacing: -.8px; text-shadow: 0 2px 2px var(--sky-deep), 0 3px 14px var(--sky-deep); }
     #hub-panel-play .v200-park-heading h2 span { display: inline-block; margin-left: 7px; color: var(--star-gold); font-size: 20px; vertical-align: middle; }
-    #device-landscape #screen-class #hub-panel-play .v200-play-audience { margin-top: 5px; font-size: 10px; text-shadow: 0 1px 3px var(--sky-deep), 0 1px 8px var(--sky-deep); }
-    #hub-panel-play .v200-park-zones { position: absolute; inset: 0; }
-    #hub-panel-play .v200-park-zone { position: absolute; display: flex; justify-content: center; align-items: flex-end; border: 0; border-radius: var(--radius-lg); background: transparent; color: var(--ink-on-dark); cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    #hub-panel-play .v200-zone-dino { left: 11.8%; top: 20%; width: 20%; height: 40%; }
-    #hub-panel-play .v200-zone-emma { left: 33%; top: 13%; width: 17%; height: 27%; }
-    #hub-panel-play .v200-zone-bruce { left: 65%; top: 19%; width: 26%; height: 34%; }
-    #hub-panel-play .v200-zone-bob { left: 34%; top: 48%; width: 25%; height: 31%; }
-    #hub-panel-play .v200-zone-hena { left: 72%; top: 57%; width: 22%; height: 26%; }
-    #hub-panel-play .v200-park-sign { display: flex; align-items: center; flex-direction: column; min-width: 126px; padding: 7px 12px 6px; border: 1px solid color-mix(in srgb, var(--glass-border) 70%, transparent); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--sky-deep) 90%, transparent); box-shadow: 0 3px 0 rgba(10,44,198,.62), 0 6px 14px rgba(10,44,198,.25), inset 0 1px 0 rgba(255,255,255,.16); white-space: nowrap; transition: transform 180ms var(--ease), background 180ms var(--ease); }
-    #hub-panel-play .v200-park-sign b { font: 700 12px/1.2 var(--display); }
-    #hub-panel-play .v200-park-sign small { margin-top: 3px; font: 600 9px/1 var(--font); color: var(--chat-you); }
-    #hub-panel-play .v200-park-sign small span { padding-left: 2px; color: var(--star-gold); }
-    #hub-panel-play .v200-park-zone:hover .v200-park-sign { transform: translateY(-4px); background: var(--sky-mid); }
+    #device-landscape #screen-class #hub-panel-play .v200-play-audience { display: inline-flex; align-items: center; gap: 7px; margin-top: 8px; padding: 6px 11px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: color-mix(in srgb, var(--sky-deep) 90%, transparent); color: var(--ink-on-dark); font: 700 12px/1.2 var(--font); box-shadow: 0 3px 10px rgba(10,44,198,.25); }
+    #hub-panel-play .v200-play-audience::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--brand-lime); box-shadow: 0 0 8px var(--brand-lime); }
+    #hub-panel-play .v200-park-viewport { position: absolute; inset: 68px 0 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; touch-action: pan-x; -webkit-overflow-scrolling: touch; cursor: grab; }
+    #hub-panel-play .v200-park-viewport::-webkit-scrollbar { display: none; }
+    #hub-panel-play .v200-park-viewport.is-dragging { cursor: grabbing; user-select: none; }
+    #hub-panel-play .v200-park-viewport.is-dragging .v200-park-zone { cursor: grabbing; }
+    #hub-panel-play .v200-park-viewport:focus-visible { outline: 2px solid var(--glass-border); outline-offset: -3px; }
+    #hub-panel-play .v200-park-zones { --park-plot-width: 240px; position: relative; display: flex; width: max-content; min-width: 100%; min-height: 234px; height: 100%; padding: 0 24px; isolation: isolate; }
+    #hub-panel-play .v200-park-pathway { position: absolute; z-index: 1; top: 0; left: 0; height: 234px; overflow: hidden; pointer-events: none; }
+    #hub-panel-play .v200-park-pathway path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    #hub-panel-play .v200-park-path-edge { stroke: color-mix(in srgb, var(--cta-orange-top) 62%, var(--surface-card)); stroke-width: 18; }
+    #hub-panel-play .v200-park-path-inner { stroke: color-mix(in srgb, var(--cta-orange-top) 34%, var(--surface-card)); stroke-width: 16; }
+    #hub-panel-play .v200-park-path-paving { stroke: color-mix(in srgb, var(--cta-orange-top) 27%, var(--surface-card)); stroke-width: 13; }
+    #hub-panel-play .v200-park-path-seams { stroke: color-mix(in srgb, var(--cta-orange-top) 57%, var(--surface-card)); stroke-width: 13; stroke-dasharray: 1 16; stroke-linecap: butt !important; opacity: .45; }
+    #hub-panel-play .v200-park-plot { --park-wave-y: 0px; position: relative; z-index: 2; flex: 0 0 var(--park-plot-width); width: var(--park-plot-width); height: 234px; }
+    #hub-panel-play .v200-park-zone { position: absolute; inset: calc(34px + var(--park-wave-y)) 25px auto; width: 190px; height: 182px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0; border: 0; border-radius: var(--radius-lg); background: transparent; color: var(--ink-on-dark); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    #hub-panel-play .v200-park-art-slot { display: grid; place-items: end center; flex: 0 0 136px; width: 176px; height: 136px; margin-bottom: 2px; }
+    #hub-panel-play .v200-park-facility-img { display: block; width: 126px; height: 124px; object-fit: contain; filter: saturate(.88); pointer-events: none; transform-origin: center bottom; transition: transform 180ms var(--ease); user-select: none; -webkit-user-drag: none; }
+    #hub-panel-play .v200-park-zone[data-park-open="true"] .v200-park-facility-img { width: 160px; height: 136px; filter: none; }
+    #hub-panel-play .v200-park-art-slot.is-fallback::after { content: '✦'; display: grid; place-items: center; width: 100px; height: 95px; border: 2px dashed var(--glass-border); border-radius: 55px 55px 18px 18px; background: var(--sky-mid); color: var(--star-gold); font-size: 40px; }
+    #hub-panel-play .v200-park-sign { display: flex; align-items: center; justify-content: center; flex-direction: column; width: 176px; height: 44px; min-height: 44px; padding: 4px 8px; border: 1px solid color-mix(in srgb, var(--cta-orange-top) 24%, var(--sky-deep)); border-radius: calc(var(--radius-sm) * .65); background: color-mix(in srgb, var(--sky-deep) 96%, transparent); box-shadow: 0 2px 0 color-mix(in srgb, var(--sky-deep) 78%, var(--ink-on-light)); transition: transform 180ms var(--ease); }
+    #hub-panel-play .v200-park-zone[data-park-open="true"] .v200-park-sign { border-color: color-mix(in srgb, var(--cta-orange-top) 52%, var(--sky-deep)); }
+    #hub-panel-play .v200-park-game-name { display: block; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 700 14px/1.1 var(--display); }
+    #hub-panel-play .v200-park-description { display: block; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; margin-top: 2px; font: 400 10px/1.1 var(--font); color: var(--ink-on-dark); opacity: .9; }
+    #hub-panel-play .v200-park-zone[data-park-open="false"] .v200-park-sign { width: 150px; height: 44px; min-height: 44px; margin-top: 0; }
+    #hub-panel-play .v200-park-availability { margin: 0; font: 700 13px/1.2 var(--display); color: var(--chat-you); }
+    #hub-panel-play .v200-park-zone:hover .v200-park-facility-img { transform: scale(1.025); }
     #hub-panel-play .v200-park-zone:active .v200-park-sign { transform: scale(.97); }
     #hub-panel-play .v200-park-zone:focus-visible { outline: 3px solid var(--brand-lime); outline-offset: 3px; background: var(--surface-glass); }
-    #hub-panel-play .v200-park-guide { position: absolute; left: 6px; bottom: 10px; width: 218px; height: 118px; pointer-events: none; }
-    #hub-panel-play .v200-park-guide img { position: absolute; left: 0; bottom: 0; width: 100px; height: 126px; object-fit: contain; filter: drop-shadow(0 7px 6px rgba(10,44,198,.35)); }
-    #hub-panel-play .v200-park-hello { position: absolute; left: 83px; bottom: 72px; padding: 9px 13px; border-radius: var(--radius-sm) var(--radius-sm) var(--radius-sm) 4px; font: 700 13px/1 var(--display); color: var(--sky-deep); background: var(--surface-card); box-shadow: 0 3px 12px rgba(10,44,198,.22); }
+    #hub-panel-play .v200-park-empty { position: absolute; inset: 106px 80px 100px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: var(--ink-on-dark); text-align: center; pointer-events: none; }
+    #hub-panel-play .v200-park-empty > span { color: var(--star-gold); font-size: 38px; }
+    #hub-panel-play .v200-park-empty p { font: 700 20px/1.2 var(--display); }
+    #hub-panel-play .v200-park-empty small { font: 400 13px/1.4 var(--font); color: var(--chat-you); }
+    #hub-panel-play .v200-park-toast { position: absolute; bottom: 76px; left: 50%; z-index: 6; transform: translateX(-50%); width: max-content; max-width: 350px; padding: 12px 20px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--sky-deep); color: var(--ink-on-dark); font: 700 14px/1.3 var(--display); box-shadow: 0 6px 25px rgba(10,44,198,.35); pointer-events: none; }
     #hub-panel-play .v200-park-primary { display: inline-flex; justify-content: center; align-items: center; gap: 9px; min-height: 48px; padding: 0 21px; border: 1px solid color-mix(in srgb, var(--cta-orange-top) 55%, white); border-radius: var(--radius-pill); background: var(--cta-grad); color: var(--ink-on-dark); font: 700 16px/1 var(--display); box-shadow: 0 4px 0 var(--cta-orange), 0 7px 20px rgba(10,44,198,.3); cursor: pointer; transition: transform 180ms var(--ease); }
-    #hub-panel-play #v200-open-arcade { position: absolute; left: 85px; bottom: 27px; z-index: 3; }
-    #hub-panel-play #v200-open-arcade span { display: grid; place-items: center; width: 23px; height: 23px; padding-left: 2px; border-radius: 50%; background: rgba(255,255,255,.22); font-size: 11px; }
     #hub-panel-play .v200-park-primary:hover { transform: translateY(-2px); }
     #hub-panel-play .v200-park-primary:active { transform: translateY(2px); }
     #hub-panel-play :is(.v200-park-primary,.v200-park-secondary,.v200-park-close):focus-visible { outline: 3px solid var(--brand-lime); outline-offset: 3px; }
-    #hub-panel-play .v200-park-overlay { position: absolute; inset: 0; z-index: 80; display: flex; justify-content: center; align-items: center; padding: 16px; background: rgba(10,44,198,.65); backdrop-filter: blur(5px); }
     #hub-panel-play [hidden] { display: none !important; }
-    #hub-panel-play .v200-park-dialog { position: relative; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: linear-gradient(145deg, var(--sky-mid), var(--sky-deep)); color: var(--ink-on-dark); box-shadow: 0 20px 60px rgba(10,44,198,.45), inset 0 1px 0 rgba(255,255,255,.2); outline: none; animation: v200ParkEnter 300ms var(--ease) both; }
-    #hub-panel-play .v200-park-close { position: absolute; top: 8px; right: 8px; z-index: 2; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.4); border-radius: 50%; background: var(--surface-glass); color: var(--ink-on-dark); font: 400 28px/1 var(--font); cursor: pointer; }
     #hub-panel-play .v200-park-secondary { min-height: 44px; padding: 10px 20px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font: 700 13px/1.2 var(--display); cursor: pointer; }
-    #hub-panel-play .v200-park-preview-card { display: flex; width: 556px; min-height: 248px; overflow: hidden; }
-    #hub-panel-play .v200-park-preview-art { position: relative; flex: 0 0 200px; min-height: 248px; background: var(--sky-mid) url("assets/v200/play-park-world.png") no-repeat; background-size: auto 350px; background-position: 5% 45%; }
-    #hub-panel-play .v200-park-preview-art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(10,44,198,.5), transparent 55%); }
-    #hub-panel-play .v200-park-preview-art > span { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 1; padding: 7px 13px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--sky-deep); font: 700 11px/1 var(--font); white-space: nowrap; }
-    #hub-panel-play .v200-park-preview-copy { flex: 1; padding: 26px 22px 22px; }
-    #hub-panel-play .v200-park-eyebrow { margin: 0 0 8px; font: 700 11px/1.3 var(--font); color: var(--chat-you); }
-    #hub-panel-play .v200-park-preview-copy h3 { max-width: 250px; padding-right: 22px; font: 700 23px/1.13 var(--display); }
-    #hub-panel-play #v200-park-preview-copy { margin: 11px 0; font: 400 12px/1.55 var(--font); }
-    #hub-panel-play .v200-park-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 17px; }
-    #hub-panel-play .v200-park-tags span { padding: 5px 8px; border-radius: var(--radius-pill); background: var(--surface-glass); font: 600 10px/1 var(--font); color: var(--chat-you); }
-    #hub-panel-play .v200-park-arcade-card { width: 716px; height: 308px; padding: 18px 16px 12px; text-align: center; }
-    #hub-panel-play #v200-park-arcade-title { font: 700 24px/1.2 var(--display); }
-    #hub-panel-play .v200-park-arcade-lead { margin-top: 5px; font: 400 12px/1.3 var(--font); color: var(--chat-you); }
-    #device-landscape #screen-class #hub-panel-play .play-grid { display: flex !important; flex-direction: row !important; justify-content: center; align-items: center; gap: 14px !important; height: 217px; padding: 6px 0 0; overflow: visible; }
-    #device-landscape #screen-class #hub-panel-play .play-card { position: relative; display: flex !important; flex: 0 1 202px; width: 202px; height: 210px; min-height: 0; flex-direction: column !important; align-items: center !important; justify-content: flex-start; gap: 0; overflow: visible; padding: 0 !important; border: 1px solid rgba(255,255,255,.15) !important; border-radius: var(--radius-md) !important; background: var(--surface-glass) !important; box-shadow: none !important; color: var(--ink-on-dark) !important; text-align: center; font-family: var(--font); cursor: pointer; transition: transform 180ms var(--ease), background 180ms var(--ease); }
-    #device-landscape #screen-class #hub-panel-play .play-card:hover { transform: translateY(-3px); background: rgba(255,255,255,.2) !important; }
-    #hub-panel-play .play-card .v200-activity-art { width: 121px; height: 121px; flex: 0 0 121px; margin-top: 1px; }
-    #device-landscape #screen-class #hub-panel-play .pc-title { padding: 0; font: 700 15px/1.2 var(--display); color: var(--ink-on-dark); }
-    #device-landscape #screen-class #hub-panel-play .pc-desc { margin-top: 5px; padding: 0 8px; font-size: 10px; }
-    #device-landscape #screen-class #hub-panel-play .pc-limit { margin-top: 10px; font-size: 10px; }
     #hub-panel-play .v200-park-status { position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; background: linear-gradient(180deg, rgba(10,44,198,.88), rgba(10,84,225,.8)); backdrop-filter: blur(10px); color: var(--ink-on-dark); }
     #hub-panel-play .v200-park-status-card { text-align: center; padding: 18px 24px 46px; }
     #hub-panel-play .v200-park-status-icon { display: block; margin-bottom: 10px; color: var(--star-gold); font-size: 38px; }
     #hub-panel-play[data-park-scene="loading"] .v200-park-status-icon { animation: v200ParkPulse 1.5s ease-in-out infinite; }
     #hub-panel-play .v200-park-status h3 { font: 700 22px/1.2 var(--display); }
     #hub-panel-play .v200-park-status p { margin: 11px 0 18px; font: 400 13px/1.4 var(--font); }
+    #v200-park-game-shell { position: absolute; inset: 0; z-index: 1000; display: flex; flex-direction: column; overflow: hidden; background: var(--sky-deep); color: var(--ink-on-dark); }
+    #v200-park-game-shell[hidden] { display: none !important; }
+    #v200-park-game-header { display: flex; align-items: center; gap: 16px; flex: 0 0 46px; padding: 3px 12px; border-bottom: 1px solid var(--surface-glass); background: var(--sky-deep); }
+    #v200-park-game-back { flex: 0 0 auto; min-height: 38px; padding: 7px 14px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font: 700 13px/1.2 var(--display); cursor: pointer; }
+    #v200-park-game-back:focus-visible { outline: 3px solid var(--brand-lime); outline-offset: 2px; }
+    #v200-park-game-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 700 16px/1.2 var(--display); }
+    #v200-park-game-content { flex: 1; min-height: 0; }
+    #v200-park-game-frame { display: block; width: 100%; height: 100%; border: 0; background: var(--sky-deep); }
     @keyframes v200ParkEnter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes v200ParkPulse { 50% { opacity: .45; transform: scale(.88); } }
     @media (max-width: 872px) {
@@ -23952,10 +23969,9 @@
   </style>
   <script>
   (function () {
-    var review = window.v200ReviewState = { audience: 'shown', playLimit: 'available', parkScene: 'ready' };
+    var review = window.v200ReviewState = { audience: '1286', parkSize: '4', parkEntries: 'launch', parkContent: 'default', playLimit: 'available', parkScene: 'ready' };
     var activityItems = [
-      ['#explore-open-story','story'], ['#explore-open-radio','radio'], ['#explore-open-speaking','speaking'], ['#explore-open-animation','animation'],
-      ['#hub-panel-play .pc-capsule','capsule'], ['#hub-panel-play .pc-word','wordpk'], ['#hub-panel-play .pc-speak','speakpk']
+      ['#explore-open-story','story'], ['#explore-open-radio','radio'], ['#explore-open-speaking','speaking'], ['#explore-open-animation','animation']
     ];
     activityItems.forEach(function (item) {
       var entry = document.querySelector(item[0]);
@@ -23975,75 +23991,447 @@
     });
     var park = document.getElementById('hub-panel-play');
     var parkScene = document.getElementById('v200-park-scene');
-    var parkImage = document.getElementById('v200-park-world');
-    var parkImageFailed = false;
-    var parkActiveOverlay = null;
-    var parkReturnFocus = null;
-    var parkThemes = {
-      dino: { name:'Dino', title:"Dino's Adventure", copy:'Big ideas, brave little steps. A new adventure with Dino is on the way!', tags:['Explore','Discover'], position:'5% 45%' },
-      emma: { name:'Emma', title:"Emma's Studio", copy:'A little imagination can make something wonderful. New fun with Emma is on the way!', tags:['Remember','Create'], position:'37% 0%' },
-      bruce: { name:'Bruce', title:"Bruce's Workshop", copy:'Tinker, build, and wonder. New discoveries with Bruce are on the way!', tags:['Build','Discover'], position:'87% 25%' },
-      bob: { name:'Bob', title:"Bob's Playhouse", copy:'Listen, copy, and make a funny sound. New fun with Bob is on the way!', tags:['Listen','Play'], position:'43% 100%' },
-      hena: { name:'Hena', title:"Hena's Kitchen", copy:'A pinch of kindness, a sprinkle of fun. New treats with Hena are on the way!', tags:['Make','Share'], position:'94% 100%' }
+    var parkViewport = document.getElementById('v200-park-viewport');
+    var parkZones = document.getElementById('v200-park-zones');
+    var parkLandscapeTrack = document.getElementById('v200-park-landscape-track');
+    var parkScrollPosition = 0;
+    var parkRestoringFocus = false;
+    var parkPointer = null;
+    var parkSuppressClickUntil = 0;
+    var parkToastTimer;
+    var constructionImage = 'assets/v200/play-park-coming-soon.png';
+    // Mock API response: this is the only source of park content and opening state.
+    // Only routes already integrated into the app can become playable.
+    var parkRoutes = Object.freeze({
+      capsule: Object.freeze({ type: 'native', target: 'screen-capsule-intro' }),
+      'word-guardians': Object.freeze({ type: 'iframe', src: './games/word-guardians/index.html' })
+    });
+    var defaultParkPayload = {
+      visitorCount: 1286,
+      games: [
+        { id: 'capsule', open: true, image: 'assets/v200/play-blind-box-attraction-v5.png', name: 'Dino Blind Box', description: 'Answer, open, and collect!', target: 'capsule' },
+        { id: 'word-guardians', open: true, image: 'assets/v200/play-word-guardians-attraction-v5.png', name: 'Word Guardians', description: 'Say the word. Defend Dino!', target: 'word-guardians' },
+        { id: 'word-match', open: false, image: '', name: 'New adventure', description: 'Match words. Discover more fun.', target: '' },
+        { id: 'word-slice', open: false, image: '', name: 'New surprise', description: 'A fresh way to play!', target: '' }
+      ]
     };
-    function closeParkOverlays(restoreFocus) {
-      if (!parkActiveOverlay) return;
-      parkActiveOverlay.hidden = true;
-      parkActiveOverlay = null;
-      park.classList.remove('has-park-overlay');
-      parkScene.inert = review.parkScene !== 'ready';
-      var target = parkReturnFocus;
-      parkReturnFocus = null;
-      if (restoreFocus !== false && target && target.isConnected && !parkScene.inert) target.focus({preventScroll:true});
+    var parkPayload = JSON.parse(JSON.stringify(defaultParkPayload));
+    function parkText(value) { return typeof value === 'string' ? value.trim() : ''; }
+    function safeParkImage(value) {
+      var image = parkText(value);
+      if (/^assets\/[a-zA-Z0-9_./-]+\.(png|jpe?g|webp|avif)$/i.test(image) && !image.includes('..')) return image;
+      try { var url = new URL(image); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; }
+    }
+    function readParkGame(game) {
+      if (!game) return null;
+      var image = safeParkImage(game.image);
+      var name = parkText(game.name), description = parkText(game.description), target = parkText(game.target);
+      var route = Object.prototype.hasOwnProperty.call(parkRoutes, target) ? parkRoutes[target] : '';
+      return { id: game.id, name: name, description: description, image: image, target: target, route: route, open: game.open === true && !!name && !!description && !!image && !!route };
+    }
+    function getParkGame(id) {
+      return readParkGame(parkPayload.games.find(function (entry) { return entry.id === id; }));
+    }
+    function findParkEntrance(id) {
+      return Array.from(parkZones.querySelectorAll('.v200-park-zone')).find(function (entry) { return entry.dataset.parkGame === id; });
+    }
+    function syncParkLandscape() {
+      parkLandscapeTrack.style.transform = 'translate3d(' + (-parkScrollPosition) + 'px, 0, 0)';
+    }
+    function renderParkLandscape() {
+      // Repeat whole scenes instead of stretching one background across an arbitrary game list.
+      var segmentWidth = 852;
+      var plotWidth = parseFloat(getComputedStyle(parkZones).getPropertyValue('--park-plot-width')) || 240;
+      var contentWidth = Math.max(segmentWidth, parkViewport.clientWidth, parkPayload.games.length * plotWidth + 48);
+      var segmentCount = Math.ceil(contentWidth / segmentWidth);
+      if (parkLandscapeTrack.childElementCount !== segmentCount) {
+        parkLandscapeTrack.replaceChildren();
+        for (var index = 0; index < segmentCount; index += 1) {
+          var segment = document.createElement('div');
+          segment.className = 'v200-park-landscape-segment';
+          segment.style.left = (index * segmentWidth) + 'px';
+          parkLandscapeTrack.append(segment);
+        }
+      }
+      parkLandscapeTrack.style.width = (segmentCount * segmentWidth) + 'px';
+      syncParkLandscape();
+    }
+    function restoreParkScroll(position) {
+      if (!parkViewport.clientWidth) return;
+      parkViewport.scrollLeft = Math.max(0, Math.min(position, parkViewport.scrollWidth - parkViewport.clientWidth));
+      parkScrollPosition = parkViewport.scrollLeft;
+      syncParkLandscape();
+    }
+    function scrollPark(direction) {
+      var plot = parkZones.querySelector('.v200-park-plot');
+      if (!plot) return;
+      parkViewport.scrollBy({ left: direction * plot.offsetWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+    function keepParkEntranceVisible(button) {
+      if (parkRestoringFocus || !button || !parkViewport.clientWidth) return;
+      var left = button.parentElement.offsetLeft + button.offsetLeft;
+      var right = left + button.offsetWidth;
+      if (left < parkViewport.scrollLeft + 28) parkViewport.scrollLeft = Math.max(0, left - 28);
+      else if (right > parkViewport.scrollLeft + parkViewport.clientWidth - 28) parkViewport.scrollLeft = right - parkViewport.clientWidth + 28;
+    }
+    parkViewport.addEventListener('scroll', function () {
+      if (parkViewport.clientWidth && currentView() === 'play') {
+        parkScrollPosition = parkViewport.scrollLeft;
+        syncParkLandscape();
+      }
+    }, { passive: true });
+    parkViewport.addEventListener('focusin', function (event) { keepParkEntranceVisible(event.target.closest('.v200-park-zone')); });
+    parkViewport.addEventListener('keydown', function (event) {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      var entries = Array.from(parkZones.querySelectorAll('.v200-park-zone'));
+      if (!entries.length) return;
+      event.preventDefault();
+      var focused = event.target.closest('.v200-park-zone');
+      if (focused) {
+        var index = entries.indexOf(focused);
+        var targetIndex = event.key === 'Home' ? 0 : event.key === 'End' ? entries.length - 1 : Math.max(0, Math.min(entries.length - 1, index + (event.key === 'ArrowRight' ? 1 : -1)));
+        entries[targetIndex].focus({ preventScroll: true });
+        keepParkEntranceVisible(entries[targetIndex]);
+      } else if (event.key === 'Home' || event.key === 'End') {
+        parkViewport.scrollLeft = event.key === 'Home' ? 0 : parkViewport.scrollWidth;
+      } else scrollPark(event.key === 'ArrowRight' ? 1 : -1);
+    });
+    parkViewport.addEventListener('dragstart', function (event) { event.preventDefault(); });
+    parkViewport.addEventListener('pointerdown', function (event) {
+      if (event.pointerType === 'touch' || event.button !== 0) return;
+      parkPointer = { id: event.pointerId, startX: event.clientX, startScroll: parkViewport.scrollLeft, scale: parkViewport.getBoundingClientRect().width / parkViewport.clientWidth || 1, dragging: false };
+    });
+    parkViewport.addEventListener('pointermove', function (event) {
+      if (!parkPointer || parkPointer.id !== event.pointerId) return;
+      if (!(event.buttons & 1)) { endParkDrag(event); return; }
+      var delta = (event.clientX - parkPointer.startX) / parkPointer.scale;
+      if (!parkPointer.dragging && Math.abs(delta) > 8) {
+        parkPointer.dragging = true;
+        parkViewport.setPointerCapture(event.pointerId);
+        parkViewport.classList.add('is-dragging');
+      }
+      if (!parkPointer.dragging) return;
+      event.preventDefault();
+      parkViewport.scrollLeft = parkPointer.startScroll - delta;
+    });
+    function endParkDrag(event) {
+      if (!parkPointer || parkPointer.id !== event.pointerId) return;
+      if (parkPointer.dragging) parkSuppressClickUntil = performance.now() + 400;
+      parkPointer = null;
+      if (parkViewport.hasPointerCapture(event.pointerId)) parkViewport.releasePointerCapture(event.pointerId);
+      parkViewport.classList.remove('is-dragging');
+    }
+    parkViewport.addEventListener('pointerup', endParkDrag);
+    parkViewport.addEventListener('pointercancel', endParkDrag);
+    window.addEventListener('pointerup', endParkDrag);
+    window.addEventListener('pointercancel', endParkDrag);
+    parkViewport.addEventListener('lostpointercapture', endParkDrag);
+    new ResizeObserver(function () { renderParkLandscape(); restoreParkScroll(parkScrollPosition); }).observe(parkViewport);
+    var parkGameId = null;
+    var parkGameTarget = null;
+    var parkGamePreviousInert = false;
+    var parkGameShell = document.createElement('section');
+    parkGameShell.id = 'v200-park-game-shell';
+    parkGameShell.hidden = true;
+    parkGameShell.setAttribute('aria-label', 'Play game');
+    var parkGameHeader = document.createElement('header');
+    parkGameHeader.id = 'v200-park-game-header';
+    var parkGameBack = document.createElement('button');
+    parkGameBack.id = 'v200-park-game-back';
+    parkGameBack.type = 'button';
+    parkGameBack.textContent = '‹ Back to park';
+    var parkGameTitle = document.createElement('h2');
+    parkGameTitle.id = 'v200-park-game-title';
+    var parkGameContent = document.createElement('div');
+    parkGameContent.id = 'v200-park-game-content';
+    parkGameHeader.append(parkGameBack, parkGameTitle);
+    parkGameShell.append(parkGameHeader, parkGameContent);
+    document.getElementById('device-landscape').append(parkGameShell);
+    function focusParkEntrance(preferredId) {
+      var target = preferredId && findParkEntrance(preferredId);
+      if (!target || target.dataset.parkOpen !== 'true') target = park.querySelector('.v200-park-zone[data-park-open="true"]') || park.querySelector('.v200-park-zone') || parkViewport;
+      parkRestoringFocus = true;
+      target.focus({ preventScroll: true });
+      parkRestoringFocus = false;
+    }
+    function closeParkGame(restoreFocus) {
+      if (!parkGameId) return;
+      var previousId = parkGameId;
+      parkGameId = null;
+      parkGameTarget = null;
+      // Removing the browsing context stops the embedded game's microphone, audio and timers.
+      var frame = document.getElementById('v200-park-game-frame');
+      if (frame) { frame.src = 'about:blank'; frame.remove(); }
+      parkGameContent.replaceChildren();
+      parkGameShell.hidden = true;
+      parkGameShell.classList.remove('is-active');
+      document.getElementById('screen-class').inert = parkGamePreviousInert;
+      if (currentView() === 'play') {
+        restoreParkScroll(parkScrollPosition);
+        if (restoreFocus !== false) focusParkEntrance(previousId);
+      }
+      window.demoStatePanel?.render();
+    }
+    window.v200CloseParkGame = closeParkGame;
+    parkGameBack.addEventListener('click', function () { closeParkGame(true); });
+    window.addEventListener('pagehide', function () { closeParkGame(false); });
+    function openParkGame(game) {
+      if (!game.open || game.route.type !== 'iframe') return;
+      closeParkGame(false);
+      closeParkOverlays();
+      // Embedded games own their sound, like the existing native Play routes.
+      if (typeof setRadioPlaying === 'function') setRadioPlaying(false);
+      if (typeof stopCourseRadio === 'function') stopCourseRadio();
+      if (typeof rpCourseKey !== 'undefined') rpCourseKey = '';
+      if (typeof fmActive !== 'undefined') fmActive = false;
+      if (typeof clearFmDoneState === 'function') clearFmDoneState();
+      if (typeof updateFmMini === 'function') updateFmMini();
+      parkGameId = game.id;
+      parkGameTarget = game.target;
+      parkGamePreviousInert = document.getElementById('screen-class').inert;
+      document.getElementById('screen-class').inert = true;
+      parkGameTitle.textContent = game.name;
+      var frame = document.createElement('iframe');
+      frame.id = 'v200-park-game-frame';
+      frame.title = game.name;
+      frame.allow = 'microphone; autoplay; fullscreen';
+      frame.src = game.route.src;
+      parkGameContent.append(frame);
+      parkGameShell.hidden = false;
+      parkGameShell.classList.add('is-active');
+      parkGameBack.focus({ preventScroll: true });
+      window.demoStatePanel?.render();
+    }
+    function closeParkOverlays() {
+      clearTimeout(parkToastTimer);
+      document.getElementById('v200-park-toast').hidden = true;
     }
     window.v200CloseParkOverlays = closeParkOverlays;
-    function openParkOverlay(id, trigger) {
-      if (review.parkScene !== 'ready') return;
-      closeParkOverlays(false);
-      parkReturnFocus = trigger;
-      parkActiveOverlay = document.getElementById(id);
-      parkActiveOverlay.hidden = false;
-      parkScene.inert = true;
-      park.classList.add('has-park-overlay');
-      parkActiveOverlay.querySelector('[role="dialog"]').focus({preventScroll:true});
+    function showParkComingSoon() {
+      closeParkOverlays();
+      var toast = document.getElementById('v200-park-toast');
+      toast.textContent = 'Coming soon. More fun is on the way!';
+      toast.hidden = false;
+      parkToastTimer = setTimeout(function () { toast.hidden = true; }, 2600);
     }
-    document.getElementById('v200-open-arcade').addEventListener('click', function () {
-      window.GAME?.renderPlayLimits();
-      openParkOverlay('v200-park-arcade', this);
-    });
-    park.querySelectorAll('[data-park-zone]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var theme = parkThemes[button.dataset.parkZone];
-        document.getElementById('v200-park-preview-name').textContent = 'Meet ' + theme.name;
-        document.getElementById('v200-park-preview-title').textContent = theme.title;
-        document.getElementById('v200-park-preview-copy').textContent = theme.copy;
-        document.getElementById('v200-park-preview-art').style.backgroundPosition = theme.position;
-        var tags = document.getElementById('v200-park-preview-tags');
-        tags.replaceChildren();
-        theme.tags.forEach(function (label) { var tag = document.createElement('span'); tag.textContent = label; tags.append(tag); });
-        openParkOverlay('v200-park-preview', button);
+    // One periodic layout rule applies to the whole list; game payloads contain no coordinates.
+    var parkWaveOffsets = [26, -26];
+    function parkWaveAt(index) {
+      return parkWaveOffsets[((index % parkWaveOffsets.length) + parkWaveOffsets.length) % parkWaveOffsets.length];
+    }
+    function renderParkPathway() {
+      var count = parkPayload.games.length;
+      if (!count) return;
+      var namespace = 'http://www.w3.org/2000/svg';
+      var plotWidth = parseFloat(getComputedStyle(parkZones).getPropertyValue('--park-plot-width')) || 240;
+      var padding = 24;
+      var height = 234;
+      var width = count * plotWidth + padding * 2;
+      var groundY = 162;
+      var svg = document.createElementNS(namespace, 'svg');
+      svg.id = 'v200-park-pathway';
+      svg.classList.add('v200-park-pathway');
+      svg.setAttribute('width', String(width));
+      svg.setAttribute('height', String(height));
+      svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('role', 'presentation');
+      svg.setAttribute('focusable', 'false');
+      function point(index) {
+        return { x: padding + (index + .5) * plotWidth, y: groundY + parkWaveAt(index), tangent: (parkWaveAt(index + 1) - parkWaveAt(index - 1)) / 2 };
+      }
+      var start = point(-1);
+      var pathData = 'M ' + start.x + ' ' + start.y;
+      // Neighbour-derived tangents keep the curve smooth at every entrance, including each new period.
+      for (var index = -1; index < count; index += 1) {
+        var from = point(index), to = point(index + 1);
+        pathData += ' C ' + (from.x + plotWidth / 3) + ' ' + (from.y + from.tangent / 3) + ', ' + (to.x - plotWidth / 3) + ' ' + (to.y - to.tangent / 3) + ', ' + to.x + ' ' + to.y;
+      }
+      ['edge', 'inner', 'paving', 'seams'].forEach(function (layer) {
+        var path = document.createElementNS(namespace, 'path');
+        path.classList.add('v200-park-path-' + layer);
+        path.setAttribute('d', pathData);
+        svg.append(path);
       });
-    });
-    park.querySelectorAll('[data-park-close]').forEach(function (button) { button.addEventListener('click', function () { closeParkOverlays(); }); });
-    park.querySelectorAll('.v200-park-overlay').forEach(function (overlay) {
-      overlay.addEventListener('click', function (event) { if (event.target === overlay) closeParkOverlays(); });
-    });
-    // Let the existing delegated game router handle each game exactly once.
+      parkZones.append(svg);
+    }
+    function renderParkConfig(preservedPosition) {
+      var savedScroll = Number.isFinite(preservedPosition) ? preservedPosition : parkViewport.clientWidth ? parkViewport.scrollLeft : parkScrollPosition;
+      var audience = document.getElementById('v200-play-audience');
+      var count = parkPayload.visitorCount;
+      audience.hidden = !Number.isSafeInteger(count) || count < 0;
+      audience.textContent = audience.hidden ? '' : count.toLocaleString('en-US') + ' in the park';
+      var previousGame = document.activeElement && document.activeElement.dataset.parkGame;
+      parkZones.replaceChildren();
+      renderParkLandscape();
+      renderParkPathway();
+      parkPayload.games.forEach(function (record, index) {
+        var game = readParkGame(record);
+        var plot = document.createElement('div');
+        plot.className = 'v200-park-plot';
+        plot.dataset.parkWave = String(parkWaveAt(index));
+        plot.style.setProperty('--park-wave-y', parkWaveAt(index) + 'px');
+        plot.setAttribute('role', 'listitem');
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'v200-park-zone';
+        button.dataset.parkGame = game.id;
+        button.dataset.parkOpen = String(game.open);
+        button.setAttribute('aria-label', game.open ? game.name + '. ' + game.description : 'Coming soon');
+        // Closed entrances remain buttons: activating them announces Coming soon.
+        if (game.open && game.route.type === 'native') button.dataset.goGame = game.route.target;
+        var artSlot = document.createElement('span');
+        artSlot.className = 'v200-park-art-slot';
+        var art = document.createElement('img');
+        art.className = 'v200-park-facility-img';
+        art.alt = '';
+        art.draggable = false;
+        art.decoding = 'async';
+        art.src = game.open ? game.image : constructionImage;
+        art.addEventListener('error', function () {
+          if (!game.open) { art.hidden = true; artSlot.classList.add('is-fallback'); return; }
+          var source = parkPayload.games.find(function (entry) { return entry.id === game.id; });
+          if (!source || safeParkImage(source.image) !== game.image || !source.open) return;
+          source.open = false;
+          window.v200ApplyParkConfig(parkPayload);
+        }, { once: true });
+        artSlot.append(art);
+        var sign = document.createElement('span');
+        sign.className = 'v200-park-sign';
+        if (game.open) {
+          var name = document.createElement('b');
+          name.className = 'v200-park-game-name';
+          name.textContent = game.name;
+          var description = document.createElement('span');
+          description.className = 'v200-park-description';
+          description.textContent = game.description;
+          sign.append(name, description);
+        } else {
+          var availability = document.createElement('small');
+          availability.className = 'v200-park-availability';
+          availability.textContent = 'Coming soon';
+          sign.append(availability);
+        }
+        button.append(artSlot, sign);
+        plot.append(button);
+        parkZones.append(plot);
+      });
+      document.getElementById('v200-park-empty').hidden = parkPayload.games.length !== 0;
+      if (!parkPayload.games.length) savedScroll = 0;
+      parkScrollPosition = savedScroll;
+      restoreParkScroll(savedScroll);
+      requestAnimationFrame(function () { restoreParkScroll(parkScrollPosition); });
+      if (previousGame && !parkScene.inert) {
+        var focusTarget = findParkEntrance(previousGame);
+        if (focusTarget) {
+          parkRestoringFocus = true;
+          focusTarget.focus({ preventScroll: true });
+          parkRestoringFocus = false;
+        }
+      }
+      window.GAME?.renderPlayLimits?.();
+    }
+    window.v200GetParkConfig = function () { return JSON.parse(JSON.stringify(parkPayload)); };
+    window.v200ApplyParkConfig = function (payload) {
+      payload = payload && typeof payload === 'object' ? payload : {};
+      var seenIds = new Set();
+      var incomingGames = Array.isArray(payload.games) ? payload.games : [];
+      parkPayload = {
+        visitorCount: Number.isSafeInteger(payload.visitorCount) && payload.visitorCount >= 0 ? payload.visitorCount : null,
+        games: incomingGames.filter(function (game) {
+          if (!game || typeof game !== 'object' || Array.isArray(game)) return false;
+          var id = parkText(game.id);
+          if (!id || id.length > 128 || /[\u0000-\u001f\u007f]/.test(id) || seenIds.has(id)) return false;
+          seenIds.add(id);
+          return true;
+        }).map(function (game) {
+          return { id: parkText(game.id), open: game.open === true, image: parkText(game.image), name: parkText(game.name), description: parkText(game.description), target: parkText(game.target) };
+        })
+      };
+      review.audience = parkPayload.visitorCount === null ? 'missing' : String(parkPayload.visitorCount);
+      review.parkSize = parkPayload.games.length ? String(parkPayload.games.length) : 'empty';
+      var openIds = parkPayload.games.map(readParkGame).filter(function (game) { return game.open; }).map(function (game) { return game.id; });
+      review.parkEntries = !openIds.length ? 'all-closed' : openIds.length === 2 && openIds.includes('capsule') && openIds.includes('word-guardians') ? 'launch' : 'custom';
+      var capsule = parkPayload.games.find(function (game) { return game.id === 'capsule'; });
+      review.parkContent = !capsule ? 'custom' : capsule.name === defaultParkPayload.games[0].name && capsule.image === defaultParkPayload.games[0].image && capsule.description === defaultParkPayload.games[0].description ? 'default' : capsule.name === 'Dino Surprise' && capsule.image === 'assets/capsules/dino-dessert-4.png' ? 'alternate' : 'custom';
+      closeParkOverlays();
+      if (parkGameId) {
+        var activeGame = getParkGame(parkGameId);
+        if (!activeGame || !activeGame.open || activeGame.target !== parkGameTarget) closeParkGame(false);
+        else parkGameTitle.textContent = activeGame.name;
+      }
+      renderParkConfig();
+      window.demoStatePanel?.render();
+      return window.v200GetParkConfig();
+    };
+    window.v200RefreshParkConfig = function () {
+      // Re-entering Play reads the current mock API response and restores its horizontal position.
+      renderParkConfig(parkScrollPosition);
+    };
+    window.v200SetParkSize = function (value) {
+      if (!['4', '6', '8', 'empty'].includes(String(value))) return;
+      value = String(value);
+      var next = window.v200GetParkConfig();
+      if (value === 'empty') next.games = [];
+      else {
+        var keepClosed = next.games.length > 0 && review.parkEntries === 'all-closed';
+        var currentById = new Map(next.games.map(function (game) { return [game.id, game]; }));
+        next.games = defaultParkPayload.games.map(function (game) {
+          var entry = currentById.get(game.id) || Object.assign({}, game);
+          if (keepClosed) entry.open = false;
+          return entry;
+        });
+        for (var index = next.games.length; index < Number(value); index += 1) {
+          var id = 'coming-soon-' + (index + 1);
+          next.games.push(currentById.get(id) || { id: id, open: false, image: '', name: '', description: '', target: '' });
+        }
+      }
+      window.v200ApplyParkConfig(next);
+    };
+    window.v200SetParkEntries = function (value) {
+      if (!['launch', 'all-closed'].includes(value)) return;
+      var next = window.v200GetParkConfig();
+      next.games.forEach(function (game) { game.open = value === 'launch' && ['capsule', 'word-guardians'].includes(game.id); });
+      window.v200ApplyParkConfig(next);
+    };
+    window.v200SetParkContent = function (value) {
+      if (!['default', 'alternate'].includes(value)) return;
+      var next = window.v200GetParkConfig();
+      var capsule = next.games.find(function (game) { return game.id === 'capsule'; });
+      if (!capsule) return;
+      var original = defaultParkPayload.games[0];
+      capsule.image = value === 'alternate' ? 'assets/capsules/dino-dessert-4.png' : original.image;
+      capsule.name = value === 'alternate' ? 'Dino Surprise' : original.name;
+      capsule.description = value === 'alternate' ? 'Meet your next little Dino friend!' : original.description;
+      window.v200ApplyParkConfig(next);
+    };
+    // Validate against the latest response before the existing delegated router sees a click.
     park.addEventListener('click', function (event) {
-      if (event.target.closest('[data-go-game]')) closeParkOverlays(false);
+      if (performance.now() < parkSuppressClickUntil && event.detail > 0) { event.preventDefault(); event.stopPropagation(); return; }
+      var entry = event.target.closest('[data-park-game]');
+      if (!entry) return;
+      var game = getParkGame(entry.dataset.parkGame);
+      if (review.parkScene !== 'ready' || !game || !game.open) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (review.parkScene === 'ready') showParkComingSoon();
+        return;
+      }
+      parkScrollPosition = parkViewport.scrollLeft;
+      if (game.route.type === 'iframe') {
+        event.preventDefault();
+        event.stopPropagation();
+        delete entry.dataset.goGame;
+        openParkGame(game);
+        return;
+      }
+      entry.dataset.goGame = game.route.target;
+      closeParkOverlays();
     }, true);
-    document.addEventListener('keydown', function (event) {
-      if (!parkActiveOverlay) return;
-      if (event.key === 'Escape') { event.preventDefault(); closeParkOverlays(); return; }
-      if (event.key !== 'Tab') return;
-      var focusable = Array.from(parkActiveOverlay.querySelectorAll('button:not([disabled]), [tabindex="0"]'));
-      var first = focusable[0], last = focusable[focusable.length - 1];
-      var current = document.activeElement;
-      if (event.shiftKey && (current === first || !focusable.includes(current))) { event.preventDefault(); last.focus({preventScroll:true}); }
-      else if (!event.shiftKey && (current === last || !focusable.includes(current))) { event.preventDefault(); first.focus({preventScroll:true}); }
-    });
+    renderParkConfig();
     window.v200SetParkScene = function (value) {
       if (!['ready','loading','error'].includes(value)) return;
+      closeParkGame(false);
       closeParkOverlays(false);
       review.parkScene = value;
       park.dataset.parkScene = value;
@@ -24057,19 +24445,12 @@
       window.demoStatePanel?.render();
     };
     function recoverParkScene() {
-      if (parkImageFailed) {
-        window.v200SetParkScene('loading');
-        parkImage.src = 'assets/v200/play-park-world.png?retry=' + Date.now();
-      } else {
-        window.v200SetParkScene('ready');
-        document.getElementById('v200-open-arcade').focus({preventScroll:true});
-      }
+      window.v200SetParkScene('ready');
+      restoreParkScroll(parkScrollPosition);
+      focusParkEntrance();
     }
     document.getElementById('v200-park-retry').addEventListener('click', recoverParkScene);
     document.getElementById('v200-park-ready').addEventListener('click', recoverParkScene);
-    parkImage.addEventListener('error', function () { parkImageFailed = true; window.v200SetParkScene('error'); });
-    parkImage.addEventListener('load', function () { if (parkImageFailed) { parkImageFailed = false; window.v200SetParkScene('ready'); } });
-    if (parkImage.complete && !parkImage.naturalWidth) { parkImageFailed = true; window.v200SetParkScene('error'); }
 
     function currentView() {
       var portraitVisible = getComputedStyle(document.getElementById('wrap-portrait')).display !== 'none';
@@ -24082,11 +24463,14 @@
     }
     function syncPage() {
       var view = currentView();
-      if (document.body.dataset.v200View !== view) document.body.dataset.v200View = view;
-      if (view !== 'play') closeParkOverlays(false);
+      var changed = document.body.dataset.v200View !== view;
+      if (changed) document.body.dataset.v200View = view;
+      if (view !== 'play') { closeParkOverlays(false); closeParkGame(false); }
+      else if (changed) window.v200RefreshParkConfig();
     }
     window.v200SyncPage = syncPage;
     window.v200BeforeJump = function () {
+      closeParkGame(false);
       closeParkOverlays(false);
       window.IP_ANIMATION?.cleanup();
       window.IP_ANIMATION?.cancelMembershipCheckout();
@@ -24098,9 +24482,9 @@
       if (typeof gt4Close === 'function') gt4Close(true);
     };
     window.v200SetAudience = function (value) {
-      review.audience = value;
-      document.getElementById('v200-play-audience').hidden = value === 'hidden';
-      window.demoStatePanel?.sync();
+      var next = window.v200GetParkConfig();
+      next.visitorCount = value === 'shown' ? 1286 : value === 'hidden' || value === 'missing' ? null : Number(value);
+      window.v200ApplyParkConfig(next);
     };
     window.v200SetPlayLimit = function (value) {
       review.playLimit = value;
@@ -24115,14 +24499,15 @@
     };
     window.v200GetValue = function (key) {
       if (key === 'v200PlayLimit') return window.GAME.getPlayLimitReview();
-      return ({v200Audience:review.audience,v200ParkScene:review.parkScene})[key];
+      return ({v200Audience:review.audience,v200ParkSize:review.parkSize,v200ParkScene:review.parkScene,v200ParkEntries:review.parkEntries,v200ParkContent:review.parkContent})[key];
     };
     window.v200Context = function () {
       var view = currentView();
       if (!view || document.querySelector('#v180-plan-reveal.show, #visit-reward-overlay.show, #force-update-overlay.show')) return null;
+      if (parkGameId) return { label:parkGameTitle.textContent,pageKey:'v200_park_game',isCore:true,keys:[] };
       if (view === 'ip-animation') return window.IP_ANIMATION?.context() || null;
       if (view === 'explore') return { label:'Explore',pageKey:'v200_explore',isCore:true,keys:['v180Tier'] };
-      return { label:'Play',pageKey:'v200_play',isCore:true,keys:['v200ParkScene','v200Audience','v200PlayLimit'] };
+      return { label:'Play',pageKey:'v200_play',isCore:true,keys:['v200ParkScene','v200ParkSize','v200ParkEntries','v200ParkContent','v200Audience','v200PlayLimit'] };
     };
     window.v200OpenPage = function (page) {
       window.v200BeforeJump();

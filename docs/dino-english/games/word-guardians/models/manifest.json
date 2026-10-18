@@ -1,0 +1,11 @@
+{
+  "name": "vosk-model-small-en-us",
+  "version": "0.15",
+  "language": "en-US",
+  "file": "vosk-small-en-us-0.15.tar.gz",
+  "bytes": 41118299,
+  "sha256": "09df8cc6dcd0ba51219b471021219b500ace7f8bb545c0ab4b89ab72122d256e",
+  "source": "https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip",
+  "sourceSha256": "30f26242c4eb449f948e42cb302dd7a686cb29a3423a8367f99ff41780942498",
+  "license": "Apache-2.0"
+}
