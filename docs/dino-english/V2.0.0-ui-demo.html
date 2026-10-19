@@ -3641,8 +3641,6 @@
       }
     }
     @media (max-width: 760px) {
-      .teacher-grid { grid-template-columns: 1fr; gap: 16px; }
-      .teacher-card-inner { min-height: 190px; }
       .course-bridge-figure-shell {
         min-height: 240px;
       }
@@ -8369,18 +8367,13 @@
     #screen-teacher.is-first-lesson .land-body.teacher-pick { display: grid; grid-template-columns: 280px minmax(0, 1fr); grid-template-rows: auto auto; grid-template-areas: "teacher welcome" "teacher action"; align-content: center; align-items: center; gap: 18px 32px; padding: 28px 40px; }
     #screen-teacher.is-first-lesson .teacher-intro { grid-area: welcome; align-self: end; width: 100%; max-width: none; margin: 0; padding: 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--surface-glass); text-align: left; }
     #screen-teacher.is-first-lesson .teacher-intro::after { content: ""; position: absolute; left: -9px; top: calc(50% - 8px); width: 16px; height: 16px; background: color-mix(in srgb, var(--sky-mid) 88%, white); border-left: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); transform: rotate(45deg); }
-    #screen-teacher.is-first-lesson #teacher-guide-ready { margin-bottom: 14px; padding-right: 44px; color: var(--ink-on-dark); font-family: var(--display); font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+    #screen-teacher.is-first-lesson #teacher-guide-ready { margin-bottom: 14px; color: var(--ink-on-dark); font-family: var(--display); font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
     #screen-teacher.is-first-lesson #teacher-guide-h2 { font-size: 17px; font-weight: 400; line-height: 1.5; }
-    #screen-teacher.is-first-lesson .teacher-greeting-audio { top: 16px; right: 16px; }
     #screen-teacher.is-first-lesson .teacher-actions { grid-area: action; align-self: start; align-items: flex-start; padding-left: 24px; }
     #screen-teacher.is-first-lesson .teacher-actions .btn-primary { min-width: 240px; min-height: 52px; font-size: 18px; background: var(--cta-grad); }
-    .teacher-greeting-audio { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 44px; height: 44px; padding: 10px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); color: var(--ink-on-dark); background: var(--surface-glass); cursor: pointer; }
-    .teacher-greeting-audio svg { width: 22px; height: 22px; }
-    .teacher-greeting-audio[aria-pressed="true"] { color: var(--accent-yellow); border-color: var(--accent-yellow); }
-    .teacher-greeting-audio:focus-visible { outline: 3px solid var(--accent-yellow); outline-offset: 2px; }
     @media (max-width: 872px) {
-      #wrap-landscape:has(#screen-teacher.is-first-lesson.active) { height: calc(393px * var(--v200-landscape-scale, 1)); overflow: hidden; }
-      #wrap-landscape:has(#screen-teacher.is-first-lesson.active) #device-landscape { width: 852px; height: 393px; max-height: none; aspect-ratio: 852 / 393; transform: scale(var(--v200-landscape-scale, 1)); transform-origin: top left; }
+      #wrap-landscape:has(#screen-teacher.active) { height: calc(393px * var(--v200-landscape-scale, 1)); overflow: hidden; }
+      #wrap-landscape:has(#screen-teacher.active) #device-landscape { width: 852px; height: 393px; max-height: none; aspect-ratio: 852 / 393; transform: scale(var(--v200-landscape-scale, 1)); transform-origin: top left; }
     }
     #screen-teacher.is-first-lesson .teacher-grid { grid-area: teacher; grid-template-columns: minmax(0,1fr); width: 100%; max-width: none; height: 320px; margin: 0; }
     #screen-teacher.is-first-lesson .teacher-card { cursor: default; transform: none; }
@@ -8394,17 +8387,23 @@
     #screen-teacher .btn-primary:disabled { opacity: .5; cursor: default; }
     #screen-teacher .teacher-card:focus-visible { outline: 3px solid var(--accent-yellow); outline-offset: 3px; }
     .teacher-switch-overlay { position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; background: color-mix(in srgb,var(--sky-deep) 65%,transparent); backdrop-filter: blur(6px); }
+    .teacher-switch-overlay[hidden], .teacher-switch-overlay [hidden] { display: none !important; }
     .teacher-switch-dialog { width: min(360px,80%); padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--glass-border); background: var(--sky-deep); color: var(--ink-on-dark); text-align: center; display: grid; justify-items: center; gap: 16px; }
     .teacher-switch-dialog p { margin: 0; font: 600 20px/1.35 var(--display); }
-    .teacher-switch-dialog .btn-primary { min-width: 148px; min-height: 44px; }
     .teacher-switch-dialog p:focus { outline: none; }
+    .teacher-switch-progress { width: 100%; display: grid; gap: 12px; }
+    .teacher-switch-track { height: 12px; overflow: hidden; border-radius: var(--radius-pill); background: var(--surface-glass); }
+    .teacher-switch-fill { display: block; height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg, var(--brand-cyan), var(--glass-border)); transition: width .12s linear; }
+    .teacher-switch-percent { color: var(--ink-on-dark); font: 700 20px/1 var(--font); font-variant-numeric: tabular-nums; }
+    .teacher-switch-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+    .teacher-switch-actions:has(#btn-teacher-retry[hidden]) { grid-template-columns: 1fr; }
+    .teacher-switch-actions button { min-width: 0; min-height: 44px; padding: 10px 12px; border-radius: var(--radius-pill); font: 700 14px/1.3 var(--font); cursor: pointer; }
+    .teacher-switch-cancel { border: 1px solid var(--glass-border); color: var(--ink-on-dark); background: var(--surface-glass); }
     .teacher-switch-icon { width: 44px; height: 44px; border: 4px solid var(--surface-glass); border-top-color: var(--glass-border); border-radius: 50%; animation: teacher-resource-spin .8s linear infinite; }
-    .teacher-switch-overlay[data-state="success"] .teacher-switch-icon,
-    .teacher-switch-overlay[data-state="error"] .teacher-switch-icon { animation: none; border: none; display: grid; place-items: center; font: 700 34px/1 var(--display); color: var(--brand-lime); }
-    .teacher-switch-overlay[data-state="error"] .teacher-switch-icon { color: var(--accent-yellow); }
-    .teacher-switch-cancel { border: none; border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); min-height: 44px; padding: 10px 20px; font: 700 14px var(--font); cursor: pointer; }
+    .teacher-switch-overlay:not([data-state="loading"]) .teacher-switch-icon { animation: none; border: none; display: grid; place-items: center; font: 700 34px/1 var(--display); color: var(--accent-yellow); }
+    .teacher-switch-overlay[data-state="success"] .teacher-switch-icon { color: var(--brand-lime); }
     @keyframes teacher-resource-spin { to { transform: rotate(360deg); } }
-    @media (prefers-reduced-motion:reduce) { .teacher-switch-icon { animation: none; } }
+    @media (prefers-reduced-motion:reduce) { .teacher-switch-icon { animation: none; } .teacher-switch-fill { transition: none; } }
   </style>
 </head>
 <body class="is-group-b">
@@ -9448,25 +9447,31 @@
           <div class="teacher-intro">
             <h2 id="teacher-guide-h1" hidden>Switch teacher</h2>
             <p id="teacher-guide-ready" role="heading" aria-level="2">Your child's free first lesson is ready.</p>
-            <p id="teacher-guide-h2" class="is-report-benefit">After the lesson, you'll get a <strong>report</strong> on your child's English level.</p>
-            <button type="button" id="btn-teacher-greeting" class="teacher-greeting-audio" aria-label="Hear Max's welcome" aria-pressed="false" title="Hear Max's welcome">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z"/><path d="M16 9a5 5 0 0 1 0 6M19 6a9 9 0 0 1 0 12"/></svg>
-            </button>
+            <p id="teacher-guide-h2" class="is-report-benefit">Finish the lesson and get your child’s <strong>placement report</strong> right away.</p>
           </div>
           <div class="teacher-grid" id="teacher-grid"></div>
           <div class="teacher-actions">
             <button type="button" class="btn btn-primary" id="btn-confirm-teacher">Start Lesson</button>
           </div>
         </div>
+
+      </section>
         <div class="teacher-switch-overlay" id="teacher-switch-overlay" role="dialog" aria-modal="true" aria-labelledby="teacher-switch-title" hidden>
           <div class="teacher-switch-dialog">
             <div class="teacher-switch-icon" id="teacher-switch-icon" aria-hidden="true"></div>
             <p id="teacher-switch-title" role="status" aria-live="polite" tabindex="-1"></p>
-            <button type="button" class="btn btn-primary" id="btn-teacher-retry" hidden>Retry</button>
-            <button type="button" class="teacher-switch-cancel" id="btn-teacher-cancel">Back to Class</button>
+            <div class="teacher-switch-progress" id="teacher-switch-progress" hidden>
+              <div class="teacher-switch-track" id="teacher-switch-track" role="progressbar" aria-labelledby="teacher-switch-title" aria-valuemin="0" aria-valuemax="100">
+                <span class="teacher-switch-fill" id="teacher-switch-fill" aria-hidden="true"></span>
+              </div>
+              <span class="teacher-switch-percent" id="teacher-switch-percent" aria-hidden="true"></span>
+            </div>
+            <div class="teacher-switch-actions" id="teacher-switch-actions" hidden>
+              <button type="button" class="btn btn-primary" id="btn-teacher-retry">Retry</button>
+              <button type="button" class="teacher-switch-cancel" id="btn-teacher-cancel">Back to Class</button>
+            </div>
           </div>
         </div>
-      </section>
       <section class="screen app-shell" id="screen-class">
         <div class="hub-app" id="hub-app">
           <!-- Profile entry: avatar in the top-left corner (replaces the Profile tab) -->
@@ -10563,6 +10568,9 @@
       levelUpResult: "up",
       trialResult: "same",
       teacherLoadResult: "success",
+      teacherSaveResult: "success",
+      teacherNetwork: "online",
+      teacherDialogLocale: "en",
       capsuleOutcome: "random",
       quizTypes: "mixed",
       deviceCount: 3,
@@ -10609,7 +10617,17 @@
     let pendingTeacherId = "max";
     let teacherSwitchState = "idle";
     let teacherSwitchTimer = null;
-    let teacherSwitchRequest = 0;
+    let teacherProgressTimer = null;
+    let teacherCompleteTimer = null;
+    let teacherSwitchProgress = null;
+    let teacherDialog = null;
+    let teacherInertScreen = null;
+    const TEACHER_WAIT_LIMIT_MS = 60000;
+    // Resource jobs outlive the dialog; only a successful selection changes profile.teacherId.
+    const teacherResources = new Map([
+      ["max", { state: "ready", progress: 100 }],
+      ["kim", { state: "ready", progress: 100 }]
+    ]);
     let teacherGreetingUtterance = null;
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
@@ -11756,57 +11774,265 @@
       $("#btn-confirm-teacher").disabled = switching && (pendingTeacherId === profile.teacherId || teacherSwitchState !== "idle");
     }
 
+    function teacherIsOnline() {
+      return navigator.onLine && demoState.teacherNetwork !== "offline";
+    }
     function resetTeacherSwitch() {
       stopTeacherGreeting();
       clearTimeout(teacherSwitchTimer);
+      clearInterval(teacherProgressTimer);
+      clearTimeout(teacherCompleteTimer);
       teacherSwitchTimer = null;
-      teacherSwitchRequest += 1;
+      teacherProgressTimer = null;
+      teacherCompleteTimer = null;
       teacherSwitchState = "idle";
-      const screen = $("#screen-teacher");
-      screen.querySelector(".teacher-pick").inert = false;
-      screen.removeAttribute("aria-busy");
+      teacherSwitchProgress = null;
+      teacherDialog = null;
+      if (teacherInertScreen) {
+        teacherInertScreen.element.inert = teacherInertScreen.wasInert;
+        teacherInertScreen.element.removeAttribute("aria-busy");
+        teacherInertScreen = null;
+      }
       $("#teacher-switch-overlay").hidden = true;
     }
+    function teacherDialogCopy() {
+      return demoState.teacherDialogLocale === "zh" ? {
+        loading: "新老师正在准备中…", lessonLoading: "老师正在准备中…", success: "切换成功",
+        error: "老师还没准备好，请重试。", saveError: "老师切换失败，请重试。",
+        offline: "网络连接已断开，请检查后重试。", retry: "重试", back: "返回 Class", close: "关闭"
+      } : {
+        loading: "The teacher is getting ready…", lessonLoading: "The teacher is getting ready…", success: "Teacher selected!",
+        error: "Your teacher isn't ready yet. Please try again.", saveError: "Couldn't switch teachers. Please try again.",
+        offline: "You're offline. Check your connection and try again.", retry: "Retry", back: "Back to Class", close: "Close"
+      };
+    }
+    function fillTeacherSwitchCopy() {
+      const copy = teacherDialogCopy();
+      const title = $("#teacher-switch-title");
+      title.lang = demoState.teacherDialogLocale === "zh" ? "zh-Hans" : "en";
+      title.textContent = teacherSwitchState === "loading" && teacherDialog?.context === "lesson" ? copy.lessonLoading : copy[teacherSwitchState] || copy.loading;
+      $("#btn-teacher-retry").textContent = copy.retry;
+      $("#btn-teacher-cancel").textContent = ["switch", "lesson"].includes(teacherDialog?.context) ? copy.back : copy.close;
+    }
+    function renderTeacherProgress() {
+      if (teacherDialog?.context === "switch") {
+        const seconds = Math.max(0, (performance.now() - teacherDialog.startedAt) / 1000);
+        // Deliberately simulated waiting progress, independent of download bytes or readiness.
+        teacherSwitchProgress = teacherDialog.completing ? 100 : Math.min(95, Math.floor(seconds <= 10 ? seconds * 6 : 60 + (seconds - 10) * .7));
+      }
+      const known = teacherSwitchState === "loading" && Number.isFinite(teacherSwitchProgress);
+      $("#teacher-switch-progress").hidden = !known;
+      $("#teacher-switch-icon").hidden = known;
+      const track = $("#teacher-switch-track");
+      if (known) {
+        track.setAttribute("aria-valuenow", teacherSwitchProgress);
+        $("#teacher-switch-fill").style.width = teacherSwitchProgress + "%";
+        $("#teacher-switch-percent").textContent = teacherSwitchProgress + "%";
+      } else {
+        track.removeAttribute("aria-valuenow");
+        $("#teacher-switch-fill").style.width = "0%";
+        $("#teacher-switch-percent").textContent = "";
+      }
+    }
     function renderTeacherSwitch(state) {
+      if (teacherDialog?.context === "switch") state = "loading";
       teacherSwitchState = state;
       const overlay = $("#teacher-switch-overlay");
+      const firstRender = overlay.hidden;
+      if (firstRender) $("#pay-toast").classList.remove("show");
       overlay.hidden = false;
       overlay.dataset.state = state;
-      $("#screen-teacher .teacher-pick").inert = true;
-      $("#screen-teacher").setAttribute("aria-busy", String(state === "loading"));
-      $("#teacher-switch-icon").textContent = state === "success" ? "✓" : state === "error" ? "!" : "";
-      $("#teacher-switch-title").textContent = state === "success" ? "Teacher selected!" : state === "error" ? "Couldn't load resources. Please try again." : "Loading resources…";
-      $("#btn-teacher-retry").hidden = state !== "error";
-      $("#btn-teacher-cancel").hidden = state === "success";
-      $("#teacher-switch-title").focus({ preventScroll: true });
+      if (!teacherInertScreen) {
+        const element = $("#device-landscape .screen.active");
+        teacherInertScreen = element ? { element, wasInert: element.inert } : null;
+        if (element) element.inert = true;
+      }
+      teacherInertScreen?.element.setAttribute("aria-busy", String(state === "loading"));
+      $("#teacher-switch-icon").textContent = state === "loading" ? "" : "!";
+      $("#teacher-switch-actions").hidden = teacherDialog?.context === "switch";
+      $("#btn-teacher-retry").hidden = !["error", "offline", "saveError"].includes(state);
+      fillTeacherSwitchCopy();
+      renderTeacherProgress();
+      if (firstRender) $("#teacher-switch-title").focus({ preventScroll: true });
       window.demoStatePanel?.render();
     }
+    function finishTeacherSelectionDialog() {
+      if (teacherDialog?.context !== "switch") return;
+      resetTeacherSwitch();
+      showClassHome();
+      showPayToast(teacherDialogCopy().success);
+      $("#btn-change-teacher").focus({ preventScroll: true });
+      window.demoStatePanel?.render();
+    }
+    function completeTeacherSelectionDialog() {
+      if (teacherDialog?.context !== "switch" || teacherDialog.completing) return;
+      teacherDialog.completing = true;
+      renderTeacherProgress();
+      const remaining = Math.max(0, TEACHER_WAIT_LIMIT_MS - (performance.now() - teacherDialog.startedAt));
+      teacherCompleteTimer = setTimeout(finishTeacherSelectionDialog, Math.min(250, remaining));
+    }
+    function dismissTeacherDialog() {
+      if (teacherDialog?.context === "switch") return;
+      const isLesson = teacherDialog?.context === "lesson";
+      resetTeacherSwitch();
+      if (isLesson) showClassHome();
+      else renderTeacherCards();
+      $(isLesson ? "#btn-change-teacher" : "#btn-confirm-teacher").focus({ preventScroll: true });
+      window.demoStatePanel?.render();
+    }
+    function syncTeacherResourceDialog(teacherId) {
+      if (!teacherDialog || teacherDialog.teacherId !== teacherId || teacherDialog.context === "save") return;
+      const job = teacherResources.get(teacherId);
+      if (!job) return;
+      if (job.state === "ready") {
+        if (teacherDialog.context === "switch") { completeTeacherSelectionDialog(); return; }
+        const source = teacherDialog.source;
+        const stillSelected = profile.teacherId === teacherId;
+        resetTeacherSwitch();
+        if (stillSelected) openClassroomDemo(source);
+        return;
+      }
+      const nextState = teacherDialog.context === "switch" || job.state === "preparing" ? "loading" : job.state;
+      teacherSwitchProgress = job.progress;
+      if (teacherSwitchState !== nextState || $("#teacher-switch-overlay").hidden) renderTeacherSwitch(nextState);
+      else renderTeacherProgress();
+    }
+    function pauseTeacherResources() {
+      for (const [id, job] of teacherResources) {
+        if (job.state !== "preparing") continue;
+        clearTimeout(job.timer);
+        job.timer = null;
+        job.state = "offline";
+        syncTeacherResourceDialog(id);
+      }
+    }
+    function continueTeacherResourceJob(teacherId) {
+      const job = teacherResources.get(teacherId);
+      if (!job || job.state === "ready") return;
+      clearTimeout(job.timer);
+      if (!teacherIsOnline()) {
+        job.state = "offline";
+        syncTeacherResourceDialog(teacherId);
+        return;
+      }
+      job.state = "preparing";
+      job.lastTick = performance.now();
+      syncTeacherResourceDialog(teacherId);
+      const tick = () => {
+        if (teacherResources.get(teacherId) !== job || job.state !== "preparing") return;
+        if (!teacherIsOnline()) { pauseTeacherResources(); return; }
+        const now = performance.now();
+        job.elapsed += now - job.lastTick;
+        job.lastTick = now;
+        const fraction = Math.min(1, job.elapsed / job.duration);
+        // Mock resource readiness; the selection dialog has its own simulated waiting progress.
+        job.progress = job.unknown || fraction === 1 ? null : Math.floor(fraction * 100);
+        job.phase = fraction === 1 ? "finalizing" : "downloading";
+        if (!job.faultShown && fraction >= .45 && ["fail", "disconnect"].includes(job.outcome)) {
+          job.faultShown = true;
+          job.timer = null;
+          if (job.outcome === "disconnect") {
+            demoState.teacherNetwork = "offline";
+            pauseTeacherResources();
+          } else {
+            job.state = "error";
+            syncTeacherResourceDialog(teacherId);
+            // Simulate automatic recovery without restarting the foreground wait limit.
+            job.timer = setTimeout(() => {
+              if (teacherResources.get(teacherId) === job && job.state === "error") continueTeacherResourceJob(teacherId);
+            }, 1500);
+          }
+          return;
+        }
+        if (fraction === 1 && job.elapsed >= job.duration + job.finalizeMs) {
+          job.state = "ready";
+          job.progress = 100;
+          job.timer = null;
+          syncTeacherResourceDialog(teacherId);
+          return;
+        }
+        syncTeacherResourceDialog(teacherId);
+        job.timer = setTimeout(tick, 120);
+      };
+      job.timer = setTimeout(tick, 120);
+    }
+    function prepareTeacherResources(teacherId, outcome) {
+      const prior = teacherResources.get(teacherId);
+      if (prior?.state === "ready") return;
+      if (prior) {
+        if (prior.state !== "preparing") continueTeacherResourceJob(teacherId);
+        return;
+      }
+      // Review-only resource readiness simulation, independent of displayed waiting progress.
+      // The foreground wait limit is real 60 seconds; its States shortcut only closes the dialog.
+      const job = { state: "preparing", progress: outcome === "unknown" ? null : 0,
+        unknown: outcome === "unknown", elapsed: 0, duration: outcome === "timeout" ? 90000 : outcome === "slow" ? 7000 : 2600,
+        phase: "downloading", finalizeMs: outcome === "finalizing" ? 3500 : outcome === "finalizingTimeout" ? 90000 : 0,
+        outcome, faultShown: false, timer: null };
+      teacherResources.set(teacherId, job);
+      continueTeacherResourceJob(teacherId);
+    }
+    function resumeTeacherResources() {
+      if (!teacherIsOnline()) return;
+      for (const [id, job] of teacherResources) {
+        if (job.state === "offline") continueTeacherResourceJob(id);
+      }
+    }
+    function retryTeacherPreparation() {
+      if (!teacherDialog || teacherDialog.context === "switch") return;
+      if (teacherDialog.context === "save") { startTeacherSwitch(); return; }
+      const job = teacherResources.get(teacherDialog.teacherId);
+      if (!job || job.state === "ready") return;
+      // Retrying only resumes preparation; it never saves or rolls back the selected teacher.
+      continueTeacherResourceJob(teacherDialog.teacherId);
+    }
     function startTeacherSwitch() {
-      if (teacherFlowMode !== "app" || !["idle", "error"].includes(teacherSwitchState) || pendingTeacherId === profile.teacherId) return;
-      clearTimeout(teacherSwitchTimer);
-      const request = ++teacherSwitchRequest;
+      if (teacherFlowMode !== "app" || pendingTeacherId === profile.teacherId || (teacherDialog && teacherDialog.context !== "save")) return;
       const selectedId = pendingTeacherId;
-      const outcome = demoState.teacherLoadResult;
-      renderTeacherSwitch("loading");
-      // Demo-only resource response; production completes after resources are ready.
-      teacherSwitchTimer = setTimeout(() => {
-        if (request !== teacherSwitchRequest || activeLandScreen() !== "screen-teacher") return;
-        if (outcome === "fail") { renderTeacherSwitch("error"); return; }
-        profile.teacherId = selectedId;
-        profile.teacherChosen = true;
-        renderClassTeacherVisual();
-        renderTeacherSwitch("success");
-        teacherSwitchTimer = setTimeout(() => {
-          if (request !== teacherSwitchRequest || activeLandScreen() !== "screen-teacher") return;
-          showClassHome();
-          $("#btn-change-teacher").focus({ preventScroll: true });
-        }, 1000);
-      }, outcome === "slow" ? 7000 : 1500);
+      resetTeacherSwitch();
+      if (!teacherIsOnline() || demoState.teacherSaveResult === "fail") {
+        teacherDialog = { context: "save", teacherId: selectedId };
+        renderTeacherSwitch(teacherIsOnline() ? "saveError" : "offline");
+        return;
+      }
+      // Successful selection save is independent from resource readiness.
+      profile.teacherId = selectedId;
+      profile.teacherChosen = true;
+      if (demoState.teacherLoadResult === "ready") {
+        clearTimeout(teacherResources.get(selectedId)?.timer);
+        teacherResources.set(selectedId, { state: "ready", progress: 100 });
+      }
+      if (teacherResources.get(selectedId)?.state === "ready") {
+        showClassHome();
+        showPayToast(teacherDialogCopy().success);
+        return;
+      }
+      renderTeacherCards();
+      teacherDialog = { context: "switch", teacherId: selectedId, startedAt: performance.now(), completing: false };
+      teacherSwitchTimer = setTimeout(finishTeacherSelectionDialog, TEACHER_WAIT_LIMIT_MS);
+      teacherProgressTimer = setInterval(renderTeacherProgress, 100);
+      prepareTeacherResources(selectedId, demoState.teacherLoadResult);
+      syncTeacherResourceDialog(selectedId);
+    }
+    function waitForTeacherBeforeLesson(source) {
+      const job = teacherResources.get(profile.teacherId);
+      if (!job || job.state === "ready") return false;
+      resetTeacherSwitch();
+      teacherDialog = { context: "lesson", teacherId: profile.teacherId, source: source || "app" };
+      if (job.state === "offline" && teacherIsOnline()) continueTeacherResourceJob(profile.teacherId);
+      syncTeacherResourceDialog(profile.teacherId);
+      return true;
     }
     function openTeacherReview(mode) {
       window.v200BeforeJump?.();
       seedReviewProfile();
       demoState.teacherLoadResult = "success";
+      demoState.teacherSaveResult = "success";
+      demoState.teacherNetwork = "online";
+      for (const job of teacherResources.values()) clearTimeout(job.timer);
+      teacherResources.clear();
+      teacherResources.set("max", { state: "ready", progress: 100 });
+      teacherResources.set(profile.teacherId, { state: "ready", progress: 100 });
       if (mode === "onboarding") {
         profile.hasStartedClass = false;
         profile.trialInProgress = false;
@@ -11837,13 +12063,12 @@
       teacherGuideSubtitle.classList.toggle("is-report-benefit", !isAppMode);
       $("#teacher-guide-h1").hidden = !isAppMode;
       $("#teacher-guide-ready").hidden = isAppMode;
-      $("#btn-teacher-greeting").hidden = isAppMode || !("speechSynthesis" in window);
       if (isAppMode) {
         $("#teacher-guide-h1").textContent = "Switch teacher";
         teacherGuideSubtitle.textContent = "Pick the teacher you'd like to keep learning with.";
       } else {
         $("#teacher-guide-ready").textContent = name ? `${name}'s free first lesson is ready.` : "Your child's free first lesson is ready.";
-        teacherGuideSubtitle.innerHTML = "After the lesson, you'll get a <strong>report</strong> on your child's English level.";
+        teacherGuideSubtitle.innerHTML = "Finish the lesson and get your child’s <strong>placement report</strong> right away.";
       }
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Lesson";
       $("#btn-teacher-back").hidden = !isAppMode;
@@ -11851,36 +12076,40 @@
     }
     function stopTeacherGreeting() {
       if (teacherGreetingUtterance) {
+        teacherGreetingUtterance.onstart = null;
         teacherGreetingUtterance.onend = null;
         teacherGreetingUtterance.onerror = null;
         window.speechSynthesis?.cancel();
         teacherGreetingUtterance = null;
       }
-      const button = $("#btn-teacher-greeting");
-      button.setAttribute("aria-pressed", "false");
-      button.setAttribute("aria-label", "Hear Max's welcome");
-      button.title = "Hear Max's welcome";
+      $("#screen-teacher").dataset.welcomeAudio = "idle";
     }
     function playTeacherGreeting() {
-      if (teacherFlowMode !== "onboarding" || !("speechSynthesis" in window)) return;
-      if (teacherGreetingUtterance) { stopTeacherGreeting(); return; }
-      // Demo preview uses browser speech; this is not Max's production voice.
-      const text = ["Hi, I'm Max!", $("#teacher-guide-ready").textContent, $("#teacher-guide-h2").textContent].join(" ");
+      if (teacherFlowMode !== "onboarding" || activeLandScreen() !== "screen-teacher" || teacherGreetingUtterance) return;
+      const screen = $("#screen-teacher");
+      if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
+        screen.dataset.welcomeAudio = "unavailable";
+        return;
+      }
+      // Demo uses browser speech. Max's production voice, Lottie and viseme assets
+      // are not bundled in this prototype; do not fake lip sync on the static image.
+      const text = "Hi, I'm Max! The first lesson is ready. Let's get started!";
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
       utterance.rate = 0.95;
       const voice = speechSynthesis.getVoices().find(item => item.lang === "en-US") || speechSynthesis.getVoices().find(item => item.lang.startsWith("en"));
       if (voice) utterance.voice = voice;
       teacherGreetingUtterance = utterance;
-      const button = $("#btn-teacher-greeting");
-      button.setAttribute("aria-pressed", "true");
-      button.setAttribute("aria-label", "Stop Max's welcome");
-      button.title = "Stop Max's welcome";
+      screen.dataset.welcomeAudio = "pending";
+      utterance.onstart = () => {
+        if (teacherGreetingUtterance === utterance) screen.dataset.welcomeAudio = "playing";
+      };
       utterance.onend = () => { if (teacherGreetingUtterance === utterance) stopTeacherGreeting(); };
-      utterance.onerror = () => {
+      utterance.onerror = (event) => {
         if (teacherGreetingUtterance !== utterance) return;
         stopTeacherGreeting();
-        showPayToast("Audio unavailable. You can read Max's welcome above.");
+        // Direct browser links may block autoplay; keep the copy and lesson CTA usable.
+        screen.dataset.welcomeAudio = event?.error === "not-allowed" ? "blocked" : "unavailable";
       };
       try { speechSynthesis.cancel(); speechSynthesis.speak(utterance); }
       catch { utterance.onerror(); }
@@ -13102,6 +13331,7 @@
       showLandScreen("screen-teacher");
       $("#screen-teacher").scrollTop = 0;
       $("#screen-teacher .teacher-pick").scrollTop = 0;
+      if (mode === "onboarding") playTeacherGreeting();
     }
     function showClassHome() {
       enterLandscape();
@@ -13605,6 +13835,7 @@
       const ab = $("#ic-answer-btn"); if (ab) ab.disabled = false;
     }
     function openClassroomDemo(source) {
+      if (waitForTeacherBeforeLesson(source)) return;
       inclassEntrySource = source || "app";
       const resumingTrial = inclassEntrySource === "trial-resume" && profile.trialInProgress && !profile.trialReportShown;
       inclassIsFirst = inclassEntrySource === "trial-start" || resumingTrial || !profile.hasStartedClass;
@@ -14219,8 +14450,8 @@
       cxStage = "v170_post_trial_paywall";
       openPaywall("screen-class", "study_plan");
     });
-    $("#btn-teacher-greeting").addEventListener("click", playTeacherGreeting);
     window.addEventListener("pagehide", stopTeacherGreeting);
+    document.addEventListener("visibilitychange", () => { if (document.hidden) stopTeacherGreeting(); });
     $("#btn-confirm-teacher").addEventListener("click", () => {
       stopTeacherGreeting();
       if (teacherFlowMode === "app") {
@@ -14233,11 +14464,14 @@
     });
     $("#btn-change-teacher").addEventListener("click", () => openTeacherPicker("app"));
     $("#btn-teacher-back").addEventListener("click", showClassHome);
-    $("#btn-teacher-cancel").addEventListener("click", showClassHome);
-    $("#btn-teacher-retry").addEventListener("click", startTeacherSwitch);
+    $("#btn-teacher-retry").addEventListener("click", retryTeacherPreparation);
+    $("#btn-teacher-cancel").addEventListener("click", dismissTeacherDialog);
+    window.addEventListener("offline", pauseTeacherResources);
+    window.addEventListener("online", resumeTeacherResources);
     $("#teacher-switch-overlay").addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { event.preventDefault(); dismissTeacherDialog(); return; }
       if (event.key !== "Tab") return;
-      const buttons = [...event.currentTarget.querySelectorAll("button")].filter((button) => !button.hidden);
+      const buttons = [...event.currentTarget.querySelectorAll("button")].filter(button => !button.closest("[hidden]"));
       const first = buttons[0], last = buttons[buttons.length - 1];
       if (!first) { event.preventDefault(); return; }
       if (event.shiftKey && document.activeElement !== last) { event.preventDefault(); last.focus(); }
@@ -19219,6 +19453,10 @@
     getValue: function (key) {
       if (key === "teacherEntry") return teacherFlowMode;
       if (key === "teacherLoadResult") return demoState.teacherLoadResult;
+      if (key === "teacherSaveResult") return demoState.teacherSaveResult;
+      if (key === "teacherNetwork") return demoState.teacherNetwork;
+      if (key === "teacherWaitReview") return "actual";
+      if (key === "teacherDialogLocale") return demoState.teacherDialogLocale;
       if (key.indexOf("promo") === 0) return window.PROMO_CODE?.getValue(key);
       if (key.indexOf("gp") === 0) return window.CLASS_PERMISSIONS?.getValue(key);
       if (key.indexOf("ip") === 0 && window.IP_ANIMATION) return window.IP_ANIMATION.getValue(key);
@@ -19299,6 +19537,11 @@
         if (document.querySelector("#visit-reward-overlay.show")) {
           return { label: "新人签到奖励", keys: [] };
         }
+        if (teacherDialog && !$("#teacher-switch-overlay").hidden) return {
+          isCore: true, pageKey: "teacher_switch",
+          label: teacherDialog.context === "lesson" ? "进课前准备老师" : "切换老师",
+          keys: ["teacherDialogLocale", "teacherNetwork", "teacherSaveResult", "teacherLoadResult"].concat(teacherDialog.context === "switch" ? ["teacherWaitReview"] : [])
+        };
         var id = (typeof activeLandScreen === "function") ? activeLandScreen() : null;
         if (id && id.indexOf("screen-capsule") === 0) return ctx(
           "盲盒机",
@@ -19312,8 +19555,9 @@
         if (id === "screen-weekly-plan-v180") return { label: "完整计划", pageKey: "full_plan", isCore: true, keys: ["v180Tier", "v180PlanState"] };
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
         if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return { label: "Dino 首页", pageKey: "dino_home", isCore: true, keys: ["v180Tier", "v180HomeTask"] };
+        if (id === "screen-class" && teacherResources.get(profile.teacherId)?.state !== "ready" && teacherResources.has(profile.teacherId)) return { label: "Class · 老师准备中", isCore: true, keys: ["teacherDialogLocale", "teacherNetwork"] };
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
-        if (id === "screen-teacher") return { label: teacherFlowMode === "app" ? "切换老师" : "首次开课", pageKey: teacherFlowMode === "app" ? "teacher_switch" : "teacher_first", isCore: true, keys: teacherFlowMode === "app" ? ["teacherEntry", "teacherLoadResult"] : ["teacherEntry"] };
+        if (id === "screen-teacher") return { label: teacherFlowMode === "app" ? "切换老师" : "首次开课", pageKey: teacherFlowMode === "app" ? "teacher_switch" : "teacher_first", isCore: true, keys: teacherFlowMode === "app" ? ["teacherEntry", "teacherDialogLocale", "teacherNetwork", "teacherSaveResult", "teacherLoadResult"] : ["teacherEntry"] };
         return ctx("App 内", ["membership"]);
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -19344,7 +19588,11 @@
     },
     groups: [
       { key: "teacherEntry", label: "进入场景", options: [["onboarding", "首次开课 · 仅 Max"], ["app", "Class · 切换老师"]], apply: function (value) { openTeacherPicker(value); } },
-      { key: "teacherLoadResult", label: "下次保存 / 重试结果", options: [["success", "加载成功"], ["slow", "慢速加载"], ["fail", "加载失败"]], apply: function (value) { demoState.teacherLoadResult = value; } },
+      { key: "teacherDialogLocale", label: "加载弹窗语言", options: [["en", "English"], ["zh", "简体中文"]], apply: function (value) { demoState.teacherDialogLocale = value; fillTeacherSwitchCopy(); } },
+      { key: "teacherSaveResult", label: "下次保存老师选择 · 模拟", options: [["success", "保存成功"], ["fail", "保存失败"]], apply: function (value) { demoState.teacherSaveResult = value; } },
+      { key: "teacherNetwork", label: "当前网络 · 模拟", options: [["online", "有网络"], ["offline", "无网络"]], apply: function (value) { demoState.teacherNetwork = value; if (value === "offline") pauseTeacherResources(); else resumeTeacherResources(); } },
+      { key: "teacherWaitReview", label: "弹窗等待上限 · 模拟", options: [["actual", "实际等待 1 分钟"], ["timeout", "立即演示满 1 分钟"]], apply: function (value) { if (value === "timeout") finishTeacherSelectionDialog(); } },
+      { key: "teacherLoadResult", label: "下次资源准备 · 模拟", options: [["success", "正常加载"], ["slow", "慢速加载"], ["timeout", "下载超过 1 分钟"], ["unknown", "无真实进度数据"], ["finalizing", "下载完成 · 继续准备"], ["finalizingTimeout", "下载后准备超过 1 分钟"], ["ready", "资源已就绪"], ["fail", "加载失败"], ["disconnect", "中途断网"]], apply: function (value) { demoState.teacherLoadResult = value; } },
       { key: "v200Audience", label: "在园人数 · 模拟配置", options: [["1286", "1,286 人"], ["2468", "2,468 人"], ["missing", "人数缺失"]], apply: function (v) { window.v200SetAudience(v); } },
       { key: "v200ParkSize", label: "入口规模 · 模拟配置", options: [["4", "4 个入口"], ["6", "6 个入口"], ["8", "8 个入口"], ["empty", "空列表"]], apply: function (v) { window.v200SetParkSize(v); } },
       { key: "v200ParkEntries", label: "入口开放状态 · 模拟配置", options: [["launch", "盲盒 + 单词守卫战"], ["all-closed", "全部未开放"]], apply: function (v) { window.v200SetParkEntries(v); } },
