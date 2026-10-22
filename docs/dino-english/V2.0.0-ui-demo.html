@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V2.0.0 — Promo Code / Play / Explore UI Demo</title>
-  <!-- DESIGN.md · V2.0.0 · Promo Code, Play park and Explore UI. -->
+  <title>Dino AI V2.0.0 — Promo code / Play / Explore UI Demo</title>
+  <!-- DESIGN.md · V2.0.0 · Promo code, Play park and Explore UI. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
@@ -10628,7 +10628,6 @@
       ["max", { state: "ready", progress: 100 }],
       ["kim", { state: "ready", progress: 100 }]
     ]);
-    let teacherGreetingUtterance = null;
     // Post-login forced info collection: set when a user who took the
     // "I already have an account" shortcut logs in without a profile yet
     // (simulates a new account / register). Show Dino's purpose page first,
@@ -11778,7 +11777,6 @@
       return navigator.onLine && demoState.teacherNetwork !== "offline";
     }
     function resetTeacherSwitch() {
-      stopTeacherGreeting();
       clearTimeout(teacherSwitchTimer);
       clearInterval(teacherProgressTimer);
       clearTimeout(teacherCompleteTimer);
@@ -12056,7 +12054,6 @@
       window.CLASS_PERMISSIONS?.onNavigate(id);
     }
     function fillTeacherGuide() {
-      stopTeacherGreeting();
       const name = getDisplayName();
       const isAppMode = teacherFlowMode === "app";
       const teacherGuideSubtitle = $("#teacher-guide-h2");
@@ -12073,46 +12070,6 @@
       $("#btn-confirm-teacher").textContent = isAppMode ? "Save" : "Start Lesson";
       $("#btn-teacher-back").hidden = !isAppMode;
       renderTeacherCards();
-    }
-    function stopTeacherGreeting() {
-      if (teacherGreetingUtterance) {
-        teacherGreetingUtterance.onstart = null;
-        teacherGreetingUtterance.onend = null;
-        teacherGreetingUtterance.onerror = null;
-        window.speechSynthesis?.cancel();
-        teacherGreetingUtterance = null;
-      }
-      $("#screen-teacher").dataset.welcomeAudio = "idle";
-    }
-    function playTeacherGreeting() {
-      if (teacherFlowMode !== "onboarding" || activeLandScreen() !== "screen-teacher" || teacherGreetingUtterance) return;
-      const screen = $("#screen-teacher");
-      if (!("speechSynthesis" in window) || !("SpeechSynthesisUtterance" in window)) {
-        screen.dataset.welcomeAudio = "unavailable";
-        return;
-      }
-      // Demo uses browser speech. Max's production voice, Lottie and viseme assets
-      // are not bundled in this prototype; do not fake lip sync on the static image.
-      const text = "Hi, I'm Max! The first lesson is ready. Let's get started!";
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US";
-      utterance.rate = 0.95;
-      const voice = speechSynthesis.getVoices().find(item => item.lang === "en-US") || speechSynthesis.getVoices().find(item => item.lang.startsWith("en"));
-      if (voice) utterance.voice = voice;
-      teacherGreetingUtterance = utterance;
-      screen.dataset.welcomeAudio = "pending";
-      utterance.onstart = () => {
-        if (teacherGreetingUtterance === utterance) screen.dataset.welcomeAudio = "playing";
-      };
-      utterance.onend = () => { if (teacherGreetingUtterance === utterance) stopTeacherGreeting(); };
-      utterance.onerror = (event) => {
-        if (teacherGreetingUtterance !== utterance) return;
-        stopTeacherGreeting();
-        // Direct browser links may block autoplay; keep the copy and lesson CTA usable.
-        screen.dataset.welcomeAudio = event?.error === "not-allowed" ? "blocked" : "unavailable";
-      };
-      try { speechSynthesis.cancel(); speechSynthesis.speak(utterance); }
-      catch { utterance.onerror(); }
     }
     // V1.3.2: dismiss the device-limit modal whenever we navigate / switch demo states,
     // so it never lingers over a different screen after a States-panel jump.
@@ -13331,7 +13288,6 @@
       showLandScreen("screen-teacher");
       $("#screen-teacher").scrollTop = 0;
       $("#screen-teacher .teacher-pick").scrollTop = 0;
-      if (mode === "onboarding") playTeacherGreeting();
     }
     function showClassHome() {
       enterLandscape();
@@ -14450,10 +14406,7 @@
       cxStage = "v170_post_trial_paywall";
       openPaywall("screen-class", "study_plan");
     });
-    window.addEventListener("pagehide", stopTeacherGreeting);
-    document.addEventListener("visibilitychange", () => { if (document.hidden) stopTeacherGreeting(); });
     $("#btn-confirm-teacher").addEventListener("click", () => {
-      stopTeacherGreeting();
       if (teacherFlowMode === "app") {
         startTeacherSwitch();
       } else {
@@ -19897,9 +19850,9 @@
     corePages: [
       { key: "teacher_first", label: "首次开课 · Max", run: function () { openTeacherReview("onboarding"); } },
       { key: "teacher_switch", label: "Class · 切换老师", run: function () { openTeacherReview("app"); } },
-      { key: "promo_profile", label: "Promo Code · 我的入口", run: function () { window.PROMO_CODE.jump("profile"); } },
-      { key: "promo_success", label: "Promo Code · 折扣券弹窗", run: function () { window.PROMO_CODE.jump("success"); } },
-      { key: "promo_paywall", label: "Promo Code · 支付页入口", run: function () { window.PROMO_CODE.jump("paywall"); } },
+      { key: "promo_profile", label: "Promo code · 我的入口", run: function () { window.PROMO_CODE.jump("profile"); } },
+      { key: "promo_success", label: "Promo code · 折扣券弹窗", run: function () { window.PROMO_CODE.jump("success"); } },
+      { key: "promo_paywall", label: "Promo code · 支付页入口", run: function () { window.PROMO_CODE.jump("paywall"); } },
       { key: "v200_explore", label: "Explore · 新布局", run: function () { window.v200OpenPage("explore"); } },
       { key: "v200_play", label: "Play · 乐园首页", run: function () { window.v200OpenPage("play"); } },
       { key: "study_plan", auxiliary: true, label: "学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
@@ -21229,7 +21182,7 @@
       var renewal = $(".wb-plan-renewal", screen);
       if(badge) badge.textContent = plan.isKol ? "KOL offer applied" : "One-time offer";
       if(sub) sub.textContent = plan.isKol
-        ? "Your Promo Code unlocked this plan at a special first-period price."
+        ? "Your promo code unlocked this plan at a special first-period price."
         : "A weekly plan at a special price, only while the timer runs.";
       if(card) card.classList.toggle("is-kol", plan.isKol);
       if(tag){
@@ -21572,7 +21525,7 @@
       consumeWinbackOffer:consumeWinbackOffer,
       openWinback:openV155Winback
     };
-    // 四个主 Tab 共用当前 UID Promo Code 的 discount 字段；无可用 Promo 时不展示角标。
+    // 四个主 Tab 共用当前 UID Promo code 的 discount 字段；无可用 Promo 时不展示角标。
     window.getV155PromoDiscount = currentPromoDiscount;
     window.getV155PromoPlanId = currentPromoPlanId;
     window.syncHubVip && window.syncHubVip();
@@ -22676,7 +22629,7 @@
     };
     /* Demo only: production receives a separate country/platform catalog for each
        tier. Max prices are derived here so both tiers still inherit the retained
-       V1.7 product order, Promo Code, IAP offer, renewal and localization fields. */
+       V1.7 product order, Promo code, IAP offer, renewal and localization fields. */
     var V180_MAX_PRICE_MULTIPLIER = 1.5;
     var v180RewardTimer = null;
     var V180_SOCIAL_PROOF_RANGES = {
@@ -24838,7 +24791,7 @@
   @container iphone16 (height < 300px) {.promo-overlay {padding:8px}.promo-dialog {padding:12px 20px}.promo-dialog h2 {font-size:20px;margin:8px 24px 12px}.promo-ticket {min-height:76px;margin-bottom:12px}.promo-ticket-inner {padding:8px}.promo-ticket strong {font-size:30px}}
 </style>
 <script id="promo-code-script">
-/* Standalone Promo Code. Fixtures represent one demo account, not a live redemption service. */
+/* Standalone Promo code. Fixtures represent one demo account, not a live redemption service. */
 (function () {
   const q = s => document.querySelector(s);
   const storageKey = 'dino-promo-code-review-v1';
@@ -24849,8 +24802,8 @@
   const usedCodes = new Set();
   const m = {account:null,locale:'en',result:'auto',refreshResult:'success',products:'ready',source:'profile',view:0,refresh:0,dialog:null,returnFocus:null};
   const copy = {
-    en:{title:'Claim a special offer',entry:'Have a Promo Code?',placeholder:'Enter Promo Code',claim:'Claim',claiming:'Claiming…',success:'Offer claimed!',view:'View offer',close:'Close',invalid:'This Promo Code isn’t valid.',expired:'This Promo Code has expired.',used:'This Promo Code has already been used.',ineligible:'This Promo Code isn’t available for your account.',network:'Couldn’t claim this offer. Please try again.',loading:'Loading offers…',loadError:'Couldn’t load offers. Try again.',retry:'Retry',empty:'No offers are available for these plans.'},
-    zh:{title:'领取一个特殊优惠',entry:'有 Promo Code？',placeholder:'输入 Promo Code',claim:'领取',claiming:'领取中…',success:'优惠领取成功',view:'查看优惠套餐',close:'关闭',invalid:'此 Promo Code 无效',expired:'此 Promo Code 已过期',used:'此 Promo Code 已使用',ineligible:'当前账号无法领取此优惠',network:'暂时无法领取，请重试',loading:'优惠套餐加载中…',loadError:'优惠套餐加载失败，请重试',retry:'重试',empty:'当前套餐暂无适用优惠'}
+    en:{title:'Claim a special offer',entry:'Have a promo code?',placeholder:'Enter promo code',claim:'Claim',claiming:'Claiming…',success:'Offer claimed!',view:'View offer',close:'Close',invalid:'This promo code isn’t valid.',expired:'This promo code has expired.',used:'This promo code has already been used.',ineligible:'This promo code isn’t available for your account.',network:'Couldn’t claim this offer. Please try again.',loading:'Loading offers…',loadError:'Couldn’t load offers. Try again.',retry:'Retry',empty:'No offers are available for these plans.'},
+    zh:{title:'领取一个特殊优惠',entry:'有 promo code？',placeholder:'输入 promo code',claim:'领取',claiming:'领取中…',success:'优惠领取成功',view:'查看优惠套餐',close:'关闭',invalid:'此 promo code 无效',expired:'此 promo code 已过期',used:'此 promo code 已使用',ineligible:'当前账号无法领取此优惠',network:'暂时无法领取，请重试',loading:'优惠套餐加载中…',loadError:'优惠套餐加载失败，请重试',retry:'重试',empty:'当前套餐暂无适用优惠'}
   };
   const t = key => copy[m.locale][key];
   const panel = () => window.demoStatePanel?.render();
@@ -24907,7 +24860,7 @@
   function open(source) {
     close();m.source=source;
     const content=makeDialog(false);
-    content.innerHTML='<form id="promo-form"><input class="promo-input" id="promo-input" aria-label="Promo Code" aria-describedby="promo-error" placeholder="'+t('placeholder')+'" autocomplete="off" autocapitalize="characters" spellcheck="false"><p class="promo-error" id="promo-error" role="alert"></p><button type="submit" class="promo-cta" id="promo-claim" disabled>'+t('claim')+'</button></form>';
+    content.innerHTML='<form id="promo-form"><input class="promo-input" id="promo-input" aria-label="Promo code" aria-describedby="promo-error" placeholder="'+t('placeholder')+'" autocomplete="off" autocapitalize="characters" spellcheck="false"><p class="promo-error" id="promo-error" role="alert"></p><button type="submit" class="promo-cta" id="promo-claim" disabled>'+t('claim')+'</button></form>';
     const input=q('#promo-input'),button=q('#promo-claim'),error=q('#promo-error');
     input.oninput=()=>{button.disabled=!input.value.trim();input.removeAttribute('aria-invalid');error.textContent='';};
     q('#promo-form').onsubmit=e=>{
@@ -25004,12 +24957,12 @@
   function context() {
     const inProfile=getComputedStyle(q('#wrap-landscape')).display!=='none'&&activeLandScreen()==='screen-class'&&activeHubTab==='profile';
     if(!m.dialog&&!inProfile)return null;
-    return {label:m.dialog?(q('#promo-view-offer')?'优惠领取成功':'Promo Code · 输入'):'我的 · Promo Code',pageKey:m.dialog&&q('#promo-view-offer')?'promo_success':'promo_profile',isCore:true,statesFirst:true,keys:['promoResult','promoRefresh','promoLocale','promoAccount']};
+    return {label:m.dialog?(q('#promo-view-offer')?'优惠领取成功':'Promo code · 输入'):'我的 · Promo code',pageKey:m.dialog&&q('#promo-view-offer')?'promo_success':'promo_profile',isCore:true,statesFirst:true,keys:['promoResult','promoRefresh','promoLocale','promoAccount']};
   }
   window.PROMO_CODE={open,close,leave,jump,set,setAccount,market,consume,placeEntry,renderProductStatus,isRefreshing:()=>['loading','fail'].includes(m.products),getValue:key=>({promoResult:m.result,promoRefresh:m.refreshResult,promoLocale:m.locale,promoAccount:m.account?.status==='claimed'?(m.account.code==='DINO10'?'claimed10':'claimed'):'empty'})[key],context,state:()=>({...m,dialog:!!m.dialog,returnFocus:null})};
   const membership=q('#btn-profile-membership'),entry=document.createElement('button');
   entry.type='button';entry.id='btn-profile-promo';entry.className='profile-menu-item';
-  entry.innerHTML='<span class="profile-menu-item-main"><span class="profile-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4V5Z" stroke="currentColor" stroke-width="1.8"/><path d="m10 15 4-6M10 9h.01M14 15h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="profile-menu-label">Promo Code</span></span><span class="profile-menu-chevron" aria-hidden="true">›</span>';
+  entry.innerHTML='<span class="profile-menu-item-main"><span class="profile-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4V5Z" stroke="currentColor" stroke-width="1.8"/><path d="m10 15 4-6M10 9h.01M14 15h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="profile-menu-label">Promo code</span></span><span class="profile-menu-chevron" aria-hidden="true">›</span>';
   membership.after(entry);entry.onclick=()=>open('profile');placeEntry();
   const screen=q('#screen-paywall-pt');
   new MutationObserver(()=>{if(!paywallOn()){m.refresh++;m.products='ready';}placeEntry();}).observe(screen,{attributes:true,attributeFilter:['class']});
