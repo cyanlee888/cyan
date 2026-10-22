@@ -361,31 +361,20 @@ section.core .story{border-left-color:var(--orange)}
 .block li b{color:var(--ink);font-weight:500}
 .block li .who{font-size:12px;color:var(--ink-faint);margin-left:6px}
 
-.requirement-groups{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start
-}
-.requirement-groups.is-single{grid-template-columns:1fr}
-.requirement-groups .requirement-column{
-  display:flex;flex-direction:column;gap:22px;min-width:0
-}
+.requirement-groups{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start}
+.requirement-platform{min-width:0}
+.platform-title{font-family:'Noto Serif SC',serif;font-size:18px;line-height:1.5;font-weight:700;color:var(--ink);margin:0 0 12px;break-after:avoid}
+.platform-blocks{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .requirement-groups .block{
   background:var(--card);border:1px solid var(--line);border-left:4px solid var(--green);
   border-radius:9px;padding:17px 19px;box-shadow:0 2px 10px rgba(31,42,36,.04);
-  width:100%;margin:0;break-inside:avoid;page-break-inside:avoid
+  width:100%;min-width:0;margin:0;break-inside:avoid;page-break-inside:avoid
 }
-@media(max-width:860px){.requirement-groups{grid-template-columns:1fr}}
 .requirement-groups .scope-landing{border-left-color:var(--orange)}
 .requirement-groups .scope-admin{border-left-color:var(--yellow)}
-.requirement-groups .scope-retention{border-left-color:var(--green-bright)}
-.requirement-groups .scope-other{border-left-color:var(--ink-faint)}
-.requirement-groups .count{
-  flex:0 0 auto;min-width:22px;text-align:center;font-size:10px;letter-spacing:0;
-  color:var(--ink-faint);background:var(--paper-deep);border:1px solid var(--line);
-  border-radius:99px;padding:1px 7px
-}
-.requirement-groups .who{
-  display:none
-}
+.noncourse-module + .noncourse-module{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.noncourse-module h5{font-size:13px;line-height:1.6;font-weight:700;color:var(--ink-soft);margin:0 0 5px;break-after:avoid}
+.requirement-groups .who{display:none}
 .risk{
   margin-top:22px;padding:14px 20px;background:#fbeee8;border:1px dashed var(--red);
   border-radius:6px;font-size:13.5px;color:#7c3322;line-height:1.8
@@ -642,35 +631,30 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">1.9.0</div><div class="node-sub" data-zh="&lt;time datetime=&quot;2026-10-16&quot;&gt;10/16&lt;/time&gt;上线">Launch <time datetime="2026-10-16">10/16</time></div></div>
   <div class="node-body">
     <div class="node-title" data-zh="课堂授权与课程展示 · 本地化配置">Lesson permissions, course display and localization</div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;调整课中授权时机、课程列表和 Dino 对话；同步推进国家／地区配置、A/B 测试基础、LP 模板及 CRM 销售工具。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Adjust in-class permission timing, course lists and Dino conversations; advance regional settings, A/B testing infrastructure, LP templates and CRM sales tools.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 课程与学习计划">Class · Lessons &amp; Study Plans</h4>
+    <div class="story" data-zh="调整课中授权时机、课程列表和 Dino 对话；同步推进国家／地区配置、A/B 测试基础、LP 模板及 CRM 销售工具。">Adjust in-class permission timing, course lists and Dino conversations; advance regional settings, A/B testing infrastructure, LP templates and CRM sales tools.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
 <li data-record-id="reczz28MWmk1d7b5" data-status="开发中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;课中麦克风和相机授权时机调整&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Adjust microphone and camera permission timing during lessons</b><span class="p0">P0</span><span class="who">李双</span></li>
 <li data-record-id="recvxsdzM2gKEZ" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;课程列表页补充“学习日期区间”&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Show the study date range on the course list</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="recvxWfJxgz5Db" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;Class 未解锁课程全彩展示及点击热区扩大&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;赵琬雪&lt;/span&gt;"><b>Class: display locked lessons in full color and enlarge tap targets</b><span class="p1">P1</span><span class="who">赵琬雪</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · 互动与反馈">Class · Interaction &amp; Feedback</h4>
-<ul>
 <li data-record-id="recvvQBbV9yUyw" data-status="已完成" data-priority="P1" data-zh="&lt;b&gt;降低Level 1和level 2老师的语速&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Slow teacher speech in Levels 1 and 2</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="App · 登录、会员与本地化">App · Login, Membership &amp; Localization</h4>
+<div class="block scope-dino" data-category="non-course"><h4 data-zh="非课程">Outside Class</h4>
 <ul>
 <li data-record-id="recvmfvu8af1rm" data-status="开发中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;国家地区本地化配置以及AB test基建&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Country and region localization settings and A/B testing infrastructure</b><span class="p0">P0</span><span class="who">李双</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Dino · 对话与语音">Dino · Conversation &amp; Voice</h4>
-<ul>
 <li data-record-id="recvw2FIyhS3lV" data-status="已完成" data-priority="P1" data-zh="&lt;b&gt;首页Dino的prompt优化：人设和回复策略调整，要求Dino回应并主动发起相关提问，并减少通用兜底话术回复。&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Home Dino prompts: refine persona and responses, ask relevant follow-up questions and reduce generic fallback replies</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
 <li data-record-id="reczz28N8ZeobmU6" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;1. DIno chat——DIno 首句话下发从【客户端】改到【服务端】&lt;br&gt;2. 优化 DIno chat [home] [explore]2 入口的 DIno 首句话文案池&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Move Dino Chat opening-line delivery from client to server; improve opening-line pools for Home and Explore</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
-</ul></div>
-<div class="block scope-landing"><h4 data-zh="Web · 官网、落地页与支付">Web · Websites, Landing Pages &amp; Payments</h4>
-<ul>
-<li data-record-id="recvuTGa8ZKIIV" data-status="验收中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;LP 配置化二期：LP 的皮肤模板支持业务方灵活可配置化&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP configuration phase 2: business-configurable theme templates</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
-</ul></div>
-<div class="block scope-admin"><h4 data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h4>
-<ul>
+</ul></div></div></div>
+<div class="requirement-platform" data-platform="admin"><h3 class="platform-title" data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h3><div class="block scope-admin"><ul>
 <li data-record-id="recvu3MpoKn4b3" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;销售视角dashboard&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>Sales dashboard</b><span class="p1">P1</span><span class="who">周蕴倩</span></li>
 <li data-record-id="recvwHgIcWSGyz" data-status="开发中" data-priority="" data-zh="&lt;b&gt;CRM支持展示游客状态用户&lt;/b&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>Show guest users in CRM</b><span class="who">周蕴倩</span></li>
 </ul></div></div>
+<div class="requirement-platform" data-platform="web"><h3 class="platform-title" data-zh="Web · 官网、落地页">Web · Websites &amp; Landing Pages</h3><div class="block scope-landing"><ul>
+<li data-record-id="recvuTGa8ZKIIV" data-status="验收中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;LP 配置化二期：LP 的皮肤模板支持业务方灵活可配置化&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP configuration phase 2: business-configurable theme templates</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
+</ul></div></div>
+</div>
     <div class="demo-strip">
       <div class="demo-thumb" role="button" tabindex="0" aria-label="User Flow &amp; Login Demo" onclick="openDemo(&quot;V1.9.0-ui-demo.html?review=journey&quot;,&quot;User Flow &amp; Login \u00b7 Demo&quot;)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
         <img src="assets/milestone-previews/flow-login.png" data-demo-src="V1.9.0-ui-demo.html?review=journey" loading="lazy" width="1280" height="860" alt="User Flow &amp; Login Demo preview">
@@ -697,20 +681,22 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">1.9.1</div><div class="node-sub" data-zh="&lt;time datetime=&quot;2026-10-21&quot;&gt;10/21&lt;/time&gt;上线">Launch <time datetime="2026-10-21">10/21</time></div></div>
   <div class="node-body">
     <div class="node-title" data-zh="学习报告 · Dino 语音 · 销售工具">Learning reports, Dino voices and sales tools</div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;完善体验课、正式课及周期学习报告，按语种配置 Dino TTS 服务，并推进外呼接入与销售中心优化。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Improve trial, regular-lesson and periodic learning reports, configure Dino TTS by language, and advance outbound calling and Sales Center improvements.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 课程与学习计划">Class · Lessons &amp; Study Plans</h4>
+    <div class="story" data-zh="完善体验课、正式课及周期学习报告，按语种配置 Dino TTS 服务，并推进外呼接入与销售中心优化。">Improve trial, regular-lesson and periodic learning reports, configure Dino TTS by language, and advance outbound calling and Sales Center improvements.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
 <li data-record-id="recvtqcFqwSfLp" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;新增与优化报告：体验课报告+正式课报告+学习周报+单元报告+学习月报&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Add and improve trial, regular lesson, weekly, unit and monthly reports</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="Dino · 对话与语音">Dino · Conversation &amp; Voice</h4>
+<div class="block scope-dino" data-category="non-course"><h4 data-zh="非课程">Outside Class</h4>
 <ul>
 <li data-record-id="reczz28O0EKYwHKK" data-status="开发中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;Dino TTS需要根据配置切换TTS服务（日语：11labs，其他语种：微软）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Configure Dino TTS providers by language: ElevenLabs for Japanese, Microsoft for other languages</b><span class="p0">P0</span><span class="who">李淑怡</span></li>
-</ul></div>
-<div class="block scope-admin"><h4 data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h4>
-<ul>
+</ul></div></div></div>
+<div class="requirement-platform" data-platform="admin"><h3 class="platform-title" data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h3><div class="block scope-admin"><ul>
 <li data-record-id="recvsTBTZtjwT8" data-status="排期中" data-priority="P1" data-zh="&lt;b&gt;Omicall（外呼系统接入）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>Integrate Omicall for outbound calling</b><span class="p1">P1</span><span class="who">周蕴倩</span></li>
 <li data-record-id="recvvQqFknpJhX" data-status="排期中" data-priority="P1" data-zh="&lt;b&gt;销售中心优化：&lt;br&gt;a）增加会议预约纬度筛选能力、b）支持批量操作、c）用户手机号等基础信息修改、d）当前跟进阶段微调&amp;amp;原因信息补充 e）销售链路各业务线拉齐&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>Sales Center: meeting-booking filters, bulk actions, basic user-detail edits, follow-up stage and reason updates, and aligned sales workflows across business lines</b><span class="p1">P1</span><span class="who">周蕴倩</span></li>
 </ul></div></div>
+</div>
   </div>
 </section>
 
@@ -719,32 +705,28 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">1.9.2</div><div class="node-sub" data-zh="&lt;time datetime=&quot;2026-10-26&quot;&gt;10/26&lt;/time&gt;上线">Launch <time datetime="2026-10-26">10/26</time></div></div>
   <div class="node-body">
     <div class="node-title" data-zh="课堂引导与互动 · 助手优化 · 本地支付&lt;span class=&quot;tag&quot;&gt;当前开发中&lt;/span&gt;">Lesson guidance, assistant improvements and local payments<span class="tag">Current development</span></div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;当前开发版本：围绕进课提示、课堂互动、学生开口等待和完课反馈推进优化；同时完善 Dino Assistant 与越南、马来支付能力。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Current development release: improve lesson-entry guidance, classroom interaction, response wait times and completion feedback; refine Dino Assistant and Vietnam / Malaysia payments.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 课程与学习计划">Class · Lessons &amp; Study Plans</h4>
+    <div class="story" data-zh="当前开发版本：围绕进课提示、课堂互动、学生开口等待和完课反馈推进优化；同时完善 Dino Assistant 与越南、马来支付能力。">Current development release: improve lesson-entry guidance, classroom interaction, response wait times and completion feedback; refine Dino Assistant and Vietnam / Malaysia payments.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
+<li data-record-id="recvxrLn5IgkeL" data-status="开发中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;调整完课问卷回收位置：从当前完课弹窗上，改动到退出paywall页面后弹出；如果有折扣页面，先展示折扣页面，在退出折扣页后弹出。&lt;br&gt;完课结算弹窗，增加TTS（本土语）：恭喜你完成了课程&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Show the post-lesson survey after Paywall exit, or after the discount page if present; add a native-language completion TTS message to the lesson results popup</b><span class="p0">P0</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28NKY55Hu6m" data-status="产品设计中" data-priority="P1" data-zh="&lt;b&gt;进课loading过程中增加上课提示TTS播报（请在安静的环境中上课、将设备交给孩子）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Add TTS guidance while a lesson loads: study in a quiet place and hand the device to the child</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
-<li data-record-id="recvxWhlEnjR1O" data-status="开发中" data-priority="P2" data-zh="&lt;b&gt;课中template tag分类（practice_reading_question）&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Classify in-class template tags (practice_reading_question)</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · Dino Assistant">Class · Dino Assistant</h4>
-<ul>
 <li data-record-id="recvqFqurlFoMH" data-status="产品设计中" data-priority="P1" data-zh="&lt;b&gt;Dino Assistant 主动触发机制（测试环境下kick-off）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Proactive Dino Assistant triggers (kick-off in the test environment)</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
 <li data-record-id="recvv9T15qjKV4" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;课中Dino Assistant提示词优化：解决Dino重复提问同一个问题+对话轮次无上限的问题。&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Improve in-class Dino Assistant prompts: stop repeated questions and unlimited dialogue turns</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
 <li data-record-id="recvvQzTh3oceZ" data-status="产品设计中" data-priority="P1" data-zh="&lt;b&gt;课中新增Dino本土语主动提示：我是Dino助手，遇到不会的，点我哦&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Proactive in-class Dino introduction in the user&#x27;s native language: tap the assistant for help</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
-<li data-record-id="recvwtMCQizwOJ" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;Dino Assistant与 AI 老师共享课堂上下文，调整 Prompt&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Share classroom context between Dino Assistant and the AI teacher; update prompts</b><span class="p2">P2</span><span class="who">李淑怡</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · 互动与反馈">Class · Interaction &amp; Feedback</h4>
-<ul>
-<li data-record-id="recvxrLn5IgkeL" data-status="开发中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;调整完课问卷回收位置：从当前完课弹窗上，改动到退出paywall页面后弹出；如果有折扣页面，先展示折扣页面，在退出折扣页后弹出。&lt;br&gt;完课结算弹窗，增加TTS（本土语）：恭喜你完成了课程&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Show the post-lesson survey after Paywall exit, or after the discount page if present; add a native-language completion TTS message to the lesson results popup</b><span class="p0">P0</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28Ne4ldCg5J" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;学生开口等待时长按照level进行调整：低level等待时长增长&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Adjust student response wait times by level; allow longer waits at lower levels</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
+<li data-record-id="recvxWhlEnjR1O" data-status="开发中" data-priority="P2" data-zh="&lt;b&gt;课中template tag分类（practice_reading_question）&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Classify in-class template tags (practice_reading_question)</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
+<li data-record-id="recvwtMCQizwOJ" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;Dino Assistant与 AI 老师共享课堂上下文，调整 Prompt&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Share classroom context between Dino Assistant and the AI teacher; update prompts</b><span class="p2">P2</span><span class="who">李淑怡</span></li>
 <li data-record-id="recvw202Dt3rpg" data-status="开发中" data-priority="P2" data-zh="&lt;b&gt;课程中开了Dino龙蛋后，需要增加一个动效，展示收到了背包；宝箱开出金币需要有加入到金币的动效&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>In-class reward animations: Dino egg rewards enter the backpack; chest coins enter the coin balance</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="recvw2Cnkm3GEL" data-status="开发中" data-priority="P2" data-zh="&lt;b&gt;Level 1–4 体验课新增弹幕家长鼓励提示&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Add scrolling parent encouragement prompts to Level 1–4 trial lessons</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
-</ul></div>
-<div class="block scope-landing"><h4 data-zh="Web · 官网、落地页与支付">Web · Websites, Landing Pages &amp; Payments</h4>
-<ul>
+</ul></div></div></div>
+<div class="requirement-platform" data-platform="web"><h3 class="platform-title" data-zh="Web · 官网、落地页">Web · Websites &amp; Landing Pages</h3><div class="block scope-landing"><ul>
 <li data-record-id="recvuBEFlEVOgf" data-status="排期中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;LP：越南新增 VietQR、Local cards、ZaloPay、分期支付四种本地支付&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP Vietnam: add VietQR, local cards, ZaloPay and installment payments</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
 <li data-record-id="recvvxT4l53XWV" data-status="未启动" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;LP：越南新增 Create Payment Link 以及 押金支付方式，主操作由销售在 CRM 完成，但是支付落地页付款页需相应改造（怎么支付、支付金额怎么配置、合规性条款补充）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP Vietnam: Create Payment Link and deposit payments managed in CRM; update payment flow, amount configuration and compliance terms</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
 <li data-record-id="recvvxWE1HydxB" data-status="排期中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;LP：马来新增 DuitNow 支付方式（airwallex 后台已确认激活）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP Malaysia: add DuitNow payments (activation confirmed in Airwallex)</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
 </ul></div></div>
+</div>
   </div>
 </section>
 
@@ -753,14 +735,17 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">1.9.3</div><div class="node-sub" data-zh="&lt;time datetime=&quot;2026-10-29&quot;&gt;10/29&lt;/time&gt;上线">Launch <time datetime="2026-10-29">10/29</time></div></div>
   <div class="node-body">
     <div class="node-title" data-zh="退出挽留 · 麦克风动效 · 口语测评">Exit retention, microphone animations and speaking assessment</div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;调整退出挽留弹窗和问卷展示，优化麦克风动效，并推进音素级口语测评及反馈机制。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Refine the exit-retention popup and survey visibility, update microphone animations, and improve phoneme-level speaking assessment and feedback.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 互动与反馈">Class · Interaction &amp; Feedback</h4>
+    <div class="story" data-zh="调整退出挽留弹窗和问卷展示，优化麦克风动效，并推进音素级口语测评及反馈机制。">Refine the exit-retention popup and survey visibility, update microphone animations, and improve phoneme-level speaking assessment and feedback.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
 <li data-record-id="reczz28NKZmp9meS" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;麦克风动效调整&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Update microphone animations</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28NKgLZjLWj" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;口语测评练习环节，优化为音素级别&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Refine speaking-assessment practice to phoneme-level evaluation</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28NKhRD3VCz" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;口语测评反馈机制优化&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Improve speaking-assessment feedback</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28NJpZuiWI7" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;课中退出挽留弹窗：按钮调整 &amp;amp; 只给部分用户发放问卷问题&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>In-class exit retention popup: adjust buttons and show survey questions only to selected users</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
-</ul></div></div>
+</ul></div></div></div>
+</div>
   </div>
 </section>
 
@@ -769,37 +754,43 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">2.0.0</div><div class="node-sub" data-zh="&lt;time datetime=&quot;2026-11-02&quot;&gt;11/02&lt;/time&gt;上线">Launch <time datetime="2026-11-02">11/02</time></div></div>
   <div class="node-body">
     <div class="node-title" data-zh="首课承接 · Promo Code · 港台本地化与 Web">First-lesson entry, Promo Codes, localization and Web</div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;保留首课引导并默认匹配 Max，支持优惠码与 Play 改版；推进香港／台湾语言适配、Dino 对话、Web 学习链路及区域支付。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Retain first-lesson guidance with teacher Max selected by default, add Promo Codes and improve Play; advance Hong Kong / Taiwan localization, Dino conversations, Web learning and regional payments.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 课程与学习计划">Class · Lessons &amp; Study Plans</h4>
+    <div class="story" data-zh="保留首课引导并默认匹配 Max，支持优惠码与 Play 改版；推进香港／台湾语言适配、Dino 对话、Web 学习链路及区域支付。">Retain first-lesson guidance with teacher Max selected by default, add Promo Codes and improve Play; advance Hong Kong / Taiwan localization, Dino conversations, Web learning and regional payments.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
 <li data-record-id="reczz28NY7nLNIPr" data-status="未启动" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;体验课默认匹配 Max：保留引导页并完善资源加载&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Default trial lessons to teacher Max: retain the guidance page and improve resource loading</b><span class="p0">P0</span><span class="who">李双</span></li>
 <li data-record-id="recvxWam6a94Uj" data-status="待评审" data-priority="P1" data-zh="&lt;b&gt;课中：繁体中文新增香港繁体（课中Dino能够听说粤语、当选择繁体-hk时，播报粤语新手引导和instructions）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>In-class Hong Kong Traditional Chinese: Dino understands and speaks Cantonese; play Cantonese onboarding and instructions when zh-hk is selected</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · 互动与反馈">Class · Interaction &amp; Feedback</h4>
-<ul>
 <li data-record-id="recvxrMvNxGuCJ" data-status="开发中" data-priority="P1" data-zh="&lt;b&gt;中途退出课堂的弹窗需要TTS（本土语）播报：callback用户继续完成课程内容&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Add native-language TTS to the mid-lesson exit popup, encouraging users to finish the lesson</b><span class="p1">P1</span><span class="who">毕燕晨 Rosa</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="App · 登录、会员与本地化">App · Login, Membership &amp; Localization</h4>
+<div class="block scope-dino" data-category="non-course"><h4 data-zh="非课程">Outside Class</h4>
+<div class="noncourse-module" data-module="membership"><h5 data-zh="会员转化">Membership Conversion</h5>
 <ul>
 <li data-record-id="recvuNApaGrNIv" data-status="产品设计中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;App Paywall 支持手动填写并应用 Promo Code&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>App Paywall: manually enter and apply a Promo Code</b><span class="p0">P0</span><span class="who">李双</span></li>
-<li data-record-id="reczz28MX5gnN9Zn" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;App 语言列表：繁体中文拆分为香港繁体和台湾繁体&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>App languages: split Traditional Chinese into Hong Kong and Taiwan variants</b><span class="p1">P1</span><span class="who">李双</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="Dino · 对话与语音">Dino · Conversation &amp; Voice</h4>
+<div class="noncourse-module" data-module="play"><h5 data-zh="Play 游戏">Play · Games</h5>
+<ul>
+<li data-record-id="recvmfvu8aMMZX" data-status="未启动" data-priority="P3" data-zh="&lt;b&gt;play模块界面优化以及上线更多游戏&lt;/b&gt;&lt;span class=&quot;p3&quot;&gt;P3&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双 / 易可可Coco&lt;/span&gt;"><b>Improve the Play UI and add more games</b><span class="p3">P3</span><span class="who">李双 / 易可可Coco</span></li>
+</ul></div>
+<div class="noncourse-module" data-module="dino"><h5 data-zh="Dino 对话">Dino · Conversation</h5>
 <ul>
 <li data-record-id="recvxDrSk90JYQ" data-status="待评审" data-priority="P1" data-zh="&lt;b&gt;Dino Chat支持zh-hk的TTS、ASR和固定文案与音频&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Dino Chat: support zh-hk TTS, ASR, fixed copy and audio</b><span class="p1">P1</span><span class="who">李淑怡</span></li>
 <li data-record-id="reczz28MrtyAbuam" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;DIno chat 三个入口&lt;br&gt;Dino首句：去掉文案库&lt;br&gt;（可能还会有改动，部分入口保留文案库；部分由模型下发）&lt;br&gt;改为：模型根据 prompt下发&lt;br&gt;需要探索新的技术方案&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Explore model-generated Dino Chat opening lines across three entry points; some may retain the copy library (approach subject to change)</b><span class="p2">P2</span><span class="who">李淑怡</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="Explore / Play · 内容与游戏">Explore / Play · Content &amp; Games</h4>
+<div class="noncourse-module" data-module="explore"><h5 data-zh="Explore 探索">Explore · Discovery</h5>
 <ul>
-<li data-record-id="recvmfvu8aMMZX" data-status="未启动" data-priority="P3" data-zh="&lt;b&gt;play模块界面优化以及上线更多游戏&lt;/b&gt;&lt;span class=&quot;p3&quot;&gt;P3&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双 / 易可可Coco&lt;/span&gt;"><b>Improve the Play UI and add more games</b><span class="p3">P3</span><span class="who">李双 / 易可可Coco</span></li>
 <li data-record-id="recvuTL64DeNZh" data-status="未启动" data-priority="P3" data-zh="&lt;b&gt;Reading Hub in App&lt;/b&gt;&lt;span class=&quot;p3&quot;&gt;P3&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>Reading Hub in App</b><span class="p3">P3</span><span class="who">易可可Coco</span></li>
 </ul></div>
-<div class="block scope-landing"><h4 data-zh="Web · 官网、落地页与支付">Web · Websites, Landing Pages &amp; Payments</h4>
+<div class="noncourse-module" data-module="localization"><h5 data-zh="语言与本地化">Language &amp; Localization</h5>
 <ul>
+<li data-record-id="reczz28MX5gnN9Zn" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;App 语言列表：繁体中文拆分为香港繁体和台湾繁体&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>App languages: split Traditional Chinese into Hong Kong and Taiwan variants</b><span class="p1">P1</span><span class="who">李双</span></li>
+</ul></div></div></div></div>
+<div class="requirement-platform" data-platform="web"><h3 class="platform-title" data-zh="Web · 官网、落地页">Web · Websites &amp; Landing Pages</h3><div class="block scope-landing"><ul>
 <li data-record-id="recvuTGa8ZmtUV" data-status="排期中" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;Web 端 Dino AI：官网信息架构 + 越南、韩国、马来支持直接进课、上课、登录、支付、学习中心&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>Dino AI Web: website information architecture; direct lesson entry, lessons, login, payments and Learning Center for Vietnam, Korea and Malaysia</b><span class="p0">P0</span><span class="who">易可可Coco</span></li>
 <li data-record-id="recvuTGa8ZPCAV" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;港澳台地区新增官网、线索收集和支付落地页，需要看看本地支付有什么，兼职翻译待做（对接人 teddy）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>Hong Kong, Macao and Taiwan: website, lead capture and payment landing pages; local payment research and freelance translation pending (contact: Teddy)</b><span class="p1">P1</span><span class="who">易可可Coco</span></li>
 <li data-record-id="recvxqPAMSoQQy" data-status="产品方案编写中" data-priority="P1" data-zh="&lt;b&gt;LP：韩国接入 antom 韩国支付方式；需要测试和接入&lt;br&gt;🇰🇷 韩国        Samsung Pay&lt;br&gt;🇰🇷 韩国        South Korean Cards&lt;br&gt;🇰🇷 韩国        Express Bank Transfer&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;易可可Coco&lt;/span&gt;"><b>LP Korea: integrate and test Antom payments—Samsung Pay, South Korean Cards and Express Bank Transfer</b><span class="p1">P1</span><span class="who">易可可Coco</span></li>
 </ul></div></div>
+</div>
     <div class="demo-strip">
       <div class="demo-thumb" role="button" tabindex="0" aria-label="First-lesson Guidance Demo" onclick="openDemo(&quot;V2.0.0-ui-demo.html?teacherPage=first&quot;,&quot;First-lesson Guidance \u00b7 Demo&quot;)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
         <img src="assets/milestone-previews/first-lesson.png" data-demo-src="V2.0.0-ui-demo.html?teacherPage=first" loading="lazy" width="1280" height="860" alt="First-lesson Guidance Demo preview">
@@ -817,47 +808,34 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
   <div class="node-marker"><div class="dot"></div><div class="node-date">2.1.0</div><div class="node-sub" data-zh="上线时间待定">Launch TBD</div></div>
   <div class="node-body">
     <div class="node-title" data-zh="课程供给与学习计划 · L5–L6 · 内容与 CRM">Course availability, study plans, L5–L6, content and CRM</div>
-    <div class="story" data-zh="&lt;span class=&quot;lab&quot;&gt;需求池 · 2026.10.19 同步&lt;/span&gt;调整周度课程下发与非会员计划展示，推进 L5–L6 及课程模板；补充邮箱登录、IP 动画、绘本和学习提醒，同步完善 CRM 与线索接入。"><span class="lab">Requirement pool · Synced 2026.10.19</span>Update weekly lesson delivery and nonmember plan visibility, prepare L5–L6 and lesson templates, and add email login, character animations, picture books and learning reminders alongside CRM and lead integrations.</div>
-    <div class="cols requirement-groups"><div class="block scope-dino"><h4 data-zh="Class · 课程与学习计划">Class · Lessons &amp; Study Plans</h4>
+    <div class="story" data-zh="调整周度课程下发与非会员计划展示，推进 L5–L6 及课程模板；补充邮箱登录、IP 动画、绘本和学习提醒，同步完善 CRM 与线索接入。">Update weekly lesson delivery and nonmember plan visibility, prepare L5–L6 and lesson templates, and add email login, character animations, picture books and learning reminders alongside CRM and lead integrations.</div>
+    <div class="requirement-groups">
+<div class="requirement-platform" data-platform="app"><h3 class="platform-title" data-zh="App端">App</h3><div class="platform-blocks">
+<div class="block scope-dino" data-category="class"><h4 data-zh="课程（Class）">Courses (Class)</h4>
 <ul>
 <li data-record-id="reczz28NeAJdgrZI" data-status="未启动" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;L5-L6放开前，当前的template优化、环节调整（11月第一周测试环节全面测试、11月第二周上线）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Before opening L5–L6, improve existing templates and lesson activities (full testing in November week 1; launch in week 2)</b><span class="p0">P0</span><span class="who">毕燕晨 Rosa</span></li>
 <li data-record-id="reczz28NfaT3Siii" data-status="未启动" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;L5-L6放开，需要调整入口定级、报告定级（11月第二周上线）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Open L5–L6 and update initial and report-based level placement (launch in the second week of November)</b><span class="p0">P0</span><span class="who">李双</span></li>
 <li data-record-id="reczz28O4Sb087Ho" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;课程解锁逻辑调整：每周固定下发3节课，不受学习进度影响&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Update course unlocking: release 3 lessons every week regardless of learning progress</b><span class="p1">P1</span><span class="who">李双</span></li>
-<li data-record-id="reczz28NJoAEMpEv" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;按国家/地区配置非会员周学习计划的展示开关&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Configure nonmember weekly study plan visibility by country or region</b><span class="p2">P2</span><span class="who">李双</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · Dino Assistant">Class · Dino Assistant</h4>
-<ul>
-<li data-record-id="recvw1VgPadS7M" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;增加摄像头识别，识别学生是否在课堂中（接图像识别）；如果识别到孩子「已离开」的状态，课堂暂停，播放callback的TTS（本土语），以及各种状态下的优先级判定：触发老师静默的话术、Dino助手的话术、callback的TTS的话术。&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Camera-based student presence detection: pause when the child leaves, play a native-language return prompt, and define priorities for teacher silence prompts, Dino Assistant and return TTS</b><span class="p2">P2</span><span class="who">李淑怡</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Class · 互动与反馈">Class · Interaction &amp; Feedback</h4>
-<ul>
 <li data-record-id="reczz28NKoAOUhTv" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;新增课程template（消消乐、打地鼠、新版口语测评-计划11月第一周上线）&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;孔丽莉&lt;/span&gt;"><b>Add lesson templates: match-and-clear, whack-a-mole and a new speaking assessment (planned for the first week of November)</b><span class="p1">P1</span><span class="who">孔丽莉</span></li>
+<li data-record-id="reczz28NKF0Zu9Se" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;调prompt：课中问孩子名字的机制调整&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;孔丽莉&lt;/span&gt;"><b>Update prompts for asking children&#x27;s names during lessons</b><span class="p1">P1</span><span class="who">孔丽莉</span></li>
+<li data-record-id="reczz28NJoAEMpEv" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;按国家/地区配置非会员周学习计划的展示开关&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Configure nonmember weekly study plan visibility by country or region</b><span class="p2">P2</span><span class="who">李双</span></li>
+<li data-record-id="recvw1VgPadS7M" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;增加摄像头识别，识别学生是否在课堂中（接图像识别）；如果识别到孩子「已离开」的状态，课堂暂停，播放callback的TTS（本土语），以及各种状态下的优先级判定：触发老师静默的话术、Dino助手的话术、callback的TTS的话术。&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李淑怡&lt;/span&gt;"><b>Camera-based student presence detection: pause when the child leaves, play a native-language return prompt, and define priorities for teacher silence prompts, Dino Assistant and return TTS</b><span class="p2">P2</span><span class="who">李淑怡</span></li>
 <li data-record-id="recvvQzudZegXU" data-status="挂起" data-priority="P2" data-zh="&lt;b&gt;新增开课激励，（发放卡通面罩给学生），增加趣味性也减少学生的抵触；用户不开启相机授权时默认使用profile的头像，头像上加一个相机的icon允许用户主动授权。&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;毕燕晨 Rosa&lt;/span&gt;"><b>Lesson-start rewards: cartoon face masks; use the profile avatar when camera permission is off, with a camera icon to enable it</b><span class="p2">P2</span><span class="who">毕燕晨 Rosa</span></li>
 </ul></div>
-<div class="block scope-dino"><h4 data-zh="App · 登录、会员与本地化">App · Login, Membership &amp; Localization</h4>
-<ul>
-<li data-record-id="recvw0PeX2qWWl" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;上线邮箱登录注册方式&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Add email registration and login</b><span class="p1">P1</span><span class="who">李双</span></li>
-<li data-record-id="reczz28NfKNx4pXV" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;整体APP风格改版&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双 / 李淑怡&lt;/span&gt;"><b>Redesign the app&#x27;s overall visual style</b><span class="p1">P1</span><span class="who">李双 / 李淑怡</span></li>
-</ul></div>
-<div class="block scope-dino"><h4 data-zh="Explore / Play · 内容与游戏">Explore / Play · Content &amp; Games</h4>
+<div class="block scope-dino" data-category="non-course"><h4 data-zh="非课程">Outside Class</h4>
 <ul>
 <li data-record-id="reczz28NK12xX1mJ" data-status="未启动" data-priority="P0-重要紧急/影响收钱" data-zh="&lt;b&gt;绘本接入到Explore（11月第一周）&lt;/b&gt;&lt;span class=&quot;p0&quot;&gt;P0&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;孔丽莉&lt;/span&gt;"><b>Bring picture books into Explore (first week of November)</b><span class="p0">P0</span><span class="who">孔丽莉</span></li>
-<li data-record-id="recvwvDYph03be" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;Explore 页面增加 IP 动画&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Add character animations to Explore</b><span class="p2">P2</span><span class="who">李双</span></li>
-</ul></div>
-<div class="block scope-retention"><h4 data-zh="活跃与留存">Engagement &amp; Retention</h4>
-<ul>
+<li data-record-id="recvw0PeX2qWWl" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;上线邮箱登录注册方式&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Add email registration and login</b><span class="p1">P1</span><span class="who">李双</span></li>
+<li data-record-id="reczz28NfKNx4pXV" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;整体APP风格改版&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双 / 李淑怡&lt;/span&gt;"><b>Redesign the app&#x27;s overall visual style</b><span class="p1">P1</span><span class="who">李双 / 李淑怡</span></li>
 <li data-record-id="recvuI9kfcW5dB" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;学习计划以及学习报告提醒 Push&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Push reminders for study plans and learning reports</b><span class="p1">P1</span><span class="who">李双</span></li>
-</ul></div>
-<div class="block scope-admin"><h4 data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h4>
-<ul>
+<li data-record-id="recvwvDYph03be" data-status="未启动" data-priority="P2" data-zh="&lt;b&gt;Explore 页面增加 IP 动画&lt;/b&gt;&lt;span class=&quot;p2&quot;&gt;P2&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;李双&lt;/span&gt;"><b>Add character animations to Explore</b><span class="p2">P2</span><span class="who">李双</span></li>
+</ul></div></div></div>
+<div class="requirement-platform" data-platform="admin"><h3 class="platform-title" data-zh="配套后台 · CRM 与销售工具">Admin · CRM &amp; Sales Tools</h3><div class="block scope-admin"><ul>
 <li data-record-id="recvre13KPO1yh" data-status="排期中" data-priority="P1" data-zh="&lt;b&gt;CRM三期-(用户详情：增加上课记录、报告、回放；订单详情)&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;姜双 / 周蕴倩&lt;/span&gt;"><b>CRM phase 3: lesson history, reports and replays in user details; order details</b><span class="p1">P1</span><span class="who">姜双 / 周蕴倩</span></li>
 <li data-record-id="recvvKeWn4tvSH" data-status="排期中" data-priority="P1" data-zh="&lt;b&gt;tiktok、messenger、whatsapp（待确认第三方）、Line、Google等广告渠道leads接入&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>Import ad-channel leads from TikTok, Messenger, WhatsApp (third-party provider TBD), LINE, Google and others</b><span class="p1">P1</span><span class="who">周蕴倩</span></li>
-<li data-record-id="reczz28NKF0Zu9Se" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;调prompt：课中问孩子名字的机制调整&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;孔丽莉&lt;/span&gt;"><b>Update prompts for asking children&#x27;s names during lessons</b><span class="p1">P1</span><span class="who">孔丽莉</span></li>
-</ul></div>
-<div class="block scope-other"><h4 data-zh="其他需求">Other Requirements</h4>
-<ul>
 <li data-record-id="reczz28Mq4zvjPu8" data-status="未启动" data-priority="P1" data-zh="&lt;b&gt;用户中心优化：用户中心支持修改CC&lt;/b&gt;&lt;span class=&quot;p1&quot;&gt;P1&lt;/span&gt;&lt;span class=&quot;who&quot;&gt;周蕴倩&lt;/span&gt;"><b>User Center: allow CC changes</b><span class="p1">P1</span><span class="who">周蕴倩</span></li>
 </ul></div></div>
+</div>
     <div class="demo-strip">
       <div class="demo-thumb" role="button" tabindex="0" aria-label="Explore Character Animations Demo" onclick="openDemo(&quot;V2.1.0-ui-demo.html?v210Page=explore&quot;,&quot;Explore Character Animations \u00b7 Demo&quot;)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
         <img src="assets/milestone-previews/explore-animation.png" data-demo-src="V2.1.0-ui-demo.html?v210Page=explore" loading="lazy" width="1280" height="860" alt="Explore Character Animations Demo preview">
@@ -907,55 +885,6 @@ document.querySelectorAll('.requirement-groups .block ul').forEach(function(list
     .sort(function(a,b){return a.rank-b.rank||a.index-b.index})
     .forEach(function(entry){list.appendChild(entry.item)});
 });
-
-/* 需求模块：用户端连续优先，官网与管理后台置后；桌面端按最短列补位 */
-var requirementGroupBlocks=new WeakMap();
-function requirementScopeRank(block){
-  if(block.classList.contains('scope-admin'))return 2;
-  if(block.classList.contains('scope-landing'))return 1;
-  return 0;
-}
-function layoutRequirementGroups(){
-  var isNarrow=window.matchMedia('(max-width:860px)').matches;
-  document.querySelectorAll('.requirement-groups').forEach(function(group){
-    var blocks=requirementGroupBlocks.get(group);
-    if(!blocks){
-      blocks=Array.from(group.children)
-        .filter(function(item){return item.classList.contains('block')})
-        .map(function(block,index){return{block:block,index:index,rank:requirementScopeRank(block)}})
-        .sort(function(a,b){return a.rank-b.rank||a.index-b.index})
-        .map(function(entry){return entry.block});
-      blocks.forEach(function(block,index){block.dataset.requirementOrder=index});
-      requirementGroupBlocks.set(group,blocks);
-    }
-    group.replaceChildren();
-    group.classList.toggle('is-single',blocks.length===1);
-    if(isNarrow||blocks.length===1){
-      blocks.forEach(function(block){group.appendChild(block)});
-      return;
-    }
-    var columns=[document.createElement('div'),document.createElement('div')];
-    var heights=[0,0];
-    columns.forEach(function(column){
-      column.className='requirement-column';
-      group.appendChild(column);
-    });
-    blocks.forEach(function(block){
-      var target=heights[0]<=heights[1]?0:1;
-      columns[target].appendChild(block);
-      heights[target]+=block.getBoundingClientRect().height+22;
-    });
-  });
-}
-var requirementLayoutFrame=0;
-function scheduleRequirementLayout(){
-  cancelAnimationFrame(requirementLayoutFrame);
-  requirementLayoutFrame=requestAnimationFrame(layoutRequirementGroups);
-}
-window.__layoutRequirementGroups=scheduleRequirementLayout;
-window.addEventListener('resize',scheduleRequirementLayout);
-layoutRequirementGroups();
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(scheduleRequirementLayout);
 
 const io=new IntersectionObserver(es=>{
   es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})
@@ -1171,7 +1100,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDemo()});
       b.classList.toggle("on", b.getAttribute("data-lang") === l);
     });
     if (window.__fitDemos) window.__fitDemos();
-    if (window.__layoutRequirementGroups) window.__layoutRequirementGroups();
     if (window.DinoFeedback && DinoFeedback.setLang) DinoFeedback.setLang(l);
   }
   btns.forEach(function (b) {
