@@ -206,9 +206,6 @@ h1 em{font-style:normal;color:var(--orange);position:relative}
   padding:10px 14px;border-top:1px dashed var(--line);opacity:.82;transition:opacity .25s
 }
 .demo-strip:hover{opacity:1}
-.demo-version-link{display:inline-flex;align-items:center;min-height:44px;color:var(--green);font-size:14px;font-weight:600;text-underline-offset:4px}
-.demo-version-link:hover{color:var(--orange)}
-.demo-version-link:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}
 
 .demo-thumb{
   position:relative;width:128px;flex-shrink:0;overflow:hidden;cursor:zoom-in;
@@ -659,7 +656,13 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 </ul></div></div>
 </div>
     <div class="demo-strip">
-      <a class="demo-version-link" href="V1.9.1-ui-demo.html" target="_blank" rel="noopener" data-zh="查看 V1.9.1 Demo ↗">Open V1.9.1 Demo ↗</a>
+      <div class="demo-thumb" role="button" tabindex="0" aria-label="V1.9.1 Demo" onclick="openDemo(&quot;V1.9.1-ui-demo.html&quot;,&quot;V1.9.1 Demo&quot;)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
+        <img src="assets/milestone-previews/class-permissions.png" data-demo-src="V1.9.1-ui-demo.html" loading="lazy" width="1280" height="860" alt="V1.9.1 Demo preview">
+      </div>
+      <div class="demo-info"><span class="demo-name">V1.9.1 Demo</span>
+        <span class="demo-hint" data-zh="完整版本演示 · 点击缩略图放大">Full version demo · click the thumbnail to enlarge</span>
+      </div>
+      <div class="demo-actions"><button type="button" onclick="openDemo(&quot;V1.9.1-ui-demo.html&quot;,&quot;V1.9.1 Demo&quot;)" data-zh="放大查看">Enlarge</button> <a class="btn" href="V1.9.1-ui-demo.html" target="_blank" rel="noopener" data-zh="新窗口打开">Open in new tab</a></div>
     </div>
   </div>
 </section>
@@ -732,7 +735,13 @@ footer .sig{font-family:'Fraunces',serif;font-size:14px;color:var(--green);font-
 </ul></div></div>
 </div>
     <div class="demo-strip">
-      <a class="demo-version-link" href="V2.0.0-ui-demo.html" target="_blank" rel="noopener" data-zh="查看 V2.0.0 Demo ↗">Open V2.0.0 Demo ↗</a>
+      <div class="demo-thumb" role="button" tabindex="0" aria-label="V2.0.0 Demo" onclick="openDemo(&quot;V2.0.0-ui-demo.html&quot;,&quot;V2.0.0 Demo&quot;)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click()}">
+        <img src="assets/milestone-previews/first-lesson.png" data-demo-src="V2.0.0-ui-demo.html" loading="lazy" width="1280" height="860" alt="V2.0.0 Demo preview">
+      </div>
+      <div class="demo-info"><span class="demo-name">V2.0.0 Demo</span>
+        <span class="demo-hint" data-zh="完整版本演示 · 点击缩略图放大">Full version demo · click the thumbnail to enlarge</span>
+      </div>
+      <div class="demo-actions"><button type="button" onclick="openDemo(&quot;V2.0.0-ui-demo.html&quot;,&quot;V2.0.0 Demo&quot;)" data-zh="放大查看">Enlarge</button> <a class="btn" href="V2.0.0-ui-demo.html" target="_blank" rel="noopener" data-zh="新窗口打开">Open in new tab</a></div>
     </div>
   </div>
 </section>
