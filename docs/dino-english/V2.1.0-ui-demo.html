@@ -8611,6 +8611,41 @@
     .class-path-open:focus-visible,.class-path-practice:focus-visible { outline:3px solid var(--brand-lime) !important; outline-offset:3px; border-radius:var(--radius-sm); }
     @media(prefers-reduced-motion:reduce) { .class-path-art { transition:none; } }
   </style>
+<style id="v210-trial-duration-style">
+    #screen-teacher { position: relative; overflow: clip; }
+    #screen-teacher [hidden] { display: none !important; }
+    #screen-teacher .teacher-pick {
+      overflow: clip;
+      background: radial-gradient(ellipse at 20% 20%, color-mix(in srgb,var(--brand-cyan) 32%,transparent), transparent 50%), linear-gradient(135deg,var(--sky-deep),var(--sky-mid));
+    }
+    #screen-teacher .teacher-intro { max-width: 650px; padding: 0 34px; }
+    #screen-teacher .teacher-intro h2 { font-weight: 600; }
+    #screen-teacher.is-first-lesson .land-body.teacher-pick { display: grid; grid-template-columns: 280px minmax(0, 1fr); grid-template-rows: auto auto; grid-template-areas: "teacher welcome" "teacher action"; align-content: center; align-items: center; gap: 18px 32px; padding: 28px 40px; }
+    #screen-teacher.is-first-lesson .teacher-intro { grid-area: welcome; align-self: end; width: 100%; max-width: none; margin: 0; padding: 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--surface-glass); text-align: left; }
+    #screen-teacher.is-first-lesson .teacher-intro::after { content: ""; position: absolute; left: -9px; top: calc(50% - 8px); width: 16px; height: 16px; background: color-mix(in srgb, var(--sky-mid) 88%, white); border-left: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); transform: rotate(45deg); }
+    #screen-teacher.is-first-lesson #teacher-guide-h1 { margin-bottom: 14px; color: var(--ink-on-dark); font-family: var(--display); font-size: 24px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+    #screen-teacher.is-first-lesson #teacher-guide-h2 { font-size: 17px; font-weight: 400; line-height: 1.5; }
+    #screen-teacher.is-first-lesson .teacher-actions { grid-area: action; align-self: start; align-items: flex-start; padding-left: 24px; }
+    #screen-teacher.is-first-lesson .teacher-actions .btn-primary { min-width: 240px; min-height: 52px; font-size: 18px; background: var(--cta-grad); }
+    @media (max-width: 872px) {
+      #wrap-landscape:has(#screen-teacher.active) { height: calc(393px * var(--v200-landscape-scale, 1)); overflow: hidden; }
+      #wrap-landscape:has(#screen-teacher.active) #device-landscape { width: 852px; height: 393px; max-height: none; aspect-ratio: 852 / 393; transform: scale(var(--v200-landscape-scale, 1)); transform-origin: top left; }
+    }
+    #screen-teacher.is-first-lesson .teacher-grid { grid-area: teacher; grid-template-columns: minmax(0,1fr); width: 100%; max-width: none; height: 320px; margin: 0; }
+    #screen-teacher.is-first-lesson .teacher-card { cursor: default; transform: none; }
+    #screen-teacher.is-first-lesson .teacher-card-shell,
+    #screen-teacher.is-first-lesson .teacher-card-inner { clip-path: none; border-radius: 0; background: none; overflow: visible; }
+    #screen-teacher.is-first-lesson .teacher-card-shell { padding: 0; filter: none; }
+    #screen-teacher.is-first-lesson .teacher-card-meta { left: 50%; right: auto; bottom: 0; transform: translateX(-50%); min-width: 112px; padding: 8px 24px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); }
+    #screen-teacher.is-first-lesson .teacher-card-portrait { height: 100%; min-height: 0; padding: 0 0 20px; }
+    #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: 100%; max-height: none; }
+
+    #screen-teacher.is-first-lesson .teacher-actions { gap: 12px; }
+    #screen-teacher .trial-duration { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 8px 14px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font: 700 16px/1.35 var(--font); }
+    #screen-teacher .trial-duration svg { width: 20px; height: 20px; flex: none; color: var(--brand-lime); }
+    #screen-teacher:not(.is-first-lesson) .trial-duration { display: none; }
+
+  </style>
 </head>
 <body class="is-group-b">
   <p class="demo-bar">V2.1.0 · IP 动画 / Play Tab · 右上 ⚙︎ States 切换页面与关键状态</p>
@@ -19498,7 +19533,7 @@
         if (id === "screen-radio-player") return ctx("Radio 播放页", ["membership"]);
         if (id === "screen-class" && typeof activeHubTab !== "undefined" && activeHubTab === "dino") return { label: "Dino 首页", pageKey: "dino_home", isCore: true, keys: ["v180Tier", "v180HomeTask"] };
         if (id === "screen-class")       return ctx("Class 首页", ["classAccess", "v155KolScenario", "startLevel"]);
-        if (id === "screen-teacher")     return ctx("选择老师", []);
+        if (id === "screen-teacher") return teacherFlowMode === "app" ? ctx("选择老师", []) : { label: "体验课 · 时长提示", pageKey: "v210_trial_duration", isCore: true, keys: [] };
         return ctx("App 内", ["membership"]);
       }
       // V1.3.0: study plan + trial report are portrait takeovers.
@@ -19828,6 +19863,7 @@
     ],
     corePagesLabel: "V2.1.0 核心页面",
     corePages: [
+      { key: "v210_trial_duration", label: "体验课 · 时长提示", run: function () { window.v210OpenTrialDuration(); } },
       { key: "class_permissions", auxiliary: true, label: "课中授权 · 首次开口", run: function () { window.CLASS_PERMISSIONS.jump("first"); } },
       { key: "permission_retry", auxiliary: true, label: "麦克风 · 拒绝后开启", run: function () { window.CLASS_PERMISSIONS.jump("retry"); } },
       { key: "permission_settings", auxiliary: true, label: "麦克风 · 设置确认弹窗", run: function () { window.CLASS_PERMISSIONS.jump("settings-confirm"); } },
@@ -24357,6 +24393,7 @@
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         var params = new URLSearchParams(location.search);
+        if (params.get('teacherPage') === 'first' || params.get('v210Page') === 'trial-duration') { window.v210OpenTrialDuration(); return; }
         if (!params.has('v210Page') && !params.has('v200Page') && params.has('v180Page')) { syncPage(); return; }
         var page = params.get('v210Page') || params.get('v200Page');
         if (['catalog','player'].includes(page)) { window.IP_ANIMATION.jump(page); return; }
@@ -25209,5 +25246,53 @@
 
 
 
+
+<script id="v210-trial-duration-module">
+(() => {
+  const screen = document.getElementById('screen-teacher');
+  const duration = document.createElement('p');
+  duration.id = 'trial-duration';
+  duration.className = 'trial-duration';
+  duration.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>About 10–15 min</span>';
+  screen.querySelector('.teacher-actions').prepend(duration);
+
+  const originalRender = renderTeacherCards;
+  renderTeacherCards = function () {
+    const first = teacherFlowMode !== 'app';
+    screen.classList.toggle('is-first-lesson', first);
+    duration.hidden = !first;
+    if (!first) { originalRender(); return; }
+    const max = TEACHERS.find(teacher => teacher.id === 'max');
+    document.getElementById('teacher-grid').innerHTML = `<div class="teacher-card ${max.theme}" data-teacher-id="max"><div class="teacher-card-shell"><div class="teacher-card-inner"><div class="teacher-card-portrait"><img src="${max.image}" alt="Max" decoding="async" /></div><div class="teacher-card-meta"><strong>Max</strong></div></div></div></div>`;
+  };
+  const originalFill = fillTeacherGuide;
+  fillTeacherGuide = function () {
+    originalFill();
+    if (teacherFlowMode === 'app') return;
+    const name = getDisplayName();
+    document.getElementById('teacher-guide-h1').textContent = name ? `${name}'s free first lesson is ready.` : "Your child's free first lesson is ready.";
+    document.getElementById('teacher-guide-h2').innerHTML = "Finish the lesson and get your child’s <strong>placement report</strong> right away.";
+    document.getElementById('btn-confirm-teacher').textContent = 'Start Lesson';
+  };
+  document.getElementById('btn-confirm-teacher').addEventListener('click', () => {
+    if (teacherFlowMode !== 'app') {
+      profile.teacherId = 'max';
+      renderClassTeacherVisual();
+    }
+  }, true);
+  window.v210OpenTrialDuration = function () {
+    window.v200BeforeJump?.();
+    seedReviewProfile();
+    profile.hasStartedClass = false;
+    profile.trialInProgress = false;
+    profile.teacherChosen = false;
+    enterLandscape();
+    openTeacherPicker('onboarding');
+    window.demoStatePanel?.panel.classList.remove('open');
+    window.demoStatePanel?.render();
+  };
+  fillTeacherGuide();
+})();
+</script>
 </body>
 </html>
