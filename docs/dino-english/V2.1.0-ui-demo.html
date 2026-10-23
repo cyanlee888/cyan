@@ -8640,9 +8640,7 @@
     #screen-teacher.is-first-lesson .teacher-card-portrait { height: 100%; min-height: 0; padding: 0 0 20px; }
     #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: 100%; max-height: none; }
 
-    #screen-teacher.is-first-lesson .teacher-actions { gap: 12px; }
-    #screen-teacher .trial-duration { display: inline-flex; align-items: center; gap: 8px; margin: 0; padding: 8px 14px; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); background: var(--surface-glass); color: var(--ink-on-dark); font: 700 16px/1.35 var(--font); }
-    #screen-teacher .trial-duration svg { width: 20px; height: 20px; flex: none; color: var(--brand-lime); }
+    #screen-teacher.is-first-lesson #teacher-guide-h2 .trial-duration { color: var(--ink-on-dark); font-weight: 700; white-space: nowrap; }
     #screen-teacher:not(.is-first-lesson) .trial-duration { display: none; }
 
   </style>
@@ -25250,17 +25248,10 @@
 <script id="v210-trial-duration-module">
 (() => {
   const screen = document.getElementById('screen-teacher');
-  const duration = document.createElement('p');
-  duration.id = 'trial-duration';
-  duration.className = 'trial-duration';
-  duration.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>About 10–15 min</span>';
-  screen.querySelector('.teacher-actions').prepend(duration);
-
   const originalRender = renderTeacherCards;
   renderTeacherCards = function () {
     const first = teacherFlowMode !== 'app';
     screen.classList.toggle('is-first-lesson', first);
-    duration.hidden = !first;
     if (!first) { originalRender(); return; }
     const max = TEACHERS.find(teacher => teacher.id === 'max');
     document.getElementById('teacher-grid').innerHTML = `<div class="teacher-card ${max.theme}" data-teacher-id="max"><div class="teacher-card-shell"><div class="teacher-card-inner"><div class="teacher-card-portrait"><img src="${max.image}" alt="Max" decoding="async" /></div><div class="teacher-card-meta"><strong>Max</strong></div></div></div></div>`;
@@ -25271,7 +25262,7 @@
     if (teacherFlowMode === 'app') return;
     const name = getDisplayName();
     document.getElementById('teacher-guide-h1').textContent = name ? `${name}'s free first lesson is ready.` : "Your child's free first lesson is ready.";
-    document.getElementById('teacher-guide-h2').innerHTML = "Finish the lesson and get your child’s <strong>placement report</strong> right away.";
+    document.getElementById('teacher-guide-h2').innerHTML = 'The lesson takes about <strong class="trial-duration" id="trial-duration">10–15 minutes</strong>. Finish it to get your child’s <strong>placement report</strong> right away.';
     document.getElementById('btn-confirm-teacher').textContent = 'Start Lesson';
   };
   document.getElementById('btn-confirm-teacher').addEventListener('click', () => {
