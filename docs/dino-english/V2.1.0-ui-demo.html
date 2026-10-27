@@ -9775,6 +9775,16 @@
                 <button type="button" class="explore-entry ee-animation" id="explore-open-animation">
                   <span class="ee-info"><b>Cartoons</b><span>Watch Dino’s adventures</span></span>
                 </button>
+                <!-- Theme class: reuse the existing event entry and its activity states. -->
+                <button type="button" id="dino-event-card" class="dino-event-card explore-entry ee-theme is-live" onclick="openThemeLanding()" aria-label="Theme classes: World Cup">
+                  <span class="v210-theme-art" aria-hidden="true">
+                    <span class="dec-ico">⚽</span>
+                    <span class="dec-badge" id="dec-badge">LIMITED</span>
+                    <span class="dec-medal" id="dec-medal" hidden>🏅</span>
+                  </span>
+                  <span class="ee-info"><b>Theme classes</b><span>World Cup</span></span>
+                  <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
+                </button>
               </div>
             </div>
             <div class="hub-panel hub-panel--dino" id="hub-panel-dino" data-hub-panel="dino">
@@ -9804,13 +9814,6 @@
                   <b class="dino-id-name" id="dino-hud-name">friend</b>
                 </div>
                 <div class="dino-mini-entries">
-                  <button type="button" id="dino-event-card" class="dino-event-card v180-event-top is-live" onclick="openThemeLanding()" aria-label="Open current theme class">
-                    <span class="dec-badge" id="dec-badge">LIMITED</span>
-                    <span class="dec-medal" id="dec-medal" hidden>🏅</span>
-                    <span class="dec-ico" aria-hidden="true">⚽</span>
-                    <span class="dec-label">World Cup</span>
-                    <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
-                  </button>
                   <button type="button" class="dn-pill dn-pill--coin" data-v180-action="utility" data-go-game="screen-shop" aria-label="Open Store. Dino Coin balance">
                     <span class="coin-ico"></span><span class="js-coin">888</span>
                     <img class="v180-coin-store-entry" src="assets/v180/store-entry.png" alt="" aria-hidden="true" decoding="async" />
@@ -18124,7 +18127,7 @@
     var themeReportOpen = false;     // 正价课报告是否由主题课打开（拦截返回+不推进度）
     var themeReturnTo = "landing";   // 课堂退出/完课返回目标：landing | studyplan | paywall（后两者仅转化链路 demo 用）
 
-    // 首页运营位只响应活动状态：预告、进行中、无活动；用户课内进度不改变入口展示。
+    // Explore 主题课入口只响应活动状态；用户课内进度不改变入口展示。
     function renderThemeEventCard(){
       var card = document.getElementById("dino-event-card");
       var hub = document.getElementById("hub-app");
@@ -18134,7 +18137,7 @@
       var cd = document.getElementById("dec-cd");
       var on = themeEvent.activity !== "ended";
       card.hidden = !on;
-      hub.classList.toggle("has-theme-event", on);
+      hub.classList.remove("has-theme-event");
       if (!on) return;
       card.classList.remove("is-live");
       badge.classList.remove("is-soon","is-done");
@@ -18207,9 +18210,9 @@
           + '<div class="m"><b>' + it.t + '</b><span>' + it.s + '</span></div>' + pill + '</div>';
       }).join("");
     }
-    // 落地页返回 → 首页 Dino tab。
+    // 落地页返回 → Explore。
     document.getElementById("tc-back")?.addEventListener("click", function () {
-      setHubTab("dino");
+      setHubTab("practice");
       showLandScreen("screen-class");
     });
 
@@ -20077,17 +20080,17 @@
         } },
     ],
     // 主题课沿用原活动状态、页面结构与进课/报告逻辑。
-    jumpsWCLabel: "世界杯主题课（运营位）",
+    jumpsWCLabel: "世界杯主题课（Explore）",
     jumpsWC: [
-      { label: "⚽ 首页入口·预告态", run: function () {
+      { label: "⚽ Explore 入口·预告态", run: function () {
           try { cxStage = null; } catch (e) {}
           themeEvent.activity = "preview"; themeEvent.user = "none";
-          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("practice");
         } },
-      { label: "⚽ 首页入口·进行中", run: function () {
+      { label: "⚽ Explore 入口·进行中", run: function () {
           try { cxStage = null; } catch (e) {}
           themeEvent.activity = "active"; themeEvent.user = "none";
-          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("dino");
+          renderThemeEventCard(); enterLandscape(); showClassHome(); setHubTab("practice");
         } },
       { label: "⚽ 落地页·进行中（有往期）", run: function () {
           try { cxStage = null; } catch (e) {}
@@ -24357,7 +24360,7 @@
       var view = currentView();
       if (!view || document.querySelector('#v180-plan-reveal.show, #visit-reward-overlay.show, #force-update-overlay.show')) return null;
       if (view === 'ip-animation') return window.IP_ANIMATION?.context() || null;
-      if (view === 'explore') return { label:'Explore',pageKey:'v200_explore',isCore:true,keys:['v180Tier'] };
+      if (view === 'explore') return { label:'Explore',pageKey:'v200_explore',isCore:true,keys:['v180Tier','themeActivity'] };
       return { label:'Play',pageKey:'v200_play',isCore:true,keys:['v200ParkScene','v200Audience','v200PlayLimit'] };
     };
     window.v200OpenPage = function (page) {
@@ -25285,5 +25288,21 @@
   fillTeacherGuide();
 })();
 </script>
+
+  <style id="v210-theme-explore-style">
+    /* Five peer entries in Explore; the existing event is hidden when it ends. */
+    #device-landscape #screen-class #hub-panel-practice .explore-entries:has(#dino-event-card:not([hidden])) { gap:8px !important; }
+    #device-landscape #screen-class #hub-panel-practice .explore-entries:has(#dino-event-card:not([hidden])) .explore-entry { flex:0 1 146px; width:146px; }
+    #hub-panel-practice .explore-entries:has(#dino-event-card:not([hidden])) .v200-activity-art { width:136px; height:144px; flex-basis:144px; background-size:300% 200%; }
+    #hub-panel-practice .explore-entries:has(#dino-event-card:not([hidden])) .v200-art-animation { background-size:contain; }
+    #device-landscape #screen-class #hub-panel-practice #dino-event-card { position:relative; inset:auto; z-index:auto; color:var(--ink-on-dark); }
+    #device-landscape #screen-class #hub-panel-practice #dino-event-card[hidden] { display:none !important; }
+    #hub-panel-practice .v210-theme-art { position:relative; display:grid; place-items:center; width:136px; height:144px; flex:0 0 144px; }
+    #hub-panel-practice .v210-theme-art::before { content:''; position:absolute; width:100px; height:100px; border:1px solid var(--glass-border); border-radius:50%; background:var(--surface-glass); }
+    #device-landscape #screen-class #hub-panel-practice .dec-ico { position:relative; font-size:90px; line-height:1; transform:rotate(-12deg); filter:drop-shadow(0 10px 10px rgba(6,21,87,.26)); }
+    #device-landscape #screen-class #hub-panel-practice .dec-badge { display:block; top:8px; left:50%; transform:translateX(-50%); z-index:1; padding:3px 8px; color:var(--ink-on-light); background:var(--star-gold); font:700 9px/1.2 var(--font); box-shadow:none; }
+    #device-landscape #screen-class #hub-panel-practice .dec-badge.is-soon { background:var(--brand-cyan); }
+    #device-landscape #screen-class #hub-panel-practice .dec-cd { margin-top:8px; padding:3px 8px; border:1px solid var(--glass-border); border-radius:var(--radius-pill); color:var(--ink-on-dark); background:var(--surface-glass); font:600 10px/1.2 var(--font); }
+  </style>
 </body>
 </html>
