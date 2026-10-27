@@ -9746,7 +9746,6 @@
                   <span class="ee-emoji">📖</span>
                   <span class="ee-info">
                     <b>Words &amp; Sentences</b>
-                    <span>Learn by doing</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-story" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -9756,7 +9755,6 @@
                   <span class="ee-emoji">🎧</span>
                   <span class="ee-info">
                     <b>Listening</b>
-                    <span>Radio stories</span>
                   </span>
                   <span class="ee-thumbs" id="ee-thumbs-radio" aria-hidden="true"></span>
                   <span class="ee-arrow">›</span>
@@ -9766,24 +9764,20 @@
                   <span class="ee-emoji">🗣️</span>
                   <span class="ee-info">
                     <b>Speaking</b>
-                    <span>Talk with Dino</span>
                   </span>
                   <span class="ee-thumbs ee-thumbs--dino" aria-hidden="true"><img src="assets/dino-mascot.png" alt="" decoding="async" /></span>
                   <span class="ee-arrow">›</span>
                 </button>
                 <!-- IP animation: shared Explore visual and in-App course screens. -->
                 <button type="button" class="explore-entry ee-animation" id="explore-open-animation">
-                  <span class="ee-info"><b>Cartoons</b><span>Watch Dino’s adventures</span></span>
+                  <span class="ee-info"><b>Cartoons</b></span>
                 </button>
                 <!-- Theme class: reuse the existing event entry and its activity states. -->
-                <button type="button" id="dino-event-card" class="dino-event-card explore-entry ee-theme is-live" onclick="openThemeLanding()" aria-label="Theme classes: World Cup">
+                <button type="button" id="dino-event-card" class="dino-event-card explore-entry ee-theme is-live" onclick="openThemeLanding()" aria-label="Theme classes">
                   <span class="v210-theme-art" aria-hidden="true">
-                    <span class="dec-ico">⚽</span>
-                    <span class="dec-badge" id="dec-badge">LIMITED</span>
-                    <span class="dec-medal" id="dec-medal" hidden>🏅</span>
+                    <img src="assets/v210/theme-classes-entry.png" alt="" decoding="async" />
                   </span>
-                  <span class="ee-info"><b>Theme classes</b><span>World Cup</span></span>
-                  <span class="dec-cd" id="dec-cd">⏱ 5d left</span>
+                  <span class="ee-info"><b>Theme classes</b></span>
                 </button>
               </div>
             </div>
@@ -18132,25 +18126,9 @@
       var card = document.getElementById("dino-event-card");
       var hub = document.getElementById("hub-app");
       if (!card || !hub) return;
-      var badge = document.getElementById("dec-badge");
-      var medal = document.getElementById("dec-medal");
-      var cd = document.getElementById("dec-cd");
-      var on = themeEvent.activity !== "ended";
-      card.hidden = !on;
+      card.hidden = themeEvent.activity === "ended";
+      card.classList.toggle("is-live", themeEvent.activity === "active");
       hub.classList.remove("has-theme-event");
-      if (!on) return;
-      card.classList.remove("is-live");
-      badge.classList.remove("is-soon","is-done");
-      medal.hidden = true;
-      if (themeEvent.activity === "preview") {
-        badge.textContent = "SOON";
-        badge.classList.add("is-soon");
-        cd.textContent = "⏱ in 3 days";
-      } else {
-        badge.textContent = "LIMITED";
-        card.classList.add("is-live");
-        cd.textContent = "⏱ 5d left";
-      }
     }
 
     // 落地页沿用原 Hero 与往期列表，按活动状态和用户进度渲染。
@@ -25297,12 +25275,8 @@
     #hub-panel-practice .explore-entries:has(#dino-event-card:not([hidden])) .v200-art-animation { background-size:contain; }
     #device-landscape #screen-class #hub-panel-practice #dino-event-card { position:relative; inset:auto; z-index:auto; color:var(--ink-on-dark); }
     #device-landscape #screen-class #hub-panel-practice #dino-event-card[hidden] { display:none !important; }
-    #hub-panel-practice .v210-theme-art { position:relative; display:grid; place-items:center; width:136px; height:144px; flex:0 0 144px; }
-    #hub-panel-practice .v210-theme-art::before { content:''; position:absolute; width:100px; height:100px; border:1px solid var(--glass-border); border-radius:50%; background:var(--surface-glass); }
-    #device-landscape #screen-class #hub-panel-practice .dec-ico { position:relative; font-size:90px; line-height:1; transform:rotate(-12deg); filter:drop-shadow(0 10px 10px rgba(6,21,87,.26)); }
-    #device-landscape #screen-class #hub-panel-practice .dec-badge { display:block; top:8px; left:50%; transform:translateX(-50%); z-index:1; padding:3px 8px; color:var(--ink-on-light); background:var(--star-gold); font:700 9px/1.2 var(--font); box-shadow:none; }
-    #device-landscape #screen-class #hub-panel-practice .dec-badge.is-soon { background:var(--brand-cyan); }
-    #device-landscape #screen-class #hub-panel-practice .dec-cd { margin-top:8px; padding:3px 8px; border:1px solid var(--glass-border); border-radius:var(--radius-pill); color:var(--ink-on-dark); background:var(--surface-glass); font:600 10px/1.2 var(--font); }
+    #hub-panel-practice .v210-theme-art { display:block; width:136px; height:144px; flex:0 0 144px; }
+    #hub-panel-practice .v210-theme-art img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 10px rgba(6,21,87,.26)); }
   </style>
 </body>
 </html>
