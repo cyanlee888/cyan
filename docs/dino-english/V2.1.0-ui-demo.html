@@ -24450,7 +24450,7 @@
     let lastStoredAt = 0;
     let mediaPreview = "ready";
     let mediaActual = "ready";
-    let playbackRate = 1; // This viewing session only; a page reload returns to normal speed.
+    let playbackRate = 1; // Changing episodes or reloading starts at normal speed.
     let returnedCompleted = false;
     // Dino Story is available to every account; membership changes only refresh the presentation.
     function refreshAccess() { syncCatalog(); return true; }
@@ -24742,6 +24742,8 @@
       cleanup();
       selectedEpisode = next;
       progress = progressByEpisode[id];
+      playbackRate = 1;
+      applyPlaybackRate();
       lastStoredAt = 0;
       mediaPreview = "ready";
       mediaActual = "ready";
