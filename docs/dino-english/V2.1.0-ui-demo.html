@@ -8454,6 +8454,7 @@
     .ip-player-controls { position:absolute; bottom:0; left:0; right:0; z-index:12; padding:10px 16px 7px; background:linear-gradient(0deg,rgba(0,0,0,.85),rgba(0,0,0,.55) 65%,transparent); }
     .ip-player-actions { display:flex; align-items:center; gap:4px; }
     .ip-player-control { width:44px; height:44px; flex-shrink:0; display:flex; align-items:center; justify-content:center; padding:10px; border:0; border-radius:var(--radius-pill); background:transparent; color:var(--ink-on-dark); cursor:pointer; }
+    #ip-speed-toggle { width:72px; font:700 16px/1 var(--font); font-variant-numeric:tabular-nums; white-space:nowrap; }
     .ip-player-control:hover { background:var(--surface-glass); }
     .ip-player-control svg { width:24px; height:24px; flex-shrink:0; }
     .ip-player-control:focus-visible, .ip-speed-option:focus-visible, .ip-player-seek:focus-visible { outline:3px solid var(--accent-yellow); outline-offset:2px; }
@@ -10279,8 +10280,7 @@
                 <button type="button" class="ip-player-control" id="ip-player-next" aria-label="Next episode"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h3v14h-3zM5 5l10 7-10 7z"/></svg></button>
                 <span class="ip-player-time" id="ip-player-time">0:00 / 2:13</span>
                 <span class="ip-control-spacer"></span>
-                <button type="button" class="ip-player-control" id="ip-player-mute" aria-label="Mute" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path id="ip-volume-waves" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" stroke-linecap="round"/><path id="ip-volume-muted" d="m17 9 5 6m0-6-5 6" stroke-linecap="round" hidden/></svg></button>
-                <button type="button" class="ip-player-control" id="ip-speed-toggle" aria-label="Settings · Playback speed 1×" aria-haspopup="menu" aria-controls="ip-speed-menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 3-.6 2.2-2 .9-2-.5-2 3.5 1.5 1.7v2.4L2.4 15l2 3.5 2-.5 2 .9L9 21h4l.6-2.1 2-.9 2 .5 2-3.5-1.5-1.8v-2.4L19.6 9l-2-3.5-2 .5-2-.9L13 3z" stroke-linejoin="round"/><circle cx="11" cy="12" r="3"/></svg></button>
+                <button type="button" class="ip-player-control" id="ip-speed-toggle" aria-label="Playback speed: 1×" aria-haspopup="menu" aria-controls="ip-speed-menu" aria-expanded="false">1×</button>
 
               </div>
               <div class="ip-speed-menu" id="ip-speed-menu" role="menu" aria-label="Playback speed" hidden>
@@ -24688,7 +24688,8 @@
         if (!target) return;
         button.setAttribute("aria-label", (offset < 0 ? "Previous" : "Next") + " episode: " + target.title);
       });
-      $("#ip-speed-toggle").setAttribute("aria-label", "Settings · Playback speed " + playbackRate + "×");
+      $("#ip-speed-toggle").textContent = playbackRate + "×";
+      $("#ip-speed-toggle").setAttribute("aria-label", "Playback speed: " + playbackRate + "×");
       syncTransport();
       $("#ip-speed-menu").querySelectorAll("[data-ip-speed]").forEach(button => button.setAttribute("aria-checked", String(Number(button.dataset.ipSpeed) === playbackRate)));
     }
@@ -24706,10 +24707,6 @@
       $("#ip-player-toggle").setAttribute("aria-label", video.paused || video.ended ? "Play" : "Pause");
       $("#ip-play-icon").toggleAttribute("hidden", !video.paused && !video.ended);
       $("#ip-pause-icon").toggleAttribute("hidden", video.paused || video.ended);
-      $("#ip-player-mute").setAttribute("aria-label", video.muted ? "Unmute" : "Mute");
-      $("#ip-player-mute").setAttribute("aria-pressed", String(video.muted));
-      $("#ip-volume-waves").toggleAttribute("hidden", video.muted);
-      $("#ip-volume-muted").toggleAttribute("hidden", !video.muted);
       const ended = playbackOpened && video.ended && mediaPreview === "ready" && mediaActual === "ready";
       $("#ip-ended-panel").hidden = !ended;
       $("#ip-ended-next").hidden = selectedEpisode === episodes[episodes.length - 1];
@@ -25020,7 +25017,6 @@
       }
     });
     video.addEventListener("pause", () => { rememberProgress(true); syncTransport(); showPlayerControls(); });
-    video.addEventListener("volumechange", syncTransport);
     video.addEventListener("durationchange", syncTransport);
     video.addEventListener("play", () => {
       if (!playbackOpened || playingEpisodeId !== loadedEpisodeId || activeScreen() !== "screen-ip-player" || mediaPreview !== "ready") { video.pause(); return; }
@@ -25102,7 +25098,6 @@
     $("#ip-player-toggle").addEventListener("click", togglePlayback);
     $("#ip-ended-next").addEventListener("click", () => switchEpisode(1));
     $("#ip-ended-replay").addEventListener("click", () => openPlayer({restart:true}));
-    $("#ip-player-mute").addEventListener("click", () => {video.muted = !video.muted; showPlayerControls();});
     $("#ip-player-seek").addEventListener("pointerdown", () => {scrubbing = true; showPlayerControls();});
     $("#ip-player-seek").addEventListener("input", seekFromControls);
     $("#ip-player-seek").addEventListener("change", () => {scrubbing = false; rememberProgress(true); syncTransport(); showPlayerControls();});
