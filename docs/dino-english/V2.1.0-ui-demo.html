@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V2.1.0 — IP 动画 / Play Tab Demo</title>
+  <title>Dino AI V2.1.0 — Dino Story / Play Tab Demo</title>
   <!-- DESIGN.md · V2.1.0 · V1.9.1 baseline plus IP animation and Play park. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -8447,14 +8447,30 @@
     }
     #screen-ip-player .ip-heading { flex:1; min-width:0; }
     #screen-ip-player .ip-heading b { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:1rem; }
-    .ip-player-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-    .ip-player-control { min-width:44px; min-height:44px; display:flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; border:1px solid var(--glass-border); border-radius:var(--radius-pill); background:rgba(10,44,198,.7); color:var(--ink-on-dark); font-family:var(--display); font-size:14px; font-weight:700; cursor:pointer; }
-    .ip-player-control svg { width:20px; height:20px; flex-shrink:0; }
-    .ip-player-control .ip-target-lock { width:15px; height:15px; }
-    .ip-player-control.is-next-ready { background:var(--cta-grad); border-color:var(--cta-orange-top); box-shadow:0 3px 0 var(--reward-orange); }
-    .ip-player-control:focus-visible, .ip-speed-option:focus-visible { outline:3px solid var(--accent-yellow); outline-offset:2px; }
-    .ip-player-control[hidden], .ip-target-lock[hidden], .ip-speed-menu[hidden] { display:none!important; }
-    .ip-speed-menu { position:absolute; top:60px; right:18px; width:154px; padding:6px; border:1px solid var(--glass-border); border-radius:var(--radius-md); background:var(--sky-deep); box-shadow:0 8px 22px rgba(0,0,0,.3); }
+    .ip-ended-panel {position:absolute;inset:66px 0 104px;z-index:10;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(0,0,0,.3);}
+    .ip-ended-panel button {width:180px;min-height:48px;font:700 16px/1.2 var(--display);}
+    .ip-ended-replay {border:1px solid rgba(255,255,255,.7);border-radius:var(--radius-pill);background:rgba(0,0,0,.55);color:var(--ink-on-dark);cursor:pointer;}
+    .ip-ended-panel.is-last .ip-ended-replay {border:0;background:var(--cta-grad);}
+    .ip-player-controls { position:absolute; bottom:0; left:0; right:0; z-index:12; padding:10px 16px 7px; background:linear-gradient(0deg,rgba(0,0,0,.85),rgba(0,0,0,.55) 65%,transparent); }
+    .ip-player-actions { display:flex; align-items:center; gap:4px; }
+    .ip-player-control { width:44px; height:44px; flex-shrink:0; display:flex; align-items:center; justify-content:center; padding:10px; border:0; border-radius:var(--radius-pill); background:transparent; color:var(--ink-on-dark); cursor:pointer; }
+    .ip-player-control:hover { background:var(--surface-glass); }
+    .ip-player-control svg { width:24px; height:24px; flex-shrink:0; }
+    .ip-player-control:focus-visible, .ip-speed-option:focus-visible, .ip-player-seek:focus-visible { outline:3px solid var(--accent-yellow); outline-offset:2px; }
+    .ip-player-control[hidden], .ip-speed-menu[hidden] { display:none!important; }
+    .ip-player-time { padding:0 8px; color:var(--ink-on-dark); font:700 13px/1 var(--font); font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .ip-control-spacer { flex:1; }
+    .ip-player-seek { display:block; width:100%; height:44px; margin:0; padding:0; appearance:none; -webkit-appearance:none; background:transparent; cursor:pointer; touch-action:none; --ip-played:0%; }
+    .ip-player-seek::-webkit-slider-runnable-track { height:4px; border-radius:4px; background:linear-gradient(to right,var(--ink-on-dark) var(--ip-played),rgba(255,255,255,.35) var(--ip-played)); }
+    .ip-player-seek::-moz-range-track { height:4px; border-radius:4px; background:rgba(255,255,255,.35); }
+    .ip-player-seek::-moz-range-progress { height:4px; background:var(--ink-on-dark); }
+    .ip-player-seek::-webkit-slider-thumb { appearance:none; -webkit-appearance:none; width:14px; height:14px; border-radius:50%; margin-top:-5px; background:var(--ink-on-dark); }
+    .ip-player-seek::-moz-range-thumb { width:14px; height:14px; border:0; border-radius:50%; background:var(--ink-on-dark); }
+    .ip-player-seek:disabled { opacity:.45; cursor:default; }
+    #screen-ip-player .ip-topbar, .ip-player-controls { transition:opacity .18s ease; }
+    #screen-ip-player.ip-controls-hidden .ip-topbar, #screen-ip-player.ip-controls-hidden .ip-player-controls { opacity:0; pointer-events:none; }
+    .ip-speed-menu { position:absolute; bottom:64px; right:16px; width:170px; padding:6px; border:1px solid rgba(255,255,255,.25); border-radius:var(--radius-sm); background:rgba(8,14,32,.96); box-shadow:0 8px 22px rgba(0,0,0,.3); }
+    .ip-settings-label { color:rgba(255,255,255,.7); padding:9px 12px 5px; font-size:12px; font-weight:700; }
     .ip-speed-option { display:flex; align-items:center; justify-content:space-between; min-height:44px; width:100%; padding:8px 14px; border:0; border-radius:var(--radius-sm); background:transparent; color:var(--ink-on-dark); font-size:16px; font-weight:700; cursor:pointer; }
     .ip-speed-option[aria-checked="true"] { background:var(--surface-glass); color:var(--accent-yellow); }
     .ip-speed-option[aria-checked="true"]::after { content:"✓"; }
@@ -8480,7 +8496,7 @@
     }
     .ip-back {min-width:44px;min-height:44px;}
     .ip-animation-video {object-fit:contain;}
-    .ip-video-status {position:absolute;inset:66px 0 0;z-index:9;display:grid;place-items:center;background:rgba(3,12,74,.88);padding:18px;}
+    .ip-video-status {position:absolute;inset:66px 0 100px;z-index:9;display:grid;place-items:center;background:rgba(3,12,74,.88);padding:18px;}
     .ip-video-status-card {max-width:440px;text-align:center;color:var(--ink-on-dark);}
     .ip-video-status-icon {display:block;font-size:2.3rem;margin-bottom:8px;}
     .ip-video-status h2 {font-family:var(--display);font-weight:600;font-size:1.2rem;}
@@ -8497,12 +8513,13 @@
     }
     #screen-ip-catalog::before { opacity: .55; }
     #screen-ip-catalog::after { right: -68px; top: -66px; bottom: auto; opacity: .3; width: 230px; height: 230px; }
-    #screen-ip-catalog .ip-topbar { height: 76px; min-height: 76px; padding: 14px 28px 10px; gap: 16px; }
+    #screen-ip-catalog .ip-topbar { height: 76px; min-height: 76px; padding: 8px 28px 6px; gap: 16px; }
     #screen-ip-catalog .ip-back, .ip-row-arrow {
       border: 2px solid var(--brand-cyan); background: linear-gradient(145deg, var(--brand-cyan), var(--sky-mid));
       box-shadow: inset 0 1px 2px rgba(255,255,255,.3), 0 4px 10px rgba(0,0,0,.14);
     }
     .ip-catalog-title { margin: 0; font: 700 32px/1.1 var(--display); color: var(--ink-on-dark); }
+    .ip-catalog-subtitle { margin:3px 0 0; color:rgba(255,255,255,.85); font:600 14px/1.2 var(--font); }
     .ip-carousel { flex: 1; min-height: 0; position: relative; display: flex; align-items: center; padding-bottom: 8px; }
     .ip-card-row {
       position: relative; display: flex; align-items: stretch; gap: 18px; width: 100%; min-width: 0;
@@ -8529,11 +8546,6 @@
     .ip-episode-visual:is([data-atlas-index="1"], [data-atlas-index="3"])::before { left: -100%; }
     .ip-episode-visual:is([data-atlas-index="2"], [data-atlas-index="3"])::before { transform: translateY(-75%); }
     .ip-card-duration { position: absolute; top: 10px; right: 10px; z-index: 3; padding: 5px 8px; border-radius: var(--radius-pill); background: rgba(3,12,74,.86); color: var(--ink-on-dark); font: 700 13px/1 var(--font); }
-    .ip-card-shade { position: absolute; inset: 0; z-index: 1; background: rgba(84,88,96,.60); pointer-events: none; }
-    .ip-episode-card.is-locked .ip-episode-visual > img,
-    .ip-episode-card.is-locked .ip-episode-visual::before { filter: grayscale(.8); }
-    .ip-card-lock { position: absolute; inset: 0; z-index: 2; display: grid; place-items: center; color: var(--ink-on-dark); pointer-events: none; }
-    .ip-card-lock svg { width: 38px; height: 38px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.35)); }
     .ip-card-play { position: absolute; bottom: 12px; right: 12px; display: grid; place-items: center; width: 47px; height: 47px; border: 2px solid var(--ink-on-dark); border-radius: var(--radius-pill); background: var(--cta-grad); box-shadow: 0 3px 8px rgba(0,0,0,.2); }
     .ip-card-play svg { width: 23px; height: 23px; margin-left: 3px; }
     .ip-card-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: rgba(255,255,255,.3); }
@@ -8646,7 +8658,7 @@
   </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V2.1.0 · IP 动画 / Play Tab · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V2.1.0 · Dino Story / Play Tab · 右上 ⚙︎ States 切换页面与关键状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -9770,7 +9782,7 @@
                 </button>
                 <!-- IP animation: shared Explore visual and in-App course screens. -->
                 <button type="button" class="explore-entry ee-animation" id="explore-open-animation">
-                  <span class="ee-info"><b>Cartoons</b></span>
+                  <span class="ee-info"><b>Dino Story</b></span>
                 </button>
                 <!-- Theme class: reuse the existing event entry and its activity states. -->
                 <button type="button" id="dino-event-card" class="dino-event-card explore-entry ee-theme is-live" onclick="openThemeLanding()" aria-label="Theme Lessons">
@@ -10180,11 +10192,12 @@
             <svg viewBox="0 0 18 18" fill="none"><path d="M11.5 4L6.5 9l5 5" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
           <div class="ip-heading">
-            <h1 class="ip-catalog-title">Cartoons</h1>
+            <h1 class="ip-catalog-title">Dino Story</h1>
+            <p class="ip-catalog-subtitle">Watch Dino’s adventures</p>
           </div>
         </header>
         <div class="ip-carousel">
-          <div class="ip-card-row" id="ip-episode-row" role="group" aria-label="Cartoon episodes"></div>
+          <div class="ip-card-row" id="ip-episode-row" role="group" aria-label="Dino Story episodes"></div>
           <button type="button" class="ip-row-arrow ip-row-arrow--previous" id="ip-row-previous" aria-label="Previous episodes" disabled>
             <svg viewBox="0 0 24 24" fill="none"><path d="m15 5-7 7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -10202,22 +10215,6 @@
           <div class="ip-heading">
             <b id="ip-player-title">Episode 1 · Welcome to Dino World</b>
           </div>
-          <nav class="ip-player-actions" aria-label="Episode controls">
-            <button type="button" class="ip-player-control" id="ip-player-previous" hidden>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m14 5-7 7 7 7M6 5v14" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Previous</span>
-              <svg class="ip-target-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true" hidden><rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-            </button>
-            <button type="button" class="ip-player-control" id="ip-player-next">
-              <span>Next</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m10 5 7 7-7 7M18 5v14" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <svg class="ip-target-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true" hidden><rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-            </button>
-            <button type="button" class="ip-player-control" id="ip-speed-toggle" aria-label="Playback speed: 1×" aria-haspopup="menu" aria-controls="ip-speed-menu" aria-expanded="false"><span id="ip-speed-value">1×</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" aria-hidden="true"><path d="m7 9 5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </nav>
-          <div class="ip-speed-menu" id="ip-speed-menu" role="menu" aria-label="Playback speed" hidden>
-            <button type="button" class="ip-speed-option" data-ip-speed="0.75" role="menuitemradio" aria-checked="false">0.75×</button>
-            <button type="button" class="ip-speed-option" data-ip-speed="1" role="menuitemradio" aria-checked="true">1×</button>
-            <button type="button" class="ip-speed-option" data-ip-speed="1.25" role="menuitemradio" aria-checked="false">1.25×</button>
-          </div>
         </header>
         <div class="ip-player-body">
           <section class="ip-video-stage" id="ip-video-stage" aria-label="Animation player">
@@ -10225,7 +10222,7 @@
               class="ip-animation-video"
               id="ip-animation-video"
               src="assets/ip-world-intro.mp4"
-              controls
+              tabindex="0"
               controlslist="nofullscreen nodownload noremoteplayback noplaybackrate"
               disablepictureinpicture
               poster="assets/ip-quiz/q2-dinosaur-family.jpg"
@@ -10240,6 +10237,31 @@
                 <p id="ip-video-status-copy">The adventure will begin in a moment.</p>
                 <button type="button" class="ip-main-cta" id="ip-video-retry">Try again</button>
                 <button type="button" class="ip-status-back" id="ip-video-status-back">Back to episodes</button>
+              </div>
+            </div>
+            <div class="ip-ended-panel" id="ip-ended-panel" role="group" aria-label="Episode finished" hidden>
+              <button type="button" class="ip-main-cta" id="ip-ended-next">Next episode</button>
+              <button type="button" class="ip-ended-replay" id="ip-ended-replay">Watch again</button>
+            </div>
+            <div class="ip-player-controls" id="ip-player-controls" role="group" aria-label="Playback controls">
+              <input class="ip-player-seek" id="ip-player-seek" type="range" min="0" max="0" step="0.1" value="0" aria-label="Playback position" disabled>
+              <div class="ip-player-actions">
+                <button type="button" class="ip-player-control" id="ip-player-previous" aria-label="Previous episode" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5h3v14H5zm14 0v14L9 12z"/></svg></button>
+                <button type="button" class="ip-player-control" id="ip-player-toggle" aria-label="Pause"><svg id="ip-pause-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg><svg id="ip-play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 3v18l15-9z"/></svg></button>
+                <button type="button" class="ip-player-control" id="ip-player-next" aria-label="Next episode"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h3v14h-3zM5 5l10 7-10 7z"/></svg></button>
+                <span class="ip-player-time" id="ip-player-time">0:00 / 2:13</span>
+                <span class="ip-control-spacer"></span>
+                <button type="button" class="ip-player-control" id="ip-player-mute" aria-label="Mute" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor" stroke-linejoin="round"/><path id="ip-volume-waves" d="M16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" stroke-linecap="round"/><path id="ip-volume-muted" d="m17 9 5 6m0-6-5 6" stroke-linecap="round" hidden/></svg></button>
+                <button type="button" class="ip-player-control" id="ip-speed-toggle" aria-label="Settings · Playback speed 1×" aria-haspopup="menu" aria-controls="ip-speed-menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 3-.6 2.2-2 .9-2-.5-2 3.5 1.5 1.7v2.4L2.4 15l2 3.5 2-.5 2 .9L9 21h4l.6-2.1 2-.9 2 .5 2-3.5-1.5-1.8v-2.4L19.6 9l-2-3.5-2 .5-2-.9L13 3z" stroke-linejoin="round"/><circle cx="11" cy="12" r="3"/></svg></button>
+
+              </div>
+              <div class="ip-speed-menu" id="ip-speed-menu" role="menu" aria-label="Playback speed" hidden>
+                <div class="ip-settings-label">Playback speed</div>
+                <button type="button" class="ip-speed-option" data-ip-speed="0.5" role="menuitemradio" aria-checked="false">0.5×</button>
+                <button type="button" class="ip-speed-option" data-ip-speed="0.75" role="menuitemradio" aria-checked="false">0.75×</button>
+                <button type="button" class="ip-speed-option" data-ip-speed="1" role="menuitemradio" aria-checked="true">1×</button>
+                <button type="button" class="ip-speed-option" data-ip-speed="1.25" role="menuitemradio" aria-checked="false">1.25×</button>
+                <button type="button" class="ip-speed-option" data-ip-speed="1.5" role="menuitemradio" aria-checked="false">1.5×</button>
               </div>
             </div>
           </section>
@@ -19553,8 +19575,7 @@
       {key:"gpAnswer",label:"孩子发言 · 演示",options:[["submit","模拟说 Hi"]],apply:v=>window.CLASS_PERMISSIONS.set("gpAnswer",v)},
       {key:"gpLessonAnswer",label:"课堂收音 · 演示",options:[["submit","模拟用户说话"]],apply:v=>window.CLASS_PERMISSIONS.set("gpAnswer",v)},
       {key:"gpSettingsReturn",label:"系统设置返回 · 仅供演示",options:[["granted","已开启并返回"],["denied","未开启直接返回"]],apply:v=>window.CLASS_PERMISSIONS.set("gpSettingsReturn",v)},
-      {key:"ipMembership",label:"Cartoons access",options:[["free","Free"],["pro","Pro"],["max","Max"],["expired","Expired"]],apply:function(v){window.IP_ANIMATION.setMembership(v);}},
-      {key:"ipMedia",label:"动画播放状态",options:[["ready","正常"],["loading","加载中"],["error","加载失败"],["offline","网络中断"]],apply:function(v){window.IP_ANIMATION.setMedia(v);}},
+      {key:"ipMedia",label:"Dino Story · 播放状态",options:[["ready","正常"],["loading","加载中"],["error","加载失败"],["offline","网络中断"]],apply:function(v){window.IP_ANIMATION.setMedia(v);}},
       { key: "v200Audience", label: "Play 模拟总人数，仅供评审", options: [["shown", "展示模拟人数"], ["hidden", "不展示人数"]], apply: function (v) { window.v200SetAudience(v); } },
       { key: "v200ParkScene", label: "乐园场景", options: [["ready", "已加载"], ["loading", "加载中"], ["error", "网络异常"]], apply: function (v) { window.v200SetParkScene(v); } },
       { key: "v200PlayLimit", label: "今日游戏次数", options: [["available", "Free · 剩余 1 次"], ["empty", "Free · 次数用尽"], ["member", "会员 · 不限次数"]], apply: function (v) { window.v200SetPlayLimit(v); } },
@@ -19850,8 +19871,8 @@
       { key: "permission_camera", auxiliary: true, label: "相机授权", run: function () { window.CLASS_PERMISSIONS.jump("camera-restore-on"); } },
       { key: "v200_explore", auxiliary: true, label: "Explore · 新布局", run: function () { window.v200OpenPage("explore"); } },
       { key: "v200_play", label: "Play · 乐园首页", run: function () { window.v200OpenPage("play"); } },
-      {key:"ip_catalog",label:"IP 动画 · 动画首页",run:function(){window.IP_ANIMATION.jump("catalog");}},
-      {key:"ip_player",label:"IP 动画 · 播放",run:function(){window.IP_ANIMATION.jump("player");}},
+      {key:"ip_catalog",label:"Dino Story · 动画首页",run:function(){window.IP_ANIMATION.jump("catalog");}},
+      {key:"ip_player",label:"Dino Story · 播放",run:function(){window.IP_ANIMATION.jump("player");}},
       { key: "study_plan", auxiliary: true, label: "学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
       { key: "membership_choice", auxiliary: true, label: "会员选择", run: withReviewProfile(function () { openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
       { key: "membership", auxiliary: true, label: "会员中心", run: withReviewProfile(function () {
@@ -20119,7 +20140,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V2.1.0 · IP 动画 / Play Tab",
+      demo: "V2.1.0 · Dino Story / Play Tab",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";
@@ -23603,9 +23624,6 @@
             '<span class="v180-benefit-cell is-label" role="rowheader">Let your child speak, practice, and review anytime</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
             '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">Watch all cartoons</span>' +
-            '<span class="v180-benefit-cell is-check" data-v180-column="pro" role="cell" aria-label="Included">✓</span>' +
-            '<span class="v180-benefit-cell is-check" data-v180-column="max" role="cell" aria-label="Included">✓</span>' +
           '</div>' +
         '</li>';
       document.querySelectorAll("[data-v180-column]").forEach(function (cell) {
@@ -23726,8 +23744,7 @@
           "Check your child's English level",
           "Access 864 CEFR-aligned lessons",
           "See your child's progress after every lesson",
-          "Let your child speak, practice, and review anytime",
-          "Watch all cartoons"
+          "Let your child speak, practice, and review anytime"
         ];
         list.innerHTML = benefits.map(function (item) { return "<li>" + esc(item) + "</li>"; }).join("");
       }
@@ -24390,6 +24407,10 @@
     const $ = selector => root.querySelector(selector);
     const video = $("#ip-animation-video");
     const episodeRow = $("#ip-episode-row");
+    const playerScreen = $("#screen-ip-player");
+    const playerControls = $("#ip-player-controls");
+    let controlsTimer = 0;
+    let scrubbing = false;
     let catalogScrollLeft = 0;
     let pointerGesture = null;
     let suppressClickUntil = 0;
@@ -24404,7 +24425,7 @@
     // This preserves the first episode's original key; storage failures keep in-page progress.
     const storageKey = id => "dino-v200-ip-playback:" + id + ":v1";
     const progressByEpisode = Object.fromEntries(episodes.map(episode => {
-      const record = {position:0, duration:episode.duration, completed:false, watched:false};
+      const record = {position:0, duration:episode.duration, completed:false, watched:false, watchedRanges:[], passCredited:false};
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey(episode.id)) || "null");
         if (saved && typeof saved.position === "number" && Number.isFinite(saved.position) && saved.position >= 0) {
@@ -24412,6 +24433,8 @@
           if (typeof saved.duration === "number" && Number.isFinite(saved.duration) && saved.duration > 0) record.duration = saved.duration;
           record.completed = saved.completed === true;
           record.watched = saved.watched === true;
+          record.passCredited = saved.passCredited === true;
+          if (Array.isArray(saved.watchedRanges)) record.watchedRanges = saved.watchedRanges.filter(range => Array.isArray(range) && range.length === 2 && range.every(Number.isFinite) && range[0] >= 0 && range[1] > range[0]);
         }
       } catch (_) {}
       return [episode.id, record];
@@ -24427,76 +24450,17 @@
     let lastStoredAt = 0;
     let mediaPreview = "ready";
     let mediaActual = "ready";
-    let membershipCheckout = false;
-    let membershipCheckoutId = 0;
-    let membershipReturn = null;
     let playbackRate = 1; // This viewing session only; a page reload returns to normal speed.
     let returnedCompleted = false;
-    let lastPaidTier = profile.membershipTier === "max" || profile.v180PlanTier === "max" ? "max" : "pro";
-    function hasCartoonMembership() {
-      const end = profile.effectiveAccessEnd;
-      return profile.premiumUnlocked && (!end || end === "lifetime" || Date.parse(end) > Date.now());
-    }
-    function isEpisodeLocked(episode = selectedEpisode) { return episode.number > 1 && !hasCartoonMembership(); }
-    function membershipValue() {
-      if (hasCartoonMembership()) return profile.membershipTier === "max" ? "max" : "pro";
-      return profile.hasSubscriptionOrder || profile.premiumUnlocked ? "expired" : "free";
-    }
-    function refreshAccess() {
-      if (hasCartoonMembership()) lastPaidTier = profile.membershipTier === "max" ? "max" : "pro";
-      if (playbackOpened && isEpisodeLocked()) {
-        openCatalog(true);
-        return false;
-      }
-      syncCatalog();
-      return !isEpisodeLocked();
-    }
+    // Dino Story is available to every account; membership changes only refresh the presentation.
+    function refreshAccess() { syncCatalog(); return true; }
+    // Retained for review scripts that switch the shared account state.
     function setMembership(value) {
-      const previousTier = lastPaidTier;
       window.v180SetTier(value, {reveal:false});
-      if (value === "expired") {
-        profile.membershipTier = previousTier;
-        profile.v180PlanTier = previousTier;
-      }
       profile.v180PlanRevealSeen = true;
       document.getElementById("v180-plan-reveal")?.classList.remove("show");
       refreshAccess();
       window.demoStatePanel?.render();
-    }
-    function openMembershipCheckout(origin = "catalog") {
-      // Capture before cleanup: metadata or the resume seek may still be pending.
-      const position = pendingResume !== null ? pendingResume : playbackOpened && playingEpisodeId === loadedEpisodeId && video.readyState >= 1 && Number.isFinite(video.currentTime) ? video.currentTime : progress.completed ? progress.duration : progress.position;
-      membershipReturn = {origin, episodeId:selectedEpisode.id, position, completed:progress.completed || video.ended};
-      cleanup();
-      membershipCheckout = true;
-      membershipCheckoutId++;
-      window.V155?.resetRestoreUi();
-      const preferredTier = membershipValue() === "expired" ? (profile.membershipTier === "max" || profile.v180PlanTier === "max" ? "max" : lastPaidTier) : "pro";
-      openPaywall("screen-ip-catalog", "ip_animation", preferredTier);
-    }
-    function cancelMembershipCheckout() {
-      if (membershipCheckout) window.V155?.resetRestoreUi();
-      membershipCheckout = false; membershipCheckoutId++;
-      membershipReturn = null;
-    }
-    function finishMembershipCheckout() {
-      if (!membershipCheckout || paywallTrigger !== "ip_animation") return false;
-      const returnTo = membershipReturn;
-      cancelMembershipCheckout();
-      profile.v180WinbackReturnsToPaywall = false;
-      profile.v180PurchaseTierPending = "";
-      profile.v180RestoreTierPending = "";
-      profile.v180PlanRevealSeen = true;
-      stopWinbackCountdown();
-      document.getElementById("v155-checkout-overlay")?.classList.remove("show");
-      document.getElementById("v180-plan-reveal")?.classList.remove("show");
-      enterLandscape();
-      if (returnTo?.origin === "player") {
-        selectEpisode(returnTo.episodeId);
-        if (isEpisodeLocked()) openCatalog(true);
-        else openPlayer({autoplay:false, resumeAt:returnTo.position, completed:returnTo.completed});
-      } else openCatalog(true);
-      return true;
     }
     function activeScreen() {
       const wrap = document.getElementById("wrap-landscape");
@@ -24511,13 +24475,45 @@
       lastStoredAt = Date.now();
       try { localStorage.setItem(storageKey(id), JSON.stringify(progressByEpisode[id])); } catch (_) {}
     }
+    function captureWatchedRanges() {
+      if (!playbackOpened || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId || video.readyState < 1) return;
+      const record = progressByEpisode[playingEpisodeId];
+      const ranges = record.watchedRanges.slice();
+      for (let i = 0; i < video.played.length; i++) ranges.push([video.played.start(i), video.played.end(i)]);
+      ranges.sort((a, b) => a[0] - b[0]);
+      const merged = [];
+      ranges.forEach(([start, end]) => {
+        start = Math.max(0, start); end = Math.min(record.duration, end);
+        if (end <= start) return;
+        const previous = merged[merged.length - 1];
+        // Absorb media-frame rounding only; a seeked-over gap never counts as watched.
+        if (previous && start <= previous[1] + .05) previous[1] = Math.max(previous[1], end);
+        else merged.push([start, end]);
+      });
+      record.watchedRanges = merged;
+    }
+    function hasWatchedWholePass(record) {
+      return record.duration > 0 && record.watchedRanges.some(([start, end]) => start <= .1 && end >= record.duration - .1);
+    }
+    function creditWatchedPass(id) {
+      const record = progressByEpisode[id];
+      if (!record || record.passCredited || !hasWatchedWholePass(record)) return;
+      record.passCredited = true;
+      record.watched = true;
+      // Persist before the shared scheduler; repeated media events credit this pass only once.
+      persistProgress(true, id);
+      window.v180CompleteExploreActivity?.();
+    }
     function rememberProgress(force = false) {
       if (!playbackOpened || returnedCompleted || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId || pendingResume !== null || video.readyState < 1 || !Number.isFinite(video.currentTime)) return;
       const record = progressByEpisode[playingEpisodeId];
       if (Number.isFinite(video.duration) && video.duration > 0) record.duration = video.duration;
+      captureWatchedRanges();
       if (video.ended) { record.position = 0; record.completed = true; }
       else { record.position = Math.max(0, video.currentTime); record.completed = false; }
       persistProgress(force);
+      // Filling a previously skipped gap completes the pass without another trip to the end.
+      creditWatchedPass(playingEpisodeId);
     }
     function applyEpisodeVisual(element, episode) {
       if (episode.atlasIndex === null) delete element.dataset.atlasIndex;
@@ -24539,7 +24535,7 @@
         visual.className = "ip-episode-visual";
         visual.setAttribute("aria-hidden", "true");
         applyEpisodeVisual(visual, episode);
-        visual.insertAdjacentHTML("beforeend", '<span class="ip-card-shade"></span><span class="ip-card-duration"></span><span class="ip-card-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="5" y="10" width="14" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><span class="ip-card-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3v18l16-9z"/></svg></span><span class="ip-card-progress"><span class="ip-card-progress-fill"></span></span>');
+        visual.insertAdjacentHTML("beforeend", '<span class="ip-card-duration"></span><span class="ip-card-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 3v18l16-9z"/></svg></span><span class="ip-card-progress"><span class="ip-card-progress-fill"></span></span>');
         const copy = document.createElement("span");
         copy.className = "ip-card-copy";
         const title = document.createElement("span");
@@ -24566,17 +24562,11 @@
       episodeRow.querySelectorAll("[data-ip-episode]").forEach(button => {
         const item = episodes.find(item => item.id === button.dataset.ipEpisode);
         const record = progressByEpisode[item.id];
-        const locked = isEpisodeLocked(item);
         const continuing = !record.completed && record.position > 0;
-        button.classList.toggle("is-locked", locked);
-        button.querySelector(".ip-card-shade").hidden = !locked;
-        button.querySelector(".ip-card-lock").hidden = !locked;
-        button.querySelector(".ip-card-play").hidden = locked;
         button.querySelector(".ip-card-duration").textContent = formatTime(record.duration);
-        button.querySelector(".ip-card-progress").hidden = locked;
         const progress = record.completed ? 100 : record.duration > 0 ? Math.min(100, Math.max(0, record.position / record.duration * 100)) : 0;
         button.querySelector(".ip-card-progress-fill").style.width = progress + "%";
-        const action = locked ? "Locked" : record.completed ? "Watch again" : continuing ? "Continue" : "Play";
+        const action = record.completed ? "Watch again" : continuing ? "Continue" : "Play";
         button.setAttribute("aria-label", "Episode " + item.number + " · " + item.title + (item.subtitle ? " · " + item.subtitle : "") + " · " + action);
       });
       $("#ip-player-title").textContent = "Episode " + selectedEpisode.number + " · " + selectedEpisode.title;
@@ -24591,34 +24581,86 @@
         const target = episodes[index + offset];
         button.hidden = !target;
         if (!target) return;
-        const locked = isEpisodeLocked(target);
-        button.querySelector(".ip-target-lock").toggleAttribute("hidden", !locked);
-        button.setAttribute("aria-label", (offset < 0 ? "Previous" : "Next") + " episode: " + target.title + (locked ? " · Locked" : ""));
-        button.classList.toggle("is-next-ready", offset > 0 && progress.completed);
+        button.setAttribute("aria-label", (offset < 0 ? "Previous" : "Next") + " episode: " + target.title);
       });
-      $("#ip-speed-value").textContent = playbackRate + "×";
-      $("#ip-speed-toggle").setAttribute("aria-label", "Playback speed: " + playbackRate + "×");
+      $("#ip-speed-toggle").setAttribute("aria-label", "Settings · Playback speed " + playbackRate + "×");
+      syncTransport();
       $("#ip-speed-menu").querySelectorAll("[data-ip-speed]").forEach(button => button.setAttribute("aria-checked", String(Number(button.dataset.ipSpeed) === playbackRate)));
+    }
+    function syncTransport() {
+      const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : progress.duration;
+      const position = pendingResume !== null ? pendingResume : Number.isFinite(video.currentTime) ? video.currentTime : progress.position;
+      const seek = $("#ip-player-seek");
+      seek.disabled = !playbackOpened || video.readyState < 1 || !duration;
+      seek.max = String(duration || 0);
+      if (!scrubbing) seek.value = String(Math.min(position, duration || 0));
+      seek.style.setProperty("--ip-played", (duration ? Math.min(100, position / duration * 100) : 0) + "%");
+      seek.setAttribute("aria-valuetext", formatTime(position) + " of " + formatTime(duration));
+      $("#ip-player-time").textContent = formatTime(position) + " / " + formatTime(duration);
+      $("#ip-player-toggle").setAttribute("aria-label", video.paused || video.ended ? "Play" : "Pause");
+      $("#ip-play-icon").toggleAttribute("hidden", !video.paused && !video.ended);
+      $("#ip-pause-icon").toggleAttribute("hidden", video.paused || video.ended);
+      $("#ip-player-mute").setAttribute("aria-label", video.muted ? "Unmute" : "Mute");
+      $("#ip-player-mute").setAttribute("aria-pressed", String(video.muted));
+      $("#ip-volume-waves").toggleAttribute("hidden", video.muted);
+      $("#ip-volume-muted").toggleAttribute("hidden", !video.muted);
+      const ended = playbackOpened && video.ended && mediaPreview === "ready" && mediaActual === "ready";
+      $("#ip-ended-panel").hidden = !ended;
+      $("#ip-ended-next").hidden = selectedEpisode === episodes[episodes.length - 1];
+      $("#ip-ended-panel").classList.toggle("is-last", selectedEpisode === episodes[episodes.length - 1]);
+    }
+    function scheduleControlsHide() {
+      clearTimeout(controlsTimer);
+      if (!playbackOpened || video.paused || video.ended || scrubbing || !$("#ip-speed-menu").hidden || !$("#ip-video-status").hidden) return;
+      controlsTimer = setTimeout(() => {
+        if (video.paused || video.ended || scrubbing || !$("#ip-speed-menu").hidden || !$("#ip-video-status").hidden || playerControls.matches(":hover") || playerScreen.querySelector(":focus-visible")) return;
+        playerScreen.classList.add("ip-controls-hidden");
+      }, 2500);
+    }
+    function showPlayerControls() {
+      playerScreen.classList.remove("ip-controls-hidden");
+      scheduleControlsHide();
+    }
+    function togglePlayback() {
+      showPlayerControls();
+      if (!playbackOpened) return;
+      if (!video.paused && !video.ended) video.pause();
+      else if (video.ended) openPlayer({restart:true});
+      else if (mediaPreview !== "ready" || mediaActual === "error") retryVideo();
+      else playVideo();
+    }
+    function seekFromControls() {
+      if (!playbackOpened || video.readyState < 1) return;
+      const position = Math.max(0, Math.min(Number($("#ip-player-seek").value), video.duration || progress.duration));
+      if (video.ended || progress.completed || (progress.passCredited && position === 0)) {
+        // A full pass may finish while filling an earlier gap, before the media reaches its end.
+        const keepPlaying = !video.paused && !video.ended;
+        openPlayer({restart:true, autoplay:keepPlaying, resumeAt:position});
+        return;
+      }
+      pendingResume = null; resumeAttempted = false; returnedCompleted = false;
+      progress.completed = false;
+      video.currentTime = position;
+      syncTransport(); showPlayerControls();
     }
     function closeSpeedMenu(restoreFocus = false) {
       $("#ip-speed-menu").hidden = true;
       $("#ip-speed-toggle").setAttribute("aria-expanded", "false");
       if (restoreFocus) $("#ip-speed-toggle").focus();
+      scheduleControlsHide();
     }
     function applyPlaybackRate() {
       if (video.defaultPlaybackRate !== playbackRate) video.defaultPlaybackRate = playbackRate;
       if (video.playbackRate !== playbackRate) video.playbackRate = playbackRate;
     }
     function setPlaybackRate(value) {
-      if (![.75, 1, 1.25].includes(value)) return;
+      if (![.5, .75, 1, 1.25, 1.5].includes(value)) return;
       playbackRate = value;
       applyPlaybackRate(); syncPlayerControls(); closeSpeedMenu(true);
     }
     function switchEpisode(direction) {
       const target = episodes[episodes.indexOf(selectedEpisode) + direction];
       if (!target || !playbackOpened || activeScreen() !== "screen-ip-player") return;
-      if (isEpisodeLocked()) { refreshAccess(); return; }
-      if (isEpisodeLocked(target)) { openMembershipCheckout("player"); return; }
       selectEpisode(target.id, true);
       openPlayer();
     }
@@ -24726,7 +24768,9 @@
       const panel = $("#ip-video-status");
       panel.hidden = activeScreen() !== "screen-ip-player" || status === "ready";
       panel.classList.toggle("is-loading", status === "loading");
+      syncTransport();
       if (panel.hidden) return;
+      showPlayerControls();
       const copy = {
         loading:["🚀", "Getting your story ready…", "The adventure will begin in a moment.", "Try again"],
         error:["🛠️", "The story couldn’t load", "Try again to continue watching.", "Try again"],
@@ -24741,7 +24785,6 @@
     }
     function playVideo() {
       if (!playbackOpened || activeScreen() !== "screen-ip-player") return;
-      if (isEpisodeLocked()) { refreshAccess(); return; }
       if (mediaPreview !== "ready") { video.pause(); renderVideoStatus(); return; }
       restorePosition();
       mediaActual = video.readyState < 2 ? "loading" : "ready";
@@ -24762,7 +24805,10 @@
       pendingResume = null;
       resumeAttempted = false;
       returnedCompleted = false;
+      scrubbing = false;
       closeSpeedMenu();
+      clearTimeout(controlsTimer);
+      playerScreen.classList.remove("ip-controls-hidden");
     }
     function openCatalog(revealSelected = false) {
       cleanup();
@@ -24771,8 +24817,14 @@
       restoreRowPosition(revealSelected === true);
     }
     function openPlayer(options = {}) {
-      if (isEpisodeLocked()) { openMembershipCheckout(); return; }
       if (playbackOpened) cleanup();
+      const restart = options.restart === true || (options.autoplay !== false && progress.completed);
+      if (restart) {
+        progress.position = 0; progress.completed = false;
+        // Reaching the end by seeking does not discard this unfinished viewing pass.
+        if (progress.passCredited) { progress.watchedRanges = []; progress.passCredited = false; }
+        persistProgress(true);
+      }
       showLandScreen("screen-ip-player");
       mediaPreview = "ready";
       mediaActual = "loading";
@@ -24788,8 +24840,8 @@
         video.src = selectedEpisode.src;
         video.poster = selectedEpisode.poster || episodes[0].poster;
         video.load();
-      } else if (video.error) video.load();
-      applyPlaybackRate(); syncPlayerControls();
+      } else if (video.error || restart) video.load(); // A fresh pass must also reset native video.played.
+      applyPlaybackRate(); syncPlayerControls(); showPlayerControls();
       if (options.autoplay === false) {
         video.pause(); restorePosition();
         mediaActual = video.readyState >= 2 && pendingResume === null ? "ready" : "loading";
@@ -24804,7 +24856,6 @@
       renderVideoStatus();
     }
     function retryVideo() {
-      if (isEpisodeLocked()) { openCatalog(true); return; }
       rememberProgress(true);
       resumeAttempted = false;
       mediaPreview = "ready";
@@ -24825,8 +24876,7 @@
     });
     video.addEventListener("ratechange", applyPlaybackRate);
     video.addEventListener("timeupdate", () => {
-      if (playbackOpened && isEpisodeLocked()) { refreshAccess(); return; }
-      rememberProgress();
+      rememberProgress(); syncTransport();
     });
     video.addEventListener("seeking", () => {
       // A user may move the native scrubber before the automatic return seek finishes.
@@ -24840,7 +24890,7 @@
     });
     video.addEventListener("seeked", () => {
       if (!playbackOpened || playingEpisodeId !== loadedEpisodeId) return;
-      // A later native seek is the learner's new position, not the automatic checkout return seek.
+      // A later native seek is the learner's new position, not the automatic resume seek.
       if (pendingResume === null && returnedCompleted) {
         returnedCompleted = false;
         progress.completed = false;
@@ -24859,9 +24909,10 @@
         mediaActual = "ready"; renderVideoStatus();
       }
     });
-    video.addEventListener("pause", () => rememberProgress(true));
+    video.addEventListener("pause", () => { rememberProgress(true); syncTransport(); showPlayerControls(); });
+    video.addEventListener("volumechange", syncTransport);
+    video.addEventListener("durationchange", syncTransport);
     video.addEventListener("play", () => {
-      if (isEpisodeLocked()) { video.pause(); refreshAccess(); return; }
       if (!playbackOpened || playingEpisodeId !== loadedEpisodeId || activeScreen() !== "screen-ip-player" || mediaPreview !== "ready") { video.pause(); return; }
       if (returnedCompleted) {
         returnedCompleted = false;
@@ -24871,18 +24922,16 @@
       syncPlayerControls();
     });
     video.addEventListener("ended", () => {
-      if (!playbackOpened || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId || activeScreen() !== "screen-ip-player") return;
-      if (isEpisodeLocked()) { refreshAccess(); return; }
+      if (!playbackOpened || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId || activeScreen() !== "screen-ip-player" || !video.ended) return;
       const record = progressByEpisode[playingEpisodeId];
+      captureWatchedRanges();
       record.position = 0;
       record.completed = true;
-      const firstWatch = !record.watched;
-      record.watched = true;
       persistProgress(true);
       syncCatalog();
-      mediaActual = "ready"; renderVideoStatus();
-      // Keep the existing Explore task completion; playback has no quiz or reward screen.
-      if (firstWatch) window.v180CompleteExploreActivity?.();
+      mediaActual = "ready"; renderVideoStatus(); showPlayerControls();
+      // The shared scheduler still chooses at most one eligible Explore task.
+      creditWatchedPass(playingEpisodeId);
     });
     ["waiting", "stalled"].forEach(event => video.addEventListener(event, () => {
       if (video.paused || activeScreen() !== "screen-ip-player") return;
@@ -24895,7 +24944,7 @@
     });
     video.addEventListener("playing", () => {
       if (!playbackOpened || video.paused) return;
-      mediaActual = "ready"; renderVideoStatus();
+      mediaActual = "ready"; renderVideoStatus(); showPlayerControls();
     });
     video.addEventListener("error", () => {
       if (!playbackOpened) return;
@@ -24903,8 +24952,8 @@
     });
     function context() {
       const page = activeScreen();
-      if (page === "screen-ip-catalog") return {label:"IP 动画 · 动画首页",pageKey:"ip_catalog",isCore:true,keys:["ipMembership"]};
-      if (page === "screen-ip-player") return {label:"IP 动画 · 播放",pageKey:"ip_player",isCore:true,keys:["ipMembership","ipMedia"]};
+      if (page === "screen-ip-catalog") return {label:"Dino Story · 动画首页",pageKey:"ip_catalog",isCore:true,keys:[]};
+      if (page === "screen-ip-player") return {label:"Dino Story · 播放",pageKey:"ip_player",isCore:true,keys:["ipMedia"]};
       return null;
     }
     function jump(page) {
@@ -24919,10 +24968,11 @@
       get playbackRate() { return playbackRate; },
       get selectedEpisode() { return selectedEpisode; },
       get state() { return progress; },
-      openCatalog,openPlayer,setMedia,cleanup,context,refreshAccess,setMembership,isEpisodeLocked,
-      isMembershipCheckout:() => membershipCheckout && paywallTrigger === "ip_animation",finishMembershipCheckout,cancelMembershipCheckout,
-      checkoutToken:() => membershipCheckout && paywallTrigger === "ip_animation" ? membershipCheckoutId : null,
-      getValue:key => key === "ipMembership" ? membershipValue() : key === "ipMedia" ? mediaPreview : null,jump
+      openCatalog,openPlayer,setMedia,cleanup,context,refreshAccess,setMembership,
+      // Compatibility for shared purchase hooks: Dino Story never starts or owns a checkout.
+      isEpisodeLocked:() => false, isMembershipCheckout:() => false,
+      finishMembershipCheckout:() => false, cancelMembershipCheckout:() => {}, checkoutToken:() => null,
+      getValue:key => key === "ipMedia" ? mediaPreview : null,jump
     };
     // Preserve the existing FM and learning-plan navigation wrappers.
     const previousShowLandScreen = showLandScreen;
@@ -24937,12 +24987,29 @@
     showPortraitScreen = function () {cleanup();return previousShowPortraitScreen.apply(this, arguments);};
     $("#explore-open-animation").addEventListener("click", () => openCatalog());
     $("#ip-player-back").addEventListener("click", () => openCatalog(true));
+    $("#ip-player-toggle").addEventListener("click", togglePlayback);
+    $("#ip-ended-next").addEventListener("click", () => switchEpisode(1));
+    $("#ip-ended-replay").addEventListener("click", () => openPlayer({restart:true}));
+    $("#ip-player-mute").addEventListener("click", () => {video.muted = !video.muted; showPlayerControls();});
+    $("#ip-player-seek").addEventListener("pointerdown", () => {scrubbing = true; showPlayerControls();});
+    $("#ip-player-seek").addEventListener("input", seekFromControls);
+    $("#ip-player-seek").addEventListener("change", () => {scrubbing = false; rememberProgress(true); syncTransport(); showPlayerControls();});
+    window.addEventListener("pointerup", () => {if (scrubbing) {scrubbing = false; syncTransport(); showPlayerControls();}});
+    window.addEventListener("pointercancel", () => {scrubbing = false; syncTransport(); showPlayerControls();});
+    playerScreen.addEventListener("pointermove", showPlayerControls);
+    playerScreen.addEventListener("pointerdown", showPlayerControls);
+    playerScreen.addEventListener("focusin", showPlayerControls);
+    playerScreen.addEventListener("focusout", () => requestAnimationFrame(scheduleControlsHide));
+    playerControls.addEventListener("pointerleave", scheduleControlsHide);
+    video.addEventListener("click", showPlayerControls);
+    video.addEventListener("keydown", event => {if ([" ", "k"].includes(event.key)) {event.preventDefault(); togglePlayback();}});
     $("#ip-player-previous").addEventListener("click", () => switchEpisode(-1));
     $("#ip-player-next").addEventListener("click", () => switchEpisode(1));
     $("#ip-speed-toggle").addEventListener("click", () => {
       const menu = $("#ip-speed-menu");
       if (!menu.hidden) { closeSpeedMenu(); return; }
       menu.hidden = false;
+      showPlayerControls();
       $("#ip-speed-toggle").setAttribute("aria-expanded", "true");
       menu.querySelector('[aria-checked="true"]').focus();
     });
@@ -24960,7 +25027,7 @@
         event.preventDefault();
         const options = Array.from($("#ip-speed-menu").querySelectorAll("[data-ip-speed]"));
         const index = options.indexOf(document.activeElement);
-        const next = event.key === "Home" ? 0 : event.key === "End" ? 2 : (index + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
+        const next = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
         options[next].focus();
       }
     });
@@ -24969,7 +25036,7 @@
     });
     $("#ip-video-status-back").addEventListener("click", () => openCatalog(true));
     $("#ip-video-retry").addEventListener("click", retryVideo);
-    $("#ip-catalog-back").addEventListener("click", () => {catalogScrollLeft = episodeRow.scrollLeft;cleanup();showExploreHome();});
+    $("#ip-catalog-back").addEventListener("click", () => {cleanup();showExploreHome();});
     function pauseForBackground() { rememberProgress(true); video.pause(); }
     window.addEventListener("pagehide", pauseForBackground);
     document.addEventListener("visibilitychange", () => {
@@ -24977,7 +25044,6 @@
     });
     window.addEventListener("pageshow", refreshAccess);
     window.addEventListener("focus", refreshAccess);
-    window.setInterval(() => { if (playbackOpened && isEpisodeLocked()) refreshAccess(); }, 1000);
     const visibilityObserver = new MutationObserver(() => {
       if (playbackOpened && activeScreen() !== "screen-ip-player") cleanup();
     });
