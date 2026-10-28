@@ -8528,7 +8528,6 @@
       overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 28px;
       touch-action: pan-x; -webkit-overflow-scrolling: touch;
     }
-    .ip-card-row.has-play-history { padding-inline: var(--ip-edge-space, 28px); scroll-padding-inline: 0; }
     .ip-card-row.has-play-history .ip-episode-card { scroll-snap-align: center; }
     .ip-card-row::-webkit-scrollbar { display: none; }
     .ip-card-row.is-dragging { scroll-snap-type: none; cursor: grabbing; }
@@ -24777,24 +24776,26 @@
       $("#ip-row-next").disabled = episodeRow.scrollLeft >= max - 2;
     }
     function cardScrollPosition(card) {
-      return episodeRow.classList.contains("has-play-history")
+      const target = episodeRow.classList.contains("has-play-history")
         ? card.offsetLeft + card.offsetWidth / 2 - episodeRow.clientWidth / 2
-        : Math.max(0, card.offsetLeft - 28);
+        : card.offsetLeft - 28;
+      return Math.max(0, Math.min(target, episodeRow.scrollWidth - episodeRow.clientWidth));
     }
     function restoreRowPosition() {
       requestAnimationFrame(() => {
         if (activeScreen() !== "screen-ip-catalog") return;
         const card = episodeRow.querySelector('[data-ip-episode="' + (lastPlayedEpisodeId || episodes[0].id) + '"]');
         episodeRow.classList.toggle("has-play-history", !!lastPlayedEpisodeId);
-        episodeRow.style.setProperty("--ip-edge-space", Math.max(28, (episodeRow.clientWidth - card.offsetWidth) / 2) + "px");
         episodeRow.scrollLeft = lastPlayedEpisodeId ? cardScrollPosition(card) : 0;
         updateRowArrows();
       });
     }
     function scrollEpisodes(direction) {
-      const card = episodeRow.querySelector(".ip-episode-card");
-      if (!card) return;
-      episodeRow.scrollBy({left:direction * (card.offsetWidth + 18), behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
+      const positions = [...new Set(Array.from(episodeRow.querySelectorAll(".ip-episode-card"), cardScrollPosition))];
+      const ordered = direction > 0 ? positions : positions.reverse();
+      const target = ordered.find(position => direction > 0 ? position > episodeRow.scrollLeft + 2 : position < episodeRow.scrollLeft - 2);
+      if (target === undefined) return;
+      episodeRow.scrollTo({left:target, behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
     }
     episodeRow.addEventListener("scroll", updateRowArrows, {passive:true});
     episodeRow.addEventListener("keydown", event => {
