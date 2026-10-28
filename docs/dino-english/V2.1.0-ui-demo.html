@@ -10262,8 +10262,8 @@
             <div class="ip-video-status" id="ip-video-status" role="status" aria-live="polite" hidden>
               <div class="ip-video-status-card">
                 <span class="ip-video-status-icon" id="ip-video-status-icon" aria-hidden="true">🚀</span>
-                <h2 id="ip-video-status-title">Getting your story ready…</h2>
-                <p id="ip-video-status-copy">The adventure will begin in a moment.</p>
+                <h2 id="ip-video-status-title">Loading…</h2>
+                <p id="ip-video-status-copy" hidden></p>
                 <button type="button" class="ip-main-cta" id="ip-video-retry">Try again</button>
                 <button type="button" class="ip-status-back" id="ip-video-status-back">Back to episodes</button>
               </div>
@@ -24877,7 +24877,7 @@
       if (panel.hidden) return;
       showPlayerControls();
       const copy = {
-        loading:["🚀", "Getting your story ready…", "The adventure will begin in a moment.", "Try again"],
+        loading:["🚀", "Loading…", "", "Try again"],
         error:["🛠️", "The story couldn’t load", "Try again to continue watching.", "Try again"],
         offline:["☁️", "Let’s reconnect", "Check your connection, then continue watching.", "Try again"],
         paused:["▶", "Your adventure is ready!", "Tap below to continue watching.", "Play story"]
@@ -24885,6 +24885,7 @@
       $("#ip-video-status-icon").textContent = copy[0];
       $("#ip-video-status-title").textContent = copy[1];
       $("#ip-video-status-copy").textContent = copy[2];
+      $("#ip-video-status-copy").hidden = !copy[2];
       $("#ip-video-retry").textContent = copy[3];
       $("#ip-video-retry").hidden = status === "loading";
     }
