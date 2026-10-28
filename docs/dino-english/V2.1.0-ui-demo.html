@@ -8527,6 +8527,8 @@
       overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 28px;
       touch-action: pan-x; -webkit-overflow-scrolling: touch;
     }
+    .ip-card-row.has-play-history { padding-inline: var(--ip-edge-space, 28px); scroll-padding-inline: 0; }
+    .ip-card-row.has-play-history .ip-episode-card { scroll-snap-align: center; }
     .ip-card-row::-webkit-scrollbar { display: none; }
     .ip-card-row.is-dragging { scroll-snap-type: none; cursor: grabbing; }
     .ip-episode-card {
@@ -24503,7 +24505,6 @@
     const playerControls = $("#ip-player-controls");
     let controlsTimer = 0;
     let scrubbing = false;
-    let catalogScrollLeft = 0;
     let pointerGesture = null;
     let suppressClickUntil = 0;
     // Replace each src when its final clip is available. Episodes 3–5 use the approved demo clip.
@@ -24516,6 +24517,13 @@
     ];
     // This preserves the first episode's original key; storage failures keep in-page progress.
     const storageKey = id => "dino-v200-ip-playback:" + id + ":v1";
+    const lastPlayedKey = "dino-v200-ip-last-played:v1";
+    let lastPlayedEpisodeId = null;
+    try {
+      const saved = localStorage.getItem(lastPlayedKey);
+      if (episodes.some(episode => episode.id === saved)) lastPlayedEpisodeId = saved;
+    } catch (_) {}
+    let actualPlaybackStarted = false;
     const progressByEpisode = Object.fromEntries(episodes.map(episode => {
       const record = {position:0, duration:episode.duration, completed:false, watched:false, watchedRanges:[], passCredited:false};
       try {
@@ -24584,12 +24592,17 @@
       });
       record.watchedRanges = merged;
     }
-    function hasWatchedWholePass(record) {
-      return record.duration > 0 && record.watchedRanges.some(([start, end]) => start <= .1 && end >= record.duration - .1);
+    function rememberLastPlayed() {
+      if (!playbackOpened || !actualPlaybackStarted || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId) return;
+      let played = false;
+      for (let i = 0; i < video.played.length; i++) if (video.played.end(i) > video.played.start(i)) played = true;
+      if (!played || lastPlayedEpisodeId === playingEpisodeId) return;
+      lastPlayedEpisodeId = playingEpisodeId;
+      try { localStorage.setItem(lastPlayedKey, lastPlayedEpisodeId); } catch (_) {}
     }
-    function creditWatchedPass(id) {
+    function creditEndedPass(id) {
       const record = progressByEpisode[id];
-      if (!record || record.passCredited || !hasWatchedWholePass(record)) return;
+      if (!video.ended || !record || record.passCredited) return;
       record.passCredited = true;
       record.watched = true;
       // Persist before the shared scheduler; repeated media events credit this pass only once.
@@ -24597,6 +24610,7 @@
       window.v180CompleteExploreActivity?.();
     }
     function rememberProgress(force = false) {
+      rememberLastPlayed();
       if (!playbackOpened || returnedCompleted || !playingEpisodeId || playingEpisodeId !== loadedEpisodeId || pendingResume !== null || video.readyState < 1 || !Number.isFinite(video.currentTime)) return;
       const record = progressByEpisode[playingEpisodeId];
       if (Number.isFinite(video.duration) && video.duration > 0) record.duration = video.duration;
@@ -24604,8 +24618,8 @@
       if (video.ended) { record.position = 0; record.completed = true; }
       else { record.position = Math.max(0, video.currentTime); record.completed = false; }
       persistProgress(force);
-      // Filling a previously skipped gap completes the pass without another trip to the end.
-      creditWatchedPass(playingEpisodeId);
+      // Reaching the end counts once, including seeking to the end while paused.
+      if (video.ended) creditEndedPass(playingEpisodeId);
     }
     function applyEpisodeVisual(element, episode) {
       if (episode.atlasIndex === null) delete element.dataset.atlasIndex;
@@ -24643,7 +24657,6 @@
         button.append(visual, copy);
         button.addEventListener("click", event => {
           if (performance.now() < suppressClickUntil) { event.preventDefault(); return; }
-          catalogScrollLeft = episodeRow.scrollLeft;
           selectEpisode(episode.id);
           openPlayer();
         });
@@ -24684,8 +24697,9 @@
       const position = pendingResume !== null ? pendingResume : Number.isFinite(video.currentTime) ? video.currentTime : progress.position;
       const seek = $("#ip-player-seek");
       seek.disabled = !playbackOpened || video.readyState < 1 || !duration;
-      seek.max = String(duration || 0);
-      if (!scrubbing) seek.value = String(Math.min(position, duration || 0));
+      // The final 0.1-second range step must reach clips with fractional durations too.
+      seek.max = String(Math.ceil((duration || 0) * 10) / 10);
+      if (!scrubbing) seek.value = video.ended ? seek.max : String(Math.min(position, duration || 0));
       seek.style.setProperty("--ip-played", (duration ? Math.min(100, position / duration * 100) : 0) + "%");
       seek.setAttribute("aria-valuetext", formatTime(position) + " of " + formatTime(duration));
       $("#ip-player-time").textContent = formatTime(position) + " / " + formatTime(duration);
@@ -24724,8 +24738,11 @@
     function seekFromControls() {
       if (!playbackOpened || video.readyState < 1) return;
       const position = Math.max(0, Math.min(Number($("#ip-player-seek").value), video.duration || progress.duration));
+      if ((video.ended || progress.completed) && position === (video.duration || progress.duration)) {
+        syncTransport(); showPlayerControls(); return;
+      }
       if (video.ended || progress.completed || (progress.passCredited && position === 0)) {
-        // A full pass may finish while filling an earlier gap, before the media reaches its end.
+        // Moving away from a credited ending begins another viewing round.
         const keepPlaying = !video.paused && !video.ended;
         openPlayer({restart:true, autoplay:keepPlaying, resumeAt:position});
         return;
@@ -24762,18 +24779,18 @@
       $("#ip-row-previous").disabled = episodeRow.scrollLeft <= 2;
       $("#ip-row-next").disabled = episodeRow.scrollLeft >= max - 2;
     }
-    function restoreRowPosition(revealSelected) {
+    function cardScrollPosition(card) {
+      return episodeRow.classList.contains("has-play-history")
+        ? card.offsetLeft + card.offsetWidth / 2 - episodeRow.clientWidth / 2
+        : Math.max(0, card.offsetLeft - 28);
+    }
+    function restoreRowPosition() {
       requestAnimationFrame(() => {
         if (activeScreen() !== "screen-ip-catalog") return;
-        episodeRow.scrollLeft = catalogScrollLeft;
-        const card = episodeRow.querySelector('[data-ip-episode="' + selectedEpisode.id + '"]');
-        if (revealSelected && card) {
-          const start = card.offsetLeft - 28;
-          const end = card.offsetLeft + card.offsetWidth + 28;
-          if (start < episodeRow.scrollLeft) episodeRow.scrollLeft = start;
-          else if (end > episodeRow.scrollLeft + episodeRow.clientWidth) episodeRow.scrollLeft = end - episodeRow.clientWidth;
-        }
-        catalogScrollLeft = episodeRow.scrollLeft;
+        const card = episodeRow.querySelector('[data-ip-episode="' + (lastPlayedEpisodeId || episodes[0].id) + '"]');
+        episodeRow.classList.toggle("has-play-history", !!lastPlayedEpisodeId);
+        episodeRow.style.setProperty("--ip-edge-space", Math.max(28, (episodeRow.clientWidth - card.offsetWidth) / 2) + "px");
+        episodeRow.scrollLeft = lastPlayedEpisodeId ? cardScrollPosition(card) : 0;
         updateRowArrows();
       });
     }
@@ -24782,10 +24799,7 @@
       if (!card) return;
       episodeRow.scrollBy({left:direction * (card.offsetWidth + 18), behavior:matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"});
     }
-    episodeRow.addEventListener("scroll", () => {
-      if (activeScreen() === "screen-ip-catalog") catalogScrollLeft = episodeRow.scrollLeft;
-      updateRowArrows();
-    }, {passive:true});
+    episodeRow.addEventListener("scroll", updateRowArrows, {passive:true});
     episodeRow.addEventListener("keydown", event => {
       if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
       const cards = Array.from(episodeRow.querySelectorAll(".ip-episode-card"));
@@ -24793,7 +24807,7 @@
       const next = event.key === "Home" ? 0 : event.key === "End" ? cards.length - 1 : Math.max(0, Math.min(cards.length - 1, current + (event.key === "ArrowRight" ? 1 : -1)));
       event.preventDefault();
       cards[next].focus({preventScroll:true});
-      episodeRow.scrollTo({left:Math.max(0, cards[next].offsetLeft - 28), behavior:"smooth"});
+      episodeRow.scrollTo({left:cardScrollPosition(cards[next]), behavior:"smooth"});
     });
     episodeRow.addEventListener("pointerdown", event => {
       if (event.button !== 0) return;
@@ -24840,7 +24854,7 @@
       mediaPreview = "ready";
       mediaActual = "ready";
       syncCatalog();
-      if (!stayInPlayer && activeScreen() === "screen-ip-player") openCatalog(true);
+      if (!stayInPlayer && activeScreen() === "screen-ip-player") openCatalog();
       return true;
     }
     function restorePosition() {
@@ -24893,6 +24907,7 @@
     function cleanup() {
       rememberProgress(true);
       playbackOpened = false;
+      actualPlaybackStarted = false;
       playingEpisodeId = null;
       playbackSession++;
       video.pause();
@@ -24904,25 +24919,26 @@
       clearTimeout(controlsTimer);
       playerScreen.classList.remove("ip-controls-hidden");
     }
-    function openCatalog(revealSelected = false) {
+    function openCatalog() {
       cleanup();
       syncCatalog();
       showLandScreen("screen-ip-catalog");
-      restoreRowPosition(revealSelected === true);
+      restoreRowPosition();
     }
     function openPlayer(options = {}) {
       if (playbackOpened) cleanup();
       const restart = options.restart === true || (options.autoplay !== false && progress.completed);
       if (restart) {
         progress.position = 0; progress.completed = false;
-        // Reaching the end by seeking does not discard this unfinished viewing pass.
-        if (progress.passCredited) { progress.watchedRanges = []; progress.passCredited = false; }
+        progress.watchedRanges = [];
+        progress.passCredited = false;
         persistProgress(true);
       }
       showLandScreen("screen-ip-player");
       mediaPreview = "ready";
       mediaActual = "loading";
       playbackOpened = true;
+      actualPlaybackStarted = false;
       playingEpisodeId = selectedEpisode.id;
       playbackSession++;
       returnedCompleted = options.autoplay === false && options.completed === true;
@@ -25025,7 +25041,7 @@
       syncCatalog();
       mediaActual = "ready"; renderVideoStatus(); showPlayerControls();
       // The shared scheduler still chooses at most one eligible Explore task.
-      creditWatchedPass(playingEpisodeId);
+      creditEndedPass(playingEpisodeId);
     });
     ["waiting", "stalled"].forEach(event => video.addEventListener(event, () => {
       if (video.paused || activeScreen() !== "screen-ip-player") return;
@@ -25038,6 +25054,8 @@
     });
     video.addEventListener("playing", () => {
       if (!playbackOpened || video.paused) return;
+      actualPlaybackStarted = true;
+      rememberLastPlayed();
       mediaActual = "ready"; renderVideoStatus(); showPlayerControls();
     });
     video.addEventListener("error", () => {
@@ -25080,7 +25098,7 @@
     const previousShowPortraitScreen = showPortraitScreen;
     showPortraitScreen = function () {cleanup();return previousShowPortraitScreen.apply(this, arguments);};
     $("#explore-open-animation").addEventListener("click", () => openCatalog());
-    $("#ip-player-back").addEventListener("click", () => openCatalog(true));
+    $("#ip-player-back").addEventListener("click", () => openCatalog());
     $("#ip-player-toggle").addEventListener("click", togglePlayback);
     $("#ip-ended-next").addEventListener("click", () => switchEpisode(1));
     $("#ip-ended-replay").addEventListener("click", () => openPlayer({restart:true}));
@@ -25128,7 +25146,7 @@
     $("#ip-speed-menu").addEventListener("focusout", () => {
       requestAnimationFrame(() => { if (!$("#ip-speed-menu").contains(document.activeElement) && document.activeElement !== $("#ip-speed-toggle")) closeSpeedMenu(); });
     });
-    $("#ip-video-status-back").addEventListener("click", () => openCatalog(true));
+    $("#ip-video-status-back").addEventListener("click", () => openCatalog());
     $("#ip-video-retry").addEventListener("click", retryVideo);
     $("#ip-catalog-back").addEventListener("click", () => {cleanup();showExploreHome();});
     function pauseForBackground() { rememberProgress(true); video.pause(); }
