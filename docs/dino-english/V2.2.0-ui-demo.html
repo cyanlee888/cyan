@@ -20374,21 +20374,24 @@
     function coachHubTab(tab){ if(typeof setHubTab === "function"){ try{ setHubTab(tab); }catch(e){} } }
     function coachSetCopy(str){ var el = document.getElementById("cx-tip-copy"); if(el) el.textContent = coachFill(str); }
 
+    function coachTabTarget(tab){
+      return Array.from(document.querySelectorAll('#screen-class [data-ex-tab="'+tab+'"], #screen-class [data-hub-tab="'+tab+'"]')).find(function(el){return el.getClientRects().length&&getComputedStyle(el).visibility!=="hidden";})||null;
+    }
     var COACH_PHASES = [
       { dot:0, tab:"dino", label:"Dino", next:true, enter:function(){ coachHubTab("dino"); },
-        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="dino"]'); },
+        tabTarget:function(){ return coachTabTarget("dino"); },
         copy:"Hi, I'm Dino, your English buddy. We can chat anytime, and I'm always right here!",
         tap:coachIntroTap(1) },
       { dot:1, tab:"class", label:"Class", next:true, enter:function(){ coachHubTab("class"); },
-        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="class"]'); },
+        tabTarget:function(){ return coachTabTarget("class"); },
         copy:"This is Class! All of your child's lessons live here. Tap to get ready!",
         tap:coachIntroTap(2) },
       { dot:2, tab:"practice", label:"Explore", next:true, enter:function(){ coachHubTab("practice"); },
-        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="practice"]'); },
+        tabTarget:function(){ return coachTabTarget("practice"); },
         copy:"This is Explore! Your child can read stories, listen to radio and practice speaking here. Tap to look!",
         tap:coachIntroTap(3) },
       { dot:3, tab:"play", label:"Play", next:true, enter:function(){ coachHubTab("play"); },
-        tabTarget:function(){ return document.querySelector('#screen-class [data-hub-tab="play"]'); },
+        tabTarget:function(){ return coachTabTarget("play"); },
         copy:"This is Play! Answer questions in fun games and win Dino Figures. Your child learns by playing!",
         tap:coachIntroTap(4) },
     ];
@@ -25627,7 +25630,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  function act(a){if(a==='reviewPrev'||a==='reviewNext'){reviewGoTo((m.reviewIndex||0)+(a==='reviewNext'?1:-1));return;}if(a==='otherDates'){openDateDrawer();return;}if(a==='scheduleDay')return;if(a==='reserve'){show('earlySchedule');return;}if(a==='decideLater'){show('preview');return;}if(['quickDate','quickTime'].includes(a)){return;}if(m.busy&&['save','back'].includes(a)){if(a==='back'){clearTimeout(job);m.busy=false;back();}return;}if(a==='start')start();else if(a==='checkout'){m.introScroll=root.querySelector('.pj-scroll')?.scrollTop||0;stop();m.checkout=true;cxStage=null;openPaywall('screen-class','parent_course_preview');profile.selectedPlan='monthly';window.v220RefreshParentPaywall?.();}else if(a==='save')save();else if(a==='play')play();else if(a==='retryMedia'){m.media='ready';show('preview');}else if(a==='allow'||a==='deny'){m.permission=a==='allow'?'granted':'denied';show('saved');}else if(a==='back')back();else if(a==='home'||a==='skip')home();else if(a==='cancel'){m.reminder=null;persist();syncBanner();}else {if(a==='plan')m.intro='plan';persist();show(a);}}
  root.addEventListener('click',e=>{const b=e.target.closest('[data-pj]');if(b)act(b.dataset.pj);});
  const oldPicker=openTeacherPicker;openTeacherPicker=function(mode){if(mode==='app')return oldPicker.apply(this,arguments);m.stage='pending';m.active=true;show('entry');};
- window.addEventListener('click',e=>{if(m.checkout&&e.target.closest?.('#btn-pwpt-back')){e.preventDefault();e.stopImmediatePropagation();m.checkout=false;show('preview');root.querySelector('.pj-scroll').scrollTop=m.introScroll||0;}},true);
+ window.addEventListener('click',e=>{if(m.checkout&&e.target.closest?.('#btn-pwpt-back')){e.preventDefault();e.stopImmediatePropagation();m.checkout=false;stop();persist();profile.v180PlanRevealSeen=true;document.getElementById('v180-plan-reveal')?.classList.remove('show');startV170HomeGuide();syncBanner();window.demoStatePanel?.render();}},true);
  const oldReport=showTrialReport;showTrialReport=function(){if(m.active&&m.stage==='started'){m.stage='completed';m.reminder=null;persist();syncBanner();}return oldReport.apply(this,arguments);};
  const oldFinish=window.IP_ANIMATION?.finishMembershipCheckout;if(window.IP_ANIMATION){window.IP_ANIMATION.finishMembershipCheckout=function(){if(!m.checkout)return oldFinish?.apply(this,arguments)||false;m.checkout=false;m.account=profile.premiumUnlocked?'paid':'free';if(m.trialActivated){profile.effectiveAccessEnd=new Date(Date.now()+3*86400000).toISOString();profile.nextBillingDate=new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{dateStyle:'medium'}).format(new Date(profile.effectiveAccessEnd));}persist();show(m.account==='paid'?'after':'plan');return true;};}
  // The existing paywall/back handlers call the checkout hook; preserve their payment and cancellation logic.
