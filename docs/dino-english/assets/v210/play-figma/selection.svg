@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="220" height="134.426" viewBox="0 0 220 134.426" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="&#233;&#128;&#137;&#228;&#184;&#173;&#230;&#149;&#136;&#230;&#158;&#156;" filter="url(#filter0_f_0_38)">
+<path id="Polygon 1" d="M210.872 51.3416L196.832 35.4704L173.91 9.55868C170.63 5.851 165.918 3.728 160.968 3.728H64.2169C59.2666 3.728 54.5541 5.851 51.2742 9.55868L28.3522 35.4704L14.3122 51.3416L7.29219 59.2772M7.29219 75.1484L14.3122 83.084L28.3522 98.9552L35.3722 106.891L42.3922 114.826L28.3522 112.371M49.4122 122.762L51.2742 124.867C54.5541 128.575 59.2666 130.698 64.2169 130.698H160.968C165.918 130.698 170.63 128.575 173.91 124.867L196.832 98.9552L210.872 83.084V90.5673" stroke-width="3.456" stroke="#F7FF00"/>
+<path id="Vector 1289" d="M109.137 125.529H156.354C161.219 125.529 165.859 123.478 169.134 119.879L188.625 98.4618" stroke-width="3.456" stroke="#F6FF00"/>
+<ellipse id="Ellipse 1104" cx="211.952" cy="52.7866" rx="6.048" ry="3.94724" fill="#F6FF00"/>
+<ellipse id="Ellipse 1105" cx="8.048" cy="75.3425" rx="6.048" ry="3.94724" fill="#F6FF00"/>
+<path id="Vector 1290" d="M67.6625 8.80339H102.222" stroke-width="3.456" stroke="#F6FF00"/>
+</g>
+<defs>
+<filter id="filter0_f_0_38" x="0" y="-1.19209e-07" width="220" height="134.426" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_0_38"/>
+</filter>
+</defs>
+</svg>

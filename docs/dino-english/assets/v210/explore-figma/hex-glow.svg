@@ -1,0 +1,31 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="102.267" height="110.718" viewBox="0 0 102.267 110.718" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Polygon 1" filter="url(#filter0_d_0_47)">
+<use xlink:href="#stroke0_0_47" fill="url(#paint0_linear_0_47)"/>
+<mask id="stroke1_0_47" maskUnits="userSpaceOnUse" x="7.55543" y="7.78068" width="87" height="96" fill="black">
+<rect fill="white" x="7.55543" y="7.78068" width="87" height="96"/>
+<use xlink:href="#stroke0_0_47"/>
+</mask>
+<path d="M9.92969 39.59V71.1276C9.92969 76.0906 12.5774 80.6765 16.8754 83.158L44.1878 98.9268C48.4859 101.408 53.7812 101.408 58.0793 98.9268L85.3917 83.158C89.6897 80.6765 92.3374 76.0906 92.3374 71.1276V39.59C92.3374 34.627 89.6897 30.0411 85.3917 27.5596L58.0793 11.7908C53.7812 9.30932 48.4859 9.30932 44.1878 11.7908L16.8754 27.5596C12.5774 30.0411 9.92969 34.627 9.92969 39.59Z" stroke-width="4" stroke="url(#paint1_linear_0_47)" mask="url(#stroke1_0_47)"/>
+</g>
+<defs>
+<filter id="filter0_d_0_47" x="0" y="2.38419e-07" width="102.267" height="110.718" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="3.96484"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_47"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_47" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_0_47" x1="10.8484" y1="34.1744" x2="51.1335" y2="102.937" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7BD3FF"/>
+<stop offset="1" stop-color="#CD7DFF"/>
+</linearGradient>
+<linearGradient id="paint1_linear_0_47" x1="51.1336" y1="7.78068" x2="51.1336" y2="102.937" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E6F9FF"/>
+<stop offset="1" stop-color="#AFC4FF"/>
+</linearGradient>
+<path id="stroke0_0_47" d="M44.1878 11.7908C48.4859 9.30932 53.7812 9.30932 58.0793 11.7908L85.3917 27.5596C89.6897 30.0411 92.3374 34.627 92.3374 39.59V71.1276C92.3374 76.0906 89.6897 80.6765 85.3917 83.158L58.0793 98.9268C53.7812 101.408 48.4859 101.408 44.1878 98.9268L16.8754 83.158C12.5774 80.6765 9.92969 76.0906 9.92969 71.1276V39.59C9.92969 34.627 12.5774 30.0411 16.8754 27.5596L44.1878 11.7908Z"/>
+</defs>
+</svg>

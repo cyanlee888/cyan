@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="75.1895" height="82.5234" viewBox="0 0 75.1895 82.5234" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Polygon 2" opacity="0.4">
+<use xlink:href="#stroke0_0_29" fill="url(#paint0_linear_0_29)"/>
+<mask id="stroke1_0_29" fill="white">
+<use xlink:href="#stroke0_0_29"/>
+</mask>
+<path d="M0 27.5766V54.9468C0 59.9097 2.6477 64.4957 6.94572 66.9771L30.6491 80.6623C34.9471 83.1437 40.2425 83.1437 44.5405 80.6623L68.2438 66.9771C72.5418 64.4957 75.1895 59.9097 75.1895 54.9468V27.5766C75.1895 22.6136 72.5418 18.0277 68.2438 15.5462L44.5405 1.8611C40.2425 -0.620369 34.9471 -0.620363 30.649 1.8611L6.94571 15.5462C2.64769 18.0277 0 22.6136 0 27.5766Z" stroke-width="1.38914" stroke="white" mask="url(#stroke1_0_29)"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_29" x1="37.5948" y1="-2.14901" x2="37.5948" y2="84.6724" gradientUnits="userSpaceOnUse">
+<stop stop-color="#97D4FF"/>
+<stop offset="1" stop-color="#F98AFF"/>
+</linearGradient>
+<path id="stroke0_0_29" d="M30.649 1.8611C34.9471 -0.620363 40.2425 -0.620369 44.5405 1.86109L68.2438 15.5462C72.5418 18.0277 75.1895 22.6136 75.1895 27.5766V54.9468C75.1895 59.9097 72.5418 64.4957 68.2438 66.9771L44.5405 80.6623C40.2425 83.1437 34.9471 83.1437 30.6491 80.6623L6.94572 66.9771C2.6477 64.4957 0 59.9097 0 54.9468V27.5766C0 22.6136 2.64769 18.0277 6.94571 15.5462L30.649 1.8611Z"/>
+</defs>
+</svg>
