@@ -13933,6 +13933,7 @@
     }
     // ----- In-class lesson flow (teach → feedback → Practice Time → quiz) -----
     let inclassIsFirst = false;
+    let inclassIsTrial = false;
     let inclassEntrySource = "app";
     let icPtTimer = null;
     function renderInclassTeacher() {
@@ -13951,6 +13952,9 @@
       inclassEntrySource = source || "app";
       const resumingTrial = inclassEntrySource === "trial-resume" && profile.trialInProgress && !profile.trialReportShown;
       inclassIsFirst = inclassEntrySource === "trial-start" || resumingTrial || !profile.hasStartedClass;
+      // Keep this session's course type even if an earlier report has been viewed.
+      inclassIsTrial = ["trial-start", "trial-resume", "teacher-onboarding", "placement-trial", "cx-placement"].includes(inclassEntrySource)
+        || (inclassIsFirst && !profile.trialReportShown);
       profile.hasStartedClass = true;
       if (inclassIsFirst && !profile.trialReportShown) profile.trialInProgress = true;
       fillClassTab();
@@ -13998,7 +14002,7 @@
         window.v180CompleteLessonStage?.();
       }
       trialReportMode = "trial";
-      lessonCompleteIsTrial = inclassIsFirst && !profile.trialReportShown;
+      lessonCompleteIsTrial = inclassIsTrial;
       if (lessonCompleteIsTrial) {
         profile.trialInProgress = false;
         profile.trialReportShown = true;
