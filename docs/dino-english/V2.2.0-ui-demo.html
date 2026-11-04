@@ -25585,7 +25585,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  }
  function hero(){return '<img class="pj-art" src="assets/v220/parent-journey/classroom-with-dino.png" alt="AI 老师通过屏幕与孩子互动的插画" />';}
  function render(){let body='',foot='';const pg=m.page;const scrollTop=root.dataset.pjPage===pg?(root.querySelector('.pj-scroll')?.scrollTop||0):0;root.dataset.pjPage=pg;root.lang=m.locale==='en'?'en':'zh-CN';
-  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div><div class="pj-entry-hero"><img src="assets/v220/parent-journey/entry-teacher-course-hd.png" alt="${txt('Max 老师介绍推荐体验课','Max presents the recommended trial lesson')}" width="1340" height="1174" fetchpriority="high"/><h2>${esc(classPathTrialCourse().title)}</h2><span>${txt('体验课 · 约 10 分钟','Trial lesson · ~10 min')}</span></div><div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start">${t('start')}</button><button class="pj-art-hit pj-art-later" data-pj="reserve">${t('later')}</button></div></div>`;foot='';}
+  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div><div class="pj-entry-hero"><img src="assets/v220/parent-journey/entry-teacher-course-hd.png" alt="${txt('Max 老师介绍推荐体验课','Max presents the recommended trial lesson')}" width="1340" height="1174" fetchpriority="high"/><h2>${esc(classPathTrialCourse().title)}</h2><span>${txt('体验课 · 约 10 分钟','Trial lesson · ~10 min')}</span></div><div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${t('start')}</span><span class="pj-entry-action-note">${txt('孩子亲自参与 · 约 10 分钟','With your child · About 10 min')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择稍后方便的时间','Choose a time for later')}</span></button></div></div>`;foot='';}
   if(pg==='preview'){
    const name=String(profile.name||'').trim(),level=String(profile.level||'').trim(),course=classPathTrialCourse();
    const clips=txt(['老师：What animal is this?','孩子：A cat!'],['Teacher: What animal is this?','Child: A cat!']);
@@ -26253,18 +26253,21 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 
 <style id="pj-crisp-entry-style">
 #screen-parent-journey:has(.pj-crisp-entry)>.pj-scroll{overflow:auto;align-items:stretch!important;background:radial-gradient(ellipse at 56% 54%,#0668ff 0%,#0040ef 46%,#052bc9 100%)}
-.pj-approved-entry.pj-crisp-entry{box-sizing:border-box;display:flex;flex-direction:column;width:100%;height:100%;min-height:590px;max-width:none;max-height:none;padding:48px 24px 20px;gap:20px;container-type:inline-size;background:none}
+.pj-approved-entry.pj-crisp-entry{box-sizing:border-box;display:flex;flex-direction:column;width:100%;height:100%;min-height:620px;max-width:none;max-height:none;padding:28px 24px 20px;gap:16px;container-type:inline-size;background:none}
 .pj-crisp-entry .pj-personal-heading{position:static;width:100%;flex:none;pointer-events:auto}
 .pj-crisp-entry .pj-personal-heading h1{font-size:clamp(26px,8.5cqw,34px)!important;line-height:1.18!important}
-.pj-crisp-entry .pj-personal-heading p{font-size:clamp(14px,4.3cqw,16px)!important;line-height:1.5!important;margin:20px 0 0!important}
-.pj-entry-hero{position:relative;flex:none;width:100%;aspect-ratio:1340/1174;margin:auto 0;isolation:isolate}
+.pj-crisp-entry .pj-personal-heading p{font-size:clamp(14px,4.3cqw,16px)!important;line-height:1.5!important;margin:16px 0 0!important}
+.pj-entry-hero{position:relative;flex:none;width:90%;max-width:320px;aspect-ratio:1340/1174;margin:auto 0;align-self:center;isolation:isolate;container-type:inline-size}
 .pj-entry-hero>img{display:block;width:100%;height:100%;object-fit:contain}
 .pj-entry-hero>h2{position:absolute;left:42%;top:50%;width:52%;height:16.5%;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--sky-deep);font:700 clamp(14px,4.7cqw,20px)/1.22 var(--display);letter-spacing:-.025em;overflow-wrap:anywhere}
 .pj-entry-hero>span{position:absolute;left:46.2%;top:67.4%;width:43.5%;height:7.8%;display:flex;align-items:center;justify-content:center;color:var(--sky-deep);font:700 clamp(11px,3.55cqw,15px)/1.2 var(--display);white-space:nowrap}
-.pj-entry-actions{display:flex;flex:none;flex-direction:column;align-items:center;width:100%;gap:8px}
-.pj-crisp-entry .pj-art-hit{position:static;min-height:44px;height:auto;padding:10px 8px;color:white}
-.pj-crisp-entry .pj-art-start{width:100%;min-height:56px;border-radius:999px;border:1px solid #ffdd83;background:linear-gradient(180deg,#ffb735 0%,#ff8d12 45%,#ff7806 100%)!important;box-shadow:inset 0 2px 2px #fff8,inset 0 -3px 2px #e9630544,0 4px 10px #00186633;font:700 clamp(18px,5.8cqw,24px)/1.25 var(--display);letter-spacing:-.025em;text-shadow:0 1px 1px #d85b3d55}
-.pj-crisp-entry .pj-art-start:active{transform:translateY(2px)}
-.pj-crisp-entry .pj-art-later{width:100%;font:700 clamp(14px,4.2cqw,17px)/1.3 var(--display)}
-@media(max-width:360px){.pj-approved-entry.pj-crisp-entry{min-height:570px;padding:32px 16px 16px;gap:16px}.pj-crisp-entry .pj-personal-heading p{margin-top:16px!important}}
+.pj-entry-actions{display:flex;flex:none;flex-direction:column;align-items:stretch;width:100%;gap:12px}
+.pj-crisp-entry .pj-art-hit{position:static;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:100%;height:auto;min-height:76px;padding:12px 16px;border-radius:24px;white-space:normal;text-align:center;cursor:pointer}
+.pj-crisp-entry .pj-entry-action-title{font:700 clamp(18px,5.8cqw,22px)/1.25 var(--display);letter-spacing:-.025em}
+.pj-crisp-entry .pj-entry-action-note{font:600 13px/1.4 var(--font)}
+.pj-crisp-entry .pj-art-start{color:white;border:1px solid #ffdd83;background:linear-gradient(180deg,#ffb735 0%,#ff8d12 45%,#ff7806 100%)!important;box-shadow:inset 0 2px 2px #fff8,inset 0 -3px 2px #e9630544,0 4px 10px #00186633;text-shadow:0 1px 1px #d85b3d55}
+.pj-crisp-entry .pj-art-later{color:var(--ink-cosmic,#151b86);border:1px solid #c7e8ff;background:linear-gradient(145deg,#fff,#eeedff)!important;box-shadow:inset 0 2px 2px #fff,0 3px 8px #00186633}
+.pj-crisp-entry .pj-art-later .pj-entry-action-note{color:#465485}
+.pj-crisp-entry .pj-art-hit:active{transform:translateY(2px)}
+@media(max-width:360px){.pj-approved-entry.pj-crisp-entry{min-height:580px;padding:24px 16px 16px;gap:16px}.pj-crisp-entry .pj-personal-heading p{margin-top:14px!important}}
 </style>
