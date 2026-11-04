@@ -19673,6 +19673,7 @@
       {key:"pjLocale",label:"家长页语言",options:[["zh","简体中文"],["en","English"]],apply:v=>window.PARENT_JOURNEY.set("pjLocale",v)},
       {key:"pjMedia",label:"课堂片段",options:[["ready","可播放示意"],["loading","加载中"],["error","加载失败"]],apply:v=>window.PARENT_JOURNEY.set("pjMedia",v)},
       {key:"pjSave",label:"下次保存提醒",options:[["success","成功"],["fail","失败"],["network","无网络"]],apply:v=>window.PARENT_JOURNEY.set("pjSave",v)},
+      {key:"pjNotify",label:"通知权限（模拟）",options:[["unknown","未询问"],["granted","已允许"],["denied","已拒绝"]],apply:v=>window.PARENT_JOURNEY.set("pjNotify",v)},
       {key:"pjProgress",label:"首课状态",options:[["pending","未开始"],["started","已开始"],["completed","已完成"]],apply:v=>window.PARENT_JOURNEY.set("pjProgress",v)},
       {key:"v210FreePlan",label:"免费学习计划",options:[["generated","生成免费学习计划"],["not_generated","不生成免费学习计划"]],apply:v=>window.v210SetFreePlanReview("plan",v)},
       {key:"phoneLocale",label:"手机号页面语言",options:[["en","English"],["zh","简体中文"]],apply:v=>{phoneAuth.locale=v;phoneAuthRender();}},
@@ -23836,6 +23837,15 @@
       window.PARENT_JOURNEY?.decorateCheckout(overlay);
     }
     function handleV180PaymentCancel() {
+      if (window.PARENT_JOURNEY?.checkoutPending()) {
+        profile.v180PurchaseTierPending = "";
+        profile.v180WinbackReturnsToPaywall = false;
+        enterPortrait();
+        showPortraitScreen("screen-paywall-pt");
+        renderPaywall();
+        showPayToast("Payment cancelled · your plan did not change");
+        return;
+      }
       profile.v180PurchaseTierPending = selectedOfferTier();
       profile.v180WinbackReturnsToPaywall = true;
       if (typeof maybeShowWinback === "function" && maybeShowWinback("cancel")) return;
@@ -25602,9 +25612,9 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
    const name=String(profile.name||'').trim(),level=String(profile.level||'').trim(),course=classPathTrialCourse();
    const clips=txt(['老师：What animal is this?','孩子：A cat!'],['Teacher: What animal is this?','Child: A cat!']);
    body=approvedLearningPlan(name,level,clips,course);
-   foot=`<button class="pj-primary" data-pj="checkout">${m.trialEligible?txt('开始免费试用','Start free trial'):txt('查看订阅套餐','View subscription plans')}</button>`;
+   foot=`<button class="pj-primary" data-pj="checkout">${monthlyTrialAvailable()?txt('开始免费试用','Start free trial'):txt('查看订阅套餐','View subscription plans')}</button>`;
   }
-  if(pg==='after'){body=`<div class="pj-success">✦</div><div class="pj-eyebrow">${t('pro')}</div><h1>${t('next')}</h1><p>${t('nextSub')}</p>`+hero()+`<p class="pj-note">${txt('订阅和试用按购买页条款生效。设置提醒不会延迟试用或扣费时间。','Subscription and trial terms apply from purchase. A reminder does not delay billing or a trial.')}</p>`;foot=primary('start','start')+link('schedule','set');}
+  if(pg==='after'){const hasReminder=m.reminder&&+new Date(m.reminder)>Date.now();body=`<div class="pj-success">✦</div><div class="pj-eyebrow">${t('pro')}</div><h1>${t('next')}</h1><p>${hasReminder?txt('体验提醒时间已保留，也可以现在开始。','Your lesson reminder is still set. You can also start now.'):t('nextSub')}</p>`+hero()+(hasReminder?`<p class="pj-note">${esc(new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{dateStyle:'medium',timeStyle:'short'}).format(new Date(m.reminder)))}</p>`:'')+`<p class="pj-note">${txt('订阅和试用按购买页条款生效。设置提醒不会延迟试用或扣费时间。','Subscription and trial terms apply from purchase. A reminder does not delay billing or a trial.')}</p>`;foot=primary('start','start')+(hasReminder?link('home','home'):link('schedule','set'));}
   if(pg==='schedule'||pg==='earlySchedule'){const now=new Date(),localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');let initial=new Date(m.reminder||Date.now()+3600000);if(initial<now)initial=new Date(Date.now()+3600000);const max=new Date(Date.now()+7*86400000);body=`<h1>${pg==='earlySchedule'?txt('孩子什么时候方便上课？','When can your child join?'):t('schedule')}</h1><p>${t('scheduleSub')}</p><div class="pj-glass"><div class="pj-date"><label for="pj-date">${t('date')}</label><input type="date" id="pj-date" min="${localDate(now)}" max="${localDate(max)}" value="${m.draftDate||localDate(initial)}"><label for="pj-time">${t('time')}</label><input type="time" id="pj-time" value="${m.draftTime||String(initial.getHours()).padStart(2,'0')+':'+String(initial.getMinutes()).padStart(2,'0')}"></div><small>${t('timezone')} · ${esc(Intl.DateTimeFormat().resolvedOptions().timeZone)}</small></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;if(pg==='earlySchedule'){const days=Array.from({length:3},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return `<button class="pj-choice" data-pj="quickDate" data-value="${localDate(d)}">${new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{weekday:'short',month:'short',day:'numeric'}).format(d)}</button>`;}).join('');body=body.replace('<div class="pj-date">',`<div class="pj-choices">${days}</div><div class="pj-choices">${['10:00','14:00','16:00','19:00'].map(v=>`<button class="pj-choice" data-pj="quickTime" data-value="${v}">${v}</button>`).join('')}</div><div class="pj-date">`);foot=`<button class="pj-primary" data-pj="save">${txt('设置提醒','Set a reminder')}</button><button class="pj-link" data-pj="decideLater">${txt('稍后决定','Decide later')}</button>`;}else foot=primary('save','save')+link('skip','skip');} 
   if(pg==='earlySchedule'){
    const now=new Date(),dateKey=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');const tomorrow=new Date(now);tomorrow.setDate(tomorrow.getDate()+1);const todayKey=dateKey(now),tomorrowKey=dateKey(tomorrow);const lastDay=new Date(now);lastDay.setDate(lastDay.getDate()+7);const maxKey=dateKey(lastDay);let selected=m.draftDate&&m.draftDate>=todayKey&&m.draftDate<=maxKey?m.draftDate:todayKey;
@@ -25634,12 +25644,19 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
 
  function start(){
   const resume=profile.trialInProgress&&!profile.trialReportShown;
-  stop();m.reminder=null;m.checkout=false;profile.teacherId='max';profile.teacherChosen=true;
+  stop();m.checkout=false;profile.teacherId='max';profile.teacherChosen=true;
   if(!resume)profile.trialReportShown=false;
   enterLandscape();openClassroomDemo(resume?'trial-resume':'trial-start');
   m.stage=trialStage();persist();syncBanner();
  }
  function home(){m.checkout=false;stop();showClassHome();syncBanner();}
+ function continueAfterReminder(next){
+  if(m.permission==='granted'){show(next);return;}
+  const denied=m.permission==='denied',dialog=document.createElement('dialog');dialog.className='pj-notification-dialog';dialog.setAttribute('aria-labelledby','pj-notification-title');
+  dialog.innerHTML=`<h2 id="pj-notification-title">${denied?txt('开启通知','Turn on notifications'):txt('接收上课提醒','Get your lesson reminder')}</h2><p>${denied?txt('通知已关闭，请在设置中开启，以接收上课提醒。','Notifications are off. Enable them in Settings to receive your lesson reminder.'):txt('允许 Dino AI 在你选择的时间发送上课提醒。','Allow Dino AI to notify you at your chosen lesson time.')}</p><button type="button" class="pj-primary" data-notify-allow>${denied?txt('打开设置','Open Settings'):txt('允许通知','Allow notifications')}</button><button type="button" class="pj-link" data-notify-deny>${txt('暂不开启','Not now')}</button>`;
+  const finish=allowed=>{m.permission=allowed?'granted':'denied';dialog.close();dialog.remove();show(next);};
+  dialog.querySelector('[data-notify-allow]').onclick=()=>finish(true);dialog.querySelector('[data-notify-deny]').onclick=()=>finish(false);dialog.addEventListener('cancel',e=>{e.preventDefault();finish(false);});root.append(dialog);dialog.showModal();
+ }
  function save(){
   if(m.busy)return;
   const date=root.querySelector('#pj-date'),time=root.querySelector('#pj-time'),status=root.querySelector('#pj-status'),button=root.querySelector('[data-pj="save"]');
@@ -25648,13 +25665,14 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   if(m.page==='earlySchedule'&&!time.value){showError(txt('请选择时间。','Please choose a time.'));time.focus();return;}
   const d=new Date(date.value+'T'+time.value);
   if(m.page==='earlySchedule'&&(!Number.isFinite(+d)||+d<Date.now()+30*60000)){showError(txt('请选择至少 30 分钟后的时间。','Please choose a time at least 30 minutes from now.'));return;}
-  if(!Number.isFinite(+d)||+d<=Date.now()||+d>Date.now()+7*86400000){showError(t('invalid'));return;}
+  const lastDay=new Date();lastDay.setDate(lastDay.getDate()+7);lastDay.setHours(23,59,59,999);
+  if(!Number.isFinite(+d)||+d<=Date.now()||+d>+lastDay){showError(t('invalid'));return;}
   m.busy=true;status.textContent='';status.hidden=true;button.disabled=true;
   job=setTimeout(()=>{
    m.busy=false;
    if(m.save!=='success'){showError(t(m.save==='network'?'network':'failed'));button.disabled=false;return;}
    m.reminder=d.toISOString();delete m.draftDate;delete m.draftTime;persist();
-   if(m.page==='earlySchedule')show('preview');else show(m.permission==='unknown'?'permission':'saved');
+   continueAfterReminder(m.page==='earlySchedule'?'preview':'saved');
   },450);
  }
  function play(){if(m.playing){stop();render();return;}if(m.clip===1)m.clip=0;m.playing=true;render();tick=setInterval(()=>{if(m.page!=='preview'||!root.classList.contains('active')){stop();return;}m.clip++;if(m.clip>=1){m.clip=1;stop();}render();},1700);}
@@ -25669,16 +25687,17 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  const oldReport=showTrialReport;showTrialReport=function(){if(m.active&&profile.trialReportShown){m.stage='completed';m.reminder=null;persist();syncBanner();}return oldReport.apply(this,arguments);};
  const oldFinish=window.IP_ANIMATION?.finishMembershipCheckout;if(window.IP_ANIMATION){window.IP_ANIMATION.finishMembershipCheckout=function(){if(!m.checkout)return oldFinish?.apply(this,arguments)||false;m.checkout=false;m.account=profile.premiumUnlocked?'paid':'free';if(m.trialActivated){profile.effectiveAccessEnd=new Date(Date.now()+3*86400000).toISOString();profile.nextBillingDate=new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{dateStyle:'medium'}).format(new Date(profile.effectiveAccessEnd));}persist();show(m.account==='paid'?'after':'plan');return true;};}
  // The existing paywall/back handlers call the checkout hook; preserve their payment and cancellation logic.
+ function monthlyTrialAvailable(){const monthly=window.V155?.getPaywallPlans?.().find(item=>item.id==='monthly');return !!monthly&&m.trialEligible&&!monthly.isKol;}
  function decoratePaywall(){
   if(!m.checkout)return;
   const monthly=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"]');
-  if(monthly&&m.trialEligible){const tag=document.createElement('span');tag.className='pwpt-badge';tag.textContent=txt('3 天免费试用','3-day free trial');monthly.append(tag);}
-  const trial=m.trialEligible&&profile.selectedPlan==='monthly';
+  if(monthly&&monthlyTrialAvailable()){const tag=document.createElement('span');tag.className='pwpt-badge';tag.textContent=txt('3 天免费试用','3-day free trial');monthly.append(tag);}
+  const trial=monthlyTrialAvailable()&&profile.selectedPlan==='monthly';
   const cta=document.getElementById('btn-pwpt-purchase');if(cta)cta.textContent=trial?txt('开始 3 天免费试用','Start 3-day free trial'):txt('立即订阅','Subscribe now');
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
- function decorateCheckout(overlay){if(!m.checkout||!m.trialEligible||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&m.trialEligible&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:true,keys:['pjLocale','pjTrial'].concat(m.page==='preview'?['pjMedia']:[],['schedule','earlySchedule'].includes(m.page)?['pjSave']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
+ function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
+ window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:true,keys:['pjLocale','pjTrial'].concat(m.page==='preview'?['pjMedia']:[],['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission,pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
  const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
@@ -26303,4 +26322,8 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-crisp-entry .pj-art-later .pj-entry-action-note{color:#465485}
 .pj-crisp-entry .pj-art-hit:active{transform:translateY(2px)}
 @media(max-width:360px){.pj-approved-entry.pj-crisp-entry{min-height:580px;padding:24px 16px 16px;gap:16px}.pj-crisp-entry .pj-personal-heading p{margin-top:14px!important}}
+</style>
+<style id="pj-notification-permission-style">
+.pj-notification-dialog{box-sizing:border-box;width:min(340px,calc(100% - 40px));border:2px solid #e5edff;border-radius:26px;padding:24px;background:linear-gradient(145deg,#fff,#ecebff);color:#151b86;box-shadow:0 20px 70px #07133466;font-family:var(--font);text-align:center}
+.pj-notification-dialog::backdrop{background:#071334aa}.pj-notification-dialog h2{margin:0 0 16px;font:700 24px/1.2 var(--display)}.pj-notification-dialog p{font-size:15px;line-height:1.5;margin:0 0 24px}.pj-notification-dialog .pj-primary{min-height:52px;width:100%;border:2px solid #ffe4a0;border-radius:999px;background:linear-gradient(#ffb42c,#ff8b15);color:#fff;font:700 17px var(--display)}.pj-notification-dialog .pj-link{display:block;margin:12px auto 0;min-height:44px;border:0;background:transparent;color:#151b86;font:600 15px var(--font)}
 </style>
