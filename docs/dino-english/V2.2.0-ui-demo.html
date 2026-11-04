@@ -12246,6 +12246,9 @@
         }
         profile.profileComplete = false;
         profile.hasStartedClass = false;
+        profile.trialInProgress = false;
+        profile.trialReportShown = false;
+        profile.trialTakenLevelId = null;
         profile.skipOnboarding = true;
         postLoginInfo = true;
         enterPortrait();
@@ -25559,6 +25562,8 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  const m={page:'entry',locale:'en',media:'ready',save:'success',permission:'unknown',trialEligible:true,account:'free',stage:'pending',reminder:null,intro:'preview',active:false,checkout:false,busy:false,clip:0,playing:false,...saved};
  let tick=null,job=null;const stop=()=>{clearInterval(tick);tick=null;m.playing=false;};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ function trialStage(){return profile.trialReportShown?'completed':profile.trialInProgress?'started':'pending';}
+ m.stage=trialStage();
  function persist(){try{localStorage.setItem(key,JSON.stringify({account:m.account,stage:m.stage,reminder:m.reminder,intro:m.intro}));}catch{}}
  const zh={entry:'10 分钟，了解孩子的英语水平',entrySub:'叫上孩子，和 Max 一起上一节体验课吧。',start:'现在让孩子体验',later:'现在不方便？',preview:'看看孩子如何开口',previewSub:'与 AI 老师互动，在练习中找到合适的起点。',arrange:'了解学习安排',ready:'先让孩子体验一节课',plan:'先找到起点，再开始学习',planSub:'这是家长预估，孩子体验后再确认课程起点。',offer:'开通试用',remind:'稍后让孩子体验',schedule:'什么时候方便让孩子体验？',scheduleSub:'选一个方便的时间，我们提醒你带孩子回来。',save:'保存提醒',skip:'稍后再说',date:'体验日期',time:'体验时间',success:'体验提醒已保存',saved:'可以提前开始，也可以随时修改提醒。',home:'返回首页',next:'下一步，让孩子亲自体验',nextSub:'课程起点需要孩子亲自确认。你可以现在开始，或设置稍后体验的提醒。',set:'设置体验提醒',return:'返回',timezone:'当前时区',none:'还未设置提醒',waiting:'孩子的体验课待开始',continue:'继续体验课',modify:'修改提醒',cancel:'取消提醒',notify:'开启通知，接收体验提醒',notifySub:'提醒已保存。是否允许 Dino AI 在约定时间发送通知？',allow:'允许通知',deny:'暂不开启',denied:'提醒已保存，开启通知后才能收到推送。',done:'已完成体验课',doneSub:'孩子的表现报告与当前学习任务已准备好。',task:'查看当前学习任务',retry:'重试',failed:'保存失败，请重试。',network:'网络连接失败，请重试。',invalid:'请选择未来 7 天内的体验时间。',saving:'正在保存…',mediaError:'课堂片段暂不可用',mediaLoading:'课堂片段加载中…',mediaNote:'交互示意 · 正式版替换为已授权的真实课堂片段',play:'播放示意',pause:'暂停',replay:'重播',demo:'家长介绍',pro:'会员已开通',free:'免费体验待开始'};
  const en={entry:'Discover your child’s English level in 10 minutes',entrySub:'Bring your child over for a short lesson with Max.',start:'Start my child’s lesson',later:'Not a good time?',preview:'See how children speak',previewSub:'Interact with an AI teacher and find the right starting point.',arrange:'Explore the learning plan',ready:'Let my child try a lesson first',plan:'Find a starting point. Then learn.',planSub:'This is your estimate. Your child’s lesson will confirm the starting point.',offer:'Start free trial',remind:'Try a lesson later',schedule:'When is a good time?',scheduleSub:'Choose a time to bring your child back for a lesson.',save:'Save reminder',skip:'Maybe later',date:'Date',time:'Time',success:'Your reminder is saved',saved:'Start earlier or change your reminder anytime.',home:'Go to home',next:'Next, let your child try a lesson',nextSub:'Your child needs to take part to confirm the starting point. Start now or set a reminder.',set:'Set a lesson reminder',return:'Back',timezone:'Current time zone',none:'No reminder set',waiting:'Your child’s lesson is ready',continue:'Continue the lesson',modify:'Change reminder',cancel:'Cancel reminder',notify:'Turn on lesson notifications',notifySub:'Your reminder is saved. May Dino AI notify you at the selected time?',allow:'Allow notifications',deny:'Not now',denied:'Reminder saved. Turn on notifications to receive a push.',done:'First lesson complete',doneSub:'Your child’s report and current learning task are ready.',task:'View learning task',retry:'Retry',failed:'Could not save. Please retry.',network:'Connection failed. Please retry.',invalid:'Choose a future time within the next 7 days.',saving:'Saving…',mediaError:'Lesson preview is unavailable',mediaLoading:'Loading lesson preview…',mediaNote:'Interaction demo · Replace with an authorized real lesson clip',play:'Play demo',pause:'Pause',replay:'Replay',demo:'For parents',pro:'Membership active',free:'Free lesson ready'};
@@ -25614,16 +25619,23 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  function syncBanner(){
   const card=document.querySelector('#class-week-list .class-path-lesson.is-trial');
   document.querySelectorAll('.pj-trial-reminder').forEach(el=>el.remove());
-  if(!m.active||m.stage==='completed'||!card)return;
-  const action=card.querySelector('.class-path-action');if(action)action.textContent=m.stage==='started'?t('continue'):t('start');
+  m.stage=trialStage();
+  if(!m.active||profile.trialReportShown||!card)return;
+  const action=card.querySelector('.class-path-action');if(action)action.textContent=profile.trialInProgress?t('continue'):t('start');
  }
  const oldClassWeek=renderClassWeek;renderClassWeek=function(){oldClassWeek.apply(this,arguments);syncBanner();};
  document.getElementById('class-week-list').addEventListener('click',e=>{
   const reminder=e.target.closest('[data-pj]');if(reminder){e.preventDefault();e.stopImmediatePropagation();act(reminder.dataset.pj);return;}
-  if(m.active&&m.stage!=='completed'&&e.target.closest('[data-path-trial]')){e.preventDefault();e.stopImmediatePropagation();start();}
+  if(m.active&&!profile.trialReportShown&&e.target.closest('[data-path-trial]')){e.preventDefault();e.stopImmediatePropagation();start();}
  },true);
 
- function start(){const resume=m.stage==='started';stop();m.stage='started';m.reminder=null;m.checkout=false;persist();syncBanner();profile.teacherId='max';profile.teacherChosen=true;enterLandscape();openClassroomDemo(resume?'trial-resume':'trial-start');}
+ function start(){
+  const resume=profile.trialInProgress&&!profile.trialReportShown;
+  stop();m.reminder=null;m.checkout=false;profile.teacherId='max';profile.teacherChosen=true;
+  if(!resume)profile.trialReportShown=false;
+  enterLandscape();openClassroomDemo(resume?'trial-resume':'trial-start');
+  m.stage=trialStage();persist();syncBanner();
+ }
  function home(){m.checkout=false;stop();showClassHome();syncBanner();}
  function save(){
   if(m.busy)return;
@@ -25651,7 +25663,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
  root.addEventListener('click',e=>{const b=e.target.closest('[data-pj]');if(b)act(b.dataset.pj);});
  const oldPicker=openTeacherPicker;openTeacherPicker=function(mode){if(mode==='app')return oldPicker.apply(this,arguments);m.stage='pending';m.active=true;show('entry');};
  window.addEventListener('click',e=>{if(m.checkout&&e.target.closest?.('#btn-pwpt-back')){e.preventDefault();e.stopImmediatePropagation();m.checkout=false;stop();persist();profile.v180PlanRevealSeen=true;document.getElementById('v180-plan-reveal')?.classList.remove('show');startV170HomeGuide();syncBanner();window.demoStatePanel?.render();}},true);
- const oldReport=showTrialReport;showTrialReport=function(){if(m.active&&m.stage==='started'){m.stage='completed';m.reminder=null;persist();syncBanner();}return oldReport.apply(this,arguments);};
+ const oldReport=showTrialReport;showTrialReport=function(){if(m.active&&profile.trialReportShown){m.stage='completed';m.reminder=null;persist();syncBanner();}return oldReport.apply(this,arguments);};
  const oldFinish=window.IP_ANIMATION?.finishMembershipCheckout;if(window.IP_ANIMATION){window.IP_ANIMATION.finishMembershipCheckout=function(){if(!m.checkout)return oldFinish?.apply(this,arguments)||false;m.checkout=false;m.account=profile.premiumUnlocked?'paid':'free';if(m.trialActivated){profile.effectiveAccessEnd=new Date(Date.now()+3*86400000).toISOString();profile.nextBillingDate=new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{dateStyle:'medium'}).format(new Date(profile.effectiveAccessEnd));}persist();show(m.account==='paid'?'after':'plan');return true;};}
  // The existing paywall/back handlers call the checkout hook; preserve their payment and cancellation logic.
  function decoratePaywall(){
@@ -25663,7 +25675,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
  function decorateCheckout(overlay){if(!m.checkout||!m.trialEligible||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&m.trialEligible&&cycle==='monthly';},needsTrialCard:()=>m.active&&m.stage!=='completed',open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:true,keys:['pjLocale','pjTrial'].concat(m.page==='preview'?['pjMedia']:[],['schedule','earlySchedule'].includes(m.page)?['pjSave']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjProgress:m.stage})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjProgress'){m.stage=v;if(v==='completed'){m.reminder=null;persist();show('done');return;}}render();},state:()=>({...m}),returnFromReminder:()=>{if(m.stage==='completed')show('done');else start();},checkoutPending:()=>m.checkout};
+ window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&m.trialEligible&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:true,keys:['pjLocale','pjTrial'].concat(m.page==='preview'?['pjMedia']:[],['schedule','earlySchedule'].includes(m.page)?['pjSave']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
  const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
@@ -25707,7 +25719,8 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
 </style>
 <script id="parent-report-handoff-module">
 (()=>{
- const key='dino-v220-report-handoff-pending';let pending=localStorage.getItem(key)==='1',wasActive=false,renderedLocale=null;
+ localStorage.removeItem('dino-v220-report-handoff-pending');
+ let wasActive=false,renderedLocale=null;
  const screen=document.getElementById('screen-lesson-complete'),card=screen.querySelector('.lesson-complete-card'),cont=document.getElementById('lc-continue');
  const preview=document.createElement('div');preview.className='prh-parent-preview';preview.hidden=true;card.insertBefore(preview,cont);
  const english=()=>window.PARENT_JOURNEY?.get('pjLocale')!=='zh';
@@ -25729,15 +25742,12 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   const active=screen.classList.contains('active')&&applies(),entering=active&&!wasActive,leaving=!active&&wasActive;wasActive=active;preview.hidden=!active;card.classList.toggle('prh-completion',active);
   if(leaving){cancelInvitation();renderedLocale=null;}if(!active)return;
   const locale=english()?'en':'zh';if(entering||locale!==renderedLocale){renderedLocale=locale;renderPreview();}
-  if(entering){pending=true;localStorage.setItem(key,'1');speak(english()?'Great job! You finished your lesson. Please hand the device to your parent to see your report.':'太棒了！你完成课程啦。请把设备交给爸爸妈妈，一起看看你的学习报告吧。');}
+  if(entering){speak(english()?'Great job! You finished your lesson. Please hand the device to your parent to see your report.':'太棒了！你完成课程啦。请把设备交给爸爸妈妈，一起看看你的学习报告吧。');}
   const ready=lcReportReady&&!cont.disabled,text=ready?(english()?'View report':'查看报告'):(english()?'Preparing your report…':'报告生成中…');if(cont.textContent!==text)cont.textContent=text;cont.setAttribute('aria-busy',String(!ready));
  }
  new MutationObserver(update).observe(screen,{attributes:true,attributeFilter:['class','disabled'],childList:true,subtree:true});
  const originalComplete=showLessonComplete;showLessonComplete=function(){cancelInvitation();wasActive=false;originalComplete.apply(this,arguments);update();};
- cont.addEventListener('click',()=>{if(!applies()||!lcReportReady||cont.disabled)return;cancelInvitation();pending=false;localStorage.removeItem(key);},true);
- function decorate(){if(!pending)return;const action=document.querySelector('#class-week-list .class-path-lesson.is-trial .class-path-action');if(action)action.textContent=english()?'View report':'查看报告';}
- const oldRender=renderClassWeek;renderClassWeek=function(){oldRender.apply(this,arguments);decorate();};
- document.addEventListener('click',e=>{if(pending&&e.target.closest('#class-week-list [data-path-trial]')){e.preventDefault();e.stopImmediatePropagation();pending=false;localStorage.removeItem(key);trialReportMode='trial';trialReportBackMode='home';showTrialReport();}},true);
+ cont.addEventListener('click',()=>{if(!applies()||!lcReportReady||cont.disabled)return;cancelInvitation();},true);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelInvitation();});
  window.PARENT_REPORT_HANDOFF={open(){window.v200BeforeJump?.();seedReviewProfile();cxStage=null;themeSettleRun=false;levelUpInProgress=false;lessonCompleteIsTrial=true;trialReportMode='trial';profile.trialInProgress=false;profile.trialReportShown=true;showLessonComplete(true);window.demoStatePanel?.panel.classList.remove('open');},refresh:update};
  if(new URLSearchParams(location.search).get('parentReport')==='complete')window.PARENT_REPORT_HANDOFF.open();
