@@ -19648,7 +19648,7 @@
       if (pid === "screen-phone-code") return {label:"输入验证码", pageKey:"phone_code", isCore:true, keys:["phoneLocale","phonePageState","phoneSendResult","phoneVerifyResult","v155OnboardingStatus"]};
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", []);
       if (pid === "screen-welcome")      return ctx(
-        "V1.7.0 · 首启价值与登录合并页",
+        "登录 / 注册",
         ["v155OnboardingStatus"]
       );
       if (pid === "screen-login")        return ctx("登录注册页", []);
@@ -19967,11 +19967,13 @@
     ].filter(Boolean),
     mainPagesLabel: "Demo 主页面快捷跳转",
     jumps: [
+      {label:"登录 / 注册",run:()=>window.v160ReviewStart()},
       {label:"家长链路 · 课前分流",run:()=>window.PARENT_JOURNEY.open("entry")},
       {label:"家长链路 · 学习计划与试用",run:()=>window.PARENT_JOURNEY.open("preview")},
       {label:"家长链路 · 设置提醒",run:()=>window.PARENT_JOURNEY.open("schedule")},
       {label:"家长链路 · 通知返回",run:()=>window.PARENT_JOURNEY.returnFromReminder()},
-      { label: "首启 / 登录", run: withReviewProfile(function () { enterPortrait(); showPortraitScreen("screen-welcome"); }) },
+      {label:"体验课完成 · 家长接手",run:()=>window.PARENT_REPORT_HANDOFF.open()},
+      {label:"Dino 首页",run:withReviewProfile(function(){enterLandscape();showClassHome();setHubTab("dino");})},
       { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("class"); }) },
       { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
       { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
@@ -24569,7 +24571,8 @@
         var page = params.get('v210Page') || params.get('v200Page');
         if (['catalog','player'].includes(page)) { window.IP_ANIMATION.jump(page); return; }
         if (page === 'permissions') { window.CLASS_PERMISSIONS.jump(params.get('permissionState') || 'first'); return; }
-        window.v200OpenPage(['explore','play'].includes(page) ? page : 'explore');
+        // Keep the login/register entry unless an explicit review page was requested.
+        if (['explore','play'].includes(page)) window.v200OpenPage(page);
       });
     });
   })();
