@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V2.2.0 — 登录注册优化 / Dino Story / Play Tab Demo</title>
+  <title>Dino AI V2.2.0 — 家长课程与学习计划 Demo</title>
   <!-- DESIGN.md · V2.2.0 · V1.9.1 baseline plus IP animation and Play park. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -2093,55 +2093,44 @@
     /* Landscape login sits on a dark glass card — lighten the separator. */
     .login-land-actions .login-more-sep { color: rgba(255,255,255,0.85); }
     .login-land-actions .login-more-sep::before, .login-land-actions .login-more-sep::after { background: rgba(255,255,255,0.32); }
-    /* V2.2.0 · Phone number and SMS verification, two full-screen steps. */
-    #screen-phone-auth, #screen-phone-code { padding: 0; }
-    .pauth-scene { position: absolute; inset: 0; display: flex; flex-direction: column; overflow-y: auto;
-      color: var(--ink-on-dark); background: radial-gradient(ellipse at 90% 25%,var(--surface-glass),transparent 55%),linear-gradient(165deg,var(--sky-deep),var(--sky-mid)); }
-    .pauth-nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px 0; flex: none; }
-    .pauth-back { width: 44px; height: 44px; border: 1px solid var(--surface-glass); border-radius: var(--radius-pill);
-      background: var(--surface-glass); color: var(--ink-on-dark); font-size: 28px; cursor: pointer; }
-    .pauth-step { font-family: var(--display); font-weight: 600; font-size: 14px; }
-    .pauth-main { padding: 4px 24px 8px; position: relative; flex: 1; }
-    .pauth-hero { display: block; width: 184px; height: 176px; object-fit: contain; margin: 0 auto 8px; }
-    .pauth-title { font-family: var(--display); font-size: 28px; line-height: 1.18; font-weight: 600; letter-spacing: -.6px; }
-    .pauth-sub { margin: 12px 0 22px; font-size: 15px; line-height: 1.5; }
-    .pauth-label { display: block; margin-bottom: 10px; font-size: 14px; font-weight: 700; }
-    .pauth-field { position: relative; display: flex; align-items: center; min-height: 60px; border: 2px solid transparent;
-      border-radius: var(--radius-md); background: var(--surface-card); color: var(--ink-on-light); padding: 0 14px; }
-    .pauth-field:focus-within { border-color: var(--glass-border); box-shadow: 0 0 0 3px var(--surface-glass); }
-    .pauth-field:has(input[aria-invalid="true"]) { border-color: var(--accent-yellow); }
-    .pauth-cc { display: flex; align-items: center; gap: 6px; height: 52px; padding: 0 10px 0 0; border: 0;
-      background: transparent; color: var(--ink-on-light); font: 700 16px var(--font); cursor: pointer; }
-    .pauth-phone-input { width: 100%; min-width: 0; height: 48px; padding: 0 0 0 12px; border: 0; border-left: 1px solid var(--sky-light);
-      outline: none; background: transparent; color: var(--ink-on-light); font: 400 17px var(--font); }
-    .pauth-note { margin: 16px 0 0; font-size: 13px; line-height: 1.5; }
-    .pauth-error { min-height: 22px; margin-top: 12px; color: var(--accent-yellow); font-size: 13px; line-height: 1.5; }
-    .pauth-cc-menu { display: none; position: absolute; z-index: 6; left: 0; right: 0; top: 64px; max-height: 220px; overflow-y: auto;
-      background: var(--surface-card); border-radius: var(--radius-sm); box-shadow: 0 12px 28px #0003; }
+    #screen-phone-auth { padding: 0; }
+    .pauth-scene { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; color: #fff;
+      background: #0a31cb url("assets/login/phone-auth-bg.png") center / cover no-repeat; }
+    .pauth-scene::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(180deg, rgba(10,40,195,.14) 0%, transparent 38%, rgba(42,151,255,.18) 100%); }
+    .pauth-status { position: relative; z-index: 2; height: 44px; flex: none; display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 22px 0; font: 600 0.78rem/1 var(--font); color: #fff; }
+    .pauth-status-icons { display: flex; align-items: center; gap: 6px; font-size: .68rem; letter-spacing: -.5px; }
+    .pauth-main { position: relative; z-index: 2; padding: 56px 24px 16px; }
+    .pauth-title { margin: 0; font-family: var(--display); font-size: 1.34rem; line-height: 1.1; font-weight: 700; letter-spacing: -.5px; }
+    .pauth-sub { margin: 10px 0 16px; max-width: 330px; font-size: .86rem; line-height: 1.45; color: rgba(255,255,255,.96); }
+    .pauth-field { position: relative; display: flex; align-items: center; height: 48px; margin-bottom: 16px; padding: 0 7px 0 14px;
+      border-radius: 80px; background: #fff; box-shadow: 0 1px 8px rgba(20,30,60,.14); color: #0a0a0a; }
+    .pauth-cc { flex: none; display: flex; align-items: center; gap: 7px; height: 100%; padding: 0 10px 0 0; border: 0; border-right: 1px solid #d9dee8;
+      background: transparent; color: #0a0a0a; font-family: var(--font); font-size: .9rem; font-weight: 700; cursor: pointer; }
+    .pauth-flag { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: #249f58; overflow: hidden; }
+    .pauth-flag img { width: 18px; height: 12px; object-fit: contain; }
+    .pauth-phone-input { flex: 1; min-width: 0; height: 100%; padding: 0 10px; border: 0; outline: 0; background: transparent;
+      color: #0a0a0a; font-family: var(--font); font-size: 1.02rem; letter-spacing: .6px; }
+    .pauth-code-label { flex: none; color: #414141; font-size: .88rem; white-space: nowrap; }
+    .pauth-code-input { flex: 1; min-width: 0; height: 100%; padding: 0 8px; border: 0; outline: 0; background: transparent;
+      color: #0a0a0a; font-family: var(--font); font-size: 1rem; }
+    .pauth-code-input:disabled { color: rgba(10,10,10,.3); }
+    .pauth-getcode { flex: none; min-width: 86px; height: 36px; padding: 0 13px; border: 0; border-radius: 24px;
+      background: linear-gradient(0deg,#ff8e1c,#fcde4f); color: #fff; font-family: var(--font); font-size: .76rem; font-weight: 800; cursor: pointer; }
+    .pauth-getcode:disabled { filter: grayscale(.5); opacity: .72; cursor: default; }
+    .pauth-note { margin: 2px 0 0; width: 290px; font-size: .72rem; line-height: 1.45; color: rgba(255,255,255,.94); }
+    .pauth-cc-menu { position: absolute; z-index: 6; top: 52px; left: 0; width: 236px; max-height: 210px; overflow-y: auto;
+      display: none; border-radius: 14px; background: #fff; box-shadow: 0 14px 30px rgba(0,0,0,.22); }
     .pauth-cc-menu.show { display: block; }
-    .pauth-cc-item { width: 100%; display: flex; gap: 8px; align-items: center; min-height: 48px; padding: 10px 14px; text-align: start;
-      border: 0; color: var(--ink-on-light); background: transparent; font: 400 14px var(--font); cursor: pointer; }
-    .pauth-cc-item:hover, .pauth-cc-item:focus-visible { background: color-mix(in srgb,var(--sky-light) 20%,white); }
-    .pauth-cc-item b { margin-left: auto; }
-    .pauth-foot { flex: none; padding: 12px 24px max(24px,env(safe-area-inset-bottom)); }
-    .pauth-primary { display: block; width: 100%; min-height: 56px; border: 0; border-radius: var(--radius-pill); background: var(--cta-grad);
-      color: var(--ink-on-dark); font: 700 18px var(--display); box-shadow: 0 4px 0 color-mix(in srgb,var(--cta-orange-bottom) 75%,black); cursor: pointer; }
-    .pauth-primary:disabled { opacity: .5; box-shadow: none; cursor: default; }
-    .pauth-recipient { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: -10px 0 18px; }
-    .pauth-recipient b { font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
-    .pauth-link { min-height: 44px; border: 0; background: transparent; color: var(--ink-on-dark); text-decoration: underline;
-      font: 600 14px var(--font); cursor: pointer; }
-    .pauth-link:disabled { opacity: .7; text-decoration: none; cursor: default; }
-    .pauth-code-wrap { position: relative; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; direction: ltr; }
-    .pauth-code-box { height: 64px; display: grid; place-items: center; background: var(--surface-card); color: var(--ink-on-light);
-      border: 2px solid transparent; border-radius: var(--radius-sm); font: 600 30px var(--display); }
-    .pauth-code-wrap:focus-within .pauth-code-box.is-focus { border-color: var(--glass-border); box-shadow: 0 0 0 3px var(--surface-glass); }
-    .pauth-code-wrap:has([aria-invalid="true"]) .pauth-code-box { border-color: var(--accent-yellow); }
-    .pauth-code-input { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; opacity: .015; font-size: 18px; caret-color: transparent; }
-    .pauth-resend { display: block; margin: 8px auto 0; padding: 0 8px; }
-    .pauth-scene button:focus-visible { outline: 3px solid var(--glass-border); outline-offset: 3px; }
-    @media(max-height:720px) { .pauth-hero { width: 128px; height: 116px; margin-bottom: 4px; } .pauth-nav { padding-top: 8px; } .pauth-sub { margin-bottom: 16px; } }
-    @media(max-width:360px) { .pauth-main { padding-inline: 18px; } .pauth-foot { padding-inline: 18px; } .pauth-title { font-size: 25px; } .pauth-code-wrap { gap: 8px; } }
+    .pauth-cc-item { width: 100%; display: flex; align-items: center; gap: 8px; padding: 11px 14px; border: 0; background: transparent;
+      color: #23314f; font-family: var(--font); font-size: .82rem; text-align: left; cursor: pointer; }
+    .pauth-cc-item:hover { background: #f3f6fb; }
+    .pauth-foot { position: relative; z-index: 2; margin-top: auto; padding: 10px 20px 24px; }
+    .pauth-login { width: 100%; height: 52px; border: 0; border-radius: 119px; background: linear-gradient(0deg,#ff821c,#fcc24f);
+      box-shadow: 0 2px 0 #ef6a1d; color: #fff; font-family: var(--display); font-size: 1rem; font-weight: 700; cursor: pointer; }
+    .pauth-login:disabled { filter: grayscale(.35); opacity: .78; box-shadow: none; cursor: default; }
+    .pauth-foot-note { margin: 10px 0 0; color: rgba(255,255,255,.9); font-size: .68rem; text-align: center; }
     /* V1.3.2 手机号绑定页（竖屏 takeover）— Figma 4867:18878. */
     #screen-bind-phone { padding: 0; }
     .bindp-scene { position: absolute; inset: 0; display: flex; flex-direction: column; color: #fff; overflow: hidden;
@@ -8652,7 +8641,7 @@
 </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V2.2.0 · 登录注册优化 · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V2.2.0 · 家长课程与学习计划 · 右上 ⚙︎ States 切换页面与关键状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8833,43 +8822,35 @@
         <div class="lg-auth-veil" aria-hidden="true"><div class="lg-auth-card"><div class="lg-auth-spin"></div><p class="lg-auth-tx">Authorizing…</p></div></div>
       </section>
 
-      <!-- V2.2.0 · step 1: phone number -->
-      <section class="screen" id="screen-phone-auth" aria-labelledby="pauth-number-title">
+      <!-- 手机号登录/注册页：Figma 3896:12801。手机号与 SMS code 同屏。 -->
+      <section class="screen" id="screen-phone-auth">
         <div class="pauth-scene">
-          <nav class="pauth-nav"><button type="button" class="pauth-back" id="pauth-back" aria-label="Back">‹</button><span class="pauth-step">1 / 2</span></nav>
+          <div class="pauth-status" aria-hidden="true">
+            <span>9:41</span>
+            <span class="pauth-status-icons">▮▮▮ ◉ ▰</span>
+          </div>
           <div class="pauth-main">
-            <img class="pauth-hero" src="assets/login/post-rocket-dino.png" alt="" />
-            <h1 class="pauth-title" id="pauth-number-title" data-pauth-copy="numberTitle">Your phone number</h1>
-            <p class="pauth-sub" data-pauth-copy="numberSub">We’ll text you a verification code.</p>
-            <label class="pauth-label" for="pauth-phone-input" data-pauth-copy="phoneLabel">Phone number</label>
-            <div class="pauth-field" dir="ltr">
-              <button type="button" class="pauth-cc" id="pauth-cc" aria-label="Country code" aria-expanded="false" aria-controls="pauth-cc-menu"><span id="pauth-cc-code">+966</span><span aria-hidden="true">⌄</span></button>
-              <input type="tel" class="pauth-phone-input" id="pauth-phone-input" inputmode="tel" placeholder="Phone number" autocomplete="tel-national" aria-describedby="pauth-number-error" />
+            <h1 class="pauth-title">Enter SMS verification code</h1>
+            <p class="pauth-sub">Unregistered number: Auto register &amp; log in after verification.</p>
+            <div class="pauth-field">
+              <button type="button" class="pauth-cc" id="pauth-cc" aria-label="Country code">
+                <span class="pauth-flag"><img src="assets/login/flag-saudi.svg" alt="" /></span>
+                <span id="pauth-cc-code">+966</span><span aria-hidden="true">▾</span>
+              </button>
+              <input type="tel" class="pauth-phone-input" id="pauth-phone-input" inputmode="numeric" placeholder="Phone number" autocomplete="off" />
               <div class="pauth-cc-menu" id="pauth-cc-menu"></div>
             </div>
-            <p class="pauth-note" data-pauth-copy="registerNote">New here? We’ll create your account after verification.</p>
-            <p class="pauth-error" id="pauth-number-error" role="status" aria-live="polite"></p>
-          </div>
-          <div class="pauth-foot"><button type="button" class="pauth-primary" id="pauth-getcode" disabled>Send code</button></div>
-        </div>
-      </section>
-      <!-- V2.2.0 · step 2: SMS code -->
-      <section class="screen" id="screen-phone-code" aria-labelledby="pauth-code-title">
-        <div class="pauth-scene">
-          <nav class="pauth-nav"><button type="button" class="pauth-back" id="pauth-code-back" aria-label="Back">‹</button><span class="pauth-step">2 / 2</span></nav>
-          <div class="pauth-main">
-            <img class="pauth-hero" src="assets/login/post-rocket-dino.png" alt="" />
-            <h1 class="pauth-title" id="pauth-code-title" data-pauth-copy="codeTitle">Enter your code</h1>
-            <p class="pauth-sub" data-pauth-copy="codeSub">We sent a 4-digit code to</p>
-            <div class="pauth-recipient"><b id="pauth-recipient" dir="ltr"></b><button type="button" class="pauth-link" id="pauth-change" data-pauth-copy="change">Change number</button></div>
-            <div class="pauth-code-wrap">
-              <span class="pauth-code-box" aria-hidden="true"></span><span class="pauth-code-box" aria-hidden="true"></span><span class="pauth-code-box" aria-hidden="true"></span><span class="pauth-code-box" aria-hidden="true"></span>
-              <input type="text" class="pauth-code-input" id="pauth-code-input" inputmode="numeric" maxlength="4" autocomplete="one-time-code" aria-label="4-digit verification code" aria-describedby="pauth-code-error" />
+            <div class="pauth-field">
+              <span class="pauth-code-label">SMS code:</span>
+              <input type="tel" class="pauth-code-input" id="pauth-code-input" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="one-time-code" disabled />
+              <button type="button" class="pauth-getcode" id="pauth-getcode" disabled>Get code</button>
             </div>
-            <p class="pauth-error" id="pauth-code-error" role="status" aria-live="polite"></p>
-            <button type="button" class="pauth-link pauth-resend" id="pauth-resend" disabled>Resend code in 60s</button>
+            <p class="pauth-note">Phone registration: Only countries in the dropdown list are supported</p>
           </div>
-          <div class="pauth-foot"><button type="button" class="pauth-primary" id="pauth-login" disabled>Continue</button></div>
+          <div class="pauth-foot">
+            <button type="button" class="pauth-login" id="pauth-login" aria-disabled="true">Log in</button>
+            <p class="pauth-foot-note">A verification code will be sent to your phone via SMS</p>
+          </div>
         </div>
       </section>
 
@@ -12537,171 +12518,134 @@
       setTimeout(gt4Pass, 260);
     });
 
-    // V2.2.0 phone auth review model. Timers use deadlines and stay keyed to a number.
-    let phoneAuthCC = LG_COUNTRIES.find(c=>c.code === "+966") || LG_COUNTRIES[0];
-    const phoneAuth = {locale:"en", sendResult:"success", verifyResult:"success", reviewState:"waiting", origin:"screen-login", busy:"", errorNumber:"", errorCode:"", sentKey:"", sentLabel:"", revision:0, challenge:0, deadlines:new Map()};
-    const PHONE_COPY = {
-      en:{numberTitle:"Your phone number",numberSub:"We’ll text you a verification code.",phoneLabel:"Phone number",registerNote:"New here? We’ll create your account after verification.",codeTitle:"Enter your code",codeSub:"We sent a 4-digit code to",change:"Change number",send:"Send code",continue:"Continue",resend:"Resend code",wait:"Resend code in {s}s",sending:"Sending…",verifying:"Verifying…",invalidPhone:"Enter a valid phone number.",fail:"Couldn’t send the code. Please try again.",limited:"Too many attempts. Please try again later.",network:"Connection failed. Please try again.",invalid:"Incorrect code. Please try again.",expired:"This code has expired. Request a new one.",unavailable:"This account is unavailable. Please contact support.",back:"Back",country:"Country code",codeLabel:"4-digit verification code"},
-      zh:{numberTitle:"输入手机号",numberSub:"我们会向你发送短信验证码。",phoneLabel:"手机号",registerNote:"首次使用？验证成功后将自动创建账号。",codeTitle:"输入验证码",codeSub:"4 位验证码已发送至",change:"修改号码",send:"发送验证码",continue:"继续",resend:"重新发送",wait:"{s} 秒后可重新发送",sending:"发送中…",verifying:"验证中…",invalidPhone:"请输入有效的手机号。",fail:"验证码发送失败，请重试。",limited:"操作过于频繁，请稍后重试。",network:"网络连接失败，请重试。",invalid:"验证码错误，请重新输入。",expired:"验证码已过期，请重新获取。",unavailable:"账号暂不可用，请联系支持。",back:"返回",country:"国家区号",codeLabel:"4 位短信验证码"}
-    };
-    const phoneAuthText=key=>(PHONE_COPY[phoneAuth.locale]||PHONE_COPY.en)[key]||"";
-    function phoneAuthDigits(){return ($("#pauth-phone-input")?.value||"").replace(/\D/g,"");}
-    function phoneAuthNational(){const d=phoneAuthDigits();return ["+44","+82","+966","+81"].includes(phoneAuthCC.code)?d.replace(/^0/,""):d;}
-    function phoneAuthKey(){return phoneAuthCC.code+phoneAuthNational();}
-    function phoneAuthValid(){
-      // Representative lengths for the existing Demo country list, not production routing configuration.
-      const limits={"+1":[10,10],"+44":[10,10],"+82":[9,10],"+966":[9,9],"+81":[9,10],"+86":[11,11],"+65":[8,8]};
-      const [min,max]=limits[phoneAuthCC.code]||[6,15];const n=phoneAuthNational().length;return n>=min&&n<=max;
+    // Figma 3896:12801 · full-screen phone login / registration.
+    let phoneAuthCC = LG_COUNTRIES.find((country) => country.code === "+966") || LG_COUNTRIES[0];
+    let phoneAuthCodeSent = false;
+    let phoneAuthResendTimer = null;
+    let phoneAuthResendLeft = 60;
+    function phoneAuthDigits() { return ($("#pauth-phone-input")?.value || "").replace(/\D/g, ""); }
+    function phoneAuthRefreshGetCode() {
+      const btn = $("#pauth-getcode");
+      if (btn && !btn.dataset.counting && !btn.dataset.verifying) btn.disabled = phoneAuthDigits().length < 6;
     }
-    function phoneAuthLeft(key=phoneAuthKey()){return Math.max(0,Math.ceil(((phoneAuth.deadlines.get(key)||0)-Date.now())/1000));}
-    function phoneAuthOnCode(){return $("#wrap-portrait").style.display!=="none"&&!!$("#screen-phone-code.active");}
-    function phoneAuthSetCode(value){$("#pauth-code-input").value=value;phoneAuthRender();}
-    let phoneAuthCountryLocale = "";
-    function phoneAuthRenderCountry(){
-      $("#pauth-cc-code").textContent=phoneAuthCC.code;
-      if(phoneAuthCountryLocale===phoneAuth.locale)return;
-      phoneAuthCountryLocale=phoneAuth.locale;
-      const region={"+1":"US","+44":"GB","+82":"KR","+966":"SA","+81":"JP","+86":"CN","+65":"SG"};
-      const names=new Intl.DisplayNames([phoneAuth.locale==="zh"?"zh-CN":"en"],{type:"region"});
-      $("#pauth-cc-menu").innerHTML=LG_COUNTRIES.map((c,i)=>`<button type="button" class="pauth-cc-item" data-pauth-cc="${i}"><span aria-hidden="true">${c.flag}</span>${names.of(region[c.code])||c.name}<b>${c.code}</b></button>`).join("");
-    }
-    function phoneAuthRender(){
-      const busy=!!phoneAuth.busy, code=$("#pauth-code-input"), value=code.value;
-      document.querySelectorAll("[data-pauth-copy]").forEach(el=>el.textContent=phoneAuthText(el.dataset.pauthCopy));
-      for(const id of ["screen-phone-auth","screen-phone-code"])$("#"+id).lang=phoneAuth.locale;
-      $("#pauth-phone-input").placeholder=phoneAuthText("phoneLabel");
-      $("#pauth-phone-input").disabled=busy;
-      $("#pauth-phone-input").setAttribute("aria-invalid",phoneAuth.errorNumber==="invalidPhone"?"true":"false");
-      $("#pauth-cc").disabled=busy;
-      $("#pauth-cc").setAttribute("aria-label",phoneAuthText("country"));
-      code.setAttribute("aria-label",phoneAuthText("codeLabel"));
-      code.setAttribute("aria-invalid",["invalid","expired"].includes(phoneAuth.errorCode)?"true":"false");
-      document.querySelectorAll(".pauth-back").forEach(b=>b.setAttribute("aria-label",phoneAuthText("back")));
-      const same=phoneAuthValid()&&phoneAuth.sentKey===phoneAuthKey();
-      const left=phoneAuthLeft(),send=$("#pauth-getcode");
-      send.disabled=busy||!phoneAuthValid()||(!same&&left>0);
-      send.textContent=phoneAuth.busy==="send"?phoneAuthText("sending"):phoneAuth.busy==="challenge"&&!phoneAuthOnCode()?phoneAuthText("verifying"):same?phoneAuthText("continue"):left>0?phoneAuthText("wait").replace("{s}",left):phoneAuthText("send");
-      const resend=$("#pauth-resend"), resendLeft=phoneAuthLeft(phoneAuth.sentKey);
-      resend.disabled=busy||resendLeft>0||!phoneAuth.sentKey;
-      resend.textContent=phoneAuth.busy==="resend"?phoneAuthText("sending"):phoneAuth.busy==="challenge"&&phoneAuthOnCode()?phoneAuthText("verifying"):resendLeft>0?phoneAuthText("wait").replace("{s}",resendLeft):phoneAuthText("resend");
-      const login=$("#pauth-login");login.disabled=busy||!phoneAuth.sentKey||phoneAuth.sentKey!==phoneAuthKey()||value.length!==4;
-      login.textContent=phoneAuth.busy==="verify"?phoneAuthText("verifying"):phoneAuthText("continue");
-      code.disabled=busy;$("#pauth-change").disabled=busy;
-      $("#pauth-recipient").textContent=phoneAuth.sentLabel;
-      $("#pauth-number-error").textContent=phoneAuthText(phoneAuth.errorNumber);
-      $("#pauth-code-error").textContent=phoneAuthText(phoneAuth.errorCode);
-      document.querySelectorAll(".pauth-code-box").forEach((el,i)=>{el.textContent=value[i]||"";el.classList.toggle("is-focus",i===Math.min(code.selectionStart??value.length,3));});
-      phoneAuthRenderCountry();
-    }
-    function phoneAuthRefreshGetCode(){phoneAuthRender();}
-    function phoneAuthRefreshLogin(){phoneAuthRender();}
-    function phoneAuthCloseMenu(){ $("#pauth-cc-menu").classList.remove("show");$("#pauth-cc").setAttribute("aria-expanded","false"); }
-    function phoneAuthCancelPending(){phoneAuth.revision++;phoneAuth.busy="";if(gt4Pending?.scene==="login_signup")gt4Close(false);}
-    function openPhoneAuth(){
-      const current=document.querySelector("#device-portrait .screen.active")?.id;
-      phoneAuthCancelPending();
-      if(!["screen-phone-auth","screen-phone-code"].includes(current)){
-        phoneAuth.origin=current==="screen-welcome"?"screen-welcome":"screen-login";
-        phoneAuth.sentKey="";phoneAuth.sentLabel="";phoneAuth.challenge++;
-        phoneAuthCC=LG_COUNTRIES.find(c=>c.code==="+966")||LG_COUNTRIES[0];
-        $("#pauth-phone-input").value="";$("#pauth-code-input").value="";
+    function phoneAuthRefreshLogin() {
+      const code = ($("#pauth-code-input")?.value || "").replace(/\D/g, "");
+      const btn = $("#pauth-login");
+      if (btn) {
+        const ready = phoneAuthCodeSent && phoneAuthDigits().length >= 6 && code.length === 4;
+        btn.dataset.ready = ready ? "1" : "0";
+        btn.setAttribute("aria-disabled", ready ? "false" : "true");
       }
-      phoneAuth.errorNumber="";phoneAuth.errorCode="";phoneAuthCloseMenu();enterPortrait();showPortraitScreen("screen-phone-auth");phoneAuthRender();
     }
-    function phoneAuthShowCode(){phoneAuthCloseMenu();showPortraitScreen("screen-phone-code");phoneAuthRender();$("#pauth-code-input").focus();}
-    function phoneAuthBackToNumber(){phoneAuthCancelPending();showPortraitScreen("screen-phone-auth");phoneAuthRender();}
-    function phoneAuthRequestCode(){
-      if(phoneAuth.busy||!phoneAuthValid())return;
-      const isResend=phoneAuthOnCode();
-      if(!isResend&&phoneAuth.sentKey===phoneAuthKey()){phoneAuthShowCode();return;}
-      const key=phoneAuthKey();if(phoneAuthLeft(key)>0)return;
-      const revision=++phoneAuth.revision, label=phoneAuthCC.code+" "+phoneAuthNational(), result=phoneAuth.sendResult;
-      const errorField=isResend?"errorCode":"errorNumber";
-      phoneAuth[errorField]="";phoneAuth.busy="challenge";phoneAuthRender();
-      gt4Open({scene:"login_signup",type:isResend?"resend":"initial",
-        onPass:()=>{
-          if(phoneAuth.revision!==revision)return;
-          phoneAuth.busy=isResend?"resend":"send";phoneAuthRender();
-          setTimeout(()=>{
-            if(phoneAuth.revision!==revision)return;
-            phoneAuth.busy="";
-            if(result!=="success"){
-              phoneAuth[errorField]=result;
-              if(result==="limited")phoneAuth.deadlines.set(key,Date.now()+60000);
-              phoneAuthRender();return;
-            }
-            phoneAuth.sentKey=key;phoneAuth.sentLabel=label;phoneAuth.challenge++;
-            phoneAuth.errorCode="";phoneAuth.errorNumber="";phoneAuth.reviewState="waiting";
-            phoneAuth.deadlines.set(key,Date.now()+60000);$("#pauth-code-input").value="";phoneAuthShowCode();
-          },650);
+    function phoneAuthRenderCountry() {
+      const code = $("#pauth-cc-code");
+      if (code) code.textContent = phoneAuthCC.code;
+      const flag = document.querySelector("#pauth-cc .pauth-flag");
+      if (flag) {
+        flag.innerHTML = phoneAuthCC.code === "+966"
+          ? '<img src="assets/login/flag-saudi.svg" alt="" />'
+          : `<span aria-hidden="true">${phoneAuthCC.flag}</span>`;
+      }
+    }
+    function openPhoneAuth(mode) {
+      enterPortrait();
+      showPortraitScreen("screen-phone-auth");
+      phoneAuthCC = LG_COUNTRIES.find((country) => country.code === "+966") || LG_COUNTRIES[0];
+      phoneAuthRenderCountry();
+      clearInterval(phoneAuthResendTimer);
+      const phone = $("#pauth-phone-input"); if (phone) phone.value = "";
+      const code = $("#pauth-code-input"); if (code) { code.value = ""; code.disabled = true; }
+      phoneAuthCodeSent = mode === "resend";
+      if (code && phoneAuthCodeSent) code.disabled = false;
+      const getCode = $("#pauth-getcode");
+      if (getCode) {
+        delete getCode.dataset.counting;
+        delete getCode.dataset.verifying;
+        getCode.disabled = true;
+        getCode.textContent = "Get code";
+      }
+      const login = $("#pauth-login"); if (login) { login.disabled = false; login.textContent = "Log in"; }
+      $("#pauth-cc-menu")?.classList.remove("show");
+      phoneAuthRefreshLogin();
+    }
+    function phoneAuthFinishSend() {
+      phoneAuthCodeSent = true;
+      const code = $("#pauth-code-input");
+      if (code) { code.disabled = false; code.focus(); }
+      const btn = $("#pauth-getcode");
+      if (!btn) return;
+      delete btn.dataset.verifying;
+      btn.dataset.counting = "1";
+      btn.disabled = true;
+      phoneAuthResendLeft = 60;
+      btn.textContent = `${phoneAuthResendLeft}s`;
+      clearInterval(phoneAuthResendTimer);
+      phoneAuthResendTimer = setInterval(() => {
+        phoneAuthResendLeft -= 1;
+        if (phoneAuthResendLeft <= 0) {
+          clearInterval(phoneAuthResendTimer);
+          delete btn.dataset.counting;
+          btn.textContent = "Get code";
+          phoneAuthRefreshGetCode();
+        } else btn.textContent = `${phoneAuthResendLeft}s`;
+      }, 1000);
+      phoneAuthRefreshLogin();
+    }
+    function phoneAuthRequestCode() {
+      const btn = $("#pauth-getcode");
+      if (!btn || btn.disabled || phoneAuthDigits().length < 6) return;
+      const requestType = phoneAuthCodeSent ? "resend" : "initial";
+      btn.disabled = true;
+      btn.dataset.verifying = "1";
+      btn.textContent = "Verifying…";
+      gt4Open({
+        scene: "login_signup",
+        type: requestType,
+        onPass: function () {
+          btn.textContent = "Sending…";
+          setTimeout(phoneAuthFinishSend, 420);
         },
-        onCancel:()=>{if(phoneAuth.revision!==revision)return;phoneAuth.busy="";phoneAuthRender();}
+        onCancel: function () {
+          delete btn.dataset.verifying;
+          btn.textContent = "Get code";
+          phoneAuthRefreshGetCode();
+        },
       });
     }
-    $("#pauth-cc").addEventListener("click",()=>{const open=$("#pauth-cc-menu").classList.toggle("show");$("#pauth-cc").setAttribute("aria-expanded",String(open));});
-    $("#pauth-cc-menu").addEventListener("click",event=>{
-      const item=event.target.closest("[data-pauth-cc]");if(!item||phoneAuth.busy)return;
-      phoneAuthCC=LG_COUNTRIES[Number(item.dataset.pauthCc)];phoneAuth.errorNumber="";phoneAuth.errorCode="";$("#pauth-code-input").value="";phoneAuthCloseMenu();phoneAuthRender();
-    });
-    document.addEventListener("click",event=>{if(!event.target.closest(".pauth-field"))phoneAuthCloseMenu();});
-    $("#pauth-phone-input").addEventListener("input",event=>{
-      event.target.value=event.target.value.replace(/\D/g,"").slice(0,15);
-      $("#pauth-code-input").value="";phoneAuth.errorNumber="";phoneAuth.errorCode="";phoneAuthRender();
-    });
-    $("#pauth-phone-input").addEventListener("blur",()=>{if(phoneAuthDigits()&&!phoneAuthValid()){phoneAuth.errorNumber="invalidPhone";phoneAuthRender();}});
-    $("#pauth-phone-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();phoneAuthRequestCode();}});
-    $("#pauth-code-input").addEventListener("input",event=>{event.target.value=event.target.value.replace(/\D/g,"").slice(0,4);phoneAuth.errorCode="";phoneAuthRender();});
-    $("#pauth-code-input").addEventListener("paste",event=>{const value=(event.clipboardData?.getData("text")||"").replace(/\D/g,"");if(value.length===4){event.preventDefault();phoneAuth.errorCode="";phoneAuthSetCode(value);}});
-    ["focus","click","keyup"].forEach(name=>$("#pauth-code-input").addEventListener(name,phoneAuthRender));
-    $("#pauth-code-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();$("#pauth-login").click();}});
-    $("#pauth-getcode").addEventListener("click",phoneAuthRequestCode);
-    $("#pauth-resend").addEventListener("click",phoneAuthRequestCode);
-    $("#pauth-code-back").addEventListener("click",phoneAuthBackToNumber);
-    $("#pauth-change").addEventListener("click",phoneAuthBackToNumber);
-    $("#pauth-back").addEventListener("click",()=>{phoneAuthCancelPending();phoneAuthCloseMenu();v155EntryAuth=false;showPortraitScreen(phoneAuth.origin);});
-    $("#pauth-login").addEventListener("click",()=>{
-      if($("#pauth-login").disabled||phoneAuth.busy)return;
-      const revision=++phoneAuth.revision, result=phoneAuth.verifyResult;
-      phoneAuth.errorCode="";phoneAuth.busy="verify";phoneAuthRender();
-      setTimeout(()=>{
-        if(phoneAuth.revision!==revision)return;
-        phoneAuth.busy="";
-        if(result!=="success"){
-          phoneAuth.errorCode=result;
-          if(result==="invalid"||result==="expired")$("#pauth-code-input").value="";
-          phoneAuthRender();$("#pauth-code-input").focus();return;
-        }
-        profile.contactPhone=phoneAuth.sentLabel;profile.phoneVerificationStatus="verified";
-        phoneAuth.sentKey="";$("#pauth-code-input").value="";phoneAuthRender();onLoginSuccess();
-      },750);
-    });
-    window.PHONE_AUTH={
-      jump(step="number"){
-        phoneAuthCancelPending();phoneAuth.sendResult="success";phoneAuth.verifyResult="success";
-        phoneAuth.origin="screen-welcome";enterPortrait();showPortraitScreen("screen-welcome");openPhoneAuth();
-        v155EntryAuth=true;profile.skipOnboarding=true;
-        if(step!=="number"){
-          $("#pauth-phone-input").value="531234567";phoneAuth.sentKey=phoneAuthKey();phoneAuth.sentLabel="+966 531234567";phoneAuth.challenge++;
-          phoneAuth.deadlines.set(phoneAuth.sentKey,step==="resend"?0:Date.now()+60000);phoneAuthShowCode();
-        }
-      },
-      autofill(code,challenge=phoneAuth.challenge){
-        if(!phoneAuthOnCode()||phoneAuth.busy||challenge!==phoneAuth.challenge||$("#pauth-code-input").value||!/^\d{4}$/.test(code))return false;
-        phoneAuth.errorCode="";phoneAuthSetCode(code);return true;
-      },
-      review(state){
-        phoneAuthCancelPending();phoneAuth.reviewState=state;phoneAuth.errorCode="";
-        if(state==="waiting"){phoneAuth.deadlines.set(phoneAuth.sentKey,Date.now()+60000);phoneAuthSetCode("");}
-        else if(state==="ready")phoneAuth.deadlines.set(phoneAuth.sentKey,0);
-        else if(state==="autofill")this.autofill("1234");
-        else {phoneAuth.errorCode=state;if(state!=="network")$("#pauth-code-input").value="";}
-        phoneAuthRender();
+    $("#pauth-cc")?.addEventListener("click", () => {
+      const menu = $("#pauth-cc-menu");
+      if (!menu) return;
+      if (!menu.children.length) {
+        menu.innerHTML = LG_COUNTRIES.map((country, index) => `<button type="button" class="pauth-cc-item" data-pauth-cc="${index}">${country.flag} ${country.name}<b style="margin-left:auto">${country.code}</b></button>`).join("");
       }
-    };
-    // Cancel pending callbacks when reviewers jump away, so stale requests cannot navigate.
-    new MutationObserver(()=>{if(phoneAuth.busy&&($("#wrap-portrait").style.display==="none"||(!$("#screen-phone-auth.active")&&!$("#screen-phone-code.active"))))phoneAuthCancelPending();}).observe($("#wrap-portrait"),{subtree:true,attributes:true,attributeFilter:["class","style"]});
-    setInterval(()=>{if($("#wrap-portrait").style.display!=="none"&&($("#screen-phone-auth.active")||phoneAuthOnCode()))phoneAuthRender();},1000);
-    document.addEventListener("visibilitychange",()=>{if(!document.hidden)phoneAuthRender();});
+      menu.classList.toggle("show");
+    });
+    $("#pauth-cc-menu")?.addEventListener("click", (event) => {
+      const item = event.target.closest(".pauth-cc-item");
+      if (!item) return;
+      phoneAuthCC = LG_COUNTRIES[+item.dataset.pauthCc] || phoneAuthCC;
+      phoneAuthRenderCountry();
+      $("#pauth-cc-menu")?.classList.remove("show");
+    });
+    $("#pauth-phone-input")?.addEventListener("input", (event) => {
+      event.target.value = event.target.value.replace(/\D/g, "").slice(0, 16);
+      phoneAuthRefreshGetCode();
+      phoneAuthRefreshLogin();
+    });
+    $("#pauth-code-input")?.addEventListener("input", (event) => {
+      event.target.value = event.target.value.replace(/\D/g, "").slice(0, 4);
+      phoneAuthRefreshLogin();
+    });
+    $("#pauth-getcode")?.addEventListener("click", phoneAuthRequestCode);
+    $("#pauth-login")?.addEventListener("click", () => {
+      const btn = $("#pauth-login");
+      if (!btn) return;
+      if (btn.dataset.ready !== "1") { $("#pauth-code-input")?.focus(); return; }
+      btn.disabled = true;
+      btn.textContent = "Logging in…";
+      clearInterval(phoneAuthResendTimer);
+      setTimeout(onLoginSuccess, 700);
+    });
 
     function lgRequestCode(scope, requestType) {
       const isResend = requestType === "resend";
@@ -12734,12 +12678,21 @@
     }
 
     function openPhoneLoginReview(startVerification) {
-      window.PHONE_AUTH.jump("number");
-      $("#pauth-phone-input").value = "531234567";
-      phoneAuthRender();
+      openPhoneAuth("initial");
+      const input = $("#pauth-phone-input");
+      if (input) input.value = "53 **** 6473";
+      phoneAuthRefreshGetCode();
       if (startVerification) setTimeout(phoneAuthRequestCode, 80);
     }
-    function openPhoneLoginResendReview() { window.PHONE_AUTH.jump("resend"); }
+    function openPhoneLoginResendReview() {
+      openPhoneAuth("resend");
+      const input = $("#pauth-phone-input");
+      if (input) input.value = "53 **** 6473";
+      const code = $("#pauth-code-input");
+      if (code) code.disabled = false;
+      phoneAuthRefreshGetCode();
+      phoneAuthRefreshLogin();
+    }
     // Delegated clicks (works for both login screens, no duplicate IDs).
     document.addEventListener("click", (e) => {
       const t = e.target;
@@ -19117,7 +19070,7 @@
             jumps.map(function (j, i) { return '<button type="button" class="sp-jump" data-sp-jump="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
         }
-        if (corePages.length) {
+        if (corePages.some(function (page) { return !page.auxiliary; })) {
           html += '<div class="sp-core-wrap"><p class="sp-core-label">' + esc(corePagesLabel) + '</p><div class="sp-jumps">' +
             corePages.map(function (j, i) { return j.auxiliary ? "" : '<button type="button" class="sp-core-page' + (ctx.pageKey === j.key ? ' on' : '') + '" data-sp-core="' + i + '">' + esc(j.label) + "</button>"; }).join("") +
             "</div></div>";
@@ -19450,10 +19403,6 @@
       if (key.indexOf("gp") === 0) return window.CLASS_PERMISSIONS?.getValue(key);
       if (key.indexOf("ip") === 0 && window.IP_ANIMATION) return window.IP_ANIMATION.getValue(key);
       if (window.v200GetValue && key.indexOf("v200") === 0) return window.v200GetValue(key);
-      if (key === "phoneLocale") return phoneAuth.locale;
-      if (key === "phoneSendResult") return phoneAuth.sendResult;
-      if (key === "phoneVerifyResult") return phoneAuth.verifyResult;
-      if (key === "phonePageState") return phoneAuth.reviewState;
       if (key === "experimentGroup") return demoState.experimentGroup;
       if (key === "v155OnboardingStatus") return demoState.v155OnboardingStatus;
       if (key === "v155Platform") return demoState.v155Platform;
@@ -19553,8 +19502,7 @@
       // V1.3.0: study plan + trial report are portrait takeovers.
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
-      if (pid === "screen-phone-auth") return {label:"输入手机号", pageKey:"phone_number", isCore:true, keys:["phoneLocale","phoneSendResult"]};
-      if (pid === "screen-phone-code") return {label:"输入验证码", pageKey:"phone_code", isCore:true, keys:["phoneLocale","phonePageState","phoneSendResult","phoneVerifyResult","v155OnboardingStatus"]};
+      if (pid === "screen-phone-auth") return ctx("手机号登录", []);
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", []);
       if (pid === "screen-welcome")      return ctx(
         "登录 / 注册",
@@ -19584,10 +19532,6 @@
       {key:"pjNotify",label:"通知权限（模拟）",options:[["granted","已授权"],["unknown","未授权"]],apply:v=>window.PARENT_JOURNEY.set("pjNotify",v)},
       {key:"pjProgress",label:"首课状态",options:[["pending","未开始"],["started","已开始"],["completed","已完成"]],apply:v=>window.PARENT_JOURNEY.set("pjProgress",v)},
       {key:"v210FreePlan",label:"免费学习计划",options:[["generated","生成免费学习计划"],["not_generated","不生成免费学习计划"]],apply:v=>window.v210SetFreePlanReview("plan",v)},
-      {key:"phoneLocale",label:"手机号页面语言",options:[["en","English"],["zh","简体中文"]],apply:v=>{phoneAuth.locale=v;phoneAuthRender();}},
-      {key:"phoneSendResult",label:"下次短信发送",options:[["success","成功"],["fail","发送失败"],["network","网络异常"],["limited","频率限制"]],apply:v=>{phoneAuth.sendResult=v;}},
-      {key:"phoneVerifyResult",label:"下次验证码校验 · 任意 4 位演示",options:[["success","成功"],["invalid","错误"],["expired","过期"],["network","网络异常"],["unavailable","账号受限"]],apply:v=>{phoneAuth.verifyResult=v;}},
-      {key:"phonePageState",label:"验证码页面状态",options:[["waiting","等待短信"],["ready","可重发"],["autofill","系统填码"],["invalid","验证码错误"],["expired","验证码过期"],["network","网络异常"]],apply:v=>{window.PHONE_AUTH.review(v);}},
       {key:"gpCountry",label:"首次进课 · 国家地区",options:[["VN","越南 · 默认开启"],["default","其他地区 · 默认关闭"]],apply:v=>window.CLASS_PERMISSIONS.set("gpCountry",v)},
       {key:"gpPlatform",label:"设备平台",options:[["android","Android"],["ios","iOS"]],apply:v=>window.CLASS_PERMISSIONS.set("gpPlatform",v)},
       {key:"gpGuide",label:"课中新手引导",options:[["pending","未完成"],["completed","已完成"]],apply:v=>window.CLASS_PERMISSIONS.set("gpGuide",v)},
@@ -19892,9 +19836,6 @@
     ],
     corePagesLabel: "V2.2.0 核心页面",
     corePages: [
-      {key:"phone_number",label:"手机号登录 · 输入号码",run:()=>window.PHONE_AUTH.jump("number")},
-      {key:"phone_code",label:"手机号登录 · 输入验证码",run:()=>window.PHONE_AUTH.jump("code")},
-      {key:"phone_visual",auxiliary:true,label:"手机号登录 · 两页视觉稿",run:()=>window.open("assets/phone-auth/two-step-concept.png","_blank","noopener")},
       { key: "class_permissions", auxiliary: true, label: "课中授权 · 首次开口", run: function () { window.CLASS_PERMISSIONS.jump("first"); } },
       { key: "permission_retry", auxiliary: true, label: "麦克风 · 拒绝后开启", run: function () { window.CLASS_PERMISSIONS.jump("retry"); } },
       { key: "permission_settings", auxiliary: true, label: "麦克风 · 设置确认弹窗", run: function () { window.CLASS_PERMISSIONS.jump("settings-confirm"); } },
@@ -25429,17 +25370,14 @@
 
 
 <style>
-/* Keep Demo-only tools outside the two phone-auth screens on narrow devices. */
+/* Keep Demo-only tools outside the baseline phone-auth screen on narrow devices. */
 @media(max-width:600px){
-  body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-phone-auth,#screen-phone-code).active) #dfb-fab { display:none !important; }
-  body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-phone-auth,#screen-phone-code).active) .device-wrap.portrait { margin-top:36px; }
-  body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-phone-auth,#screen-phone-code).active) .device.portrait { height:min(800px,calc(100dvh - 112px)); max-height:calc(100dvh - 112px); }
+  body:has(#wrap-portrait:not([style*="display: none"]) #screen-phone-auth.active) #dfb-fab { display:none !important; }
+  body:has(#wrap-portrait:not([style*="display: none"]) #screen-phone-auth.active) .device-wrap.portrait { margin-top:36px; }
+  body:has(#wrap-portrait:not([style*="display: none"]) #screen-phone-auth.active) .device.portrait { height:min(800px,calc(100dvh - 112px)); max-height:calc(100dvh - 112px); }
 }
 </style>
-<script>
-// Direct review links; run after the existing V2.2.0 boot sequence.
-window.addEventListener("load",()=>{const step=new URLSearchParams(location.search).get("phoneAuth");if(["number","code","resend"].includes(step))setTimeout(()=>window.PHONE_AUTH.jump(step),120);});
-</script>
+
 
 <script id="v220-teacher-baseline-module">
 (() => {
@@ -25727,12 +25665,13 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   };
   send(false);if(!sent){voiceListener=()=>send(false);synth.addEventListener('voiceschanged',voiceListener);voiceTimer=setTimeout(()=>send(true),1000);}
  }
- function renderPreview(){preview.innerHTML=`<div class="prh-completion-art"><img src="assets/v220/parent-journey/lesson-complete-parent-handoff.png" alt="${english()?'A child celebrates finishing a lesson and hands a tablet with a star to a parent':'孩子完成课程后，开心地把显示星星的平板递给家长'}"/></div><div class="prh-completion-copy"><span class="prh-complete-label">${english()?'LESSON COMPLETE':'课程完成'}</span><h2>${english()?'Great job!':'太棒了！'}</h2><p class="prh-child-instruction">${english()?'Bring a parent over to see how you did.':'请爸爸妈妈来看看你的表现吧。'}</p><div class="prh-parent-summary"><span>${english()?'FOR PARENTS':'家长看这里'}</span><p>${english()?'See your child’s English level and what to learn next.':'了解孩子的英语水平，以及接下来适合学什么。'}</p></div></div>`;}
+ function invitationCopy(){return english()?{title:'You did it!',message:'You finished your lesson! Go get Mom or Dad and show them your amazing work!'}:{title:'太棒了！',message:'你完成这节课啦！快请爸爸妈妈过来，看看你的精彩表现吧！'};}
+ function renderPreview(){const copy=invitationCopy();preview.innerHTML=`<div class="prh-completion-art"><img src="assets/v220/parent-journey/lesson-complete-parent-handoff.png" alt="${english()?'A child celebrates finishing a lesson and hands a tablet with a star to a parent':'孩子完成课程后，开心地把显示星星的平板递给家长'}"/></div><div class="prh-completion-copy"><span class="prh-complete-label">${english()?'LESSON COMPLETE':'课程完成'}</span><h2>${copy.title}</h2><p class="prh-child-instruction">${copy.message}</p><div class="prh-parent-summary"><span>${english()?'FOR PARENTS':'家长看这里'}</span><p>${english()?'See your child’s English level and what to learn next.':'了解孩子的英语水平，以及接下来适合学什么。'}</p></div></div>`;}
  function update(){
   const active=screen.classList.contains('active')&&applies(),entering=active&&!wasActive,leaving=!active&&wasActive;wasActive=active;preview.hidden=!active;card.classList.toggle('prh-completion',active);
   if(leaving){cancelInvitation();renderedLocale=null;}if(!active)return;
   const locale=english()?'en':'zh';if(entering||locale!==renderedLocale){renderedLocale=locale;renderPreview();}
-  if(entering){speak(english()?'Great job! You finished your lesson. Please hand the device to your parent to see your report.':'太棒了！你完成课程啦。请把设备交给爸爸妈妈，一起看看你的学习报告吧。');}
+  if(entering){const copy=invitationCopy();speak(copy.title+' '+copy.message);}
   const ready=lcReportReady&&!cont.disabled,text=ready?(english()?'View report':'查看报告'):(english()?'Preparing your report…':'报告生成中…');if(cont.textContent!==text)cont.textContent=text;cont.setAttribute('aria-busy',String(!ready));
  }
  new MutationObserver(update).observe(screen,{attributes:true,attributeFilter:['class','disabled'],childList:true,subtree:true});
