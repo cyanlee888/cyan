@@ -21423,6 +21423,10 @@
       }
     }
     function renderPaywall(){
+      if (document.getElementById("screen-paywall-pt")?.classList.contains("v220-trial-a") && window.v180RenderPaywall) {
+        window.v180RenderPaywall();
+        return;
+      }
       ensurePaywallUi();
       var name = reviewName();
       renderValueCarousel();
@@ -23662,9 +23666,16 @@
       document.querySelector("#screen-paywall-pt .v180-price-note")?.remove();
     }
     function renderPaywall() {
+      var paywallScreen = document.getElementById("screen-paywall-pt");
+      var parentTrial = paywallTrigger === "parent_course_preview" && !!window.PARENT_JOURNEY?.checkoutPending();
+      paywallScreen.classList.toggle("v220-trial-a", parentTrial);
+      if (!parentTrial) paywallScreen.removeAttribute("data-paywall-template");
       ensurePaywallLayer();
       window.PROMO_CODE?.placeEntry();
-      if (window.PROMO_CODE?.renderProductStatus()) return;
+      if (window.PROMO_CODE?.renderProductStatus()) {
+        window.V220_TRIAL_PAYWALL_A?.render({prices: [], tier: selectedOfferTier()});
+        return;
+      }
       var value = selectedOfferTier();
       var name = String(profile.name || "").trim() || "your child";
       var prices = availablePrices();
@@ -23722,6 +23733,7 @@
       var cta = document.getElementById("btn-pwpt-purchase");
       if (cta) cta.textContent = "Subscribe now";
       window.PARENT_JOURNEY?.decoratePaywall();
+      window.V220_TRIAL_PAYWALL_A?.render({prices: prices, tier: value});
     }
     window.v220RefreshParentPaywall = renderPaywall;
     function openSelectedCheckout() {
@@ -24055,10 +24067,18 @@
       else if (name === "unlock-expired") { closePlanReveal(); openPaywall("screen-class", "expired_plan", planTier()); }
       else if (name === "explore-more") { closePlanReveal(); showClassHome(); setHubTab("practice"); }
       else if (name === "confirm-purchase") {
+        if (document.getElementById("screen-paywall-pt")?.classList.contains("v220-trial-a")) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
         activateSelectedMembership();
       }
       else if (name === "cancel-purchase") {
+        if (document.getElementById("screen-paywall-pt")?.classList.contains("v220-trial-a")) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
         document.getElementById("v155-checkout-overlay")?.classList.remove("show");
         handleV180PaymentCancel();
       }
@@ -25604,7 +25624,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
  function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
+ window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,continueFree:()=>{if(profile.trialReportShown){m.checkout=false;stop();showDinoHome();syncBanner();}else start();},captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'3 天免费试用 · A',pageKey:'trial_paywall_a',isCore:true,keys:['pjTrial','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
  const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
@@ -26234,3 +26254,137 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-notification-dialog{position:fixed;inset:0;margin:auto;max-height:calc(100dvh - 32px);overflow-y:auto;box-sizing:border-box;width:min(340px,calc(100% - 40px));border:2px solid #e5edff;border-radius:26px;padding:24px;background:linear-gradient(145deg,#fff,#ecebff);color:#151b86;box-shadow:0 20px 70px #07133466;font-family:var(--font);text-align:center}
 .pj-notification-dialog::backdrop{background:#071334aa}.pj-notification-dialog h2{margin:0 0 16px;font:700 24px/1.2 var(--display)}.pj-notification-dialog p{font-size:15px;line-height:1.5;margin:0 0 24px}.pj-notification-dialog .pj-primary{min-height:52px;width:100%;border:2px solid #ffe4a0;border-radius:999px;background:linear-gradient(#ffb42c,#ff8b15);color:#fff;font:700 17px var(--display)}.pj-notification-dialog .pj-link{display:block;margin:12px auto 0;min-height:44px;border:0;background:transparent;color:#151b86;font:600 15px var(--font)}
 </style>
+
+<style id="v220-trial-paywall-a-style">
+#screen-paywall-pt.v220-trial-a{container-type:size;container-name:trial-paywall;padding:0!important;background:#eaf5ff url('assets/v220/paywall-a/castle-clouds-background.png') center top/cover no-repeat;color:#10134c}
+#screen-paywall-pt.v220-trial-a #pwpt-scroll{position:relative;inset:auto;flex:1;min-height:0;padding:0 20px 20px;background:transparent}
+#screen-paywall-pt.v220-trial-a .pwpt-head{position:relative;inset:auto;display:flex;align-items:center;height:44px;min-height:44px;margin:0;padding:2px 0;z-index:2}
+#screen-paywall-pt.v220-trial-a .pwpt-back{position:static;display:grid;place-items:center;width:40px;height:40px;border:1px solid #fff8;background:#fff2;color:white;box-shadow:none;font-size:30px}
+#screen-paywall-pt.v220-trial-a :is(.pwpt-timer,.v155-value-carousel,.pwpt-hero-top,.pwpt-benefits,.v180-offer-strip,.pwpt-cta-spacer){display:none!important}
+#screen-paywall-pt.v220-trial-a .pwpt-hero-card{display:flex;flex-direction:column;gap:12px;max-width:none;margin:0;padding:0;border:0!important;border-radius:0;background:none;box-shadow:none;overflow:visible}
+#screen-paywall-pt.v220-trial-a .pwpt-hero-card::before,#screen-paywall-pt.v220-trial-a .pwpt-hero-card::after{display:none}
+.v220-pwa-intro,.v220-pwa-current,.v220-pwa-fees,.v220-pwa-free{display:none}
+#screen-paywall-pt.v220-trial-a .v220-pwa-intro{display:block;padding:8px 0 18px;text-align:center;color:white}
+.v220-pwa-intro h1{margin:0;font:700 clamp(30px,9cqw,38px)/1.12 var(--display);letter-spacing:-.03em;text-shadow:0 2px 10px #2539b52b}
+.v220-pwa-intro p{margin:8px auto 0;font:600 16px/1.45 var(--font);max-width:290px;overflow-wrap:anywhere}
+#screen-paywall-pt.v220-trial-a .v220-pwa-current{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 12px;border:1px solid #ffffffaa;border-radius:16px;background:#ffffffd9;box-shadow:0 5px 14px #b5c9e826}
+.v220-pwa-current strong{font:700 15px/1.4 var(--font)}
+.v220-pwa-change{flex-shrink:0;min-height:44px;padding:0;border:0;background:transparent;color:#1554df;font:700 13px var(--font);cursor:pointer}
+#screen-paywall-pt.v220-trial-a #v180-paywall-selector{display:none;margin:0;padding:0;background:transparent}
+#screen-paywall-pt.v220-trial-a[data-pwa-tier-open="true"] #v180-paywall-selector{display:block}
+#screen-paywall-pt.v220-trial-a #pwpt-plans{display:flex!important;flex-direction:column;gap:12px;padding:0!important;margin:0!important;max-width:none}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan{position:relative;display:flex;align-items:center;justify-content:space-between;min-height:80px;margin:0;padding:14px 16px 14px 54px;border:2px solid #cbdfff;border-radius:20px;background:linear-gradient(145deg,#fff,#f5f8ff);box-shadow:none;text-align:left;color:#111443}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan.is-selected{border-color:#ffae16;background:linear-gradient(130deg,#fffdf1,#fff9dc);box-shadow:0 0 0 2px #fff3c0}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan::before{content:"";box-sizing:border-box;position:absolute;left:17px;top:50%;width:24px;height:24px;border:2px solid #bac6dc;border-radius:50%;background:white;transform:translateY(-50%);box-shadow:none}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan.is-selected::before{border:7px solid #ff9f0a}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan::after{display:none}
+#screen-paywall-pt.v220-trial-a .pwpt-plan-l{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:0}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-name{font:700 17px/1.2 var(--font);color:#141746}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-price-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-price{font-size:20px;color:#141746;line-height:1.3}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-price b{font:800 23px/1.25 var(--font)}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-price small{font-size:14px;font-weight:600}
+#screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-orig{font-size:13px;color:#73839b}
+#screen-paywall-pt.v220-trial-a :is(.pwpt-plan-r,.pwpt-badge){display:none!important}
+#screen-paywall-pt.v220-trial-a .v220-pwa-fees{display:block;margin:0 0 12px;padding:14px;border:1px solid #fff;border-radius:18px;background:linear-gradient(130deg,#fffbe9e8,#fff8dfcc);color:#141746;box-shadow:0 3px 12px #c0d9ee33}
+.v220-pwa-fee-line{display:flex;align-items:baseline;justify-content:space-between;gap:16px;font:600 14px/1.4 var(--font)}
+.v220-pwa-fee-line+.v220-pwa-fee-line{margin-top:8px}
+.v220-pwa-fee-line strong{text-align:right;font:800 16px/1.4 var(--font)}
+.v220-pwa-fees p{margin:12px 0 0;font:400 12px/1.5 var(--font);text-align:center;color:#536486}
+#screen-paywall-pt.v220-trial-a .pwpt-cta-bar{flex-shrink:0;position:relative;inset:auto;padding:14px 20px 18px;border:0;background:linear-gradient(0deg,#f4fbfff5,#f4fbffdc);box-shadow:none}
+#screen-paywall-pt.v220-trial-a #btn-pwpt-purchase{min-height:56px;padding:13px 18px;border:1px solid #ffd36b;border-radius:999px;background:linear-gradient(#ffb62d,#ff8b0c);color:white;box-shadow:inset 0 2px 1px #fff7,0 4px 10px #ff9c1726;font:700 20px/1.3 var(--display)}
+#screen-paywall-pt.v220-trial-a .v220-pwa-free{display:block;width:100%;min-height:44px;margin:6px 0;padding:8px 12px;border:0;border-radius:12px;background:transparent;color:#2054dc;font:700 15px/1.4 var(--font);cursor:pointer}
+#screen-paywall-pt.v220-trial-a .v220-pwa-free:focus-visible,#screen-paywall-pt.v220-trial-a .v220-pwa-change:focus-visible{outline:3px solid #ffb21b;outline-offset:2px}
+#screen-paywall-pt.v220-trial-a .pwpt-cancel-note{display:none}
+#screen-paywall-pt.v220-trial-a .pwpt-legal{margin:4px 0 0;font:600 12px/1.6 var(--font);color:#315ab9}
+#screen-paywall-pt.v220-trial-a .v155-footer-links{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
+#screen-paywall-pt.v220-trial-a .pwpt-legal :is(a,button){color:#315ab9;font-size:12px;line-height:1.6}
+@media(max-width:360px){#screen-paywall-pt.v220-trial-a #pwpt-scroll{padding-right:16px;padding-left:16px}#screen-paywall-pt.v220-trial-a .v220-pwa-intro{padding:8px 0 24px}.v220-pwa-intro h1{font-size:32px}.v220-pwa-intro p{font-size:14px}#screen-paywall-pt.v220-trial-a .v220-pwa-current{padding:8px 12px;gap:8px}.v220-pwa-current strong{font-size:13px}.v220-pwa-change{font-size:12px}#screen-paywall-pt.v220-trial-a .pwpt-cta-bar{padding:12px 16px 16px}#screen-paywall-pt.v220-trial-a #btn-pwpt-purchase{font-size:18px}.v220-pwa-fee-line{font-size:13px}.v220-pwa-fee-line strong{font-size:14px}}
+@media(max-height:650px){#screen-paywall-pt.v220-trial-a .v220-pwa-intro{padding-top:4px;padding-bottom:20px}#screen-paywall-pt.v220-trial-a .pwpt-cta-bar{padding-top:10px;padding-bottom:12px}}
+@container trial-paywall (max-height:660px){
+ #screen-paywall-pt.v220-trial-a .v220-pwa-intro{padding:4px 0 16px}
+ .v220-pwa-intro h1{font-size:32px}.v220-pwa-intro p{font-size:14px;margin-top:8px}
+ #screen-paywall-pt.v220-trial-a .v220-pwa-current{padding:4px 12px}
+ #screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan{min-height:70px;padding:8px 14px 8px 50px}
+ #screen-paywall-pt.v220-trial-a .pwpt-plan-l{gap:2px}
+ #screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-name{font-size:16px}
+ #screen-paywall-pt.v220-trial-a #pwpt-plans .pwpt-plan-price b{font-size:22px}
+ #screen-paywall-pt.v220-trial-a .v220-pwa-fees{padding:12px;margin-bottom:10px}
+ #screen-paywall-pt.v220-trial-a .pwpt-cta-bar{padding-top:12px;padding-bottom:12px}
+ #screen-paywall-pt.v220-trial-a #btn-pwpt-purchase{min-height:52px;font-size:18px}
+}
+@media(max-width:600px){body:has(#screen-paywall-pt.active.v220-trial-a) #dfb-fab{display:none!important}}
+</style>
+<script id="v220-trial-paywall-a-module">
+(() => {
+  const screen = document.getElementById('screen-paywall-pt');
+  const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const copy = (zh, en) => window.PARENT_JOURNEY?.get('pjLocale') === 'zh' ? zh : en;
+  const template = {
+    id: 'a',
+    trialTitle: () => copy('3 天免费试用', '3-day free trial'),
+    subscriptionTitle: () => copy('开始孩子的英语学习', 'Start learning with Dino AI'),
+    trialSubtitle: name => name ? copy(`试试 ${name} 的英语学习计划`, `Try ${name}’s English learning plan`) : copy('试试孩子的英语学习计划', 'Try your child’s English learning plan')
+  };
+  function render({prices = [], tier = 'pro'} = {}) {
+    if (!screen.classList.contains('v220-trial-a')) return;
+    screen.dataset.paywallTemplate = template.id;
+    const hero = screen.querySelector('.pwpt-hero-card');
+    let intro = document.getElementById('v220-pwa-intro');
+    if (!intro) {
+      intro = document.createElement('header');
+      intro.id = 'v220-pwa-intro'; intro.className = 'v220-pwa-intro';
+      hero.before(intro);
+      const current = document.createElement('div');
+      current.id = 'v220-pwa-current'; current.className = 'v220-pwa-current';
+      hero.prepend(current);
+      const fees = document.createElement('section');
+      fees.id = 'v220-pwa-fees'; fees.className = 'v220-pwa-fees';
+      fees.setAttribute('aria-live', 'polite');
+      document.getElementById('btn-pwpt-purchase').before(fees);
+      const free = document.createElement('button');
+      free.type = 'button'; free.id = 'btn-pwpt-free'; free.className = 'v220-pwa-free';
+      document.getElementById('btn-pwpt-purchase').after(free);
+      free.addEventListener('click', () => window.PARENT_JOURNEY?.continueFree());
+      current.addEventListener('click', event => {
+        const toggle = event.target.closest('[data-pwa-change]');
+        if (!toggle) return;
+        const open = screen.dataset.pwaTierOpen !== 'true';
+        screen.dataset.pwaTierOpen = String(open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    }
+    const selected = prices.find(item => item.id === profile.selectedPlan);
+    const trial = !!selected && selected.id === 'monthly' && !selected.isKol && window.PARENT_JOURNEY?.get('pjTrial') === 'eligible';
+    const name = String(profile.name || '').trim();
+    const headline = selected ? (trial ? template.trialTitle() : template.subscriptionTitle()) : copy('选择学习套餐', 'Choose your learning plan');
+    intro.innerHTML = `<h1>${escape(headline)}</h1><p>${escape(template.trialSubtitle(name))}</p>`;
+    if (screen.dataset.pwaTier && screen.dataset.pwaTier !== tier) screen.dataset.pwaTierOpen = 'false';
+    screen.dataset.pwaTier = tier;
+    document.getElementById('v220-pwa-current').innerHTML = `<strong>Dino ${tier === 'max' ? 'Max' : 'Pro'} · ${copy(`每周 ${tier === 'max' ? 5 : 3} 节主课`, `${tier === 'max' ? 5 : 3} AI lessons / week`)}</strong><button type="button" class="v220-pwa-change" data-pwa-change aria-controls="v180-paywall-selector" aria-expanded="${screen.dataset.pwaTierOpen === 'true'}">${copy('切换方案', 'Change plan')} ›</button>`;
+    const fees = document.getElementById('v220-pwa-fees');
+    const cta = document.getElementById('btn-pwpt-purchase');
+    cta.before(fees);
+    if (!document.getElementById('v155-restore-status')) {
+      const status = document.createElement('span');
+      status.id = 'v155-restore-status'; status.className = 'v155-restore-status';
+      status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
+      screen.querySelector('.pwpt-legal').append(status);
+    }
+    if (selected) {
+      const price = selected.chargeToday || selected.regularCharge || selected.price;
+      const today = trial ? String(price).replace(/\d[\d,.]*/, '0') : price;
+      const renewal = trial ? selected.price + selected.period : selected.renewal || selected.price + selected.period;
+      const store = demoState.v155Platform === 'ios' ? 'App Store' : 'Google Play';
+      fees.innerHTML = `<div class="v220-pwa-fee-line"><span>${copy('今天支付', 'Due today')}</span><strong>${escape(today)}</strong></div><div class="v220-pwa-fee-line"><span>${trial ? copy('3 天试用后', 'After 3 days') : copy('自动续订', 'Auto-renewal')}</span><strong>${escape(renewal)}</strong></div><p>${escape(copy(`可在 ${store} 的订阅设置中取消`, `Cancel anytime in ${store} settings.`))}</p>`;
+      cta.textContent = trial ? copy('开启 3 天免费试用', 'Start 3-day trial') : copy('立即订阅', 'Subscribe now');
+      cta.disabled = false;
+    } else {
+      fees.innerHTML = `<p role="status">${copy('套餐确认后显示费用说明', 'Your billing details will appear when plans are available.')}</p>`;
+      cta.disabled = true;
+    }
+    document.getElementById('btn-pwpt-free').textContent = profile.trialReportShown ? copy('返回首页', 'Go to home') : copy('先免费试听', 'Try a free lesson first');
+  }
+  window.V220_TRIAL_PAYWALL_A = {template, render};
+})();
+</script>
