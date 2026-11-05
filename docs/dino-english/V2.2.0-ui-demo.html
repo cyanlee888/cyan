@@ -410,18 +410,6 @@
       border-radius: 0 0 0 3px;
     }
     .who-intro .speech-bubble::after { display: none; }
-    /* Loading */
-    .loading-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px 24px 32px;
-      text-align: center;
-    }
-    .loading-dino { width: 88px; margin-bottom: 16px; }
-    .loading-dino .dino-mascot { max-height: 96px; }
     .name-field {
       width: 100%;
       min-height: 54px;
@@ -455,27 +443,6 @@
       text-align: center;
     }
     .name-required-hint.is-show { display: block; }
-    .progress-ring {
-      width: 88px;
-      height: 88px;
-      margin-bottom: 28px;
-    }
-    .progress-ring circle.track { stroke: #f4e7d6; }
-    .progress-ring circle.fill {
-      stroke: var(--cta-orange);
-      stroke-linecap: round;
-      transform: rotate(-90deg);
-      transform-origin: 50% 50%;
-      transition: stroke-dashoffset 0.15s linear;
-    }
-    .loading-status {
-      font-family: var(--display);
-      font-size: 1.05rem;
-      color: var(--reward-orange);
-      margin-bottom: 8px;
-      min-height: 1.4em;
-    }
-    .loading-sub { font-size: 0.8125rem; color: var(--ink-muted); }
     .logo {
       font-family: var(--display);
       font-size: 1.35rem;
@@ -4838,14 +4805,6 @@
     .bullets { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 8px; }
     .bullets li { position: relative; padding-left: 24px; font-size: 0.9rem; color: #3a5a76; line-height: 1.4; }
     .bullets li::before { content: "✓"; position: absolute; left: 0; color: var(--cta-orange); font-weight: 800; }
-    .loading-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
-    .loading-dino { width: 110px; height: 110px; }
-    .loading-dino svg, .loading-dino img { width: 100%; height: 100%; }
-    .progress-ring { width: 88px; height: 88px; transform: rotate(-90deg); }
-    .progress-ring .track { stroke: #e3edf7; }
-    .progress-ring .fill { stroke: var(--cta-orange); stroke-linecap: round; transition: stroke-dashoffset .3s ease; }
-    .loading-status { font-size: 1rem; font-weight: 700; color: #143a5e; margin: 0; }
-    .loading-sub { font-size: 0.82rem; color: #8aa; margin: 0; }
     .login-block { align-items: center; text-align: center; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .chip-row span { background: color-mix(in srgb,var(--accent-yellow) 18%,white); color: var(--reward-orange); border-radius: 999px; padding: 5px 11px; font-size: 0.75rem; font-weight: 700; }
@@ -8803,23 +8762,6 @@
         </div>
       </section>
 
-      <section class="screen" id="screen-loading">
-        <div class="top-bar">
-          <button type="button" class="btn-back" data-back="screen-goal-value">Back</button>
-          <span class="top-spacer"></span>
-        </div>
-        <div class="loading-body">
-          <div class="loading-dino" id="loading-dino"></div>
-          <svg class="progress-ring" viewBox="0 0 88 88" aria-hidden="true">
-            <circle class="track" cx="44" cy="44" r="36" fill="none" stroke-width="8"/>
-            <circle class="fill" id="loading-ring" cx="44" cy="44" r="36" fill="none" stroke-width="8"
-              stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
-          </svg>
-          <p class="loading-status" id="loading-status">Creating your plan…</p>
-          <p class="loading-sub">This usually takes a few seconds</p>
-        </div>
-      </section>
-
       <section class="screen" id="screen-login">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-login-back">Back</button>
@@ -12228,7 +12170,7 @@
     }
     function finishPostLoginInfo() {
       profile.profileComplete = true;
-      startLoadingSequence({ afterComplete: "teacher", clearPostLoginInfo: true });
+      completeOnboarding({ afterComplete: "teacher", clearPostLoginInfo: true });
     }
     function onLoginSuccess() {
       const fromSharedEntry = v155EntryAuth || !!$("#screen-welcome.active");
@@ -16582,14 +16524,12 @@
         "is-hidden",
         demoState.experimentGroup === "b" || (postLoginInfo && id === "screen-name")
       );
-      $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
       const dp = $("#device-portrait");
       if (dp) dp.scrollTop = 0;
       if (window.VISIT_REWARD) window.VISIT_REWARD.onScreen(id);
     }
 
     // ----- Onboarding data -----
-    const RING_LEN = 226.2;
     const AGES = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13+"];
     const LEGACY_AGE_BANDS = Object.freeze({
       "3–5": "3–5", "3—5": "3–5", "3-5": "3–5", "3_5": "3–5",
@@ -16773,13 +16713,6 @@
       if (!isParentVoice()) return "you";
       return ageBandFor(profile.age) === "13+" ? "your teen" : "your child";
     }
-    // Loading copy forks by voice (parent vs self) via isParentVoice().
-    const LOADING_LINES = [
-      (p) => `Hi ${p.name || "there"}, setting up your first lessons…`,
-      (p) => `Finding the right starting point for ${p.name || (isParentVoice() ? "your child" : "you")}…`,
-      () => "Choosing the AI teacher…",
-      (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
-    ];
     // Login-screen lead line. Returning users (entered via "Log in") see a sign-in
     // prompt; users who just finished Onboarding see a voice-based "save your plan"
     // CTA — self keeps "your plan", parent path uses the child's name.
@@ -16939,39 +16872,15 @@
       $("#login-chips").innerHTML = chips.map((c) => `<span>${c}</span>`).join("");
     }
 
-    let loadingTimer = null;
-    function startLoadingSequence(options = {}) {
-      const afterComplete = options.afterComplete || "login";
-      showPortraitScreen("screen-loading");
-      const ring = $("#loading-ring");
-      const status = $("#loading-status");
-      $("#loading-dino").innerHTML = DINO_CHAR;
-      let progress = 0;
-      let lineIdx = 0;
-      if (status) status.textContent = LOADING_LINES[0](profile);
-      if (loadingTimer) clearInterval(loadingTimer);
-      loadingTimer = setInterval(() => {
-        progress += 2;
-        if (ring) ring.setAttribute("stroke-dashoffset", String(RING_LEN * (1 - progress / 100)));
-        if (progress % 24 === 0 && lineIdx < LOADING_LINES.length - 1) {
-          lineIdx += 1;
-          if (status) status.textContent = LOADING_LINES[lineIdx](profile);
-        }
-        if (progress >= 100) {
-          clearInterval(loadingTimer);
-          loadingTimer = null;
-          if (afterComplete === "teacher") {
-            setTimeout(() => {
-              if (options.clearPostLoginInfo) postLoginInfo = false;
-              enterLandscape();
-              openTeacherPicker("onboarding");
-            }, 400);
-          } else {
-            fillLogin();
-            setTimeout(() => showPortraitScreen("screen-login"), 400);
-          }
-        }
-      }, 70);
+    function completeOnboarding(options = {}) {
+      if (options.clearPostLoginInfo) postLoginInfo = false;
+      if (options.afterComplete === "teacher") {
+        enterLandscape();
+        openTeacherPicker("onboarding");
+      } else {
+        fillLogin();
+        showPortraitScreen("screen-login");
+      }
     }
 
     let carouselTimer = null;
@@ -17189,15 +17098,15 @@
           showPortraitScreen("screen-age");
         }
       });
-      // V1.7.0：目标选完 → 规划学习内容 loading → 选老师。
+      // Continue directly after the learning goals are confirmed.
       $("#btn-goal-value-continue")?.addEventListener("click", () => {
         if (demoState.experimentGroup === "b") {
           if (!profile.goals?.length) return;
           postLoginInfo = false;
           profile.profileComplete = true;
-          startLoadingSequence({ afterComplete: "teacher" });
+          completeOnboarding({ afterComplete: "teacher" });
         } else {
-          startLoadingSequence();
+          completeOnboarding();
         }
       });
       $("#btn-login-back")?.addEventListener("click", () => {
@@ -19653,7 +19562,6 @@
       );
       if (pid === "screen-login")        return ctx("登录注册页", []);
       if (pid === "screen-goal-value" && demoState.experimentGroup === "b") return ctx("Onboarding · 学习目标多选", []);
-      if (pid === "screen-loading" && demoState.experimentGroup === "b") return ctx("Onboarding 加载页", []);
       if (pid === "screen-paywall-pt") return { label: "会员选择", pageKey: "membership_choice", isCore: true, keys: ["v180OfferTier", "v180Payment"] };
       if (pid === "screen-winback")      return ctx("V1.8.0 · 限时优惠挽留页", ["v180OfferTier", "membership", "v155KolScenario"]);
       if (pid === "screen-vn-consult")   return ctx(
@@ -21962,7 +21870,7 @@
       seedReviewProfile();
       setMembershipReviewState("free");
       cxStage = null;
-      startLoadingSequence({ afterComplete: "teacher" });
+      completeOnboarding({ afterComplete: "teacher" });
       window.demoStatePanel && window.demoStatePanel.render();
     };
     window.v170ReviewOfficialPlan = function(kind){
@@ -25696,7 +25604,7 @@ window.addEventListener("load",()=>{const step=new URLSearchParams(location.sear
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
  function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:true,keys:['pjLocale','pjTrial'].concat(m.page==='preview'?['pjMedia']:[],['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
+ window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'家长链路 · 试用购买',keys:['pjTrial','v180OfferTier','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
  const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
@@ -26323,6 +26231,6 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 @media(max-width:360px){.pj-approved-entry.pj-crisp-entry{min-height:580px;padding:24px 16px 16px;gap:16px}.pj-crisp-entry .pj-personal-heading p{margin-top:14px!important}}
 </style>
 <style id="pj-notification-permission-style">
-.pj-notification-dialog{box-sizing:border-box;width:min(340px,calc(100% - 40px));border:2px solid #e5edff;border-radius:26px;padding:24px;background:linear-gradient(145deg,#fff,#ecebff);color:#151b86;box-shadow:0 20px 70px #07133466;font-family:var(--font);text-align:center}
+.pj-notification-dialog{position:fixed;inset:0;margin:auto;max-height:calc(100dvh - 32px);overflow-y:auto;box-sizing:border-box;width:min(340px,calc(100% - 40px));border:2px solid #e5edff;border-radius:26px;padding:24px;background:linear-gradient(145deg,#fff,#ecebff);color:#151b86;box-shadow:0 20px 70px #07133466;font-family:var(--font);text-align:center}
 .pj-notification-dialog::backdrop{background:#071334aa}.pj-notification-dialog h2{margin:0 0 16px;font:700 24px/1.2 var(--display)}.pj-notification-dialog p{font-size:15px;line-height:1.5;margin:0 0 24px}.pj-notification-dialog .pj-primary{min-height:52px;width:100%;border:2px solid #ffe4a0;border-radius:999px;background:linear-gradient(#ffb42c,#ff8b15);color:#fff;font:700 17px var(--display)}.pj-notification-dialog .pj-link{display:block;margin:12px auto 0;min-height:44px;border:0;background:transparent;color:#151b86;font:600 15px var(--font)}
 </style>
