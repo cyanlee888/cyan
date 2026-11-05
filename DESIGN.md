@@ -90,3 +90,7 @@ Dino English V1.1.0 presents a **forest classroom**: trustworthy, warm, slightly
 - Screen enter: 280ms fade + 12px rise.
 - Option select: 150ms scale + border color.
 - Carousel: 4s crossfade on welcome hero.
+
+## V2.2.0 试听前学习计划
+
+试听前学习计划按[最新确认参考](https://dino-plan-content.selita.net/#pages)使用浅紫渐变、白色圆角阅读卡片、三步成长路径与暖黄色套餐按钮；复用参考页的 Dino、课程体系和 AI 教学素材。页面为可滚动内容，姓名、推荐级别、体验课与套餐操作由 Demo 当前数据决定。此页面以新参考为准，深蓝星空方案保留为历史视觉参考。

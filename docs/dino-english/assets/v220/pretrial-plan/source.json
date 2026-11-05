@@ -1,0 +1,21 @@
+{
+  "source": "https://dino-plan-content.selita.net/#pages",
+  "page": "学习计划页面 - 试听前",
+  "retrieved": "2026-11-05",
+  "assets": [
+    "logo.webp",
+    "dino.webp",
+    "icon-level.webp",
+    "product-resource-elements.webp",
+    "curriculum-global.svg",
+    "teacher-capability-1.svg",
+    "teacher-capability-2.svg",
+    "teacher-capability-3.svg"
+  ],
+  "notes": [
+    "Curriculum L6 label uses the existing Demo CEFR B2 mapping.",
+    "Level 1 vocabulary and sentence counts are reference content; other levels only show counts calculated from the Demo course library.",
+    "Name, recommended level and trial lesson use current Demo data.",
+    "Existing Demo feedback is retained; illustrative reviews are labeled Mock."
+  ]
+}
