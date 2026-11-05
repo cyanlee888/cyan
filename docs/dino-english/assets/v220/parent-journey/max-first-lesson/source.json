@@ -1,0 +1,27 @@
+{
+  "animation": "User-provided teacher_max_first_lesson_welcome_en.pag",
+  "audio": "User-provided max first/1.mp3",
+  "sdk": {
+    "name": "libpag",
+    "version": "4.5.16",
+    "url": "https://registry.npmjs.org/libpag/-/libpag-4.5.16.tgz",
+    "shasum": "8e97e733026c9f5d806607768b68a0e414b2a296",
+    "license": "Apache-2.0"
+  },
+  "welcomeText": "Hi, I'm Max! The first lesson is ready. Let's get started!",
+  "animationDurationSeconds": 5.041667,
+  "audioDurationSeconds": 4.64,
+  "animationSize": [
+    1440,
+    1440
+  ],
+  "frameRate": 24,
+  "hasEmbeddedAudio": false,
+  "poster": "First frame rendered from the supplied PAG; original transparency retained.",
+  "visibleViewportInComposition": [
+    380,
+    140,
+    700,
+    1300
+  ]
+}

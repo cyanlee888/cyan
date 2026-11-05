@@ -25486,6 +25486,86 @@
 })();
 </script>
 
+<style id="v220-max-entry-style">
+.pj-entry-hero.pj-max-entry{position:relative;isolation:isolate;width:96%;max-width:340px;aspect-ratio:1340/1174;flex:none;align-self:center;margin:auto 0;container-type:inline-size}
+.pj-max-entry:before{content:"";position:absolute;left:-3%;right:-3%;bottom:0;height:13%;background:radial-gradient(ellipse,#b1ffff 0%,#32eaff 34%,#059aff66 58%,transparent 73%);filter:blur(5px);z-index:0;pointer-events:none}
+.pj-max-entry .pj-max-actor{position:absolute;left:-1%;bottom:3%;height:96%;aspect-ratio:700/1300;overflow:hidden;z-index:2;pointer-events:none}
+.pj-max-actor>canvas,.pj-max-actor>img{position:absolute;left:-54.285714%;top:-10.769231%;width:205.714286%;height:110.769231%;max-width:none;object-fit:fill}
+.pj-max-actor>canvas{visibility:hidden}
+.pj-max-actor.is-ready>canvas{visibility:visible}
+.pj-max-actor.is-ready>img{visibility:hidden}
+.pj-max-course{position:absolute;left:46%;top:7%;width:54%;min-height:79%;padding:4px 4px 10px;border:2px solid #c9eaff;border-radius:22px;background:linear-gradient(145deg,#fff,#eaf0ff);box-shadow:inset 0 2px 3px #fff,0 6px 12px #002d9466;z-index:1;text-align:center;overflow:hidden;box-sizing:border-box}
+.pj-max-course>img{display:block;width:100%;height:auto;aspect-ratio:1.3;object-fit:cover;border-radius:16px}
+.pj-max-course>h2{position:static!important;display:block!important;width:auto!important;height:auto!important;margin:9px 5px!important;color:var(--sky-deep);font:700 clamp(13px,4.6cqw,17px)/1.24 var(--display);letter-spacing:-.025em;overflow-wrap:anywhere}
+.pj-max-course>span{display:inline-flex;position:static!important;align-items:center;justify-content:center;padding:4px 10px;border-radius:99px;background:#b9cdff;color:var(--sky-deep);font:700 clamp(11px,3.6cqw,13px)/1.2 var(--display)}
+.pj-max-entry .pj-max-audio-enable{position:absolute;z-index:3;left:0;bottom:5%;max-width:47%;min-height:44px;padding:7px 9px;border:1px solid #ffffff99;border-radius:14px;background:#123cbea8;color:#fff;box-shadow:0 2px 8px #07248b44;backdrop-filter:blur(5px);font:700 12px/1.35 var(--font);text-align:center;cursor:pointer}
+.pj-max-entry .pj-max-audio-enable[hidden]{display:none!important}
+.pj-max-entry .pj-max-audio-enable:focus-visible{outline:3px solid #ffd66d;outline-offset:3px}
+.pj-max-entry .pj-max-status{position:absolute;bottom:-18px;left:0;right:0;margin:0!important;text-align:center;font:400 11px/1.4 var(--font);color:#fff}
+.pj-max-entry .pj-max-status[hidden]{display:none!important}
+@media(max-width:360px){.pj-entry-hero.pj-max-entry{width:100%}.pj-max-course{border-radius:18px}.pj-max-course>img{border-radius:12px}.pj-max-course>h2{margin:7px 3px!important}}
+</style>
+<script id="v220-max-entry-module">
+(() => {
+ const base='assets/v220/parent-journey/max-first-lesson/';
+ const escaped=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ let sdk=null,pagBytes=null,current=null;
+ function loadSDK(){if(!sdk)sdk=import(new URL(base+'libpag/libpag.esm.js',document.baseURI).href).then(({PAGInit})=>PAGInit({locateFile:file=>new URL(base+'libpag/'+file,document.baseURI).href})).catch(e=>{sdk=null;throw e;});return sdk;}
+ function loadFile(){if(!pagBytes)pagBytes=fetch(base+'teacher_max_first_lesson_welcome_en.pag').then(r=>{if(!r.ok)throw Error('Animation unavailable');return r.arrayBuffer()}).catch(e=>{pagBytes=null;throw e;});return pagBytes;}
+ function html(course,zh=false){return `<div class="pj-entry-hero pj-max-entry" data-max-entry data-media-state="loading"><div class="pj-max-actor" role="img" aria-label="${zh?'Max 老师欢迎孩子开始体验课':'Max welcomes your child to the first lesson'}"><img src="${base}poster.png" alt="" width="1440" height="1440" fetchpriority="high"><canvas aria-hidden="true" width="720" height="720"></canvas></div><article class="pj-max-course"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="300" height="230"><h2>${escaped(course.title)}</h2><span>${zh?'体验课':'Trial lesson'}</span></article><button type="button" class="pj-max-audio-enable" data-max-enable hidden>${zh?'点击听 Max 欢迎语':'Tap to hear Max'}</button><p class="pj-max-status" role="status" hidden></p></div>`;}
+ function visible(root){return root.classList.contains('active')&&root.dataset.pjPage==='entry'&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none'&&!document.hidden;}
+ function release(s){
+  if(s.releaseScheduled)return;s.releaseScheduled=true;
+  Promise.resolve(s.task).catch(()=>{}).then(async()=>{
+   if(s.playTask)await s.playTask.catch(()=>{});
+   while(s.flushes.size)await Promise.allSettled([...s.flushes]);
+   await new Promise(resolve=>setTimeout(resolve,0));
+   s.view?.destroy();s.file?.destroy();s.released=true;
+  }).catch(()=>{});
+ }
+ function stop(){const s=current;if(!s)return;current=null;s.cancelled=true;clearTimeout(s.timeout);s.audio.pause();s.audio.currentTime=0;s.view?.pause();s.stage.dataset.mediaState='stopped';s.stage.querySelector('.pj-max-actor')?.classList.remove('is-ready');s.observer?.disconnect();for(const [el,event,fn] of s.listeners)el.removeEventListener(event,fn);release(s);} 
+ function mount(root){
+  const stage=root.querySelector('[data-max-entry]');if(!stage||!visible(root))return;if(current?.stage===stage)return;stop();
+  const audio=new Audio(new URL(base+'welcome-en.mp3',document.baseURI).href);audio.preload='auto';audio.playsInline=true;
+  const s={root,stage,audio,view:null,file:null,cancelled:false,played:false,attempting:false,listeners:[],timeout:null,observer:null,flushes:new Set(),task:null,playTask:null,releaseScheduled:false};current=s;
+  const actor=stage.querySelector('.pj-max-actor'),canvas=actor.querySelector('canvas'),enable=stage.querySelector('[data-max-enable]'),status=stage.querySelector('.pj-max-status');
+  const valid=()=>current===s&&!s.cancelled&&visible(root);
+  const listen=(el,event,fn)=>{el.addEventListener(event,fn);s.listeners.push([el,event,fn]);};
+  function showStatus(text){status.textContent=text;status.hidden=!text;}
+  function gate(){if(!valid()||s.played)return;stage.dataset.mediaState='awaiting-gesture';enable.hidden=false;}
+  async function play(){
+   if(!valid()||s.played||s.attempting||!s.view)return;s.attempting=true;enable.hidden=true;showStatus('');
+   try{await audio.play();if(!valid()){audio.pause();return;}}
+   catch(e){if(!valid())return;if(e.name==='NotAllowedError'||e.name==='AbortError')gate();else{stage.dataset.mediaState='audio-error';enable.hidden=false;showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');}}
+   finally{s.attempting=false;}
+  }
+  listen(enable,'click',()=>{if(audio.error){audio.load();s.played=false;}play();});
+  listen(audio,'playing',()=>{if(!valid()){audio.pause();return;}s.played=true;enable.hidden=true;stage.dataset.mediaState='playing';s.view.setProgress(Math.min(audio.currentTime*1e6/s.view.duration(),1));if(!matchMedia('(prefers-reduced-motion: reduce)').matches)s.playTask=s.view.play().catch(()=>{if(valid())stage.dataset.mediaState='animation-error';});});
+  listen(audio,'timeupdate',()=>{if(!valid()||!s.view||audio.paused)return;const time=s.view.getProgress()*s.view.duration()/1e6;if(Math.abs(time-audio.currentTime)>.12)s.view.setProgress(Math.min(audio.currentTime*1e6/s.view.duration(),.999));});
+  listen(audio,'waiting',()=>s.view?.pause());
+  listen(audio,'pause',()=>s.view?.pause());
+  listen(audio,'ended',()=>{if(!valid())return;s.view.pause();s.view.setProgress(1);s.view.flush().catch(()=>{});stage.dataset.mediaState='complete';});
+  listen(audio,'error',()=>{if(!valid())return;stage.dataset.mediaState='audio-error';s.played=false;s.view?.pause();enable.hidden=false;showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');});
+  // Stop synchronously before a route change so a late decode or play promise cannot restart the greeting.
+  listen(root,'click',e=>{if(e.target.closest('[data-pj]'))stop();});
+  listen(document,'visibilitychange',()=>{if(document.hidden)stop();});
+  s.observer=new MutationObserver(()=>{if(!visible(root)||!stage.isConnected)stop();});s.observer.observe(root,{attributes:true,attributeFilter:['class','data-pj-page'],childList:true});s.observer.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});
+  s.timeout=setTimeout(()=>{if(!valid()||s.view)return;stage.dataset.mediaState='animation-error';showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');},15000);
+  s.task=(async()=>{
+   try{
+    const [PAG,bytes]=await Promise.all([loadSDK(),loadFile()]);if(!valid())return;
+    s.file=await PAG.PAGFile.load(bytes.slice(0));if(!valid())return;
+    s.view=await PAG.PAGView.init(s.file,canvas,{useScale:false});if(!valid())return;
+    if(!s.view)throw Error('Animation unavailable');const flush=s.view.flush.bind(s.view);s.view.flush=(...args)=>{const pending=flush(...args);s.flushes.add(pending);pending.then(()=>s.flushes.delete(pending),()=>s.flushes.delete(pending));return pending;};clearTimeout(s.timeout);s.view.setRepeatCount(1);actor.classList.add('is-ready');stage.dataset.mediaState='ready';
+    await play();
+   }catch(e){if(!valid())return;clearTimeout(s.timeout);stage.dataset.mediaState='animation-error';showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');}
+   finally{if(s.cancelled)release(s);}
+  })();
+ }
+ window.V220_MAX_ENTRY={html,mount,stop,state:()=>current?{state:current.stage.dataset.mediaState,audioPaused:current.audio.paused,audioTime:current.audio.currentTime,audioDuration:current.audio.duration,animationTime:current.view?current.view.getProgress()*current.view.duration()/1e6:null,animationPlaying:current.view?.isPlaying||false,played:current.played}:null};
+})();
+</script>
+
 <script id="parent-journey-module">
 (() => {
  const root=document.createElement('section');root.id='screen-parent-journey';root.className='screen pj-screen';document.getElementById('device-portrait').append(root);
@@ -25493,7 +25573,7 @@
  const label=document.createElement('div');label.id='pj-review-label';label.textContent='V2.2.0 · 家长链路评审稿 · 课堂片段与购买均为演示';label.hidden=true;document.body.append(label);
  const key='dino-v220-parent-journey-review-v1'; let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}');}catch{}
  const m={page:'entry',locale:'en',media:'ready',save:'success',permission:'unknown',trialEligible:true,account:'free',stage:'pending',reminder:null,intro:'preview',active:false,checkout:false,busy:false,clip:0,playing:false,...saved};
- let tick=null,job=null;const stop=()=>{clearInterval(tick);tick=null;m.playing=false;window.V220_PRETRIAL_PLAN?.stop();};
+ let tick=null,job=null;const stop=()=>{clearInterval(tick);tick=null;m.playing=false;window.V220_PRETRIAL_PLAN?.stop();window.V220_MAX_ENTRY?.stop();};
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  function trialStage(){return profile.trialReportShown?'completed':profile.trialInProgress?'started':'pending';}
  m.stage=trialStage();
@@ -25502,7 +25582,7 @@
  const en={entry:'Discover your child’s English level in 10 minutes',entrySub:'Bring your child over for a short lesson with Max.',start:'Start my child’s lesson',later:'Not a good time?',preview:'See how children speak',previewSub:'Interact with an AI teacher and find the right starting point.',arrange:'Explore the learning plan',ready:'Let my child try a lesson first',plan:'Find a starting point. Then learn.',planSub:'This is your estimate. Your child’s lesson will confirm the starting point.',offer:'Start free trial',remind:'Try a lesson later',schedule:'When is a good time?',scheduleSub:'Choose a time to bring your child back for a lesson.',save:'Save reminder',skip:'Maybe later',date:'Date',time:'Time',success:'Your reminder is saved',saved:'Start earlier or change your reminder anytime.',home:'Go to home',next:'Next, let your child try a lesson',nextSub:'Your child needs to take part to confirm the starting point. Start now or set a reminder.',set:'Set a lesson reminder',return:'Back',timezone:'Current time zone',none:'No reminder set',waiting:'Your child’s lesson is ready',continue:'Continue the lesson',modify:'Change reminder',cancel:'Cancel reminder',notify:'Turn on lesson notifications',notifySub:'Your reminder is saved. May Dino AI notify you at the selected time?',allow:'Allow notifications',deny:'Not now',denied:'Reminder saved. Turn on notifications to receive a push.',done:'First lesson complete',doneSub:'Your child’s report and current learning task are ready.',task:'View learning task',retry:'Retry',failed:'Could not save. Please retry.',network:'Connection failed. Please retry.',invalid:'Choose a future time within the next 7 days.',saving:'Saving…',mediaError:'Lesson preview is unavailable',mediaLoading:'Loading lesson preview…',mediaNote:'Interaction demo · Replace with an authorized real lesson clip',play:'Play demo',pause:'Pause',replay:'Replay',demo:'For parents',pro:'Membership active',free:'Free lesson ready'};
  const t=k=>(m.locale==='en'?en:zh)[k]||k;const txt=(z,e)=>m.locale==='en'?e:z;
  const primary=(a,k)=>`<button class="pj-primary" data-pj="${a}">${t(k)}</button>`;const link=(a,k)=>`<button class="pj-link" data-pj="${a}">${t(k)}</button>`;
- function show(page){if(page==='after'){finishToHome();return;}if(page==='plan')page='preview';stop();clearTimeout(job);m.busy=false;m.checkout=false;m.page=page;m.active=true;render();enterPortrait();showPortraitScreen(root.id);window.demoStatePanel?.render();if(page==='preview')window.V220_PRETRIAL_PLAN?.mount(root);}
+ function show(page){if(page==='after'){finishToHome();return;}if(page==='plan')page='preview';stop();clearTimeout(job);m.busy=false;m.checkout=false;m.page=page;m.active=true;render();enterPortrait();showPortraitScreen(root.id);window.demoStatePanel?.render();if(page==='preview')window.V220_PRETRIAL_PLAN?.mount(root);if(page==='entry')window.V220_MAX_ENTRY?.mount(root);}
  function when(){return m.reminder?new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{dateStyle:'medium',timeStyle:'short'}).format(new Date(m.reminder))+' · '+Intl.DateTimeFormat().resolvedOptions().timeZone:t('none');}
  const reviewCards=[{"kind": "verified", "author": "cyanlee888", "initial": "C", "rating": 5, "excerpt": "The word practice is simple, engaging, and easy to fit into my daily routine.", "source": "App Store · US · v1.0.0", "url": "https://itunes.apple.com/us/rss/customerreviews/id=6773257149/sortBy=mostRecent/json"}, {"kind": "mock", "author": "Demo parent A", "initial": "A", "rating": 5, "excerpt": "The short lessons are easy to fit into our family’s day."}, {"kind": "mock", "author": "Demo parent B", "initial": "B", "rating": 5, "excerpt": "I like being able to see what my child practiced after a lesson."}, {"kind": "mock", "author": "Demo parent C", "initial": "C", "rating": 5, "excerpt": "The teacher’s questions give my child a reason to speak English."}];
  function reviewsSection(){const index=Math.min(m.reviewIndex||0,reviewCards.length-1);return `<section class="pj-plan-section pj-user-reviews" aria-labelledby="pj-reviews-title" aria-roledescription="carousel"><h2 id="pj-reviews-title"><span class="pj-section-marker" aria-hidden="true">4</span>${txt('用户怎么说','What users say')}</h2><div class="pj-review-track" tabindex="0" role="group" aria-label="${txt('左右滑动查看评价','Swipe to browse feedback')}">${reviewCards.map((r,i)=>`<article class="pj-review-card" aria-label="${i+1} / ${reviewCards.length}" data-review-card="${i}">${r.kind==='mock'?`<span class="pj-review-kind is-mock">${txt('示意评价 · Mock','Demo feedback · Mock')}</span>`:''}<div class="pj-review-rating" role="img" aria-label="${r.kind==='mock'?txt('示意评分：5 星','Illustrative rating: 5 out of 5 stars'):txt('这条评价为 5 星，满分 5 星','This review: 5 out of 5 stars')}">${'★'.repeat(r.rating)}</div><blockquote>${esc(r.excerpt)}</blockquote><div class="pj-review-byline"><span class="pj-review-initial" aria-hidden="true">${esc(r.initial)}</span><div><strong>${esc(r.author)}</strong>${r.kind==='mock'?`<small>${txt('示意资料，非真实用户','Demo profile, not a real user')}</small>`:''}</div></div></article>`).join('')}</div><div class="pj-review-controls"><button type="button" class="pj-review-arrow" data-pj="reviewPrev" aria-label="${txt('上一条评价','Previous review')}" ${index===0?'disabled':''}>‹</button><div class="pj-review-dots" role="group" aria-label="${txt('选择评价','Choose a review')}">${reviewCards.map((r,i)=>`<button type="button" data-review-goto="${i}" aria-label="${txt('查看第','Review ')}${i+1}${txt('条评价','')}" aria-current="${i===index?'true':'false'}"><span></span></button>`).join('')}</div><button type="button" class="pj-review-arrow" data-pj="reviewNext" aria-label="${txt('下一条评价','Next review')}" ${index===reviewCards.length-1?'disabled':''}>›</button></div><span class="pj-review-position" role="status" aria-live="polite">${index+1} / ${reviewCards.length}</span></section>`;}
@@ -25513,7 +25593,7 @@
  function approvedLearningPlan(name,level,clips,course){return window.V220_PRETRIAL_PLAN.html({name,course,reviews:reviewCards});}
  function hero(){return '<img class="pj-art" src="assets/v220/parent-journey/classroom-with-dino.png" alt="AI 老师通过屏幕与孩子互动的插画" />';}
  function render(){let body='',foot='';const pg=m.page;const scrollTop=root.dataset.pjPage===pg?(root.querySelector('.pj-scroll')?.scrollTop||0):0;root.dataset.pjPage=pg;root.lang=m.locale==='en'?'en':'zh-CN';
-  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div><div class="pj-entry-hero"><img src="assets/v220/parent-journey/entry-teacher-course-hd.png" alt="${txt('Max 老师介绍推荐体验课','Max presents the recommended trial lesson')}" width="1340" height="1174" fetchpriority="high"/><h2>${esc(classPathTrialCourse().title)}</h2><span>${txt('体验课','Trial lesson')}</span></div><div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${t('start')}</span><span class="pj-entry-action-note">${txt('叫上孩子一起开始','Have your child join you')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择稍后方便的时间','Choose a time for later')}</span></button></div></div>`;foot='';}
+  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div>${window.V220_MAX_ENTRY.html(classPathTrialCourse(),m.locale==='zh')}<div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${t('start')}</span><span class="pj-entry-action-note">${txt('叫上孩子一起开始','Have your child join you')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择稍后方便的时间','Choose a time for later')}</span></button></div></div>`;foot='';}
   if(pg==='preview'){
    const name=String(profile.name||'').trim(),level=String(profile.level||'').trim(),course=classPathTrialCourse();
    const clips=txt(['老师：What animal is this?','孩子：A cat!'],['Teacher: What animal is this?','Child: A cat!']);
@@ -25532,7 +25612,7 @@
   if(pg==='permission'){body=`<div class="pj-success">♧</div><h1>${t('notify')}</h1><p>${t('notifySub')}</p><div class="pj-glass">${esc(when())}</div><p class="pj-demo-tag">${txt('通知授权模拟，不调用真实系统权限','Simulated permission; no system permission requested')}</p>`;foot=primary('allow','allow')+link('deny','deny');}
   if(pg==='saved'){body=`<div class="pj-success">✓</div><h1>${t('success')}</h1><p>${t('saved')}</p><div class="pj-glass">${esc(when())}</div>${m.permission==='denied'?`<p class="pj-status">${t('denied')}</p>`:''}`;foot=primary('home','home')+link('start','start')+'<br>'+link('schedule','modify');}
   if(pg==='done'){body=`<div class="pj-success">★</div><h1>${t('done')}</h1><p>${t('doneSub')}</p>`;foot=primary('home','task');}
-  root.innerHTML=`<header class="pj-top"><button class="pj-back" aria-label="${t('return')}" data-pj="back">‹</button></header><div class="pj-scroll">${body}</div><footer class="pj-foot">${foot}</footer>`;root.querySelector('.pj-scroll').scrollTop=scrollTop;mountReviews();if(pg==='preview')window.V220_PRETRIAL_PLAN?.mount(root);syncBanner();label.hidden=!m.active;
+  root.innerHTML=`<header class="pj-top"><button class="pj-back" aria-label="${t('return')}" data-pj="back">‹</button></header><div class="pj-scroll">${body}</div><footer class="pj-foot">${foot}</footer>`;root.querySelector('.pj-scroll').scrollTop=scrollTop;mountReviews();if(pg==='preview')window.V220_PRETRIAL_PLAN?.mount(root);if(pg==='entry')window.V220_MAX_ENTRY?.mount(root);syncBanner();label.hidden=!m.active;
  }
  function syncBanner(){
   const card=document.querySelector('#class-week-list .class-path-lesson.is-trial');
