@@ -9004,7 +9004,7 @@
             <div class="sp2-stats">
               <div class="sp2-stat">
                 <img src="assets/v170/plan-stat-lessons.png" alt="" />
-                <div class="sp2-stat-copy"><b id="sp2-stat-week">3&times;</b><span id="sp2-stat-week-label">AI lessons a week</span></div>
+                <div class="sp2-stat-copy"><b id="sp2-stat-week">3&times;</b><span id="sp2-stat-week-label">lessons a week</span></div>
               </div>
               <div class="sp2-stat">
                 <img src="assets/v170/plan-stat-units.png" alt="" />
@@ -9012,7 +9012,7 @@
               </div>
               <div class="sp2-stat">
                 <img src="assets/v170/plan-stat-ai.png" alt="" />
-                <div class="sp2-stat-copy"><b id="sp2-stat-lessons">144</b><span>personalized AI lessons</span></div>
+                <div class="sp2-stat-copy"><b id="sp2-stat-lessons">144</b><span>personalized lessons</span></div>
               </div>
               <div class="sp2-stat">
                 <img src="assets/v170/plan-stat-practice.png" alt="" />
@@ -9079,7 +9079,7 @@
               </div>
             </div>
             <!-- Auto-playing glimpse of a real lesson: teach → speak → practice → quiz -->
-            <div class="sp2-class" aria-label="A glimpse of a live AI lesson">
+            <div class="sp2-class" aria-label="A glimpse of a live lesson">
               <div class="sp2-cls-screen">
                 <!-- persistent classroom HUD -->
                 <div class="sp2-cls-hud">
@@ -9708,7 +9708,7 @@
                         </button>
                       </div>
                     </div>
-                    <!-- Current Level → every Unit → AI lesson + three After Class practices. -->
+                    <!-- Current Level → every Unit → lesson + three After Class practices. -->
                     <div class="class-week-list" id="class-week-list"></div>
                   </section>
                 </div>
@@ -10354,7 +10354,7 @@
               </span>
               <h2 class="ms-premium-title">My benefits</h2>
               <ul class="ms-benefits-list">
-                <li>3 AI lessons each week</li>
+                <li>3 lessons each week</li>
                 <li>1× level progress speed</li>
                 <li>13 unit assessments each year</li>
                 <li>Check your child's English level</li>
@@ -11383,15 +11383,15 @@
       const courseTitle = options.title || course?.title || course?.unitTheme || "This lesson";
       const courseKey = course ? (course.isTrial ? "trial::" : "") + makeCourseKey(course.levelId, course.unitId, course.lessonId) : "demo-course";
       return `
-        <div class="course-mission-bundle" aria-label="One learning mission includes the AI lesson and After Class Words, Listening and Speaking practice">
+        <div class="course-mission-bundle" aria-label="One learning mission includes the lesson and After Class Words, Listening and Speaking practice">
           <div class="cmb-flow">
             <button type="button" class="cmb-after ${afterClassUnlocked ? "is-ready" : "is-locked"}" data-action="after-class" data-after-class-entry data-after-class-locked="${afterClassUnlocked ? "0" : "1"}" data-course-key="${courseKey}" data-course-title="${encodeURIComponent(courseTitle)}" aria-label="${afterClassUnlocked ? "Open" : "Locked"} After Class practice for ${courseTitle}" ${afterClassUnlocked ? "" : 'aria-disabled="true"'}>
               <span class="cmb-after-icon" aria-hidden="true">${afterClassUnlocked ? "✎" : "🔒"}</span>
-              <span class="cmb-after-copy"><b>${afterClassUnlocked ? "Start After Class" : "After Class"}</b><small>${afterClassUnlocked ? "Words · Listening · Speaking" : "Finish the AI Lesson to unlock"}</small></span>
+              <span class="cmb-after-copy"><b>${afterClassUnlocked ? "Start After Class" : "After Class"}</b><small>${afterClassUnlocked ? "Words · Listening · Speaking" : "Finish the Lesson to unlock"}</small></span>
               <em class="cmb-after-action" aria-hidden="true">${afterClassUnlocked ? "›" : "🔒"}</em>
             </button>
           </div>
-          <span class="cmb-summary">AI Lesson + Words · Listening · Speaking</span>
+          <span class="cmb-summary">Lesson + Words · Listening · Speaking</span>
         </div>
       `;
     }
@@ -11476,7 +11476,7 @@
     // After Class uses the same three destinations as Explore, with a course context.
     function openAfterClassDestination(name, courseKey) {
       const course = classPathCourse(courseKey);
-      if (!course || !classPathPracticeUnlocked(course)) { showPayToast("Finish this AI lesson to unlock its practice"); return; }
+      if (!course || !classPathPracticeUnlocked(course)) { showPayToast("Finish this lesson to unlock its practice"); return; }
       afterClassReturnScreen = activeLandScreen();
       closeAfterClassLayer();
       if (name === "Words") showPracticeQuiz(null, courseKey);
@@ -11530,7 +11530,7 @@
         event.preventDefault();
         event.stopPropagation();
         if (trigger.dataset.afterClassLocked === "1") {
-          showPayToast("Finish the AI lesson to unlock After Class");
+          showPayToast("Finish the lesson to unlock After Class");
           return;
         }
         openAfterClassLayer(trigger);
@@ -11648,15 +11648,15 @@
           + `<button type="button" class="course-cta-chat" data-action="chat-dino" data-chat-level="${course.levelId}" data-chat-unit="${course.unitId}" data-chat-lesson="${course.lessonId}">Chat with Dino</button>`;
       }
       if (state === "InProgress") {
-        return `<button type="button" class="btn btn-primary" data-action="continue">Continue AI Lesson</button>`;
+        return `<button type="button" class="btn btn-primary" data-action="continue">Continue Lesson</button>`;
       }
       if (state === "Current") {
-        return `<button type="button" class="btn btn-primary" data-action="start">Start AI Lesson</button>`;
+        return `<button type="button" class="btn btn-primary" data-action="start">Start Lesson</button>`;
       }
       // Unlocked this week but earlier in the batch than the learner's pointer:
       // the batch is sequential — keep the Start affordance but guard the tap with
       // "Finish the previous lesson first" (no jumping ahead within the batch).
-      return `<button type="button" class="btn btn-primary" data-action="seq-locked">Start AI Lesson</button>`;
+      return `<button type="button" class="btn btn-primary" data-action="seq-locked">Start Lesson</button>`;
     }
 
     function bindCourseCardActions(container, course, source) {
@@ -13137,7 +13137,7 @@
           <div class="course-card-actions class-home-actions">
             <div class="course-card-cta-wrap">
               ${isAvailable
-                ? '<button type="button" class="btn btn-primary" data-action="trial-start">Start AI Lesson</button>'
+                ? '<button type="button" class="btn btn-primary" data-action="trial-start">Start Lesson</button>'
                 : isContinue
                 ? '<button type="button" class="course-cta-secondary" data-action="trial-continue">Continue trial</button>'
                 : `<button type="button" class="course-cta-secondary" data-action="trial-report">View report</button>
@@ -13276,7 +13276,7 @@
       });
       list.querySelectorAll("[data-path-practice]").forEach(button => button.addEventListener("click", () => {
         const course = classPathCourse(button.dataset.courseKey);
-        if (!course || !classPathPracticeUnlocked(course)) { showPayToast("Finish this AI lesson to unlock its practice"); return; }
+        if (!course || !classPathPracticeUnlocked(course)) { showPayToast("Finish this lesson to unlock its practice"); return; }
         classPathFocusKey = button.dataset.courseKey;
         window.v180PrepareAfterClassMission?.(classPathFocusKey);
         openAfterClassDestination(button.dataset.pathPractice, classPathFocusKey);
@@ -19526,6 +19526,7 @@
       return ctx("Onboarding", []);
     },
     groups: [
+      {key:"pjPaywall",label:"支付页模板",options:[["a","A · 简洁"],["c","C · 会员权益"]],apply:v=>window.V220_TRIAL_PAYWALL_A.setVariant(v)},
       {key:"pjTrial",label:"月包试用资格",options:[["eligible","可领 3 天试用"],["ineligible","无试用资格"]],apply:v=>window.PARENT_JOURNEY.set("pjTrial",v)},
       {key:"pjLocale",label:"家长页语言",options:[["zh","简体中文"],["en","English"]],apply:v=>window.PARENT_JOURNEY.set("pjLocale",v)},
       {key:"pjMedia",label:"课堂片段",options:[["ready","可播放示意"],["loading","加载中"],["error","加载失败"]],apply:v=>window.PARENT_JOURNEY.set("pjMedia",v)},
@@ -19824,6 +19825,8 @@
       {label:"登录 / 注册",run:()=>window.v160ReviewStart()},
       {label:"家长链路 · 课前分流",run:()=>window.PARENT_JOURNEY.open("entry")},
       {label:"家长链路 · 学习计划与试用",run:()=>window.PARENT_JOURNEY.open("preview")},
+      {label:"试用支付页 A",run:()=>{window.V220_TRIAL_PAYWALL_A.setVariant('a');window.PARENT_JOURNEY.open('preview');document.querySelector('#screen-parent-journey [data-pj="checkout"]')?.click();}},
+      {label:"试用支付页 C",run:()=>{window.V220_TRIAL_PAYWALL_A.setVariant('c');window.PARENT_JOURNEY.open('preview');document.querySelector('#screen-parent-journey [data-pj="checkout"]')?.click();}},
       {label:"家长链路 · 设置提醒",run:()=>window.PARENT_JOURNEY.open("earlySchedule")},
       {label:"体验课完成 · 家长接手",run:()=>window.PARENT_REPORT_HANDOFF.open()},
       {label:"正式课完成 · 家长接手",run:()=>window.PARENT_REPORT_HANDOFF.open("formal")},
@@ -20379,7 +20382,7 @@
         +renderCourseMissionBundle(null, { unlocked: !!window.__cxFbDone, title: "Starter Class" })
         +'</div>'
         +'<div class="course-card-actions class-home-actions"><div class="course-card-cta-wrap">'
-        +'<button type="button" class="btn btn-primary" data-cx-fb-start>' + (window.__cxFbDone ? "View report" : "Start AI Lesson") + '</button>'
+        +'<button type="button" class="btn btn-primary" data-cx-fb-start>' + (window.__cxFbDone ? "View report" : "Start Lesson") + '</button>'
         +'</div></div>';
       list.insertBefore(card, list.firstChild);
       card.querySelector("[data-cx-fb-start]").addEventListener("click", function(ev){
@@ -23175,7 +23178,7 @@
       taskState(taskIndex).courseKey = profile.v180ActiveLessonCourseKey;
       profile.v180ActiveLessonTaskTitle = task.title;
       openClassroomDemo("v180-home-plan");
-      showPayToast(task.title + " · AI Lesson");
+      showPayToast(task.title + " · Lesson");
     }
     function openCurrentTask() {
       openTask(servedTaskIndex(), "home");
@@ -23362,7 +23365,7 @@
       document.getElementById("v180-plan-sub").textContent = planName(value) + " · " + rhythm(value);
       list.innerHTML = plan.map(function (task, index) {
         var status = nodeStatus(index);
-        var currentCopy = task.kind === "lesson" ? "AI lesson" : "Explore";
+        var currentCopy = task.kind === "lesson" ? "lesson" : "Explore";
         var orb = status.indexOf("is-done") !== -1 ? "✓" : task.icon;
         var disabled = canOpenPlanNode(index) ? "" : ' disabled aria-disabled="true"';
         return '<button type="button" class="v180-plan-node ' + status + '" data-v180-node="' + index + '"' + disabled + '>' +
@@ -23496,9 +23499,9 @@
       });
       return text.slice(0, match.index) + scaled + text.slice(match.index + match[0].length);
     }
-    function availablePrices() {
+    function availablePrices(tierOverride) {
       var catalog = window.V155 && window.V155.getPaywallPlans ? window.V155.getPaywallPlans() : [];
-      var multiplier = selectedOfferTier() === "max" ? V180_MAX_PRICE_MULTIPLIER : 1;
+      var multiplier = (tierOverride || selectedOfferTier()) === "max" ? V180_MAX_PRICE_MULTIPLIER : 1;
       return catalog.map(function (item) {
         var plan = Object.assign({}, item);
         if (multiplier !== 1) {
@@ -23527,7 +23530,7 @@
       var week = document.getElementById("sp2-stat-week");
       if (week) week.textContent = isMax ? "5×" : "3×";
       var weekLabel = document.getElementById("sp2-stat-week-label");
-      if (weekLabel) weekLabel.textContent = "AI lessons a week";
+      if (weekLabel) weekLabel.textContent = "lessons a week";
     }
     var v170RenderStudyPlanScreen = renderStudyPlanScreen;
     renderStudyPlanScreen = function () {
@@ -23637,7 +23640,7 @@
             '<span class="v180-benefit-cell is-head is-label" role="columnheader">Benefits</span>' +
             '<span class="v180-benefit-cell is-head" data-v180-column="pro" role="columnheader">Dino Pro</span>' +
             '<span class="v180-benefit-cell is-head" data-v180-column="max" role="columnheader">Dino Max</span>' +
-            '<span class="v180-benefit-cell is-label" role="rowheader">AI lessons each week</span>' +
+            '<span class="v180-benefit-cell is-label" role="rowheader">lessons each week</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="pro" role="cell">3</span>' +
             '<span class="v180-benefit-cell is-value" data-v180-column="max" role="cell">5</span>' +
             '<span class="v180-benefit-cell is-label" role="rowheader">Level progress speed</span>' +
@@ -23679,6 +23682,12 @@
       window.V220_TRIAL_PAYWALL_A?.render({prices: prices, tier: value});
     }
     window.v220RefreshParentPaywall = renderPaywall;
+    window.V220_PAYWALL_CATALOG = tier => availablePrices(tier);
+    window.v220SelectPaywallPlan = (tier, cycle) => {
+      profile.selectedMembershipTier = tier === 'max' ? 'max' : 'pro';
+      profile.selectedPlan = cycle;
+      renderPaywall();
+    };
     function openSelectedCheckout() {
       if (window.PROMO_CODE?.isRefreshing()) return;
       var overlay = document.getElementById("v155-checkout-overlay");
@@ -23786,7 +23795,7 @@
       var list = document.querySelector("#screen-membership .ms-benefits-list");
       if (list) {
         var benefits = [
-          (value === "max" ? "5" : "3") + " AI lessons each week",
+          (value === "max" ? "5" : "3") + " lessons each week",
           (value === "max" ? "1.7×" : "1×") + " level progress speed",
           (value === "max" ? "21" : "13") + " unit assessments each year",
           "Check your child's English level",
@@ -25434,6 +25443,17 @@
 @media(max-width:600px){body:has(#screen-parent-journey.active):has(#wrap-portrait:not([style*="display: none"])) #dfb-fab{display:none!important}#pj-review-label{display:none!important}}
 .pj-lesson-combo{position:relative;margin:24px 0 12px;padding-top:16px}.pj-lesson-cover{width:76%;position:relative;overflow:hidden;border-radius:var(--radius-md);border:2px solid var(--glass-border);background:var(--surface-glass)}.pj-lesson-cover>img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.pj-lesson-cover>span{display:block;padding:10px 12px;font-size:13px;font-weight:700}.pj-lesson-teacher{position:absolute;right:-8px;top:0;width:37%;height:210px;object-fit:contain;object-position:bottom;filter:drop-shadow(0 8px 12px #00166455);pointer-events:none}.pj-lesson-combo h2{font:700 20px/1.35 var(--display);margin:14px 0 0;max-width:90%}@media(max-height:720px){.pj-lesson-combo{margin-top:12px}.pj-lesson-cover{width:72%}.pj-lesson-cover>img{aspect-ratio:16/9}.pj-lesson-teacher{height:165px}.pj-lesson-combo h2{font-size:18px}}.pj-lesson-combo{padding:0;overflow:hidden;border-radius:var(--radius-md);background:var(--surface-glass);border:1px solid var(--glass-border);box-shadow:0 12px 28px #00166422}.pj-lesson-scene{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}.pj-lesson-info{padding:14px 16px 16px}.pj-lesson-info>span{font-size:12px;opacity:.85}.pj-lesson-combo .pj-lesson-info h2{font:700 19px/1.35 var(--display);max-width:none;margin:6px 0 0}@media(max-height:720px){.pj-lesson-scene{aspect-ratio:16/9}.pj-lesson-info{padding:10px 14px 12px}.pj-lesson-combo .pj-lesson-info h2{font-size:17px}}.pj-teacher-intro{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--glass-border);background:var(--surface-glass)}.pj-teacher-intro>img{width:52px;height:58px;object-fit:cover;object-position:top;border-radius:var(--radius-sm);background:var(--surface-glass)}.pj-teacher-intro>span{font:700 16px var(--display)}.pj-teacher-intro>span>span{display:block;font:400 12px var(--font);margin-top:5px;opacity:.8}.pj-lesson-scene{aspect-ratio:16/9}.pj-lesson-info{padding-bottom:12px}.pj-max-welcome{position:relative;display:flex;align-items:center;justify-content:center;gap:4px;height:174px;margin:6px 0 0}.pj-max-welcome>img{height:180px;width:48%;object-fit:contain;align-self:flex-end;animation:pj-max-hello .75s ease-out both;transform-origin:50% 100%}.pj-max-bubble{position:relative;background:var(--surface-card);color:var(--ink-on-light);border-radius:var(--radius-md);padding:13px 14px;max-width:145px;font:700 16px/1.35 var(--display);box-shadow:0 6px 18px #00166422}.pj-max-bubble:before{content:"";position:absolute;left:-8px;top:40%;border-top:8px solid transparent;border-bottom:8px solid transparent;border-right:10px solid var(--surface-card)}.pj-max-welcome+.pj-lesson-combo{margin-top:0}.pj-max-welcome+.pj-lesson-combo .pj-lesson-scene{aspect-ratio:3/1;object-position:center 55%}@keyframes pj-max-hello{0%{opacity:0;transform:translateY(12px) rotate(-4deg)}65%{opacity:1;transform:translateY(0) rotate(2deg)}100%{transform:rotate(0)}}@media(max-height:720px){.pj-max-welcome{height:140px}.pj-max-welcome>img{height:145px}.pj-max-bubble{font-size:14px}.pj-max-welcome+.pj-lesson-combo .pj-lesson-scene{aspect-ratio:3.6/1}}@media(prefers-reduced-motion:reduce){.pj-max-welcome>img{animation:none}}.pj-screen:has(.pj-max-welcome){background:radial-gradient(ellipse at 50% 46%,#286dff 0%,transparent 48%),linear-gradient(145deg,var(--sky-deep),#104be5 70%,var(--sky-deep))}.pj-screen:has(.pj-max-welcome) .pj-scroll{display:flex;flex-direction:column}.pj-screen:has(.pj-max-welcome) h1{font-size:28px;text-align:center}.pj-screen:has(.pj-max-welcome) .pj-scroll>p{text-align:center;font-size:14px;margin-bottom:4px}.pj-max-welcome{flex:1;min-height:170px;height:auto;margin:0;position:relative;isolation:isolate}.pj-max-welcome:before{content:"";position:absolute;width:85%;height:70%;bottom:0;border-radius:50%;background:radial-gradient(ellipse,#76caff55,transparent 70%);z-index:-1}.pj-max-welcome>img{height:100%;max-height:300px;width:100%;position:absolute;bottom:0;object-fit:contain;object-position:center bottom;mask-image:linear-gradient(to bottom,#000 90%,transparent 100%)}.pj-max-welcome+.pj-lesson-combo{display:flex;align-items:center;gap:14px;flex-shrink:0;margin:8px 0 0;padding:12px 0;border:0;border-top:1px solid #9ddcff33;border-radius:0;background:transparent;box-shadow:none;overflow:visible}.pj-max-welcome+.pj-lesson-combo .pj-lesson-scene{width:37%;aspect-ratio:16/9;border-radius:var(--radius-sm);object-fit:cover;flex-shrink:0}.pj-max-welcome+.pj-lesson-combo .pj-lesson-info{padding:0;display:flex;flex-direction:column-reverse;gap:6px}.pj-max-welcome+.pj-lesson-combo .pj-lesson-info h2{font-size:16px;margin:0}.pj-max-welcome+.pj-lesson-combo .pj-lesson-info>span{font-size:12px}@media(max-height:720px){.pj-screen:has(.pj-max-welcome) h1{font-size:25px}.pj-max-welcome{min-height:130px}.pj-max-welcome>img{max-height:220px}.pj-max-welcome+.pj-lesson-combo{padding:10px 0;gap:12px}.pj-max-welcome+.pj-lesson-combo .pj-lesson-info h2{font-size:14px}}.pj-entry-stage{display:grid;grid-template-columns:43% 57%;align-items:center;position:relative;flex:1;min-height:240px;margin:12px -10px 0;isolation:isolate}.pj-entry-stage:before{content:"";position:absolute;inset:14% -5% 4%;background:radial-gradient(ellipse,#7bcaff44,transparent 70%);z-index:-1}.pj-entry-stage .pj-max-welcome{width:100%;height:280px;min-height:0;flex:none;align-self:center;z-index:1}.pj-entry-stage .pj-max-welcome:before{display:none}.pj-entry-stage .pj-max-welcome>img{width:125%;max-width:none;height:100%;max-height:none;left:-12%;mask-image:linear-gradient(#000 93%,transparent)}.pj-entry-stage .pj-lesson-combo{display:block!important;margin:0!important;padding:0!important;border:1px solid var(--glass-border)!important;border-radius:var(--radius-md)!important;background:linear-gradient(150deg,#4275f5,#2453d5)!important;box-shadow:0 12px 28px #00166433!important;overflow:hidden!important;z-index:2;transform:translateY(8px)}.pj-entry-stage .pj-lesson-combo .pj-lesson-scene{width:100%!important;aspect-ratio:4/3!important;border-radius:0!important;object-fit:cover}.pj-entry-stage .pj-lesson-combo .pj-lesson-info{padding:12px!important;gap:8px!important}.pj-entry-stage .pj-lesson-combo .pj-lesson-info h2{font-size:16px!important;line-height:1.35}.pj-entry-stage .pj-lesson-info>span{font-size:11px!important}@media(max-height:720px){.pj-entry-stage{min-height:205px;margin-top:4px}.pj-entry-stage .pj-max-welcome{height:230px}.pj-entry-stage .pj-lesson-combo .pj-lesson-info{padding:10px!important}.pj-entry-stage .pj-lesson-combo .pj-lesson-info h2{font-size:14px!important}}.pj-entry-stage .pj-max-welcome{height:224px}.pj-entry-stage .pj-max-welcome>img{width:100%;left:0;object-fit:contain}@media(max-height:720px){.pj-entry-stage .pj-max-welcome{height:184px}}.pj-entry-stage{grid-template-columns:40% 60%;margin-left:-12px;margin-right:-4px;align-items:center}.pj-entry-stage:before{inset:auto -3% 8%;height:28px;border-radius:50%;background:radial-gradient(ellipse,#a1f7ffb3 0%,#31b8ff66 40%,transparent 72%);filter:blur(5px)}.pj-entry-stage .pj-max-welcome{height:280px;align-self:center}.pj-entry-stage .pj-max-welcome>img{width:125%;left:-10%;height:100%;object-position:center bottom;mask-image:linear-gradient(#000 90%,transparent 100%)}.pj-entry-stage .pj-lesson-combo{background:var(--surface-card)!important;border:3px solid #c4e9ff!important;border-radius:26px!important;box-shadow:0 10px 22px #00218a44!important;transform:translateY(-10px);overflow:hidden!important}.pj-entry-stage .pj-lesson-combo .pj-lesson-scene{aspect-ratio:1.35!important;border-radius:20px!important;object-fit:cover}.pj-entry-stage .pj-lesson-combo .pj-lesson-info{padding:12px 8px 14px!important;align-items:center;text-align:center;gap:10px!important}.pj-entry-stage .pj-lesson-combo .pj-lesson-info h2{color:var(--sky-deep);font-size:17px!important;font-weight:700}.pj-entry-stage .pj-lesson-combo .pj-lesson-info>span{color:var(--sky-deep);font-weight:700;font-size:11px!important;border-radius:var(--radius-pill);background:#dce6ff;padding:6px 10px;opacity:1}@media(max-height:720px){.pj-entry-stage .pj-max-welcome{height:238px}.pj-entry-stage .pj-lesson-combo .pj-lesson-info h2{font-size:15px!important}.pj-entry-stage .pj-lesson-combo .pj-lesson-info{padding:10px 7px 12px!important}}.pj-entry-stage .pj-max-welcome{height:220px;overflow:hidden;align-self:center;transform:translateY(18px)}.pj-entry-stage .pj-max-welcome>img{width:155%;height:auto;max-height:none;left:-26%;top:0;bottom:auto;object-fit:initial;mask-image:none}.pj-entry-stage .pj-max-welcome:after{content:"";position:absolute;left:0;right:0;bottom:0;height:18px;background:linear-gradient(transparent,#1652e8);pointer-events:none}@media(max-height:720px){.pj-entry-stage .pj-max-welcome{height:185px}.pj-entry-stage .pj-max-welcome>img{width:155%;height:auto}}.pj-screen:has(.pj-approved-entry){background:#0732c9!important}.pj-screen:has(.pj-approved-entry)>.pj-top,.pj-screen:has(.pj-approved-entry)>.pj-foot{display:none!important}.pj-screen:has(.pj-approved-entry)>.pj-scroll{padding:0!important;display:flex!important;justify-content:center;align-items:center;overflow:hidden}.pj-approved-entry{position:relative;height:100%;max-height:100%;aspect-ratio:898/1750;max-width:100%;margin:auto}.pj-approved-entry>img{display:block;width:100%;height:100%;object-fit:fill}.pj-art-hit{position:absolute;border:0;background:transparent!important;cursor:pointer;padding:0;min-height:0;color:transparent}.pj-art-hit:focus-visible{outline:3px solid var(--star-gold);outline-offset:2px;border-radius:30px}.pj-art-back{left:3%;top:1.8%;width:13%;height:6%}.pj-art-start{left:4.5%;top:81.7%;width:91%;height:8.5%;border-radius:50px}.pj-art-later{left:8%;top:91%;width:84%;height:5.5%}.pj-screen:has(.pj-approved-entry)>.pj-scroll{width:100%;height:100%;box-sizing:border-box;align-items:stretch!important}.pj-approved-entry{width:100%;height:100%;max-width:none;aspect-ratio:auto;flex:1;margin:0}.pj-approved-entry>img{width:100%;height:100%;object-fit:fill}</style>
 
+<script id="v220-explore-resource-catalog">
+// Shared names and original icons for Explore and the parent learning plan.
+window.V220_EXPLORE_RESOURCES = Object.freeze([
+  {buttonId:'explore-open-reading',title:'Reading',label:'Reading',src:'assets/v210/explore-figma/reading.png'},
+  {buttonId:'explore-open-radio',title:'Listening',label:'Listening',src:'assets/v210/explore-figma/listening.png'},
+  {buttonId:'explore-open-story',title:'Words & Sentences',label:'Words',src:'assets/v210/explore-figma/words.png'},
+  {buttonId:'explore-open-speaking',title:'Speaking',label:'Speaking',src:'assets/v210/explore-figma/speaking.png'},
+  {buttonId:'explore-open-animation',title:'Dino Story',label:'Dino Story',src:'assets/v200/ip-animation-entry.png'},
+  {buttonId:'dino-event-card',title:'Theme Lessons',label:'Theme Lessons',src:'assets/v210/explore-figma/theme.png'}
+]);
+</script>
 <script id="v220-pretrial-plan-module">
 (() => {
  const base='assets/v220/pretrial-plan/';
@@ -25449,8 +25469,8 @@
   const cefr=levelCefrLabel(level.id),nextCefr=levelCefrLabel(next.id),first=level.id==='level-1';
   const possessive=name?name+'’s':'Your child’s';
   const units=level.units.length,lessons=level.units.reduce((sum,u)=>sum+u.lessons.length,0);
-  const resources=[['Listening',-189.92248062015506,-80.83333333333333],['Chat',-332.5581395348837,-220],['Words',-332.5581395348837,-80.83333333333333],['Reading',-46.51162790697674,-80.83333333333333]];
-  const stats=[[units,'units'],[lessons,'1:1 AI lessons'],...(first?[['200+','words'],['60+','sentence patterns']]:[])];
+  const resources=window.V220_EXPLORE_RESOURCES;
+  const stats=[[units,'units'],[lessons,'1:1 lessons'],...(first?[['200+','words'],['60+','sentence patterns']]:[])];
   const features=['1:1 AI teaching','Personalized path','Ongoing feedback'];
   const palettes=[['#fbf1f4','#eed8e3'],['#f0f5fe','#dce6f7'],['#f5f0fc','#e4d8f3'],['#eff8f2','#d9eadf']];
   return `<div class="pj-pretrial-plan" data-level-id="${escape(level.id)}">
@@ -25458,7 +25478,7 @@
    <header class="pj-pretrial-hero"><p class="pj-pretrial-name">${escape(possessive)} learning plan</p><h1>Suggested start</h1><div class="pj-pretrial-level">${escape(level.label)} <span>${escape(cefr)}</span></div><p class="pj-pretrial-basis">Based on your answers</p><img class="pj-pretrial-character" src="${base}dino.webp" alt="" width="84" height="120"></header>
    <section class="pj-pretrial-card" aria-labelledby="pj-pretrial-growth"><h2 id="pj-pretrial-growth">${escape(possessive)} growth journey</h2><ol class="pj-pretrial-steps">
     <li class="pj-pretrial-step pj-pretrial-first"><span class="pj-pretrial-number" aria-hidden="true">1</span><span class="pj-pretrial-status">First learning step</span><h3>Find the right starting level</h3><p>Have your child take the trial lesson to find the right starting level.</p><div class="pj-pretrial-trial"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="76" height="58"><div><strong>${escape(course.title)}</strong><small>Trial lesson · ${escape(formatCourseDuration(course.duration))}</small></div></div></li>
-    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">2</span><h3>Start ${escape(level.label)}</h3><div class="pj-pretrial-scope"><h4>What ${escape(name||'your child')} will learn</h4><dl class="pj-pretrial-stats">${stats.map(([value,label])=>`<div><dd>${value}</dd><dt>${label}</dt></div>`).join('')}</dl><div class="pj-pretrial-daily"><h4>Daily practice</h4><p>Daily access to Listening, Chat, Words and Reading.</p></div><div class="pj-pretrial-resources">${resources.map(([label,x,y])=>`<figure><span class="pj-pretrial-resource-art" style="--resource-x:${x}%;--resource-y:${y}%"><img src="${base}product-resource-elements.webp" alt="" loading="lazy"></span><figcaption>${label}</figcaption></figure>`).join('')}</div></div></li>
+    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">2</span><h3>Start ${escape(level.label)}</h3><div class="pj-pretrial-scope"><h4>What ${escape(name||'your child')} will learn</h4><dl class="pj-pretrial-stats">${stats.map(([value,label])=>`<div><dd>${value}</dd><dt>${label}</dt></div>`).join('')}</dl><div class="pj-pretrial-daily"><h4>Daily practice</h4><p>Explore Reading, Listening, Words, Speaking, Dino Story and Theme Lessons.</p></div><div class="pj-pretrial-resources">${resources.map(({label,src})=>`<figure><span class="pj-pretrial-resource-art"><img src="${src}" alt="" loading="lazy"></span><figcaption>${label}</figcaption></figure>`).join('')}</div></div></li>
     <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">3</span><h3>${escape(possessive)} next English milestone</h3><div class="pj-pretrial-climb"><svg class="pj-pretrial-arc" viewBox="0 0 280 180" aria-hidden="true"><path d="M55 115 Q139 105 208 35" fill="none" stroke="#c4b6df" stroke-width="3" stroke-dasharray="3 7"/><path d="M195 36 L210 30 L208 46" fill="none" stroke="#c4b6df" stroke-width="3"/></svg><div class="pj-pretrial-milestone"><small>Starting point</small><div><span>${escape(level.label)}</span><strong><small>CEFR</small>${escape(cefr)}</strong></div></div><div class="pj-pretrial-milestone pj-pretrial-next"><img src="${base}dino.webp" alt="" loading="lazy"><small>${index===5?'Learning goal':'Next goal'}</small><div><span>${escape(next.label)}</span><strong><small>CEFR</small>${escape(nextCefr)}</strong></div></div></div><div class="pj-pretrial-goal"><b>Build towards CEFR ${escape(nextCefr)}</b>${escape(descriptors[index])}${index<5?` → ${escape(descriptors[index+1])}`:''}</div></li>
    </ol></section>
    <section class="pj-pretrial-card" aria-labelledby="pj-pretrial-curriculum"><header class="pj-pretrial-curriculum-head"><img src="${base}icon-level.webp" alt="" loading="lazy"><div><h2 id="pj-pretrial-curriculum">A path from L1 to L6</h2><small>CEFR-aligned</small></div></header><button type="button" class="pj-pretrial-chart" data-pretrial-chart aria-label="Enlarge the L1 to L6 curriculum"><img src="${base}curriculum-global.svg" alt="CEFR learning path: L1 Pre-A1, L2 A1, L3 A1+, L4 A2, L5 A2+, L6 B2" loading="lazy"><span>Tap to explore the learning path ↗</span></button><div class="pj-pretrial-current"><strong>L${index+1} · ${escape(cefr)}</strong><span>${escape(descriptors[index])}</span></div></section>
@@ -25684,8 +25704,8 @@
   const cta=document.getElementById('btn-pwpt-purchase');if(cta)cta.textContent=trial?txt('开始 3 天免费试用','Start 3-day free trial'):txt('立即订阅','Subscribe now');
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
- function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent=txt('0 · 3 天免费试用','0 · 3-day free trial');const heading=overlay.querySelector('h3');if(heading)heading.textContent=txt('确认开通 3 天免费试用','Confirm 3-day free trial');const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent=txt('3 天后按月自动续订：','Auto-renews monthly after 3 days: ')+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'3 天免费试用 · A',pageKey:'trial_paywall_a',isCore:true,keys:['pjTrial','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
+ function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent='0 · 3-day free trial';const heading=overlay.querySelector('h3');if(heading)heading.textContent='Confirm 3-day free trial';const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent='Auto-renews monthly after 3 days: '+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
+ window.PARENT_JOURNEY={continueFree:()=>{if(profile.trialReportShown)finishToHome();else start();},decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'3-day trial · '+(window.V220_PAYWALL_VARIANT==='c'?'C':'A'),pageKey:window.V220_PAYWALL_VARIANT==='c'?'trial_paywall_c':'trial_paywall_a',isCore:true,keys:['pjPaywall','pjTrial','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjPaywall:window.V220_PAYWALL_VARIANT||'a',pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
  const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
@@ -26073,14 +26093,11 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
     </nav>`;
   const reading = document.createElement('button');
   reading.id = 'explore-open-reading'; reading.type = 'button'; reading.className = 'explore-entry';
-  const entries = [
-    {button:reading,title:'Reading',image:'reading.png'},
-    {button:originals['explore-open-radio'],title:'Listening',image:'listening.png'},
-    {button:originals['explore-open-story'],title:'Words & Sentences',label:'Words',image:'words.png'},
-    {button:originals['explore-open-speaking'],title:'Speaking',image:'speaking.png'},
-    {button:originals['explore-open-animation'],title:'Dino Story',src:animationImage},
-    {button:originals['dino-event-card'],title:'Theme Lessons',label:'Theme Lessons',image:'theme.png'}
-  ];
+  const entries = window.V220_EXPLORE_RESOURCES.map(entry => ({
+    ...entry,
+    button:entry.buttonId==='explore-open-reading'?reading:originals[entry.buttonId],
+    src:entry.buttonId==='explore-open-animation'?animationImage:entry.src
+  }));
   entries.forEach((entry,index) => {
     const button = entry.button;
     button.setAttribute('aria-label',entry.title);
@@ -26088,7 +26105,7 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
     button.style.setProperty('--ex-x', (358 + (index % 3) * 125.156) + 'px');
     button.style.setProperty('--ex-y', (index < 3 ? 77 : 190) + 'px');
     const isBase = [1,3,5].includes(index);
-    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.image==='speaking.png'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b></span>`;
+    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.buttonId==='explore-open-speaking'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b></span>`;
     scene.querySelector('.ex-entries').appendChild(button);
   });
   panel.replaceChildren(scene);
@@ -26375,12 +26392,28 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
  #screen-paywall-pt.v220-trial-a #btn-pwpt-purchase{min-height:52px;font-size:18px}
 }
 @media(max-width:600px){body:has(#screen-paywall-pt.active.v220-trial-a) #dfb-fab{display:none!important}}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v220-pwa-current{display:none}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-option{padding:10px 4px;min-height:62px;line-height:1.3}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-option small{display:block;margin-top:4px;font:600 12px/1.4 var(--font)}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-r{display:flex!important;flex-shrink:0;margin-left:10px;align-items:center;text-align:right}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .pwpt-plan-daily{display:flex;flex-direction:column;color:#526482;font:600 12px/1.4 var(--font)}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .pwpt-plan-daily b{font:800 17px/1.3 var(--font);color:#141746}
+@container trial-paywall (max-width:340px){#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan{padding-left:42px;padding-right:10px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan::before{left:10px;width:20px;height:20px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price b{font-size:19px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .pwpt-plan-daily b{font-size:15px}}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v220-tier-panel{background:linear-gradient(145deg,#fff,#eef4ff);border:2px solid #e3edff;border-radius:22px;box-shadow:0 8px 24px #5579be18;overflow:hidden;padding:0 12px 12px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v180-paywall-selector{margin:0 -12px 12px;padding:0;background:none}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-tabs{border-radius:0;padding:0;background:#dfe8f7;overflow:visible;gap:0}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-option{border-radius:0;margin:0;background:#dfe8f7;color:#637491;box-shadow:none;border-bottom:2px solid #c6d6ee}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-option.is-selected{background:#fff;color:#1554df;border-bottom-color:transparent;box-shadow:none}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v180-tier-option[data-v180-offer-tier="max"].is-selected{background:#fff;color:#1554df}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan{padding-left:44px;padding-right:12px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan::before{left:12px}
+@container trial-paywall (max-width:340px){#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v220-tier-panel{padding:0 8px 8px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v180-paywall-selector{margin:0 -8px 10px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan{padding-left:34px;padding-right:8px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan::before{left:8px;width:18px;height:18px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-name{font-size:14px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price b{font-size:17px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price small{font-size:12px}}
 </style>
 <script id="v220-trial-paywall-a-module">
 (() => {
   const screen = document.getElementById('screen-paywall-pt');
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const copy = (zh, en) => window.PARENT_JOURNEY?.get('pjLocale') === 'zh' ? zh : en;
+  const copy = (zh, en) => en; // Both review templates use English copy.
   const template = {
     id: 'a',
     trialTitle: () => copy('3 天免费试用', '3-day free trial'),
@@ -26389,7 +26422,8 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
   };
   function render({prices = [], tier = 'pro'} = {}) {
     if (!screen.classList.contains('v220-trial-a')) return;
-    screen.dataset.paywallTemplate = template.id;
+    const variant = window.V220_PAYWALL_VARIANT === 'c' ? 'c' : 'a';
+    screen.dataset.paywallTemplate = variant;
     const hero = screen.querySelector('.pwpt-hero-card');
     let intro = document.getElementById('v220-pwa-intro');
     if (!intro) {
@@ -26406,22 +26440,55 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
       current.addEventListener('click', event => {
         const toggle = event.target.closest('[data-pwa-change]');
         if (!toggle) return;
-        const open = screen.dataset.pwaTierOpen !== 'true';
-        screen.dataset.pwaTierOpen = String(open);
-        toggle.setAttribute('aria-expanded', String(open));
+        openPlanDrawer();
       });
     }
     const selected = prices.find(item => item.id === profile.selectedPlan);
     const trial = !!selected && selected.id === 'monthly' && !selected.isKol && window.PARENT_JOURNEY?.get('pjTrial') === 'eligible';
     const name = String(profile.name || '').trim();
-    const headline = selected ? (trial ? template.trialTitle() : template.subscriptionTitle()) : copy('选择学习套餐', 'Choose your learning plan');
-    intro.innerHTML = `<h1>${escape(headline)}</h1><p>${escape(template.trialSubtitle(name))}</p>`;
-    if (screen.dataset.pwaTier && screen.dataset.pwaTier !== tier) screen.dataset.pwaTierOpen = 'false';
+    const headline = selected ? (variant === 'c' ? 'From a first lesson to steady learning' : (trial ? template.trialTitle() : template.subscriptionTitle())) : 'Choose your learning plan';
+    intro.innerHTML = `<h1>${escape(headline)}</h1><p>${escape(variant === 'c' ? 'Discover what Dino membership includes.' : template.trialSubtitle(name))}</p>`;
+    let comparison = document.getElementById('v220-pwc-compare');
+    if (!comparison) { comparison = document.createElement('section'); comparison.id='v220-pwc-compare'; comparison.className='v220-pwc-compare'; hero.prepend(comparison); }
+    comparison.hidden = variant !== 'c';
+    comparison.innerHTML = `<ul><li><img src="assets/v155/paywall-figma/benefit-icon-5.png" alt=""><strong>Access 864 CEFR-aligned lessons</strong></li><li><span class="v155-benefit-sprite v155-benefit-sprite--map" aria-hidden="true"></span><strong>Follow a personalized weekly learning plan</strong></li><li><img src="assets/v155/paywall-figma/benefit-icon-4.png" alt=""><strong>See your child’s progress after every lesson</strong></li></ul>`;
+    if (variant === 'c') hero.prepend(comparison);
+
+    screen.querySelectorAll('[data-v180-offer-tier]').forEach(tab => {
+      const max = tab.dataset.v180OfferTier === 'max';
+      tab.innerHTML = `Dino ${max ? 'Max' : 'Pro'}${variant === 'a' ? `<small>${max ? 5 : 3} lessons / week</small>` : ''}`;
+    });
+    let tierPanel = document.getElementById('v220-tier-panel');
+    if (!tierPanel) { tierPanel = document.createElement('section'); tierPanel.id='v220-tier-panel'; }
+    const selector = document.getElementById('v180-paywall-selector');
+    const plans = document.getElementById('pwpt-plans');
+    if (variant === 'a') {
+      hero.append(tierPanel);
+      tierPanel.append(selector, plans);
+      plans.setAttribute('role','tabpanel');
+      plans.setAttribute('aria-labelledby',`v220-tier-tab-${tier}`);
+      selector.querySelectorAll('[data-v180-offer-tier]').forEach(tab => {
+        tab.id=`v220-tier-tab-${tab.dataset.v180OfferTier}`;
+        tab.setAttribute('aria-controls','pwpt-plans');
+      });
+      plans.querySelectorAll('.pwpt-plan').forEach(card => {
+        const label=card.querySelector('.pwpt-plan-name');
+        if (label) label.textContent=`${tier==='max'?'Max':'Pro'} ${label.textContent.replace(/^(Pro|Max) /,'')}`;
+      });
+    } else {
+      tierPanel.remove();
+      plans.removeAttribute('role'); plans.removeAttribute('aria-labelledby');
+    }
     screen.dataset.pwaTier = tier;
-    document.getElementById('v220-pwa-current').innerHTML = `<strong>Dino ${tier === 'max' ? 'Max' : 'Pro'} · ${copy(`每周 ${tier === 'max' ? 5 : 3} 节主课`, `${tier === 'max' ? 5 : 3} AI lessons / week`)}</strong><button type="button" class="v220-pwa-change" data-pwa-change aria-controls="v180-paywall-selector" aria-expanded="${screen.dataset.pwaTierOpen === 'true'}">${copy('切换方案', 'Change plan')} ›</button>`;
+    document.getElementById('v220-pwa-current').innerHTML = variant === 'c'
+      ? `<div><strong>Dino ${tier === 'max' ? 'Max' : 'Pro'} · ${tier === 'max' ? 5 : 3} lessons / week</strong><span class="v220-pwa-summary">${selected ? escape(selected.name + ' · ' + selected.price + selected.period) : 'No plans available'}</span></div><button type="button" class="v220-pwa-change" data-pwa-change aria-haspopup="dialog" aria-controls="v220-plan-drawer">Change plan ›</button>`
+      : `<strong>Dino ${tier === 'max' ? 'Max' : 'Pro'} · ${tier === 'max' ? 5 : 3} lessons / week</strong>`;
     const fees = document.getElementById('v220-pwa-fees');
     const cta = document.getElementById('btn-pwpt-purchase');
     cta.before(fees);
+    const currentCard = document.getElementById('v220-pwa-current');
+    if (variant === 'c') fees.before(currentCard);
+    else hero.prepend(currentCard);
     if (!document.getElementById('v155-restore-status')) {
       const status = document.createElement('span');
       status.id = 'v155-restore-status'; status.className = 'v155-restore-status';
@@ -26440,11 +26507,173 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
       fees.innerHTML = `<p role="status">${copy('套餐确认后显示费用说明', 'Your billing details will appear when plans are available.')}</p>`;
       cta.disabled = true;
     }
+    let free = document.getElementById('v220-pwa-free');
+    const freeTag = 'P';
+    if (free && free.tagName !== freeTag) { free.remove(); free = null; }
+    if (!free) {
+      free = document.createElement(freeTag.toLowerCase()); free.id='v220-pwa-free'; free.className='v220-pwa-free'; cta.after(free);
+    }
+    free.textContent = profile.trialReportShown ? 'Continue free learning' : 'Try a free lesson first';
   }
-  window.V220_TRIAL_PAYWALL_A = {template, render};
+  let draft = null;
+  let returnFocus = null;
+  function ensurePlanDrawer() {
+    let dialog = document.getElementById('v220-plan-drawer');
+    if (dialog) return dialog;
+    dialog = document.createElement('dialog');
+    dialog.id = 'v220-plan-drawer'; dialog.className = 'v220-plan-drawer';
+    dialog.setAttribute('aria-labelledby','v220-plan-drawer-title');
+    dialog.innerHTML = `<header><h2 id="v220-plan-drawer-title">Choose your plan</h2><button type="button" data-picker-close aria-label="Close plan selection">×</button></header><div class="v220-picker-tabs" role="tablist" aria-label="Membership tier"><button type="button" role="tab" data-picker-tier="pro">Dino Pro</button><button type="button" role="tab" data-picker-tier="max">Dino Max</button></div><div id="v220-picker-products" role="radiogroup" aria-label="Subscription period"></div><footer><button type="button" id="v220-picker-confirm">Confirm plan</button></footer>`;
+    document.body.append(dialog);
+    dialog.addEventListener('click', event => {
+      if (event.target === dialog || event.target.closest('[data-picker-close]')) { dialog.close(); return; }
+      const tier = event.target.closest('[data-picker-tier]');
+      if (tier) { draft.tier = tier.dataset.pickerTier; renderPlanDrawer(); return; }
+      const product = event.target.closest('[data-picker-product]');
+      if (product) { draft.cycle = product.dataset.pickerProduct; renderPlanDrawer(); dialog.querySelector(`[data-picker-product="${draft.cycle}"]`)?.focus(); return; }
+      if (event.target.closest('#v220-picker-confirm')) {
+        if (!window.V220_PAYWALL_CATALOG(draft.tier).some(p=>p.id===draft.cycle)) return;
+        window.v220SelectPaywallPlan(draft.tier,draft.cycle);
+        dialog.close();
+      }
+    });
+    dialog.addEventListener('keydown', event => {
+      const radio = event.target.closest('[data-picker-product]');
+      if (radio && ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(event.key)) {
+        event.preventDefault();
+        const products=window.V220_PAYWALL_CATALOG(draft.tier);
+        const index=products.findIndex(p=>p.id===draft.cycle);
+        const step=['ArrowUp','ArrowLeft'].includes(event.key)?-1:1;
+        draft.cycle=products[(index+step+products.length)%products.length]?.id||'';
+        renderPlanDrawer(); dialog.querySelector(`[data-picker-product="${draft.cycle}"]`)?.focus();
+      }
+      const tab = event.target.closest('[data-picker-tier]');
+      if (tab && ['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) {
+        event.preventDefault(); draft.tier = event.key==='Home'?'pro':event.key==='End'?'max':draft.tier==='pro'?'max':'pro';
+        renderPlanDrawer(); dialog.querySelector(`[data-picker-tier="${draft.tier}"]`).focus();
+      }
+    });
+    dialog.addEventListener('close',()=>{draft=null;returnFocus?.focus();});
+    return dialog;
+  }
+  function renderPlanDrawer() {
+    const dialog = ensurePlanDrawer();
+    const products = window.V220_PAYWALL_CATALOG(draft.tier);
+    if (!products.some(p=>p.id===draft.cycle)) draft.cycle=products[0]?.id||'';
+    dialog.querySelectorAll('[data-picker-tier]').forEach(tab=>{
+      const selected=tab.dataset.pickerTier===draft.tier;
+      const max=tab.dataset.pickerTier==='max';
+      tab.innerHTML=`Dino ${max?'Max':'Pro'}<small>${max?5:3} lessons / week</small>`;
+      tab.setAttribute('aria-selected',String(selected)); tab.tabIndex=selected?0:-1;
+    });
+    dialog.querySelector('#v220-picker-products').innerHTML = products.length ? products.map(p=>{
+      const trial=p.id==='monthly'&&!p.isKol&&window.PARENT_JOURNEY?.get('pjTrial')==='eligible';
+      return `<button type="button" role="radio" tabindex="${p.id===draft.cycle?0:-1}" aria-checked="${p.id===draft.cycle}" data-picker-product="${escape(p.id)}"><span class="v220-picker-product-main"><strong>${draft.tier==='max'?'Max':'Pro'} ${escape(p.name)}</strong><span class="v220-picker-price-row"><b>${escape(p.price)}</b><small>${escape(p.period)}</small>${p.comparison?`<s>${escape(p.comparison)}</s>`:''}</span>${trial?'<small>3-day free trial</small>':''}</span><span class="v220-picker-price"><strong>${escape(p.daily)}</strong><small>/day</small></span></button>`;
+    }).join('') : '<p role="status">No plans available. Please try again.</p>';
+    dialog.querySelector('#v220-picker-confirm').disabled=!products.length;
+  }
+  function openPlanDrawer() {
+    returnFocus=document.querySelector('[data-pwa-change]');
+    draft={tier:profile.selectedMembershipTier==='max'?'max':'pro',cycle:profile.selectedPlan};
+    renderPlanDrawer();
+    const dialog=ensurePlanDrawer();
+    const r=screen.getBoundingClientRect();
+    dialog.style.left=r.left+'px';dialog.style.top=(r.bottom-Math.min(r.height*.6,520))+'px';
+    dialog.style.width=r.width+'px';dialog.style.height=Math.min(r.height*.6,520)+'px';
+    dialog.showModal();
+  }
+  window.V220_PAYWALL_VARIANT = new URLSearchParams(location.search).get('trialPaywall') === 'c' ? 'c' : 'a';
+  window.V220_TRIAL_PAYWALL_A = {template, render, variant:()=>window.V220_PAYWALL_VARIANT, setVariant:value=>{window.V220_PAYWALL_VARIANT=value==='c'?'c':'a';window.v220RefreshParentPaywall?.();document.getElementById('pwpt-scroll').scrollTop=0;window.demoStatePanel?.render();}};
+  document.addEventListener('DOMContentLoaded',()=>{if(!new URLSearchParams(location.search).has('trialPaywall'))return;window.PARENT_JOURNEY.open('preview');document.querySelector('#screen-parent-journey [data-pj="checkout"]')?.click();});
 })();
 </script>
 
+
+<style id="v220-paywall-c-style">
+#v220-pwc-compare h2{font:700 18px/1.3 var(--display);margin:4px 6px 14px;color:#141746}
+#v220-pwc-compare ul{list-style:none;margin:0;padding:0 6px;display:flex;flex-direction:column;gap:14px}
+#v220-pwc-compare li{display:flex;align-items:center;gap:12px;text-align:left;font:600 14px/1.45 var(--font);color:#141746;min-height:44px}
+#v220-pwc-compare li img,#v220-pwc-compare li>.v155-benefit-sprite{display:block;width:36px;height:36px;flex-shrink:0;object-fit:contain}
+#v220-pwc-compare li>.v155-benefit-sprite{width:30px;height:30px;margin:3px}
+#v220-pwc-compare li strong{font-weight:600}
+
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .pwpt-cta-bar #v220-pwa-current{margin:0 0 10px;padding:10px 12px;flex-shrink:0;background:linear-gradient(145deg,#fff,#f0f4ff);border:2px solid #d5e2fb;border-radius:18px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .pwpt-cta-bar #v220-pwa-current strong{font-size:14px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .pwpt-cta-bar{padding-top:10px}
+
+.v220-pwa-free{display:block;margin:8px auto 4px;padding:8px 12px;min-height:40px;border:0;background:none;color:#315ab9;font:600 13px/1.4 var(--font);text-decoration:none;cursor:default;text-align:center}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-free{text-decoration:none;cursor:default;text-align:center}
+.v220-pwc-compare{display:none}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .v220-pwc-compare:not([hidden]){display:block;background:#fffffff2;border:1px solid #fff;border-radius:18px;padding:10px}
+.v220-pwc-compare table{width:100%;border-collapse:collapse;font:500 12px/1.4 var(--font);color:#141746;table-layout:fixed}
+.v220-pwc-compare caption{font:700 16px/1.4 var(--font);text-align:left;padding:2px 4px 12px}
+.v220-pwc-compare th,.v220-pwc-compare td{padding:10px 5px;text-align:center;overflow-wrap:anywhere;border-bottom:1px solid #dce6f3;vertical-align:middle}
+.v220-pwc-compare th:first-child{text-align:left;width:32%}.v220-pwc-compare th:last-child,.v220-pwc-compare td:last-child{background:#fff5d7}
+.v220-pwc-compare p{font:400 11px/1.4 var(--font);color:#526482;margin:10px 4px 2px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .v220-pwa-intro h1{font-size:clamp(28px,8cqw,34px)}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] #pwpt-plans{display:none!important}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v180-paywall-selector{display:block}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v220-pwa-current{display:none}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #v180-paywall-selector{order:0}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans{order:2}
+#screen-paywall-pt.v220-trial-a .v180-tier-option{min-height:44px;font-size:15px}
+.v220-pwa-summary{display:block;margin-top:4px;color:#526482;font:600 13px/1.4 var(--font)}
+.v220-plan-drawer{position:fixed;box-sizing:border-box;margin:0;padding:20px;border:0;border-radius:26px 26px 36px 36px;max-width:none;max-height:none;background:linear-gradient(145deg,#fff,#eef1ff);color:#141746;box-shadow:0 -12px 40px #14295738;overflow:hidden;font-family:var(--font)}
+.v220-plan-drawer[open]{display:flex;flex-direction:column;gap:12px}
+.v220-plan-drawer::backdrop{background:#0d193980}
+.v220-plan-drawer header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+.v220-plan-drawer h2{font:700 22px/1.3 var(--display);margin:0}
+.v220-plan-drawer header button{min-width:44px;min-height:44px;border:0;border-radius:50%;background:#e6ebfa;color:#182354;font-size:28px}
+.v220-picker-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#e2e9f9;border-radius:16px;padding:4px;flex-shrink:0}
+.v220-picker-tabs button{border:0;border-radius:12px;min-height:44px;background:none;color:#5b6b89;font:700 15px var(--font)}
+.v220-picker-tabs button{padding:10px 4px;min-height:62px;line-height:1.3}
+.v220-picker-tabs button small{display:block;margin-top:4px;font:600 12px/1.4 var(--font)}
+.v220-picker-tabs button[aria-selected="true"]{color:#1554df;background:white;box-shadow:0 3px 9px #24476b22}
+.v220-picker-tabs button[data-picker-tier="max"][aria-selected="true"]{color:#a64d07;background:#fff8ed}
+#v220-picker-benefit{font:600 14px/1.4 var(--font);margin:0;flex-shrink:0}
+#v220-picker-products{display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0;flex:1;padding:2px}
+#v220-picker-products>button{display:flex;gap:12px;align-items:center;justify-content:space-between;border:2px solid #cbd7ed;border-radius:18px;padding:14px;min-height:80px;text-align:left;background:white;color:#141746;font-family:var(--font);flex-shrink:0}
+#v220-picker-products>button[aria-checked="true"]{border-color:#ffa216;background:#fff9e5;box-shadow:0 0 0 2px #ffedbe}
+#v220-picker-products strong{display:block;font-size:16px;line-height:1.4}
+#v220-picker-products small{display:block;font-size:12px;line-height:1.5;color:#526482}
+.v220-picker-price{text-align:right;flex-shrink:0}
+.v220-plan-drawer footer{padding-top:4px;flex-shrink:0}
+#v220-picker-confirm{width:100%;min-height:52px;border:1px solid #ffd36b;border-radius:999px;background:linear-gradient(#ffb62d,#ff8b0c);color:white;font:700 18px var(--display);box-shadow:inset 0 2px 1px #fff7}
+#v220-picker-confirm:disabled{opacity:.5}
+.v220-plan-drawer button:focus-visible{outline:3px solid #1554df;outline-offset:2px}
+@media(max-width:360px){.v220-plan-drawer{padding:16px;gap:8px}.v220-plan-drawer h2{font-size:20px}#v220-picker-products>button{padding:10px;min-height:76px}.v220-picker-price strong{font-size:15px}}
+#screen-paywall-pt:not(.v220-trial-a) :is(.v220-pwa-free,.v220-pwc-compare){display:none!important}
+
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .pwpt-cta-bar #v220-pwa-current{background:linear-gradient(130deg,#fffbe9,#fff3d6);border-color:#ffd17c;box-shadow:0 3px 10px #e6ac4220}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .pwpt-cta-bar #v220-pwa-fees{background:linear-gradient(145deg,#f2f6fc,#edf3fa);border:1px solid #e5edf7;box-shadow:none;padding:12px;color:#526482}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] #v220-pwa-fees .v220-pwa-fee-line{font-weight:400;color:#526482}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] #v220-pwa-fees .v220-pwa-fee-line strong{font-size:14px;font-weight:600;color:#334664}
+
+#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .v220-pwa-intro{padding:16px 0 48px}
+@container trial-paywall (max-height:660px){#screen-paywall-pt.v220-trial-a[data-paywall-template="c"] .v220-pwa-intro{padding:12px 0 40px}}
+
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-intro{padding:24px 0 42px}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-intro h1{font-size:clamp(36px,10.8cqw,44px);line-height:1.1;text-shadow:0 3px 14px #2539b550}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-intro p{margin-top:14px}
+@container trial-paywall (max-height:660px){#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-intro{padding:16px 0 28px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] .v220-pwa-intro h1{font-size:clamp(34px,10cqw,40px)}}
+
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price-row{flex-wrap:nowrap;gap:6px;white-space:nowrap}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price{white-space:nowrap;flex-shrink:0}
+#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-orig{display:inline;margin:0;font-size:11px;white-space:nowrap;flex-shrink:0}
+@container trial-paywall (max-width:340px){#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-price-row{gap:4px}#screen-paywall-pt.v220-trial-a[data-paywall-template="a"] #pwpt-plans .pwpt-plan-orig{font-size:10px}}
+
+#v220-picker-products>button{position:relative;padding:12px 12px 12px 46px;background:linear-gradient(145deg,#fff,#f5f8ff);border-radius:20px;gap:8px}
+#v220-picker-products>button::before{content:"";box-sizing:border-box;position:absolute;left:14px;top:50%;transform:translateY(-50%);width:22px;height:22px;border:2px solid #bac6dc;border-radius:50%;background:white}
+#v220-picker-products>button[aria-checked="true"]::before{border:7px solid #ff9f0a}
+#v220-picker-products>button[aria-checked="true"]{border-color:#ffae16;background:linear-gradient(130deg,#fffdf1,#fff9dc);box-shadow:0 0 0 2px #fff3c0}
+.v220-picker-product-main{min-width:0}
+#v220-picker-products .v220-picker-price-row{display:flex;align-items:baseline;gap:3px;white-space:nowrap;margin-top:3px}
+#v220-picker-products .v220-picker-price-row b{font-size:20px;line-height:1.3}
+#v220-picker-products .v220-picker-price-row small{display:inline;font-size:12px;color:#141746}
+#v220-picker-products .v220-picker-price-row s{font-size:10px;color:#73839b}
+#v220-picker-products .v220-picker-price strong{font-size:17px}
+@media(max-width:360px){#v220-picker-products>button{padding:10px 8px 10px 34px}#v220-picker-products>button::before{left:8px;width:18px;height:18px}#v220-picker-products .v220-picker-product-main>strong{font-size:14px}#v220-picker-products .v220-picker-price-row b{font-size:17px}#v220-picker-products .v220-picker-price-row small{font-size:11px}#v220-picker-products .v220-picker-price strong{font-size:15px}}
+</style>
 <style id="v220-pretrial-plan-style">
 #screen-parent-journey[data-pj-page="preview"]{background:#f7f4fb;color:#433453;font-family:Arial,"Segoe UI",sans-serif}
 #screen-parent-journey[data-pj-page="preview"]>.pj-top{display:none}
@@ -26493,10 +26722,10 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-pretrial-stats dt{font-size:14px;color:#70617e}
 .pj-pretrial-daily{margin-top:20px}
 .pj-pretrial-daily p{font-size:12px;margin-top:5px;color:#8a7b96;line-height:1.5}
-.pj-pretrial-resources{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:14px}
-.pj-pretrial-resources figure{min-width:0;text-align:center}
-.pj-pretrial-resource-art{position:relative;display:block;margin:auto;width:100%;max-width:52px;aspect-ratio:129/120;overflow:hidden;clip-path:polygon(50% 0,62% 4%,94% 23%,99% 31%,100% 39%,100% 79%,97% 88%,90% 95%,79% 100%,21% 100%,10% 95%,3% 88%,0 79%,0 39%,1% 31%,6% 23%,38% 4%)}
-.pj-pretrial-resource-art img{position:absolute;width:491.472868217%;max-width:none;height:auto;left:var(--resource-x);top:var(--resource-y)}
+.pj-pretrial-resources{display:flex;gap:12px;margin-top:14px;overflow-x:auto;overscroll-behavior-x:contain;padding:2px 0 8px;scrollbar-width:thin}
+.pj-pretrial-resources figure{flex:0 0 64px;min-width:0;margin:0;text-align:center}
+.pj-pretrial-resource-art{display:flex;align-items:center;justify-content:center;margin:auto;width:60px;height:60px}
+.pj-pretrial-resource-art img{display:block;width:100%;height:100%;object-fit:contain}
 .pj-pretrial-resources figcaption{font-size:11px;line-height:1.4;margin-top:6px;overflow-wrap:anywhere;color:#735e87}
 .pj-pretrial-climb{position:relative;height:180px;margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
 .pj-pretrial-arc{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
