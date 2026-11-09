@@ -25626,9 +25626,18 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   if(pg==='earlySchedule'){
    const now=new Date(),dateKey=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');const tomorrow=new Date(now);tomorrow.setDate(tomorrow.getDate()+1);const todayKey=dateKey(now),tomorrowKey=dateKey(tomorrow);const lastDay=new Date(now);lastDay.setDate(lastDay.getDate()+7);const maxKey=dateKey(lastDay);let selected=m.draftDate&&m.draftDate>=todayKey&&m.draftDate<=maxKey?m.draftDate:todayKey;
    const availableTimes=day=>Array.from({length:24},(_,hour)=>String(hour).padStart(2,'0')+':00').filter(value=>+new Date(day+'T'+value)>=Date.now()+30*60000);
-   let options=availableTimes(selected);if(selected===todayKey&&!options.length){selected=tomorrowKey;options=availableTimes(selected);}
+   const todayOptions = availableTimes(todayKey);
+   const todayUnavailable = todayOptions.length === 0;
+   if (selected === todayKey && todayUnavailable) selected = tomorrowKey;
+   const options = selected === todayKey ? todayOptions : availableTimes(selected);
    const preferred=m.draftTime||m.preferredTime;const chosen=options.includes(preferred)?preferred:selected===todayKey?options[0]:'19:00';m.draftDate=selected;m.draftTime=chosen;
-   body=`<h1>${txt('孩子什么时候方便上课？','When can your child join?')}</h1><p>${txt('选一个方便的时间，提醒你带孩子回来上课。','Choose a time, and we’ll remind you to bring your child back.')}</p><div class="pj-glass"><label class="pj-field-label">${txt('日期','Day')}</label><div class="pj-choices">${[[todayKey,txt('今天','Today')],[tomorrowKey,txt('明天','Tomorrow')]].map(([value,label])=>`<button class="pj-choice ${selected===value?'is-selected':''}" aria-pressed="${selected===value}" data-pj="scheduleDay" data-value="${value}">${label}</button>`).join('')}<button class="pj-choice ${![todayKey,tomorrowKey].includes(selected)?'is-selected':''}" data-pj="otherDates">${![todayKey,tomorrowKey].includes(selected)?new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{month:'short',day:'numeric'}).format(new Date(selected+'T12:00')):txt('其他日期','Other dates')}</button></div><input id="pj-date" type="hidden" value="${selected}"><div class="pj-date"><label for="pj-time">${txt('时间','Time')}</label><select id="pj-time"><option value="" disabled ${chosen?'':'selected'}>${options.length?txt('选择时间','Choose a time'):txt('今天没有可选时间，请选择明天','No times left today. Choose tomorrow.')}</option>${options.map(v=>`<option value="${v}" ${chosen===v?'selected':''}>${v}</option>`).join('')}</select></div></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;
+   const dayButtons = [[todayKey, txt('今天', 'Today')], [tomorrowKey, txt('明天', 'Tomorrow')]]
+     .map(([value, label]) => {
+       const isSelected = selected === value;
+       const isDisabled = value === todayKey && todayUnavailable;
+       return `<button type="button" class="pj-choice ${isSelected ? 'is-selected' : ''}" aria-pressed="${isSelected}" data-pj="scheduleDay" data-value="${value}"${isDisabled ? ' disabled' : ''}>${label}</button>`;
+     }).join('');
+   body=`<h1>${txt('孩子什么时候方便上课？','When can your child join?')}</h1><p>${txt('选一个方便的时间，提醒你带孩子回来上课。','Choose a time, and we’ll remind you to bring your child back.')}</p><div class="pj-glass"><label class="pj-field-label">${txt('日期','Day')}</label><div class="pj-choices">${dayButtons}<button class="pj-choice ${![todayKey,tomorrowKey].includes(selected)?'is-selected':''}" data-pj="otherDates">${![todayKey,tomorrowKey].includes(selected)?new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{month:'short',day:'numeric'}).format(new Date(selected+'T12:00')):txt('其他日期','Other dates')}</button></div><input id="pj-date" type="hidden" value="${selected}"><div class="pj-date"><label for="pj-time">${txt('时间','Time')}</label><select id="pj-time"><option value="" disabled ${chosen?'':'selected'}>${options.length?txt('选择时间','Choose a time'):txt('今天没有可选时间，请选择明天','No times left today. Choose tomorrow.')}</option>${options.map(v=>`<option value="${v}" ${chosen===v?'selected':''}>${v}</option>`).join('')}</select></div></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;
    foot=`<button class="pj-primary" data-pj="save">${txt('设置提醒','Set a reminder')}</button><button class="pj-link" data-pj="decideLater">${txt('稍后决定','Decide later')}</button>`;
   }
   if(pg==='permission'){body=`<div class="pj-success">♧</div><h1>${t('notify')}</h1><p>${t('notifySub')}</p><div class="pj-glass">${esc(when())}</div><p class="pj-demo-tag">${txt('通知授权模拟，不调用真实系统权限','Simulated permission; no system permission requested')}</p>`;foot=primary('allow','allow')+link('deny','deny');}
@@ -25657,7 +25666,22 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   m.stage=trialStage();persist();syncBanner();
  }
  function home(){m.checkout=false;stop();showClassHome();syncBanner();}
- function finishToHome(){m.checkout=false;stop();persist();profile.v180PlanRevealSeen=true;document.getElementById('v180-plan-reveal')?.classList.remove('show');startV170HomeGuide();syncBanner();window.demoStatePanel?.render();}
+ function finishToHome({ showGuide = true } = {}) {
+  m.checkout = false;
+  stop();
+  persist();
+  profile.v180PlanRevealSeen = true;
+  document.getElementById('v180-plan-reveal')?.classList.remove('show');
+  if (showGuide) {
+   startV170HomeGuide();
+  } else {
+   cxStage = 'home';
+   label.hidden = true;
+   showDinoHome();
+  }
+  syncBanner();
+  window.demoStatePanel?.render();
+ }
  function continueAfterReminder(next){
   if(m.permission==='granted'){show(next);return;}
   const denied=m.permission==='denied',dialog=document.createElement('dialog');dialog.className='pj-notification-dialog';dialog.setAttribute('aria-labelledby','pj-notification-title');
@@ -25684,7 +25708,15 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   },450);
  }
  function play(){if(m.playing){stop();render();return;}if(m.clip===1)m.clip=0;m.playing=true;render();tick=setInterval(()=>{if(m.page!=='preview'||!root.classList.contains('active')){stop();return;}m.clip++;if(m.clip>=1){m.clip=1;stop();}render();},1700);}
- function back(){if(m.page==='earlySchedule'){show('entry');return;}if(m.page==='entry'){m.active=false;label.hidden=true;home();return;}if(m.page==='plan')show('preview');else if(m.page==='preview')show('earlySchedule');else if(m.page==='schedule')show(m.account==='paid'?'after':'plan');else if(m.page==='permission')show('saved');else show('plan');}
+ function back() {
+  if (m.page === 'earlySchedule') { show('entry'); return; }
+  if (m.page === 'entry') { m.active = false; label.hidden = true; home(); return; }
+  if (m.page === 'preview') { finishToHome({ showGuide: false }); return; }
+  if (m.page === 'plan') show('preview');
+  else if (m.page === 'schedule') show(m.account === 'paid' ? 'after' : 'plan');
+  else if (m.page === 'permission') show('saved');
+  else show('plan');
+ }
  function openDateDrawer(){const drawer=document.createElement('dialog');drawer.className='pj-date-drawer';const now=new Date();const days=Array.from({length:6},(_,i)=>{const d=new Date(now);d.setDate(d.getDate()+i+2);const value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');return `<button type="button" data-date-value="${value}" class="${m.draftDate===value?'is-selected':''}">${new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{weekday:'short',month:'short',day:'numeric'}).format(d)}</button>`;});drawer.innerHTML=`<header><h2>${txt('选择日期','Choose a day')}</h2><button type="button" data-close aria-label="Close">×</button></header><div class="pj-drawer-days">${days.join('')}</div>`;root.append(drawer);const close=()=>{drawer.close();drawer.remove();root.querySelector('[data-pj=otherDates]')?.focus();};drawer.addEventListener('click',e=>{const choice=e.target.closest('[data-date-value]');if(choice){m.draftDate=choice.dataset.dateValue;m.draftTime=m.preferredTime||'';drawer.close();drawer.remove();render();root.querySelector('[data-pj=otherDates]')?.focus();}else if(e.target===drawer||e.target.closest('[data-close]'))close();});drawer.addEventListener('cancel',e=>{e.preventDefault();close();});drawer.showModal();}
  root.addEventListener('change',e=>{if(m.page==='earlySchedule'&&e.target.id==='pj-time'){m.preferredTime=e.target.value;m.draftTime=e.target.value;}});
  root.addEventListener('click',e=>{const day=e.target.closest('[data-pj=scheduleDay]');if(day){m.draftDate=day.dataset.value;m.draftTime=m.preferredTime||'';render();return;}const b=e.target.closest('[data-pj=quickDate],[data-pj=quickTime]');if(b){const el=root.querySelector(b.dataset.pj==='quickDate'?'#pj-date':'#pj-time');el.value=b.dataset.value;}});
@@ -25784,7 +25816,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  const handoffKind=new URLSearchParams(location.search).get('parentReport');if(handoffKind==='complete'||handoffKind==='formal')window.PARENT_REPORT_HANDOFF.open(handoffKind==='formal'?'formal':'trial');
 })();
 </script>
-<style>.pj-choices{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}.pj-choice{flex:1;min-height:42px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-glass);color:white;font-size:12px!important}.pj-choice:focus{background:#497bff}.prh-child-voice{border:0;background:transparent;min-height:32px;min-width:44px;cursor:pointer}.prh-child-voice[hidden]{display:none!important}.prh-reward-later{display:none!important}</style><style>.pj-field-label{display:block;font-size:14px;margin-bottom:8px}.pj-choice.is-selected{background:var(--surface-card);color:var(--sky-deep);font-weight:700;border-color:var(--surface-card)}.pj-date select{width:100%;min-height:48px;box-sizing:border-box;background:var(--surface-card);color:var(--ink-on-light);border:0;border-radius:var(--radius-sm);padding:12px;font:inherit}.pj-date select:focus-visible{outline:3px solid var(--star-gold);outline-offset:3px}</style>
+<style>.pj-choices{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}.pj-choice{flex:1;min-height:42px;border:1px solid var(--glass-border);border-radius:12px;background:var(--surface-glass);color:white;font-size:12px!important}.pj-choice:focus{background:#497bff}.pj-screen .pj-choice:disabled{background:#d8dee8;border-color:#d8dee8;color:#526075;cursor:not-allowed}.prh-child-voice{border:0;background:transparent;min-height:32px;min-width:44px;cursor:pointer}.prh-child-voice[hidden]{display:none!important}.prh-reward-later{display:none!important}</style><style>.pj-field-label{display:block;font-size:14px;margin-bottom:8px}.pj-choice.is-selected{background:var(--surface-card);color:var(--sky-deep);font-weight:700;border-color:var(--surface-card)}.pj-date select{width:100%;min-height:48px;box-sizing:border-box;background:var(--surface-card);color:var(--ink-on-light);border:0;border-radius:var(--radius-sm);padding:12px;font:inherit}.pj-date select:focus-visible{outline:3px solid var(--star-gold);outline-offset:3px}</style>
 <style id="v210-play-figma-style">
 #v210-play-scene .ex-avatar { position:absolute; left:40px; top:20px; width:40px; height:40px; border:0; padding:0; border-radius:20px; overflow:hidden; background:#ffe78c; cursor:pointer; }
 #v210-play-scene .ex-avatar img { width:40px; height:40px; object-fit:cover; }
