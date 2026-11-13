@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V2.2.0 — 家长课程与学习计划 Demo</title>
-  <!-- DESIGN.md · V2.2.0 · V1.9.1 baseline plus IP animation and Play park. -->
+  <title>Dino AI V2.2.0 — 越南顾问咨询预约 Demo</title>
+  <!-- DESIGN.md · V2.1.0 · V1.9.1 baseline plus IP animation and Play park. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Sora:wght@500;600;700&family=Quicksand:wght@500;600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&display=swap" rel="stylesheet" />
@@ -410,6 +410,18 @@
       border-radius: 0 0 0 3px;
     }
     .who-intro .speech-bubble::after { display: none; }
+    /* Loading */
+    .loading-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 24px 32px;
+      text-align: center;
+    }
+    .loading-dino { width: 88px; margin-bottom: 16px; }
+    .loading-dino .dino-mascot { max-height: 96px; }
     .name-field {
       width: 100%;
       min-height: 54px;
@@ -443,6 +455,27 @@
       text-align: center;
     }
     .name-required-hint.is-show { display: block; }
+    .progress-ring {
+      width: 88px;
+      height: 88px;
+      margin-bottom: 28px;
+    }
+    .progress-ring circle.track { stroke: #f4e7d6; }
+    .progress-ring circle.fill {
+      stroke: var(--cta-orange);
+      stroke-linecap: round;
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+      transition: stroke-dashoffset 0.15s linear;
+    }
+    .loading-status {
+      font-family: var(--display);
+      font-size: 1.05rem;
+      color: var(--reward-orange);
+      margin-bottom: 8px;
+      min-height: 1.4em;
+    }
+    .loading-sub { font-size: 0.8125rem; color: var(--ink-muted); }
     .logo {
       font-family: var(--display);
       font-size: 1.35rem;
@@ -4794,6 +4827,14 @@
     .bullets { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 8px; }
     .bullets li { position: relative; padding-left: 24px; font-size: 0.9rem; color: #3a5a76; line-height: 1.4; }
     .bullets li::before { content: "✓"; position: absolute; left: 0; color: var(--cta-orange); font-weight: 800; }
+    .loading-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+    .loading-dino { width: 110px; height: 110px; }
+    .loading-dino svg, .loading-dino img { width: 100%; height: 100%; }
+    .progress-ring { width: 88px; height: 88px; transform: rotate(-90deg); }
+    .progress-ring .track { stroke: #e3edf7; }
+    .progress-ring .fill { stroke: var(--cta-orange); stroke-linecap: round; transition: stroke-dashoffset .3s ease; }
+    .loading-status { font-size: 1rem; font-weight: 700; color: #143a5e; margin: 0; }
+    .loading-sub { font-size: 0.82rem; color: #8aa; margin: 0; }
     .login-block { align-items: center; text-align: center; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
     .chip-row span { background: color-mix(in srgb,var(--accent-yellow) 18%,white); color: var(--reward-orange); border-radius: 999px; padding: 5px 11px; font-size: 0.75rem; font-weight: 700; }
@@ -8639,9 +8680,30 @@
     #screen-teacher.is-first-lesson .teacher-card-portrait img { height: 100%; width: 100%; max-height: none; }
 
 </style>
+<style>
+#screen-v220-consult{display:none;padding:0;overflow-y:auto;background:#071a43 url("assets/v220/consultation/advisor-scene-dino.jpg") center top/100% auto no-repeat;color:#fff;font-family:Quicksand,system-ui,sans-serif}
+#screen-v220-consult.active{display:flex;flex-direction:column}
+#screen-v220-consult [hidden]{display:none!important}
+.v220c-top{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0}
+.v220c-top img{width:67px;height:auto;object-fit:contain}
+.v220c-hero{padding:22px 20px 24px;min-height:clamp(228px,31vh,270px);flex:none;box-sizing:border-box}
+#screen-v220-consult h1{font:800 clamp(24px,5.9vw,29px)/1.15 Quicksand,system-ui,sans-serif;margin:0 0 14px;max-width:86%;text-wrap:balance;text-shadow:0 2px 8px #06183f}
+#v220c-copy{font-size:14px;line-height:1.5;margin:0;max-width:54%;color:#e0eeff;text-shadow:0 2px 8px #06183f}
+.v220c-card{display:grid;gap:10px;list-style:none;margin:0 20px 24px;padding:16px;border-radius:22px;border:2px solid #e5ecff;background:linear-gradient(150deg,#fff,#f3f5fd);box-shadow:0 0 23px #3d8dff55;color:#101f49}
+.v220c-card li{display:flex;align-items:center;gap:12px;padding:10px 12px;min-height:46px;background:#edf2fc;border-radius:13px;font-weight:800;font-size:14px;line-height:1.3}
+.v220c-card svg{flex:0 0 27px;width:27px;height:27px;stroke:#2261ce;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.v220c-actions{display:grid;gap:12px;margin:0 20px;padding-bottom:24px;text-align:center}
+.v220c-actions p{margin:0;font-size:13px;line-height:1.35;color:#d4e6ff}
+#v220c-status{color:#ffd8bc;font-weight:800}
+.v220c-actions button{width:100%;min-height:52px;padding:10px 12px;border-radius:26px;font:800 15px/1.22 Quicksand,system-ui,sans-serif;cursor:pointer}
+.v220c-primary{background:linear-gradient(#ffae38,#ff651b);color:#271400;border:1px solid #ffd178;box-shadow:0 3px 15px #ff7d4363}
+.v220c-primary:disabled{opacity:.7;cursor:wait}.v220c-actions .v220c-skip{justify-self:center;width:auto;min-height:44px;background:none;color:#f3f7ff;border:0;border-radius:0;text-decoration:underline;text-underline-offset:.2em}
+#screen-v220-consult button:focus-visible{outline:3px solid #a4d0ff;outline-offset:3px}
+@media(max-width:350px){.v220c-top{padding-inline:16px}.v220c-hero{padding-inline:16px}.v220c-card,.v220c-actions{margin-inline:16px}.v220c-card{padding:12px}.v220c-card li{padding-inline:9px}}
+</style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V2.2.0 · 家长课程与学习计划 · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V2.2.0 · 越南顾问咨询预约 · Explore、Play 与家长链路 · 右上 ⚙︎ States 切换页面与关键状态</p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -8751,6 +8813,23 @@
         </div>
       </section>
 
+      <section class="screen" id="screen-loading">
+        <div class="top-bar">
+          <button type="button" class="btn-back" data-back="screen-goal-value">Back</button>
+          <span class="top-spacer"></span>
+        </div>
+        <div class="loading-body">
+          <div class="loading-dino" id="loading-dino"></div>
+          <svg class="progress-ring" viewBox="0 0 88 88" aria-hidden="true">
+            <circle class="track" cx="44" cy="44" r="36" fill="none" stroke-width="8"/>
+            <circle class="fill" id="loading-ring" cx="44" cy="44" r="36" fill="none" stroke-width="8"
+              stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+          </svg>
+          <p class="loading-status" id="loading-status">Creating your plan…</p>
+          <p class="loading-sub">This usually takes a few seconds</p>
+        </div>
+      </section>
+
       <section class="screen" id="screen-login">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-login-back">Back</button>
@@ -8855,6 +8934,21 @@
       </section>
 
       <!-- V1.3.2 手机号绑定页（竖屏 takeover）：卡号登录后若未获取到手机号进入。参考 Figma 4867:18878。 -->
+      <section class="screen" id="screen-v220-consult" aria-labelledby="v220c-title">
+        <div class="v220c-top"><img src="assets/v220/pretrial-plan/logo.webp" alt="Dino AI"></div>
+        <div class="v220c-hero"><h1 id="v220c-title" tabindex="-1"></h1><p id="v220c-copy"></p></div>
+        <ul class="v220c-card" id="v220c-topics">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v15M12 6C9 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-7-1-10 2Z"/></svg><span></span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3"/><circle cx="18" cy="9" r="2.5"/><path d="M2 21v-2a7 7 0 0 1 14 0v2m1-7a5 5 0 0 1 5 5v2"/></svg><span></span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5H5v16h14V5h-3M8 3h8v4H8zM8 14l3 3 5-6"/></svg><span></span></li>
+        </ul>
+        <div class="v220c-actions">
+          <p id="v220c-contact"></p>
+          <p id="v220c-status" role="status" hidden></p>
+          <button class="v220c-primary" type="button" id="v220c-primary"></button>
+          <button class="v220c-skip" type="button" id="v220c-skip"></button>
+        </div>
+      </section>
       <section class="screen" id="screen-bind-phone">
         <div class="bindp-scene">
           <button type="button" class="bindp-back" id="bindp-back" aria-label="Back">‹</button>
@@ -11077,7 +11171,9 @@
         const login = (kind) => {
           profile.skipOnboarding = true;
           v155EntryAuth = true;
-          if (kind === "phone") {
+          if (kind === "phone" && v220ConsultReview) {
+            onLoginSuccess();
+          } else if (kind === "phone") {
             openPhoneAuth("initial");
           } else if ((kind === "apple" || kind === "google") && typeof window.cxMockOAuth === "function") {
             window.cxMockOAuth(kind);
@@ -12151,13 +12247,22 @@
     }
     function finishPostLoginInfo() {
       profile.profileComplete = true;
+      if (v220ConsultReview && window.PARENT_JOURNEY) {
+        postLoginInfo = false;
+        window.PARENT_JOURNEY.open("entry");
+        return;
+      }
       completeOnboarding({ afterComplete: "teacher", clearPostLoginInfo: true });
     }
     function onLoginSuccess() {
       const fromSharedEntry = v155EntryAuth || !!$("#screen-welcome.active");
+      const newRegistration = fromSharedEntry && v220ConsultReview && v220AuthOutcome === "signup";
+      if (newRegistration && v220ConsultMarketConfig[demoState.marketRoute]?.enabled) {
+        profile.contactPhone = CONSULT_REVIEW_PHONES.vn;
+      }
       v155EntryAuth = false;
       if (fromSharedEntry) {
-        if (demoState.v155OnboardingStatus === "complete") {
+        if (!newRegistration && demoState.v155OnboardingStatus === "complete") {
           seedReviewProfile();
           profile.profileComplete = true;
           profile.skipOnboarding = false;
@@ -12176,6 +12281,7 @@
         postLoginInfo = true;
         enterPortrait();
         applyVoiceWording();
+        if (newRegistration && openV220Consult()) return;
         showPortraitScreen("screen-name");
         return;
       }
@@ -16478,12 +16584,14 @@
         "is-hidden",
         demoState.experimentGroup === "b" || (postLoginInfo && id === "screen-name")
       );
+      $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
       const dp = $("#device-portrait");
       if (dp) dp.scrollTop = 0;
       if (window.VISIT_REWARD) window.VISIT_REWARD.onScreen(id);
     }
 
     // ----- Onboarding data -----
+    const RING_LEN = 226.2;
     const AGES = ["3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13+"];
     const LEGACY_AGE_BANDS = Object.freeze({
       "3–5": "3–5", "3—5": "3–5", "3-5": "3–5", "3_5": "3–5",
@@ -16667,6 +16775,13 @@
       if (!isParentVoice()) return "you";
       return ageBandFor(profile.age) === "13+" ? "your teen" : "your child";
     }
+    // Loading copy forks by voice (parent vs self) via isParentVoice().
+    const LOADING_LINES = [
+      (p) => `Hi ${p.name || "there"}, setting up your first lessons…`,
+      (p) => `Finding the right starting point for ${p.name || (isParentVoice() ? "your child" : "you")}…`,
+      () => "Choosing the AI teacher…",
+      (p) => `Building ${p.name ? p.name + "'s" : (isParentVoice() ? "your child's" : "your")} first lesson…`,
+    ];
     // Login-screen lead line. Returning users (entered via "Log in") see a sign-in
     // prompt; users who just finished Onboarding see a voice-based "save your plan"
     // CTA — self keeps "your plan", parent path uses the child's name.
@@ -16826,15 +16941,39 @@
       $("#login-chips").innerHTML = chips.map((c) => `<span>${c}</span>`).join("");
     }
 
+    let loadingTimer = null;
     function completeOnboarding(options = {}) {
-      if (options.clearPostLoginInfo) postLoginInfo = false;
-      if (options.afterComplete === "teacher") {
-        enterLandscape();
-        openTeacherPicker("onboarding");
-      } else {
-        fillLogin();
-        showPortraitScreen("screen-login");
-      }
+      const afterComplete = options.afterComplete || "login";
+      showPortraitScreen("screen-loading");
+      const ring = $("#loading-ring");
+      const status = $("#loading-status");
+      $("#loading-dino").innerHTML = DINO_CHAR;
+      let progress = 0;
+      let lineIdx = 0;
+      if (status) status.textContent = LOADING_LINES[0](profile);
+      if (loadingTimer) clearInterval(loadingTimer);
+      loadingTimer = setInterval(() => {
+        progress += 2;
+        if (ring) ring.setAttribute("stroke-dashoffset", String(RING_LEN * (1 - progress / 100)));
+        if (progress % 24 === 0 && lineIdx < LOADING_LINES.length - 1) {
+          lineIdx += 1;
+          if (status) status.textContent = LOADING_LINES[lineIdx](profile);
+        }
+        if (progress >= 100) {
+          clearInterval(loadingTimer);
+          loadingTimer = null;
+          if (afterComplete === "teacher") {
+            setTimeout(() => {
+              if (options.clearPostLoginInfo) postLoginInfo = false;
+              enterLandscape();
+              openTeacherPicker("onboarding");
+            }, 400);
+          } else {
+            fillLogin();
+            setTimeout(() => showPortraitScreen("screen-login"), 400);
+          }
+        }
+      }, 70);
     }
 
     let carouselTimer = null;
@@ -17280,6 +17419,116 @@
       if (window.IP_ANIMATION?.finishMembershipCheckout()) return;
       enterLandscape();
       showLandScreen(paywallReturnScreen || "screen-class");
+    }
+
+    // V2.2.0: opt-in demo scenario. All CRM / AF results are simulated.
+    const v220ConsultQuery = new URLSearchParams(location.search);
+    const v220ConsultEntry = v220ConsultQuery.get("vnConsult") || "";
+    const v220ConsultMarketConfig = Object.freeze({ vn: { enabled: true } });
+    let v220ConsultReview = true;
+    let v220AuthOutcome = "signup";
+    let v220ConsultResult = v220ConsultQuery.get("vnResult") === "fail" ? "fail" : "success";
+    let v220ConsultStatus = "ready";
+    let v220ConsultSeen = false;
+    const v220ConsultLang = { vi: "vi", zh: "zh-CN" }[v220ConsultQuery.get("vnLang")] || "en";
+    const v220ConsultCopy = v220ConsultLang === "vi" ? {
+      title:"Tìm hiểu khóa học tiếng Anh cho con", body:"Trao đổi với chuyên viên Dino AI về khóa học và cách học.",
+      topics:["Tìm hiểu cách học trong khóa học","Trao đổi về cách học phù hợp với con","Tìm hiểu cách bắt đầu bài học thử"],
+      contact:"Chuyên viên sẽ gọi vào số điện thoại bạn đã đăng ký.",
+      submit:"Đăng ký tư vấn qua điện thoại", skip:"Tiếp tục mà không đăng ký", sending:"Đang gửi…",
+      failed:"Chưa gửi được yêu cầu. Bạn có thể thử lại hoặc tiếp tục.", retry:"Thử lại",
+      toast:"Đã nhận yêu cầu tư vấn"
+    } : v220ConsultLang === "zh-CN" ? {
+      title:"为孩子了解合适的英语课程", body:"和 Dino AI 顾问聊聊课程与学习方式。",
+      topics:["了解课程怎么学","咨询适合孩子的学习方式","了解如何开始体验课"],
+      contact:"顾问将通过注册手机号联系你。",
+      submit:"申请顾问电话咨询", skip:"暂不咨询，继续", sending:"正在提交…",
+      failed:"申请未提交，请重试或继续。", retry:"重试",
+      toast:"咨询申请已收到"
+    } : {
+      title:"Find the right English course for your child", body:"Talk with a Dino AI advisor about our courses and how your child can learn.",
+      topics:["See how the course works","Find a way to learn that suits your child","Learn how to start a trial lesson"],
+      contact:"An advisor will call the phone number you used to sign up.",
+      submit:"Request a call from an advisor", skip:"I’ll explore on my own", sending:"Sending…",
+      failed:"We couldn’t send your request. Try again or explore on your own.", retry:"Try again",
+      toast:"Consultation request received"
+    };
+    function renderV220Consult() {
+      const c = v220ConsultCopy, busy = v220ConsultStatus === "sending";
+      $("#screen-v220-consult").lang = v220ConsultLang;
+      const status = $("#v220c-status");
+      $("#v220c-title").textContent = c.title;
+      $("#v220c-copy").textContent = c.body;
+      $("#v220c-topics").querySelectorAll("span").forEach((item,i)=>{item.textContent=c.topics[i];});
+      $("#v220c-contact").textContent = c.contact;
+      status.hidden = v220ConsultStatus !== "failed";
+      status.textContent = status.hidden ? "" : c.failed;
+      const button = $("#v220c-primary");
+      button.disabled = busy;
+      button.textContent = busy ? c.sending : status.hidden ? c.submit : c.retry;
+      $("#v220c-skip").textContent = c.skip;
+      $("#v220c-skip").hidden = busy;
+    }
+    function openV220Consult() {
+      if (!v220ConsultMarketConfig[demoState.marketRoute]?.enabled || v220ConsultSeen || !profile.contactPhone ||
+          demoState.vnConsultSubmitted || profile.premiumUnlocked) return false;
+      v220ConsultSeen = true;
+      v220ConsultStatus = "ready";
+      renderV220Consult();
+      showPortraitScreen("screen-v220-consult");
+      $("#v220c-title").focus();
+      return true;
+    }
+    function continueV220Consult() { showPortraitScreen("screen-name"); }
+    $("#v220c-skip").addEventListener("click", continueV220Consult);
+    $("#v220c-primary").addEventListener("click", () => {
+      if (v220ConsultStatus === "sending") return;
+      v220ConsultStatus = "sending";
+      renderV220Consult();
+      setTimeout(() => {
+        if (v220ConsultResult === "fail") {
+          v220ConsultResult = "success";
+          v220ConsultStatus = "failed";
+        } else {
+          demoState.vnConsultSubmitted = true;
+          demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
+          demoState.vnConsultLarkSynced = true;
+          demoState.vnConsultOutboundSynced = true;
+          v220ConsultStatus = "done";
+          document.dispatchEvent(new CustomEvent("demo:vn-consult-created", {detail:{source:"registration", simulated:true}}));
+        }
+        if (!$("#screen-v220-consult.active")) return;
+        if (v220ConsultStatus === "done") {
+          continueV220Consult();
+          showPayToast(v220ConsultCopy.toast);
+        } else {
+          renderV220Consult();
+        }
+      }, 450);
+    });
+    function startV220ConsultReview(market = "vn", result = "success", outcome = "signup") {
+      window.v160ReviewStart();
+      v220ConsultReview = true;
+      v220AuthOutcome = outcome;
+      v220ConsultResult = result;
+      v220ConsultSeen = false;
+      v220ConsultStatus = "ready";
+      demoState.marketRoute = market;
+      demoState.v155OnboardingStatus = "incomplete";
+      demoState.vnConsultSubmitted = false;
+      demoState.vnConsultState = VN_CONSULT_STATE.UNSEEN;
+      demoState.vnConsultLarkSynced = false;
+      demoState.vnConsultOutboundSynced = false;
+      profile.premiumUnlocked = false;
+      profile.contactPhone = "";
+      window.demoStatePanel?.render();
+    }
+    if (["vn","other","login","paid","leadgen","control"].includes(v220ConsultEntry)) {
+      window.addEventListener("load", () => startV220ConsultReview(
+        ["other","control"].includes(v220ConsultEntry) ? "other" : "vn",
+        v220ConsultResult,
+        ["login","leadgen"].includes(v220ConsultEntry) ? "login" : "signup"
+      ), {once:true});
     }
 
     // ===== V1.7.0 · VN / MY two-hook advisor consultation =====
@@ -19405,6 +19654,8 @@
       if (key.indexOf("ip") === 0 && window.IP_ANIMATION) return window.IP_ANIMATION.getValue(key);
       if (window.v200GetValue && key.indexOf("v200") === 0) return window.v200GetValue(key);
       if (key === "experimentGroup") return demoState.experimentGroup;
+      if (key === "v220ConsultRegion") return demoState.marketRoute === "vn" ? "vn" : "other";
+      if (key === "v220AuthOutcome") return v220AuthOutcome;
       if (key === "v155OnboardingStatus") return demoState.v155OnboardingStatus;
       if (key === "v155Platform") return demoState.v155Platform;
       if (key === "v155RestoreResult") return demoState.v155RestoreResult;
@@ -19503,11 +19754,13 @@
       // V1.3.0: study plan + trial report are portrait takeovers.
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
+      if (pid === "screen-v220-consult") return { label: "越南 · 顾问电话咨询", pageKey: "v220_consult", isCore: true, keys: [] };
       if (pid === "screen-phone-auth") return ctx("手机号登录", []);
+      if (pid === "screen-loading") return ctx("Onboarding 加载页", []);
       if (pid === "screen-bind-phone")   return ctx("手机号绑定", []);
       if (pid === "screen-welcome")      return ctx(
         "登录 / 注册",
-        ["v155OnboardingStatus"]
+        ["v220ConsultRegion", "v220AuthOutcome"]
       );
       if (pid === "screen-login")        return ctx("登录注册页", []);
       if (pid === "screen-goal-value" && demoState.experimentGroup === "b") return ctx("Onboarding · 学习目标多选", []);
@@ -19541,6 +19794,7 @@
       {key:"gpCameraScene",label:"查看状态",options:[["granted","相机已开"],["kept-off","相机已关"],["request","首次授权"],["settings","已申请 · 未授权"]],apply:v=>window.CLASS_PERMISSIONS.set("gpCameraScene",v)},
       {key:"gpRequestOutcome",label:"点击开启后 · 模拟系统响应",options:[["permission","系统授权弹窗"],["settings-confirm","设置确认弹窗"]],apply:v=>window.CLASS_PERMISSIONS.set("gpRequestOutcome",v)},
       {key:"gpDevice",label:"设备可用性",options:[["ready","正常"],["micFailure","麦克风异常"],["cameraFailure","相机异常"]],apply:v=>window.CLASS_PERMISSIONS.set("gpDevice",v)},
+      {key:"gpPermissionAudio",label:"首次授权音频 · 切换后重新申请",options:[["normal","正常播放"],["failed","加载失败"],["stalled","一直未播完"]],apply:v=>window.CLASS_PERMISSIONS.set("gpPermissionAudio",v)},
       {key:"gpVoice",label:"引导配音 · 演示",options:[["off","关闭配音"],["on","开启配音"]],apply:v=>window.CLASS_PERMISSIONS.set("gpVoice",v)},
       {key:"gpAnswer",label:"孩子发言 · 演示",options:[["submit","模拟说 Hi"]],apply:v=>window.CLASS_PERMISSIONS.set("gpAnswer",v)},
       {key:"gpLessonAnswer",label:"课堂收音 · 演示",options:[["submit","模拟用户说话"]],apply:v=>window.CLASS_PERMISSIONS.set("gpAnswer",v)},
@@ -19584,6 +19838,8 @@
       { key: "v180Payment", label: "支付结果",
         options: [["success", "成功"], ["fail", "失败 · 可重试"], ["cancel", "取消 · 权益不变"]],
         apply: function (v) { demoState.v180PaymentResult = v; } },
+      { key:"v220ConsultRegion", label:"咨询配置 · 国家或地区", options:[["vn","越南"],["other","非越南"]], apply:v=>{v220ConsultReview=true;demoState.marketRoute=v;} },
+      { key:"v220AuthOutcome", label:"登录注册结果", options:[["signup","新注册"],["login","已有账号登录（含 Leadform）"]], apply:v=>{v220ConsultReview=true;v220AuthOutcome=v;} },
       { key: "v155OnboardingStatus", label: "登录账号 Onboarding",
         options: [["incomplete", "未完成"], ["complete", "已完成"]],
         apply: function (v) {
@@ -19820,49 +20076,23 @@
           if (activeLandScreen() === "screen-theme-course") renderThemeLanding();
         } },
     ].filter(Boolean),
-    mainPagesLabel: "Demo 主页面快捷跳转",
+    mainPagesLabel: "Demo 主页面",
     jumps: [
-      {label:"登录 / 注册",run:()=>window.v160ReviewStart()},
-      {label:"家长链路 · 课前分流",run:()=>window.PARENT_JOURNEY.open("entry")},
-      {label:"家长链路 · 学习计划与试用",run:()=>window.PARENT_JOURNEY.open("preview")},
-      {label:"试用支付页 A",run:()=>{window.V220_TRIAL_PAYWALL_A.setVariant('a');window.PARENT_JOURNEY.open('preview');document.querySelector('#screen-parent-journey [data-pj="checkout"]')?.click();}},
-      {label:"试用支付页 C",run:()=>{window.V220_TRIAL_PAYWALL_A.setVariant('c');window.PARENT_JOURNEY.open('preview');document.querySelector('#screen-parent-journey [data-pj="checkout"]')?.click();}},
-      {label:"家长链路 · 设置提醒",run:()=>window.PARENT_JOURNEY.open("earlySchedule")},
-      {label:"体验课完成 · 家长接手",run:()=>window.PARENT_REPORT_HANDOFF.open()},
-      {label:"正式课完成 · 家长接手",run:()=>window.PARENT_REPORT_HANDOFF.open("formal")},
-      {label:"Dino 首页",run:withReviewProfile(function(){enterLandscape();showClassHome();setHubTab("dino");})},
+      { label: "登录 / 注册", run: () => startV220ConsultReview("vn") },
+      { label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
       { label: "Class 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("class"); }) },
-      { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
-      { label: "Level·Unit", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
       { label: "Explore", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("practice"); }) },
       { label: "Play", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("play"); }) },
+      { label: "Profile", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("profile"); }) },
+      { label: "课程列表", run: withReviewProfile(function () { enterLandscape(); showAllCourses(undefined, "class"); }) },
+      { label: "Level / Unit 地图", run: withReviewProfile(function () { enterLandscape(); showCourseMap(); }) },
+      { label: "体验课开始", run: () => window.PARENT_JOURNEY.open("entry") },
       { label: "体验课报告", run: withReviewProfile(function () { trialReportMode = "trial"; profile.trialTakenLevelId = null; showTrialReport(); }) },
-      { label: "正价课报告", run: withReviewProfile(function () { showLessonReport(); }) },
     ],
-    corePagesLabel: "V2.2.0 核心页面",
+    corePagesLabel: "V2.2.0 · 关键页面",
     corePages: [
-      { key: "class_permissions", auxiliary: true, label: "课中授权 · 首次开口", run: function () { window.CLASS_PERMISSIONS.jump("first"); } },
-      { key: "permission_retry", auxiliary: true, label: "麦克风 · 拒绝后开启", run: function () { window.CLASS_PERMISSIONS.jump("retry"); } },
-      { key: "permission_settings", auxiliary: true, label: "麦克风 · 设置确认弹窗", run: function () { window.CLASS_PERMISSIONS.jump("settings-confirm"); } },
-      { key: "permission_returning", auxiliary: true, label: "老用户 · 麦克风权限关闭", run: function () { window.CLASS_PERMISSIONS.jump("returning-revoked"); } },
-      { key: "permission_camera", auxiliary: true, label: "相机授权", run: function () { window.CLASS_PERMISSIONS.jump("camera-restore-on"); } },
-      { key: "v200_explore", auxiliary: true, label: "Explore · 新布局", run: function () { window.v200OpenPage("explore"); } },
-      { key: "v200_play", auxiliary:true, label: "Play · 乐园首页", run: function () { window.v200OpenPage("play"); } },
-      {key:"ip_catalog", auxiliary:true,label:"Dino Story · 动画首页",run:function(){window.IP_ANIMATION.jump("catalog");}},
-      {key:"ip_player", auxiliary:true,label:"Dino Story · 播放",run:function(){window.IP_ANIMATION.jump("player");}},
-      { key: "study_plan", auxiliary: true, label: "学习方案选择", run: withReviewProfile(function () { window.v170ReviewOfficialPlan && window.v170ReviewOfficialPlan("free"); }) },
-      { key: "membership_choice", auxiliary: true, label: "会员选择", run: withReviewProfile(function () { openPaywall(activeLandScreen() || "screen-class", "membership_entry"); }) },
-      { key: "membership", auxiliary: true, label: "会员中心", run: withReviewProfile(function () {
-          if (!isPaidMembership()) {
-            setMembershipReviewState("subscription");
-            refreshUnlockState();
-          }
-          enterLandscape();
-          openMembership();
-        }) },
-      { key: "v210_no_free_plan", auxiliary:true, label: "Dino 首页 · 无免费计划", run: function () { window.v210OpenNoPlanHome(); } },
-      { key: "dino_home", auxiliary: true, label: "Dino 首页", run: withReviewProfile(function () { enterLandscape(); showClassHome(); setHubTab("dino"); }) },
-      { key: "full_plan", auxiliary: true, label: "完整计划", run: withReviewProfile(function () { window.v180OpenPlanReveal && window.v180OpenPlanReveal(true); }) },
+      { key: "v220_consult", label: "新注册 · 展示咨询", run: () => { startV220ConsultReview("vn"); $("#cx-w-phone")?.click(); } },
+      { key: "v220_consult_bypass", label: "新注册 · 不展示咨询", run: () => { startV220ConsultReview("other"); $("#cx-w-phone")?.click(); } },
     ],
     legacyJumps: [
       { label: "Class 首页",  run: withReviewProfile(function () { enterLandscape(); showClassHome(); }) },
@@ -20118,7 +20348,7 @@
   <script src="assets/dino-feedback.js"></script>
   <script>
     DinoFeedback.init({
-      demo: "V2.2.0 · Dino Story / Play Tab",
+      demo: "V2.1.0 · Dino Story / Play Tab",
       getContext: () => {
         const w = document.getElementById("wrap-landscape");
         const land = w && getComputedStyle(w).display !== "none";
@@ -24138,7 +24368,7 @@
     window.requestAnimationFrame(openLinkedV180Page);
   })();
   </script>
-  <!-- V2.2.0 page-optimization layer. The original content and game routing stay reusable. -->
+  <!-- V2.1.0 page-optimization layer. The original content and game routing stay reusable. -->
   <style id="v200-page-optimizations">
     /* Explore keeps its original activity entrances; Play owns a full-bleed park scene. */
     #device-landscape #screen-class #hub-panel-practice .explore-entries { display: flex !important; flex-direction: row !important; flex: 1; min-height: 0; gap: 18px !important; padding: 1px 0 0; justify-content: center; align-items: center; overflow: visible; }
@@ -25216,7 +25446,7 @@
   const nativeSettingsReference={title:'提示',body:{mic:'麦克风权限被拒绝,请前往设置中打开',camera:'相机权限被拒绝,请前往设置中打开'},cancel:'取消',settings:'设置'};
   // Demo fixtures: country resolves a policy; an explicit learner choice overrides its default.
   const cameraPolicies={VN:{defaultOn:true},default:{defaultOn:false}};
-  const m={active:false,epoch:0,platform:'android',locale:'en',country:'default',cameraDefaultOn:false,mic:'new',camera:'new',cameraOn:false,cameraPreferredOn:null,cameraSource:null,cameraReview:false,phase:'idle',denials:0,pending:null,device:'ready',voice:false,guideComplete:false};
+  const m={active:false,epoch:0,platform:'android',locale:'en',country:'default',cameraDefaultOn:false,mic:'new',camera:'new',cameraOn:false,cameraPreferredOn:null,cameraSource:null,cameraReview:false,phase:'idle',denials:0,pending:null,device:'ready',voice:false,permissionAudio:'normal',guideComplete:false};
   let jobs=[],last=performance.now(),speechSerial=0;
   const t=k=>words[m.locale][k]||k;
   const current=()=>document.querySelector('#device-landscape .screen.active');
@@ -25249,9 +25479,8 @@
   }
   function cue(key,next){clear();const job=schedule(Math.max(2600,(t(key).length*95)),next);if(speak(key,()=>{job.left=0;},()=>{job.left=1500;}))job.left=10000;}
   function replayPermissionVoice(){
-    if(m.pending)return;
-    if(m.phase==='mic-cue')cue('micSpeech',()=>request('mic','first'));
-    else if(m.phase==='mic-recover')speak('micSpeech');
+    if(m.pending){if(m.pending.type==='permission'&&m.pending.kind==='mic'&&m.pending.source==='first')playFirstMicVoice();return;}
+    if(m.phase==='mic-recover')speak('micSpeech');
     else if(['camera-cue','camera-recover'].includes(m.phase))speak('cameraSpeech');
   }
   function resumeAfterCamera(returnPhase){
@@ -25273,7 +25502,12 @@
     if(m.camera==='granted'&&cameraWantedOn()&&!m.cameraOn)showCameraToast();
   }
   function cancel(){m.epoch++;m.active=false;m.pending=null;m.cameraOn=false;m.cameraSource=null;m.returnPhase=null;clear();hideCameraToast();releaseContent();document.body.classList.remove('gp-review-active');layer.hidden=true;modal.hidden=true;modal.remove();document.querySelectorAll('.gp-guiding').forEach(e=>e.classList.remove('gp-guiding'));}
-  function firstMic(){if(m.mic==='granted'){prepareMic();return;}if(m.mic==='new'){phase('mic-cue');cue('micSpeech',()=>request('mic','first'));}else recoverMic();}
+  function playFirstMicVoice(){
+    // Audio is optional and never controls the native request or its result.
+    if(m.permissionAudio!=='normal'){stopVoice();return;}
+    try{speak('micSpeech');}catch{stopVoice();}
+  }
+  function firstMic(){if(m.mic==='granted'){prepareMic();return;}if(m.mic==='new'){clear();phase('mic-requesting');request('mic','first');playFirstMicVoice();}else recoverMic();}
   function recoverMic(){clear();phase('mic-recover');speak('micSpeech');}
   function prepareMic(){clear();phase('mic-preparing');schedule(650,()=>{if(m.device==='micFailure'){phase('mic-error');return;}if(m.guideComplete){phase('listening');return;}phase('hi-cue');cue('hi',()=>phase('listening'));});}
   function button(action,label,secondary=false){return '<button type="button" class="'+(secondary?'gp-secondary':'gp-primary')+'" data-gp="'+action+'">'+label+'</button>';}
@@ -25284,7 +25518,6 @@
     document.querySelectorAll('.inclass').forEach(el=>{el.classList.add('gp-enabled');const feed=el.querySelector('.ic-feed');if(feed){feed.innerHTML='<img class="gp-avatar" src="'+(m.cameraOn?cameraFrame:avatar)+'" alt="'+(m.cameraOn?'Simulated learner video':'Learner avatar')+'"><button type="button" class="gp-camera-toggle" data-gp="camera" aria-label="'+t(m.cameraOn?'camOn':'camOff')+'" aria-pressed="'+m.cameraOn+'">'+camIcon(!m.cameraOn)+'</button><div class="gp-listening-status" '+(listening?'':'hidden')+' role="img" aria-label="'+t('listening')+'">'+listeningWave+listeningMic(el.id)+listeningWave+'</div>';feed.classList.toggle('gp-camera-on',m.cameraOn);feed.classList.toggle('gp-listening',listening);feed.querySelector('button').disabled=!!m.pending;}
       let status=el.querySelector('.gp-mic-status');if(!status){status=document.createElement('div');status.className='gp-mic-status';el.appendChild(status);}const ready=m.mic==='granted'&&!['mic-error','mic-preparing'].includes(m.phase);status.hidden=ready;status.innerHTML=micIcon(true);status.setAttribute('aria-label',t('micOff'));});
     let html='';
-    if(m.phase==='mic-cue')html=bubble(t('micTitle'),t('micCopy'));
     if(['hi-cue','listening'].includes(m.phase)&&!m.guideComplete)html=bubble(t('hi'),m.phase==='listening'?t('listening'):'');
     if(m.phase==='mic-error')html=bubble(t('micFail'),t('micFailBody'),button('mic-retry-device',t('tryAgain')));
     if(m.phase==='mic-recover')html=bubble(t('micTitle'),t('retryCopy'),button('mic-request',t('retry')));
@@ -25330,8 +25563,8 @@
     const p=m.pending;if(p?.type!=='settings-confirm')return;
     m.pending=null;modal.hidden=true;modal.remove();settings(p.kind,p.source);
   }
-  function showSystem(){const p=m.pending;if(!p)return;stopVoice();const kind=t(p.kind);modal.hidden=false;current().appendChild(modal);modal.innerHTML='<div class="gp-system" role="dialog" aria-modal="true" aria-labelledby="gp-system-title"><span class="gp-sim-label">'+t('system')+' · '+(m.platform==='ios'?'iOS':'Android')+'</span>'+ (p.kind==='mic'?micIcon(false):camIcon(false))+'<h3 id="gp-system-title">'+t('systemTitle')+kind+'？</h3><p>'+t(p.kind==='mic'?'systemBodyMic':'systemBodyManual')+'</p><button data-gp="allow">'+t('allow')+'</button><button data-gp="deny">'+t('deny')+'</button>'+(m.platform==='android'?'<button data-gp="dismiss">'+t('cancel')+'</button>':'')+'</div>';render();modal.querySelector('button').focus();}
-  function resolve(allowed,dismissed=false){const p=m.pending;if(!p||p.epoch!==m.epoch||p.type!=='permission')return;m.pending=null;modal.hidden=true;modal.remove();const key=p.kind==='mic'?'mic':'camera';if(allowed)m[key]='granted';else if(p.kind==='mic'){if(!dismissed)m.denials++;m.mic=(m.platform==='ios'||m.denials>=2)?'blocked':'retry';}else m.camera=m.platform==='ios'?'blocked':'denied';
+  function showSystem(){const p=m.pending;if(!p)return;if(!(p.kind==='mic'&&p.source==='first'))stopVoice();const kind=t(p.kind);modal.hidden=false;current().appendChild(modal);modal.innerHTML='<div class="gp-system" role="dialog" aria-modal="true" aria-labelledby="gp-system-title"><span class="gp-sim-label">'+t('system')+' · '+(m.platform==='ios'?'iOS':'Android')+'</span>'+ (p.kind==='mic'?micIcon(false):camIcon(false))+'<h3 id="gp-system-title">'+t('systemTitle')+kind+'？</h3><p>'+t(p.kind==='mic'?'systemBodyMic':'systemBodyManual')+'</p><button data-gp="allow">'+t('allow')+'</button><button data-gp="deny">'+t('deny')+'</button>'+(m.platform==='android'?'<button data-gp="dismiss">'+t('cancel')+'</button>':'')+'</div>';render();modal.querySelector('button').focus();}
+  function resolve(allowed,dismissed=false){const p=m.pending;if(!p||p.epoch!==m.epoch||p.type!=='permission')return;stopVoice();m.pending=null;modal.hidden=true;modal.remove();const key=p.kind==='mic'?'mic':'camera';if(allowed)m[key]='granted';else if(p.kind==='mic'){if(!dismissed)m.denials++;m.mic=(m.platform==='ios'||m.denials>=2)?'blocked':'retry';}else m.camera=m.platform==='ios'?'blocked':'denied';
     if(p.kind==='mic'){allowed?prepareMic():recoverMic();return;}
     if(allowed)openCamera(p.returnPhase);else closeCameraGuide(p.returnPhase);
   }
@@ -25373,8 +25606,8 @@
   }
   function cameraScene(value){if(!m.active)return;m.cameraReview=true;clear();m.pending=null;m.cameraSource=null;modal.hidden=true;modal.remove();m.mic='granted';m.cameraOn=false;m.device='ready';m.returnPhase='listening';m.cameraPreferredOn=['granted','revoked'].includes(value);m.camera=['off','request'].includes(value)?'new':value==='revoked'?'blocked':['settings','denied'].includes(value)?(m.platform==='ios'?'blocked':'denied'):'granted';restoreCamera();if(current()!==document.getElementById('screen-inclass-teach'))showLandScreen('screen-inclass-teach');phase('listening');if(['request','settings'].includes(value))cameraToggle();}
   function cameraSceneValue(){if(m.pending?.kind==='camera')return m.phase==='camera-cue'?'request':'settings';if(m.phase==='camera-recover')return 'settings';if(m.phase==='camera-cue')return 'request';return m.cameraOn?'granted':'kept-off';}
-  function set(key,value){if(key==='gpRequestOutcome'){const kind=recoveryKind();if(!kind||m.pending||m.platform!=='android')return;m[kind]=value==='settings-confirm'?'blocked':kind==='mic'?'retry':'denied';if(kind==='mic')m.denials=value==='settings-confirm'?2:1;render();return;}if(key==='gpCountry'){const platform=m.platform;jump(value==='VN'?'camera-entry-vn':'camera-entry-other');m.platform=platform;render();return;}if(key==='gpGuide'){profile.classGuideCompleted=value==='completed';begin();return;}if(key==='gpSettingsReturn'){returnSettings(value==='granted');return;}if(key==='gpAnswer'){if(value==='submit')answer();return;}if(key==='gpVoice'){m.voice=value==='on';if(!m.voice)stopVoice();else replayPermissionVoice();render();return;}if(key==='gpCameraScene'){cameraScene(value);return;}if(key==='gpPlatform'){m.platform=value;if(value==='ios'&&m.mic==='retry')m.mic='blocked';render();}if(key==='gpLocale'){m.locale=value;stopVoice();render();if(m.pending?.type==='permission')showSystem();}if(key==='gpMic'){clear();m.pending=null;modal.hidden=true;modal.remove();m.mic=value;m.denials=value==='retry'?1:value==='blocked'?2:0;if(m.platform==='ios'&&value==='retry')m.mic='blocked';if(current()!==document.getElementById('screen-inclass-teach'))showLandScreen('screen-inclass-teach');firstMic();}if(key==='gpCamera'){m.camera=value==='on'?'granted':value;if(value==='on')m.cameraPreferredOn=true;restoreCamera();render();}if(key==='gpDevice'){m.device=value;if(value==='micFailure'&&m.mic==='granted'){clear();phase('mic-error');}else render();}}
-  window.CLASS_PERMISSIONS={begin,cancel,jump,set,answer,render,exit,defer:(fn,ms)=>schedule(ms,fn),token:()=>m.epoch,valid:token=>m.active&&m.epoch===token&&!m.pending,canAnswer:()=>m.active&&m.mic==='granted'&&m.phase==='answered'&&!m.pending,onNavigate:id=>{if(!id.startsWith('screen-inclass-'))cancel();else if(m.active)render();},getValue:key=>({gpRequestOutcome:recoveryKind()?simulatedRequestOutcome(recoveryKind()):null,gpCountry:m.country,gpPlatform:m.platform,gpLocale:m.locale,gpGuide:m.guideComplete?'completed':'pending',gpMic:['blocked','restricted','denied','requested'].includes(m.mic)?'retry':m.mic,gpCamera:m.cameraOn?'on':m.camera,gpCameraScene:cameraSceneValue(),gpDevice:m.device,gpVoice:m.voice?'on':'off'})[key],state:()=>({...m}),context:()=>m.active&&isClass(current())?{label:m.pending?.type==='settings'?(m.pending.kind==='mic'?'麦克风':'相机')+' · 设置返回演示':m.cameraReview?'相机授权':'课中按需授权',pageKey:m.cameraReview?'permission_camera':'class_permissions',isCore:true,statesFirst:m.cameraReview,keys:m.pending?.type==='settings'?['gpSettingsReturn']:(m.cameraReview?['gpCountry','gpCameraScene','gpPlatform']:['gpCountry','gpPlatform','gpGuide','gpMic','gpCameraScene','gpDevice']).concat(m.platform==='android'&&recoveryKind()&&!m.pending?['gpRequestOutcome']:[],['gpVoice'],m.phase==='listening'&&!m.pending?[m.guideComplete?'gpLessonAnswer':'gpAnswer']:[])}:null};
+  function set(key,value){if(key==='gpPermissionAudio'){m.permissionAudio=value;set('gpMic','new');return;}if(key==='gpRequestOutcome'){const kind=recoveryKind();if(!kind||m.pending||m.platform!=='android')return;m[kind]=value==='settings-confirm'?'blocked':kind==='mic'?'retry':'denied';if(kind==='mic')m.denials=value==='settings-confirm'?2:1;render();return;}if(key==='gpCountry'){const platform=m.platform;jump(value==='VN'?'camera-entry-vn':'camera-entry-other');m.platform=platform;render();return;}if(key==='gpGuide'){profile.classGuideCompleted=value==='completed';begin();return;}if(key==='gpSettingsReturn'){returnSettings(value==='granted');return;}if(key==='gpAnswer'){if(value==='submit')answer();return;}if(key==='gpVoice'){m.voice=value==='on';if(!m.voice)stopVoice();else replayPermissionVoice();render();return;}if(key==='gpCameraScene'){cameraScene(value);return;}if(key==='gpPlatform'){m.platform=value;if(value==='ios'&&m.mic==='retry')m.mic='blocked';render();}if(key==='gpLocale'){m.locale=value;stopVoice();render();if(m.pending?.type==='permission')showSystem();}if(key==='gpMic'){clear();m.pending=null;modal.hidden=true;modal.remove();m.mic=value;m.denials=value==='retry'?1:value==='blocked'?2:0;if(m.platform==='ios'&&value==='retry')m.mic='blocked';if(current()!==document.getElementById('screen-inclass-teach'))showLandScreen('screen-inclass-teach');firstMic();}if(key==='gpCamera'){m.camera=value==='on'?'granted':value;if(value==='on')m.cameraPreferredOn=true;restoreCamera();render();}if(key==='gpDevice'){m.device=value;if(value==='micFailure'&&m.mic==='granted'){clear();phase('mic-error');}else render();}}
+  window.CLASS_PERMISSIONS={begin,cancel,jump,set,answer,render,exit,defer:(fn,ms)=>schedule(ms,fn),token:()=>m.epoch,valid:token=>m.active&&m.epoch===token&&!m.pending,canAnswer:()=>m.active&&m.mic==='granted'&&m.phase==='answered'&&!m.pending,onNavigate:id=>{if(!id.startsWith('screen-inclass-'))cancel();else if(m.active)render();},getValue:key=>({gpRequestOutcome:recoveryKind()?simulatedRequestOutcome(recoveryKind()):null,gpCountry:m.country,gpPlatform:m.platform,gpLocale:m.locale,gpGuide:m.guideComplete?'completed':'pending',gpMic:['blocked','restricted','denied','requested'].includes(m.mic)?'retry':m.mic,gpCamera:m.cameraOn?'on':m.camera,gpCameraScene:cameraSceneValue(),gpDevice:m.device,gpPermissionAudio:m.permissionAudio,gpVoice:m.voice?'on':'off'})[key],state:()=>({...m}),context:()=>m.active&&isClass(current())?{label:m.pending?.type==='settings'?(m.pending.kind==='mic'?'麦克风':'相机')+' · 设置返回演示':m.cameraReview?'相机授权':'课中按需授权',pageKey:m.cameraReview?'permission_camera':'class_permissions',isCore:true,statesFirst:m.cameraReview,keys:m.pending?.type==='settings'?['gpSettingsReturn']:(m.cameraReview?['gpCountry','gpCameraScene','gpPlatform']:['gpCountry','gpPlatform','gpGuide','gpMic','gpCameraScene','gpDevice']).concat(m.platform==='android'&&recoveryKind()&&!m.pending?['gpRequestOutcome']:[],['gpPermissionAudio','gpVoice'],m.phase==='listening'&&!m.pending?[m.guideComplete?'gpLessonAnswer':'gpAnswer']:[])}:null};
 })();
 </script>
 
@@ -25433,7 +25666,7 @@
     #hub-panel-practice .v210-theme-art { display:block; width:136px; height:144px; flex:0 0 144px; }
     #hub-panel-practice .v210-theme-art img { width:100%; height:100%; object-fit:contain; filter:drop-shadow(0 10px 10px rgba(6,21,87,.26)); }
   </style>
-<!-- V2.2.0 · Parent journey; isolated addition to retained demo. -->
+<!-- V2.1.0 · Parent journey; isolated addition to retained demo. -->
 <style id="parent-journey-style">
 #device-portrait .pj-screen{padding:0;background:radial-gradient(ellipse at 90% 15%,var(--surface-glass),transparent 45%),linear-gradient(165deg,var(--sky-deep),var(--sky-mid) 70%,var(--sky-light));color:var(--ink-on-dark);font-family:var(--font);overflow:hidden}
 .pj-screen button,.pj-screen input,.pj-screen select{font:inherit}.pj-screen button{cursor:pointer}.pj-top{display:flex;align-items:center;gap:12px;padding:18px 20px 8px;flex-shrink:0}.pj-top strong{font-family:var(--display);font-size:18px;font-weight:700}.pj-top span:last-child{margin-left:auto;font-size:12px;opacity:.8}.pj-back{width:44px;height:44px;border:1px solid var(--glass-border);border-radius:50%;background:var(--surface-glass);color:white;font-size:25px!important}.pj-scroll{flex:1;overflow:auto;padding:8px 24px 18px;min-height:0}.pj-screen h1{font-family:var(--display);font-size:29px;font-weight:600;line-height:1.25;letter-spacing:-.5px;margin:12px 0}.pj-screen p{font-weight:400;font-size:15px;line-height:1.6;margin:8px 0 16px}.pj-eyebrow{font-size:12px;color:var(--brand-lime);letter-spacing:1.5px;font-weight:700}.pj-foot{padding:12px 24px 20px;background:linear-gradient(0deg,var(--sky-deep),transparent);flex-shrink:0;text-align:center}.pj-primary{border:0;border-radius:var(--radius-pill);width:100%;min-height:54px;padding:12px 18px;background:linear-gradient(var(--cta-orange-top),var(--cta-orange-bottom));color:white;font:700 17px var(--display)!important;box-shadow:0 5px 0 color-mix(in srgb,var(--reward-orange) 65%,transparent)}.pj-link{border:0;background:transparent;color:white;min-height:44px;padding:10px 4px;font-size:14px!important}.pj-secondary{border:1px solid var(--glass-border);border-radius:var(--radius-pill);background:var(--surface-glass);color:white;min-height:48px;width:100%;margin-top:12px}.pj-hero{width:100%;height:240px;object-fit:contain;display:block;margin:8px auto}.pj-art{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:var(--radius-md);display:block}.pj-glass{background:var(--surface-glass);border:1px solid var(--glass-border);border-radius:var(--radius-md);padding:16px;margin:16px 0}.pj-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.pj-proof div{background:var(--surface-glass);border-radius:var(--radius-sm);padding:13px 6px;text-align:center;font-size:13px}.pj-proof strong{display:block;font-size:13px;color:var(--brand-lime);margin-bottom:6px}.pj-proof small{display:block;font-size:11px;line-height:1.5}.pj-proof b{display:block;color:var(--brand-lime);font-size:20px;margin-bottom:6px}.pj-step{display:flex;gap:12px;margin:18px 0;align-items:flex-start}.pj-step i{font-style:normal;background:var(--star-gold);color:var(--ink-on-light);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;flex-shrink:0;font-weight:700}.pj-step strong{display:block;font-size:16px}.pj-step small{display:block;font-size:13px;line-height:1.5;opacity:.85;margin-top:4px}.pj-status{font-size:14px;line-height:1.5;color:var(--accent-yellow);min-height:22px}.pj-date{display:grid;gap:8px;margin:18px 0}.pj-date label{font-size:14px}.pj-date input{width:100%;min-height:48px;background:white;color:var(--ink-on-light);border:0;border-radius:var(--radius-sm);padding:10px;box-sizing:border-box}.pj-date input:focus,.pj-screen button:focus-visible{outline:3px solid var(--star-gold);outline-offset:3px}.pj-screen [hidden]{display:none!important}.pj-note{font-size:12px!important;opacity:.8}.pj-success{font-size:50px;color:var(--star-gold);text-align:center;margin:24px}.pj-replay{border:1px solid var(--glass-border);background:var(--surface-glass);color:white;border-radius:var(--radius-pill);padding:10px 18px;min-height:44px}.pj-caption{margin:12px 0;background:var(--surface-card);color:var(--ink-on-light);border-radius:var(--radius-sm);padding:12px;min-height:50px}.pj-demo-tag{font-size:11px;color:var(--brand-lime);margin:7px 0}#screen-class .class-path-lesson:has(.pj-trial-reminder){flex-direction:column;justify-content:center}
@@ -25451,7 +25684,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   {buttonId:'explore-open-story',title:'Words & Sentences',label:'Words',src:'assets/v210/explore-figma/words.png'},
   {buttonId:'explore-open-speaking',title:'Speaking',label:'Speaking',src:'assets/v210/explore-figma/speaking.png'},
   {buttonId:'explore-open-animation',title:'Dino Story',label:'Dino Story',src:'assets/v200/ip-animation-entry.png'},
-  {buttonId:'dino-event-card',title:'Theme Lessons',label:'Theme Lessons',src:'assets/v210/explore-figma/theme.png'}
+  {buttonId:'dino-event-card',title:'Theme Lessons',label:'Theme Lessons',ageLabel:'Ages 3–6',src:'assets/v210/explore-figma/theme.png'}
 ]);
 </script>
 <script id="v220-pretrial-plan-module">
@@ -25459,50 +25692,81 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  const base='assets/v220/pretrial-plan/';
  const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const descriptors=['First words','Everyday sentences','Connected ideas','Read & write','Build expression','Independent English'];
- const state={slide:0,review:0,teachingAuto:!matchMedia('(prefers-reduced-motion: reduce)').matches,reviewAuto:false};
+ const curriculum={
+  global:['CEFR-aligned',descriptors],
+  vn:['Cambridge',['Starters','Movers','Movers+','Flyers','KET','PET']],
+  jp:['英検®',['英検 5級 / 4級','英検 3級','英検 3級','準2級（Plus含む）','準2級（Plus含む）','英検 2級']],
+  hk:['Trinity GESE',['GESE Grade 1','GESE Grade 2','GESE Grade 2/3','GESE Grade 3/4','GESE Grade 4','GESE Grade 5/6']]
+ };
+ const learning=[
+  ['Words, sentences & letter sounds','Follow instructions; ask and answer'],
+  ['Sentences, phonics & grammar','Talk about daily life; read stories'],
+  ['Speaking, grammar & early reading','Describe experiences; discuss stories'],
+  ['Reading strategies & early writing','Find key ideas; retell and write'],
+  ['Text analysis & structured writing','Compare, summarize & write paragraphs'],
+  ['Academic reading & varied writing','Support opinions; write for different purposes']
+ ];
+ const reviews=[['bin','Vietnam · Bin'],['nirah','Malaysia · Nirah'],['seo-eun','South Korea · Seo-eun'],['lia','South Korea · Lia'],['nadia','Indonesia · Nadia']];
+ const state={review:0,reviewAuto:false};
  let cleanup=()=>{};
  function stop(){cleanup();cleanup=()=>{};}
- function html({name,course,reviews}){
-  const levelId=profile.placementLevelId||profile.currentLevelId||'level-1';
+ function html({name,course}){
+  const completedTrial=!!profile.trialReportShown;
+  const baseLevelId=profile.placementLevelId||profile.currentLevelId||'level-1';
+  const levelId=completedTrial&&!profile.trialTakenLevelId?firstTrialAssessedLevelId(baseLevelId):baseLevelId;
   const level=COURSE_LIBRARY.find(l=>l.id===levelId)||COURSE_LIBRARY[0];
   const index=COURSE_LIBRARY.indexOf(level),next=COURSE_LIBRARY[Math.min(index+1,COURSE_LIBRARY.length-1)];
-  const cefr=levelCefrLabel(level.id),nextCefr=levelCefrLabel(next.id),first=level.id==='level-1';
+  const cefr=level.id==='level-6'?'B1':levelCefrLabel(level.id);
+  const nextCefr=next.id==='level-6'?'B1':levelCefrLabel(next.id);
   const possessive=name?name+'’s':'Your child’s';
-  const units=level.units.length,lessons=level.units.reduce((sum,u)=>sum+u.lessons.length,0);
+  const marketParam=new URLSearchParams(location.search).get('pjMarket');
+  const market=Object.hasOwn(curriculum,marketParam)?marketParam:'global';
+  const [marketLabel,targets]=curriculum[market];
   const resources=window.V220_EXPLORE_RESOURCES;
-  const stats=[[units,'units'],[lessons,'1:1 lessons'],...(first?[['200+','words'],['60+','sentence patterns']]:[])];
-  const features=['1:1 AI teaching','Personalized path','Ongoing feedback'];
-  const palettes=[['#fbf1f4','#eed8e3'],['#f0f5fe','#dce6f7'],['#f5f0fc','#e4d8f3'],['#eff8f2','#d9eadf']];
+  const teaching=document.querySelector('.sp2-product').cloneNode(true);
+  const learner=escape(name||'your learner');
+  teaching.querySelector('#sp2-product-title').innerHTML=`Meet ${learner}’s personal AI teacher`;
+  teaching.querySelector('#sp2-feat-speak').innerHTML=`Gets ${learner} speaking`;
+  teaching.querySelector('#sp2-feat-adapts').innerHTML=`Adapts to ${learner}’s pace`;
+  teaching.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));
   return `<div class="pj-pretrial-plan" data-level-id="${escape(level.id)}">
    <div class="pj-pretrial-top"><button type="button" class="pj-pretrial-back" data-pj="back" aria-label="Back">‹</button></div>
-   <header class="pj-pretrial-hero"><p class="pj-pretrial-name">${escape(possessive)} learning plan</p><h1>Suggested start</h1><div class="pj-pretrial-level">${escape(level.label)} <span>${escape(cefr)}</span></div><p class="pj-pretrial-basis">Based on your answers</p><img class="pj-pretrial-character" src="${base}dino.webp" alt="" width="84" height="120"></header>
+   <header class="pj-pretrial-hero"><p class="pj-pretrial-name">${escape(possessive)} learning plan${completedTrial?"":" preview"}</p><h1>${completedTrial?"Recommended start":"Suggested start"}</h1><div class="pj-pretrial-level">${escape(level.label)} <span>${escape(cefr)}</span></div><p class="pj-pretrial-basis">${completedTrial?escape("Based on "+possessive+" trial lesson"):"Based on your answers"}</p><img class="pj-pretrial-character" src="${base}dino.webp" alt="" width="84" height="120"></header>
    <section class="pj-pretrial-card" aria-labelledby="pj-pretrial-growth"><h2 id="pj-pretrial-growth">${escape(possessive)} growth journey</h2><ol class="pj-pretrial-steps">
-    <li class="pj-pretrial-step pj-pretrial-first"><span class="pj-pretrial-number" aria-hidden="true">1</span><span class="pj-pretrial-status">First learning step</span><h3>Find the right starting level</h3><p>Have your child take the trial lesson to find the right starting level.</p><div class="pj-pretrial-trial"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="76" height="58"><div><strong>${escape(course.title)}</strong><small>Trial lesson · ${escape(formatCourseDuration(course.duration))}</small></div></div></li>
-    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">2</span><h3>Start ${escape(level.label)}</h3><div class="pj-pretrial-scope"><h4>What ${escape(name||'your child')} will learn</h4><dl class="pj-pretrial-stats">${stats.map(([value,label])=>`<div><dd>${value}</dd><dt>${label}</dt></div>`).join('')}</dl><div class="pj-pretrial-daily"><h4>Daily practice</h4><p>Explore Reading, Listening, Words, Speaking, Dino Story and Theme Lessons.</p></div><div class="pj-pretrial-resources">${resources.map(({label,src})=>`<figure><span class="pj-pretrial-resource-art"><img src="${src}" alt="" loading="lazy"></span><figcaption>${label}</figcaption></figure>`).join('')}</div></div></li>
-    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">3</span><h3>${escape(possessive)} next English milestone</h3><div class="pj-pretrial-climb"><svg class="pj-pretrial-arc" viewBox="0 0 280 180" aria-hidden="true"><path d="M55 115 Q139 105 208 35" fill="none" stroke="#c4b6df" stroke-width="3" stroke-dasharray="3 7"/><path d="M195 36 L210 30 L208 46" fill="none" stroke="#c4b6df" stroke-width="3"/></svg><div class="pj-pretrial-milestone"><small>Starting point</small><div><span>${escape(level.label)}</span><strong><small>CEFR</small>${escape(cefr)}</strong></div></div><div class="pj-pretrial-milestone pj-pretrial-next"><img src="${base}dino.webp" alt="" loading="lazy"><small>${index===5?'Learning goal':'Next goal'}</small><div><span>${escape(next.label)}</span><strong><small>CEFR</small>${escape(nextCefr)}</strong></div></div></div><div class="pj-pretrial-goal"><b>Build towards CEFR ${escape(nextCefr)}</b>${escape(descriptors[index])}${index<5?` → ${escape(descriptors[index+1])}`:''}</div></li>
+    <li class="pj-pretrial-step pj-pretrial-first${completedTrial?" is-complete":""}"><span class="pj-pretrial-number" aria-hidden="true">${completedTrial?"✓":"1"}</span><span class="pj-pretrial-status">${completedTrial?"Completed":"First learning step"}</span><h3>${completedTrial?"Trial lesson &amp; level check":"Find the right starting level"}</h3><p>${completedTrial?"Starting level recommended: "+escape(level.label):"Have your child take the trial lesson to find the right starting level."}</p><div class="pj-pretrial-trial"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="76" height="58"><div><strong>${escape(course.title)}</strong>${completedTrial?"":`<small>Trial lesson · ${escape(formatCourseDuration(course.duration))}</small>`}</div></div></li>
+    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">2</span>
+     ${completedTrial?`<span class="pj-pretrial-status">Next step</span><h3>Start ${escape(level.label)}</h3>`:`<h3>Suggested start: ${escape(level.label)}</h3><p>We’ll check ${escape(name?possessive:'your child’s')} starting level during the trial.</p>`}
+     <div class="pj-pretrial-scope">${completedTrial?`<h4>${escape(possessive)} learning plan</h4>`:''}
+      <dl class="pj-pretrial-stats"><div><dd>12</dd><dt>units</dt></div><div><dd>144</dd><dt>1:1 AI lessons</dt></div></dl>
+      <dl class="pj-pretrial-learning"><div><dt>Learning focus</dt><dd>${escape(learning[index][0])}</dd></div><div><dt>Learning goals</dt><dd>${escape(learning[index][1])}</dd></div></dl>
+      <div class="pj-pretrial-daily"><h4>Daily practice</h4><p>Daily access to</p></div>
+      <div class="pj-pretrial-resources">${resources.map(({label,src})=>`<figure><span class="pj-pretrial-resource-art"><img src="${src}" alt="" loading="lazy"></span><figcaption>${label==='Words'?'Words &amp; Sentence':escape(label)}</figcaption></figure>`).join('')}</div>
+     </div></li>
+    <li class="pj-pretrial-step"><span class="pj-pretrial-number" aria-hidden="true">3</span><h3>${completedTrial?escape(possessive)+' next English milestone':'A look ahead'}</h3>
+     <div class="pj-pretrial-climb${index===5?' is-final':''}"><div class="pj-pretrial-milestone"><small>${completedTrial?'Starting point':'Suggested start'}</small><div><span>${escape(level.label)}</span><strong><small>CEFR</small>${escape(cefr)}</strong></div></div>
+      ${index<5?`<div class="pj-pretrial-milestone pj-pretrial-next"><small>${completedTrial?'Next goal':'Possible next step'}</small><div><span>${escape(next.label)}</span><strong><small>CEFR</small>${escape(nextCefr)}</strong></div></div>`:''}
+     </div><div class="pj-pretrial-goal"><b>${market==='global'?'Learning goals':escape(marketLabel)}</b>${escape(targets[index])}${index<5?` → ${escape(targets[index+1])}`:''}</div></li>
    </ol></section>
-   <section class="pj-pretrial-card" aria-labelledby="pj-pretrial-curriculum"><header class="pj-pretrial-curriculum-head"><img src="${base}icon-level.webp" alt="" loading="lazy"><div><h2 id="pj-pretrial-curriculum">A path from L1 to L6</h2><small>CEFR-aligned</small></div></header><button type="button" class="pj-pretrial-chart" data-pretrial-chart aria-label="Enlarge the L1 to L6 curriculum"><img src="${base}curriculum-global.svg" alt="CEFR learning path: L1 Pre-A1, L2 A1, L3 A1+, L4 A2, L5 A2+, L6 B2" loading="lazy"></button></section>
-   <section class="pj-pretrial-card pj-pretrial-teaching" aria-labelledby="pj-pretrial-ai"><h2 id="pj-pretrial-ai">1:1 lessons with an AI teacher</h2><div class="pj-pretrial-teaching-art"><img src="${base}teacher-capability-${state.slide+1}.svg" alt="${features[state.slide]}" loading="lazy"></div><div class="pj-pretrial-teaching-labels">${features.map((f,i)=>`<button type="button" data-pretrial-slide="${i}" aria-current="${i===state.slide}"><b>${i+1}</b>${f}</button>`).join('')}</div><div class="pj-pretrial-controls"><div class="pj-pretrial-dots" role="group" aria-label="Teaching features">${features.map((f,i)=>`<button type="button" data-pretrial-slide="${i}" aria-label="${f}" aria-current="${i===state.slide}"><i></i></button>`).join('')}</div><button type="button" class="pj-pretrial-toggle" data-pretrial-teaching-auto aria-pressed="${state.teachingAuto}">${state.teachingAuto?'Ⅱ Pause':'▷ Play'}</button></div></section>
+   <section class="pj-pretrial-card" aria-labelledby="pj-pretrial-curriculum"><header class="pj-pretrial-curriculum-head"><img src="${base}icon-level.webp" alt="" loading="lazy"><div><h2 id="pj-pretrial-curriculum">A path from L1 to L6</h2><small>${escape(marketLabel)}</small></div></header><button type="button" class="pj-pretrial-chart" data-pretrial-chart aria-label="Enlarge the L1 to L6 curriculum"><img src="${market==='global'?'assets/v210/plan-curriculum-global.svg':base+'curriculum-'+market+'.svg'}" alt="${escape(marketLabel)} learning path from Level 1 to Level 6" loading="lazy"></button></section>
+   ${teaching.outerHTML}
    <section class="pj-pretrial-trust" aria-label="Teaching expertise"><p>Teaching expertise behind Dino AI</p><div><div><strong>13 years</strong><span>curriculum expertise</span></div><div><strong>280M+</strong><span>real classroom lessons</span></div><div><strong>CEFR</strong><span>aligned curriculum</span></div></div></section>
-   <section class="pj-pretrial-card pj-pretrial-reviews" aria-labelledby="pj-pretrial-reviews" aria-roledescription="carousel"><h2 id="pj-pretrial-reviews">What families say</h2><p class="pj-pretrial-family-line">Families around the world</p><div class="pj-pretrial-review-track" tabindex="0" role="group" aria-label="Swipe to browse feedback">${reviews.map((r,i)=>`<article class="pj-pretrial-review" style="--review-bg:${palettes[i%4][0]};--review-border:${palettes[i%4][1]}" aria-label="${i+1} of ${reviews.length}"><div class="pj-pretrial-review-head"><span class="pj-pretrial-avatar" aria-hidden="true">${escape(r.initial)}</span><div><strong>${escape(r.author)}</strong>${r.kind==='mock'?'<small class="pj-pretrial-mock">Demo feedback · Mock</small>':''}</div></div><div class="pj-pretrial-stars" role="img" aria-label="${r.kind==='mock'?'Illustrative rating: ':''}${r.rating} out of 5 stars">${'★'.repeat(r.rating)}</div><blockquote>${escape(r.excerpt)}</blockquote></article>`).join('')}</div><div class="pj-pretrial-review-nav"><button type="button" data-pretrial-review="-1" aria-label="Previous review">‹</button><span data-pretrial-position role="status" aria-live="polite">${state.review+1} / ${reviews.length}</span><button type="button" data-pretrial-review="1" aria-label="Next review">›</button><button type="button" class="pj-pretrial-toggle" data-pretrial-reviews-auto aria-pressed="${state.reviewAuto}">${state.reviewAuto?'Ⅱ Pause':'▷ Play'} reviews</button></div></section>
+   <section class="pj-pretrial-card pj-pretrial-reviews" aria-labelledby="pj-pretrial-reviews" aria-roledescription="carousel"><h2 id="pj-pretrial-reviews">What families say</h2><p class="pj-pretrial-family-line">Families around the world</p><div class="pj-pretrial-review-track" tabindex="0" role="group" aria-label="Swipe to browse feedback">${reviews.map(([file,author])=>`<article class="pj-pretrial-review pj-pretrial-review-original"><img src="${base}review-${file}.png" alt="${escape(author)}" loading="lazy"></article>`).join('')}</div><div class="pj-pretrial-review-nav"><button type="button" data-pretrial-review="-1" aria-label="Previous review">‹</button><span data-pretrial-position role="status" aria-live="polite">${state.review+1} / ${reviews.length}</span><button type="button" data-pretrial-review="1" aria-label="Next review">›</button><button type="button" class="pj-pretrial-toggle" data-pretrial-reviews-auto aria-pressed="${state.reviewAuto}">${state.reviewAuto?'Ⅱ Pause':'▷ Play'} reviews</button></div></section>
   </div>`;
  }
  function mount(root){
   stop();const plan=root.querySelector('.pj-pretrial-plan');if(!plan)return;
-  const track=plan.querySelector('.pj-pretrial-review-track'),cards=[...track.children],art=plan.querySelector('.pj-pretrial-teaching-art img');
-  let timer=null,reviewTimer=null,teacherVisible=false,reviewsVisible=false,scrollTimer=null;
-  const features=['1:1 AI teaching','Personalized path','Ongoing feedback'];
-  function slideTo(i){state.slide=(i+3)%3;art.src=base+'teacher-capability-'+(state.slide+1)+'.svg';art.alt=features[state.slide];plan.querySelectorAll('[data-pretrial-slide]').forEach(b=>b.setAttribute('aria-current',String(Number(b.dataset.pretrialSlide)===state.slide)));}
+  const track=plan.querySelector('.pj-pretrial-review-track'),cards=[...track.children];
+  let reviewTimer=null,reviewsVisible=false,scrollTimer=null;
   function syncReviews(){plan.querySelector('[data-pretrial-position]').textContent=(state.review+1)+' / '+cards.length;plan.querySelector('[data-pretrial-review="-1"]').disabled=state.review===0;plan.querySelector('[data-pretrial-review="1"]').disabled=state.review===cards.length-1;}
   function goReview(i,smooth=true){state.review=Math.max(0,Math.min(i,cards.length-1));track.scrollTo({left:cards[state.review].offsetLeft-cards[0].offsetLeft,behavior:smooth&&!matchMedia('(prefers-reduced-motion: reduce)').matches?'smooth':'instant'});syncReviews();}
-  function timers(){clearInterval(timer);clearInterval(reviewTimer);timer=reviewTimer=null;if(!root.classList.contains('active')||document.hidden)return;if(state.teachingAuto&&teacherVisible)timer=setInterval(()=>slideTo(state.slide+1),4500);if(state.reviewAuto&&reviewsVisible)reviewTimer=setInterval(()=>goReview((state.review+1)%cards.length),5500);}
-  const observer=new IntersectionObserver(entries=>{for(const e of entries){if(e.target.classList.contains('pj-pretrial-teaching'))teacherVisible=e.isIntersecting;else reviewsVisible=e.isIntersecting;}timers();},{root:root.querySelector('.pj-scroll'),threshold:.2});
-  observer.observe(plan.querySelector('.pj-pretrial-teaching'));observer.observe(plan.querySelector('.pj-pretrial-reviews'));
-  function click(e){const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-pretrial-slide')){slideTo(Number(b.dataset.pretrialSlide));timers();}else if(b.hasAttribute('data-pretrial-teaching-auto')){state.teachingAuto=!state.teachingAuto;b.setAttribute('aria-pressed',String(state.teachingAuto));b.textContent=state.teachingAuto?'Ⅱ Pause':'▷ Play';timers();}else if(b.hasAttribute('data-pretrial-review')){goReview(state.review+Number(b.dataset.pretrialReview));timers();}else if(b.hasAttribute('data-pretrial-reviews-auto')){state.reviewAuto=!state.reviewAuto;b.setAttribute('aria-pressed',String(state.reviewAuto));b.textContent=(state.reviewAuto?'Ⅱ Pause':'▷ Play')+' reviews';timers();}else if(b.hasAttribute('data-pretrial-chart')){const scroll=root.querySelector('.pj-scroll'),top=scroll.scrollTop;const dialog=document.createElement('dialog');dialog.className='pj-pretrial-dialog';dialog.setAttribute('aria-labelledby','pj-pretrial-dialog-title');dialog.innerHTML=`<header><span id="pj-pretrial-dialog-title">A path from L1 to L6</span><button type="button" aria-label="Close curriculum">×</button></header><img src="${base}curriculum-global.svg" alt="CEFR learning path from Level 1 to Level 6">`;root.append(dialog);const close=()=>dialog.close();dialog.querySelector('button').onclick=close;dialog.addEventListener('click',ev=>{if(ev.target===dialog){const r=dialog.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)close();}});dialog.addEventListener('close',()=>{dialog.remove();b.focus({preventScroll:true});scroll.scrollTop=top;});dialog.showModal();}}
+  function timers(){clearInterval(reviewTimer);if(root.classList.contains('active')&&!document.hidden&&state.reviewAuto&&reviewsVisible)reviewTimer=setInterval(()=>goReview((state.review+1)%cards.length),5500);}
+  const observer=new IntersectionObserver(([entry])=>{reviewsVisible=entry.isIntersecting;timers();},{root:root.querySelector('.pj-scroll'),threshold:.2});
+  observer.observe(plan.querySelector('.pj-pretrial-reviews'));
+  function click(e){const b=e.target.closest('button');if(!b)return;if(b.hasAttribute('data-pretrial-review')){goReview(state.review+Number(b.dataset.pretrialReview));timers();}else if(b.hasAttribute('data-pretrial-reviews-auto')){state.reviewAuto=!state.reviewAuto;b.setAttribute('aria-pressed',String(state.reviewAuto));b.textContent=(state.reviewAuto?'Ⅱ Pause':'▷ Play')+' reviews';timers();}else if(b.hasAttribute('data-pretrial-chart')){const scroll=root.querySelector('.pj-scroll'),top=scroll.scrollTop;const dialog=document.createElement('dialog');dialog.className='pj-pretrial-dialog';dialog.setAttribute('aria-labelledby','pj-pretrial-dialog-title');dialog.innerHTML=`<header><span id="pj-pretrial-dialog-title">A path from L1 to L6</span><button type="button" aria-label="Close curriculum">×</button></header><img src="${b.querySelector("img").src}" alt="${escape(b.querySelector("img").alt)}">`;root.append(dialog);const close=()=>dialog.close();dialog.querySelector('button').onclick=close;dialog.addEventListener('click',ev=>{if(ev.target===dialog){const r=dialog.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)close();}});dialog.addEventListener('close',()=>{dialog.remove();b.focus({preventScroll:true});scroll.scrollTop=top;});dialog.showModal();}}
   function scroll(){clearTimeout(scrollTimer);scrollTimer=setTimeout(()=>{let nearest=0;cards.forEach((c,i)=>{if(Math.abs(c.offsetLeft-cards[0].offsetLeft-track.scrollLeft)<Math.abs(cards[nearest].offsetLeft-cards[0].offsetLeft-track.scrollLeft))nearest=i;});state.review=nearest;syncReviews();},80);}
   function key(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();goReview(state.review+(e.key==='ArrowRight'?1:-1));}}
   plan.addEventListener('click',click);track.addEventListener('scroll',scroll,{passive:true});track.addEventListener('keydown',key);document.addEventListener('visibilitychange',timers);goReview(state.review,false);
-  cleanup=()=>{clearInterval(timer);clearInterval(reviewTimer);clearTimeout(scrollTimer);observer.disconnect();plan.removeEventListener('click',click);track.removeEventListener('scroll',scroll);track.removeEventListener('keydown',key);document.removeEventListener('visibilitychange',timers);root.querySelector('.pj-pretrial-dialog')?.remove();};
+  cleanup=()=>{clearInterval(reviewTimer);clearTimeout(scrollTimer);observer.disconnect();plan.removeEventListener('click',click);track.removeEventListener('scroll',scroll);track.removeEventListener('keydown',key);document.removeEventListener('visibilitychange',timers);root.querySelector('.pj-pretrial-dialog')?.remove();};
  }
  window.V220_PRETRIAL_PLAN={html,mount,stop};
 })();
@@ -25523,8 +25787,6 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
 .pj-max-entry .pj-max-audio-enable{position:absolute;z-index:3;left:0;bottom:5%;max-width:47%;min-height:44px;padding:7px 9px;border:1px solid #ffffff99;border-radius:14px;background:#123cbea8;color:#fff;box-shadow:0 2px 8px #07248b44;backdrop-filter:blur(5px);font:700 12px/1.35 var(--font);text-align:center;cursor:pointer}
 .pj-max-entry .pj-max-audio-enable[hidden]{display:none!important}
 .pj-max-entry .pj-max-audio-enable:focus-visible{outline:3px solid #ffd66d;outline-offset:3px}
-.pj-max-entry .pj-max-status{position:absolute;bottom:-18px;left:0;right:0;margin:0!important;text-align:center;font:400 11px/1.4 var(--font);color:#fff}
-.pj-max-entry .pj-max-status[hidden]{display:none!important}
 @media(max-width:360px){.pj-entry-hero.pj-max-entry{width:100%}.pj-max-course{border-radius:18px}.pj-max-course>img{border-radius:12px}.pj-max-course>h2{margin:7px 3px!important}}
 </style>
 <script id="v220-max-entry-module">
@@ -25534,7 +25796,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  let sdk=null,pagBytes=null,current=null;
  function loadSDK(){if(!sdk)sdk=import(new URL(base+'libpag/libpag.esm.js',document.baseURI).href).then(({PAGInit})=>PAGInit({locateFile:file=>new URL(base+'libpag/'+file,document.baseURI).href})).catch(e=>{sdk=null;throw e;});return sdk;}
  function loadFile(){if(!pagBytes)pagBytes=fetch(base+'teacher_max_first_lesson_welcome_en.pag').then(r=>{if(!r.ok)throw Error('Animation unavailable');return r.arrayBuffer()}).catch(e=>{pagBytes=null;throw e;});return pagBytes;}
- function html(course,zh=false){return `<div class="pj-entry-hero pj-max-entry" data-max-entry data-media-state="loading"><div class="pj-max-actor" role="img" aria-label="${zh?'Max 老师欢迎孩子开始体验课':'Max welcomes your child to the first lesson'}"><img src="${base}poster.png" alt="" width="1440" height="1440" fetchpriority="high"><canvas aria-hidden="true" width="720" height="720"></canvas></div><article class="pj-max-course"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="300" height="230"><h2>${escaped(course.title)}</h2><span>${zh?'体验课':'Trial lesson'}</span></article><button type="button" class="pj-max-audio-enable" data-max-enable hidden>${zh?'点击听 Max 欢迎语':'Tap to hear Max'}</button><p class="pj-max-status" role="status" hidden></p></div>`;}
+ function html(course,zh=false){return `<div class="pj-entry-hero pj-max-entry" data-max-entry data-media-state="loading"><div class="pj-max-actor" role="img" aria-label="${zh?'Max 老师欢迎孩子开始体验课':'Max welcomes your child to the first lesson'}"><img src="${base}poster.png" alt="" width="1440" height="1440" fetchpriority="high"><canvas aria-hidden="true" width="720" height="720"></canvas></div><article class="pj-max-course"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="300" height="230"><h2>${escaped(course.title)}</h2><span>${zh?'体验课':'Trial lesson'}</span></article><button type="button" class="pj-max-audio-enable" data-max-enable hidden>${zh?'点击听 Max 欢迎语':'Tap to hear Max'}</button></div>`;}
  function visible(root){return root.classList.contains('active')&&root.dataset.pjPage==='entry'&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none'&&!document.hidden;}
  function release(s){
   if(s.releaseScheduled)return;s.releaseScheduled=true;
@@ -25545,20 +25807,19 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
    s.view?.destroy();s.file?.destroy();s.released=true;
   }).catch(()=>{});
  }
- function stop(){const s=current;if(!s)return;current=null;s.cancelled=true;clearTimeout(s.timeout);s.audio.pause();s.audio.currentTime=0;s.view?.pause();s.stage.dataset.mediaState='stopped';s.stage.querySelector('.pj-max-actor')?.classList.remove('is-ready');s.observer?.disconnect();for(const [el,event,fn] of s.listeners)el.removeEventListener(event,fn);release(s);} 
+ function stop(){const s=current;if(!s)return;current=null;s.cancelled=true;clearTimeout(s.timeout);s.audio.pause();s.audio.currentTime=0;s.view?.pause();s.stage.dataset.mediaState='stopped';s.stage.querySelector('.pj-max-actor')?.classList.remove('is-ready');s.observer?.disconnect();for(const [el,event,fn] of s.listeners)el.removeEventListener(event,fn);release(s);}
  function mount(root){
   const stage=root.querySelector('[data-max-entry]');if(!stage||!visible(root))return;if(current?.stage===stage)return;stop();
   const audio=new Audio(new URL(base+'welcome-en.mp3',document.baseURI).href);audio.preload='auto';audio.playsInline=true;
   const s={root,stage,audio,view:null,file:null,cancelled:false,played:false,attempting:false,listeners:[],timeout:null,observer:null,flushes:new Set(),task:null,playTask:null,releaseScheduled:false};current=s;
-  const actor=stage.querySelector('.pj-max-actor'),canvas=actor.querySelector('canvas'),enable=stage.querySelector('[data-max-enable]'),status=stage.querySelector('.pj-max-status');
+  const actor=stage.querySelector('.pj-max-actor'),canvas=actor.querySelector('canvas'),enable=stage.querySelector('[data-max-enable]');
   const valid=()=>current===s&&!s.cancelled&&visible(root);
   const listen=(el,event,fn)=>{el.addEventListener(event,fn);s.listeners.push([el,event,fn]);};
-  function showStatus(text){status.textContent=text;status.hidden=!text;}
   function gate(){if(!valid()||s.played)return;stage.dataset.mediaState='awaiting-gesture';enable.hidden=false;}
   async function play(){
-   if(!valid()||s.played||s.attempting||!s.view)return;s.attempting=true;enable.hidden=true;showStatus('');
+   if(!valid()||s.played||s.attempting||!s.view)return;s.attempting=true;enable.hidden=true;
    try{await audio.play();if(!valid()){audio.pause();return;}}
-   catch(e){if(!valid())return;if(e.name==='NotAllowedError'||e.name==='AbortError')gate();else{stage.dataset.mediaState='audio-error';enable.hidden=false;showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');}}
+   catch(e){if(!valid())return;if(e.name==='NotAllowedError'||e.name==='AbortError')gate();else{stage.dataset.mediaState='audio-error';enable.hidden=false;}}
    finally{s.attempting=false;}
   }
   listen(enable,'click',()=>{if(audio.error){audio.load();s.played=false;}play();});
@@ -25567,12 +25828,12 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   listen(audio,'waiting',()=>s.view?.pause());
   listen(audio,'pause',()=>s.view?.pause());
   listen(audio,'ended',()=>{if(!valid())return;s.view.pause();s.view.setProgress(1);s.view.flush().catch(()=>{});stage.dataset.mediaState='complete';});
-  listen(audio,'error',()=>{if(!valid())return;stage.dataset.mediaState='audio-error';s.played=false;s.view?.pause();enable.hidden=false;showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');});
+  listen(audio,'error',()=>{if(!valid())return;stage.dataset.mediaState='audio-error';s.played=false;s.view?.pause();enable.hidden=false;});
   // Stop synchronously before a route change so a late decode or play promise cannot restart the greeting.
   listen(root,'click',e=>{if(e.target.closest('[data-pj]'))stop();});
   listen(document,'visibilitychange',()=>{if(document.hidden)stop();});
   s.observer=new MutationObserver(()=>{if(!visible(root)||!stage.isConnected)stop();});s.observer.observe(root,{attributes:true,attributeFilter:['class','data-pj-page'],childList:true});s.observer.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});
-  s.timeout=setTimeout(()=>{if(!valid()||s.view)return;stage.dataset.mediaState='animation-error';showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');},15000);
+  s.timeout=setTimeout(()=>{if(!valid()||s.view)return;stage.dataset.mediaState='animation-error';},15000);
   s.task=(async()=>{
    try{
     const [PAG,bytes]=await Promise.all([loadSDK(),loadFile()]);if(!valid())return;
@@ -25580,7 +25841,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
     s.view=await PAG.PAGView.init(s.file,canvas,{useScale:false});if(!valid())return;
     if(!s.view)throw Error('Animation unavailable');const flush=s.view.flush.bind(s.view);s.view.flush=(...args)=>{const pending=flush(...args);s.flushes.add(pending);pending.then(()=>s.flushes.delete(pending),()=>s.flushes.delete(pending));return pending;};clearTimeout(s.timeout);s.view.setRepeatCount(1);actor.classList.add('is-ready');stage.dataset.mediaState='ready';
     await play();
-   }catch(e){if(!valid())return;clearTimeout(s.timeout);stage.dataset.mediaState='animation-error';showStatus(root.lang==='en'?'Max will meet you in the lesson.':'Max 会在课堂里与你见面。');}
+   }catch(e){if(!valid())return;clearTimeout(s.timeout);stage.dataset.mediaState='animation-error';}
    finally{if(s.cancelled)release(s);}
   })();
  }
@@ -25592,7 +25853,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
 (() => {
  const root=document.createElement('section');root.id='screen-parent-journey';root.className='screen pj-screen';document.getElementById('device-portrait').append(root);
 
- const label=document.createElement('div');label.id='pj-review-label';label.textContent='V2.2.0 · 家长链路评审稿 · 课堂片段与购买均为演示';label.hidden=true;document.body.append(label);
+ const label=document.createElement('div');label.id='pj-review-label';label.textContent='V2.1.0 · 家长链路评审稿 · 课堂片段与购买均为演示';label.hidden=true;document.body.append(label);
  const key='dino-v220-parent-journey-review-v1'; let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}');}catch{}
  const m={page:'entry',locale:'en',media:'ready',save:'success',permission:'unknown',trialEligible:true,account:'free',stage:'pending',reminder:null,intro:'preview',active:false,checkout:false,busy:false,clip:0,playing:false,...saved};
  let tick=null,job=null;const stop=()=>{clearInterval(tick);tick=null;m.playing=false;window.V220_PRETRIAL_PLAN?.stop();window.V220_MAX_ENTRY?.stop();};
@@ -25612,17 +25873,17 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  function syncReviewControls(){const section=root.querySelector('.pj-user-reviews');if(!section)return;const i=m.reviewIndex||0;section.querySelector('[data-pj="reviewPrev"]').disabled=i===0;section.querySelector('[data-pj="reviewNext"]').disabled=i===reviewCards.length-1;section.querySelectorAll('[data-review-goto]').forEach(b=>b.setAttribute('aria-current',String(Number(b.dataset.reviewGoto)===i)));section.querySelector('.pj-review-position').textContent=(i+1)+' / '+reviewCards.length;}
  function mountReviews(){const track=root.querySelector('.pj-review-track');if(!track)return;const cards=[...track.children];const index=Math.min(m.reviewIndex||0,cards.length-1);track.scrollLeft=cards[index].offsetLeft-cards[0].offsetLeft;track.addEventListener('scroll',()=>{const current=cards.reduce((best,card,i)=>Math.abs(card.offsetLeft-cards[0].offsetLeft-track.scrollLeft)<Math.abs(cards[best].offsetLeft-cards[0].offsetLeft-track.scrollLeft)?i:best,0);if(current!==m.reviewIndex){m.reviewIndex=current;syncReviewControls();}},{passive:true});track.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();reviewGoTo((m.reviewIndex||0)+(e.key==='ArrowRight'?1:-1));}});}
  root.addEventListener('click',e=>{const b=e.target.closest('[data-review-goto]');if(b)reviewGoTo(Number(b.dataset.reviewGoto));});
- function approvedLearningPlan(name,level,clips,course){return window.V220_PRETRIAL_PLAN.html({name,course,reviews:reviewCards});}
+ function approvedLearningPlan(name,level,clips,course){return window.V220_PRETRIAL_PLAN.html({name,course});}
  function hero(){return '<img class="pj-art" src="assets/v220/parent-journey/classroom-with-dino.png" alt="AI 老师通过屏幕与孩子互动的插画" />';}
  function render(){let body='',foot='';const pg=m.page;const scrollTop=root.dataset.pjPage===pg?(root.querySelector('.pj-scroll')?.scrollTop||0):0;root.dataset.pjPage=pg;root.lang=m.locale==='en'?'en':'zh-CN';
-  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div>${window.V220_MAX_ENTRY.html(classPathTrialCourse(),m.locale==='zh')}<div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${t('start')}</span><span class="pj-entry-action-note">${txt('叫上孩子一起开始','Have your child join you')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择稍后方便的时间','Choose a time for later')}</span></button></div></div>`;foot='';}
+  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div>${window.V220_MAX_ENTRY.html(classPathTrialCourse(),m.locale==='zh')}<div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${txt('开始上课','Start lesson')}</span><span class="pj-entry-action-note">${txt('请确认孩子在你身边','Make sure your child is with you')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择时间','Choose a time')}</span></button></div></div>`;foot='';}
   if(pg==='preview'){
    const name=String(profile.name||'').trim(),level=String(profile.level||'').trim(),course=classPathTrialCourse();
    const clips=txt(['老师：What animal is this?','孩子：A cat!'],['Teacher: What animal is this?','Child: A cat!']);
    body=approvedLearningPlan(name,level,clips,course);
    foot=`<p>Choose a package for ${esc(name||'your child')}’s learning journey</p><button type="button" class="pj-primary" data-pj="checkout">View course packages →</button>`;
   }
-  if(pg==='schedule'||pg==='earlySchedule'){const now=new Date(),localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');let initial=new Date(m.reminder||Date.now()+3600000);if(initial<now)initial=new Date(Date.now()+3600000);const max=new Date(Date.now()+7*86400000);body=`<h1>${pg==='earlySchedule'?txt('孩子什么时候方便上课？','When can your child join?'):t('schedule')}</h1><p>${t('scheduleSub')}</p><div class="pj-glass"><div class="pj-date"><label for="pj-date">${t('date')}</label><input type="date" id="pj-date" min="${localDate(now)}" max="${localDate(max)}" value="${m.draftDate||localDate(initial)}"><label for="pj-time">${t('time')}</label><input type="time" id="pj-time" value="${m.draftTime||String(initial.getHours()).padStart(2,'0')+':'+String(initial.getMinutes()).padStart(2,'0')}"></div><small>${t('timezone')} · ${esc(Intl.DateTimeFormat().resolvedOptions().timeZone)}</small></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;if(pg==='earlySchedule'){const days=Array.from({length:3},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return `<button class="pj-choice" data-pj="quickDate" data-value="${localDate(d)}">${new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{weekday:'short',month:'short',day:'numeric'}).format(d)}</button>`;}).join('');body=body.replace('<div class="pj-date">',`<div class="pj-choices">${days}</div><div class="pj-choices">${['10:00','14:00','16:00','19:00'].map(v=>`<button class="pj-choice" data-pj="quickTime" data-value="${v}">${v}</button>`).join('')}</div><div class="pj-date">`);foot=`<button class="pj-primary" data-pj="save">${txt('设置提醒','Set a reminder')}</button><button class="pj-link" data-pj="decideLater">${txt('稍后决定','Decide later')}</button>`;}else foot=primary('save','save')+link('skip','skip');} 
+  if(pg==='schedule'){const now=new Date(),localDate=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');let initial=new Date(m.reminder||Date.now()+3600000);if(initial<now)initial=new Date(Date.now()+3600000);const max=new Date(Date.now()+7*86400000);body=`<h1>${t('schedule')}</h1><p>${t('scheduleSub')}</p><div class="pj-glass"><div class="pj-date"><label for="pj-date">${t('date')}</label><input type="date" id="pj-date" min="${localDate(now)}" max="${localDate(max)}" value="${m.draftDate||localDate(initial)}"><label for="pj-time">${t('time')}</label><input type="time" id="pj-time" value="${m.draftTime||String(initial.getHours()).padStart(2,'0')+':'+String(initial.getMinutes()).padStart(2,'0')}"></div><small>${t('timezone')} · ${esc(Intl.DateTimeFormat().resolvedOptions().timeZone)}</small></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;if(pg==='earlySchedule'){const days=Array.from({length:3},(_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return `<button class="pj-choice" data-pj="quickDate" data-value="${localDate(d)}">${new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{weekday:'short',month:'short',day:'numeric'}).format(d)}</button>`;}).join('');body=body.replace('<div class="pj-date">',`<div class="pj-choices">${days}</div><div class="pj-choices">${['10:00','14:00','16:00','19:00'].map(v=>`<button class="pj-choice" data-pj="quickTime" data-value="${v}">${v}</button>`).join('')}</div><div class="pj-date">`);foot=`<button class="pj-primary" data-pj="save">${txt('设置提醒','Set a reminder')}</button><button class="pj-link" data-pj="decideLater">${txt('稍后决定','Decide later')}</button>`;}else foot=primary('save','save')+link('skip','skip');}
   if(pg==='earlySchedule'){
    const now=new Date(),dateKey=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');const tomorrow=new Date(now);tomorrow.setDate(tomorrow.getDate()+1);const todayKey=dateKey(now),tomorrowKey=dateKey(tomorrow);const lastDay=new Date(now);lastDay.setDate(lastDay.getDate()+7);const maxKey=dateKey(lastDay);let selected=m.draftDate&&m.draftDate>=todayKey&&m.draftDate<=maxKey?m.draftDate:todayKey;
    const availableTimes=day=>Array.from({length:24},(_,hour)=>String(hour).padStart(2,'0')+':00').filter(value=>+new Date(day+'T'+value)>=Date.now()+30*60000);
@@ -25637,7 +25898,12 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
        const isDisabled = value === todayKey && todayUnavailable;
        return `<button type="button" class="pj-choice ${isSelected ? 'is-selected' : ''}" aria-pressed="${isSelected}" data-pj="scheduleDay" data-value="${value}"${isDisabled ? ' disabled' : ''}>${label}</button>`;
      }).join('');
-   body=`<h1>${txt('孩子什么时候方便上课？','When can your child join?')}</h1><p>${txt('选一个方便的时间，提醒你带孩子回来上课。','Choose a time, and we’ll remind you to bring your child back.')}</p><div class="pj-glass"><label class="pj-field-label">${txt('日期','Day')}</label><div class="pj-choices">${dayButtons}<button class="pj-choice ${![todayKey,tomorrowKey].includes(selected)?'is-selected':''}" data-pj="otherDates">${![todayKey,tomorrowKey].includes(selected)?new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{month:'short',day:'numeric'}).format(new Date(selected+'T12:00')):txt('其他日期','Other dates')}</button></div><input id="pj-date" type="hidden" value="${selected}"><div class="pj-date"><label for="pj-time">${txt('时间','Time')}</label><select id="pj-time"><option value="" disabled ${chosen?'':'selected'}>${options.length?txt('选择时间','Choose a time'):txt('今天没有可选时间，请选择明天','No times left today. Choose tomorrow.')}</option>${options.map(v=>`<option value="${v}" ${chosen===v?'selected':''}>${v}</option>`).join('')}</select></div></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;
+   const childName = String(profile.name || '').trim();
+   const lessonTitle = txt(
+     childName ? `${childName} 什么时候方便上课？` : '孩子什么时候方便上课？',
+     childName ? `When is a good time for ${childName}’s lesson?` : 'When is a good time for your child’s lesson?'
+   );
+   body=`<h1>${esc(lessonTitle)}</h1><p>${txt('选一个方便的时间，我们会提醒你开始上课','Choose a time, and we’ll remind you to start the lesson')}</p><div class="pj-glass"><label class="pj-field-label">${txt('日期','Day')}</label><div class="pj-choices">${dayButtons}<button class="pj-choice ${![todayKey,tomorrowKey].includes(selected)?'is-selected':''}" data-pj="otherDates">${![todayKey,tomorrowKey].includes(selected)?new Intl.DateTimeFormat(m.locale==='en'?'en-US':'zh-CN',{month:'short',day:'numeric'}).format(new Date(selected+'T12:00')):txt('其他日期','Other dates')}</button></div><input id="pj-date" type="hidden" value="${selected}"><div class="pj-date"><label for="pj-time">${txt('时间','Time')}</label><select id="pj-time"><option value="" disabled ${chosen?'':'selected'}>${options.length?txt('选择时间','Choose a time'):txt('今天没有可选时间，请选择明天','No times left today. Choose tomorrow.')}</option>${options.map(v=>`<option value="${v}" ${chosen===v?'selected':''}>${v}</option>`).join('')}</select></div></div><p class="pj-status" role="status" id="pj-status" hidden></p>`;
    foot=`<button class="pj-primary" data-pj="save">${txt('设置提醒','Set a reminder')}</button><button class="pj-link" data-pj="decideLater">${txt('稍后决定','Decide later')}</button>`;
   }
   if(pg==='permission'){body=`<div class="pj-success">♧</div><h1>${t('notify')}</h1><p>${t('notifySub')}</p><div class="pj-glass">${esc(when())}</div><p class="pj-demo-tag">${txt('通知授权模拟，不调用真实系统权限','Simulated permission; no system permission requested')}</p>`;foot=primary('allow','allow')+link('deny','deny');}
@@ -25737,9 +26003,9 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   const note=document.querySelector('#screen-paywall-pt .pwpt-cancel-note');if(note){note.textContent=trial?txt('前 3 天免费，之后按所选月包价格自动续订；可在商店取消。','Free for 3 days, then auto-renews at the selected monthly price. Cancel in the store.'):txt('按所选套餐价格订阅，可在商店管理续订。','Subscribe at the selected plan price. Manage renewal in the store.');}
  }
  function decorateCheckout(overlay){if(!m.checkout||!monthlyTrialAvailable()||profile.selectedPlan!=='monthly')return;const price=document.querySelector('#pwpt-plans [data-v180-cycle="monthly"] .pwpt-plan-price');const charge=overlay.querySelector('.v155-checkout-total b');if(charge)charge.textContent='0 · 3-day free trial';const heading=overlay.querySelector('h3');if(heading)heading.textContent='Confirm 3-day free trial';const note=document.createElement('p');note.className='v155-checkout-renewal';note.textContent='Auto-renews monthly after 3 days: '+(price?.innerText||'');overlay.querySelector('.v155-checkout-confirm').before(note);}
- window.PARENT_JOURNEY={continueFree:()=>{if(profile.trialReportShown)finishToHome();else start();},decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'3-day trial · '+(window.V220_PAYWALL_VARIANT==='c'?'C':'A'),pageKey:window.V220_PAYWALL_VARIANT==='c'?'trial_paywall_c':'trial_paywall_a',isCore:true,keys:['pjPaywall','pjTrial','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjPaywall:window.V220_PAYWALL_VARIANT||'a',pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
+ window.PARENT_JOURNEY={continueFree:()=>{if(profile.trialReportShown)finishToHome();else start();},decoratePaywall,decorateCheckout,captureTrial:cycle=>{m.trialActivated=m.checkout&&monthlyTrialAvailable()&&cycle==='monthly';},needsTrialCard:()=>m.active&&!profile.trialReportShown,open:page=>{window.demoStatePanel?.beforeJump?.();seedReviewProfile();profile.hasStartedClass=false;profile.teacherId='max';if(page==='previewAfter'){profile.hasStartedClass=true;profile.trialReportShown=true;profile.trialInProgress=false;profile.trialTakenLevelId=profile.placementLevelId||profile.currentLevelId;profile.placementLevelId=firstTrialAssessedLevelId(profile.trialTakenLevelId);page='preview';}show(page||'entry');window.demoStatePanel?.panel.classList.remove('open');},context:()=>m.checkout?{label:'3-day trial · '+(window.V220_PAYWALL_VARIANT==='c'?'C':'A'),pageKey:window.V220_PAYWALL_VARIANT==='c'?'trial_paywall_c':'trial_paywall_a',isCore:true,keys:['pjPaywall','pjTrial','v180Payment']}:m.active&&(root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none')?{label:'家长链路 · '+(m.page==='preview'?'学习计划':m.page),pageKey:'parent_journey',isCore:m.page!=='preview',keys:m.page==='preview'?[]:['pjLocale','pjTrial'].concat(['schedule','earlySchedule'].includes(m.page)?['pjSave','pjNotify']:[],['pjProgress'])}:null,get:key=>({pjPaywall:window.V220_PAYWALL_VARIANT||'a',pjTrial:m.trialEligible?'eligible':'ineligible',pjLocale:m.locale,pjMedia:m.media,pjSave:m.save,pjNotify:m.permission==='granted'?'granted':'unknown',pjProgress:trialStage()})[key],set:(key,v)=>{stop();if(key==='pjTrial'){m.trialEligible=v==='eligible';if(m.checkout)window.v220RefreshParentPaywall?.();}if(key==='pjLocale')m.locale=v;if(key==='pjMedia')m.media=v;if(key==='pjSave')m.save=v;if(key==='pjNotify')m.permission=v;if(key==='pjProgress'){m.stage=v;profile.hasStartedClass=v!=='pending';profile.trialInProgress=v==='started';profile.trialReportShown=v==='completed';if(v==='completed'){m.reminder=null;persist();show('done');return;}persist();}render();},state:()=>({...m,stage:trialStage()}),returnFromReminder:()=>{if(profile.trialReportShown)show('done');else start();},checkoutPending:()=>m.checkout};
  const observe=new MutationObserver(()=>{const visible=root.classList.contains('active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';label.hidden=!m.active||(!visible&&!m.checkout);if(!visible)stop();});observe.observe(document.getElementById('wrap-portrait'),{attributes:true,attributeFilter:['style']});observe.observe(root,{attributes:true,attributeFilter:['class']});
- const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
+ const q=new URLSearchParams(location.search);if(q.has('parentJourney')){if(q.get('pjReset')==='1'){m.account='free';m.stage='pending';m.reminder=null;profile.premiumUnlocked=false;persist();}if(['en','zh'].includes(q.get('pjLocale')))m.locale=q.get('pjLocale');window.PARENT_JOURNEY.open(['entry','preview','previewAfter','plan','schedule','after','saved','done'].includes(q.get('parentJourney'))?q.get('parentJourney'):'entry');}
 })();
 </script>
 
@@ -26068,6 +26334,7 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
 #v210-explore-scene .ee-info { all:unset!important; position:absolute!important; top:77.08px!important; left:50%!important; transform:translateX(-50%)!important; text-align:center!important; pointer-events:none!important; }
 #v210-explore-scene .ee-info b { display:block!important; font:900 italic 16.652px/20.3px Montserrat,sans-serif!important; color:#fff159!important; background:linear-gradient(90deg,#ffef3a,#fffabc)!important; -webkit-background-clip:text!important; background-clip:text!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:0!important; filter:drop-shadow(1.5px 0 #7157de) drop-shadow(-1.5px 0 #7157de) drop-shadow(0 1.5px #7157de) drop-shadow(0 -1.5px #7157de)!important; white-space:nowrap!important; text-shadow:none!important; margin:0!important; }
 #v210-explore-scene .ee-info b.ex-long { font-size:14px!important; line-height:17px!important; }
+#v210-explore-scene .ex-age-label { display:inline-block; margin-top:3px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--sky-deep); color:var(--ink-on-dark); font:600 11px/1.3 var(--font); white-space:nowrap; }
 #v210-explore-scene .ex-nav { position:absolute; left:470px; top:296px; width:302px; height:67px; display:flex; gap:4px; padding:0 16px; align-items:flex-start; }
 #v210-explore-scene .ex-nav::before { content:""; position:absolute; left:0; top:27px; width:302px; height:40px; border:1px solid #fff8; border-radius:40px; background:linear-gradient(#fff3,#88d1ff33); backdrop-filter:blur(50px); }
 #v210-explore-scene .ex-nav button { position:relative; width:64px; height:63px; padding:0; border:0; border-radius:25px; color:#fff; background:none; cursor:pointer; font:400 10px/15px Poppins,sans-serif; flex:none; }
@@ -26132,12 +26399,12 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
   }));
   entries.forEach((entry,index) => {
     const button = entry.button;
-    button.setAttribute('aria-label',entry.title);
+    button.setAttribute('aria-label', entry.ageLabel ? entry.title + ', ' + entry.ageLabel : entry.title);
     button.dataset.exEntry = entry.title;
     button.style.setProperty('--ex-x', (358 + (index % 3) * 125.156) + 'px');
     button.style.setProperty('--ex-y', (index < 3 ? 77 : 190) + 'px');
     const isBase = [1,3,5].includes(index);
-    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.buttonId==='explore-open-speaking'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b></span>`;
+    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.buttonId==='explore-open-speaking'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b>${entry.ageLabel ? `<span class="ex-age-label">${entry.ageLabel}</span>` : ''}</span>`;
     scene.querySelector('.ex-entries').appendChild(button);
   });
   panel.replaceChildren(scene);
@@ -26740,6 +27007,9 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-pretrial-first{padding:16px;margin-left:-4px;margin-bottom:24px;padding-left:38px;border:1px solid #efdfb9;border-radius:12px;background:#fff9ed}
 .pj-pretrial-first .pj-pretrial-number{left:8px;top:17px;background:#f3dfa8;color:#755e28}
 .pj-pretrial-first:before{display:none}
+.pj-pretrial-first.is-complete{background:#f1f8ed;border-color:#cce3c5}
+.pj-pretrial-first.is-complete :is(.pj-pretrial-number,.pj-pretrial-status){color:#43754a}
+.pj-pretrial-first.is-complete .pj-pretrial-number{background:#d7edcf}
 .pj-pretrial-status{display:block;color:#9a742c;font-size:12px;font-weight:700;margin-bottom:6px}
 .pj-pretrial-first p{margin-top:9px;font-size:14px;line-height:1.5}
 .pj-pretrial-trial{display:flex;align-items:center;gap:12px;margin-top:16px;padding-top:14px;border-top:1px solid #f0e3c8}
@@ -26759,8 +27029,7 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-pretrial-resource-art{display:flex;align-items:center;justify-content:center;margin:auto;width:60px;height:60px}
 .pj-pretrial-resource-art img{display:block;width:100%;height:100%;object-fit:contain}
 .pj-pretrial-resources figcaption{font-size:11px;line-height:1.4;margin-top:6px;overflow-wrap:anywhere;color:#735e87}
-.pj-pretrial-climb{position:relative;height:180px;margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
-.pj-pretrial-arc{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pj-pretrial-climb{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
 .pj-pretrial-milestone{position:relative;text-align:center;z-index:1}
 .pj-pretrial-milestone>small{display:block;font-size:11px;color:#887791;margin-bottom:7px}
 .pj-pretrial-milestone>div{padding:15px 8px;border:1px solid #eed8e8;border-radius:12px;background:linear-gradient(#f7e7ef,#f1dce9)}
@@ -26770,13 +27039,20 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 .pj-pretrial-next{align-self:start;margin-top:12px}
 .pj-pretrial-next>div{background:linear-gradient(#e8f4e8,#d6ebdc);border-color:#cee4cc}
 .pj-pretrial-next strong,.pj-pretrial-next span{color:#56845f}
-.pj-pretrial-next>img{position:absolute;right:4px;top:-41px;width:44px;height:51px;object-fit:contain}
 .pj-pretrial-goal{margin-top:14px;padding:12px;border-radius:10px;background:#f8f4fc;text-align:center;font-size:12px;color:#877295}
 .pj-pretrial-goal b{display:block;font-size:14px;margin-bottom:4px;color:#715189}
 .pj-pretrial-curriculum-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
 .pj-pretrial-curriculum-head img{width:44px;height:44px;object-fit:contain}
 .pj-pretrial-curriculum-head h2{margin:0}
 .pj-pretrial-curriculum-head small{color:#8c7d99;font-size:12px}
+.pj-pretrial-learning{display:grid;gap:8px;margin:12px 0}
+.pj-pretrial-learning div{padding:10px;border-radius:10px;background:#f5effb}
+.pj-pretrial-learning dt{font-size:12px;color:#77598f}
+.pj-pretrial-learning dd{margin:4px 0 0;font-weight:700}
+.pj-pretrial-climb.is-final .pj-pretrial-milestone{grid-column:1/-1}
+.pj-pretrial-review-original{padding:0!important;overflow:hidden;background:#fff}
+.pj-pretrial-review-original img{display:block;width:100%;height:auto}
+.pj-pretrial-plan .sp2-product{margin:0}
 .pj-pretrial-chart{display:block;width:100%;border:0;border-radius:12px;padding:0;background:#faf7fd;text-align:center;overflow:hidden}
 .pj-pretrial-chart img{display:block;width:100%;height:auto}
 .pj-pretrial-chart span{display:block;padding:10px;font-size:12px;color:#7f6891}
