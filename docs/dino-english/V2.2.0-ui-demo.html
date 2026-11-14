@@ -8702,6 +8702,28 @@
 @media(max-width:350px){.v220c-top{padding-inline:16px}.v220c-hero{padding-inline:16px}.v220c-card,.v220c-actions{margin-inline:16px}.v220c-card{padding:12px}.v220c-card li{padding-inline:9px}}
 </style>
 <style id="v220-gaid-review-style">
+.v220-gaid-review-banner {
+  display:none; flex:none; align-items:baseline; flex-wrap:wrap; gap:2px 10px;
+  width:min(358px,100%); margin:0 0 8px; padding:7px 12px;
+  border:1px solid #495980; border-radius:10px; background:#283550;
+  color:#ecf2ff; font:400 13px/1.45 var(--font);
+}
+.v220-gaid-review-banner strong { color:#fff; white-space:nowrap; }
+body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-welcome.active) > .demo-bar {
+  display:none;
+}
+body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-welcome.active) > .v220-gaid-review-banner {
+  display:flex;
+}
+body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-welcome.active) #device-portrait {
+  max-height:calc(100dvh - 68px);
+}
+@media(max-width:720px) {
+  .v220-gaid-review-banner { margin-top:42px; }
+  body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-welcome.active) #device-portrait {
+    max-height:calc(100dvh - 110px);
+  }
+}
 #device-portrait #screen-welcome.v220-gaid-welcome,
 #device-portrait #screen-operator {
   background:radial-gradient(ellipse at 80% 18%,#2375ed 0%,#1554df 40%,#0A2CC6 100%) !important;
@@ -8784,6 +8806,10 @@
   #screen-operator .v220-gaid-art { flex-basis:108px; width:108px; background-size:135px auto; }
   #screen-operator .v220-gaid-card { min-height:76px; }
 }
+@media(max-height:620px) {
+  #device-portrait .v220-gaid-welcome .welcome-hero { flex-basis:72px; min-height:72px; margin-block:4px 0; }
+  #device-portrait .v220-gaid-welcome .welcome-foot { gap:8px; }
+}
 @media(max-width:650px) {
   body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-operator, .v220-gaid-welcome).active) #dfb-fab { display:none !important; }
 }
@@ -8794,6 +8820,10 @@
 </head>
 <body class="is-group-b">
   <p class="demo-bar">V2.2.0 · 越南顾问咨询预约 · Explore、Play 与家长链路 · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="v220-gaid-review-banner" lang="zh-CN" role="status" aria-atomic="true">
+    <strong id="v220-gaid-review-mode"></strong>
+    <span id="v220-gaid-review-next"></span>
+  </p>
 
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
@@ -17754,7 +17784,12 @@
       }
       $("#screen-welcome .title").textContent = "Learn, speak & explore";
       $("#screen-welcome .sub").innerHTML = "AI-guided lessons.<br>A little progress every day.";
+      const loginFirst = gaidReview.mode === "a-front";
+      $("#v220-gaid-review-mode").textContent = loginFirst ? "A · 登录前置" : "A · 登录后置";
+      const reviewNext = $("#v220-gaid-review-next");
       if (gaidReview.welcomeStep === "choose") {
+        reviewNext.textContent = gaidReview.signedIn ? "已登录，选择后直接填资料。" :
+          loginFirst ? "点选后在本页登录，再填资料。" : "点选后直接填昵称，填完资料再登录。";
         foot.innerHTML = '<p class="v220-gaid-question" id="v220-gaid-question">Who are you setting up for?</p>' +
           '<div class="v220-gaid-roles" role="group" aria-labelledby="v220-gaid-question">' +
           v220GaidCards("For my child", "For myself") + '</div>' +
@@ -17769,6 +17804,7 @@
       }
 
       const existing = gaidReview.welcomeStep === "existing";
+      reviewNext.textContent = existing ? "已有账号可直接在本页登录。" : "在本页登录后，再填写学习资料。";
       const message = existing ? "Welcome back" : gaidReview.role === "child" ? "Setting up for my child" : "Setting up for myself";
       foot.insertAdjacentHTML("afterbegin", '<div class="v220-gaid-choice-summary"><span>' + message + '</span>' +
         '<button class="v220-gaid-link" id="v220-gaid-change" type="button">' + (existing ? "Back" : "Change") + '</button></div>');
