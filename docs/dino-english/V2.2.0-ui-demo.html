@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dino AI V2.2.0 — 越南顾问咨询预约 Demo</title>
+  <title>Dino AI V2.2.0 — LINE 登录与好友邀请 Demo</title>
   <!-- DESIGN.md · V2.1.0 · V1.9.1 baseline plus IP animation and Play park. -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -8941,7 +8941,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 </style>
 </head>
 <body class="is-group-b">
-  <p class="demo-bar">V2.2.0 · 越南顾问咨询预约 · Explore、Play 与家长链路 · 右上 ⚙︎ States 切换页面与关键状态</p>
+  <p class="demo-bar">V2.2.0 · LINE 登录加好友 / 越南顾问咨询预约 · 右上 ⚙︎ States 切换流程与状态</p>
   <p class="v220-gaid-review-banner" lang="zh-CN" role="status" aria-atomic="true">
     <strong id="v220-gaid-review-mode"></strong>
     <span id="v220-gaid-review-next"></span>
@@ -9122,6 +9122,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
                 </button>
                 <button type="button" class="lg-ic-btn lg-ic-fb" data-lg-method="facebook" aria-label="Continue with Facebook">f</button>
                 <button type="button" class="lg-ic-btn lg-ic-kakao" data-lg-method="kakao" aria-label="Continue with Kakao">K</button>
+                <button type="button" class="lg-ic-btn line-login-entry" id="btn-login-line" aria-label="Continue with LINE" title="Continue with LINE"><span>LINE</span></button>
               </div>
             </div>
           </div>
@@ -11453,7 +11454,8 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
           '<div class="cx-w-more">Or continue with</div>' +
           '<div class="cx-w-icons"><button type="button" class="cx-w-ic" id="cx-w-phone" aria-label="Phone">☎</button>' +
           '<button type="button" class="cx-w-ic fb" id="cx-w-fb" aria-label="Facebook">f</button>' +
-          '<button type="button" class="cx-w-ic kakao" id="cx-w-kakao" aria-label="Kakao">K</button></div>';
+          '<button type="button" class="cx-w-ic kakao" id="cx-w-kakao" aria-label="Kakao">K</button>' +
+          '<button type="button" class="cx-w-ic line-login-entry" id="cx-w-line" aria-label="Continue with LINE" title="Continue with LINE"><span>LINE</span></button></div>';
         const login = (kind) => {
           profile.skipOnboarding = true;
           v155EntryAuth = true;
@@ -20164,6 +20166,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
     // themeCourseRun 残留会误劫持下一节普通课/漏斗课的完课分支（themeReportOpen 同理）。
     // 切换快捷状态时收起引导蒙层。
     beforeJump: function () {
+      window.LINE_LOGIN?.leave();
       leaveV220GaidReview();
       window.PROMO_CODE?.leave();
       window.CLASS_PERMISSIONS?.cancel();
@@ -20178,6 +20181,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       if (window.VISIT_REWARD) window.VISIT_REWARD.resetVisuals();
     },
     getValue: function (key) {
+      if (key.startsWith("line")) return window.LINE_LOGIN?.get(key);
       if (key.indexOf("pj") === 0) return window.PARENT_JOURNEY?.get(key);
       if (key.indexOf("promo") === 0) return window.PROMO_CODE?.getValue(key);
       if (key.indexOf("gp") === 0) return window.CLASS_PERMISSIONS?.getValue(key);
@@ -20230,6 +20234,8 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       return null;
     },
     context: function () {
+      var lineContext = window.LINE_LOGIN?.context();
+      if (lineContext) return lineContext;
       var parentContext = window.PARENT_JOURNEY?.context();
       if (parentContext) return parentContext;
       var promoContext = window.PROMO_CODE?.context();
@@ -20321,6 +20327,10 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       return ctx("Onboarding", []);
     },
     groups: [
+      {key:"lineAccount",label:"LINE 对应的 Dino 账号",options:[["new","新用户"],["existing","已有账号 · 资料完整"],["incomplete","已有账号 · 待补资料"]],apply:v=>window.LINE_LOGIN.set("lineAccount",v)},
+      {key:"lineRelation",label:"进入授权时的好友关系",options:[["none","尚未添加"],["friend","已是好友"],["blocked","已屏蔽"]],apply:v=>window.LINE_LOGIN.set("lineRelation",v)},
+      {key:"lineEntry",label:"LINE 授权路径（模拟）",options:[["app","已安装 LINE"],["browser","浏览器登录"],["auto","复用已有授权"]],apply:v=>window.LINE_LOGIN.set("lineEntry",v)},
+      {key:"lineOutcome",label:"下一次登录结果",options:[["success","成功"],["auth_error","LINE 授权失败"],["session_error","Dino 登录失败"],["unknown","好友状态查询失败"],["slow","等待返回 · 可取消"]],apply:v=>window.LINE_LOGIN.set("lineOutcome",v)},
       {key:"pjPaywall",label:"支付页模板",options:[["a","A · 简洁"],["c","C · 会员权益"]],apply:v=>window.V220_TRIAL_PAYWALL_A.setVariant(v)},
       {key:"pjTrial",label:"月包试用资格",options:[["eligible","可领 3 天试用"],["ineligible","无试用资格"]],apply:v=>window.PARENT_JOURNEY.set("pjTrial",v)},
       {key:"pjLocale",label:"家长页语言",options:[["zh","简体中文"],["en","English"]],apply:v=>window.PARENT_JOURNEY.set("pjLocale",v)},
@@ -20636,6 +20646,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
     ],
     corePagesLabel: "V2.2.0 · 关键页面",
     corePages: [
+      { key: "line_login", label: "日本 · LINE 登录加好友", run: () => window.LINE_LOGIN.start() },
       { key: "gaid_a-front", label: "GAID A · 登录前置", run: () => startV220GaidReview("a-front") },
       { key: "gaid_a-post", label: "GAID A · 登录后置", run: () => startV220GaidReview("a-post") },
       { key: "gaid_b", label: "GAID B · Onboarding 身份题", run: () => startV220GaidReview("b") },
@@ -27682,4 +27693,165 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
     const mode = new URLSearchParams(location.search).get("gaid");
     if (mode) startV220GaidReview(mode);
   }, { once: true });
+</script>
+<!-- V2.2.0 LINE: local review only. No credentials, real authorization or messages. -->
+<style id="v220-line-style">
+.line-login-entry{background:#06c755!important;color:white!important;font-family:Arial,sans-serif!important;font-weight:800!important;font-size:12px!important;min-width:44px;min-height:44px;flex-shrink:0}
+.line-login-entry span{display:grid;place-items:center;position:relative;background:#fff;color:#06a747;border-radius:50%;width:33px;height:26px;font-size:10px;letter-spacing:-.4px}
+.line-login-entry span:after{content:"";position:absolute;bottom:-3px;left:7px;width:7px;height:7px;background:white;transform:skewY(-30deg)}
+#line-auth-overlay{position:absolute;inset:0;z-index:30000;background:white;color:#202124;display:flex;flex-direction:column;border-radius:inherit;overflow:hidden;font-family:Arial,"Noto Sans JP",sans-serif;text-align:left}
+#line-auth-overlay *{box-sizing:border-box}
+.line-auth-bar{flex-shrink:0;height:56px;padding:8px 16px;border-bottom:1px solid #e7e7e7;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff}
+.line-auth-bar strong{font:800 21px Arial,sans-serif;color:#06b24e;letter-spacing:-1px}
+.line-auth-bar span{font-size:12px;color:#66716c}
+.line-auth-bar button{background:transparent;border:0;min-width:44px;min-height:44px;font-size:26px;cursor:pointer;color:#4c5550}
+.line-auth-content{flex:1;min-height:0;overflow-y:auto;padding:24px;overscroll-behavior:contain}
+.line-app-logo{display:block;width:64px;height:64px;border-radius:16px;margin:0 auto 12px;object-fit:cover}
+.line-auth-content h1{font-size:23px;line-height:1.4;text-align:center;margin:0 0 8px;font-weight:700;color:#202124}
+.line-auth-intro{font-size:14px;line-height:1.6;text-align:center;color:#68736b;margin:0 0 24px}
+.line-auth-section{padding:20px 0;border-top:1px solid #e7ebe8}
+.line-auth-section h2{font:700 15px/1.6 Arial,sans-serif;margin:0 0 12px;color:#303932}
+.line-permission{display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5}
+.line-permission b{color:#06a747;font-size:18px}
+.line-permission p{margin:0;color:#303932}
+.line-permission small{display:block;font-size:12px;color:#738078;line-height:1.6;margin-top:4px}
+.line-friend{display:flex;align-items:center;gap:12px;min-height:64px;padding:12px;border:1px solid #e0e6e2;border-radius:12px;background:#f8faf9;cursor:pointer}
+.line-friend input{appearance:auto;accent-color:#06b24e;width:24px;height:24px;flex-shrink:0;margin:0}
+.line-friend-copy{flex:1;font-size:14px;line-height:1.5}
+.line-friend-copy strong{display:block;font-size:15px;color:#26342b}
+.line-friend-copy small{display:block;font-size:12px;color:#68736b;margin-top:3px}
+.line-friend-status{font-size:14px;color:#07883b;padding:14px;background:#effaf3;border-radius:12px}
+.line-auth-note{font-size:12px;line-height:1.7;color:#68736b;margin:12px 0 0}
+.line-auth-footer{flex-shrink:0;padding:16px 24px 20px;background:#fff;border-top:1px solid #e7ebe8;display:grid;gap:8px}
+.line-auth-primary,.line-auth-secondary{width:100%;min-height:48px;border-radius:8px;cursor:pointer;font:700 15px/1.4 Arial,sans-serif;padding:12px}
+.line-auth-primary{border:0;background:#06c755;color:white}
+.line-auth-secondary{border:1px solid #d8dfda;background:white;color:#58665e}
+#line-auth-overlay button:focus-visible,.line-login-entry:focus-visible{outline:3px solid #2369de;outline-offset:3px}
+.line-wait-body{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;min-height:300px;height:100%}
+.line-wait-body h1{font-size:22px}
+.line-wait-body p{font-size:14px;line-height:1.6;margin:0;color:#68736b}
+.line-spinner{width:40px;height:40px;border:4px solid #d9f4e3;border-top-color:#06c755;border-radius:50%;animation:line-spin .9s linear infinite;margin-bottom:10px}
+.line-error-symbol{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:#fff0e5;color:#d66c19;font-weight:bold;font-size:30px;margin-bottom:8px}
+@keyframes line-spin{to{transform:rotate(360deg)}}
+#line-review-result{position:fixed;left:16px;bottom:16px;z-index:9990;width:260px;max-width:calc(100vw - 32px);background:#fff;border:1px solid #dce6e1;border-left:4px solid #06c755;border-radius:14px;box-shadow:0 10px 30px #0002;padding:14px 16px;color:#243d30;font:13px/1.6 Arial,sans-serif;text-align:left}
+#line-review-result[hidden]{display:none}
+#line-review-result strong{display:block;font-size:14px;margin-bottom:6px}
+#line-review-result p{margin:5px 0;overflow-wrap:anywhere}
+#line-review-result small{font-size:11px;color:#6b7d71}
+#line-review-result button{min-height:36px;margin-top:8px;border:1px solid #b5dac5;border-radius:8px;background:#f0faf4;color:#087b3d;padding:6px 10px;cursor:pointer;font-size:12px}
+#line-review-result .line-review-close{position:absolute;right:5px;top:0;margin:0;width:32px;height:32px;min-height:32px;border:0;background:none;color:#66786d;font-size:20px}
+@media(max-width:700px){#line-review-result{left:8px;bottom:8px;width:calc(100vw - 16px);max-width:none;padding:8px 12px;font-size:12px}#line-review-result strong{font-size:12px;margin:0}#line-review-result p{margin:2px 0}#line-review-result small{display:none}#line-review-result button:not(.line-review-close){margin-top:2px;min-height:30px}}
+@media(prefers-reduced-motion:reduce){.line-spinner{animation:none}}
+</style>
+<script id="v220-line-login">
+(function(){
+  const m = {enabled:false, account:'new', relation:'none', entry:'app', outcome:'success', phase:'idle', origin:null, returnFocus:null, epoch:0, timer:0, last:null};
+  const fields = {lineAccount:'account',lineRelation:'relation',lineEntry:'entry',lineOutcome:'outcome'};
+  const $line = s => document.querySelector(s);
+  const reviewBar=document.querySelector('.demo-bar');
+  const originalBarText=reviewBar?.textContent;
+  function markReview(){if(reviewBar)reviewBar.textContent='V2.2.0 · 日本 LINE 登录与可选加好友 · 外部页面为交互模拟，不连接真实 LINE';}
+  const result = document.createElement('aside');
+  result.id = 'line-review-result'; result.hidden = true; result.setAttribute('aria-live','polite');
+  document.body.appendChild(result);
+  const escape = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function refresh(){window.demoStatePanel?.render();}
+  function cleanup(){m.epoch++;clearTimeout(m.timer);$line('#line-auth-overlay')?.remove();if(m.origin)m.origin.inert=false;}
+  function cancel(){cleanup();m.phase='cancelled';v155EntryAuth=false;m.returnFocus?.focus();refresh();}
+  function leave(){cleanup();m.enabled=false;m.last=null;m.phase='idle';result.hidden=true;if(reviewBar)reviewBar.textContent=originalBarText;}
+  function start(){
+    leave(); leaveV220GaidReview();
+    m.enabled=true;markReview(); startV220ConsultReview('jp','success',m.account==='new'?'signup':'login');
+    demoState.v155OnboardingStatus=m.account==='existing'?'complete':'incomplete';
+    refresh();
+  }
+  function shell(title, content, footer){
+    $line('#line-auth-overlay')?.remove();
+    const el=document.createElement('section');el.id='line-auth-overlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-labelledby','line-auth-title');
+    el.innerHTML='<header class="line-auth-bar"><strong>LINE</strong><span>'+title+'</span><button type="button" data-line-cancel aria-label="Cancel login">×</button></header><div class="line-auth-content">'+content+'</div><footer class="line-auth-footer">'+footer+'</footer>';
+    document.getElementById('device-portrait').appendChild(el);
+    if(m.origin)m.origin.inert=true;
+    el.querySelectorAll('[data-line-cancel]').forEach(b=>b.onclick=cancel);
+    el.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();cancel();}
+      if(event.key==='Tab'){
+        const items=[...el.querySelectorAll('button:not(:disabled),input:not(:disabled)')];const first=items[0],last=items[items.length-1];
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+      }
+    });
+    el.querySelector('button')?.focus(); refresh(); return el;
+  }
+  function consent(){
+    m.phase='consent';
+    const friend=m.relation==='friend';
+    const friendContent=friend?'<div class="line-friend-status">✓ Dino AI は友だち追加済みです</div>':
+      '<label class="line-friend"><input id="line-add-friend" type="checkbox"><span class="line-friend-copy"><strong>Dino AI</strong><span>'+(m.relation==='blocked'?'ブロックを解除する':'友だち追加する')+'</span><small>LINE公式アカウント</small></span></label>';
+    const el=shell('認証', '<img class="line-app-logo" src="assets/dino-favicon.png" alt="Dino AI"><h1 id="line-auth-title">Dino AI</h1><p class="line-auth-intro">このアプリへのアクセスを許可しますか？</p><section class="line-auth-section"><h2>許可する情報</h2><div class="line-permission"><b aria-hidden="true">✓</b><p>プロフィール情報<small>ユーザー識別子、表示名、プロフィール画像</small></p></div></section><section class="line-auth-section"><h2>公式アカウント</h2>'+friendContent+'<p class="line-auth-note">'+(friend?'Dino AI からLINEでメッセージを受け取れます。':'この選択は任意です。選択しなくてもログインできます。')+'</p></section>', '<button type="button" class="line-auth-primary" id="line-allow">許可する</button><button type="button" class="line-auth-secondary" data-line-cancel>キャンセル</button>');
+    el.querySelector('#line-allow').onclick=()=>authorize(!!el.querySelector('#line-add-friend')?.checked);
+  }
+  function browserLogin(){
+    m.phase='browser';
+    const el=shell('LINE Login', '<div class="line-wait-body"><h1 id="line-auth-title">LINEにログイン</h1><p>LINEアカウントでログインして<br>Dino AIへ進みます。</p><img class="line-app-logo" src="assets/dino-favicon.png" alt="Dino AI"></div>', '<button type="button" class="line-auth-primary" id="line-browser-continue">LINEアカウントで続ける</button><button type="button" class="line-auth-secondary" data-line-cancel>キャンセル</button>');
+    el.querySelector('#line-browser-continue').onclick=consent;
+  }
+  function begin(){
+    cleanup();m.enabled=true;markReview();m.last=null;result.hidden=true;
+    m.origin=$line('#device-portrait .screen.active');m.returnFocus=document.activeElement;
+    demoState.marketRoute='jp';
+    if(m.entry==='browser')browserLogin();else if(m.entry==='auto')authorize(false);else consent();
+  }
+  function showError(){
+    m.phase='error';
+    const el=shell('Dino AI', '<div class="line-wait-body"><div class="line-error-symbol" aria-hidden="true">!</div><h1 id="line-auth-title">Couldn’t log in with LINE</h1><p>Please try again.</p></div>', '<button type="button" class="line-auth-primary" id="line-retry">Try again</button><button type="button" class="line-auth-secondary" data-line-cancel>Back to login</button>');
+    el.querySelector('#line-retry').onclick=begin;
+  }
+  function authorize(add){
+    const outcome=m.outcome;
+    // LINE friendship may already change even if the later Dino session fails.
+    if(outcome!=='auth_error'&&add)m.relation='friend';
+    m.phase='pending';
+    shell('Dino AI','<div class="line-wait-body"><div class="line-spinner" aria-hidden="true"></div><h1 id="line-auth-title">Logging in with LINE…</h1><p>Please wait while we return to Dino AI.</p></div>','<button type="button" class="line-auth-secondary" data-line-cancel>Cancel login</button>');
+    const epoch=m.epoch;
+    m.timer=setTimeout(()=>{
+      if(epoch!==m.epoch||!$line('#line-auth-overlay'))return;
+      if(outcome==='auth_error'||outcome==='session_error'){showError();return;}
+      finish(outcome==='unknown'?'unknown':m.relation);
+    },outcome==='slow'?12000:900);
+  }
+  function finish(relation){
+    cleanup();m.phase='complete';
+    const shared=m.origin?.id==='screen-welcome';
+    v155EntryAuth=shared;
+    v220AuthOutcome=m.account==='new'?'signup':'login';
+    demoState.v155OnboardingStatus=m.account==='existing'?'complete':'incomplete';
+    if(m.account==='existing'&&!shared){seedReviewProfile();profile.profileComplete=true;profile.hasStartedClass=true;profile.skipOnboarding=false;}
+    if(m.account==='incomplete'){profile.profileComplete=false;profile.skipOnboarding=true;}
+    m.last={dinoUserId:'DEMO-DINO-001',lineUserId:'DEMO-LINE-001',account:m.account,friendship:relation,eligible:relation==='friend',simulated:true};
+    onLoginSuccess();
+    const texts={friend:'已确认好友，可进入 CRM 邀请候选范围。',none:'未添加好友，暂不进入 CRM 邀请范围。',blocked:'仍屏蔽官方账号，暂不可邀请。',unknown:'好友状态未知，登录已完成，暂不可邀请。'};
+    result.innerHTML='<button type="button" class="line-review-close" aria-label="收起演示结果">×</button><strong>演示结果 · LINE 登录成功</strong><p>'+escape(texts[relation])+'</p><small>已模拟建立 Dino 用户与 LINE 用户的对应关系。此 Demo 不发消息；状态与外部授权页均为交互示意。</small><br><button type="button" id="line-restart">重新演示 LINE 登录</button>';
+    result.hidden=false;
+    result.querySelector('.line-review-close').onclick=()=>{result.hidden=true;};
+    result.querySelector('#line-restart').onclick=start;
+    refresh();
+  }
+  function set(key,value){
+    const field=fields[key];if(!field)return;m[field]=value;
+    if($line('#line-auth-overlay')&&(key==='lineRelation'||key==='lineEntry')){cleanup();begin();}
+    refresh();
+  }
+  function context(){
+    if(!m.enabled)return null;
+    const active=!!$line('#line-auth-overlay');
+    const onLogin=!!$line('#screen-welcome.active,#screen-login.active')&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none';
+    if(!active&&!onLogin)return null;
+    return {label:active?'LINE · '+({browser:'浏览器登录',consent:'可选添加好友',pending:'返回 Dino',error:'登录失败'}[m.phase]||'登录'):'日本 · LINE 登录',pageKey:'line_login',isCore:true,keys:['lineAccount','lineRelation','lineEntry','lineOutcome'],note:'评审模拟，不连接真实 LINE。普通 Provider：加好友默认未勾选；可不添加直接授权。浏览器登录仅演示跳转与返回，不收集真实账号。'};
+  }
+  document.addEventListener('click',event=>{
+    if(event.target.closest('.line-login-entry')){event.preventDefault();event.stopImmediatePropagation();begin();}
+  },true);
+  window.LINE_LOGIN={start,begin,leave,set,context,get:key=>m[fields[key]],snapshot:()=>({...m,origin:m.origin?.id,returnFocus:undefined,last:m.last&&{...m.last}})};
+  window.addEventListener('load',()=>{if(new URLSearchParams(location.search).get('lineLogin')==='1')start();},{once:true});
+})();
 </script>
