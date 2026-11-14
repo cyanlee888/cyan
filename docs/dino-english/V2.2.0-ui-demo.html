@@ -8701,6 +8701,96 @@
 #screen-v220-consult button:focus-visible{outline:3px solid #a4d0ff;outline-offset:3px}
 @media(max-width:350px){.v220c-top{padding-inline:16px}.v220c-hero{padding-inline:16px}.v220c-card,.v220c-actions{margin-inline:16px}.v220c-card{padding:12px}.v220c-card li{padding-inline:9px}}
 </style>
+<style id="v220-gaid-review-style">
+#device-portrait #screen-welcome.v220-gaid-welcome,
+#device-portrait #screen-operator {
+  background:radial-gradient(ellipse at 80% 18%,#2375ed 0%,#1554df 40%,#0A2CC6 100%) !important;
+  color:#fff;
+}
+#device-portrait #screen-welcome.v220-gaid-welcome {
+  padding:24px 24px 20px;
+  overflow-y:auto;
+}
+.v220-gaid-welcome .welcome-copy { order:0; padding:6px 0 0; margin:0; text-align:center; flex:none; }
+#device-portrait .v220-gaid-welcome .logo { font:700 25px/1.2 var(--display); margin-bottom:8px; }
+#device-portrait .v220-gaid-welcome .welcome-copy .title {
+  font:700 clamp(24px,7vw,29px)/1.16 var(--display) !important; margin:0 0 8px;
+}
+#device-portrait .v220-gaid-welcome .welcome-copy .sub,
+#device-portrait #screen-operator .hint { color:#e3efff !important; font-size:15px; line-height:1.45; }
+#device-portrait .v220-gaid-welcome .welcome-hero {
+  order:1; flex:1 0 128px; min-height:128px; max-height:255px; height:auto;
+  margin:8px 0 4px; padding:0; background:none;
+}
+.v220-gaid-welcome .carousel-frame { width:100%; height:100%; overflow:visible; }
+.v220-gaid-welcome .carousel-dots { display:none; }
+.v220-gaid-hero { display:block; width:100%; height:100%; object-fit:contain; }
+#device-portrait .v220-gaid-welcome .welcome-foot {
+  order:2; flex:none; gap:12px; padding:0; background:none;
+}
+.v220-gaid-question { margin:0; text-align:center; font:700 17px/1.35 var(--display); }
+.v220-gaid-roles { display:grid; gap:12px; }
+.v220-gaid-card {
+  display:flex; align-items:center; gap:14px; width:100%; min-height:74px;
+  padding:12px 16px; border:1.5px solid #b5e1ff; border-radius:20px;
+  background:linear-gradient(135deg,#69acf6,#3579dc);
+  box-shadow:inset 0 2px 0 #ffffff66,0 4px 0 #1746a0;
+  color:#fff; text-align:left; font:700 20px/1.2 var(--display); cursor:pointer;
+  transition:transform .18s,filter .18s;
+}
+.v220-gaid-card:hover { transform:translateY(-2px); filter:brightness(1.06); }
+.v220-gaid-card:active { transform:translateY(2px); }
+.v220-gaid-card:focus-visible, .v220-gaid-welcome button:focus-visible,
+#device-portrait #screen-operator button:focus-visible { outline:3px solid #E2FF5E; outline-offset:3px; }
+.v220-gaid-icon {
+  flex:0 0 48px; height:48px; display:grid; place-items:center; border-radius:16px;
+  background:#dbf5ff; color:#2360c1; transform:rotate(-5deg);
+  box-shadow:inset 0 2px 0 #fff,0 3px 0 #2460b933;
+}
+[data-gaid-role="self"] .v220-gaid-icon { background:#E2FF5E; color:#275e50; transform:rotate(5deg); }
+.v220-gaid-icon svg { width:34px; height:34px; fill:none; stroke:currentColor; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+.v220-gaid-arrow { margin-left:auto; opacity:.85; font-size:28px; font-weight:400; }
+.v220-gaid-link {
+  min-height:44px; border:0; background:none; color:#e1ebff; text-align:center;
+  font:400 14px/1.4 var(--font); cursor:pointer;
+}
+.v220-gaid-link strong, .v220-gaid-choice-summary .v220-gaid-link { color:#FFF837; font-weight:700; }
+.v220-gaid-choice-summary {
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+  padding:0 12px; border:1px solid #ffffff55; border-radius:14px; background:#ffffff12;
+  font-size:14px;
+}
+.v220-gaid-welcome .cx-w-oauth { flex:none; min-height:48px; }
+.v220-gaid-welcome .cx-w-icons[hidden], .v220-gaid-welcome .cx-w-more { display:none !important; }
+.pauth-main .v220-gaid-phone-back { position:absolute; top:11px; left:16px; min-height:44px; color:#fff; }
+#screen-welcome .v220-gaid-auth-legal { margin:0; color:#e3efff; font-size:12px; text-align:center; }
+.v220-gaid-auth-legal a { color:inherit; }
+#device-portrait #screen-operator .top-bar { background:none; }
+#device-portrait #screen-operator .btn-back { color:#fff; min-height:44px; }
+#device-portrait #screen-operator .scroll-body { text-align:center; padding:24px 2px 12px; overflow-y:auto; }
+#device-portrait #screen-operator .title { font:700 clamp(27px,7vw,34px)/1.15 var(--display); color:#fff; margin:0; }
+#screen-operator .v220-gaid-art {
+  flex:0 0 138px; width:142px; align-self:center; margin:0 0 12px;
+  background:url("assets/gaid-review/playful-dino-universe.png") center 41%/180px auto no-repeat;
+  mask-image:radial-gradient(circle,#000 48%,transparent 72%);
+}
+#screen-operator .v220-gaid-roles { flex:none; gap:16px; }
+#screen-operator .v220-gaid-card { min-height:96px; }
+@media(max-height:740px) {
+  #device-portrait #screen-welcome.v220-gaid-welcome { padding:18px 18px 16px; }
+  #device-portrait .v220-gaid-welcome .welcome-hero { flex-basis:92px; min-height:92px; max-height:180px; }
+  .v220-gaid-card { min-height:62px; padding:10px 12px; font-size:18px; }
+  .v220-gaid-icon { flex-basis:40px; height:40px; }
+  #screen-operator .v220-gaid-art { flex-basis:108px; width:108px; background-size:135px auto; }
+  #screen-operator .v220-gaid-card { min-height:76px; }
+}
+@media(max-width:650px) {
+  body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-operator, .v220-gaid-welcome).active) #dfb-fab { display:none !important; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .v220-gaid-card { transition:none; }
+}
+</style>
 </head>
 <body class="is-group-b">
   <p class="demo-bar">V2.2.0 · 越南顾问咨询预约 · Explore、Play 与家长链路 · 右上 ⚙︎ States 切换页面与关键状态</p>
@@ -8727,6 +8817,16 @@
             <button type="button" class="cx-w-ic fb" id="cx-w-fb" aria-label="Facebook">f</button>
             <button type="button" class="cx-w-ic kakao" id="cx-w-kakao" aria-label="Kakao">K</button>
           </div>
+        </div>
+      </section>
+
+      <section class="screen" id="screen-operator" aria-labelledby="v220-gaid-role-title">
+        <div class="top-bar"><button class="btn-back" id="v220-gaid-operator-back" type="button">Back</button></div>
+        <div class="scroll-body">
+          <h1 class="title" id="v220-gaid-role-title" tabindex="-1">Who is setting up?</h1>
+          <p class="hint">Choose who is using Dino right now.</p>
+          <div class="v220-gaid-art" aria-hidden="true"></div>
+          <div class="v220-gaid-roles" id="v220-gaid-operator-roles" role="group" aria-labelledby="v220-gaid-role-title"></div>
         </div>
       </section>
 
@@ -8909,6 +9009,7 @@
             <span class="pauth-status-icons">▮▮▮ ◉ ▰</span>
           </div>
           <div class="pauth-main">
+            <button id="v220-gaid-phone-back" type="button" class="btn-back v220-gaid-phone-back" hidden>Back</button>
             <h1 class="pauth-title">Enter SMS verification code</h1>
             <p class="pauth-sub">Unregistered number: Auto register &amp; log in after verification.</p>
             <div class="pauth-field">
@@ -11059,6 +11160,13 @@
     // True only while authentication was triggered from the B-flow value-led login page.
     // The result is then routed by the signed-in account's Onboarding status.
     let v155EntryAuth = false;
+    const V220_GAID_ROUTES = Object.freeze({
+      "a-front": "选择学习对象 → 同页登录 → 学习资料",
+      "a-post": "选择学习对象 → 学习资料 → 登录",
+      b: "登录 → 选择家长或学习者 → 学习资料",
+    });
+    const gaidReview = { mode: "", role: "", welcomeStep: "choose", signedIn: false, profileReady: false };
+    const isGaidFirstLaunch = () => gaidReview.mode.startsWith("a-");
 
     const REVIEW_PROFILE = Object.freeze({
       learner: "child",
@@ -11145,8 +11253,14 @@
       document.body.classList.toggle("is-group-a", !isB);
       document.body.classList.toggle("is-group-b", isB);
       updateExperimentStepChrome();
-      const foot = document.querySelector("#screen-welcome .welcome-foot");
-      if (!foot) return;
+      const welcome = $("#screen-welcome");
+      const foot = welcome.querySelector(".welcome-foot");
+      const gaidFirstLaunch = isGaidFirstLaunch();
+      welcome.classList.toggle("v220-gaid-welcome", gaidFirstLaunch);
+      if (gaidFirstLaunch && gaidReview.welcomeStep === "choose") {
+        renderV220GaidWelcome(foot);
+        return;
+      }
       if (!isB) {
         foot.innerHTML =
           '<button type="button" class="btn btn-primary" id="btn-get-started">Get Started</button>' +
@@ -11171,7 +11285,7 @@
         const login = (kind) => {
           profile.skipOnboarding = true;
           v155EntryAuth = true;
-          if (kind === "phone" && v220ConsultReview) {
+          if (kind === "phone" && v220ConsultReview && !gaidReview.mode) {
             onLoginSuccess();
           } else if (kind === "phone") {
             openPhoneAuth("initial");
@@ -11187,7 +11301,11 @@
         document.getElementById("cx-w-fb")?.addEventListener("click", () => login("facebook"));
         document.getElementById("cx-w-kakao")?.addEventListener("click", () => login("kakao"));
       }
-      initCarousel();
+      if (gaidFirstLaunch) {
+        renderV220GaidWelcome(foot);
+      } else {
+        initCarousel();
+      }
     }
 
     function setExperimentGroup(group, navigate = true) {
@@ -11195,14 +11313,7 @@
       cxStage = null;
       postLoginInfo = false;
       profile.learner = "child";
-      profile.name = "";
-      profile.age = "";
-      profile.ageDataValue = "";
-      profile.level = "";
-      profile.goal = "";
-      profile.goalLabel = "";
-      profile.goals = [];
-      profile.goalLabels = [];
+      clearOnboardingAnswers();
       profile.profileComplete = false;
       profile.hasStartedClass = false;
       profile.trialInProgress = false;
@@ -11210,16 +11321,6 @@
       profile.trialTakenLevelId = null;
       profile.homeGuideShown = false;
       profile.skipOnboarding = demoState.experimentGroup === "b";
-      const nameInput = document.getElementById("input-name");
-      if (nameInput) nameInput.value = "";
-      document.querySelectorAll("#device-portrait .option-item.is-selected").forEach((item) => {
-        item.classList.remove("is-selected");
-        if (item.getAttribute("role") === "radio") item.setAttribute("aria-checked", "false");
-      });
-      const ageContinue = document.getElementById("btn-age-continue");
-      const placementContinue = document.getElementById("btn-pt-continue");
-      if (ageContinue) ageContinue.disabled = true;
-      if (placementContinue) placementContinue.disabled = true;
       applyVoiceWording();
       if (typeof window.cxCoachHide === "function") window.cxCoachHide();
       renderExperimentWelcome();
@@ -11227,6 +11328,25 @@
         enterPortrait();
         showPortraitScreen("screen-welcome");
       }
+    }
+
+    function clearOnboardingAnswers() {
+      Object.assign(profile, { name: "", age: "", ageDataValue: "", level: "", goal: "", goalLabel: "", goals: [], goalLabels: [] });
+      ptAnswers = [];
+      ptCurrentIdx = 0;
+      const nameInput = document.getElementById("input-name");
+      if (nameInput) {
+        nameInput.value = "";
+        nameInput.classList.remove("is-error");
+      }
+      $("#name-required-hint")?.classList.remove("is-show");
+      $$("#device-portrait :is(.option-item, .name-suggest).is-selected").forEach((item) => {
+        item.classList.remove("is-selected");
+        if (item.getAttribute("role") === "radio") item.setAttribute("aria-checked", "false");
+        if (item.hasAttribute("aria-pressed")) item.setAttribute("aria-pressed", "false");
+      });
+      $("#btn-age-continue").disabled = true;
+      $("#btn-pt-continue").disabled = true;
     }
     function activateBFlow() {
       if (demoState.experimentGroup !== "b") setExperimentGroup("b", false);
@@ -12256,11 +12376,20 @@
     }
     function onLoginSuccess() {
       const fromSharedEntry = v155EntryAuth || !!$("#screen-welcome.active");
-      const newRegistration = fromSharedEntry && v220ConsultReview && v220AuthOutcome === "signup";
+      const gaidLoginAfterProfile = gaidReview.mode === "a-post" && gaidReview.profileReady;
+      const returningGaidUser = isGaidFirstLaunch() && gaidReview.welcomeStep === "existing";
+      const newRegistration = (fromSharedEntry || gaidLoginAfterProfile) &&
+        v220ConsultReview && v220AuthOutcome === "signup" && !returningGaidUser;
       if (newRegistration && v220ConsultMarketConfig[demoState.marketRoute]?.enabled) {
         profile.contactPhone = CONSULT_REVIEW_PHONES.vn;
       }
       v155EntryAuth = false;
+      if (gaidLoginAfterProfile) {
+        gaidReview.signedIn = true;
+        if (newRegistration && openV220Consult()) return;
+        finishV220GaidOnboarding();
+        return;
+      }
       if (fromSharedEntry) {
         if (!newRegistration && demoState.v155OnboardingStatus === "complete") {
           seedReviewProfile();
@@ -12279,6 +12408,7 @@
         profile.trialTakenLevelId = null;
         profile.skipOnboarding = true;
         postLoginInfo = true;
+        if (gaidReview.mode) gaidReview.signedIn = true;
         enterPortrait();
         applyVoiceWording();
         if (newRegistration && openV220Consult()) return;
@@ -12654,6 +12784,7 @@
       }
     }
     function openPhoneAuth(mode) {
+      $("#v220-gaid-phone-back").hidden = !gaidReview.mode;
       enterPortrait();
       showPortraitScreen("screen-phone-auth");
       phoneAuthCC = LG_COUNTRIES.find((country) => country.code === "+966") || LG_COUNTRIES[0];
@@ -12750,7 +12881,9 @@
       btn.disabled = true;
       btn.textContent = "Logging in…";
       clearInterval(phoneAuthResendTimer);
-      setTimeout(onLoginSuccess, 700);
+      setTimeout(() => {
+        if ($("#screen-phone-auth.active") && btn.disabled) onLoginSuccess();
+      }, 700);
     });
 
     function lgRequestCode(scope, requestType) {
@@ -15115,6 +15248,10 @@
       });
       $("#btn-profile-logout")?.addEventListener("click", () => {
         if (confirm("Log out and return to login?")) {
+          if (gaidReview.mode) {
+            startV220GaidReview(gaidReview.mode, demoState.marketRoute, v220AuthOutcome);
+            return;
+          }
           const landscape = $("#wrap-landscape");
           const portrait = $("#wrap-portrait");
           if (landscape) landscape.style.display = "none";
@@ -16578,16 +16715,26 @@
 
     /* ===================== V1.2.0: Onboarding + Payment ===================== */
     function showPortraitScreen(id) {
+      if (id === "screen-name" && gaidReview.mode && !gaidReview.role) {
+        if (gaidReview.mode === "b") {
+          id = "screen-operator";
+        } else {
+          gaidReview.welcomeStep = "choose";
+          renderExperimentWelcome();
+          id = "screen-welcome";
+        }
+      }
       dismissDeviceLimitNotice();
       $$("#device-portrait .screen").forEach((s) => s.classList.toggle("active", s.id === id));
       $("#screen-name .btn-back")?.classList.toggle(
         "is-hidden",
-        demoState.experimentGroup === "b" || (postLoginInfo && id === "screen-name")
+        !gaidReview.mode && (demoState.experimentGroup === "b" || (postLoginInfo && id === "screen-name"))
       );
       $("#screen-loading .btn-back")?.classList.toggle("is-hidden", postLoginInfo && id === "screen-loading");
       const dp = $("#device-portrait");
       if (dp) dp.scrollTop = 0;
       if (window.VISIT_REWARD) window.VISIT_REWARD.onScreen(id);
+      if (id === "screen-operator") $("#v220-gaid-role-title").focus({ preventScroll: true });
     }
 
     // ----- Onboarding data -----
@@ -16831,7 +16978,9 @@
           });
           profile.age = btn.dataset.val;
           profile.ageDataValue = ageProfileValue(profile.age);
-          setTimeout(() => onPick(profile.age), 160);
+          setTimeout(() => {
+            if ($("#screen-age.active") && profile.age) onPick(profile.age);
+          }, 160);
         });
       });
     }
@@ -16874,6 +17023,7 @@
       if (bullets) bullets.hidden = true;
       if (box) box.hidden = false;
       $("#goal-value-h1").textContent = `What are ${valueSubject()}'s learning goals?`;
+      if (!isParentVoice()) $("#goal-value-h1").textContent = "What are your learning goals?";
       $("#goal-value-h2").textContent = "Select all that apply. You can choose more than one.";
       const foot = document.querySelector("#screen-goal-value .foot-actions");
       if (foot) foot.style.display = "";
@@ -16938,7 +17088,11 @@
         profile.level ? `Level ${profile.level}` : "",
         ...(profile.goalLabels?.length ? profile.goalLabels : [profile.goalLabel]).filter(Boolean),
       ].filter(Boolean);
-      $("#login-chips").innerHTML = chips.map((c) => `<span>${c}</span>`).join("");
+      $("#login-chips").replaceChildren(...chips.map((text) => {
+        const chip = document.createElement("span");
+        chip.textContent = text;
+        return chip;
+      }));
     }
 
     let loadingTimer = null;
@@ -16962,16 +17116,17 @@
         if (progress >= 100) {
           clearInterval(loadingTimer);
           loadingTimer = null;
-          if (afterComplete === "teacher") {
-            setTimeout(() => {
+          setTimeout(() => {
+            if (!$("#screen-loading.active") || getComputedStyle($("#wrap-portrait")).display === "none") return;
+            if (afterComplete === "teacher") {
               if (options.clearPostLoginInfo) postLoginInfo = false;
               enterLandscape();
               openTeacherPicker("onboarding");
-            }, 400);
-          } else {
-            fillLogin();
-            setTimeout(() => showPortraitScreen("screen-login"), 400);
-          }
+            } else {
+              fillLogin();
+              showPortraitScreen("screen-login");
+            }
+          }, 400);
         }
       }, 70);
     }
@@ -17058,11 +17213,15 @@
     function renderPlacementQuestion(idx) {
       const total = 1; // V1.3.0: one self-assessment question; its options vary by age.
       const name = profile.name || "your child";
-      $("#pt-question").textContent = PLACEMENT_PROMPT.prompt.replace(/\{name\}/g, name);
+      $("#pt-question").textContent = isParentVoice()
+        ? PLACEMENT_PROMPT.prompt.replace(/\{name\}/g, name)
+        : "Which best describes your English right now?";
       const hintEl = $("#pt-hint");
       if (hintEl) {
         hintEl.hidden = false;
-        hintEl.textContent = PLACEMENT_PROMPT.hint.replace(/\{name\}/g, name);
+        hintEl.textContent = isParentVoice()
+          ? PLACEMENT_PROMPT.hint.replace(/\{name\}/g, name)
+          : "Pick the one that fits best. Dino adjusts the level as you learn.";
       }
       const box = $("#pt-options");
       box.innerHTML = "";
@@ -17193,6 +17352,19 @@
       });
       // Continue directly after the learning goals are confirmed.
       $("#btn-goal-value-continue")?.addEventListener("click", () => {
+        if (gaidReview.mode) {
+          if (!profile.goals.length) return;
+          gaidReview.profileReady = true;
+          if (gaidReview.signedIn) {
+            postLoginInfo = false;
+            profile.profileComplete = true;
+            completeOnboarding({ afterComplete: "teacher" });
+          } else {
+            profile.skipOnboarding = false;
+            completeOnboarding();
+          }
+          return;
+        }
         if (demoState.experimentGroup === "b") {
           if (!profile.goals?.length) return;
           postLoginInfo = false;
@@ -17209,6 +17381,14 @@
       $$("#device-portrait .btn-back[data-back]").forEach((btn) => {
         btn.addEventListener("click", () => {
           let target = btn.dataset.back;
+          if (gaidReview.mode && btn.closest("#screen-name")) {
+            if (gaidReview.mode === "b") {
+              showPortraitScreen("screen-operator");
+            } else {
+              backToV220GaidChoice();
+            }
+            return;
+          }
           // During post-login info completion the user can't go back to the welcome screen.
           if (postLoginInfo && target === "screen-welcome") return;
           showPortraitScreen(target);
@@ -17453,8 +17633,28 @@
       failed:"We couldn’t send your request. Try again or explore on your own.", retry:"Try again",
       toast:"Consultation request received"
     };
+    const v220ConsultLearnerCopy = {
+      "vi": {
+        title: "Khám phá các khóa tiếng Anh của Dino AI",
+        body: "Trao đổi với chuyên viên Dino AI để tìm cách học tiếng Anh phù hợp.",
+        topics: ["Tìm hiểu cách học trong khóa học", "Tìm lộ trình học phù hợp", "Tìm hiểu cách bắt đầu bài học thử"],
+      },
+      "zh-CN": {
+        title: "了解 Dino AI 英语课程",
+        body: "和 Dino AI 顾问聊聊课程与学习方式。",
+        topics: ["了解课程怎么学", "咨询合适的学习方式", "了解如何开始体验课"],
+      },
+      en: {
+        title: "Explore Dino AI’s English courses",
+        body: "Talk with a Dino AI advisor about our courses and learning options.",
+        topics: ["See how the course works", "Find a learning plan that fits", "Learn how to start a trial lesson"],
+      },
+    };
     function renderV220Consult() {
-      const c = v220ConsultCopy, busy = v220ConsultStatus === "sending";
+      const c = gaidReview.mode && gaidReview.role !== "child"
+        ? { ...v220ConsultCopy, ...v220ConsultLearnerCopy[v220ConsultLang] }
+        : v220ConsultCopy;
+      const busy = v220ConsultStatus === "sending";
       $("#screen-v220-consult").lang = v220ConsultLang;
       const status = $("#v220c-status");
       $("#v220c-title").textContent = c.title;
@@ -17479,13 +17679,20 @@
       $("#v220c-title").focus();
       return true;
     }
-    function continueV220Consult() { showPortraitScreen("screen-name"); }
+    function continueV220Consult() {
+      if (gaidReview.mode === "a-post" && gaidReview.signedIn && gaidReview.profileReady) {
+        finishV220GaidOnboarding();
+      } else {
+        showPortraitScreen("screen-name");
+      }
+    }
     $("#v220c-skip").addEventListener("click", continueV220Consult);
     $("#v220c-primary").addEventListener("click", () => {
       if (v220ConsultStatus === "sending") return;
       v220ConsultStatus = "sending";
       renderV220Consult();
       setTimeout(() => {
+        if (v220ConsultStatus !== "sending") return;
         if (v220ConsultResult === "fail") {
           v220ConsultResult = "success";
           v220ConsultStatus = "failed";
@@ -17507,7 +17714,6 @@
       }, 450);
     });
     function startV220ConsultReview(market = "vn", result = "success", outcome = "signup") {
-      window.v160ReviewStart();
       v220ConsultReview = true;
       v220AuthOutcome = outcome;
       v220ConsultResult = result;
@@ -17521,8 +17727,143 @@
       demoState.vnConsultOutboundSynced = false;
       profile.premiumUnlocked = false;
       profile.contactPhone = "";
+      window.v160ReviewStart();
       window.demoStatePanel?.render();
     }
+
+    // Android GAID review compares where to ask about the learner. All authentication
+    // is simulated, and these choices never access an advertising ID.
+    function v220GaidCards(childLabel, selfLabel) {
+      const icons = {
+        child: '<circle cx="22" cy="18" r="8"/><path d="M7 49v-6a15 15 0 0 1 30 0v6"/><circle cx="44" cy="29" r="6"/><path d="M36 49v-3a9 9 0 0 1 18 0v3"/>',
+        self: '<path d="M29 17C21 12 12 12 5 15v32c8-3 17-2 24 3 7-5 16-6 24-3V15c-7-3-16-3-24 2v33"/><path d="M12 24h10m-10 8h10m14-8h10m-10 8h10"/>',
+      };
+      return [["child", childLabel], ["self", selfLabel]].map(([role, label]) =>
+        '<button type="button" class="v220-gaid-card" data-gaid-role="' + role + '">' +
+        '<span class="v220-gaid-icon" aria-hidden="true"><svg viewBox="0 0 60 60">' + icons[role] + '</svg></span>' +
+        '<span>' + label + '</span><span class="v220-gaid-arrow" aria-hidden="true">›</span></button>'
+      ).join("");
+    }
+
+    function renderV220GaidWelcome(foot) {
+      clearInterval(carouselTimer);
+      carouselTimer = null;
+      const frame = $("#carousel-frame");
+      if (!frame.querySelector(".v220-gaid-hero")) {
+        frame.innerHTML = '<img class="v220-gaid-hero" src="assets/gaid-review/welcome-reading-dino.png" alt="">';
+      }
+      $("#screen-welcome .title").textContent = "Learn, speak & explore";
+      $("#screen-welcome .sub").innerHTML = "AI-guided lessons.<br>A little progress every day.";
+      if (gaidReview.welcomeStep === "choose") {
+        foot.innerHTML = '<p class="v220-gaid-question" id="v220-gaid-question">Who are you setting up for?</p>' +
+          '<div class="v220-gaid-roles" role="group" aria-labelledby="v220-gaid-question">' +
+          v220GaidCards("For my child", "For myself") + '</div>' +
+          (gaidReview.signedIn ? "" :
+            '<button class="v220-gaid-link" id="v220-gaid-existing" type="button">Already have an account? <strong>Log in</strong></button>');
+        $("#v220-gaid-existing")?.addEventListener("click", () => {
+          gaidReview.welcomeStep = "existing";
+          renderExperimentWelcome();
+          $("#cx-w-google").focus();
+        });
+        return;
+      }
+
+      const existing = gaidReview.welcomeStep === "existing";
+      const message = existing ? "Welcome back" : gaidReview.role === "child" ? "Setting up for my child" : "Setting up for myself";
+      foot.insertAdjacentHTML("afterbegin", '<div class="v220-gaid-choice-summary"><span>' + message + '</span>' +
+        '<button class="v220-gaid-link" id="v220-gaid-change" type="button">' + (existing ? "Back" : "Change") + '</button></div>');
+      $("#v220-gaid-change").addEventListener("click", backToV220GaidChoice);
+      const moreMethods = foot.querySelector(".cx-w-icons");
+      moreMethods.id = "v220-gaid-more-methods";
+      moreMethods.hidden = true;
+      foot.insertAdjacentHTML("beforeend",
+        '<button class="v220-gaid-link" id="v220-gaid-more" type="button" aria-expanded="false" ' +
+        'aria-controls="v220-gaid-more-methods">More login options</button>' +
+        '<p class="v220-gaid-auth-legal">By continuing, you agree to our <a href="https://www.dinoai.ai/website/terms/" ' +
+        'target="_blank" rel="noopener">Terms</a> and <a href="https://www.dinoai.ai/website/privacy/" ' +
+        'target="_blank" rel="noopener">Privacy Policy</a>.</p>');
+      const more = $("#v220-gaid-more");
+      more.before(moreMethods);
+      more.addEventListener("click", () => {
+        moreMethods.hidden = !moreMethods.hidden;
+        more.setAttribute("aria-expanded", String(!moreMethods.hidden));
+        more.textContent = moreMethods.hidden ? "More login options" : "Fewer login options";
+      });
+    }
+
+    function backToV220GaidChoice() {
+      gaidReview.welcomeStep = "choose";
+      renderExperimentWelcome();
+      showPortraitScreen("screen-welcome");
+      $("#screen-welcome [data-gaid-role]").focus();
+    }
+
+    function chooseV220GaidRole(role) {
+      if (gaidReview.role !== role) {
+        clearOnboardingAnswers();
+        gaidReview.profileReady = false;
+      }
+      gaidReview.role = role;
+      profile.learner = role;
+      applyVoiceWording();
+      if (gaidReview.mode === "a-front" && !gaidReview.signedIn) {
+        gaidReview.welcomeStep = "login";
+        renderExperimentWelcome();
+        $("#cx-w-google").focus();
+        return;
+      }
+      showPortraitScreen("screen-name");
+      $("#input-name").focus({ preventScroll: true });
+    }
+
+    function finishV220GaidOnboarding() {
+      profile.profileComplete = true;
+      postLoginInfo = false;
+      openTeacherPicker("onboarding");
+    }
+
+    function leaveV220GaidReview() {
+      if (!gaidReview.mode) return;
+      const wasFirstLaunch = isGaidFirstLaunch();
+      Object.assign(gaidReview, { mode: "", role: "", welcomeStep: "choose", signedIn: false, profileReady: false });
+      v155EntryAuth = false;
+      v220ConsultStatus = "ready";
+      clearInterval(loadingTimer);
+      loadingTimer = null;
+      clearInterval(phoneAuthResendTimer);
+      lgCloseAll($("#screen-login"));
+      $$(".cx-oauth").forEach(overlay => overlay.remove());
+      if (wasFirstLaunch) renderExperimentWelcome();
+    }
+
+    function startV220GaidReview(mode, market = "other", outcome = "signup") {
+      if (!Object.hasOwn(V220_GAID_ROUTES, mode)) return;
+      leaveV220GaidReview();
+      gaidReview.mode = mode;
+      startV220ConsultReview(market, "success", outcome);
+      window.demoStatePanel?.panel.classList.remove("open");
+    }
+
+    $("#v220-gaid-operator-roles").innerHTML = v220GaidCards("I am a parent", "I am a learner");
+    $("#device-portrait").addEventListener("click", (event) => {
+      const choice = event.target.closest("[data-gaid-role]");
+      if (choice && gaidReview.mode && choice.closest(".screen.active")) {
+        chooseV220GaidRole(choice.dataset.gaidRole);
+      }
+    });
+    $("#v220-gaid-operator-back").addEventListener("click", () => {
+      startV220GaidReview("b", demoState.marketRoute, v220AuthOutcome);
+    });
+    $("#v220-gaid-phone-back").addEventListener("click", () => {
+      clearInterval(phoneAuthResendTimer);
+      if (v155EntryAuth) {
+        v155EntryAuth = false;
+        showPortraitScreen("screen-welcome");
+      } else {
+        showPortraitScreen("screen-login");
+      }
+    });
+
     if (["vn","other","login","paid","leadgen","control"].includes(v220ConsultEntry)) {
       window.addEventListener("load", () => startV220ConsultReview(
         ["other","control"].includes(v220ConsultEntry) ? "other" : "vn",
@@ -19327,6 +19668,7 @@
         }
         if (ctx.isCore) {
           html += '<div class="sp-state-wrap"><p class="sp-state-title">当前页面状态 · ' + esc(ctx.label) + '</p>';
+          if (ctx.note) html += '<p class="sp-note">' + esc(ctx.note) + '</p>';
           if (visible.length) {
             html += visible.map(function (g) {
               return '<div class="sp-group"><p>' + esc(g.label) + '</p><div class="sp-seg">' +
@@ -19635,6 +19977,7 @@
     // themeCourseRun 残留会误劫持下一节普通课/漏斗课的完课分支（themeReportOpen 同理）。
     // 切换快捷状态时收起引导蒙层。
     beforeJump: function () {
+      leaveV220GaidReview();
       window.PROMO_CODE?.leave();
       window.CLASS_PERMISSIONS?.cancel();
       if (window.v200BeforeJump) window.v200BeforeJump();
@@ -19654,6 +19997,7 @@
       if (key.indexOf("ip") === 0 && window.IP_ANIMATION) return window.IP_ANIMATION.getValue(key);
       if (window.v200GetValue && key.indexOf("v200") === 0) return window.v200GetValue(key);
       if (key === "experimentGroup") return demoState.experimentGroup;
+      if (key === "gaidSetup") return gaidReview.mode;
       if (key === "v220ConsultRegion") return demoState.marketRoute === "vn" ? "vn" : "other";
       if (key === "v220AuthOutcome") return v220AuthOutcome;
       if (key === "v155OnboardingStatus") return demoState.v155OnboardingStatus;
@@ -19754,6 +20098,17 @@
       // V1.3.0: study plan + trial report are portrait takeovers.
       var pel = document.querySelector("#device-portrait .screen.active");
       var pid = pel ? pel.id : null;
+      if (gaidReview.mode && ["screen-welcome", "screen-operator", "screen-phone-auth",
+        "screen-login", "screen-v220-consult", "screen-name", "screen-age",
+        "screen-placement", "screen-goal-value", "screen-loading"].includes(pid)) {
+        const keys = ["gaidSetup"];
+        if (pid === "screen-welcome") keys.push("v220ConsultRegion", "v220AuthOutcome");
+        const label = { "a-front": "A · 登录前置", "a-post": "A · 登录后置", b: "B · 身份题" }[gaidReview.mode];
+        return {
+          label, pageKey: "gaid_" + gaidReview.mode, isCore: true, keys,
+          note: V220_GAID_ROUTES[gaidReview.mode] + "。再次点选当前模式可重新体验。GAID 保持关闭。",
+        };
+      }
       if (pid === "screen-v220-consult") return { label: "越南 · 顾问电话咨询", pageKey: "v220_consult", isCore: true, keys: [] };
       if (pid === "screen-phone-auth") return ctx("手机号登录", []);
       if (pid === "screen-loading") return ctx("Onboarding 加载页", []);
@@ -19840,6 +20195,9 @@
         apply: function (v) { demoState.v180PaymentResult = v; } },
       { key:"v220ConsultRegion", label:"咨询配置 · 国家或地区", options:[["vn","越南"],["other","非越南"]], apply:v=>{v220ConsultReview=true;demoState.marketRoute=v;} },
       { key:"v220AuthOutcome", label:"登录注册结果", options:[["signup","新注册"],["login","已有账号登录（含 Leadform）"]], apply:v=>{v220ConsultReview=true;v220AuthOutcome=v;} },
+      { key:"gaidSetup", label:"Android GAID 分流",
+        options:[["a-front","A · 先登录"],["a-post","A · 先填资料"],["b","B · 身份题"]],
+        apply:v=>startV220GaidReview(v, demoState.marketRoute, v220AuthOutcome) },
       { key: "v155OnboardingStatus", label: "登录账号 Onboarding",
         options: [["incomplete", "未完成"], ["complete", "已完成"]],
         apply: function (v) {
@@ -20091,6 +20449,9 @@
     ],
     corePagesLabel: "V2.2.0 · 关键页面",
     corePages: [
+      { key: "gaid_a-front", label: "GAID A · 登录前置", run: () => startV220GaidReview("a-front") },
+      { key: "gaid_a-post", label: "GAID A · 登录后置", run: () => startV220GaidReview("a-post") },
+      { key: "gaid_b", label: "GAID B · Onboarding 身份题", run: () => startV220GaidReview("b") },
       { key: "v220_consult", label: "新注册 · 展示咨询", run: () => { startV220ConsultReview("vn"); $("#cx-w-phone")?.click(); } },
       { key: "v220_consult_bypass", label: "新注册 · 不展示咨询", run: () => { startV220ConsultReview("other"); $("#cx-w-phone")?.click(); } },
     ],
@@ -20900,7 +21261,7 @@
       var host = document.getElementById(land ? "device-landscape" : "device-portrait") || document.body;
       host.appendChild(ov);
       var cont = ov.querySelector(".cx-oauth-continue");
-      cont.onclick = function(){ cont.textContent = "Authorizing…"; cont.disabled = true; setTimeout(function(){ ov.remove(); if(typeof onLoginSuccess==="function") onLoginSuccess(); }, 850); };
+      cont.onclick = function(){ cont.textContent = "Authorizing…"; cont.disabled = true; setTimeout(function(){ if(!ov.isConnected)return; ov.remove(); if(typeof onLoginSuccess==="function") onLoginSuccess(); }, 850); };
       ov.querySelector(".cx-oauth-cancel").onclick = function(){ v155EntryAuth = false; ov.remove(); };
       ov.addEventListener("click", function(e){ if(e.target===ov){ v155EntryAuth = false; ov.remove(); } });
     }
@@ -25796,7 +26157,16 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  let sdk=null,pagBytes=null,current=null;
  function loadSDK(){if(!sdk)sdk=import(new URL(base+'libpag/libpag.esm.js',document.baseURI).href).then(({PAGInit})=>PAGInit({locateFile:file=>new URL(base+'libpag/'+file,document.baseURI).href})).catch(e=>{sdk=null;throw e;});return sdk;}
  function loadFile(){if(!pagBytes)pagBytes=fetch(base+'teacher_max_first_lesson_welcome_en.pag').then(r=>{if(!r.ok)throw Error('Animation unavailable');return r.arrayBuffer()}).catch(e=>{pagBytes=null;throw e;});return pagBytes;}
- function html(course,zh=false){return `<div class="pj-entry-hero pj-max-entry" data-max-entry data-media-state="loading"><div class="pj-max-actor" role="img" aria-label="${zh?'Max 老师欢迎孩子开始体验课':'Max welcomes your child to the first lesson'}"><img src="${base}poster.png" alt="" width="1440" height="1440" fetchpriority="high"><canvas aria-hidden="true" width="720" height="720"></canvas></div><article class="pj-max-course"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="300" height="230"><h2>${escaped(course.title)}</h2><span>${zh?'体验课':'Trial lesson'}</span></article><button type="button" class="pj-max-audio-enable" data-max-enable hidden>${zh?'点击听 Max 欢迎语':'Tap to hear Max'}</button></div>`;}
+ function html(course,zh=false){
+  const welcome = isParentVoice()
+    ? (zh ? 'Max 老师欢迎孩子开始体验课' : 'Max welcomes your child to the first lesson')
+    : (zh ? 'Max 老师欢迎你开始体验课' : 'Max welcomes you to the first lesson');
+  return `<div class="pj-entry-hero pj-max-entry" data-max-entry data-media-state="loading">
+   <div class="pj-max-actor" role="img" aria-label="${welcome}"><img src="${base}poster.png" alt="" width="1440" height="1440" fetchpriority="high"><canvas aria-hidden="true" width="720" height="720"></canvas></div>
+   <article class="pj-max-course"><img src="${classPathAsset('ip-quiz/q3-school.png')}" alt="" width="300" height="230"><h2>${escaped(course.title)}</h2><span>${zh?'体验课':'Trial lesson'}</span></article>
+   <button type="button" class="pj-max-audio-enable" data-max-enable hidden>${zh?'点击听 Max 欢迎语':'Tap to hear Max'}</button>
+  </div>`;
+ }
  function visible(root){return root.classList.contains('active')&&root.dataset.pjPage==='entry'&&getComputedStyle(document.getElementById('wrap-portrait')).display!=='none'&&!document.hidden;}
  function release(s){
   if(s.releaseScheduled)return;s.releaseScheduled=true;
@@ -25876,7 +26246,29 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
  function approvedLearningPlan(name,level,clips,course){return window.V220_PRETRIAL_PLAN.html({name,course});}
  function hero(){return '<img class="pj-art" src="assets/v220/parent-journey/classroom-with-dino.png" alt="AI 老师通过屏幕与孩子互动的插画" />';}
  function render(){let body='',foot='';const pg=m.page;const scrollTop=root.dataset.pjPage===pg?(root.querySelector('.pj-scroll')?.scrollTop||0):0;root.dataset.pjPage=pg;root.lang=m.locale==='en'?'en':'zh-CN';
-  if(pg==='entry'){body=`<div class="pj-approved-entry pj-crisp-entry"><div class="pj-personal-heading"><h1>${esc(profile.name?.trim()?`Let’s check ${profile.name.trim()}’s English level`:'Let’s check your child’s English level')}</h1><p>${esc(profile.name?.trim()?`Have ${profile.name.trim()} take a 10-minute lesson so we can personalize their learning plan.`:'Have your child take a 10-minute lesson so we can personalize their learning plan.')}</p></div>${window.V220_MAX_ENTRY.html(classPathTrialCourse(),m.locale==='zh')}<div class="pj-entry-actions"><button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${txt('开始上课','Start lesson')}</span><span class="pj-entry-action-note">${txt('请确认孩子在你身边','Make sure your child is with you')}</span></button><button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择时间','Choose a time')}</span></button></div></div>`;foot='';}
+ if(pg==='entry'){
+  const name = profile.name?.trim();
+  const parent = isParentVoice();
+  const title = parent
+    ? (name ? `Let’s check ${name}’s English level` : 'Let’s check your child’s English level')
+    : txt('来测测你的英语水平', 'Let’s check your English level');
+  const intro = parent
+    ? (name ? `Have ${name} take a 10-minute lesson so we can personalize their learning plan.`
+      : 'Have your child take a 10-minute lesson so we can personalize their learning plan.')
+    : txt('上一节 10 分钟的体验课，找到适合你的学习起点。', 'Take a 10-minute lesson to find the right starting point for you.');
+  const startNote = parent
+    ? txt('请确认孩子在你身边','Make sure your child is with you')
+    : txt('和 Max 一起上第一课','Take your first lesson with Max');
+  body = `<div class="pj-approved-entry pj-crisp-entry">
+   <div class="pj-personal-heading"><h1>${esc(title)}</h1><p>${esc(intro)}</p></div>
+   ${window.V220_MAX_ENTRY.html(classPathTrialCourse(),m.locale==='zh')}
+   <div class="pj-entry-actions">
+    <button class="pj-art-hit pj-art-start" data-pj="start"><span class="pj-entry-action-title">${txt('开始上课','Start lesson')}</span><span class="pj-entry-action-note">${startNote}</span></button>
+    <button class="pj-art-hit pj-art-later" data-pj="reserve"><span class="pj-entry-action-title">${t('later')}</span><span class="pj-entry-action-note">${txt('选择时间','Choose a time')}</span></button>
+   </div>
+  </div>`;
+  foot='';
+ }
   if(pg==='preview'){
    const name=String(profile.name||'').trim(),level=String(profile.level||'').trim(),course=classPathTrialCourse();
    const clips=txt(['老师：What animal is this?','孩子：A cat!'],['Teacher: What animal is this?','Child: A cat!']);
@@ -27098,3 +27490,9 @@ dialog.querySelector('[data-gate-cancel]').onclick=()=>{pending=null;dialog.clos
 @media(max-width:350px){.pj-pretrial-card{padding:16px}.pj-pretrial-step{padding-left:30px}.pj-pretrial-first{padding-left:36px}.pj-pretrial-scope{padding:12px}.pj-pretrial-trial{gap:8px}.pj-pretrial-trial img{width:64px;height:52px}.pj-pretrial-hero{padding-left:20px;padding-right:102px}.pj-pretrial-level{font-size:31px}.pj-pretrial-character{right:12px;width:76px}}
 @media(prefers-reduced-motion:reduce){.pj-pretrial-plan *{scroll-behavior:auto!important}}
 </style>
+<script id="v220-gaid-review-entry">
+  window.addEventListener("load", () => {
+    const mode = new URLSearchParams(location.search).get("gaid");
+    if (mode) startV220GaidReview(mode);
+  }, { once: true });
+</script>
