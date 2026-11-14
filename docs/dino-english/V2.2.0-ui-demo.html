@@ -8724,8 +8724,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
     max-height:calc(100dvh - 110px);
   }
 }
-#device-portrait #screen-welcome.v220-gaid-welcome,
-#device-portrait #screen-operator {
+#device-portrait #screen-welcome.v220-gaid-welcome {
   background:radial-gradient(ellipse at 80% 18%,#2375ed 0%,#1554df 40%,#0A2CC6 100%) !important;
   color:#fff;
 }
@@ -8738,8 +8737,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 #device-portrait .v220-gaid-welcome .welcome-copy .title {
   font:700 clamp(24px,7vw,29px)/1.16 var(--display) !important; margin:0 0 8px;
 }
-#device-portrait .v220-gaid-welcome .welcome-copy .sub,
-#device-portrait #screen-operator .hint { color:#e3efff !important; font-size:15px; line-height:1.45; }
+#device-portrait .v220-gaid-welcome .welcome-copy .sub { color:#e3efff !important; font-size:15px; line-height:1.45; }
 #device-portrait .v220-gaid-welcome .welcome-hero {
   order:1; flex:1 0 128px; min-height:128px; max-height:255px; height:auto;
   margin:8px 0 4px; padding:0; background:none;
@@ -8762,8 +8760,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 }
 .v220-gaid-card:hover { transform:translateY(-2px); filter:brightness(1.06); }
 .v220-gaid-card:active { transform:translateY(2px); }
-.v220-gaid-card:focus-visible, .v220-gaid-welcome button:focus-visible,
-#device-portrait #screen-operator button:focus-visible { outline:3px solid #E2FF5E; outline-offset:3px; }
+.v220-gaid-card:focus-visible, .v220-gaid-welcome button:focus-visible { outline:3px solid #E2FF5E; outline-offset:3px; }
 .v220-gaid-icon {
   flex:0 0 48px; height:48px; display:grid; place-items:center; border-radius:16px;
   background:#dbf5ff; color:#2360c1; transform:rotate(-5deg);
@@ -8787,34 +8784,159 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 .pauth-main .v220-gaid-phone-back { position:absolute; top:11px; left:16px; min-height:44px; color:#fff; }
 #screen-welcome .v220-gaid-auth-legal { margin:0; color:#e3efff; font-size:12px; text-align:center; }
 .v220-gaid-auth-legal a { color:inherit; }
-#device-portrait #screen-operator .top-bar { background:none; }
-#device-portrait #screen-operator .btn-back { color:#fff; min-height:44px; }
-#device-portrait #screen-operator .scroll-body { text-align:center; padding:24px 2px 12px; overflow-y:auto; }
-#device-portrait #screen-operator .title { font:700 clamp(27px,7vw,34px)/1.15 var(--display); color:#fff; margin:0; }
-#screen-operator .v220-gaid-art {
-  flex:0 0 138px; width:142px; align-self:center; margin:0 0 12px;
-  background:url("assets/gaid-review/playful-dino-universe.png") center 41%/180px auto no-repeat;
-  mask-image:radial-gradient(circle,#000 48%,transparent 72%);
-}
-#screen-operator .v220-gaid-roles { flex:none; gap:16px; }
-#screen-operator .v220-gaid-card { min-height:96px; }
 @media(max-height:740px) {
   #device-portrait #screen-welcome.v220-gaid-welcome { padding:18px 18px 16px; }
   #device-portrait .v220-gaid-welcome .welcome-hero { flex-basis:92px; min-height:92px; max-height:180px; }
   .v220-gaid-card { min-height:62px; padding:10px 12px; font-size:18px; }
   .v220-gaid-icon { flex-basis:40px; height:40px; }
-  #screen-operator .v220-gaid-art { flex-basis:108px; width:108px; background-size:135px auto; }
-  #screen-operator .v220-gaid-card { min-height:76px; }
 }
 @media(max-height:620px) {
   #device-portrait .v220-gaid-welcome .welcome-hero { flex-basis:72px; min-height:72px; margin-block:4px 0; }
   #device-portrait .v220-gaid-welcome .welcome-foot { gap:8px; }
 }
 @media(max-width:650px) {
-  body:has(#wrap-portrait:not([style*="display: none"]) :is(#screen-operator, .v220-gaid-welcome).active) #dfb-fab { display:none !important; }
+  body:has(#wrap-portrait:not([style*="display: none"]) .v220-gaid-welcome.active) #dfb-fab { display:none !important; }
 }
 @media(prefers-reduced-motion:reduce) {
   .v220-gaid-card { transition:none; }
+}
+</style>
+<style id="v220-b-onboarding-style">
+.v220-onboarding-status, .dino-wrap .v220-onboarding-dino { display:none; }
+.device.portrait.v220-b-onboarding:has(.v220-onboarding-question.active) > .v220-onboarding-status {
+  position:absolute; z-index:2; top:16px; inset-inline:20px; padding-inline:24px 6px;
+  display:flex; justify-content:space-between; align-items:center; pointer-events:none;
+  color:#fff; font:600 15px/20px system-ui,sans-serif;
+}
+.device.portrait.v220-b-onboarding .v220-onboarding-question {
+  --onboarding-font:"Poppins", var(--font);
+  --onboarding-option-text:#2a2c32;
+  --onboarding-option-bg:linear-gradient(180deg,#d8eaff,#fff);
+  --onboarding-pick-bg:#fffcce;
+  --onboarding-pick-border:#ffbe46;
+  isolation:isolate; overflow:hidden; padding:44px 20px clamp(20px,7vh,58px);
+  background:#1038cc; color:#fff; font-family:var(--onboarding-font);
+}
+.v220-b-onboarding .v220-onboarding-question::before {
+  content:""; position:absolute; z-index:-2; inset:-4.3% -6% -17%;
+  background:url("assets/gaid-review/onboarding/question-background.png") center 36% / cover no-repeat;
+  filter:blur(15px); pointer-events:none;
+}
+.device.portrait.v220-b-onboarding .v220-onboarding-question .top-bar {
+  min-height:44px; padding:0; flex:none; background:none;
+}
+.v220-b-onboarding .v220-onboarding-question .btn-back {
+  display:grid; place-items:center; flex:none; width:44px; height:44px;
+  margin-left:-16px; padding:0; border:0; background:none; color:#fff; font-size:0;
+}
+.v220-b-onboarding .v220-onboarding-question .btn-back::before {
+  content:""; width:40px; height:40px;
+  background:url("assets/gaid-review/onboarding/question-back.svg") center no-repeat;
+}
+.device.portrait.v220-b-onboarding .v220-onboarding-question .step-label {
+  padding:2px 10px; border:1px solid #ffffff38; border-radius:999px; background:#ffffff30;
+  color:#fff; font:600 14px/1.4 var(--onboarding-font); letter-spacing:0;
+}
+.v220-b-onboarding .v220-onboarding-question .progress-bar {
+  flex:0 0 6px; margin:10px 0 0; background:#fff;
+}
+.v220-b-onboarding .v220-onboarding-question .progress-fill { background:#ffda37; }
+.device.portrait.v220-b-onboarding .v220-onboarding-question .scroll-body {
+  gap:0; padding:24px 0 6px; text-align:left;
+}
+.device.portrait.v220-b-onboarding .v220-onboarding-question .title {
+  margin:0; color:#fff; font:700 24px/1.45 var(--onboarding-font); letter-spacing:0;
+}
+.device.portrait.v220-b-onboarding .v220-onboarding-question .hint {
+  margin:12px 0 0; color:#e2ecff; font:500 16px/1.5 var(--onboarding-font);
+}
+.v220-b-onboarding .v220-onboarding-question .option-list { gap:14px; margin-top:22px; flex:none; }
+.v220-b-onboarding :is(#screen-operator,#screen-placement,#screen-goal-value) .option-item,
+.v220-b-onboarding #age-options .age-option {
+  min-height:52px; padding:12px 22px; border:2px solid transparent; border-radius:16px;
+  background:var(--onboarding-option-bg); color:var(--onboarding-option-text);
+  font:500 16px/1.35 var(--onboarding-font); box-shadow:none;
+}
+#device-portrait.v220-b-onboarding .v220-onboarding-question .option-item:is(.is-selected,:active) {
+  background:var(--onboarding-pick-bg); border-color:var(--onboarding-pick-border);
+}
+.v220-b-onboarding .v220-onboarding-question button:focus-visible {
+  outline:3px solid #ffda37; outline-offset:-3px;
+}
+.v220-b-onboarding #age-options.age-option-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.v220-b-onboarding #age-options .age-option { min-height:60px; padding:6px; }
+.v220-b-onboarding .v220-onboarding-question .foot-actions { padding:12px 0 0; }
+.v220-b-onboarding .v220-onboarding-question .btn-primary {
+  min-height:52px; border:0; border-radius:999px;
+  background:linear-gradient(#fcc24f,#ff821c); box-shadow:0 2px 0 #ef6a1d;
+  color:#fff; font:600 16px/1.3 var(--onboarding-font);
+}
+.v220-b-onboarding .v220-onboarding-question .btn-primary:disabled {
+  background:linear-gradient(#fee6b8,#ffcea5); box-shadow:0 2px 0 #ffb58b; opacity:1;
+}
+.v220-b-onboarding #screen-name::after {
+  content:""; position:absolute; z-index:-1; inset:auto -32% -54px -24%; height:clamp(185px,40%,323px);
+  background:url("assets/gaid-review/onboarding/nickname-platform.png") center 40% / cover no-repeat;
+  mask-image:linear-gradient(transparent,#000 37%); pointer-events:none;
+}
+.v220-b-onboarding #screen-name .name-field {
+  width:100%; min-height:60px; margin:16px 0 0; padding:12px 22px; border:2px solid transparent;
+  border-radius:16px; background:#e8f3ff; color:var(--onboarding-option-text);
+  font:600 14px/1.4 var(--onboarding-font);
+}
+.v220-b-onboarding #screen-name .name-field:focus { border-color:var(--onboarding-pick-border); }
+.v220-b-onboarding #screen-name .name-field.is-error { border-color:#e5484d; }
+.v220-b-onboarding #screen-name .name-field::placeholder { color:#666e7c; }
+.v220-b-onboarding #screen-name .name-suggest-row { gap:10px; margin:18px 0 0; }
+.v220-b-onboarding #screen-name .name-suggest-label {
+  flex-basis:100%; color:#fff; font:600 16px/1.4 var(--onboarding-font);
+}
+.v220-b-onboarding #screen-name .name-suggest {
+  padding:8px 14px; min-height:44px; border:1px solid transparent;
+  background:#ffffff52; color:#fff; font:500 14px/1.3 var(--onboarding-font);
+}
+.v220-b-onboarding #screen-name .name-suggest.is-selected {
+  background:var(--onboarding-pick-bg); border-color:var(--onboarding-pick-border); color:var(--onboarding-option-text);
+}
+.v220-b-onboarding #screen-name .who-intro {
+  order:1; flex:none; align-items:flex-end; gap:12px; margin:auto 0 0; padding-top:16px;
+}
+.v220-b-onboarding #screen-name .dino-wrap {
+  position:relative; isolation:isolate; width:clamp(70px, calc((100vh - 520px) * .32), 121px);
+}
+.v220-b-onboarding #screen-name .dino-wrap::before {
+  content:""; position:absolute; z-index:-1; left:50%; bottom:-13px; transform:translateX(-50%);
+  width:128.599px; height:35.7255px;
+  background:url("assets/gaid-review/onboarding/nickname-shadow.svg") center no-repeat;
+}
+.v220-b-onboarding #screen-name .dino-mascot { display:none; }
+.v220-b-onboarding #screen-name .v220-onboarding-dino { display:block; width:100%; height:auto; }
+.v220-b-onboarding #screen-name .speech-bubble {
+  align-self:flex-start; padding:12px 14px; border:1px solid #ffffff55; border-radius:22px 22px 22px 4px;
+  background:#3576efd9; backdrop-filter:blur(25px); box-shadow:none;
+}
+.v220-b-onboarding #screen-name .speech-bubble::before { display:none; }
+.v220-b-onboarding #screen-name .speech-bubble p,
+.v220-b-onboarding #screen-name .speech-bubble strong { color:#fff; font:500 14px/1.5 var(--onboarding-font); }
+.v220-b-onboarding #screen-goal-value .option-list { gap:8px; }
+.v220-b-onboarding #screen-goal-value .cx-goal { min-height:64px; padding:8px 10px; gap:10px; }
+.v220-b-onboarding #screen-goal-value .cx-goal-art {
+  display:grid; place-items:center; overflow:hidden; position:relative; flex:0 0 40px; height:40px;
+}
+.v220-b-onboarding #screen-goal-value .cx-goal-art img { display:block; max-width:34px; max-height:34px; }
+.v220-b-onboarding #screen-goal-value .cx-goal-art[data-goal-icon="daily"] img {
+  position:absolute; left:-225%; top:-79.21%; width:325.15%; height:184.62%; max-width:none; max-height:none;
+}
+.v220-b-onboarding #screen-goal-value .cx-goal-check { border:1.5px solid #cccdce; border-radius:50%; background:#fff; font-size:0; }
+.v220-b-onboarding #screen-goal-value .cx-goal.is-selected .cx-goal-check {
+  border:0; transform:none; background:url("assets/gaid-review/onboarding/goal-selected.svg") center no-repeat;
+}
+@media(max-height:760px) {
+  .device.portrait.v220-b-onboarding .v220-onboarding-question { padding-bottom:22px; }
+  .device.portrait.v220-b-onboarding .v220-onboarding-question .scroll-body { padding-top:18px; }
+}
+@media(max-width:650px) {
+  body:has(#wrap-portrait:not([style*="display: none"]) .v220-b-onboarding .v220-onboarding-question.active) #dfb-fab { display:none !important; }
 }
 </style>
 </head>
@@ -8828,6 +8950,10 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
   <div class="device-wrap portrait" id="wrap-portrait">
     <div class="device portrait" id="device-portrait">
       <div class="pay-toast" id="portrait-toast" role="status" aria-live="polite"></div>
+      <div class="v220-onboarding-status" aria-hidden="true">
+        <span>9:41</span>
+        <img src="assets/gaid-review/onboarding/status-icons.svg" alt="" loading="lazy">
+      </div>
       <section class="screen active" id="screen-welcome">
         <div class="welcome-hero">
           <div class="carousel-frame" id="carousel-frame"></div>
@@ -8850,17 +8976,23 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
         </div>
       </section>
 
-      <section class="screen" id="screen-operator" aria-labelledby="v220-gaid-role-title">
-        <div class="top-bar"><button class="btn-back" id="v220-gaid-operator-back" type="button">Back</button></div>
+      <section class="screen v220-onboarding-question" id="screen-operator" aria-labelledby="v220-gaid-role-title">
+        <div class="top-bar">
+          <button class="btn-back" id="v220-gaid-operator-back" type="button">Back</button>
+          <span class="step-label">1/5</span>
+        </div>
+        <div class="progress-bar" aria-hidden="true"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="v220-gaid-role-title" tabindex="-1">Who is setting up?</h1>
-          <p class="hint">Choose who is using Dino right now.</p>
-          <div class="v220-gaid-art" aria-hidden="true"></div>
-          <div class="v220-gaid-roles" id="v220-gaid-operator-roles" role="group" aria-labelledby="v220-gaid-role-title"></div>
+          <p class="hint" id="v220-gaid-role-hint">Choose who is using Dino right now.</p>
+          <div class="option-list" role="group" aria-labelledby="v220-gaid-role-title" aria-describedby="v220-gaid-role-hint">
+            <button type="button" class="option-item" data-gaid-role="child">I am a parent</button>
+            <button type="button" class="option-item" data-gaid-role="self">I am a learner</button>
+          </div>
         </div>
       </section>
 
-      <section class="screen" id="screen-name">
+      <section class="screen v220-onboarding-question" id="screen-name">
         <div class="top-bar">
           <button type="button" class="btn-back is-hidden" data-back="screen-welcome">Back</button>
           <span class="step-label">Step 1 of 4</span>
@@ -8868,7 +9000,9 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
         <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
         <div class="scroll-body">
           <div class="who-intro">
-            <div class="dino-wrap" id="dino-name"></div>
+            <div class="dino-wrap" id="dino-name">
+              <img src="assets/gaid-review/onboarding/nickname-dino.png" alt="" class="v220-onboarding-dino" loading="lazy">
+            </div>
             <div class="speech-bubble">
               <p><strong>Hi, I'm Dino!</strong> Just a few quick questions to find the right <strong>starting point</strong>.</p>
             </div>
@@ -8892,7 +9026,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
         </div>
       </section>
 
-      <section class="screen" id="screen-age">
+      <section class="screen v220-onboarding-question" id="screen-age">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-name">Back</button>
           <span class="step-label">Step 2 of 4</span>
@@ -8909,7 +9043,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       </section>
 
       <!-- Placement test blends into onboarding as a normal question step (single onboarding progress bar) -->
-      <section class="screen" id="screen-placement">
+      <section class="screen v220-onboarding-question" id="screen-placement">
         <div class="top-bar">
           <button type="button" class="btn-back" id="btn-pt-back">Back</button>
           <span class="step-label">Step 3 of 4</span>
@@ -8925,7 +9059,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
         </div>
       </section>
 
-      <section class="screen" id="screen-goal-value">
+      <section class="screen v220-onboarding-question" id="screen-goal-value">
         <div class="top-bar">
           <button type="button" class="btn-back" data-back="screen-placement">Back</button>
           <span class="step-label" id="goal-value-step">Step 4 of 4</span>
@@ -11252,16 +11386,24 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 
     function updateExperimentStepChrome() {
       const isB = demoState.experimentGroup === "b";
-      const steps = isB
-        ? [["screen-name", "Step 1 of 4", "25%"], ["screen-age", "Step 2 of 4", "50%"], ["screen-placement", "Step 3 of 4", "75%"]]
-        : [["screen-name", "Step 1 of 3", "33%"], ["screen-age", "Step 2 of 3", "66%"], ["screen-placement", "Step 3 of 3", "100%"]];
-      steps.forEach(([id, label, width]) => {
+      const withIdentity = gaidReview.mode === "b";
+      $("#device-portrait").classList.toggle("v220-b-onboarding", withIdentity);
+      const steps = ["screen-name", "screen-age", "screen-placement"];
+      if (isB || withIdentity) steps.push("screen-goal-value");
+      if (withIdentity) steps.unshift("screen-operator");
+      steps.forEach((id, i) => {
         const screen = document.getElementById(id);
         if (!screen) return;
         const step = screen.querySelector(".step-label");
         const fill = screen.querySelector(".progress-fill");
-        if (step) step.textContent = label;
-        if (fill) fill.style.width = width;
+        const number = i + 1;
+        const label = "Step " + number + " of " + steps.length;
+        if (step) {
+          step.textContent = withIdentity ? number + "/" + steps.length : label;
+          if (withIdentity) step.setAttribute("aria-label", label);
+          else step.removeAttribute("aria-label");
+        }
+        if (fill) fill.style.width = Math.floor(100 * number / steps.length) + "%";
       });
       const nameBack = document.querySelector("#screen-name .btn-back");
       if (nameBack) {
@@ -17024,6 +17166,13 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       { id: "daily", icon: "💬", label: "Use English in everyday situations" },
       { id: "habit", icon: "📅", label: "Build a consistent learning habit" },
     ];
+    const V220_ONBOARDING_GOAL_ART = {
+      confidence: "goal-speak.png",
+      school: "goal-school.png",
+      path: "goal-foundation.png",
+      daily: "goal-everyday.png",
+      habit: "goal-habit.png",
+    };
     function fillGoalValuePage() {
       const isB = demoState.experimentGroup === "b";
       const illo = $("#illo-goal-value");
@@ -17070,10 +17219,12 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
         if (cont) cont.disabled = picked.length === 0;
       };
       const saved = new Set(profile.goals?.length ? profile.goals : [profile.goal].filter(Boolean));
+      const showGoalArt = gaidReview.mode === "b";
       box.innerHTML = CX_GOALS.map((goal) => `
         <button type="button" class="option-item cx-goal${saved.has(goal.id) ? " is-selected" : ""}"
           data-val="${goal.id}" data-label="${goal.label}" aria-pressed="${saved.has(goal.id)}">
-          <span class="cx-goal-label">${goal.icon} ${goal.label}</span>
+          ${showGoalArt ? `<span class="cx-goal-art" data-goal-icon="${goal.id}" aria-hidden="true"><img src="assets/gaid-review/onboarding/${V220_ONBOARDING_GOAL_ART[goal.id]}" alt=""></span>` : ""}
+          <span class="cx-goal-label">${showGoalArt ? "" : goal.icon + " "}${goal.label}</span>
           <span class="cx-goal-check" aria-hidden="true">✓</span>
         </button>`).join("");
       box.querySelectorAll(".cx-goal").forEach((btn) => {
@@ -17309,7 +17460,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
 
     function initOnboarding() {
       if ($("#dino-who")) $("#dino-who").innerHTML = DINO_CHAR;
-      if ($("#dino-name")) $("#dino-name").innerHTML = DINO_CHAR;
+      $("#dino-name")?.insertAdjacentHTML("afterbegin", DINO_CHAR);
       renderWhoOptions();
       applyVoiceWording();
       // Age selection always leads straight into the placement test (the standalone
@@ -17870,6 +18021,7 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       lgCloseAll($("#screen-login"));
       $$(".cx-oauth").forEach(overlay => overlay.remove());
       if (wasFirstLaunch) renderExperimentWelcome();
+      else updateExperimentStepChrome();
     }
 
     function startV220GaidReview(mode, market = "other", outcome = "signup") {
@@ -17880,7 +18032,6 @@ body:has(#wrap-portrait:not([style*="display: none"]) #screen-welcome.v220-gaid-
       window.demoStatePanel?.panel.classList.remove("open");
     }
 
-    $("#v220-gaid-operator-roles").innerHTML = v220GaidCards("I am a parent", "I am a learner");
     $("#device-portrait").addEventListener("click", (event) => {
       const choice = event.target.closest("[data-gaid-role]");
       if (choice && gaidReview.mode && choice.closest(".screen.active")) {
