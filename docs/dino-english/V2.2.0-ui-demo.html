@@ -18659,16 +18659,16 @@
           cta = '<button type="button" class="tc-cta" onclick="startThemeCourse()">'
             + (themeEvent.user === "inprogress" ? "Continue ▶" : "Start the lesson ▶") + '</button>';
         }
-        hero.innerHTML = '<div class="tc-hero"><div class="tc-tags">' + tags + '</div>'
+        hero.innerHTML = '<div class="tc-hero"><div class="tc-tags">' + tags + '<span class="tc-tag is-timer">Ages 3–6</span></div>'
           + '<h2>The Tiny Team<br>World Cup Final 🏆</h2>'
           + '<div class="tc-scene">🐜 🐌 ⚽ 🥅 🪲</div>'
           + '<p class="tc-story">The ant and the snail lead the Tiny Team against the big beetle squad. Small, fast and together — can they win the World Cup?</p>'
           + '<div class="tc-chips"><span class="tc-chip">Come on!</span><span class="tc-chip">So close!</span><span class="tc-chip">Goal!</span></div>'
-          + cta + '<div class="tc-lvl">Level 1–2 · Ages 4–7 · ~5 min</div></div>';
+          + cta + '<div class="tc-lvl">Level 1–2 · ~5 min</div></div>';
       }
       var items = [];
       if (themeEvent.activity === "ended") {
-        items.push({ e:"⚽", bg:"#E8F6EC", t:"World Cup · The Tiny Team", s:"2026.07 · Completed", pill:"report" });
+        items.push({ e:"⚽", bg:"#E8F6EC", t:"World Cup · The Tiny Team", s:"2026.07 · Completed · Ages 3–6", pill:"report" });
       }
       if (themeEvent.pastEmpty) {
         past.innerHTML = "<b>Past events</b>"
@@ -25996,7 +25996,7 @@ window.V220_EXPLORE_RESOURCES = Object.freeze([
   {buttonId:'explore-open-story',title:'Words & Sentences',label:'Words',src:'assets/v210/explore-figma/words.png'},
   {buttonId:'explore-open-speaking',title:'Speaking',label:'Speaking',src:'assets/v210/explore-figma/speaking.png'},
   {buttonId:'explore-open-animation',title:'Dino Story',label:'Dino Story',src:'assets/v200/ip-animation-entry.png'},
-  {buttonId:'dino-event-card',title:'Theme Lessons',label:'Theme Lessons',ageLabel:'Ages 3–6',src:'assets/v210/explore-figma/theme.png'}
+  {buttonId:'dino-event-card',title:'Theme Lessons',label:'Theme Lessons',src:'assets/v210/explore-figma/theme.png'}
 ]);
 </script>
 <script id="v220-pretrial-plan-module">
@@ -26684,7 +26684,6 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
 #v210-explore-scene .ee-info { all:unset!important; position:absolute!important; top:77.08px!important; left:50%!important; transform:translateX(-50%)!important; text-align:center!important; pointer-events:none!important; }
 #v210-explore-scene .ee-info b { display:block!important; font:900 italic 16.652px/20.3px Montserrat,sans-serif!important; color:#fff159!important; background:linear-gradient(90deg,#ffef3a,#fffabc)!important; -webkit-background-clip:text!important; background-clip:text!important; -webkit-text-fill-color:transparent!important; -webkit-text-stroke:0!important; filter:drop-shadow(1.5px 0 #7157de) drop-shadow(-1.5px 0 #7157de) drop-shadow(0 1.5px #7157de) drop-shadow(0 -1.5px #7157de)!important; white-space:nowrap!important; text-shadow:none!important; margin:0!important; }
 #v210-explore-scene .ee-info b.ex-long { font-size:14px!important; line-height:17px!important; }
-#v210-explore-scene .ex-age-label { display:inline-block; margin-top:3px; padding:2px 8px; border-radius:var(--radius-pill); background:var(--sky-deep); color:var(--ink-on-dark); font:600 11px/1.3 var(--font); white-space:nowrap; }
 #v210-explore-scene .ex-nav { position:absolute; left:470px; top:296px; width:302px; height:67px; display:flex; gap:4px; padding:0 16px; align-items:flex-start; }
 #v210-explore-scene .ex-nav::before { content:""; position:absolute; left:0; top:27px; width:302px; height:40px; border:1px solid #fff8; border-radius:40px; background:linear-gradient(#fff3,#88d1ff33); backdrop-filter:blur(50px); }
 #v210-explore-scene .ex-nav button { position:relative; width:64px; height:63px; padding:0; border:0; border-radius:25px; color:#fff; background:none; cursor:pointer; font:400 10px/15px Poppins,sans-serif; flex:none; }
@@ -26749,12 +26748,12 @@ body[data-v200-view="explore"] #hub-cx-vip { visibility:hidden!important; pointe
   }));
   entries.forEach((entry,index) => {
     const button = entry.button;
-    button.setAttribute('aria-label', entry.ageLabel ? entry.title + ', ' + entry.ageLabel : entry.title);
+    button.setAttribute('aria-label', entry.title);
     button.dataset.exEntry = entry.title;
     button.style.setProperty('--ex-x', (358 + (index % 3) * 125.156) + 'px');
     button.style.setProperty('--ex-y', (index < 3 ? 77 : 190) + 'px');
     const isBase = [1,3,5].includes(index);
-    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.buttonId==='explore-open-speaking'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b>${entry.ageLabel ? `<span class="ex-age-label">${entry.ageLabel}</span>` : ''}</span>`;
+    button.innerHTML = `${asset(isBase?'hex-base.svg':'hex-glow.svg','ex-hex outer'+(isBase?' base':''))}${asset('hex-fill.svg','ex-hex fill')}${asset('hex-inner.svg','ex-hex inner')}<span class="ex-entry-art ${entry.buttonId==='explore-open-speaking'?'speaking':''}"><img src="${entry.src || base+entry.image}" alt="" draggable="false"></span><span class="ee-info"><b${entry.title==='Theme Lessons'?' class="ex-long"':''}>${entry.label||entry.title}</b></span>`;
     scene.querySelector('.ex-entries').appendChild(button);
   });
   panel.replaceChildren(scene);
