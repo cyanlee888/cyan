@@ -8692,6 +8692,16 @@
 .v220c-card svg{flex:0 0 27px;width:27px;height:27px;stroke:#2261ce;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .v220c-actions{display:grid;gap:12px;margin:0 20px;padding-bottom:24px;text-align:center}
 .v220c-actions p{margin:0;font-size:13px;line-height:1.35;color:#d4e6ff}
+.v220c-phone{display:grid;gap:6px;text-align:left}
+.v220c-phone label{font-size:14px;line-height:1.4;font-weight:700;color:#fff}
+.v220c-phone-row{display:flex;min-width:0;min-height:48px;border:1px solid #819fe7;border-radius:14px;background:linear-gradient(145deg,#fff,#e9efff);overflow:hidden}
+.v220c-phone-row select,.v220c-phone-row input{min-height:46px;border:0;background:transparent;color:#122451;font:700 16px/1.35 Quicksand,system-ui,sans-serif}
+.v220c-phone-row select{padding:0 8px;border-inline-end:1px solid #c2d0f0}
+.v220c-phone-row input{flex:1;min-width:0;width:0;padding:0 12px}
+.v220c-phone-row input::placeholder{color:#4b608f;opacity:1}
+.v220c-phone-row:focus-within{outline:3px solid #a4d0ff;outline-offset:2px}
+.v220c-phone-row:has([aria-invalid="true"]){border-color:#ffd8bc}
+.v220c-phone .v220c-phone-error{color:#ffd8bc;font-weight:700}
 #v220c-status{color:#ffd8bc;font-weight:800}
 .v220c-actions button{width:100%;min-height:52px;padding:10px 12px;border-radius:26px;font:800 15px/1.22 Quicksand,system-ui,sans-serif;cursor:pointer}
 .v220c-primary {
@@ -9126,6 +9136,18 @@
         </ul>
         <div class="v220c-actions">
           <p id="v220c-contact"></p>
+          <div class="v220c-phone" id="v220c-phone" hidden>
+            <label id="v220c-phone-label" for="v220c-phone-input">Phone number</label>
+            <div class="v220c-phone-row">
+              <select id="v220c-phone-country" aria-label="Country or region code">
+                <option value="vn">VN +84</option>
+                <option value="my">MY +60</option>
+              </select>
+              <input id="v220c-phone-input" type="tel" inputmode="tel" autocomplete="tel-national"
+                maxlength="24" aria-describedby="v220c-contact v220c-phone-error" />
+            </div>
+            <p id="v220c-phone-error" class="v220c-phone-error" role="status" hidden></p>
+          </div>
           <p id="v220c-status" role="status" hidden></p>
           <button class="v220c-primary" type="button" id="v220c-primary"></button>
           <button class="v220c-skip" type="button" id="v220c-skip"></button>
@@ -11368,7 +11390,7 @@
           } else if ((kind === "apple" || kind === "google") && typeof window.cxMockOAuth === "function") {
             window.cxMockOAuth(kind);
           } else {
-            onLoginSuccess();
+            onLoginSuccess(kind === "phone" ? CONSULT_REVIEW_PHONES[demoState.marketRoute] : "");
           }
         };
         document.getElementById("cx-w-apple")?.addEventListener("click", () => login("apple"));
@@ -12461,11 +12483,11 @@
       }
       completeOnboarding({ afterComplete: "teacher", clearPostLoginInfo: true });
     }
-    function onLoginSuccess() {
+    function onLoginSuccess(registeredPhone = "") {
       const fromSharedEntry = v155EntryAuth || !!$("#screen-welcome.active");
       const newRegistration = fromSharedEntry && v220AuthOutcome === "signup";
-      if (newRegistration && v220ConsultMarketConfig[demoState.marketRoute]?.enabled) {
-        profile.contactPhone = CONSULT_REVIEW_PHONES.vn;
+      if (newRegistration && registeredPhone && v220ConsultMarketConfig[demoState.marketRoute]?.enabled) {
+        profile.contactPhone = registeredPhone;
       }
       v155EntryAuth = false;
       if (fromSharedEntry) {
@@ -12518,10 +12540,10 @@
         openTeacherPicker("onboarding");
       }
     }
-    $("#btn-login-apple-land")?.addEventListener("click", onLoginSuccess);
-    $("#btn-login-google-land")?.addEventListener("click", onLoginSuccess);
-    $("#btn-login-apple")?.addEventListener("click", onLoginSuccess);
-    $("#btn-login-google")?.addEventListener("click", onLoginSuccess);
+    $("#btn-login-apple-land")?.addEventListener("click", () => onLoginSuccess());
+    $("#btn-login-google-land")?.addEventListener("click", () => onLoginSuccess());
+    $("#btn-login-apple")?.addEventListener("click", () => onLoginSuccess());
+    $("#btn-login-google")?.addEventListener("click", () => onLoginSuccess());
 
     // ===== V1.3.0 More login options (phone OTP / Facebook / Kakao) =====
     // Both login screens embed the same class-based sheets; we scope every
@@ -12958,7 +12980,9 @@
       btn.textContent = "Logging in…";
       clearInterval(phoneAuthResendTimer);
       setTimeout(() => {
-        if ($("#screen-phone-auth.active") && btn.disabled) onLoginSuccess();
+        if ($("#screen-phone-auth.active") && btn.disabled) {
+          onLoginSuccess(`${phoneAuthCC.code} ${phoneAuthDigits()}`);
+        }
       }, 700);
     });
 
@@ -13054,7 +13078,8 @@
           if (tx) tx.textContent = "Verifying…";
           scope.querySelectorAll(".lg-sheet-overlay").forEach((o) => o.classList.remove("show"));
           veil?.classList.add("show");
-          setTimeout(() => { lgCloseAll(scope); onLoginSuccess(); }, 1000);
+          const phone = `${lgCC.code} ${lgPhoneDigits(scope)}`;
+          setTimeout(() => { lgCloseAll(scope); onLoginSuccess(phone); }, 1000);
         }
         return;
       }
@@ -17671,11 +17696,14 @@
     let v220ConsultResult = v220ConsultQuery.get("vnResult") === "fail" ? "fail" : "success";
     let v220ConsultStatus = "ready";
     let v220ConsultSeen = false;
+    let v220ConsultSubmitTimer;
     const v220ConsultLang = { vi: "vi", zh: "zh-CN" }[v220ConsultQuery.get("vnLang")] || "en";
     const v220ConsultCopy = v220ConsultLang === "vi" ? {
       title:"Tìm hiểu khóa học tiếng Anh cho con", body:"Trao đổi với chuyên viên Dino AI về khóa học và cách học.",
       topics:["Tìm hiểu cách học trong khóa học","Trao đổi về cách học phù hợp với con","Tìm hiểu cách bắt đầu bài học thử"],
       contact:"Chuyên viên sẽ gọi vào số điện thoại bạn đã đăng ký.",
+      contactProvided:"Chuyên viên sẽ gọi vào số điện thoại bạn cung cấp.",
+      phoneLabel:"Số điện thoại", phoneRegionLabel:"Mã quốc gia hoặc khu vực", phoneError:"Vui lòng nhập số điện thoại hợp lệ.",
       submit:"Đăng ký tư vấn qua điện thoại", skip:"Tiếp tục mà không đăng ký", sending:"Đang gửi…",
       failed:"Chưa gửi được yêu cầu. Bạn có thể thử lại hoặc tiếp tục.", retry:"Thử lại",
       toast:"Đã nhận yêu cầu tư vấn"
@@ -17683,6 +17711,8 @@
       title:"为孩子了解合适的英语课程", body:"和 Dino AI 顾问聊聊课程与学习方式。",
       topics:["了解课程怎么学","咨询适合孩子的学习方式","了解如何开始体验课"],
       contact:"顾问将通过注册手机号联系你。",
+      contactProvided:"顾问将通过你提供的手机号联系你。",
+      phoneLabel:"手机号", phoneRegionLabel:"国家或地区区号", phoneError:"请输入有效的手机号。",
       submit:"申请顾问电话咨询", skip:"暂不咨询，继续", sending:"正在提交…",
       failed:"申请未提交，请重试或继续。", retry:"重试",
       toast:"咨询申请已收到"
@@ -17690,6 +17720,8 @@
       title:"Find the right English course for your child", body:"Talk with a Dino AI advisor about our courses and how your child can learn.",
       topics:["See how the course works","Find a way to learn that suits your child","Learn how to start a trial lesson"],
       contact:"An advisor will call the phone number you used to sign up.",
+      contactProvided:"An advisor will call the phone number you provide.",
+      phoneLabel:"Phone number", phoneRegionLabel:"Country or region code", phoneError:"Enter a valid phone number.",
       submit:"Request a call from an advisor", skip:"I’ll explore on my own", sending:"Sending…",
       failed:"We couldn’t send your request. Try again or explore on your own.", retry:"Try again",
       toast:"Consultation request received"
@@ -17716,12 +17748,18 @@
         ? v220ConsultCopy
         : { ...v220ConsultCopy, ...v220ConsultLearnerCopy[v220ConsultLang] };
       const busy = v220ConsultStatus === "sending";
+      const needsPhone = !vnConsultHasPhone();
       $("#screen-v220-consult").lang = v220ConsultLang;
       const status = $("#v220c-status");
       $("#v220c-title").textContent = c.title;
       $("#v220c-copy").textContent = c.body;
       $("#v220c-topics").querySelectorAll("span").forEach((item,i)=>{item.textContent=c.topics[i];});
-      $("#v220c-contact").textContent = c.contact;
+      $("#v220c-contact").textContent = needsPhone ? c.contactProvided : c.contact;
+      $("#v220c-phone").hidden = !needsPhone;
+      $("#v220c-phone-label").textContent = c.phoneLabel;
+      $("#v220c-phone-country").setAttribute("aria-label", c.phoneRegionLabel);
+      $("#v220c-phone-country").disabled = busy;
+      $("#v220c-phone-input").disabled = busy;
       status.hidden = v220ConsultStatus !== "failed";
       status.textContent = status.hidden ? "" : c.failed;
       const button = $("#v220c-primary");
@@ -17731,10 +17769,12 @@
       $("#v220c-skip").hidden = busy;
     }
     function openV220Consult() {
-      if (!v220ConsultMarketConfig[demoState.marketRoute]?.enabled || v220ConsultSeen || !profile.contactPhone ||
+      if (!v220ConsultMarketConfig[demoState.marketRoute]?.enabled || v220ConsultSeen ||
           demoState.vnConsultSubmitted || profile.premiumUnlocked) return false;
       v220ConsultSeen = true;
       v220ConsultStatus = "ready";
+      $("#v220c-phone-country").value = demoState.marketRoute;
+      resetV220ConsultPhoneInput();
       renderV220Consult();
       showPortraitScreen("screen-v220-consult");
       $("#v220c-title").focus();
@@ -17743,12 +17783,43 @@
     function continueV220Consult() {
       showPortraitScreen("screen-name");
     }
+    function v220ConsultPhoneRegion() {
+      return CONSULT_PHONE_REGIONS[$("#v220c-phone-country").value] || CONSULT_PHONE_REGIONS.vn;
+    }
+    function showV220ConsultPhoneError(visible) {
+      $("#v220c-phone-input").setAttribute("aria-invalid", String(visible));
+      const error = $("#v220c-phone-error");
+      error.hidden = !visible;
+      error.textContent = visible ? v220ConsultCopy.phoneError : "";
+    }
+    function resetV220ConsultPhoneInput() {
+      const input = $("#v220c-phone-input");
+      input.value = "";
+      input.placeholder = v220ConsultPhoneRegion().example;
+      showV220ConsultPhoneError(false);
+    }
+    $("#v220c-phone-country").addEventListener("change", resetV220ConsultPhoneInput);
+    $("#v220c-phone-input").addEventListener("input", (event) => {
+      const field = event.target;
+      if (field.getAttribute("aria-invalid") === "true" && normalizeConsultPhone(field.value, v220ConsultPhoneRegion())) {
+        showV220ConsultPhoneError(false);
+      }
+    });
     $("#v220c-skip").addEventListener("click", continueV220Consult);
     $("#v220c-primary").addEventListener("click", () => {
       if (v220ConsultStatus === "sending") return;
+      const phoneInput = $("#v220c-phone-input");
+      const consultationPhone = vnConsultHasPhone()
+        ? profile.contactPhone.trim()
+        : normalizeConsultPhone(phoneInput.value, v220ConsultPhoneRegion());
+      if (!consultationPhone) {
+        showV220ConsultPhoneError(true);
+        phoneInput.focus();
+        return;
+      }
       v220ConsultStatus = "sending";
       renderV220Consult();
-      setTimeout(() => {
+      v220ConsultSubmitTimer = setTimeout(() => {
         if (v220ConsultStatus !== "sending") return;
         if (v220ConsultResult === "fail") {
           v220ConsultResult = "success";
@@ -17758,6 +17829,7 @@
           demoState.vnConsultState = VN_CONSULT_STATE.STOPPED;
           demoState.vnConsultLarkSynced = true;
           demoState.vnConsultOutboundSynced = true;
+          demoState.vnConsultOutboundPhone = consultationPhone;
           v220ConsultStatus = "done";
           document.dispatchEvent(new CustomEvent("demo:vn-consult-created", {detail:{source:"registration", simulated:true}}));
         }
@@ -17782,6 +17854,7 @@
       demoState.vnConsultState = VN_CONSULT_STATE.UNSEEN;
       demoState.vnConsultLarkSynced = false;
       demoState.vnConsultOutboundSynced = false;
+      demoState.vnConsultOutboundPhone = "";
       profile.premiumUnlocked = false;
       profile.contactPhone = "";
       window.v160ReviewStart();
@@ -17791,6 +17864,7 @@
     function resetV220EntryOverlays() {
       v155EntryAuth = false;
       v220ConsultStatus = "ready";
+      clearTimeout(v220ConsultSubmitTimer);
       clearInterval(loadingTimer);
       loadingTimer = null;
       clearInterval(phoneAuthResendTimer);
@@ -17846,10 +17920,9 @@
       return CONSULT_PHONE_REGIONS[demoState.vnConsultPhoneRegion]
         || CONSULT_PHONE_REGIONS.vn;
     }
-    function normalizeVnConsultPhone() {
-      const region = vnConsultPhoneRegion();
+    function normalizeConsultPhone(phone, region) {
       const callingDigits = region.callingCode.replace(/\D/g, "");
-      let digits = ($("#vnc-phone-input")?.value || "").replace(/\D/g, "");
+      let digits = phone.replace(/\D/g, "");
       if (
         region.nationalLengths.includes(digits.length - callingDigits.length)
         && digits.startsWith(callingDigits)
@@ -17865,6 +17938,9 @@
         || !region.nationalPattern.test(digits)
       ) return "";
       return `${region.callingCode}${digits}`;
+    }
+    function normalizeVnConsultPhone() {
+      return normalizeConsultPhone($("#vnc-phone-input")?.value || "", vnConsultPhoneRegion());
     }
     function refreshVnConsultPhone(showError = false) {
       const phoneBox = $("#vnc-phone");
@@ -20065,7 +20141,8 @@
         keys: [...onboardingContext.keys, "v220ConsultRegion", "v220AuthOutcome"],
       };
       if (pid === "screen-v220-consult") return {
-        ...onboardingContext, label: "越南 · 顾问电话咨询", pageKey: "v220_consult",
+        ...onboardingContext, label: "越南 · 顾问电话咨询",
+        pageKey: vnConsultHasPhone() ? "v220_consult" : "v220_consult_no_phone",
       };
       if (pid === "screen-phone-auth") return { ...onboardingContext, label: "手机号登录" };
       if (pid === "screen-login") return { ...onboardingContext, label: "登录注册页" };
@@ -20423,7 +20500,14 @@
         showPortraitScreen("screen-name");
         window.demoStatePanel?.panel.classList.remove("open");
       } },
-      { key: "v220_consult", label: "新注册 · 展示咨询", run: () => { startV220ConsultReview("vn"); onLoginSuccess(); } },
+      { key: "v220_consult", label: "新注册 · 展示咨询（已有手机号）", run: () => {
+        startV220ConsultReview("vn");
+        onLoginSuccess(CONSULT_REVIEW_PHONES.vn);
+      } },
+      { key: "v220_consult_no_phone", label: "新注册 · 展示咨询（无手机号）", run: () => {
+        startV220ConsultReview("vn");
+        onLoginSuccess();
+      } },
       { key: "v220_consult_bypass", label: "新注册 · 不展示咨询", run: () => { startV220ConsultReview("other"); onLoginSuccess(); } },
     ],
     legacyJumps: [
