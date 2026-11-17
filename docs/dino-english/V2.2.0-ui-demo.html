@@ -8684,9 +8684,7 @@
 #screen-v220-consult{display:none;padding:0;overflow-y:auto;background:#071a43 url("assets/v220/consultation/advisor-scene-dino.jpg") center top/100% auto no-repeat;color:#fff;font-family:Quicksand,system-ui,sans-serif}
 #screen-v220-consult.active{display:flex;flex-direction:column}
 #screen-v220-consult [hidden]{display:none!important}
-.v220c-top{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0}
-.v220c-top img{width:67px;height:auto;object-fit:contain}
-.v220c-hero{padding:22px 20px 24px;min-height:clamp(228px,31vh,270px);flex:none;box-sizing:border-box}
+.v220c-hero{padding:36px 20px 24px;min-height:clamp(252px,calc(31vh + 24px),294px);flex:none;box-sizing:border-box}
 #screen-v220-consult h1{font:800 clamp(24px,5.9vw,29px)/1.15 Quicksand,system-ui,sans-serif;margin:0 0 14px;max-width:86%;text-wrap:balance;text-shadow:0 2px 8px #06183f}
 #v220c-copy{font-size:14px;line-height:1.5;margin:0;max-width:54%;color:#e0eeff;text-shadow:0 2px 8px #06183f}
 .v220c-card{display:grid;gap:10px;list-style:none;margin:0 20px 24px;padding:16px;border-radius:22px;border:2px solid #e5ecff;background:linear-gradient(150deg,#fff,#f3f5fd);box-shadow:0 0 23px #3d8dff55;color:#101f49}
@@ -8713,7 +8711,7 @@
 }
 .v220c-primary:disabled{opacity:.7;cursor:wait}.v220c-actions .v220c-skip{justify-self:center;width:auto;min-height:44px;background:none;color:#f3f7ff;border:0;border-radius:0;text-decoration:underline;text-underline-offset:.2em}
 #screen-v220-consult button:focus-visible{outline:3px solid #a4d0ff;outline-offset:3px}
-@media(max-width:350px){.v220c-top{padding-inline:16px}.v220c-hero{padding-inline:16px}.v220c-card,.v220c-actions{margin-inline:16px}.v220c-card{padding:12px}.v220c-card li{padding-inline:9px}}
+@media(max-width:350px){.v220c-hero{padding-inline:16px}.v220c-card,.v220c-actions{margin-inline:16px}.v220c-card{padding:12px}.v220c-card li{padding-inline:9px}}
 </style>
 <style id="v220-onboarding-style">
 .pauth-main .v220-entry-phone-back { position:absolute; top:11px; left:16px; min-height:44px; color:#fff; }
@@ -9111,7 +9109,6 @@
 
       <!-- V1.3.2 手机号绑定页（竖屏 takeover）：卡号登录后若未获取到手机号进入。参考 Figma 4867:18878。 -->
       <section class="screen" id="screen-v220-consult" aria-labelledby="v220c-title">
-        <div class="v220c-top"><img src="assets/v220/pretrial-plan/logo.webp" alt="Dino AI"></div>
         <div class="v220c-hero"><h1 id="v220c-title" tabindex="-1"></h1><p id="v220c-copy"></p></div>
         <ul class="v220c-card" id="v220c-topics">
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v15M12 6C9 3 5 3 2 4v15c4-1 7-1 10 2 3-3 6-3 10-2V4c-3-1-7-1-10 2Z"/></svg><span></span></li>
