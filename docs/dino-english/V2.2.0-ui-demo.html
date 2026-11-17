@@ -8695,19 +8695,28 @@
 #v220c-status{color:#ffd8bc;font-weight:800}
 .v220c-actions button{width:100%;min-height:52px;padding:10px 12px;border-radius:26px;font:800 15px/1.22 Quicksand,system-ui,sans-serif;cursor:pointer}
 .v220c-primary {
-  background: linear-gradient(#c15305, #b33c00);
+  background: linear-gradient(#ff9e38, #f57519 48%, #f25410);
   color: #fff;
+  -webkit-text-stroke: 1.2px #8d2800;
+  paint-order: stroke fill;
+  text-shadow: 0 1px 2px #7a2000cc;
   border: 1px solid #ffd178;
-  box-shadow: 0 3px 15px #ff7d4363;
+  box-shadow: inset 0 1px 0 #ffda9a9e, 0 4px 16px #ff79276b;
 }
 @media (prefers-reduced-motion: no-preference) {
   #screen-v220-consult.active .v220c-primary:enabled {
-    animation: v220c-button-breathe 2.4s ease-in-out 2;
+    animation: v220c-button-breathe 2.2s ease-in-out 2;
   }
 }
 @keyframes v220c-button-breathe {
-  0%, 100% { box-shadow: 0 3px 15px #ff7d4363; }
-  50% { box-shadow: 0 3px 24px #ff9a5ca6, 0 0 0 3px #ffb4643d; }
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: inset 0 1px 0 #ffda9a9e, 0 4px 16px #ff79276b;
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: inset 0 1px 0 #ffda9a9e, 0 0 34px #ff941bcf, 0 0 0 5px #ffc06454;
+  }
 }
 .v220c-primary:disabled{opacity:.7;cursor:wait}.v220c-actions .v220c-skip{justify-self:center;width:auto;min-height:44px;background:none;color:#f3f7ff;border:0;border-radius:0;text-decoration:underline;text-underline-offset:.2em}
 #screen-v220-consult button:focus-visible{outline:3px solid #a4d0ff;outline-offset:3px}
