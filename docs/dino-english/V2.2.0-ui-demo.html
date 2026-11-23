@@ -8795,6 +8795,33 @@
 .v220-onboarding .v220-onboarding-question button:focus-visible {
   outline:3px solid #ffda37; outline-offset:-3px;
 }
+.v220-onboarding #screen-operator .option-list {
+  gap:16px; margin-top:28px;
+}
+.v220-onboarding #screen-operator .option-item {
+  display:grid; grid-template-columns:minmax(0,1fr) 16px; align-items:center; gap:16px;
+  min-height:136px; padding:20px; text-align:left;
+  box-shadow:inset 0 1px 0 #fff, 0 4px 0 #082a8b24;
+}
+.v220-onboarding #screen-operator .role-option-copy {
+  display:flex; flex-direction:column; gap:8px;
+}
+.v220-onboarding #screen-operator .role-option-title {
+  font:600 18px/1.4 var(--onboarding-font); color:var(--onboarding-option-text);
+}
+.v220-onboarding #screen-operator .role-option-description {
+  font:400 14px/1.5 var(--onboarding-font); color:#4c5f7b;
+}
+.v220-onboarding #screen-operator .role-option-arrow {
+  width:9px; height:9px; border-top:2px solid #5173a1; border-right:2px solid #5173a1;
+  transform:rotate(45deg); justify-self:center;
+}
+@media (max-width:350px) {
+  .v220-onboarding #screen-operator .option-list { margin-top:22px; gap:12px; }
+  .v220-onboarding #screen-operator .option-item { min-height:120px; padding:16px; gap:12px; }
+  .v220-onboarding #screen-operator .role-option-copy { gap:6px; }
+  .v220-onboarding #screen-operator .role-option-title { font-size:16px; }
+}
 .v220-onboarding #age-options.age-option-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
 .v220-onboarding #age-options .age-option { min-height:60px; padding:6px; }
 .v220-onboarding .v220-onboarding-question .foot-actions { padding:12px 0 0; }
@@ -8911,10 +8938,22 @@
         <div class="progress-bar" aria-hidden="true"><div class="progress-fill" style="width:20%"></div></div>
         <div class="scroll-body">
           <h1 class="title" id="v220-gaid-role-title" tabindex="-1">Which best describes you?</h1>
-          <p class="hint" id="v220-gaid-role-hint">We’ll help you set up a profile for yourself or your child.</p>
+          <p class="hint" id="v220-gaid-role-hint">Let’s find the right way to learn English.</p>
           <div class="option-list" role="group" aria-labelledby="v220-gaid-role-title" aria-describedby="v220-gaid-role-hint">
-            <button type="button" class="option-item" data-gaid-role="child">I’m a parent or guardian</button>
-            <button type="button" class="option-item" data-gaid-role="self">I’m a learner</button>
+            <button type="button" class="option-item" data-gaid-role="child" aria-labelledby="v220-role-parent-title" aria-describedby="v220-role-parent-description">
+              <span class="role-option-copy">
+                <span class="role-option-title" id="v220-role-parent-title">I’m a parent or guardian</span>
+                <span class="role-option-description" id="v220-role-parent-description">I’m looking for English lessons for my child.</span>
+              </span>
+              <span class="role-option-arrow" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="option-item" data-gaid-role="self" aria-labelledby="v220-role-learner-title" aria-describedby="v220-role-learner-description">
+              <span class="role-option-copy">
+                <span class="role-option-title" id="v220-role-learner-title">I’m a learner</span>
+                <span class="role-option-description" id="v220-role-learner-description">Practice English on my own.</span>
+              </span>
+              <span class="role-option-arrow" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
       </section>
